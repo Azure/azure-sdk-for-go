@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CertificatesClient contains the methods for the Certificates group.
 // Don't use this type directly, use NewCertificatesClient() instead.
 type CertificatesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewCertificatesClient creates a new instance of CertificatesClient with the specified values.
-func NewCertificatesClient(con *armcore.Connection, subscriptionID string) *CertificatesClient {
-	return &CertificatesClient{con: con, subscriptionID: subscriptionID}
+func NewCertificatesClient(con *arm.Connection, subscriptionID string) *CertificatesClient {
+	return &CertificatesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Create or update certificate resource.
@@ -40,65 +43,37 @@ func (client *CertificatesClient) BeginCreateOrUpdate(ctx context.Context, resou
 		return CertificatesCreateOrUpdatePollerResponse{}, err
 	}
 	result := CertificatesCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("CertificatesClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return CertificatesCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &certificatesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CertificatesCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new CertificatesCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to CertificatesCreateOrUpdatePoller.ResumeToken().
-func (client *CertificatesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (CertificatesCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("CertificatesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return CertificatesCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &certificatesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return CertificatesCreateOrUpdatePollerResponse{}, err
-	}
-	result := CertificatesCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CertificatesCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("CertificatesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return CertificatesCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &CertificatesCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update certificate resource.
 // If the operation fails it returns the *CloudError error type.
-func (client *CertificatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, certificateResource CertificateResource, options *CertificatesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *CertificatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, certificateResource CertificateResource, options *CertificatesBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, certificateName, certificateResource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, certificateResource CertificateResource, options *CertificatesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, certificateResource CertificateResource, options *CertificatesBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -116,29 +91,28 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(certificateResource)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, certificateResource)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *CertificatesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CertificatesClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDelete - Delete the certificate resource.
@@ -149,65 +123,37 @@ func (client *CertificatesClient) BeginDelete(ctx context.Context, resourceGroup
 		return CertificatesDeletePollerResponse{}, err
 	}
 	result := CertificatesDeletePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("CertificatesClient.Delete", "azure-async-operation", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return CertificatesDeletePollerResponse{}, err
-	}
-	poller := &certificatesDeletePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CertificatesDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new CertificatesDeletePoller from the specified resume token.
-// token - The value must come from a previous call to CertificatesDeletePoller.ResumeToken().
-func (client *CertificatesClient) ResumeDelete(ctx context.Context, token string) (CertificatesDeletePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("CertificatesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return CertificatesDeletePollerResponse{}, err
-	}
-	poller := &certificatesDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return CertificatesDeletePollerResponse{}, err
-	}
-	result := CertificatesDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CertificatesDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("CertificatesClient.Delete", "azure-async-operation", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return CertificatesDeletePollerResponse{}, err
+	}
+	result.Poller = &CertificatesDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete the certificate resource.
 // If the operation fails it returns the *CloudError error type.
-func (client *CertificatesClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, options *CertificatesBeginDeleteOptions) (*azcore.Response, error) {
+func (client *CertificatesClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, options *CertificatesBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, certificateName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, options *CertificatesBeginDeleteOptions) (*azcore.Request, error) {
+func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, options *CertificatesBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -225,29 +171,28 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *CertificatesClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CertificatesClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Get the certificate resource.
@@ -257,18 +202,18 @@ func (client *CertificatesClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return CertificatesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return CertificatesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return CertificatesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CertificatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, options *CertificatesGetOptions) (*azcore.Request, error) {
+func (client *CertificatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, options *CertificatesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/certificates/{certificateName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -286,56 +231,55 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter certificateName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *CertificatesClient) getHandleResponse(resp *azcore.Response) (CertificatesGetResponse, error) {
-	result := CertificatesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.CertificateResource); err != nil {
+func (client *CertificatesClient) getHandleResponse(resp *http.Response) (CertificatesGetResponse, error) {
+	result := CertificatesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateResource); err != nil {
 		return CertificatesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *CertificatesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CertificatesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - List all the certificates of one user.
 // If the operation fails it returns the *CloudError error type.
-func (client *CertificatesClient) List(resourceGroupName string, serviceName string, options *CertificatesListOptions) CertificatesListPager {
-	return &certificatesListPager{
+func (client *CertificatesClient) List(resourceGroupName string, serviceName string, options *CertificatesListOptions) *CertificatesListPager {
+	return &CertificatesListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp CertificatesListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.CertificateResourceCollection.NextLink)
+		advancer: func(ctx context.Context, resp CertificatesListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateResourceCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *CertificatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *CertificatesListOptions) (*azcore.Request, error) {
+func (client *CertificatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *CertificatesListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/certificates"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -349,36 +293,35 @@ func (client *CertificatesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *CertificatesClient) listHandleResponse(resp *azcore.Response) (CertificatesListResponse, error) {
-	result := CertificatesListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.CertificateResourceCollection); err != nil {
+func (client *CertificatesClient) listHandleResponse(resp *http.Response) (CertificatesListResponse, error) {
+	result := CertificatesListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateResourceCollection); err != nil {
 		return CertificatesListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *CertificatesClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CertificatesClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

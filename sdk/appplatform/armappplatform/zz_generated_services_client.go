@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ServicesClient contains the methods for the Services group.
 // Don't use this type directly, use NewServicesClient() instead.
 type ServicesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewServicesClient creates a new instance of ServicesClient with the specified values.
-func NewServicesClient(con *armcore.Connection, subscriptionID string) *ServicesClient {
-	return &ServicesClient{con: con, subscriptionID: subscriptionID}
+func NewServicesClient(con *arm.Connection, subscriptionID string) *ServicesClient {
+	return &ServicesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CheckNameAvailability - Checks that the resource name is valid and is not already in use.
@@ -39,18 +42,18 @@ func (client *ServicesClient) CheckNameAvailability(ctx context.Context, locatio
 	if err != nil {
 		return ServicesCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ServicesCheckNameAvailabilityResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ServicesCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *ServicesClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, availabilityParameters NameAvailabilityParameters, options *ServicesCheckNameAvailabilityOptions) (*azcore.Request, error) {
+func (client *ServicesClient) checkNameAvailabilityCreateRequest(ctx context.Context, location string, availabilityParameters NameAvailabilityParameters, options *ServicesCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/locations/{location}/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -60,38 +63,37 @@ func (client *ServicesClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(availabilityParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, availabilityParameters)
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *ServicesClient) checkNameAvailabilityHandleResponse(resp *azcore.Response) (ServicesCheckNameAvailabilityResponse, error) {
-	result := ServicesCheckNameAvailabilityResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.NameAvailability); err != nil {
+func (client *ServicesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ServicesCheckNameAvailabilityResponse, error) {
+	result := ServicesCheckNameAvailabilityResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailability); err != nil {
 		return ServicesCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
 // checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *ServicesClient) checkNameAvailabilityHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServicesClient) checkNameAvailabilityHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginCreateOrUpdate - Create a new Service or update an exiting Service.
@@ -102,65 +104,37 @@ func (client *ServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 		return ServicesCreateOrUpdatePollerResponse{}, err
 	}
 	result := ServicesCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ServicesClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return ServicesCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &servicesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ServicesCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new ServicesCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to ServicesCreateOrUpdatePoller.ResumeToken().
-func (client *ServicesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (ServicesCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ServicesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return ServicesCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &servicesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ServicesCreateOrUpdatePollerResponse{}, err
-	}
-	result := ServicesCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ServicesCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ServicesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return ServicesCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &ServicesCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create a new Service or update an exiting Service.
 // If the operation fails it returns the *CloudError error type.
-func (client *ServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource, options *ServicesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *ServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource, options *ServicesBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, resource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource, options *ServicesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource, options *ServicesBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -174,29 +148,28 @@ func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(resource)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, resource)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ServicesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServicesClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDelete - Operation to delete a Service.
@@ -207,65 +180,37 @@ func (client *ServicesClient) BeginDelete(ctx context.Context, resourceGroupName
 		return ServicesDeletePollerResponse{}, err
 	}
 	result := ServicesDeletePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ServicesClient.Delete", "azure-async-operation", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return ServicesDeletePollerResponse{}, err
-	}
-	poller := &servicesDeletePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ServicesDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new ServicesDeletePoller from the specified resume token.
-// token - The value must come from a previous call to ServicesDeletePoller.ResumeToken().
-func (client *ServicesClient) ResumeDelete(ctx context.Context, token string) (ServicesDeletePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ServicesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return ServicesDeletePollerResponse{}, err
-	}
-	poller := &servicesDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ServicesDeletePollerResponse{}, err
-	}
-	result := ServicesDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ServicesDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ServicesClient.Delete", "azure-async-operation", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return ServicesDeletePollerResponse{}, err
+	}
+	result.Poller = &ServicesDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Operation to delete a Service.
 // If the operation fails it returns the *CloudError error type.
-func (client *ServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesBeginDeleteOptions) (*azcore.Response, error) {
+func (client *ServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesBeginDeleteOptions) (*azcore.Request, error) {
+func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -279,29 +224,28 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *ServicesClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServicesClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // DisableTestEndpoint - Disable test endpoint functionality for a Service.
@@ -311,18 +255,18 @@ func (client *ServicesClient) DisableTestEndpoint(ctx context.Context, resourceG
 	if err != nil {
 		return ServicesDisableTestEndpointResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ServicesDisableTestEndpointResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ServicesDisableTestEndpointResponse{}, client.disableTestEndpointHandleError(resp)
 	}
-	return ServicesDisableTestEndpointResponse{RawResponse: resp.Response}, nil
+	return ServicesDisableTestEndpointResponse{RawResponse: resp}, nil
 }
 
 // disableTestEndpointCreateRequest creates the DisableTestEndpoint request.
-func (client *ServicesClient) disableTestEndpointCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesDisableTestEndpointOptions) (*azcore.Request, error) {
+func (client *ServicesClient) disableTestEndpointCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesDisableTestEndpointOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/disableTestEndpoint"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -336,29 +280,28 @@ func (client *ServicesClient) disableTestEndpointCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // disableTestEndpointHandleError handles the DisableTestEndpoint error response.
-func (client *ServicesClient) disableTestEndpointHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServicesClient) disableTestEndpointHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // EnableTestEndpoint - Enable test endpoint functionality for a Service.
@@ -368,18 +311,18 @@ func (client *ServicesClient) EnableTestEndpoint(ctx context.Context, resourceGr
 	if err != nil {
 		return ServicesEnableTestEndpointResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ServicesEnableTestEndpointResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ServicesEnableTestEndpointResponse{}, client.enableTestEndpointHandleError(resp)
 	}
 	return client.enableTestEndpointHandleResponse(resp)
 }
 
 // enableTestEndpointCreateRequest creates the EnableTestEndpoint request.
-func (client *ServicesClient) enableTestEndpointCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesEnableTestEndpointOptions) (*azcore.Request, error) {
+func (client *ServicesClient) enableTestEndpointCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesEnableTestEndpointOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/enableTestEndpoint"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -393,38 +336,37 @@ func (client *ServicesClient) enableTestEndpointCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // enableTestEndpointHandleResponse handles the EnableTestEndpoint response.
-func (client *ServicesClient) enableTestEndpointHandleResponse(resp *azcore.Response) (ServicesEnableTestEndpointResponse, error) {
-	result := ServicesEnableTestEndpointResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TestKeys); err != nil {
+func (client *ServicesClient) enableTestEndpointHandleResponse(resp *http.Response) (ServicesEnableTestEndpointResponse, error) {
+	result := ServicesEnableTestEndpointResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TestKeys); err != nil {
 		return ServicesEnableTestEndpointResponse{}, err
 	}
 	return result, nil
 }
 
 // enableTestEndpointHandleError handles the EnableTestEndpoint error response.
-func (client *ServicesClient) enableTestEndpointHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServicesClient) enableTestEndpointHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Get a Service and its properties.
@@ -434,18 +376,18 @@ func (client *ServicesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return ServicesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ServicesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ServicesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesGetOptions) (*azcore.Request, error) {
+func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -459,56 +401,55 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServicesClient) getHandleResponse(resp *azcore.Response) (ServicesGetResponse, error) {
-	result := ServicesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ServiceResource); err != nil {
+func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesGetResponse, error) {
+	result := ServicesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceResource); err != nil {
 		return ServicesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ServicesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServicesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Handles requests to list all resources in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *ServicesClient) List(resourceGroupName string, options *ServicesListOptions) ServicesListPager {
-	return &servicesListPager{
+func (client *ServicesClient) List(resourceGroupName string, options *ServicesListOptions) *ServicesListPager {
+	return &ServicesListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp ServicesListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ServiceResourceList.NextLink)
+		advancer: func(ctx context.Context, resp ServicesListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceResourceList.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ServicesClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *ServicesListOptions) (*azcore.Request, error) {
+func (client *ServicesClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *ServicesListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -518,93 +459,91 @@ func (client *ServicesClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ServicesClient) listHandleResponse(resp *azcore.Response) (ServicesListResponse, error) {
-	result := ServicesListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ServiceResourceList); err != nil {
+func (client *ServicesClient) listHandleResponse(resp *http.Response) (ServicesListResponse, error) {
+	result := ServicesListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceResourceList); err != nil {
 		return ServicesListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *ServicesClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServicesClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListBySubscription - Handles requests to list all resources in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *ServicesClient) ListBySubscription(options *ServicesListBySubscriptionOptions) ServicesListBySubscriptionPager {
-	return &servicesListBySubscriptionPager{
+func (client *ServicesClient) ListBySubscription(options *ServicesListBySubscriptionOptions) *ServicesListBySubscriptionPager {
+	return &ServicesListBySubscriptionPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp ServicesListBySubscriptionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ServiceResourceList.NextLink)
+		advancer: func(ctx context.Context, resp ServicesListBySubscriptionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceResourceList.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ServicesClient) listBySubscriptionCreateRequest(ctx context.Context, options *ServicesListBySubscriptionOptions) (*azcore.Request, error) {
+func (client *ServicesClient) listBySubscriptionCreateRequest(ctx context.Context, options *ServicesListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/Spring"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ServicesClient) listBySubscriptionHandleResponse(resp *azcore.Response) (ServicesListBySubscriptionResponse, error) {
-	result := ServicesListBySubscriptionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ServiceResourceList); err != nil {
+func (client *ServicesClient) listBySubscriptionHandleResponse(resp *http.Response) (ServicesListBySubscriptionResponse, error) {
+	result := ServicesListBySubscriptionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceResourceList); err != nil {
 		return ServicesListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *ServicesClient) listBySubscriptionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServicesClient) listBySubscriptionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListTestKeys - List test keys for a Service.
@@ -614,18 +553,18 @@ func (client *ServicesClient) ListTestKeys(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ServicesListTestKeysResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ServicesListTestKeysResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ServicesListTestKeysResponse{}, client.listTestKeysHandleError(resp)
 	}
 	return client.listTestKeysHandleResponse(resp)
 }
 
 // listTestKeysCreateRequest creates the ListTestKeys request.
-func (client *ServicesClient) listTestKeysCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesListTestKeysOptions) (*azcore.Request, error) {
+func (client *ServicesClient) listTestKeysCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ServicesListTestKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/listTestKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -639,38 +578,37 @@ func (client *ServicesClient) listTestKeysCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listTestKeysHandleResponse handles the ListTestKeys response.
-func (client *ServicesClient) listTestKeysHandleResponse(resp *azcore.Response) (ServicesListTestKeysResponse, error) {
-	result := ServicesListTestKeysResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TestKeys); err != nil {
+func (client *ServicesClient) listTestKeysHandleResponse(resp *http.Response) (ServicesListTestKeysResponse, error) {
+	result := ServicesListTestKeysResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TestKeys); err != nil {
 		return ServicesListTestKeysResponse{}, err
 	}
 	return result, nil
 }
 
 // listTestKeysHandleError handles the ListTestKeys error response.
-func (client *ServicesClient) listTestKeysHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServicesClient) listTestKeysHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // RegenerateTestKey - Regenerate a test key for a Service.
@@ -680,18 +618,18 @@ func (client *ServicesClient) RegenerateTestKey(ctx context.Context, resourceGro
 	if err != nil {
 		return ServicesRegenerateTestKeyResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ServicesRegenerateTestKeyResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ServicesRegenerateTestKeyResponse{}, client.regenerateTestKeyHandleError(resp)
 	}
 	return client.regenerateTestKeyHandleResponse(resp)
 }
 
 // regenerateTestKeyCreateRequest creates the RegenerateTestKey request.
-func (client *ServicesClient) regenerateTestKeyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, regenerateTestKeyRequest RegenerateTestKeyRequestPayload, options *ServicesRegenerateTestKeyOptions) (*azcore.Request, error) {
+func (client *ServicesClient) regenerateTestKeyCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, regenerateTestKeyRequest RegenerateTestKeyRequestPayload, options *ServicesRegenerateTestKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/regenerateTestKey"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -705,38 +643,37 @@ func (client *ServicesClient) regenerateTestKeyCreateRequest(ctx context.Context
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(regenerateTestKeyRequest)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, regenerateTestKeyRequest)
 }
 
 // regenerateTestKeyHandleResponse handles the RegenerateTestKey response.
-func (client *ServicesClient) regenerateTestKeyHandleResponse(resp *azcore.Response) (ServicesRegenerateTestKeyResponse, error) {
-	result := ServicesRegenerateTestKeyResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TestKeys); err != nil {
+func (client *ServicesClient) regenerateTestKeyHandleResponse(resp *http.Response) (ServicesRegenerateTestKeyResponse, error) {
+	result := ServicesRegenerateTestKeyResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TestKeys); err != nil {
 		return ServicesRegenerateTestKeyResponse{}, err
 	}
 	return result, nil
 }
 
 // regenerateTestKeyHandleError handles the RegenerateTestKey error response.
-func (client *ServicesClient) regenerateTestKeyHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServicesClient) regenerateTestKeyHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginUpdate - Operation to update an exiting Service.
@@ -747,65 +684,37 @@ func (client *ServicesClient) BeginUpdate(ctx context.Context, resourceGroupName
 		return ServicesUpdatePollerResponse{}, err
 	}
 	result := ServicesUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ServicesClient.Update", "azure-async-operation", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return ServicesUpdatePollerResponse{}, err
-	}
-	poller := &servicesUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ServicesUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdate creates a new ServicesUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to ServicesUpdatePoller.ResumeToken().
-func (client *ServicesClient) ResumeUpdate(ctx context.Context, token string) (ServicesUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ServicesClient.Update", token, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return ServicesUpdatePollerResponse{}, err
-	}
-	poller := &servicesUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ServicesUpdatePollerResponse{}, err
-	}
-	result := ServicesUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ServicesUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ServicesClient.Update", "azure-async-operation", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return ServicesUpdatePollerResponse{}, err
+	}
+	result.Poller = &ServicesUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Operation to update an exiting Service.
 // If the operation fails it returns the *CloudError error type.
-func (client *ServicesClient) update(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource, options *ServicesBeginUpdateOptions) (*azcore.Response, error) {
+func (client *ServicesClient) update(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource, options *ServicesBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, resource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource, options *ServicesBeginUpdateOptions) (*azcore.Request, error) {
+func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, resource ServiceResource, options *ServicesBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -819,27 +728,26 @@ func (client *ServicesClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(resource)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, resource)
 }
 
 // updateHandleError handles the Update error response.
-func (client *ServicesClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ServicesClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

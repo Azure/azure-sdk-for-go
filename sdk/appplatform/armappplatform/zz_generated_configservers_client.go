@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ConfigServersClient contains the methods for the ConfigServers group.
 // Don't use this type directly, use NewConfigServersClient() instead.
 type ConfigServersClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewConfigServersClient creates a new instance of ConfigServersClient with the specified values.
-func NewConfigServersClient(con *armcore.Connection, subscriptionID string) *ConfigServersClient {
-	return &ConfigServersClient{con: con, subscriptionID: subscriptionID}
+func NewConfigServersClient(con *arm.Connection, subscriptionID string) *ConfigServersClient {
+	return &ConfigServersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Get the config server and its properties.
@@ -39,18 +42,18 @@ func (client *ConfigServersClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ConfigServersGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ConfigServersGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ConfigServersGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ConfigServersClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ConfigServersGetOptions) (*azcore.Request, error) {
+func (client *ConfigServersClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ConfigServersGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configServers/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -64,38 +67,37 @@ func (client *ConfigServersClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConfigServersClient) getHandleResponse(resp *azcore.Response) (ConfigServersGetResponse, error) {
-	result := ConfigServersGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ConfigServerResource); err != nil {
+func (client *ConfigServersClient) getHandleResponse(resp *http.Response) (ConfigServersGetResponse, error) {
+	result := ConfigServersGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigServerResource); err != nil {
 		return ConfigServersGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ConfigServersClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ConfigServersClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginUpdatePatch - Update the config server.
@@ -106,65 +108,37 @@ func (client *ConfigServersClient) BeginUpdatePatch(ctx context.Context, resourc
 		return ConfigServersUpdatePatchPollerResponse{}, err
 	}
 	result := ConfigServersUpdatePatchPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ConfigServersClient.UpdatePatch", "azure-async-operation", resp, client.con.Pipeline(), client.updatePatchHandleError)
-	if err != nil {
-		return ConfigServersUpdatePatchPollerResponse{}, err
-	}
-	poller := &configServersUpdatePatchPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConfigServersUpdatePatchResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdatePatch creates a new ConfigServersUpdatePatchPoller from the specified resume token.
-// token - The value must come from a previous call to ConfigServersUpdatePatchPoller.ResumeToken().
-func (client *ConfigServersClient) ResumeUpdatePatch(ctx context.Context, token string) (ConfigServersUpdatePatchPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ConfigServersClient.UpdatePatch", token, client.con.Pipeline(), client.updatePatchHandleError)
-	if err != nil {
-		return ConfigServersUpdatePatchPollerResponse{}, err
-	}
-	poller := &configServersUpdatePatchPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ConfigServersUpdatePatchPollerResponse{}, err
-	}
-	result := ConfigServersUpdatePatchPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConfigServersUpdatePatchResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ConfigServersClient.UpdatePatch", "azure-async-operation", resp, client.pl, client.updatePatchHandleError)
+	if err != nil {
+		return ConfigServersUpdatePatchPollerResponse{}, err
+	}
+	result.Poller = &ConfigServersUpdatePatchPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // UpdatePatch - Update the config server.
 // If the operation fails it returns the *CloudError error type.
-func (client *ConfigServersClient) updatePatch(ctx context.Context, resourceGroupName string, serviceName string, configServerResource ConfigServerResource, options *ConfigServersBeginUpdatePatchOptions) (*azcore.Response, error) {
+func (client *ConfigServersClient) updatePatch(ctx context.Context, resourceGroupName string, serviceName string, configServerResource ConfigServerResource, options *ConfigServersBeginUpdatePatchOptions) (*http.Response, error) {
 	req, err := client.updatePatchCreateRequest(ctx, resourceGroupName, serviceName, configServerResource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.updatePatchHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updatePatchCreateRequest creates the UpdatePatch request.
-func (client *ConfigServersClient) updatePatchCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, configServerResource ConfigServerResource, options *ConfigServersBeginUpdatePatchOptions) (*azcore.Request, error) {
+func (client *ConfigServersClient) updatePatchCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, configServerResource ConfigServerResource, options *ConfigServersBeginUpdatePatchOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configServers/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,29 +152,28 @@ func (client *ConfigServersClient) updatePatchCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(configServerResource)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, configServerResource)
 }
 
 // updatePatchHandleError handles the UpdatePatch error response.
-func (client *ConfigServersClient) updatePatchHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ConfigServersClient) updatePatchHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginUpdatePut - Update the config server.
@@ -211,65 +184,37 @@ func (client *ConfigServersClient) BeginUpdatePut(ctx context.Context, resourceG
 		return ConfigServersUpdatePutPollerResponse{}, err
 	}
 	result := ConfigServersUpdatePutPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ConfigServersClient.UpdatePut", "azure-async-operation", resp, client.con.Pipeline(), client.updatePutHandleError)
-	if err != nil {
-		return ConfigServersUpdatePutPollerResponse{}, err
-	}
-	poller := &configServersUpdatePutPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConfigServersUpdatePutResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdatePut creates a new ConfigServersUpdatePutPoller from the specified resume token.
-// token - The value must come from a previous call to ConfigServersUpdatePutPoller.ResumeToken().
-func (client *ConfigServersClient) ResumeUpdatePut(ctx context.Context, token string) (ConfigServersUpdatePutPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ConfigServersClient.UpdatePut", token, client.con.Pipeline(), client.updatePutHandleError)
-	if err != nil {
-		return ConfigServersUpdatePutPollerResponse{}, err
-	}
-	poller := &configServersUpdatePutPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ConfigServersUpdatePutPollerResponse{}, err
-	}
-	result := ConfigServersUpdatePutPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConfigServersUpdatePutResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ConfigServersClient.UpdatePut", "azure-async-operation", resp, client.pl, client.updatePutHandleError)
+	if err != nil {
+		return ConfigServersUpdatePutPollerResponse{}, err
+	}
+	result.Poller = &ConfigServersUpdatePutPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // UpdatePut - Update the config server.
 // If the operation fails it returns the *CloudError error type.
-func (client *ConfigServersClient) updatePut(ctx context.Context, resourceGroupName string, serviceName string, configServerResource ConfigServerResource, options *ConfigServersBeginUpdatePutOptions) (*azcore.Response, error) {
+func (client *ConfigServersClient) updatePut(ctx context.Context, resourceGroupName string, serviceName string, configServerResource ConfigServerResource, options *ConfigServersBeginUpdatePutOptions) (*http.Response, error) {
 	req, err := client.updatePutCreateRequest(ctx, resourceGroupName, serviceName, configServerResource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.updatePutHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updatePutCreateRequest creates the UpdatePut request.
-func (client *ConfigServersClient) updatePutCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, configServerResource ConfigServerResource, options *ConfigServersBeginUpdatePutOptions) (*azcore.Request, error) {
+func (client *ConfigServersClient) updatePutCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, configServerResource ConfigServerResource, options *ConfigServersBeginUpdatePutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configServers/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -283,29 +228,28 @@ func (client *ConfigServersClient) updatePutCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(configServerResource)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, configServerResource)
 }
 
 // updatePutHandleError handles the UpdatePut error response.
-func (client *ConfigServersClient) updatePutHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ConfigServersClient) updatePutHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginValidate - Check if the config server settings are valid.
@@ -316,65 +260,37 @@ func (client *ConfigServersClient) BeginValidate(ctx context.Context, resourceGr
 		return ConfigServersValidatePollerResponse{}, err
 	}
 	result := ConfigServersValidatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ConfigServersClient.Validate", "location", resp, client.con.Pipeline(), client.validateHandleError)
-	if err != nil {
-		return ConfigServersValidatePollerResponse{}, err
-	}
-	poller := &configServersValidatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConfigServersValidateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeValidate creates a new ConfigServersValidatePoller from the specified resume token.
-// token - The value must come from a previous call to ConfigServersValidatePoller.ResumeToken().
-func (client *ConfigServersClient) ResumeValidate(ctx context.Context, token string) (ConfigServersValidatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ConfigServersClient.Validate", token, client.con.Pipeline(), client.validateHandleError)
-	if err != nil {
-		return ConfigServersValidatePollerResponse{}, err
-	}
-	poller := &configServersValidatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ConfigServersValidatePollerResponse{}, err
-	}
-	result := ConfigServersValidatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConfigServersValidateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ConfigServersClient.Validate", "location", resp, client.pl, client.validateHandleError)
+	if err != nil {
+		return ConfigServersValidatePollerResponse{}, err
+	}
+	result.Poller = &ConfigServersValidatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Validate - Check if the config server settings are valid.
 // If the operation fails it returns the *CloudError error type.
-func (client *ConfigServersClient) validate(ctx context.Context, resourceGroupName string, serviceName string, configServerSettings ConfigServerSettings, options *ConfigServersBeginValidateOptions) (*azcore.Response, error) {
+func (client *ConfigServersClient) validate(ctx context.Context, resourceGroupName string, serviceName string, configServerSettings ConfigServerSettings, options *ConfigServersBeginValidateOptions) (*http.Response, error) {
 	req, err := client.validateCreateRequest(ctx, resourceGroupName, serviceName, configServerSettings, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.validateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // validateCreateRequest creates the Validate request.
-func (client *ConfigServersClient) validateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, configServerSettings ConfigServerSettings, options *ConfigServersBeginValidateOptions) (*azcore.Request, error) {
+func (client *ConfigServersClient) validateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, configServerSettings ConfigServerSettings, options *ConfigServersBeginValidateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configServers/validate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -388,27 +304,26 @@ func (client *ConfigServersClient) validateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(configServerSettings)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, configServerSettings)
 }
 
 // validateHandleError handles the Validate error response.
-func (client *ConfigServersClient) validateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ConfigServersClient) validateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

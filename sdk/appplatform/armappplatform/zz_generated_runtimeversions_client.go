@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,20 +11,23 @@ package armappplatform
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RuntimeVersionsClient contains the methods for the RuntimeVersions group.
 // Don't use this type directly, use NewRuntimeVersionsClient() instead.
 type RuntimeVersionsClient struct {
-	con *armcore.Connection
+	ep string
+	pl runtime.Pipeline
 }
 
 // NewRuntimeVersionsClient creates a new instance of RuntimeVersionsClient with the specified values.
-func NewRuntimeVersionsClient(con *armcore.Connection) *RuntimeVersionsClient {
-	return &RuntimeVersionsClient{con: con}
+func NewRuntimeVersionsClient(con *arm.Connection) *RuntimeVersionsClient {
+	return &RuntimeVersionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
 }
 
 // ListRuntimeVersions - Lists all of the available runtime versions supported by Microsoft.AppPlatform provider.
@@ -34,49 +37,48 @@ func (client *RuntimeVersionsClient) ListRuntimeVersions(ctx context.Context, op
 	if err != nil {
 		return RuntimeVersionsListRuntimeVersionsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RuntimeVersionsListRuntimeVersionsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RuntimeVersionsListRuntimeVersionsResponse{}, client.listRuntimeVersionsHandleError(resp)
 	}
 	return client.listRuntimeVersionsHandleResponse(resp)
 }
 
 // listRuntimeVersionsCreateRequest creates the ListRuntimeVersions request.
-func (client *RuntimeVersionsClient) listRuntimeVersionsCreateRequest(ctx context.Context, options *RuntimeVersionsListRuntimeVersionsOptions) (*azcore.Request, error) {
+func (client *RuntimeVersionsClient) listRuntimeVersionsCreateRequest(ctx context.Context, options *RuntimeVersionsListRuntimeVersionsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.AppPlatform/runtimeVersions"
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listRuntimeVersionsHandleResponse handles the ListRuntimeVersions response.
-func (client *RuntimeVersionsClient) listRuntimeVersionsHandleResponse(resp *azcore.Response) (RuntimeVersionsListRuntimeVersionsResponse, error) {
-	result := RuntimeVersionsListRuntimeVersionsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AvailableRuntimeVersions); err != nil {
+func (client *RuntimeVersionsClient) listRuntimeVersionsHandleResponse(resp *http.Response) (RuntimeVersionsListRuntimeVersionsResponse, error) {
+	result := RuntimeVersionsListRuntimeVersionsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableRuntimeVersions); err != nil {
 		return RuntimeVersionsListRuntimeVersionsResponse{}, err
 	}
 	return result, nil
 }
 
 // listRuntimeVersionsHandleError handles the ListRuntimeVersions error response.
-func (client *RuntimeVersionsClient) listRuntimeVersionsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RuntimeVersionsClient) listRuntimeVersionsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

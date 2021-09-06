@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // MonitoringSettingsClient contains the methods for the MonitoringSettings group.
 // Don't use this type directly, use NewMonitoringSettingsClient() instead.
 type MonitoringSettingsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewMonitoringSettingsClient creates a new instance of MonitoringSettingsClient with the specified values.
-func NewMonitoringSettingsClient(con *armcore.Connection, subscriptionID string) *MonitoringSettingsClient {
-	return &MonitoringSettingsClient{con: con, subscriptionID: subscriptionID}
+func NewMonitoringSettingsClient(con *arm.Connection, subscriptionID string) *MonitoringSettingsClient {
+	return &MonitoringSettingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Get the Monitoring Setting and its properties.
@@ -39,18 +42,18 @@ func (client *MonitoringSettingsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return MonitoringSettingsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return MonitoringSettingsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return MonitoringSettingsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *MonitoringSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *MonitoringSettingsGetOptions) (*azcore.Request, error) {
+func (client *MonitoringSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *MonitoringSettingsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/monitoringSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -64,38 +67,37 @@ func (client *MonitoringSettingsClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *MonitoringSettingsClient) getHandleResponse(resp *azcore.Response) (MonitoringSettingsGetResponse, error) {
-	result := MonitoringSettingsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.MonitoringSettingResource); err != nil {
+func (client *MonitoringSettingsClient) getHandleResponse(resp *http.Response) (MonitoringSettingsGetResponse, error) {
+	result := MonitoringSettingsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MonitoringSettingResource); err != nil {
 		return MonitoringSettingsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *MonitoringSettingsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MonitoringSettingsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginUpdatePatch - Update the Monitoring Setting.
@@ -106,65 +108,37 @@ func (client *MonitoringSettingsClient) BeginUpdatePatch(ctx context.Context, re
 		return MonitoringSettingsUpdatePatchPollerResponse{}, err
 	}
 	result := MonitoringSettingsUpdatePatchPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("MonitoringSettingsClient.UpdatePatch", "azure-async-operation", resp, client.con.Pipeline(), client.updatePatchHandleError)
-	if err != nil {
-		return MonitoringSettingsUpdatePatchPollerResponse{}, err
-	}
-	poller := &monitoringSettingsUpdatePatchPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MonitoringSettingsUpdatePatchResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdatePatch creates a new MonitoringSettingsUpdatePatchPoller from the specified resume token.
-// token - The value must come from a previous call to MonitoringSettingsUpdatePatchPoller.ResumeToken().
-func (client *MonitoringSettingsClient) ResumeUpdatePatch(ctx context.Context, token string) (MonitoringSettingsUpdatePatchPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("MonitoringSettingsClient.UpdatePatch", token, client.con.Pipeline(), client.updatePatchHandleError)
-	if err != nil {
-		return MonitoringSettingsUpdatePatchPollerResponse{}, err
-	}
-	poller := &monitoringSettingsUpdatePatchPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return MonitoringSettingsUpdatePatchPollerResponse{}, err
-	}
-	result := MonitoringSettingsUpdatePatchPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MonitoringSettingsUpdatePatchResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("MonitoringSettingsClient.UpdatePatch", "azure-async-operation", resp, client.pl, client.updatePatchHandleError)
+	if err != nil {
+		return MonitoringSettingsUpdatePatchPollerResponse{}, err
+	}
+	result.Poller = &MonitoringSettingsUpdatePatchPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // UpdatePatch - Update the Monitoring Setting.
 // If the operation fails it returns the *CloudError error type.
-func (client *MonitoringSettingsClient) updatePatch(ctx context.Context, resourceGroupName string, serviceName string, monitoringSettingResource MonitoringSettingResource, options *MonitoringSettingsBeginUpdatePatchOptions) (*azcore.Response, error) {
+func (client *MonitoringSettingsClient) updatePatch(ctx context.Context, resourceGroupName string, serviceName string, monitoringSettingResource MonitoringSettingResource, options *MonitoringSettingsBeginUpdatePatchOptions) (*http.Response, error) {
 	req, err := client.updatePatchCreateRequest(ctx, resourceGroupName, serviceName, monitoringSettingResource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.updatePatchHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updatePatchCreateRequest creates the UpdatePatch request.
-func (client *MonitoringSettingsClient) updatePatchCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, monitoringSettingResource MonitoringSettingResource, options *MonitoringSettingsBeginUpdatePatchOptions) (*azcore.Request, error) {
+func (client *MonitoringSettingsClient) updatePatchCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, monitoringSettingResource MonitoringSettingResource, options *MonitoringSettingsBeginUpdatePatchOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/monitoringSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,29 +152,28 @@ func (client *MonitoringSettingsClient) updatePatchCreateRequest(ctx context.Con
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(monitoringSettingResource)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, monitoringSettingResource)
 }
 
 // updatePatchHandleError handles the UpdatePatch error response.
-func (client *MonitoringSettingsClient) updatePatchHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MonitoringSettingsClient) updatePatchHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginUpdatePut - Update the Monitoring Setting.
@@ -211,65 +184,37 @@ func (client *MonitoringSettingsClient) BeginUpdatePut(ctx context.Context, reso
 		return MonitoringSettingsUpdatePutPollerResponse{}, err
 	}
 	result := MonitoringSettingsUpdatePutPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("MonitoringSettingsClient.UpdatePut", "azure-async-operation", resp, client.con.Pipeline(), client.updatePutHandleError)
-	if err != nil {
-		return MonitoringSettingsUpdatePutPollerResponse{}, err
-	}
-	poller := &monitoringSettingsUpdatePutPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MonitoringSettingsUpdatePutResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdatePut creates a new MonitoringSettingsUpdatePutPoller from the specified resume token.
-// token - The value must come from a previous call to MonitoringSettingsUpdatePutPoller.ResumeToken().
-func (client *MonitoringSettingsClient) ResumeUpdatePut(ctx context.Context, token string) (MonitoringSettingsUpdatePutPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("MonitoringSettingsClient.UpdatePut", token, client.con.Pipeline(), client.updatePutHandleError)
-	if err != nil {
-		return MonitoringSettingsUpdatePutPollerResponse{}, err
-	}
-	poller := &monitoringSettingsUpdatePutPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return MonitoringSettingsUpdatePutPollerResponse{}, err
-	}
-	result := MonitoringSettingsUpdatePutPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MonitoringSettingsUpdatePutResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("MonitoringSettingsClient.UpdatePut", "azure-async-operation", resp, client.pl, client.updatePutHandleError)
+	if err != nil {
+		return MonitoringSettingsUpdatePutPollerResponse{}, err
+	}
+	result.Poller = &MonitoringSettingsUpdatePutPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // UpdatePut - Update the Monitoring Setting.
 // If the operation fails it returns the *CloudError error type.
-func (client *MonitoringSettingsClient) updatePut(ctx context.Context, resourceGroupName string, serviceName string, monitoringSettingResource MonitoringSettingResource, options *MonitoringSettingsBeginUpdatePutOptions) (*azcore.Response, error) {
+func (client *MonitoringSettingsClient) updatePut(ctx context.Context, resourceGroupName string, serviceName string, monitoringSettingResource MonitoringSettingResource, options *MonitoringSettingsBeginUpdatePutOptions) (*http.Response, error) {
 	req, err := client.updatePutCreateRequest(ctx, resourceGroupName, serviceName, monitoringSettingResource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.updatePutHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updatePutCreateRequest creates the UpdatePut request.
-func (client *MonitoringSettingsClient) updatePutCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, monitoringSettingResource MonitoringSettingResource, options *MonitoringSettingsBeginUpdatePutOptions) (*azcore.Request, error) {
+func (client *MonitoringSettingsClient) updatePutCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, monitoringSettingResource MonitoringSettingResource, options *MonitoringSettingsBeginUpdatePutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/monitoringSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -283,27 +228,26 @@ func (client *MonitoringSettingsClient) updatePutCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(monitoringSettingResource)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, monitoringSettingResource)
 }
 
 // updatePutHandleError handles the UpdatePut error response.
-func (client *MonitoringSettingsClient) updatePutHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MonitoringSettingsClient) updatePutHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

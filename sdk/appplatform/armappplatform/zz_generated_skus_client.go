@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,76 +12,78 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SKUsClient contains the methods for the SKUs group.
 // Don't use this type directly, use NewSKUsClient() instead.
 type SKUsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewSKUsClient creates a new instance of SKUsClient with the specified values.
-func NewSKUsClient(con *armcore.Connection, subscriptionID string) *SKUsClient {
-	return &SKUsClient{con: con, subscriptionID: subscriptionID}
+func NewSKUsClient(con *arm.Connection, subscriptionID string) *SKUsClient {
+	return &SKUsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // List - Lists all of the available skus of the Microsoft.AppPlatform provider.
 // If the operation fails it returns the *CloudError error type.
-func (client *SKUsClient) List(options *SKUsListOptions) SKUsListPager {
-	return &skUsListPager{
+func (client *SKUsClient) List(options *SKUsListOptions) *SKUsListPager {
+	return &SKUsListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp SKUsListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceSKUCollection.NextLink)
+		advancer: func(ctx context.Context, resp SKUsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceSKUCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SKUsClient) listCreateRequest(ctx context.Context, options *SKUsListOptions) (*azcore.Request, error) {
+func (client *SKUsClient) listCreateRequest(ctx context.Context, options *SKUsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AppPlatform/skus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SKUsClient) listHandleResponse(resp *azcore.Response) (SKUsListResponse, error) {
-	result := SKUsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ResourceSKUCollection); err != nil {
+func (client *SKUsClient) listHandleResponse(resp *http.Response) (SKUsListResponse, error) {
+	result := SKUsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceSKUCollection); err != nil {
 		return SKUsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *SKUsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SKUsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

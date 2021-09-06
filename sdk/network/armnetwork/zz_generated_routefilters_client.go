@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,93 +12,68 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RouteFiltersClient contains the methods for the RouteFilters group.
 // Don't use this type directly, use NewRouteFiltersClient() instead.
 type RouteFiltersClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewRouteFiltersClient creates a new instance of RouteFiltersClient with the specified values.
-func NewRouteFiltersClient(con *armcore.Connection, subscriptionID string) *RouteFiltersClient {
-	return &RouteFiltersClient{con: con, subscriptionID: subscriptionID}
+func NewRouteFiltersClient(con *arm.Connection, subscriptionID string) *RouteFiltersClient {
+	return &RouteFiltersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Creates or updates a route filter in a specified resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *RouteFiltersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, routeFilterParameters RouteFilter, options *RouteFiltersBeginCreateOrUpdateOptions) (RouteFilterPollerResponse, error) {
+func (client *RouteFiltersClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, routeFilterParameters RouteFilter, options *RouteFiltersBeginCreateOrUpdateOptions) (RouteFiltersCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, routeFilterName, routeFilterParameters, options)
 	if err != nil {
-		return RouteFilterPollerResponse{}, err
+		return RouteFiltersCreateOrUpdatePollerResponse{}, err
 	}
-	result := RouteFilterPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("RouteFiltersClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return RouteFilterPollerResponse{}, err
-	}
-	poller := &routeFilterPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RouteFilterResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new RouteFilterPoller from the specified resume token.
-// token - The value must come from a previous call to RouteFilterPoller.ResumeToken().
-func (client *RouteFiltersClient) ResumeCreateOrUpdate(ctx context.Context, token string) (RouteFilterPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("RouteFiltersClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return RouteFilterPollerResponse{}, err
-	}
-	poller := &routeFilterPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return RouteFilterPollerResponse{}, err
-	}
-	result := RouteFilterPollerResponse{
+	result := RouteFiltersCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RouteFilterResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("RouteFiltersClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return RouteFiltersCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &RouteFiltersCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a route filter in a specified resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *RouteFiltersClient) createOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, routeFilterParameters RouteFilter, options *RouteFiltersBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *RouteFiltersClient) createOrUpdate(ctx context.Context, resourceGroupName string, routeFilterName string, routeFilterParameters RouteFilter, options *RouteFiltersBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, routeFilterName, routeFilterParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *RouteFiltersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string, routeFilterParameters RouteFilter, options *RouteFiltersBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *RouteFiltersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string, routeFilterParameters RouteFilter, options *RouteFiltersBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -111,98 +87,69 @@ func (client *RouteFiltersClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(routeFilterParameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, routeFilterParameters)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *RouteFiltersClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RouteFiltersClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDelete - Deletes the specified route filter.
 // If the operation fails it returns the *CloudError error type.
-func (client *RouteFiltersClient) BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string, options *RouteFiltersBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *RouteFiltersClient) BeginDelete(ctx context.Context, resourceGroupName string, routeFilterName string, options *RouteFiltersBeginDeleteOptions) (RouteFiltersDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, routeFilterName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return RouteFiltersDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("RouteFiltersClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *RouteFiltersClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("RouteFiltersClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := RouteFiltersDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("RouteFiltersClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return RouteFiltersDeletePollerResponse{}, err
+	}
+	result.Poller = &RouteFiltersDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the specified route filter.
 // If the operation fails it returns the *CloudError error type.
-func (client *RouteFiltersClient) deleteOperation(ctx context.Context, resourceGroupName string, routeFilterName string, options *RouteFiltersBeginDeleteOptions) (*azcore.Response, error) {
+func (client *RouteFiltersClient) deleteOperation(ctx context.Context, resourceGroupName string, routeFilterName string, options *RouteFiltersBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, routeFilterName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RouteFiltersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string, options *RouteFiltersBeginDeleteOptions) (*azcore.Request, error) {
+func (client *RouteFiltersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string, options *RouteFiltersBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -216,50 +163,49 @@ func (client *RouteFiltersClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *RouteFiltersClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RouteFiltersClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets the specified route filter.
 // If the operation fails it returns the *CloudError error type.
-func (client *RouteFiltersClient) Get(ctx context.Context, resourceGroupName string, routeFilterName string, options *RouteFiltersGetOptions) (RouteFilterResponse, error) {
+func (client *RouteFiltersClient) Get(ctx context.Context, resourceGroupName string, routeFilterName string, options *RouteFiltersGetOptions) (RouteFiltersGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, routeFilterName, options)
 	if err != nil {
-		return RouteFilterResponse{}, err
+		return RouteFiltersGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RouteFilterResponse{}, err
+		return RouteFiltersGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return RouteFilterResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return RouteFiltersGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RouteFiltersClient) getCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string, options *RouteFiltersGetOptions) (*azcore.Request, error) {
+func (client *RouteFiltersClient) getCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string, options *RouteFiltersGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -273,120 +219,112 @@ func (client *RouteFiltersClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-03-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RouteFiltersClient) getHandleResponse(resp *azcore.Response) (RouteFilterResponse, error) {
-	var val *RouteFilter
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RouteFilterResponse{}, err
+func (client *RouteFiltersClient) getHandleResponse(resp *http.Response) (RouteFiltersGetResponse, error) {
+	result := RouteFiltersGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RouteFilter); err != nil {
+		return RouteFiltersGetResponse{}, err
 	}
-	return RouteFilterResponse{RawResponse: resp.Response, RouteFilter: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *RouteFiltersClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RouteFiltersClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Gets all route filters in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *RouteFiltersClient) List(options *RouteFiltersListOptions) RouteFilterListResultPager {
-	return &routeFilterListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *RouteFiltersClient) List(options *RouteFiltersListOptions) *RouteFiltersListPager {
+	return &RouteFiltersListPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp RouteFilterListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.RouteFilterListResult.NextLink)
+		advancer: func(ctx context.Context, resp RouteFiltersListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.RouteFilterListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *RouteFiltersClient) listCreateRequest(ctx context.Context, options *RouteFiltersListOptions) (*azcore.Request, error) {
+func (client *RouteFiltersClient) listCreateRequest(ctx context.Context, options *RouteFiltersListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/routeFilters"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RouteFiltersClient) listHandleResponse(resp *azcore.Response) (RouteFilterListResultResponse, error) {
-	var val *RouteFilterListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RouteFilterListResultResponse{}, err
+func (client *RouteFiltersClient) listHandleResponse(resp *http.Response) (RouteFiltersListResponse, error) {
+	result := RouteFiltersListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RouteFilterListResult); err != nil {
+		return RouteFiltersListResponse{}, err
 	}
-	return RouteFilterListResultResponse{RawResponse: resp.Response, RouteFilterListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *RouteFiltersClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RouteFiltersClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByResourceGroup - Gets all route filters in a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *RouteFiltersClient) ListByResourceGroup(resourceGroupName string, options *RouteFiltersListByResourceGroupOptions) RouteFilterListResultPager {
-	return &routeFilterListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *RouteFiltersClient) ListByResourceGroup(resourceGroupName string, options *RouteFiltersListByResourceGroupOptions) *RouteFiltersListByResourceGroupPager {
+	return &RouteFiltersListByResourceGroupPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listByResourceGroupHandleResponse,
-		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp RouteFilterListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.RouteFilterListResult.NextLink)
+		advancer: func(ctx context.Context, resp RouteFiltersListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.RouteFilterListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *RouteFiltersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *RouteFiltersListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *RouteFiltersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *RouteFiltersListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -396,59 +334,58 @@ func (client *RouteFiltersClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *RouteFiltersClient) listByResourceGroupHandleResponse(resp *azcore.Response) (RouteFilterListResultResponse, error) {
-	var val *RouteFilterListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RouteFilterListResultResponse{}, err
+func (client *RouteFiltersClient) listByResourceGroupHandleResponse(resp *http.Response) (RouteFiltersListByResourceGroupResponse, error) {
+	result := RouteFiltersListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RouteFilterListResult); err != nil {
+		return RouteFiltersListByResourceGroupResponse{}, err
 	}
-	return RouteFilterListResultResponse{RawResponse: resp.Response, RouteFilterListResult: val}, nil
+	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *RouteFiltersClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RouteFiltersClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // UpdateTags - Updates tags of a route filter.
 // If the operation fails it returns the *CloudError error type.
-func (client *RouteFiltersClient) UpdateTags(ctx context.Context, resourceGroupName string, routeFilterName string, parameters TagsObject, options *RouteFiltersUpdateTagsOptions) (RouteFilterResponse, error) {
+func (client *RouteFiltersClient) UpdateTags(ctx context.Context, resourceGroupName string, routeFilterName string, parameters TagsObject, options *RouteFiltersUpdateTagsOptions) (RouteFiltersUpdateTagsResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, routeFilterName, parameters, options)
 	if err != nil {
-		return RouteFilterResponse{}, err
+		return RouteFiltersUpdateTagsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RouteFilterResponse{}, err
+		return RouteFiltersUpdateTagsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return RouteFilterResponse{}, client.updateTagsHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return RouteFiltersUpdateTagsResponse{}, client.updateTagsHandleError(resp)
 	}
 	return client.updateTagsHandleResponse(resp)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
-func (client *RouteFiltersClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string, parameters TagsObject, options *RouteFiltersUpdateTagsOptions) (*azcore.Request, error) {
+func (client *RouteFiltersClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, routeFilterName string, parameters TagsObject, options *RouteFiltersUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/routeFilters/{routeFilterName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -462,36 +399,35 @@ func (client *RouteFiltersClient) updateTagsCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *RouteFiltersClient) updateTagsHandleResponse(resp *azcore.Response) (RouteFilterResponse, error) {
-	var val *RouteFilter
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RouteFilterResponse{}, err
+func (client *RouteFiltersClient) updateTagsHandleResponse(resp *http.Response) (RouteFiltersUpdateTagsResponse, error) {
+	result := RouteFiltersUpdateTagsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RouteFilter); err != nil {
+		return RouteFiltersUpdateTagsResponse{}, err
 	}
-	return RouteFilterResponse{RawResponse: resp.Response, RouteFilter: val}, nil
+	return result, nil
 }
 
 // updateTagsHandleError handles the UpdateTags error response.
-func (client *RouteFiltersClient) updateTagsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RouteFiltersClient) updateTagsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,93 +12,68 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // GallerySharingProfileClient contains the methods for the GallerySharingProfile group.
 // Don't use this type directly, use NewGallerySharingProfileClient() instead.
 type GallerySharingProfileClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewGallerySharingProfileClient creates a new instance of GallerySharingProfileClient with the specified values.
-func NewGallerySharingProfileClient(con *armcore.Connection, subscriptionID string) *GallerySharingProfileClient {
-	return &GallerySharingProfileClient{con: con, subscriptionID: subscriptionID}
+func NewGallerySharingProfileClient(con *arm.Connection, subscriptionID string) *GallerySharingProfileClient {
+	return &GallerySharingProfileClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginUpdate - Update sharing profile of a gallery.
 // If the operation fails it returns the *CloudError error type.
-func (client *GallerySharingProfileClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (SharingUpdatePollerResponse, error) {
+func (client *GallerySharingProfileClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (GallerySharingProfileUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, galleryName, sharingUpdate, options)
 	if err != nil {
-		return SharingUpdatePollerResponse{}, err
+		return GallerySharingProfileUpdatePollerResponse{}, err
 	}
-	result := SharingUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("GallerySharingProfileClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return SharingUpdatePollerResponse{}, err
-	}
-	poller := &sharingUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SharingUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdate creates a new SharingUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to SharingUpdatePoller.ResumeToken().
-func (client *GallerySharingProfileClient) ResumeUpdate(ctx context.Context, token string) (SharingUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("GallerySharingProfileClient.Update", token, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return SharingUpdatePollerResponse{}, err
-	}
-	poller := &sharingUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return SharingUpdatePollerResponse{}, err
-	}
-	result := SharingUpdatePollerResponse{
+	result := GallerySharingProfileUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SharingUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("GallerySharingProfileClient.Update", "", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return GallerySharingProfileUpdatePollerResponse{}, err
+	}
+	result.Poller = &GallerySharingProfileUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Update sharing profile of a gallery.
 // If the operation fails it returns the *CloudError error type.
-func (client *GallerySharingProfileClient) update(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (*azcore.Response, error) {
+func (client *GallerySharingProfileClient) update(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, galleryName, sharingUpdate, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *GallerySharingProfileClient) updateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (*azcore.Request, error) {
+func (client *GallerySharingProfileClient) updateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/share"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -111,27 +87,26 @@ func (client *GallerySharingProfileClient) updateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter galleryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryName}", url.PathEscape(galleryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-09-30")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(sharingUpdate)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, sharingUpdate)
 }
 
 // updateHandleError handles the Update error response.
-func (client *GallerySharingProfileClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *GallerySharingProfileClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

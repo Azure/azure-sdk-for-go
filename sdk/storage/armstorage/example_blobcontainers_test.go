@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,7 +10,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/armstorage"
 )
@@ -19,7 +20,7 @@ func ExampleBlobContainersClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewBlobContainersClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armstorage.NewBlobContainersClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	resp, err := client.Create(
 		context.Background(),
 		"<resource group name>",
@@ -37,7 +38,7 @@ func ExampleBlobContainersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewBlobContainersClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armstorage.NewBlobContainersClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	resp, err := client.Get(
 		context.Background(),
 		"<resource group name>",
@@ -54,7 +55,7 @@ func ExampleBlobContainersClient_List() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewBlobContainersClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armstorage.NewBlobContainersClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	pager := client.List("<resource group name>", "<storage account name>", nil)
 	for pager.NextPage(context.Background()) {
 		resp := pager.PageResponse()
@@ -75,7 +76,7 @@ func ExampleBlobContainersClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewBlobContainersClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armstorage.NewBlobContainersClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	_, err = client.Delete(
 		context.Background(),
 		"<resource group name>",

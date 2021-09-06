@@ -9,10 +9,12 @@
 
 package guestconfigurationapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2020-06-25/guestconfiguration/guestconfigurationapi"
+import original "github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2021-01-25/guestconfiguration/guestconfigurationapi"
 
 type AssignmentReportsClientAPI = original.AssignmentReportsClientAPI
+type AssignmentReportsVMSSClientAPI = original.AssignmentReportsVMSSClientAPI
 type AssignmentsClientAPI = original.AssignmentsClientAPI
+type AssignmentsVMSSClientAPI = original.AssignmentsVMSSClientAPI
 type HCRPAssignmentReportsClientAPI = original.HCRPAssignmentReportsClientAPI
 type HCRPAssignmentsClientAPI = original.HCRPAssignmentsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI

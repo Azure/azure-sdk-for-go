@@ -9,18 +9,19 @@
 
 package dataprotectionapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/dataprotection/mgmt/2021-01-01/dataprotection/dataprotectionapi"
+import original "github.com/Azure/azure-sdk-for-go/services/dataprotection/mgmt/2021-07-01/dataprotection/dataprotectionapi"
 
 type BackupInstancesClientAPI = original.BackupInstancesClientAPI
 type BackupPoliciesClientAPI = original.BackupPoliciesClientAPI
+type BackupVaultOperationResultsClientAPI = original.BackupVaultOperationResultsClientAPI
 type BackupVaultsClientAPI = original.BackupVaultsClientAPI
-type BaseClientAPI = original.BaseClientAPI
+type ClientAPI = original.ClientAPI
 type ExportJobsClientAPI = original.ExportJobsClientAPI
 type ExportJobsOperationResultClientAPI = original.ExportJobsOperationResultClientAPI
-type FindRestorableTimeRangesClientAPI = original.FindRestorableTimeRangesClientAPI
-type JobClientAPI = original.JobClientAPI
 type JobsClientAPI = original.JobsClientAPI
 type OperationResultClientAPI = original.OperationResultClientAPI
+type OperationStatusClientAPI = original.OperationStatusClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
-type RecoveryPointClientAPI = original.RecoveryPointClientAPI
 type RecoveryPointsClientAPI = original.RecoveryPointsClientAPI
+type ResourceGuardsClientAPI = original.ResourceGuardsClientAPI
+type RestorableTimeRangesClientAPI = original.RestorableTimeRangesClientAPI

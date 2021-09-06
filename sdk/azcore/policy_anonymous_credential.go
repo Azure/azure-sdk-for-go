@@ -6,13 +6,19 @@
 
 package azcore
 
-import "net/http"
+import (
+	"net/http"
 
-func anonCredAuthPolicyFunc(AuthenticationOptions) Policy {
-	return policyFunc(anonCredPolicyFunc)
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+)
+
+func anonCredAuthPolicyFunc(runtime.AuthenticationOptions) policy.Policy {
+	return pipeline.PolicyFunc(anonCredPolicyFunc)
 }
 
-func anonCredPolicyFunc(req *Request) (*http.Response, error) {
+func anonCredPolicyFunc(req *policy.Request) (*http.Response, error) {
 	return req.Next()
 }
 

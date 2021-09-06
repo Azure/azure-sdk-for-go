@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,54 +10,34 @@ package armkeyvault
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"net/http"
 	"reflect"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// DeletedManagedHsmListResultPager provides iteration over DeletedManagedHsmListResult pages.
-type DeletedManagedHsmListResultPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current DeletedManagedHsmListResultResponse.
-	PageResponse() DeletedManagedHsmListResultResponse
+// KeysListPager provides operations for iterating over paged responses.
+type KeysListPager struct {
+	client    *KeysClient
+	current   KeysListResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, KeysListResponse) (*policy.Request, error)
 }
 
-type deletedManagedHsmListResultCreateRequest func(context.Context) (*azcore.Request, error)
-
-type deletedManagedHsmListResultHandleError func(*azcore.Response) error
-
-type deletedManagedHsmListResultHandleResponse func(*azcore.Response) (DeletedManagedHsmListResultResponse, error)
-
-type deletedManagedHsmListResultAdvancePage func(context.Context, DeletedManagedHsmListResultResponse) (*azcore.Request, error)
-
-type deletedManagedHsmListResultPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester deletedManagedHsmListResultCreateRequest
-	// callback for handling response errors
-	errorer deletedManagedHsmListResultHandleError
-	// callback for handling the HTTP response
-	responder deletedManagedHsmListResultHandleResponse
-	// callback for advancing to the next page
-	advancer deletedManagedHsmListResultAdvancePage
-	// contains the current response
-	current DeletedManagedHsmListResultResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *deletedManagedHsmListResultPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *KeysListPager) Err() error {
 	return p.err
 }
 
-func (p *deletedManagedHsmListResultPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *KeysListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.DeletedManagedHsmListResult.NextLink == nil || len(*p.current.DeletedManagedHsmListResult.NextLink) == 0 {
+		if p.current.KeyListResult.NextLink == nil || len(*p.current.KeyListResult.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -67,16 +48,16 @@ func (p *deletedManagedHsmListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -85,54 +66,32 @@ func (p *deletedManagedHsmListResultPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *deletedManagedHsmListResultPager) PageResponse() DeletedManagedHsmListResultResponse {
+// PageResponse returns the current KeysListResponse page.
+func (p *KeysListPager) PageResponse() KeysListResponse {
 	return p.current
 }
 
-// DeletedVaultListResultPager provides iteration over DeletedVaultListResult pages.
-type DeletedVaultListResultPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current DeletedVaultListResultResponse.
-	PageResponse() DeletedVaultListResultResponse
+// KeysListVersionsPager provides operations for iterating over paged responses.
+type KeysListVersionsPager struct {
+	client    *KeysClient
+	current   KeysListVersionsResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, KeysListVersionsResponse) (*policy.Request, error)
 }
 
-type deletedVaultListResultCreateRequest func(context.Context) (*azcore.Request, error)
-
-type deletedVaultListResultHandleError func(*azcore.Response) error
-
-type deletedVaultListResultHandleResponse func(*azcore.Response) (DeletedVaultListResultResponse, error)
-
-type deletedVaultListResultAdvancePage func(context.Context, DeletedVaultListResultResponse) (*azcore.Request, error)
-
-type deletedVaultListResultPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester deletedVaultListResultCreateRequest
-	// callback for handling response errors
-	errorer deletedVaultListResultHandleError
-	// callback for handling the HTTP response
-	responder deletedVaultListResultHandleResponse
-	// callback for advancing to the next page
-	advancer deletedVaultListResultAdvancePage
-	// contains the current response
-	current DeletedVaultListResultResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *deletedVaultListResultPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *KeysListVersionsPager) Err() error {
 	return p.err
 }
 
-func (p *deletedVaultListResultPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *KeysListVersionsPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.DeletedVaultListResult.NextLink == nil || len(*p.current.DeletedVaultListResult.NextLink) == 0 {
+		if p.current.KeyListResult.NextLink == nil || len(*p.current.KeyListResult.NextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -143,16 +102,16 @@ func (p *deletedVaultListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listVersionsHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listVersionsHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -161,51 +120,29 @@ func (p *deletedVaultListResultPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *deletedVaultListResultPager) PageResponse() DeletedVaultListResultResponse {
+// PageResponse returns the current KeysListVersionsResponse page.
+func (p *KeysListVersionsPager) PageResponse() KeysListVersionsResponse {
 	return p.current
 }
 
-// MHSMPrivateEndpointConnectionsListResultPager provides iteration over MHSMPrivateEndpointConnectionsListResult pages.
-type MHSMPrivateEndpointConnectionsListResultPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current MHSMPrivateEndpointConnectionsListResultResponse.
-	PageResponse() MHSMPrivateEndpointConnectionsListResultResponse
+// MHSMPrivateEndpointConnectionsListByResourcePager provides operations for iterating over paged responses.
+type MHSMPrivateEndpointConnectionsListByResourcePager struct {
+	client    *MHSMPrivateEndpointConnectionsClient
+	current   MHSMPrivateEndpointConnectionsListByResourceResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, MHSMPrivateEndpointConnectionsListByResourceResponse) (*policy.Request, error)
 }
 
-type mhsmPrivateEndpointConnectionsListResultCreateRequest func(context.Context) (*azcore.Request, error)
-
-type mhsmPrivateEndpointConnectionsListResultHandleError func(*azcore.Response) error
-
-type mhsmPrivateEndpointConnectionsListResultHandleResponse func(*azcore.Response) (MHSMPrivateEndpointConnectionsListResultResponse, error)
-
-type mhsmPrivateEndpointConnectionsListResultAdvancePage func(context.Context, MHSMPrivateEndpointConnectionsListResultResponse) (*azcore.Request, error)
-
-type mhsmPrivateEndpointConnectionsListResultPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester mhsmPrivateEndpointConnectionsListResultCreateRequest
-	// callback for handling response errors
-	errorer mhsmPrivateEndpointConnectionsListResultHandleError
-	// callback for handling the HTTP response
-	responder mhsmPrivateEndpointConnectionsListResultHandleResponse
-	// callback for advancing to the next page
-	advancer mhsmPrivateEndpointConnectionsListResultAdvancePage
-	// contains the current response
-	current MHSMPrivateEndpointConnectionsListResultResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *mhsmPrivateEndpointConnectionsListResultPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *MHSMPrivateEndpointConnectionsListByResourcePager) Err() error {
 	return p.err
 }
 
-func (p *mhsmPrivateEndpointConnectionsListResultPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *MHSMPrivateEndpointConnectionsListByResourcePager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.MHSMPrivateEndpointConnectionsListResult.NextLink == nil || len(*p.current.MHSMPrivateEndpointConnectionsListResult.NextLink) == 0 {
@@ -219,16 +156,16 @@ func (p *mhsmPrivateEndpointConnectionsListResultPager) NextPage(ctx context.Con
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listByResourceHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listByResourceHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -237,51 +174,29 @@ func (p *mhsmPrivateEndpointConnectionsListResultPager) NextPage(ctx context.Con
 	return true
 }
 
-func (p *mhsmPrivateEndpointConnectionsListResultPager) PageResponse() MHSMPrivateEndpointConnectionsListResultResponse {
+// PageResponse returns the current MHSMPrivateEndpointConnectionsListByResourceResponse page.
+func (p *MHSMPrivateEndpointConnectionsListByResourcePager) PageResponse() MHSMPrivateEndpointConnectionsListByResourceResponse {
 	return p.current
 }
 
-// ManagedHsmListResultPager provides iteration over ManagedHsmListResult pages.
-type ManagedHsmListResultPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current ManagedHsmListResultResponse.
-	PageResponse() ManagedHsmListResultResponse
+// ManagedHsmsListByResourceGroupPager provides operations for iterating over paged responses.
+type ManagedHsmsListByResourceGroupPager struct {
+	client    *ManagedHsmsClient
+	current   ManagedHsmsListByResourceGroupResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ManagedHsmsListByResourceGroupResponse) (*policy.Request, error)
 }
 
-type managedHsmListResultCreateRequest func(context.Context) (*azcore.Request, error)
-
-type managedHsmListResultHandleError func(*azcore.Response) error
-
-type managedHsmListResultHandleResponse func(*azcore.Response) (ManagedHsmListResultResponse, error)
-
-type managedHsmListResultAdvancePage func(context.Context, ManagedHsmListResultResponse) (*azcore.Request, error)
-
-type managedHsmListResultPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester managedHsmListResultCreateRequest
-	// callback for handling response errors
-	errorer managedHsmListResultHandleError
-	// callback for handling the HTTP response
-	responder managedHsmListResultHandleResponse
-	// callback for advancing to the next page
-	advancer managedHsmListResultAdvancePage
-	// contains the current response
-	current ManagedHsmListResultResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *managedHsmListResultPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *ManagedHsmsListByResourceGroupPager) Err() error {
 	return p.err
 }
 
-func (p *managedHsmListResultPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ManagedHsmsListByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.ManagedHsmListResult.NextLink == nil || len(*p.current.ManagedHsmListResult.NextLink) == 0 {
@@ -295,16 +210,16 @@ func (p *managedHsmListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listByResourceGroupHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listByResourceGroupHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -313,51 +228,137 @@ func (p *managedHsmListResultPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *managedHsmListResultPager) PageResponse() ManagedHsmListResultResponse {
+// PageResponse returns the current ManagedHsmsListByResourceGroupResponse page.
+func (p *ManagedHsmsListByResourceGroupPager) PageResponse() ManagedHsmsListByResourceGroupResponse {
 	return p.current
 }
 
-// OperationListResultPager provides iteration over OperationListResult pages.
-type OperationListResultPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current OperationListResultResponse.
-	PageResponse() OperationListResultResponse
+// ManagedHsmsListBySubscriptionPager provides operations for iterating over paged responses.
+type ManagedHsmsListBySubscriptionPager struct {
+	client    *ManagedHsmsClient
+	current   ManagedHsmsListBySubscriptionResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ManagedHsmsListBySubscriptionResponse) (*policy.Request, error)
 }
 
-type operationListResultCreateRequest func(context.Context) (*azcore.Request, error)
-
-type operationListResultHandleError func(*azcore.Response) error
-
-type operationListResultHandleResponse func(*azcore.Response) (OperationListResultResponse, error)
-
-type operationListResultAdvancePage func(context.Context, OperationListResultResponse) (*azcore.Request, error)
-
-type operationListResultPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester operationListResultCreateRequest
-	// callback for handling response errors
-	errorer operationListResultHandleError
-	// callback for handling the HTTP response
-	responder operationListResultHandleResponse
-	// callback for advancing to the next page
-	advancer operationListResultAdvancePage
-	// contains the current response
-	current OperationListResultResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *operationListResultPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *ManagedHsmsListBySubscriptionPager) Err() error {
 	return p.err
 }
 
-func (p *operationListResultPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ManagedHsmsListBySubscriptionPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ManagedHsmListResult.NextLink == nil || len(*p.current.ManagedHsmListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listBySubscriptionHandleError(resp)
+		return false
+	}
+	result, err := p.client.listBySubscriptionHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current ManagedHsmsListBySubscriptionResponse page.
+func (p *ManagedHsmsListBySubscriptionPager) PageResponse() ManagedHsmsListBySubscriptionResponse {
+	return p.current
+}
+
+// ManagedHsmsListDeletedPager provides operations for iterating over paged responses.
+type ManagedHsmsListDeletedPager struct {
+	client    *ManagedHsmsClient
+	current   ManagedHsmsListDeletedResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ManagedHsmsListDeletedResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *ManagedHsmsListDeletedPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ManagedHsmsListDeletedPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DeletedManagedHsmListResult.NextLink == nil || len(*p.current.DeletedManagedHsmListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listDeletedHandleError(resp)
+		return false
+	}
+	result, err := p.client.listDeletedHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current ManagedHsmsListDeletedResponse page.
+func (p *ManagedHsmsListDeletedPager) PageResponse() ManagedHsmsListDeletedResponse {
+	return p.current
+}
+
+// OperationsListPager provides operations for iterating over paged responses.
+type OperationsListPager struct {
+	client    *OperationsClient
+	current   OperationsListResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *OperationsListPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.OperationListResult.NextLink == nil || len(*p.current.OperationListResult.NextLink) == 0 {
@@ -371,16 +372,16 @@ func (p *operationListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -389,51 +390,29 @@ func (p *operationListResultPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *operationListResultPager) PageResponse() OperationListResultResponse {
+// PageResponse returns the current OperationsListResponse page.
+func (p *OperationsListPager) PageResponse() OperationsListResponse {
 	return p.current
 }
 
-// PrivateEndpointConnectionListResultPager provides iteration over PrivateEndpointConnectionListResult pages.
-type PrivateEndpointConnectionListResultPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current PrivateEndpointConnectionListResultResponse.
-	PageResponse() PrivateEndpointConnectionListResultResponse
+// PrivateEndpointConnectionsListByResourcePager provides operations for iterating over paged responses.
+type PrivateEndpointConnectionsListByResourcePager struct {
+	client    *PrivateEndpointConnectionsClient
+	current   PrivateEndpointConnectionsListByResourceResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, PrivateEndpointConnectionsListByResourceResponse) (*policy.Request, error)
 }
 
-type privateEndpointConnectionListResultCreateRequest func(context.Context) (*azcore.Request, error)
-
-type privateEndpointConnectionListResultHandleError func(*azcore.Response) error
-
-type privateEndpointConnectionListResultHandleResponse func(*azcore.Response) (PrivateEndpointConnectionListResultResponse, error)
-
-type privateEndpointConnectionListResultAdvancePage func(context.Context, PrivateEndpointConnectionListResultResponse) (*azcore.Request, error)
-
-type privateEndpointConnectionListResultPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester privateEndpointConnectionListResultCreateRequest
-	// callback for handling response errors
-	errorer privateEndpointConnectionListResultHandleError
-	// callback for handling the HTTP response
-	responder privateEndpointConnectionListResultHandleResponse
-	// callback for advancing to the next page
-	advancer privateEndpointConnectionListResultAdvancePage
-	// contains the current response
-	current PrivateEndpointConnectionListResultResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *privateEndpointConnectionListResultPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *PrivateEndpointConnectionsListByResourcePager) Err() error {
 	return p.err
 }
 
-func (p *privateEndpointConnectionListResultPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *PrivateEndpointConnectionsListByResourcePager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.PrivateEndpointConnectionListResult.NextLink == nil || len(*p.current.PrivateEndpointConnectionListResult.NextLink) == 0 {
@@ -447,92 +426,16 @@ func (p *privateEndpointConnectionListResultPager) NextPage(ctx context.Context)
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listByResourceHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	p.current = result
-	return true
-}
-
-func (p *privateEndpointConnectionListResultPager) PageResponse() PrivateEndpointConnectionListResultResponse {
-	return p.current
-}
-
-// ResourceListResultPager provides iteration over ResourceListResult pages.
-type ResourceListResultPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current ResourceListResultResponse.
-	PageResponse() ResourceListResultResponse
-}
-
-type resourceListResultCreateRequest func(context.Context) (*azcore.Request, error)
-
-type resourceListResultHandleError func(*azcore.Response) error
-
-type resourceListResultHandleResponse func(*azcore.Response) (ResourceListResultResponse, error)
-
-type resourceListResultAdvancePage func(context.Context, ResourceListResultResponse) (*azcore.Request, error)
-
-type resourceListResultPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester resourceListResultCreateRequest
-	// callback for handling response errors
-	errorer resourceListResultHandleError
-	// callback for handling the HTTP response
-	responder resourceListResultHandleResponse
-	// callback for advancing to the next page
-	advancer resourceListResultAdvancePage
-	// contains the current response
-	current ResourceListResultResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *resourceListResultPager) Err() error {
-	return p.err
-}
-
-func (p *resourceListResultPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
-	var err error
-	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.ResourceListResult.NextLink == nil || len(*p.current.ResourceListResult.NextLink) == 0 {
-			return false
-		}
-		req, err = p.advancer(ctx, p.current)
-	} else {
-		req, err = p.requester(ctx)
-	}
-	if err != nil {
-		p.err = err
-		return false
-	}
-	resp, err := p.pipeline.Do(req)
-	if err != nil {
-		p.err = err
-		return false
-	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
-		return false
-	}
-	result, err := p.responder(resp)
+	result, err := p.client.listByResourceHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -541,51 +444,29 @@ func (p *resourceListResultPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *resourceListResultPager) PageResponse() ResourceListResultResponse {
+// PageResponse returns the current PrivateEndpointConnectionsListByResourceResponse page.
+func (p *PrivateEndpointConnectionsListByResourcePager) PageResponse() PrivateEndpointConnectionsListByResourceResponse {
 	return p.current
 }
 
-// SecretListResultPager provides iteration over SecretListResult pages.
-type SecretListResultPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current SecretListResultResponse.
-	PageResponse() SecretListResultResponse
+// SecretsListPager provides operations for iterating over paged responses.
+type SecretsListPager struct {
+	client    *SecretsClient
+	current   SecretsListResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, SecretsListResponse) (*policy.Request, error)
 }
 
-type secretListResultCreateRequest func(context.Context) (*azcore.Request, error)
-
-type secretListResultHandleError func(*azcore.Response) error
-
-type secretListResultHandleResponse func(*azcore.Response) (SecretListResultResponse, error)
-
-type secretListResultAdvancePage func(context.Context, SecretListResultResponse) (*azcore.Request, error)
-
-type secretListResultPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester secretListResultCreateRequest
-	// callback for handling response errors
-	errorer secretListResultHandleError
-	// callback for handling the HTTP response
-	responder secretListResultHandleResponse
-	// callback for advancing to the next page
-	advancer secretListResultAdvancePage
-	// contains the current response
-	current SecretListResultResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *secretListResultPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *SecretsListPager) Err() error {
 	return p.err
 }
 
-func (p *secretListResultPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *SecretsListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.SecretListResult.NextLink == nil || len(*p.current.SecretListResult.NextLink) == 0 {
@@ -599,16 +480,16 @@ func (p *secretListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -617,51 +498,29 @@ func (p *secretListResultPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *secretListResultPager) PageResponse() SecretListResultResponse {
+// PageResponse returns the current SecretsListResponse page.
+func (p *SecretsListPager) PageResponse() SecretsListResponse {
 	return p.current
 }
 
-// VaultListResultPager provides iteration over VaultListResult pages.
-type VaultListResultPager interface {
-	azcore.Pager
-
-	// PageResponse returns the current VaultListResultResponse.
-	PageResponse() VaultListResultResponse
+// VaultsListByResourceGroupPager provides operations for iterating over paged responses.
+type VaultsListByResourceGroupPager struct {
+	client    *VaultsClient
+	current   VaultsListByResourceGroupResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, VaultsListByResourceGroupResponse) (*policy.Request, error)
 }
 
-type vaultListResultCreateRequest func(context.Context) (*azcore.Request, error)
-
-type vaultListResultHandleError func(*azcore.Response) error
-
-type vaultListResultHandleResponse func(*azcore.Response) (VaultListResultResponse, error)
-
-type vaultListResultAdvancePage func(context.Context, VaultListResultResponse) (*azcore.Request, error)
-
-type vaultListResultPager struct {
-	// the pipeline for making the request
-	pipeline azcore.Pipeline
-	// creates the initial request (non-LRO case)
-	requester vaultListResultCreateRequest
-	// callback for handling response errors
-	errorer vaultListResultHandleError
-	// callback for handling the HTTP response
-	responder vaultListResultHandleResponse
-	// callback for advancing to the next page
-	advancer vaultListResultAdvancePage
-	// contains the current response
-	current VaultListResultResponse
-	// status codes for successful retrieval
-	statusCodes []int
-	// any error encountered
-	err error
-}
-
-func (p *vaultListResultPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *VaultsListByResourceGroupPager) Err() error {
 	return p.err
 }
 
-func (p *vaultListResultPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *VaultsListByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.VaultListResult.NextLink == nil || len(*p.current.VaultListResult.NextLink) == 0 {
@@ -675,16 +534,16 @@ func (p *vaultListResultPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.pipeline.Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(p.statusCodes...) {
-		p.err = p.errorer(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listByResourceGroupHandleError(resp)
 		return false
 	}
-	result, err := p.responder(resp)
+	result, err := p.client.listByResourceGroupHandleResponse(resp)
 	if err != nil {
 		p.err = err
 		return false
@@ -693,6 +552,169 @@ func (p *vaultListResultPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *vaultListResultPager) PageResponse() VaultListResultResponse {
+// PageResponse returns the current VaultsListByResourceGroupResponse page.
+func (p *VaultsListByResourceGroupPager) PageResponse() VaultsListByResourceGroupResponse {
+	return p.current
+}
+
+// VaultsListBySubscriptionPager provides operations for iterating over paged responses.
+type VaultsListBySubscriptionPager struct {
+	client    *VaultsClient
+	current   VaultsListBySubscriptionResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, VaultsListBySubscriptionResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *VaultsListBySubscriptionPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *VaultsListBySubscriptionPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.VaultListResult.NextLink == nil || len(*p.current.VaultListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listBySubscriptionHandleError(resp)
+		return false
+	}
+	result, err := p.client.listBySubscriptionHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current VaultsListBySubscriptionResponse page.
+func (p *VaultsListBySubscriptionPager) PageResponse() VaultsListBySubscriptionResponse {
+	return p.current
+}
+
+// VaultsListDeletedPager provides operations for iterating over paged responses.
+type VaultsListDeletedPager struct {
+	client    *VaultsClient
+	current   VaultsListDeletedResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, VaultsListDeletedResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *VaultsListDeletedPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *VaultsListDeletedPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.DeletedVaultListResult.NextLink == nil || len(*p.current.DeletedVaultListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listDeletedHandleError(resp)
+		return false
+	}
+	result, err := p.client.listDeletedHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current VaultsListDeletedResponse page.
+func (p *VaultsListDeletedPager) PageResponse() VaultsListDeletedResponse {
+	return p.current
+}
+
+// VaultsListPager provides operations for iterating over paged responses.
+type VaultsListPager struct {
+	client    *VaultsClient
+	current   VaultsListResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, VaultsListResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *VaultsListPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *VaultsListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.ResourceListResult.NextLink == nil || len(*p.current.ResourceListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current VaultsListResponse page.
+func (p *VaultsListPager) PageResponse() VaultsListResponse {
 	return p.current
 }

@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IntegrationRuntimeObjectMetadataClient contains the methods for the IntegrationRuntimeObjectMetadata group.
 // Don't use this type directly, use NewIntegrationRuntimeObjectMetadataClient() instead.
 type IntegrationRuntimeObjectMetadataClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewIntegrationRuntimeObjectMetadataClient creates a new instance of IntegrationRuntimeObjectMetadataClient with the specified values.
-func NewIntegrationRuntimeObjectMetadataClient(con *armcore.Connection, subscriptionID string) *IntegrationRuntimeObjectMetadataClient {
-	return &IntegrationRuntimeObjectMetadataClient{con: con, subscriptionID: subscriptionID}
+func NewIntegrationRuntimeObjectMetadataClient(con *arm.Connection, subscriptionID string) *IntegrationRuntimeObjectMetadataClient {
+	return &IntegrationRuntimeObjectMetadataClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
@@ -39,18 +42,18 @@ func (client *IntegrationRuntimeObjectMetadataClient) Get(ctx context.Context, r
 	if err != nil {
 		return IntegrationRuntimeObjectMetadataGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IntegrationRuntimeObjectMetadataGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return IntegrationRuntimeObjectMetadataGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IntegrationRuntimeObjectMetadataClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataGetOptions) (*azcore.Request, error) {
+func (client *IntegrationRuntimeObjectMetadataClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/getObjectMetadata"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -68,41 +71,40 @@ func (client *IntegrationRuntimeObjectMetadataClient) getCreateRequest(ctx conte
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.GetMetadataRequest != nil {
-		return req, req.MarshalAsJSON(*options.GetMetadataRequest)
+		return req, runtime.MarshalAsJSON(req, *options.GetMetadataRequest)
 	}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *IntegrationRuntimeObjectMetadataClient) getHandleResponse(resp *azcore.Response) (IntegrationRuntimeObjectMetadataGetResponse, error) {
-	result := IntegrationRuntimeObjectMetadataGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SsisObjectMetadataListResponse); err != nil {
+func (client *IntegrationRuntimeObjectMetadataClient) getHandleResponse(resp *http.Response) (IntegrationRuntimeObjectMetadataGetResponse, error) {
+	result := IntegrationRuntimeObjectMetadataGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SsisObjectMetadataListResponse); err != nil {
 		return IntegrationRuntimeObjectMetadataGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *IntegrationRuntimeObjectMetadataClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IntegrationRuntimeObjectMetadataClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginRefresh - Refresh a SSIS integration runtime object metadata.
@@ -113,65 +115,37 @@ func (client *IntegrationRuntimeObjectMetadataClient) BeginRefresh(ctx context.C
 		return IntegrationRuntimeObjectMetadataRefreshPollerResponse{}, err
 	}
 	result := IntegrationRuntimeObjectMetadataRefreshPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("IntegrationRuntimeObjectMetadataClient.Refresh", "", resp, client.con.Pipeline(), client.refreshHandleError)
-	if err != nil {
-		return IntegrationRuntimeObjectMetadataRefreshPollerResponse{}, err
-	}
-	poller := &integrationRuntimeObjectMetadataRefreshPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (IntegrationRuntimeObjectMetadataRefreshResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeRefresh creates a new IntegrationRuntimeObjectMetadataRefreshPoller from the specified resume token.
-// token - The value must come from a previous call to IntegrationRuntimeObjectMetadataRefreshPoller.ResumeToken().
-func (client *IntegrationRuntimeObjectMetadataClient) ResumeRefresh(ctx context.Context, token string) (IntegrationRuntimeObjectMetadataRefreshPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("IntegrationRuntimeObjectMetadataClient.Refresh", token, client.con.Pipeline(), client.refreshHandleError)
-	if err != nil {
-		return IntegrationRuntimeObjectMetadataRefreshPollerResponse{}, err
-	}
-	poller := &integrationRuntimeObjectMetadataRefreshPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return IntegrationRuntimeObjectMetadataRefreshPollerResponse{}, err
-	}
-	result := IntegrationRuntimeObjectMetadataRefreshPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (IntegrationRuntimeObjectMetadataRefreshResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("IntegrationRuntimeObjectMetadataClient.Refresh", "", resp, client.pl, client.refreshHandleError)
+	if err != nil {
+		return IntegrationRuntimeObjectMetadataRefreshPollerResponse{}, err
+	}
+	result.Poller = &IntegrationRuntimeObjectMetadataRefreshPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Refresh - Refresh a SSIS integration runtime object metadata.
 // If the operation fails it returns the *CloudError error type.
-func (client *IntegrationRuntimeObjectMetadataClient) refresh(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataBeginRefreshOptions) (*azcore.Response, error) {
+func (client *IntegrationRuntimeObjectMetadataClient) refresh(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataBeginRefreshOptions) (*http.Response, error) {
 	req, err := client.refreshCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.refreshHandleError(resp)
 	}
 	return resp, nil
 }
 
 // refreshCreateRequest creates the Refresh request.
-func (client *IntegrationRuntimeObjectMetadataClient) refreshCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataBeginRefreshOptions) (*azcore.Request, error) {
+func (client *IntegrationRuntimeObjectMetadataClient) refreshCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataBeginRefreshOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/refreshObjectMetadata"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -189,27 +163,26 @@ func (client *IntegrationRuntimeObjectMetadataClient) refreshCreateRequest(ctx c
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // refreshHandleError handles the Refresh error response.
-func (client *IntegrationRuntimeObjectMetadataClient) refreshHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IntegrationRuntimeObjectMetadataClient) refreshHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

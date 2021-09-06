@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DataFlowsClient contains the methods for the DataFlows group.
 // Don't use this type directly, use NewDataFlowsClient() instead.
 type DataFlowsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewDataFlowsClient creates a new instance of DataFlowsClient with the specified values.
-func NewDataFlowsClient(con *armcore.Connection, subscriptionID string) *DataFlowsClient {
-	return &DataFlowsClient{con: con, subscriptionID: subscriptionID}
+func NewDataFlowsClient(con *arm.Connection, subscriptionID string) *DataFlowsClient {
+	return &DataFlowsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates or updates a data flow.
@@ -38,18 +41,18 @@ func (client *DataFlowsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return DataFlowsCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DataFlowsCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DataFlowsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DataFlowsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, dataFlow DataFlowResource, options *DataFlowsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *DataFlowsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, dataFlow DataFlowResource, options *DataFlowsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/dataflows/{dataFlowName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,41 +70,40 @@ func (client *DataFlowsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter dataFlowName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataFlowName}", url.PathEscape(dataFlowName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header.Set("If-Match", *options.IfMatch)
 	}
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(dataFlow)
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, dataFlow)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DataFlowsClient) createOrUpdateHandleResponse(resp *azcore.Response) (DataFlowsCreateOrUpdateResponse, error) {
-	result := DataFlowsCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DataFlowResource); err != nil {
+func (client *DataFlowsClient) createOrUpdateHandleResponse(resp *http.Response) (DataFlowsCreateOrUpdateResponse, error) {
+	result := DataFlowsCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataFlowResource); err != nil {
 		return DataFlowsCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DataFlowsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DataFlowsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Deletes a data flow.
@@ -111,18 +113,18 @@ func (client *DataFlowsClient) Delete(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return DataFlowsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DataFlowsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DataFlowsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return DataFlowsDeleteResponse{RawResponse: resp.Response}, nil
+	return DataFlowsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DataFlowsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, options *DataFlowsDeleteOptions) (*azcore.Request, error) {
+func (client *DataFlowsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, options *DataFlowsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/dataflows/{dataFlowName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,29 +142,28 @@ func (client *DataFlowsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter dataFlowName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataFlowName}", url.PathEscape(dataFlowName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *DataFlowsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DataFlowsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets a data flow.
@@ -172,18 +173,18 @@ func (client *DataFlowsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return DataFlowsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DataFlowsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DataFlowsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DataFlowsClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, options *DataFlowsGetOptions) (*azcore.Request, error) {
+func (client *DataFlowsClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, dataFlowName string, options *DataFlowsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/dataflows/{dataFlowName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -201,59 +202,58 @@ func (client *DataFlowsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter dataFlowName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataFlowName}", url.PathEscape(dataFlowName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfNoneMatch != nil {
-		req.Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
 	}
-	req.Header.Set("Accept", "application/json")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataFlowsClient) getHandleResponse(resp *azcore.Response) (DataFlowsGetResponse, error) {
-	result := DataFlowsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DataFlowResource); err != nil {
+func (client *DataFlowsClient) getHandleResponse(resp *http.Response) (DataFlowsGetResponse, error) {
+	result := DataFlowsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataFlowResource); err != nil {
 		return DataFlowsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *DataFlowsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DataFlowsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByFactory - Lists data flows.
 // If the operation fails it returns the *CloudError error type.
-func (client *DataFlowsClient) ListByFactory(resourceGroupName string, factoryName string, options *DataFlowsListByFactoryOptions) DataFlowsListByFactoryPager {
-	return &dataFlowsListByFactoryPager{
+func (client *DataFlowsClient) ListByFactory(resourceGroupName string, factoryName string, options *DataFlowsListByFactoryOptions) *DataFlowsListByFactoryPager {
+	return &DataFlowsListByFactoryPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
 		},
-		advancer: func(ctx context.Context, resp DataFlowsListByFactoryResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DataFlowListResponse.NextLink)
+		advancer: func(ctx context.Context, resp DataFlowsListByFactoryResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataFlowListResponse.NextLink)
 		},
 	}
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
-func (client *DataFlowsClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *DataFlowsListByFactoryOptions) (*azcore.Request, error) {
+func (client *DataFlowsClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *DataFlowsListByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/dataflows"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -267,36 +267,35 @@ func (client *DataFlowsClient) listByFactoryCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByFactoryHandleResponse handles the ListByFactory response.
-func (client *DataFlowsClient) listByFactoryHandleResponse(resp *azcore.Response) (DataFlowsListByFactoryResponse, error) {
-	result := DataFlowsListByFactoryResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DataFlowListResponse); err != nil {
+func (client *DataFlowsClient) listByFactoryHandleResponse(resp *http.Response) (DataFlowsListByFactoryResponse, error) {
+	result := DataFlowsListByFactoryResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataFlowListResponse); err != nil {
 		return DataFlowsListByFactoryResponse{}, err
 	}
 	return result, nil
 }
 
 // listByFactoryHandleError handles the ListByFactory error response.
-func (client *DataFlowsClient) listByFactoryHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DataFlowsClient) listByFactoryHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

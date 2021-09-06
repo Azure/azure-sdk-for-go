@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // FactoriesClient contains the methods for the Factories group.
 // Don't use this type directly, use NewFactoriesClient() instead.
 type FactoriesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewFactoriesClient creates a new instance of FactoriesClient with the specified values.
-func NewFactoriesClient(con *armcore.Connection, subscriptionID string) *FactoriesClient {
-	return &FactoriesClient{con: con, subscriptionID: subscriptionID}
+func NewFactoriesClient(con *arm.Connection, subscriptionID string) *FactoriesClient {
+	return &FactoriesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // ConfigureFactoryRepo - Updates a factory's repo information.
@@ -38,18 +41,18 @@ func (client *FactoriesClient) ConfigureFactoryRepo(ctx context.Context, locatio
 	if err != nil {
 		return FactoriesConfigureFactoryRepoResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return FactoriesConfigureFactoryRepoResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return FactoriesConfigureFactoryRepoResponse{}, client.configureFactoryRepoHandleError(resp)
 	}
 	return client.configureFactoryRepoHandleResponse(resp)
 }
 
 // configureFactoryRepoCreateRequest creates the ConfigureFactoryRepo request.
-func (client *FactoriesClient) configureFactoryRepoCreateRequest(ctx context.Context, locationID string, factoryRepoUpdate FactoryRepoUpdate, options *FactoriesConfigureFactoryRepoOptions) (*azcore.Request, error) {
+func (client *FactoriesClient) configureFactoryRepoCreateRequest(ctx context.Context, locationID string, factoryRepoUpdate FactoryRepoUpdate, options *FactoriesConfigureFactoryRepoOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/locations/{locationId}/configureFactoryRepo"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -59,38 +62,37 @@ func (client *FactoriesClient) configureFactoryRepoCreateRequest(ctx context.Con
 		return nil, errors.New("parameter locationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationId}", url.PathEscape(locationID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(factoryRepoUpdate)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, factoryRepoUpdate)
 }
 
 // configureFactoryRepoHandleResponse handles the ConfigureFactoryRepo response.
-func (client *FactoriesClient) configureFactoryRepoHandleResponse(resp *azcore.Response) (FactoriesConfigureFactoryRepoResponse, error) {
-	result := FactoriesConfigureFactoryRepoResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Factory); err != nil {
+func (client *FactoriesClient) configureFactoryRepoHandleResponse(resp *http.Response) (FactoriesConfigureFactoryRepoResponse, error) {
+	result := FactoriesConfigureFactoryRepoResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Factory); err != nil {
 		return FactoriesConfigureFactoryRepoResponse{}, err
 	}
 	return result, nil
 }
 
 // configureFactoryRepoHandleError handles the ConfigureFactoryRepo error response.
-func (client *FactoriesClient) configureFactoryRepoHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *FactoriesClient) configureFactoryRepoHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // CreateOrUpdate - Creates or updates a factory.
@@ -100,18 +102,18 @@ func (client *FactoriesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return FactoriesCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return FactoriesCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return FactoriesCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *FactoriesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, factory Factory, options *FactoriesCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *FactoriesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, factory Factory, options *FactoriesCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -125,41 +127,40 @@ func (client *FactoriesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header.Set("If-Match", *options.IfMatch)
 	}
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(factory)
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, factory)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *FactoriesClient) createOrUpdateHandleResponse(resp *azcore.Response) (FactoriesCreateOrUpdateResponse, error) {
-	result := FactoriesCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Factory); err != nil {
+func (client *FactoriesClient) createOrUpdateHandleResponse(resp *http.Response) (FactoriesCreateOrUpdateResponse, error) {
+	result := FactoriesCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Factory); err != nil {
 		return FactoriesCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *FactoriesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *FactoriesClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Deletes a factory.
@@ -169,18 +170,18 @@ func (client *FactoriesClient) Delete(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return FactoriesDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return FactoriesDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return FactoriesDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return FactoriesDeleteResponse{RawResponse: resp.Response}, nil
+	return FactoriesDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *FactoriesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *FactoriesDeleteOptions) (*azcore.Request, error) {
+func (client *FactoriesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *FactoriesDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -194,29 +195,28 @@ func (client *FactoriesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *FactoriesClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *FactoriesClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets a factory.
@@ -226,18 +226,18 @@ func (client *FactoriesClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return FactoriesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return FactoriesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNotModified) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotModified) {
 		return FactoriesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *FactoriesClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *FactoriesGetOptions) (*azcore.Request, error) {
+func (client *FactoriesClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *FactoriesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -251,41 +251,40 @@ func (client *FactoriesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfNoneMatch != nil {
-		req.Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
 	}
-	req.Header.Set("Accept", "application/json")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *FactoriesClient) getHandleResponse(resp *azcore.Response) (FactoriesGetResponse, error) {
-	result := FactoriesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Factory); err != nil {
+func (client *FactoriesClient) getHandleResponse(resp *http.Response) (FactoriesGetResponse, error) {
+	result := FactoriesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Factory); err != nil {
 		return FactoriesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *FactoriesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *FactoriesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetDataPlaneAccess - Get Data Plane access.
@@ -295,18 +294,18 @@ func (client *FactoriesClient) GetDataPlaneAccess(ctx context.Context, resourceG
 	if err != nil {
 		return FactoriesGetDataPlaneAccessResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return FactoriesGetDataPlaneAccessResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return FactoriesGetDataPlaneAccessResponse{}, client.getDataPlaneAccessHandleError(resp)
 	}
 	return client.getDataPlaneAccessHandleResponse(resp)
 }
 
 // getDataPlaneAccessCreateRequest creates the GetDataPlaneAccess request.
-func (client *FactoriesClient) getDataPlaneAccessCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, policy UserAccessPolicy, options *FactoriesGetDataPlaneAccessOptions) (*azcore.Request, error) {
+func (client *FactoriesClient) getDataPlaneAccessCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, policy UserAccessPolicy, options *FactoriesGetDataPlaneAccessOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getDataPlaneAccess"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -320,38 +319,37 @@ func (client *FactoriesClient) getDataPlaneAccessCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(policy)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, policy)
 }
 
 // getDataPlaneAccessHandleResponse handles the GetDataPlaneAccess response.
-func (client *FactoriesClient) getDataPlaneAccessHandleResponse(resp *azcore.Response) (FactoriesGetDataPlaneAccessResponse, error) {
-	result := FactoriesGetDataPlaneAccessResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AccessPolicyResponse); err != nil {
+func (client *FactoriesClient) getDataPlaneAccessHandleResponse(resp *http.Response) (FactoriesGetDataPlaneAccessResponse, error) {
+	result := FactoriesGetDataPlaneAccessResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccessPolicyResponse); err != nil {
 		return FactoriesGetDataPlaneAccessResponse{}, err
 	}
 	return result, nil
 }
 
 // getDataPlaneAccessHandleError handles the GetDataPlaneAccess error response.
-func (client *FactoriesClient) getDataPlaneAccessHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *FactoriesClient) getDataPlaneAccessHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetGitHubAccessToken - Get GitHub Access Token.
@@ -361,18 +359,18 @@ func (client *FactoriesClient) GetGitHubAccessToken(ctx context.Context, resourc
 	if err != nil {
 		return FactoriesGetGitHubAccessTokenResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return FactoriesGetGitHubAccessTokenResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return FactoriesGetGitHubAccessTokenResponse{}, client.getGitHubAccessTokenHandleError(resp)
 	}
 	return client.getGitHubAccessTokenHandleResponse(resp)
 }
 
 // getGitHubAccessTokenCreateRequest creates the GetGitHubAccessToken request.
-func (client *FactoriesClient) getGitHubAccessTokenCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, gitHubAccessTokenRequest GitHubAccessTokenRequest, options *FactoriesGetGitHubAccessTokenOptions) (*azcore.Request, error) {
+func (client *FactoriesClient) getGitHubAccessTokenCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, gitHubAccessTokenRequest GitHubAccessTokenRequest, options *FactoriesGetGitHubAccessTokenOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getGitHubAccessToken"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -386,111 +384,109 @@ func (client *FactoriesClient) getGitHubAccessTokenCreateRequest(ctx context.Con
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(gitHubAccessTokenRequest)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, gitHubAccessTokenRequest)
 }
 
 // getGitHubAccessTokenHandleResponse handles the GetGitHubAccessToken response.
-func (client *FactoriesClient) getGitHubAccessTokenHandleResponse(resp *azcore.Response) (FactoriesGetGitHubAccessTokenResponse, error) {
-	result := FactoriesGetGitHubAccessTokenResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.GitHubAccessTokenResponse); err != nil {
+func (client *FactoriesClient) getGitHubAccessTokenHandleResponse(resp *http.Response) (FactoriesGetGitHubAccessTokenResponse, error) {
+	result := FactoriesGetGitHubAccessTokenResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GitHubAccessTokenResponse); err != nil {
 		return FactoriesGetGitHubAccessTokenResponse{}, err
 	}
 	return result, nil
 }
 
 // getGitHubAccessTokenHandleError handles the GetGitHubAccessToken error response.
-func (client *FactoriesClient) getGitHubAccessTokenHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *FactoriesClient) getGitHubAccessTokenHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Lists factories under the specified subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *FactoriesClient) List(options *FactoriesListOptions) FactoriesListPager {
-	return &factoriesListPager{
+func (client *FactoriesClient) List(options *FactoriesListOptions) *FactoriesListPager {
+	return &FactoriesListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp FactoriesListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.FactoryListResponse.NextLink)
+		advancer: func(ctx context.Context, resp FactoriesListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.FactoryListResponse.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *FactoriesClient) listCreateRequest(ctx context.Context, options *FactoriesListOptions) (*azcore.Request, error) {
+func (client *FactoriesClient) listCreateRequest(ctx context.Context, options *FactoriesListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/factories"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *FactoriesClient) listHandleResponse(resp *azcore.Response) (FactoriesListResponse, error) {
-	result := FactoriesListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.FactoryListResponse); err != nil {
+func (client *FactoriesClient) listHandleResponse(resp *http.Response) (FactoriesListResponse, error) {
+	result := FactoriesListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.FactoryListResponse); err != nil {
 		return FactoriesListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *FactoriesClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *FactoriesClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByResourceGroup - Lists factories.
 // If the operation fails it returns the *CloudError error type.
-func (client *FactoriesClient) ListByResourceGroup(resourceGroupName string, options *FactoriesListByResourceGroupOptions) FactoriesListByResourceGroupPager {
-	return &factoriesListByResourceGroupPager{
+func (client *FactoriesClient) ListByResourceGroup(resourceGroupName string, options *FactoriesListByResourceGroupOptions) *FactoriesListByResourceGroupPager {
+	return &FactoriesListByResourceGroupPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp FactoriesListByResourceGroupResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.FactoryListResponse.NextLink)
+		advancer: func(ctx context.Context, resp FactoriesListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.FactoryListResponse.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *FactoriesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *FactoriesListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *FactoriesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *FactoriesListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -500,38 +496,37 @@ func (client *FactoriesClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *FactoriesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (FactoriesListByResourceGroupResponse, error) {
-	result := FactoriesListByResourceGroupResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.FactoryListResponse); err != nil {
+func (client *FactoriesClient) listByResourceGroupHandleResponse(resp *http.Response) (FactoriesListByResourceGroupResponse, error) {
+	result := FactoriesListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.FactoryListResponse); err != nil {
 		return FactoriesListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *FactoriesClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *FactoriesClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Update - Updates a factory.
@@ -541,18 +536,18 @@ func (client *FactoriesClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return FactoriesUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return FactoriesUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return FactoriesUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *FactoriesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, factoryUpdateParameters FactoryUpdateParameters, options *FactoriesUpdateOptions) (*azcore.Request, error) {
+func (client *FactoriesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, factoryUpdateParameters FactoryUpdateParameters, options *FactoriesUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -566,36 +561,35 @@ func (client *FactoriesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(factoryUpdateParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, factoryUpdateParameters)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *FactoriesClient) updateHandleResponse(resp *azcore.Response) (FactoriesUpdateResponse, error) {
-	result := FactoriesUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Factory); err != nil {
+func (client *FactoriesClient) updateHandleResponse(resp *http.Response) (FactoriesUpdateResponse, error) {
+	result := FactoriesUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Factory); err != nil {
 		return FactoriesUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *FactoriesClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *FactoriesClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

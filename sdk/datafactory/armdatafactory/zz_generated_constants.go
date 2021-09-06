@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,7 +8,32 @@
 
 package armdatafactory
 
-const telemetryInfo = "azsdk-go-armdatafactory/v0.1.0"
+const (
+	module  = "armdatafactory"
+	version = "v0.1.0"
+)
+
+type AmazonRdsForOraclePartitionOption string
+
+const (
+	AmazonRdsForOraclePartitionOptionDynamicRange              AmazonRdsForOraclePartitionOption = "DynamicRange"
+	AmazonRdsForOraclePartitionOptionNone                      AmazonRdsForOraclePartitionOption = "None"
+	AmazonRdsForOraclePartitionOptionPhysicalPartitionsOfTable AmazonRdsForOraclePartitionOption = "PhysicalPartitionsOfTable"
+)
+
+// PossibleAmazonRdsForOraclePartitionOptionValues returns the possible values for the AmazonRdsForOraclePartitionOption const type.
+func PossibleAmazonRdsForOraclePartitionOptionValues() []AmazonRdsForOraclePartitionOption {
+	return []AmazonRdsForOraclePartitionOption{
+		AmazonRdsForOraclePartitionOptionDynamicRange,
+		AmazonRdsForOraclePartitionOptionNone,
+		AmazonRdsForOraclePartitionOptionPhysicalPartitionsOfTable,
+	}
+}
+
+// ToPtr returns a *AmazonRdsForOraclePartitionOption pointing to the current value.
+func (c AmazonRdsForOraclePartitionOption) ToPtr() *AmazonRdsForOraclePartitionOption {
+	return &c
+}
 
 type AvroCompressionCodec string
 

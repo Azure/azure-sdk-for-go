@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ExposureControlClient contains the methods for the ExposureControl group.
 // Don't use this type directly, use NewExposureControlClient() instead.
 type ExposureControlClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewExposureControlClient creates a new instance of ExposureControlClient with the specified values.
-func NewExposureControlClient(con *armcore.Connection, subscriptionID string) *ExposureControlClient {
-	return &ExposureControlClient{con: con, subscriptionID: subscriptionID}
+func NewExposureControlClient(con *arm.Connection, subscriptionID string) *ExposureControlClient {
+	return &ExposureControlClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // GetFeatureValue - Get exposure control feature for specific location.
@@ -38,18 +41,18 @@ func (client *ExposureControlClient) GetFeatureValue(ctx context.Context, locati
 	if err != nil {
 		return ExposureControlGetFeatureValueResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ExposureControlGetFeatureValueResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ExposureControlGetFeatureValueResponse{}, client.getFeatureValueHandleError(resp)
 	}
 	return client.getFeatureValueHandleResponse(resp)
 }
 
 // getFeatureValueCreateRequest creates the GetFeatureValue request.
-func (client *ExposureControlClient) getFeatureValueCreateRequest(ctx context.Context, locationID string, exposureControlRequest ExposureControlRequest, options *ExposureControlGetFeatureValueOptions) (*azcore.Request, error) {
+func (client *ExposureControlClient) getFeatureValueCreateRequest(ctx context.Context, locationID string, exposureControlRequest ExposureControlRequest, options *ExposureControlGetFeatureValueOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/locations/{locationId}/getFeatureValue"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -59,38 +62,37 @@ func (client *ExposureControlClient) getFeatureValueCreateRequest(ctx context.Co
 		return nil, errors.New("parameter locationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationId}", url.PathEscape(locationID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(exposureControlRequest)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, exposureControlRequest)
 }
 
 // getFeatureValueHandleResponse handles the GetFeatureValue response.
-func (client *ExposureControlClient) getFeatureValueHandleResponse(resp *azcore.Response) (ExposureControlGetFeatureValueResponse, error) {
-	result := ExposureControlGetFeatureValueResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ExposureControlResponse); err != nil {
+func (client *ExposureControlClient) getFeatureValueHandleResponse(resp *http.Response) (ExposureControlGetFeatureValueResponse, error) {
+	result := ExposureControlGetFeatureValueResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExposureControlResponse); err != nil {
 		return ExposureControlGetFeatureValueResponse{}, err
 	}
 	return result, nil
 }
 
 // getFeatureValueHandleError handles the GetFeatureValue error response.
-func (client *ExposureControlClient) getFeatureValueHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ExposureControlClient) getFeatureValueHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetFeatureValueByFactory - Get exposure control feature for specific factory.
@@ -100,18 +102,18 @@ func (client *ExposureControlClient) GetFeatureValueByFactory(ctx context.Contex
 	if err != nil {
 		return ExposureControlGetFeatureValueByFactoryResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ExposureControlGetFeatureValueByFactoryResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ExposureControlGetFeatureValueByFactoryResponse{}, client.getFeatureValueByFactoryHandleError(resp)
 	}
 	return client.getFeatureValueByFactoryHandleResponse(resp)
 }
 
 // getFeatureValueByFactoryCreateRequest creates the GetFeatureValueByFactory request.
-func (client *ExposureControlClient) getFeatureValueByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, exposureControlRequest ExposureControlRequest, options *ExposureControlGetFeatureValueByFactoryOptions) (*azcore.Request, error) {
+func (client *ExposureControlClient) getFeatureValueByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, exposureControlRequest ExposureControlRequest, options *ExposureControlGetFeatureValueByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getFeatureValue"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -125,38 +127,37 @@ func (client *ExposureControlClient) getFeatureValueByFactoryCreateRequest(ctx c
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(exposureControlRequest)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, exposureControlRequest)
 }
 
 // getFeatureValueByFactoryHandleResponse handles the GetFeatureValueByFactory response.
-func (client *ExposureControlClient) getFeatureValueByFactoryHandleResponse(resp *azcore.Response) (ExposureControlGetFeatureValueByFactoryResponse, error) {
-	result := ExposureControlGetFeatureValueByFactoryResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ExposureControlResponse); err != nil {
+func (client *ExposureControlClient) getFeatureValueByFactoryHandleResponse(resp *http.Response) (ExposureControlGetFeatureValueByFactoryResponse, error) {
+	result := ExposureControlGetFeatureValueByFactoryResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExposureControlResponse); err != nil {
 		return ExposureControlGetFeatureValueByFactoryResponse{}, err
 	}
 	return result, nil
 }
 
 // getFeatureValueByFactoryHandleError handles the GetFeatureValueByFactory error response.
-func (client *ExposureControlClient) getFeatureValueByFactoryHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ExposureControlClient) getFeatureValueByFactoryHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // QueryFeatureValuesByFactory - Get list of exposure control features for specific factory.
@@ -166,18 +167,18 @@ func (client *ExposureControlClient) QueryFeatureValuesByFactory(ctx context.Con
 	if err != nil {
 		return ExposureControlQueryFeatureValuesByFactoryResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ExposureControlQueryFeatureValuesByFactoryResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ExposureControlQueryFeatureValuesByFactoryResponse{}, client.queryFeatureValuesByFactoryHandleError(resp)
 	}
 	return client.queryFeatureValuesByFactoryHandleResponse(resp)
 }
 
 // queryFeatureValuesByFactoryCreateRequest creates the QueryFeatureValuesByFactory request.
-func (client *ExposureControlClient) queryFeatureValuesByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, exposureControlBatchRequest ExposureControlBatchRequest, options *ExposureControlQueryFeatureValuesByFactoryOptions) (*azcore.Request, error) {
+func (client *ExposureControlClient) queryFeatureValuesByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, exposureControlBatchRequest ExposureControlBatchRequest, options *ExposureControlQueryFeatureValuesByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryFeaturesValue"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -191,36 +192,35 @@ func (client *ExposureControlClient) queryFeatureValuesByFactoryCreateRequest(ct
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(exposureControlBatchRequest)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, exposureControlBatchRequest)
 }
 
 // queryFeatureValuesByFactoryHandleResponse handles the QueryFeatureValuesByFactory response.
-func (client *ExposureControlClient) queryFeatureValuesByFactoryHandleResponse(resp *azcore.Response) (ExposureControlQueryFeatureValuesByFactoryResponse, error) {
-	result := ExposureControlQueryFeatureValuesByFactoryResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ExposureControlBatchResponse); err != nil {
+func (client *ExposureControlClient) queryFeatureValuesByFactoryHandleResponse(resp *http.Response) (ExposureControlQueryFeatureValuesByFactoryResponse, error) {
+	result := ExposureControlQueryFeatureValuesByFactoryResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExposureControlBatchResponse); err != nil {
 		return ExposureControlQueryFeatureValuesByFactoryResponse{}, err
 	}
 	return result, nil
 }
 
 // queryFeatureValuesByFactoryHandleError handles the QueryFeatureValuesByFactory error response.
-func (client *ExposureControlClient) queryFeatureValuesByFactoryHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ExposureControlClient) queryFeatureValuesByFactoryHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

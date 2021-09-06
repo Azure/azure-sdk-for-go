@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,41 +12,44 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PrivateEndPointConnectionsClient contains the methods for the PrivateEndPointConnections group.
 // Don't use this type directly, use NewPrivateEndPointConnectionsClient() instead.
 type PrivateEndPointConnectionsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewPrivateEndPointConnectionsClient creates a new instance of PrivateEndPointConnectionsClient with the specified values.
-func NewPrivateEndPointConnectionsClient(con *armcore.Connection, subscriptionID string) *PrivateEndPointConnectionsClient {
-	return &PrivateEndPointConnectionsClient{con: con, subscriptionID: subscriptionID}
+func NewPrivateEndPointConnectionsClient(con *arm.Connection, subscriptionID string) *PrivateEndPointConnectionsClient {
+	return &PrivateEndPointConnectionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // ListByFactory - Lists Private endpoint connections
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateEndPointConnectionsClient) ListByFactory(resourceGroupName string, factoryName string, options *PrivateEndPointConnectionsListByFactoryOptions) PrivateEndPointConnectionsListByFactoryPager {
-	return &privateEndPointConnectionsListByFactoryPager{
+func (client *PrivateEndPointConnectionsClient) ListByFactory(resourceGroupName string, factoryName string, options *PrivateEndPointConnectionsListByFactoryOptions) *PrivateEndPointConnectionsListByFactoryPager {
+	return &PrivateEndPointConnectionsListByFactoryPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateEndPointConnectionsListByFactoryResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionListResponse.NextLink)
+		advancer: func(ctx context.Context, resp PrivateEndPointConnectionsListByFactoryResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionListResponse.NextLink)
 		},
 	}
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
-func (client *PrivateEndPointConnectionsClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *PrivateEndPointConnectionsListByFactoryOptions) (*azcore.Request, error) {
+func (client *PrivateEndPointConnectionsClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *PrivateEndPointConnectionsListByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndPointConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -60,36 +63,35 @@ func (client *PrivateEndPointConnectionsClient) listByFactoryCreateRequest(ctx c
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByFactoryHandleResponse handles the ListByFactory response.
-func (client *PrivateEndPointConnectionsClient) listByFactoryHandleResponse(resp *azcore.Response) (PrivateEndPointConnectionsListByFactoryResponse, error) {
-	result := PrivateEndPointConnectionsListByFactoryResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PrivateEndpointConnectionListResponse); err != nil {
+func (client *PrivateEndPointConnectionsClient) listByFactoryHandleResponse(resp *http.Response) (PrivateEndPointConnectionsListByFactoryResponse, error) {
+	result := PrivateEndPointConnectionsListByFactoryResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResponse); err != nil {
 		return PrivateEndPointConnectionsListByFactoryResponse{}, err
 	}
 	return result, nil
 }
 
 // listByFactoryHandleError handles the ListByFactory error response.
-func (client *PrivateEndPointConnectionsClient) listByFactoryHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PrivateEndPointConnectionsClient) listByFactoryHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

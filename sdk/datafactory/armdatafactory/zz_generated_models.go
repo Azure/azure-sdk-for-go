@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,9 +10,10 @@ package armdatafactory
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AccessPolicyResponse - Get Data Plane read only token response definition.
@@ -640,6 +641,419 @@ func (a *AmazonMWSSource) UnmarshalJSON(data []byte) error {
 		}
 	}
 	return a.TabularSource.unmarshalInternal(rawMsg)
+}
+
+// AmazonRdsForLinkedServiceTypeProperties - AmazonRdsForOracle database linked service properties.
+type AmazonRdsForLinkedServiceTypeProperties struct {
+	// REQUIRED; The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
+	ConnectionString map[string]interface{} `json:"connectionString,omitempty"`
+
+	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression
+	// with resultType string).
+	EncryptedCredential map[string]interface{} `json:"encryptedCredential,omitempty"`
+
+	// The Azure key vault secret reference of password in connection string.
+	Password SecretBaseClassification `json:"password,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AmazonRdsForLinkedServiceTypeProperties.
+func (a AmazonRdsForLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "connectionString", a.ConnectionString)
+	populate(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populate(objectMap, "password", a.Password)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AmazonRdsForLinkedServiceTypeProperties.
+func (a *AmazonRdsForLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "connectionString":
+			err = unpopulate(val, &a.ConnectionString)
+			delete(rawMsg, key)
+		case "encryptedCredential":
+			err = unpopulate(val, &a.EncryptedCredential)
+			delete(rawMsg, key)
+		case "password":
+			a.Password, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// AmazonRdsForOracleLinkedService - AmazonRdsForOracle database.
+type AmazonRdsForOracleLinkedService struct {
+	LinkedService
+	// REQUIRED; AmazonRdsForOracle database linked service properties.
+	TypeProperties *AmazonRdsForLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AmazonRdsForOracleLinkedService.
+func (a AmazonRdsForOracleLinkedService) MarshalJSON() ([]byte, error) {
+	objectMap := a.LinkedService.marshalInternal("AmazonRdsForOracle")
+	populate(objectMap, "typeProperties", a.TypeProperties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AmazonRdsForOracleLinkedService.
+func (a *AmazonRdsForOracleLinkedService) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "typeProperties":
+			err = unpopulate(val, &a.TypeProperties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return a.LinkedService.unmarshalInternal(rawMsg)
+}
+
+// AmazonRdsForOraclePartitionSettings - The settings that will be leveraged for AmazonRdsForOracle source partitioning.
+type AmazonRdsForOraclePartitionSettings struct {
+	// The name of the column in integer type that will be used for proceeding range partitioning. Type: string (or Expression with resultType string).
+	PartitionColumnName map[string]interface{} `json:"partitionColumnName,omitempty"`
+
+	// The minimum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType
+	// string).
+	PartitionLowerBound map[string]interface{} `json:"partitionLowerBound,omitempty"`
+
+	// Names of the physical partitions of AmazonRdsForOracle table.
+	PartitionNames map[string]interface{} `json:"partitionNames,omitempty"`
+
+	// The maximum value of column specified in partitionColumnName that will be used for proceeding range partitioning. Type: string (or Expression with resultType
+	// string).
+	PartitionUpperBound map[string]interface{} `json:"partitionUpperBound,omitempty"`
+}
+
+// AmazonRdsForOracleSource - A copy activity AmazonRdsForOracle source.
+type AmazonRdsForOracleSource struct {
+	CopySource
+	// Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
+	AdditionalColumns map[string]interface{} `json:"additionalColumns,omitempty"`
+
+	// AmazonRdsForOracle reader query. Type: string (or Expression with resultType string).
+	OracleReaderQuery map[string]interface{} `json:"oracleReaderQuery,omitempty"`
+
+	// The partition mechanism that will be used for AmazonRdsForOracle read in parallel. Type: string (or Expression with resultType string).
+	PartitionOption map[string]interface{} `json:"partitionOption,omitempty"`
+
+	// The settings that will be leveraged for AmazonRdsForOracle source partitioning.
+	PartitionSettings *AmazonRdsForOraclePartitionSettings `json:"partitionSettings,omitempty"`
+
+	// Query timeout. Type: string (or Expression with resultType string), pattern: ((\d+).)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+	QueryTimeout map[string]interface{} `json:"queryTimeout,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AmazonRdsForOracleSource.
+func (a AmazonRdsForOracleSource) MarshalJSON() ([]byte, error) {
+	objectMap := a.CopySource.marshalInternal("AmazonRdsForOracleSource")
+	populate(objectMap, "additionalColumns", a.AdditionalColumns)
+	populate(objectMap, "oracleReaderQuery", a.OracleReaderQuery)
+	populate(objectMap, "partitionOption", a.PartitionOption)
+	populate(objectMap, "partitionSettings", a.PartitionSettings)
+	populate(objectMap, "queryTimeout", a.QueryTimeout)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AmazonRdsForOracleSource.
+func (a *AmazonRdsForOracleSource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "additionalColumns":
+			err = unpopulate(val, &a.AdditionalColumns)
+			delete(rawMsg, key)
+		case "oracleReaderQuery":
+			err = unpopulate(val, &a.OracleReaderQuery)
+			delete(rawMsg, key)
+		case "partitionOption":
+			err = unpopulate(val, &a.PartitionOption)
+			delete(rawMsg, key)
+		case "partitionSettings":
+			err = unpopulate(val, &a.PartitionSettings)
+			delete(rawMsg, key)
+		case "queryTimeout":
+			err = unpopulate(val, &a.QueryTimeout)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return a.CopySource.unmarshalInternal(rawMsg)
+}
+
+// AmazonRdsForOracleTableDataset - The AmazonRdsForOracle database dataset.
+type AmazonRdsForOracleTableDataset struct {
+	Dataset
+	// AmazonRdsForOracle dataset properties.
+	TypeProperties *AmazonRdsForOracleTableDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AmazonRdsForOracleTableDataset.
+func (a AmazonRdsForOracleTableDataset) MarshalJSON() ([]byte, error) {
+	objectMap := a.Dataset.marshalInternal("AmazonRdsForOracleTable")
+	populate(objectMap, "typeProperties", a.TypeProperties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AmazonRdsForOracleTableDataset.
+func (a *AmazonRdsForOracleTableDataset) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "typeProperties":
+			err = unpopulate(val, &a.TypeProperties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return a.Dataset.unmarshalInternal(rawMsg)
+}
+
+// AmazonRdsForOracleTableDatasetTypeProperties - AmazonRdsForOracle dataset properties.
+type AmazonRdsForOracleTableDatasetTypeProperties struct {
+	// The schema name of the AmazonRdsForOracle database. Type: string (or Expression with resultType string).
+	Schema map[string]interface{} `json:"schema,omitempty"`
+
+	// The table name of the AmazonRdsForOracle database. Type: string (or Expression with resultType string).
+	Table map[string]interface{} `json:"table,omitempty"`
+}
+
+// AmazonRdsForSQLServerLinkedService - Amazon RDS for SQL Server linked service.
+type AmazonRdsForSQLServerLinkedService struct {
+	LinkedService
+	// REQUIRED; Amazon RDS for SQL Server linked service properties.
+	TypeProperties *AmazonRdsForSQLServerLinkedServiceTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AmazonRdsForSQLServerLinkedService.
+func (a AmazonRdsForSQLServerLinkedService) MarshalJSON() ([]byte, error) {
+	objectMap := a.LinkedService.marshalInternal("AmazonRdsForSqlServer")
+	populate(objectMap, "typeProperties", a.TypeProperties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AmazonRdsForSQLServerLinkedService.
+func (a *AmazonRdsForSQLServerLinkedService) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "typeProperties":
+			err = unpopulate(val, &a.TypeProperties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return a.LinkedService.unmarshalInternal(rawMsg)
+}
+
+// AmazonRdsForSQLServerLinkedServiceTypeProperties - Amazon Rds for SQL Server linked service properties.
+type AmazonRdsForSQLServerLinkedServiceTypeProperties struct {
+	// REQUIRED; The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
+	ConnectionString map[string]interface{} `json:"connectionString,omitempty"`
+
+	// Sql always encrypted properties.
+	AlwaysEncryptedSettings *SQLAlwaysEncryptedProperties `json:"alwaysEncryptedSettings,omitempty"`
+
+	// The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression
+	// with resultType string).
+	EncryptedCredential map[string]interface{} `json:"encryptedCredential,omitempty"`
+
+	// The on-premises Windows authentication password.
+	Password SecretBaseClassification `json:"password,omitempty"`
+
+	// The on-premises Windows authentication user name. Type: string (or Expression with resultType string).
+	UserName map[string]interface{} `json:"userName,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AmazonRdsForSQLServerLinkedServiceTypeProperties.
+func (a AmazonRdsForSQLServerLinkedServiceTypeProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "alwaysEncryptedSettings", a.AlwaysEncryptedSettings)
+	populate(objectMap, "connectionString", a.ConnectionString)
+	populate(objectMap, "encryptedCredential", a.EncryptedCredential)
+	populate(objectMap, "password", a.Password)
+	populate(objectMap, "userName", a.UserName)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AmazonRdsForSQLServerLinkedServiceTypeProperties.
+func (a *AmazonRdsForSQLServerLinkedServiceTypeProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "alwaysEncryptedSettings":
+			err = unpopulate(val, &a.AlwaysEncryptedSettings)
+			delete(rawMsg, key)
+		case "connectionString":
+			err = unpopulate(val, &a.ConnectionString)
+			delete(rawMsg, key)
+		case "encryptedCredential":
+			err = unpopulate(val, &a.EncryptedCredential)
+			delete(rawMsg, key)
+		case "password":
+			a.Password, err = unmarshalSecretBaseClassification(val)
+			delete(rawMsg, key)
+		case "userName":
+			err = unpopulate(val, &a.UserName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// AmazonRdsForSQLServerSource - A copy activity Amazon RDS for SQL Server source.
+type AmazonRdsForSQLServerSource struct {
+	TabularSource
+	// The partition mechanism that will be used for Sql read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
+	PartitionOption map[string]interface{} `json:"partitionOption,omitempty"`
+
+	// The settings that will be leveraged for Sql source partitioning.
+	PartitionSettings *SQLPartitionSettings `json:"partitionSettings,omitempty"`
+
+	// Which additional types to produce.
+	ProduceAdditionalTypes map[string]interface{} `json:"produceAdditionalTypes,omitempty"`
+
+	// SQL reader query. Type: string (or Expression with resultType string).
+	SQLReaderQuery map[string]interface{} `json:"sqlReaderQuery,omitempty"`
+
+	// Name of the stored procedure for a SQL Database source. This cannot be used at the same time as SqlReaderQuery. Type: string (or Expression with resultType
+	// string).
+	SQLReaderStoredProcedureName map[string]interface{} `json:"sqlReaderStoredProcedureName,omitempty"`
+
+	// Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
+	StoredProcedureParameters map[string]*StoredProcedureParameter `json:"storedProcedureParameters,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AmazonRdsForSQLServerSource.
+func (a AmazonRdsForSQLServerSource) MarshalJSON() ([]byte, error) {
+	objectMap := a.TabularSource.marshalInternal("AmazonRdsForSqlServerSource")
+	populate(objectMap, "partitionOption", a.PartitionOption)
+	populate(objectMap, "partitionSettings", a.PartitionSettings)
+	populate(objectMap, "produceAdditionalTypes", a.ProduceAdditionalTypes)
+	populate(objectMap, "sqlReaderQuery", a.SQLReaderQuery)
+	populate(objectMap, "sqlReaderStoredProcedureName", a.SQLReaderStoredProcedureName)
+	populate(objectMap, "storedProcedureParameters", a.StoredProcedureParameters)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AmazonRdsForSQLServerSource.
+func (a *AmazonRdsForSQLServerSource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "partitionOption":
+			err = unpopulate(val, &a.PartitionOption)
+			delete(rawMsg, key)
+		case "partitionSettings":
+			err = unpopulate(val, &a.PartitionSettings)
+			delete(rawMsg, key)
+		case "produceAdditionalTypes":
+			err = unpopulate(val, &a.ProduceAdditionalTypes)
+			delete(rawMsg, key)
+		case "sqlReaderQuery":
+			err = unpopulate(val, &a.SQLReaderQuery)
+			delete(rawMsg, key)
+		case "sqlReaderStoredProcedureName":
+			err = unpopulate(val, &a.SQLReaderStoredProcedureName)
+			delete(rawMsg, key)
+		case "storedProcedureParameters":
+			err = unpopulate(val, &a.StoredProcedureParameters)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return a.TabularSource.unmarshalInternal(rawMsg)
+}
+
+// AmazonRdsForSQLServerTableDataset - The Amazon RDS for SQL Server dataset.
+type AmazonRdsForSQLServerTableDataset struct {
+	Dataset
+	// The Amazon RDS for SQL Server dataset properties.
+	TypeProperties *AmazonRdsForSQLServerTableDatasetTypeProperties `json:"typeProperties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AmazonRdsForSQLServerTableDataset.
+func (a AmazonRdsForSQLServerTableDataset) MarshalJSON() ([]byte, error) {
+	objectMap := a.Dataset.marshalInternal("AmazonRdsForSqlServerTable")
+	populate(objectMap, "typeProperties", a.TypeProperties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AmazonRdsForSQLServerTableDataset.
+func (a *AmazonRdsForSQLServerTableDataset) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "typeProperties":
+			err = unpopulate(val, &a.TypeProperties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return a.Dataset.unmarshalInternal(rawMsg)
+}
+
+// AmazonRdsForSQLServerTableDatasetTypeProperties - The Amazon RDS for SQL Server dataset properties.
+type AmazonRdsForSQLServerTableDatasetTypeProperties struct {
+	// The schema name of the SQL Server dataset. Type: string (or Expression with resultType string).
+	Schema map[string]interface{} `json:"schema,omitempty"`
+
+	// The table name of the SQL Server dataset. Type: string (or Expression with resultType string).
+	Table map[string]interface{} `json:"table,omitempty"`
 }
 
 // AmazonRedshiftLinkedService - Linked service for Amazon Redshift.
@@ -8216,20 +8630,20 @@ func (c *CopySink) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 // CopySourceClassification provides polymorphic access to related types.
 // Call the interface's GetCopySource() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AmazonMWSSource, *AmazonRedshiftSource, *AvroSource, *AzureBlobFSSource, *AzureDataExplorerSource, *AzureDataLakeStoreSource,
-// - *AzureDatabricksDeltaLakeSource, *AzureMariaDBSource, *AzureMySqlSource, *AzurePostgreSqlSource, *AzureSqlSource, *AzureTableSource,
-// - *BinarySource, *BlobSource, *CassandraSource, *CommonDataServiceForAppsSource, *ConcurSource, *CopySource, *CosmosDbMongoDbApiSource,
-// - *CosmosDbSqlApiSource, *CouchbaseSource, *Db2Source, *DelimitedTextSource, *DocumentDbCollectionSource, *DrillSource,
-// - *DynamicsAXSource, *DynamicsCrmSource, *DynamicsSource, *EloquaSource, *ExcelSource, *FileSystemSource, *GoogleAdWordsSource,
-// - *GoogleBigQuerySource, *GreenplumSource, *HBaseSource, *HdfsSource, *HiveSource, *HttpSource, *HubspotSource, *ImpalaSource,
-// - *InformixSource, *JiraSource, *JsonSource, *MagentoSource, *MariaDBSource, *MarketoSource, *MicrosoftAccessSource, *MongoDbAtlasSource,
-// - *MongoDbSource, *MongoDbV2Source, *MySqlSource, *NetezzaSource, *ODataSource, *OdbcSource, *Office365Source, *OracleServiceCloudSource,
-// - *OracleSource, *OrcSource, *ParquetSource, *PaypalSource, *PhoenixSource, *PostgreSqlSource, *PrestoSource, *QuickBooksSource,
-// - *RelationalSource, *ResponsysSource, *RestSource, *SalesforceMarketingCloudSource, *SalesforceServiceCloudSource, *SalesforceSource,
-// - *SapBwSource, *SapCloudForCustomerSource, *SapEccSource, *SapHanaSource, *SapOpenHubSource, *SapTableSource, *ServiceNowSource,
-// - *SharePointOnlineListSource, *ShopifySource, *SnowflakeSource, *SparkSource, *SqlDWSource, *SqlMISource, *SqlServerSource,
-// - *SqlSource, *SquareSource, *SybaseSource, *TabularSource, *TeradataSource, *VerticaSource, *WebSource, *XeroSource, *XmlSource,
-// - *ZohoSource
+// - *AmazonMWSSource, *AmazonRdsForOracleSource, *AmazonRdsForSqlServerSource, *AmazonRedshiftSource, *AvroSource, *AzureBlobFSSource,
+// - *AzureDataExplorerSource, *AzureDataLakeStoreSource, *AzureDatabricksDeltaLakeSource, *AzureMariaDBSource, *AzureMySqlSource,
+// - *AzurePostgreSqlSource, *AzureSqlSource, *AzureTableSource, *BinarySource, *BlobSource, *CassandraSource, *CommonDataServiceForAppsSource,
+// - *ConcurSource, *CopySource, *CosmosDbMongoDbApiSource, *CosmosDbSqlApiSource, *CouchbaseSource, *Db2Source, *DelimitedTextSource,
+// - *DocumentDbCollectionSource, *DrillSource, *DynamicsAXSource, *DynamicsCrmSource, *DynamicsSource, *EloquaSource, *ExcelSource,
+// - *FileSystemSource, *GoogleAdWordsSource, *GoogleBigQuerySource, *GreenplumSource, *HBaseSource, *HdfsSource, *HiveSource,
+// - *HttpSource, *HubspotSource, *ImpalaSource, *InformixSource, *JiraSource, *JsonSource, *MagentoSource, *MariaDBSource,
+// - *MarketoSource, *MicrosoftAccessSource, *MongoDbAtlasSource, *MongoDbSource, *MongoDbV2Source, *MySqlSource, *NetezzaSource,
+// - *ODataSource, *OdbcSource, *Office365Source, *OracleServiceCloudSource, *OracleSource, *OrcSource, *ParquetSource, *PaypalSource,
+// - *PhoenixSource, *PostgreSqlSource, *PrestoSource, *QuickBooksSource, *RelationalSource, *ResponsysSource, *RestSource,
+// - *SalesforceMarketingCloudSource, *SalesforceServiceCloudSource, *SalesforceSource, *SapBwSource, *SapCloudForCustomerSource,
+// - *SapEccSource, *SapHanaSource, *SapOpenHubSource, *SapTableSource, *ServiceNowSource, *SharePointOnlineListSource, *ShopifySource,
+// - *SnowflakeSource, *SparkSource, *SqlDWSource, *SqlMISource, *SqlServerSource, *SqlSource, *SquareSource, *SybaseSource,
+// - *TabularSource, *TeradataSource, *VerticaSource, *WebSource, *XeroSource, *XmlSource, *ZohoSource
 type CopySourceClassification interface {
 	// GetCopySource returns the CopySource content of the underlying type.
 	GetCopySource() *CopySource
@@ -10355,24 +10769,24 @@ func (d DatabricksSparkPythonActivityTypeProperties) MarshalJSON() ([]byte, erro
 // DatasetClassification provides polymorphic access to related types.
 // Call the interface's GetDataset() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AmazonMWSObjectDataset, *AmazonRedshiftTableDataset, *AmazonS3Dataset, *AvroDataset, *AzureBlobDataset, *AzureBlobFSDataset,
-// - *AzureDataExplorerTableDataset, *AzureDataLakeStoreDataset, *AzureDatabricksDeltaLakeDataset, *AzureMariaDBTableDataset,
-// - *AzureMySqlTableDataset, *AzurePostgreSqlTableDataset, *AzureSearchIndexDataset, *AzureSqlDWTableDataset, *AzureSqlMITableDataset,
-// - *AzureSqlTableDataset, *AzureTableDataset, *BinaryDataset, *CassandraTableDataset, *CommonDataServiceForAppsEntityDataset,
-// - *ConcurObjectDataset, *CosmosDbMongoDbApiCollectionDataset, *CosmosDbSqlApiCollectionDataset, *CouchbaseTableDataset,
-// - *CustomDataset, *Dataset, *Db2TableDataset, *DelimitedTextDataset, *DocumentDbCollectionDataset, *DrillTableDataset,
-// - *DynamicsAXResourceDataset, *DynamicsCrmEntityDataset, *DynamicsEntityDataset, *EloquaObjectDataset, *ExcelDataset, *FileShareDataset,
-// - *GoogleAdWordsObjectDataset, *GoogleBigQueryObjectDataset, *GreenplumTableDataset, *HBaseObjectDataset, *HiveObjectDataset,
-// - *HttpDataset, *HubspotObjectDataset, *ImpalaObjectDataset, *InformixTableDataset, *JiraObjectDataset, *JsonDataset, *MagentoObjectDataset,
-// - *MariaDBTableDataset, *MarketoObjectDataset, *MicrosoftAccessTableDataset, *MongoDbAtlasCollectionDataset, *MongoDbCollectionDataset,
-// - *MongoDbV2CollectionDataset, *MySqlTableDataset, *NetezzaTableDataset, *ODataResourceDataset, *OdbcTableDataset, *Office365Dataset,
-// - *OracleServiceCloudObjectDataset, *OracleTableDataset, *OrcDataset, *ParquetDataset, *PaypalObjectDataset, *PhoenixObjectDataset,
-// - *PostgreSqlTableDataset, *PrestoObjectDataset, *QuickBooksObjectDataset, *RelationalTableDataset, *ResponsysObjectDataset,
-// - *RestResourceDataset, *SalesforceMarketingCloudObjectDataset, *SalesforceObjectDataset, *SalesforceServiceCloudObjectDataset,
-// - *SapBwCubeDataset, *SapCloudForCustomerResourceDataset, *SapEccResourceDataset, *SapHanaTableDataset, *SapOpenHubTableDataset,
-// - *SapTableResourceDataset, *ServiceNowObjectDataset, *SharePointOnlineListResourceDataset, *ShopifyObjectDataset, *SnowflakeDataset,
-// - *SparkObjectDataset, *SqlServerTableDataset, *SquareObjectDataset, *SybaseTableDataset, *TeradataTableDataset, *VerticaTableDataset,
-// - *WebTableDataset, *XeroObjectDataset, *XmlDataset, *ZohoObjectDataset
+// - *AmazonMWSObjectDataset, *AmazonRdsForOracleTableDataset, *AmazonRdsForSqlServerTableDataset, *AmazonRedshiftTableDataset,
+// - *AmazonS3Dataset, *AvroDataset, *AzureBlobDataset, *AzureBlobFSDataset, *AzureDataExplorerTableDataset, *AzureDataLakeStoreDataset,
+// - *AzureDatabricksDeltaLakeDataset, *AzureMariaDBTableDataset, *AzureMySqlTableDataset, *AzurePostgreSqlTableDataset, *AzureSearchIndexDataset,
+// - *AzureSqlDWTableDataset, *AzureSqlMITableDataset, *AzureSqlTableDataset, *AzureTableDataset, *BinaryDataset, *CassandraTableDataset,
+// - *CommonDataServiceForAppsEntityDataset, *ConcurObjectDataset, *CosmosDbMongoDbApiCollectionDataset, *CosmosDbSqlApiCollectionDataset,
+// - *CouchbaseTableDataset, *CustomDataset, *Dataset, *Db2TableDataset, *DelimitedTextDataset, *DocumentDbCollectionDataset,
+// - *DrillTableDataset, *DynamicsAXResourceDataset, *DynamicsCrmEntityDataset, *DynamicsEntityDataset, *EloquaObjectDataset,
+// - *ExcelDataset, *FileShareDataset, *GoogleAdWordsObjectDataset, *GoogleBigQueryObjectDataset, *GreenplumTableDataset,
+// - *HBaseObjectDataset, *HiveObjectDataset, *HttpDataset, *HubspotObjectDataset, *ImpalaObjectDataset, *InformixTableDataset,
+// - *JiraObjectDataset, *JsonDataset, *MagentoObjectDataset, *MariaDBTableDataset, *MarketoObjectDataset, *MicrosoftAccessTableDataset,
+// - *MongoDbAtlasCollectionDataset, *MongoDbCollectionDataset, *MongoDbV2CollectionDataset, *MySqlTableDataset, *NetezzaTableDataset,
+// - *ODataResourceDataset, *OdbcTableDataset, *Office365Dataset, *OracleServiceCloudObjectDataset, *OracleTableDataset, *OrcDataset,
+// - *ParquetDataset, *PaypalObjectDataset, *PhoenixObjectDataset, *PostgreSqlTableDataset, *PrestoObjectDataset, *QuickBooksObjectDataset,
+// - *RelationalTableDataset, *ResponsysObjectDataset, *RestResourceDataset, *SalesforceMarketingCloudObjectDataset, *SalesforceObjectDataset,
+// - *SalesforceServiceCloudObjectDataset, *SapBwCubeDataset, *SapCloudForCustomerResourceDataset, *SapEccResourceDataset,
+// - *SapHanaTableDataset, *SapOpenHubTableDataset, *SapTableResourceDataset, *ServiceNowObjectDataset, *SharePointOnlineListResourceDataset,
+// - *ShopifyObjectDataset, *SnowflakeDataset, *SparkObjectDataset, *SqlServerTableDataset, *SquareObjectDataset, *SybaseTableDataset,
+// - *TeradataTableDataset, *VerticaTableDataset, *WebTableDataset, *XeroObjectDataset, *XmlDataset, *ZohoObjectDataset
 type DatasetClassification interface {
 	// GetDataset returns the Dataset content of the underlying type.
 	GetDataset() *Dataset
@@ -18936,6 +19350,12 @@ type IntegrationRuntimeCustomSetupScriptProperties struct {
 	SasToken *SecureString `json:"sasToken,omitempty"`
 }
 
+// IntegrationRuntimeCustomerVirtualNetwork - The definition and properties of virtual network to which Azure-SSIS integration runtime will join.
+type IntegrationRuntimeCustomerVirtualNetwork struct {
+	// The ID of subnet to which Azure-SSIS integration runtime will join.
+	SubnetID *string `json:"subnetId,omitempty"`
+}
+
 // IntegrationRuntimeDataFlowProperties - Data flow properties for managed integration runtime.
 type IntegrationRuntimeDataFlowProperties struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
@@ -20546,26 +20966,27 @@ func (l *LinkedIntegrationRuntimeType) unmarshalInternal(rawMsg map[string]json.
 // LinkedServiceClassification provides polymorphic access to related types.
 // Call the interface's GetLinkedService() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AmazonMWSLinkedService, *AmazonRedshiftLinkedService, *AmazonS3CompatibleLinkedService, *AmazonS3LinkedService, *AzureBatchLinkedService,
-// - *AzureBlobFSLinkedService, *AzureBlobStorageLinkedService, *AzureDataExplorerLinkedService, *AzureDataLakeAnalyticsLinkedService,
-// - *AzureDataLakeStoreLinkedService, *AzureDatabricksDeltaLakeLinkedService, *AzureDatabricksLinkedService, *AzureFileStorageLinkedService,
-// - *AzureFunctionLinkedService, *AzureKeyVaultLinkedService, *AzureMLLinkedService, *AzureMLServiceLinkedService, *AzureMariaDBLinkedService,
-// - *AzureMySqlLinkedService, *AzurePostgreSqlLinkedService, *AzureSearchLinkedService, *AzureSqlDWLinkedService, *AzureSqlDatabaseLinkedService,
-// - *AzureSqlMILinkedService, *AzureStorageLinkedService, *AzureTableStorageLinkedService, *CassandraLinkedService, *CommonDataServiceForAppsLinkedService,
-// - *ConcurLinkedService, *CosmosDbLinkedService, *CosmosDbMongoDbApiLinkedService, *CouchbaseLinkedService, *CustomDataSourceLinkedService,
-// - *Db2LinkedService, *DrillLinkedService, *DynamicsAXLinkedService, *DynamicsCrmLinkedService, *DynamicsLinkedService,
-// - *EloquaLinkedService, *FileServerLinkedService, *FtpServerLinkedService, *GoogleAdWordsLinkedService, *GoogleBigQueryLinkedService,
-// - *GoogleCloudStorageLinkedService, *GreenplumLinkedService, *HBaseLinkedService, *HDInsightLinkedService, *HDInsightOnDemandLinkedService,
-// - *HdfsLinkedService, *HiveLinkedService, *HttpLinkedService, *HubspotLinkedService, *ImpalaLinkedService, *InformixLinkedService,
-// - *JiraLinkedService, *LinkedService, *MagentoLinkedService, *MariaDBLinkedService, *MarketoLinkedService, *MicrosoftAccessLinkedService,
-// - *MongoDbAtlasLinkedService, *MongoDbLinkedService, *MongoDbV2LinkedService, *MySqlLinkedService, *NetezzaLinkedService,
-// - *ODataLinkedService, *OdbcLinkedService, *Office365LinkedService, *OracleCloudStorageLinkedService, *OracleLinkedService,
-// - *OracleServiceCloudLinkedService, *PaypalLinkedService, *PhoenixLinkedService, *PostgreSqlLinkedService, *PrestoLinkedService,
-// - *QuickBooksLinkedService, *ResponsysLinkedService, *RestServiceLinkedService, *SalesforceLinkedService, *SalesforceMarketingCloudLinkedService,
-// - *SalesforceServiceCloudLinkedService, *SapBWLinkedService, *SapCloudForCustomerLinkedService, *SapEccLinkedService, *SapHanaLinkedService,
-// - *SapOpenHubLinkedService, *SapTableLinkedService, *ServiceNowLinkedService, *SftpServerLinkedService, *SharePointOnlineListLinkedService,
-// - *ShopifyLinkedService, *SnowflakeLinkedService, *SparkLinkedService, *SqlServerLinkedService, *SquareLinkedService, *SybaseLinkedService,
-// - *TeradataLinkedService, *VerticaLinkedService, *WebLinkedService, *XeroLinkedService, *ZohoLinkedService
+// - *AmazonMWSLinkedService, *AmazonRdsForOracleLinkedService, *AmazonRdsForSqlServerLinkedService, *AmazonRedshiftLinkedService,
+// - *AmazonS3CompatibleLinkedService, *AmazonS3LinkedService, *AzureBatchLinkedService, *AzureBlobFSLinkedService, *AzureBlobStorageLinkedService,
+// - *AzureDataExplorerLinkedService, *AzureDataLakeAnalyticsLinkedService, *AzureDataLakeStoreLinkedService, *AzureDatabricksDeltaLakeLinkedService,
+// - *AzureDatabricksLinkedService, *AzureFileStorageLinkedService, *AzureFunctionLinkedService, *AzureKeyVaultLinkedService,
+// - *AzureMLLinkedService, *AzureMLServiceLinkedService, *AzureMariaDBLinkedService, *AzureMySqlLinkedService, *AzurePostgreSqlLinkedService,
+// - *AzureSearchLinkedService, *AzureSqlDWLinkedService, *AzureSqlDatabaseLinkedService, *AzureSqlMILinkedService, *AzureStorageLinkedService,
+// - *AzureTableStorageLinkedService, *CassandraLinkedService, *CommonDataServiceForAppsLinkedService, *ConcurLinkedService,
+// - *CosmosDbLinkedService, *CosmosDbMongoDbApiLinkedService, *CouchbaseLinkedService, *CustomDataSourceLinkedService, *Db2LinkedService,
+// - *DrillLinkedService, *DynamicsAXLinkedService, *DynamicsCrmLinkedService, *DynamicsLinkedService, *EloquaLinkedService,
+// - *FileServerLinkedService, *FtpServerLinkedService, *GoogleAdWordsLinkedService, *GoogleBigQueryLinkedService, *GoogleCloudStorageLinkedService,
+// - *GreenplumLinkedService, *HBaseLinkedService, *HDInsightLinkedService, *HDInsightOnDemandLinkedService, *HdfsLinkedService,
+// - *HiveLinkedService, *HttpLinkedService, *HubspotLinkedService, *ImpalaLinkedService, *InformixLinkedService, *JiraLinkedService,
+// - *LinkedService, *MagentoLinkedService, *MariaDBLinkedService, *MarketoLinkedService, *MicrosoftAccessLinkedService, *MongoDbAtlasLinkedService,
+// - *MongoDbLinkedService, *MongoDbV2LinkedService, *MySqlLinkedService, *NetezzaLinkedService, *ODataLinkedService, *OdbcLinkedService,
+// - *Office365LinkedService, *OracleCloudStorageLinkedService, *OracleLinkedService, *OracleServiceCloudLinkedService, *PaypalLinkedService,
+// - *PhoenixLinkedService, *PostgreSqlLinkedService, *PrestoLinkedService, *QuickBooksLinkedService, *ResponsysLinkedService,
+// - *RestServiceLinkedService, *SalesforceLinkedService, *SalesforceMarketingCloudLinkedService, *SalesforceServiceCloudLinkedService,
+// - *SapBWLinkedService, *SapCloudForCustomerLinkedService, *SapEccLinkedService, *SapHanaLinkedService, *SapOpenHubLinkedService,
+// - *SapTableLinkedService, *ServiceNowLinkedService, *SftpServerLinkedService, *SharePointOnlineListLinkedService, *ShopifyLinkedService,
+// - *SnowflakeLinkedService, *SparkLinkedService, *SqlServerLinkedService, *SquareLinkedService, *SybaseLinkedService, *TeradataLinkedService,
+// - *VerticaLinkedService, *WebLinkedService, *XeroLinkedService, *ZohoLinkedService
 type LinkedServiceClassification interface {
 	// GetLinkedService returns the LinkedService content of the underlying type.
 	GetLinkedService() *LinkedService
@@ -21542,6 +21963,9 @@ func (m *ManagedIntegrationRuntimeStatusTypeProperties) UnmarshalJSON(data []byt
 type ManagedIntegrationRuntimeTypeProperties struct {
 	// The compute resource for managed integration runtime.
 	ComputeProperties *IntegrationRuntimeComputeProperties `json:"computeProperties,omitempty"`
+
+	// The name of virtual network to which Azure-SSIS integration runtime will join
+	CustomerVirtualNetwork *IntegrationRuntimeCustomerVirtualNetwork `json:"customerVirtualNetwork,omitempty"`
 
 	// SSIS properties for managed integration runtime.
 	SsisProperties *IntegrationRuntimeSsisProperties `json:"ssisProperties,omitempty"`
@@ -34594,14 +35018,15 @@ type SybaseTableDatasetTypeProperties struct {
 // TabularSourceClassification provides polymorphic access to related types.
 // Call the interface's GetTabularSource() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AmazonMWSSource, *AmazonRedshiftSource, *AzureMariaDBSource, *AzureMySqlSource, *AzurePostgreSqlSource, *AzureSqlSource,
-// - *AzureTableSource, *CassandraSource, *ConcurSource, *CouchbaseSource, *Db2Source, *DrillSource, *DynamicsAXSource, *EloquaSource,
-// - *GoogleAdWordsSource, *GoogleBigQuerySource, *GreenplumSource, *HBaseSource, *HiveSource, *HubspotSource, *ImpalaSource,
-// - *InformixSource, *JiraSource, *MagentoSource, *MariaDBSource, *MarketoSource, *MySqlSource, *NetezzaSource, *OdbcSource,
-// - *OracleServiceCloudSource, *PaypalSource, *PhoenixSource, *PostgreSqlSource, *PrestoSource, *QuickBooksSource, *ResponsysSource,
-// - *SalesforceMarketingCloudSource, *SalesforceSource, *SapBwSource, *SapCloudForCustomerSource, *SapEccSource, *SapHanaSource,
-// - *SapOpenHubSource, *SapTableSource, *ServiceNowSource, *ShopifySource, *SparkSource, *SqlDWSource, *SqlMISource, *SqlServerSource,
-// - *SqlSource, *SquareSource, *SybaseSource, *TabularSource, *TeradataSource, *VerticaSource, *XeroSource, *ZohoSource
+// - *AmazonMWSSource, *AmazonRdsForSqlServerSource, *AmazonRedshiftSource, *AzureMariaDBSource, *AzureMySqlSource, *AzurePostgreSqlSource,
+// - *AzureSqlSource, *AzureTableSource, *CassandraSource, *ConcurSource, *CouchbaseSource, *Db2Source, *DrillSource, *DynamicsAXSource,
+// - *EloquaSource, *GoogleAdWordsSource, *GoogleBigQuerySource, *GreenplumSource, *HBaseSource, *HiveSource, *HubspotSource,
+// - *ImpalaSource, *InformixSource, *JiraSource, *MagentoSource, *MariaDBSource, *MarketoSource, *MySqlSource, *NetezzaSource,
+// - *OdbcSource, *OracleServiceCloudSource, *PaypalSource, *PhoenixSource, *PostgreSqlSource, *PrestoSource, *QuickBooksSource,
+// - *ResponsysSource, *SalesforceMarketingCloudSource, *SalesforceSource, *SapBwSource, *SapCloudForCustomerSource, *SapEccSource,
+// - *SapHanaSource, *SapOpenHubSource, *SapTableSource, *ServiceNowSource, *ShopifySource, *SparkSource, *SqlDWSource, *SqlMISource,
+// - *SqlServerSource, *SqlSource, *SquareSource, *SybaseSource, *TabularSource, *TeradataSource, *VerticaSource, *XeroSource,
+// - *ZohoSource
 type TabularSourceClassification interface {
 	CopySourceClassification
 	// GetTabularSource returns the TabularSource content of the underlying type.

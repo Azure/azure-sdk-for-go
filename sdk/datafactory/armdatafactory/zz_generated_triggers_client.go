@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TriggersClient contains the methods for the Triggers group.
 // Don't use this type directly, use NewTriggersClient() instead.
 type TriggersClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewTriggersClient creates a new instance of TriggersClient with the specified values.
-func NewTriggersClient(con *armcore.Connection, subscriptionID string) *TriggersClient {
-	return &TriggersClient{con: con, subscriptionID: subscriptionID}
+func NewTriggersClient(con *arm.Connection, subscriptionID string) *TriggersClient {
+	return &TriggersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates or updates a trigger.
@@ -39,18 +42,18 @@ func (client *TriggersClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return TriggersCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TriggersCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TriggersCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *TriggersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, trigger TriggerResource, options *TriggersCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *TriggersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, trigger TriggerResource, options *TriggersCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -68,41 +71,40 @@ func (client *TriggersClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header.Set("If-Match", *options.IfMatch)
 	}
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(trigger)
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, trigger)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *TriggersClient) createOrUpdateHandleResponse(resp *azcore.Response) (TriggersCreateOrUpdateResponse, error) {
-	result := TriggersCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TriggerResource); err != nil {
+func (client *TriggersClient) createOrUpdateHandleResponse(resp *http.Response) (TriggersCreateOrUpdateResponse, error) {
+	result := TriggersCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TriggerResource); err != nil {
 		return TriggersCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *TriggersClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TriggersClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Deletes a trigger.
@@ -112,18 +114,18 @@ func (client *TriggersClient) Delete(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return TriggersDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TriggersDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return TriggersDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return TriggersDeleteResponse{RawResponse: resp.Response}, nil
+	return TriggersDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersDeleteOptions) (*azcore.Request, error) {
+func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -141,29 +143,28 @@ func (client *TriggersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *TriggersClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TriggersClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets a trigger.
@@ -173,18 +174,18 @@ func (client *TriggersClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return TriggersGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TriggersGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNotModified) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNotModified) {
 		return TriggersGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TriggersClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersGetOptions) (*azcore.Request, error) {
+func (client *TriggersClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -202,41 +203,40 @@ func (client *TriggersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfNoneMatch != nil {
-		req.Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
 	}
-	req.Header.Set("Accept", "application/json")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *TriggersClient) getHandleResponse(resp *azcore.Response) (TriggersGetResponse, error) {
-	result := TriggersGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TriggerResource); err != nil {
+func (client *TriggersClient) getHandleResponse(resp *http.Response) (TriggersGetResponse, error) {
+	result := TriggersGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TriggerResource); err != nil {
 		return TriggersGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *TriggersClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TriggersClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetEventSubscriptionStatus - Get a trigger's event subscription status.
@@ -246,18 +246,18 @@ func (client *TriggersClient) GetEventSubscriptionStatus(ctx context.Context, re
 	if err != nil {
 		return TriggersGetEventSubscriptionStatusResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TriggersGetEventSubscriptionStatusResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TriggersGetEventSubscriptionStatusResponse{}, client.getEventSubscriptionStatusHandleError(resp)
 	}
 	return client.getEventSubscriptionStatusHandleResponse(resp)
 }
 
 // getEventSubscriptionStatusCreateRequest creates the GetEventSubscriptionStatus request.
-func (client *TriggersClient) getEventSubscriptionStatusCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersGetEventSubscriptionStatusOptions) (*azcore.Request, error) {
+func (client *TriggersClient) getEventSubscriptionStatusCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersGetEventSubscriptionStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/getEventSubscriptionStatus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -275,56 +275,55 @@ func (client *TriggersClient) getEventSubscriptionStatusCreateRequest(ctx contex
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getEventSubscriptionStatusHandleResponse handles the GetEventSubscriptionStatus response.
-func (client *TriggersClient) getEventSubscriptionStatusHandleResponse(resp *azcore.Response) (TriggersGetEventSubscriptionStatusResponse, error) {
-	result := TriggersGetEventSubscriptionStatusResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TriggerSubscriptionOperationStatus); err != nil {
+func (client *TriggersClient) getEventSubscriptionStatusHandleResponse(resp *http.Response) (TriggersGetEventSubscriptionStatusResponse, error) {
+	result := TriggersGetEventSubscriptionStatusResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TriggerSubscriptionOperationStatus); err != nil {
 		return TriggersGetEventSubscriptionStatusResponse{}, err
 	}
 	return result, nil
 }
 
 // getEventSubscriptionStatusHandleError handles the GetEventSubscriptionStatus error response.
-func (client *TriggersClient) getEventSubscriptionStatusHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TriggersClient) getEventSubscriptionStatusHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByFactory - Lists triggers.
 // If the operation fails it returns the *CloudError error type.
-func (client *TriggersClient) ListByFactory(resourceGroupName string, factoryName string, options *TriggersListByFactoryOptions) TriggersListByFactoryPager {
-	return &triggersListByFactoryPager{
+func (client *TriggersClient) ListByFactory(resourceGroupName string, factoryName string, options *TriggersListByFactoryOptions) *TriggersListByFactoryPager {
+	return &TriggersListByFactoryPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
 		},
-		advancer: func(ctx context.Context, resp TriggersListByFactoryResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.TriggerListResponse.NextLink)
+		advancer: func(ctx context.Context, resp TriggersListByFactoryResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.TriggerListResponse.NextLink)
 		},
 	}
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
-func (client *TriggersClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *TriggersListByFactoryOptions) (*azcore.Request, error) {
+func (client *TriggersClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *TriggersListByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -338,38 +337,37 @@ func (client *TriggersClient) listByFactoryCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByFactoryHandleResponse handles the ListByFactory response.
-func (client *TriggersClient) listByFactoryHandleResponse(resp *azcore.Response) (TriggersListByFactoryResponse, error) {
-	result := TriggersListByFactoryResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TriggerListResponse); err != nil {
+func (client *TriggersClient) listByFactoryHandleResponse(resp *http.Response) (TriggersListByFactoryResponse, error) {
+	result := TriggersListByFactoryResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TriggerListResponse); err != nil {
 		return TriggersListByFactoryResponse{}, err
 	}
 	return result, nil
 }
 
 // listByFactoryHandleError handles the ListByFactory error response.
-func (client *TriggersClient) listByFactoryHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TriggersClient) listByFactoryHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // QueryByFactory - Query triggers.
@@ -379,18 +377,18 @@ func (client *TriggersClient) QueryByFactory(ctx context.Context, resourceGroupN
 	if err != nil {
 		return TriggersQueryByFactoryResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TriggersQueryByFactoryResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TriggersQueryByFactoryResponse{}, client.queryByFactoryHandleError(resp)
 	}
 	return client.queryByFactoryHandleResponse(resp)
 }
 
 // queryByFactoryCreateRequest creates the QueryByFactory request.
-func (client *TriggersClient) queryByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, filterParameters TriggerFilterParameters, options *TriggersQueryByFactoryOptions) (*azcore.Request, error) {
+func (client *TriggersClient) queryByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, filterParameters TriggerFilterParameters, options *TriggersQueryByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/querytriggers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -404,38 +402,37 @@ func (client *TriggersClient) queryByFactoryCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(filterParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, filterParameters)
 }
 
 // queryByFactoryHandleResponse handles the QueryByFactory response.
-func (client *TriggersClient) queryByFactoryHandleResponse(resp *azcore.Response) (TriggersQueryByFactoryResponse, error) {
-	result := TriggersQueryByFactoryResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TriggerQueryResponse); err != nil {
+func (client *TriggersClient) queryByFactoryHandleResponse(resp *http.Response) (TriggersQueryByFactoryResponse, error) {
+	result := TriggersQueryByFactoryResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TriggerQueryResponse); err != nil {
 		return TriggersQueryByFactoryResponse{}, err
 	}
 	return result, nil
 }
 
 // queryByFactoryHandleError handles the QueryByFactory error response.
-func (client *TriggersClient) queryByFactoryHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TriggersClient) queryByFactoryHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginStart - Starts a trigger.
@@ -446,65 +443,37 @@ func (client *TriggersClient) BeginStart(ctx context.Context, resourceGroupName 
 		return TriggersStartPollerResponse{}, err
 	}
 	result := TriggersStartPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("TriggersClient.Start", "", resp, client.con.Pipeline(), client.startHandleError)
-	if err != nil {
-		return TriggersStartPollerResponse{}, err
-	}
-	poller := &triggersStartPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TriggersStartResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeStart creates a new TriggersStartPoller from the specified resume token.
-// token - The value must come from a previous call to TriggersStartPoller.ResumeToken().
-func (client *TriggersClient) ResumeStart(ctx context.Context, token string) (TriggersStartPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("TriggersClient.Start", token, client.con.Pipeline(), client.startHandleError)
-	if err != nil {
-		return TriggersStartPollerResponse{}, err
-	}
-	poller := &triggersStartPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return TriggersStartPollerResponse{}, err
-	}
-	result := TriggersStartPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TriggersStartResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("TriggersClient.Start", "", resp, client.pl, client.startHandleError)
+	if err != nil {
+		return TriggersStartPollerResponse{}, err
+	}
+	result.Poller = &TriggersStartPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Start - Starts a trigger.
 // If the operation fails it returns the *CloudError error type.
-func (client *TriggersClient) start(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersBeginStartOptions) (*azcore.Response, error) {
+func (client *TriggersClient) start(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersBeginStartOptions) (*http.Response, error) {
 	req, err := client.startCreateRequest(ctx, resourceGroupName, factoryName, triggerName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return nil, client.startHandleError(resp)
 	}
 	return resp, nil
 }
 
 // startCreateRequest creates the Start request.
-func (client *TriggersClient) startCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersBeginStartOptions) (*azcore.Request, error) {
+func (client *TriggersClient) startCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/start"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -522,29 +491,28 @@ func (client *TriggersClient) startCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // startHandleError handles the Start error response.
-func (client *TriggersClient) startHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TriggersClient) startHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginStop - Stops a trigger.
@@ -555,65 +523,37 @@ func (client *TriggersClient) BeginStop(ctx context.Context, resourceGroupName s
 		return TriggersStopPollerResponse{}, err
 	}
 	result := TriggersStopPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("TriggersClient.Stop", "", resp, client.con.Pipeline(), client.stopHandleError)
-	if err != nil {
-		return TriggersStopPollerResponse{}, err
-	}
-	poller := &triggersStopPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TriggersStopResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeStop creates a new TriggersStopPoller from the specified resume token.
-// token - The value must come from a previous call to TriggersStopPoller.ResumeToken().
-func (client *TriggersClient) ResumeStop(ctx context.Context, token string) (TriggersStopPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("TriggersClient.Stop", token, client.con.Pipeline(), client.stopHandleError)
-	if err != nil {
-		return TriggersStopPollerResponse{}, err
-	}
-	poller := &triggersStopPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return TriggersStopPollerResponse{}, err
-	}
-	result := TriggersStopPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TriggersStopResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("TriggersClient.Stop", "", resp, client.pl, client.stopHandleError)
+	if err != nil {
+		return TriggersStopPollerResponse{}, err
+	}
+	result.Poller = &TriggersStopPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Stop - Stops a trigger.
 // If the operation fails it returns the *CloudError error type.
-func (client *TriggersClient) stop(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersBeginStopOptions) (*azcore.Response, error) {
+func (client *TriggersClient) stop(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersBeginStopOptions) (*http.Response, error) {
 	req, err := client.stopCreateRequest(ctx, resourceGroupName, factoryName, triggerName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return nil, client.stopHandleError(resp)
 	}
 	return resp, nil
 }
 
 // stopCreateRequest creates the Stop request.
-func (client *TriggersClient) stopCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersBeginStopOptions) (*azcore.Request, error) {
+func (client *TriggersClient) stopCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/stop"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -631,29 +571,28 @@ func (client *TriggersClient) stopCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // stopHandleError handles the Stop error response.
-func (client *TriggersClient) stopHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TriggersClient) stopHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginSubscribeToEvents - Subscribe event trigger to events.
@@ -664,65 +603,37 @@ func (client *TriggersClient) BeginSubscribeToEvents(ctx context.Context, resour
 		return TriggersSubscribeToEventsPollerResponse{}, err
 	}
 	result := TriggersSubscribeToEventsPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("TriggersClient.SubscribeToEvents", "", resp, client.con.Pipeline(), client.subscribeToEventsHandleError)
-	if err != nil {
-		return TriggersSubscribeToEventsPollerResponse{}, err
-	}
-	poller := &triggersSubscribeToEventsPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TriggersSubscribeToEventsResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeSubscribeToEvents creates a new TriggersSubscribeToEventsPoller from the specified resume token.
-// token - The value must come from a previous call to TriggersSubscribeToEventsPoller.ResumeToken().
-func (client *TriggersClient) ResumeSubscribeToEvents(ctx context.Context, token string) (TriggersSubscribeToEventsPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("TriggersClient.SubscribeToEvents", token, client.con.Pipeline(), client.subscribeToEventsHandleError)
-	if err != nil {
-		return TriggersSubscribeToEventsPollerResponse{}, err
-	}
-	poller := &triggersSubscribeToEventsPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return TriggersSubscribeToEventsPollerResponse{}, err
-	}
-	result := TriggersSubscribeToEventsPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TriggersSubscribeToEventsResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("TriggersClient.SubscribeToEvents", "", resp, client.pl, client.subscribeToEventsHandleError)
+	if err != nil {
+		return TriggersSubscribeToEventsPollerResponse{}, err
+	}
+	result.Poller = &TriggersSubscribeToEventsPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // SubscribeToEvents - Subscribe event trigger to events.
 // If the operation fails it returns the *CloudError error type.
-func (client *TriggersClient) subscribeToEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersBeginSubscribeToEventsOptions) (*azcore.Response, error) {
+func (client *TriggersClient) subscribeToEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersBeginSubscribeToEventsOptions) (*http.Response, error) {
 	req, err := client.subscribeToEventsCreateRequest(ctx, resourceGroupName, factoryName, triggerName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.subscribeToEventsHandleError(resp)
 	}
 	return resp, nil
 }
 
 // subscribeToEventsCreateRequest creates the SubscribeToEvents request.
-func (client *TriggersClient) subscribeToEventsCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersBeginSubscribeToEventsOptions) (*azcore.Request, error) {
+func (client *TriggersClient) subscribeToEventsCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersBeginSubscribeToEventsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/subscribeToEvents"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -740,29 +651,28 @@ func (client *TriggersClient) subscribeToEventsCreateRequest(ctx context.Context
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // subscribeToEventsHandleError handles the SubscribeToEvents error response.
-func (client *TriggersClient) subscribeToEventsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TriggersClient) subscribeToEventsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginUnsubscribeFromEvents - Unsubscribe event trigger from events.
@@ -773,65 +683,37 @@ func (client *TriggersClient) BeginUnsubscribeFromEvents(ctx context.Context, re
 		return TriggersUnsubscribeFromEventsPollerResponse{}, err
 	}
 	result := TriggersUnsubscribeFromEventsPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("TriggersClient.UnsubscribeFromEvents", "", resp, client.con.Pipeline(), client.unsubscribeFromEventsHandleError)
-	if err != nil {
-		return TriggersUnsubscribeFromEventsPollerResponse{}, err
-	}
-	poller := &triggersUnsubscribeFromEventsPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TriggersUnsubscribeFromEventsResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUnsubscribeFromEvents creates a new TriggersUnsubscribeFromEventsPoller from the specified resume token.
-// token - The value must come from a previous call to TriggersUnsubscribeFromEventsPoller.ResumeToken().
-func (client *TriggersClient) ResumeUnsubscribeFromEvents(ctx context.Context, token string) (TriggersUnsubscribeFromEventsPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("TriggersClient.UnsubscribeFromEvents", token, client.con.Pipeline(), client.unsubscribeFromEventsHandleError)
-	if err != nil {
-		return TriggersUnsubscribeFromEventsPollerResponse{}, err
-	}
-	poller := &triggersUnsubscribeFromEventsPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return TriggersUnsubscribeFromEventsPollerResponse{}, err
-	}
-	result := TriggersUnsubscribeFromEventsPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TriggersUnsubscribeFromEventsResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("TriggersClient.UnsubscribeFromEvents", "", resp, client.pl, client.unsubscribeFromEventsHandleError)
+	if err != nil {
+		return TriggersUnsubscribeFromEventsPollerResponse{}, err
+	}
+	result.Poller = &TriggersUnsubscribeFromEventsPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // UnsubscribeFromEvents - Unsubscribe event trigger from events.
 // If the operation fails it returns the *CloudError error type.
-func (client *TriggersClient) unsubscribeFromEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersBeginUnsubscribeFromEventsOptions) (*azcore.Response, error) {
+func (client *TriggersClient) unsubscribeFromEvents(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersBeginUnsubscribeFromEventsOptions) (*http.Response, error) {
 	req, err := client.unsubscribeFromEventsCreateRequest(ctx, resourceGroupName, factoryName, triggerName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.unsubscribeFromEventsHandleError(resp)
 	}
 	return resp, nil
 }
 
 // unsubscribeFromEventsCreateRequest creates the UnsubscribeFromEvents request.
-func (client *TriggersClient) unsubscribeFromEventsCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersBeginUnsubscribeFromEventsOptions) (*azcore.Request, error) {
+func (client *TriggersClient) unsubscribeFromEventsCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, options *TriggersBeginUnsubscribeFromEventsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/triggers/{triggerName}/unsubscribeFromEvents"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -849,27 +731,26 @@ func (client *TriggersClient) unsubscribeFromEventsCreateRequest(ctx context.Con
 		return nil, errors.New("parameter triggerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{triggerName}", url.PathEscape(triggerName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // unsubscribeFromEventsHandleError handles the UnsubscribeFromEvents error response.
-func (client *TriggersClient) unsubscribeFromEventsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TriggersClient) unsubscribeFromEventsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

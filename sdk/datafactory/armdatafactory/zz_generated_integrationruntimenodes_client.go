@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IntegrationRuntimeNodesClient contains the methods for the IntegrationRuntimeNodes group.
 // Don't use this type directly, use NewIntegrationRuntimeNodesClient() instead.
 type IntegrationRuntimeNodesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewIntegrationRuntimeNodesClient creates a new instance of IntegrationRuntimeNodesClient with the specified values.
-func NewIntegrationRuntimeNodesClient(con *armcore.Connection, subscriptionID string) *IntegrationRuntimeNodesClient {
-	return &IntegrationRuntimeNodesClient{con: con, subscriptionID: subscriptionID}
+func NewIntegrationRuntimeNodesClient(con *arm.Connection, subscriptionID string) *IntegrationRuntimeNodesClient {
+	return &IntegrationRuntimeNodesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Delete - Deletes a self-hosted integration runtime node.
@@ -38,18 +41,18 @@ func (client *IntegrationRuntimeNodesClient) Delete(ctx context.Context, resourc
 	if err != nil {
 		return IntegrationRuntimeNodesDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IntegrationRuntimeNodesDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return IntegrationRuntimeNodesDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return IntegrationRuntimeNodesDeleteResponse{RawResponse: resp.Response}, nil
+	return IntegrationRuntimeNodesDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IntegrationRuntimeNodesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, nodeName string, options *IntegrationRuntimeNodesDeleteOptions) (*azcore.Request, error) {
+func (client *IntegrationRuntimeNodesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, nodeName string, options *IntegrationRuntimeNodesDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,29 +74,28 @@ func (client *IntegrationRuntimeNodesClient) deleteCreateRequest(ctx context.Con
 		return nil, errors.New("parameter nodeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeName}", url.PathEscape(nodeName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *IntegrationRuntimeNodesClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IntegrationRuntimeNodesClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets a self-hosted integration runtime node.
@@ -103,18 +105,18 @@ func (client *IntegrationRuntimeNodesClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return IntegrationRuntimeNodesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IntegrationRuntimeNodesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return IntegrationRuntimeNodesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *IntegrationRuntimeNodesClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, nodeName string, options *IntegrationRuntimeNodesGetOptions) (*azcore.Request, error) {
+func (client *IntegrationRuntimeNodesClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, nodeName string, options *IntegrationRuntimeNodesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -136,38 +138,37 @@ func (client *IntegrationRuntimeNodesClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter nodeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeName}", url.PathEscape(nodeName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *IntegrationRuntimeNodesClient) getHandleResponse(resp *azcore.Response) (IntegrationRuntimeNodesGetResponse, error) {
-	result := IntegrationRuntimeNodesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SelfHostedIntegrationRuntimeNode); err != nil {
+func (client *IntegrationRuntimeNodesClient) getHandleResponse(resp *http.Response) (IntegrationRuntimeNodesGetResponse, error) {
+	result := IntegrationRuntimeNodesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SelfHostedIntegrationRuntimeNode); err != nil {
 		return IntegrationRuntimeNodesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *IntegrationRuntimeNodesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IntegrationRuntimeNodesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetIPAddress - Get the IP address of self-hosted integration runtime node.
@@ -177,18 +178,18 @@ func (client *IntegrationRuntimeNodesClient) GetIPAddress(ctx context.Context, r
 	if err != nil {
 		return IntegrationRuntimeNodesGetIPAddressResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IntegrationRuntimeNodesGetIPAddressResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return IntegrationRuntimeNodesGetIPAddressResponse{}, client.getIPAddressHandleError(resp)
 	}
 	return client.getIPAddressHandleResponse(resp)
 }
 
 // getIPAddressCreateRequest creates the GetIPAddress request.
-func (client *IntegrationRuntimeNodesClient) getIPAddressCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, nodeName string, options *IntegrationRuntimeNodesGetIPAddressOptions) (*azcore.Request, error) {
+func (client *IntegrationRuntimeNodesClient) getIPAddressCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, nodeName string, options *IntegrationRuntimeNodesGetIPAddressOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}/ipAddress"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -210,38 +211,37 @@ func (client *IntegrationRuntimeNodesClient) getIPAddressCreateRequest(ctx conte
 		return nil, errors.New("parameter nodeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeName}", url.PathEscape(nodeName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getIPAddressHandleResponse handles the GetIPAddress response.
-func (client *IntegrationRuntimeNodesClient) getIPAddressHandleResponse(resp *azcore.Response) (IntegrationRuntimeNodesGetIPAddressResponse, error) {
-	result := IntegrationRuntimeNodesGetIPAddressResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.IntegrationRuntimeNodeIPAddress); err != nil {
+func (client *IntegrationRuntimeNodesClient) getIPAddressHandleResponse(resp *http.Response) (IntegrationRuntimeNodesGetIPAddressResponse, error) {
+	result := IntegrationRuntimeNodesGetIPAddressResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeNodeIPAddress); err != nil {
 		return IntegrationRuntimeNodesGetIPAddressResponse{}, err
 	}
 	return result, nil
 }
 
 // getIPAddressHandleError handles the GetIPAddress error response.
-func (client *IntegrationRuntimeNodesClient) getIPAddressHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IntegrationRuntimeNodesClient) getIPAddressHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Update - Updates a self-hosted integration runtime node.
@@ -251,18 +251,18 @@ func (client *IntegrationRuntimeNodesClient) Update(ctx context.Context, resourc
 	if err != nil {
 		return IntegrationRuntimeNodesUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return IntegrationRuntimeNodesUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return IntegrationRuntimeNodesUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *IntegrationRuntimeNodesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, nodeName string, updateIntegrationRuntimeNodeRequest UpdateIntegrationRuntimeNodeRequest, options *IntegrationRuntimeNodesUpdateOptions) (*azcore.Request, error) {
+func (client *IntegrationRuntimeNodesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, nodeName string, updateIntegrationRuntimeNodeRequest UpdateIntegrationRuntimeNodeRequest, options *IntegrationRuntimeNodesUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/nodes/{nodeName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -284,36 +284,35 @@ func (client *IntegrationRuntimeNodesClient) updateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter nodeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeName}", url.PathEscape(nodeName))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(updateIntegrationRuntimeNodeRequest)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, updateIntegrationRuntimeNodeRequest)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *IntegrationRuntimeNodesClient) updateHandleResponse(resp *azcore.Response) (IntegrationRuntimeNodesUpdateResponse, error) {
-	result := IntegrationRuntimeNodesUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SelfHostedIntegrationRuntimeNode); err != nil {
+func (client *IntegrationRuntimeNodesClient) updateHandleResponse(resp *http.Response) (IntegrationRuntimeNodesUpdateResponse, error) {
+	result := IntegrationRuntimeNodesUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SelfHostedIntegrationRuntimeNode); err != nil {
 		return IntegrationRuntimeNodesUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *IntegrationRuntimeNodesClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *IntegrationRuntimeNodesClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

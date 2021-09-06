@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ActivityRunsClient contains the methods for the ActivityRuns group.
 // Don't use this type directly, use NewActivityRunsClient() instead.
 type ActivityRunsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewActivityRunsClient creates a new instance of ActivityRunsClient with the specified values.
-func NewActivityRunsClient(con *armcore.Connection, subscriptionID string) *ActivityRunsClient {
-	return &ActivityRunsClient{con: con, subscriptionID: subscriptionID}
+func NewActivityRunsClient(con *arm.Connection, subscriptionID string) *ActivityRunsClient {
+	return &ActivityRunsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // QueryByPipelineRun - Query activity runs based on input filter conditions.
@@ -38,18 +41,18 @@ func (client *ActivityRunsClient) QueryByPipelineRun(ctx context.Context, resour
 	if err != nil {
 		return ActivityRunsQueryByPipelineRunResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ActivityRunsQueryByPipelineRunResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ActivityRunsQueryByPipelineRunResponse{}, client.queryByPipelineRunHandleError(resp)
 	}
 	return client.queryByPipelineRunHandleResponse(resp)
 }
 
 // queryByPipelineRunCreateRequest creates the QueryByPipelineRun request.
-func (client *ActivityRunsClient) queryByPipelineRunCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, runID string, filterParameters RunFilterParameters, options *ActivityRunsQueryByPipelineRunOptions) (*azcore.Request, error) {
+func (client *ActivityRunsClient) queryByPipelineRunCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, runID string, filterParameters RunFilterParameters, options *ActivityRunsQueryByPipelineRunOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}/queryActivityruns"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,36 +70,35 @@ func (client *ActivityRunsClient) queryByPipelineRunCreateRequest(ctx context.Co
 		return nil, errors.New("parameter runID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runId}", url.PathEscape(runID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(filterParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, filterParameters)
 }
 
 // queryByPipelineRunHandleResponse handles the QueryByPipelineRun response.
-func (client *ActivityRunsClient) queryByPipelineRunHandleResponse(resp *azcore.Response) (ActivityRunsQueryByPipelineRunResponse, error) {
-	result := ActivityRunsQueryByPipelineRunResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ActivityRunsQueryResponse); err != nil {
+func (client *ActivityRunsClient) queryByPipelineRunHandleResponse(resp *http.Response) (ActivityRunsQueryByPipelineRunResponse, error) {
+	result := ActivityRunsQueryByPipelineRunResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityRunsQueryResponse); err != nil {
 		return ActivityRunsQueryByPipelineRunResponse{}, err
 	}
 	return result, nil
 }
 
 // queryByPipelineRunHandleError handles the QueryByPipelineRun error response.
-func (client *ActivityRunsClient) queryByPipelineRunHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ActivityRunsClient) queryByPipelineRunHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

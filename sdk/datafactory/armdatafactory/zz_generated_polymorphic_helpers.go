@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -342,6 +342,10 @@ func unmarshalCopySourceClassification(rawMsg json.RawMessage) (CopySourceClassi
 	switch m["type"] {
 	case "AmazonMWSSource":
 		b = &AmazonMWSSource{}
+	case "AmazonRdsForOracleSource":
+		b = &AmazonRdsForOracleSource{}
+	case "AmazonRdsForSqlServerSource":
+		b = &AmazonRdsForSQLServerSource{}
 	case "AmazonRedshiftSource":
 		b = &AmazonRedshiftSource{}
 	case "AvroSource":
@@ -721,6 +725,10 @@ func unmarshalDatasetClassification(rawMsg json.RawMessage) (DatasetClassificati
 	switch m["type"] {
 	case "AmazonMWSObject":
 		b = &AmazonMWSObjectDataset{}
+	case "AmazonRdsForOracleTable":
+		b = &AmazonRdsForOracleTableDataset{}
+	case "AmazonRdsForSqlServerTable":
+		b = &AmazonRdsForSQLServerTableDataset{}
 	case "AmazonRedshiftTable":
 		b = &AmazonRedshiftTableDataset{}
 	case "AmazonS3Object":
@@ -1539,6 +1547,10 @@ func unmarshalLinkedServiceClassification(rawMsg json.RawMessage) (LinkedService
 	switch m["type"] {
 	case "AmazonMWS":
 		b = &AmazonMWSLinkedService{}
+	case "AmazonRdsForOracle":
+		b = &AmazonRdsForOracleLinkedService{}
+	case "AmazonRdsForSqlServer":
+		b = &AmazonRdsForSQLServerLinkedService{}
 	case "AmazonRedshift":
 		b = &AmazonRedshiftLinkedService{}
 	case "AmazonS3":
@@ -2007,6 +2019,8 @@ func unmarshalTabularSourceClassification(rawMsg json.RawMessage) (TabularSource
 	switch m["type"] {
 	case "AmazonMWSSource":
 		b = &AmazonMWSSource{}
+	case "AmazonRdsForSqlServerSource":
+		b = &AmazonRdsForSQLServerSource{}
 	case "AmazonRedshiftSource":
 		b = &AmazonRedshiftSource{}
 	case "AzureMariaDBSource":

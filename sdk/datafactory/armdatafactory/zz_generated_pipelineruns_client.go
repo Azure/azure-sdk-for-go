@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PipelineRunsClient contains the methods for the PipelineRuns group.
 // Don't use this type directly, use NewPipelineRunsClient() instead.
 type PipelineRunsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewPipelineRunsClient creates a new instance of PipelineRunsClient with the specified values.
-func NewPipelineRunsClient(con *armcore.Connection, subscriptionID string) *PipelineRunsClient {
-	return &PipelineRunsClient{con: con, subscriptionID: subscriptionID}
+func NewPipelineRunsClient(con *arm.Connection, subscriptionID string) *PipelineRunsClient {
+	return &PipelineRunsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Cancel - Cancel a pipeline run by its run ID.
@@ -39,18 +42,18 @@ func (client *PipelineRunsClient) Cancel(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return PipelineRunsCancelResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PipelineRunsCancelResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PipelineRunsCancelResponse{}, client.cancelHandleError(resp)
 	}
-	return PipelineRunsCancelResponse{RawResponse: resp.Response}, nil
+	return PipelineRunsCancelResponse{RawResponse: resp}, nil
 }
 
 // cancelCreateRequest creates the Cancel request.
-func (client *PipelineRunsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, runID string, options *PipelineRunsCancelOptions) (*azcore.Request, error) {
+func (client *PipelineRunsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, runID string, options *PipelineRunsCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}/cancel"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -68,32 +71,31 @@ func (client *PipelineRunsClient) cancelCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter runID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runId}", url.PathEscape(runID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.IsRecursive != nil {
 		reqQP.Set("isRecursive", strconv.FormatBool(*options.IsRecursive))
 	}
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // cancelHandleError handles the Cancel error response.
-func (client *PipelineRunsClient) cancelHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PipelineRunsClient) cancelHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Get a pipeline run by its run ID.
@@ -103,18 +105,18 @@ func (client *PipelineRunsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return PipelineRunsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PipelineRunsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PipelineRunsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PipelineRunsClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, runID string, options *PipelineRunsGetOptions) (*azcore.Request, error) {
+func (client *PipelineRunsClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, runID string, options *PipelineRunsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -132,38 +134,37 @@ func (client *PipelineRunsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter runID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runId}", url.PathEscape(runID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PipelineRunsClient) getHandleResponse(resp *azcore.Response) (PipelineRunsGetResponse, error) {
-	result := PipelineRunsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PipelineRun); err != nil {
+func (client *PipelineRunsClient) getHandleResponse(resp *http.Response) (PipelineRunsGetResponse, error) {
+	result := PipelineRunsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineRun); err != nil {
 		return PipelineRunsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *PipelineRunsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PipelineRunsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // QueryByFactory - Query pipeline runs in the factory based on input filter conditions.
@@ -173,18 +174,18 @@ func (client *PipelineRunsClient) QueryByFactory(ctx context.Context, resourceGr
 	if err != nil {
 		return PipelineRunsQueryByFactoryResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PipelineRunsQueryByFactoryResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PipelineRunsQueryByFactoryResponse{}, client.queryByFactoryHandleError(resp)
 	}
 	return client.queryByFactoryHandleResponse(resp)
 }
 
 // queryByFactoryCreateRequest creates the QueryByFactory request.
-func (client *PipelineRunsClient) queryByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, filterParameters RunFilterParameters, options *PipelineRunsQueryByFactoryOptions) (*azcore.Request, error) {
+func (client *PipelineRunsClient) queryByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, filterParameters RunFilterParameters, options *PipelineRunsQueryByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryPipelineRuns"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -198,36 +199,35 @@ func (client *PipelineRunsClient) queryByFactoryCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(filterParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, filterParameters)
 }
 
 // queryByFactoryHandleResponse handles the QueryByFactory response.
-func (client *PipelineRunsClient) queryByFactoryHandleResponse(resp *azcore.Response) (PipelineRunsQueryByFactoryResponse, error) {
-	result := PipelineRunsQueryByFactoryResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PipelineRunsQueryResponse); err != nil {
+func (client *PipelineRunsClient) queryByFactoryHandleResponse(resp *http.Response) (PipelineRunsQueryByFactoryResponse, error) {
+	result := PipelineRunsQueryByFactoryResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineRunsQueryResponse); err != nil {
 		return PipelineRunsQueryByFactoryResponse{}, err
 	}
 	return result, nil
 }
 
 // queryByFactoryHandleError handles the QueryByFactory error response.
-func (client *PipelineRunsClient) queryByFactoryHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PipelineRunsClient) queryByFactoryHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

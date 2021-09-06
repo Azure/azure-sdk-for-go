@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ManagedVirtualNetworksClient contains the methods for the ManagedVirtualNetworks group.
 // Don't use this type directly, use NewManagedVirtualNetworksClient() instead.
 type ManagedVirtualNetworksClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewManagedVirtualNetworksClient creates a new instance of ManagedVirtualNetworksClient with the specified values.
-func NewManagedVirtualNetworksClient(con *armcore.Connection, subscriptionID string) *ManagedVirtualNetworksClient {
-	return &ManagedVirtualNetworksClient{con: con, subscriptionID: subscriptionID}
+func NewManagedVirtualNetworksClient(con *arm.Connection, subscriptionID string) *ManagedVirtualNetworksClient {
+	return &ManagedVirtualNetworksClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates or updates a managed Virtual Network.
@@ -38,18 +41,18 @@ func (client *ManagedVirtualNetworksClient) CreateOrUpdate(ctx context.Context, 
 	if err != nil {
 		return ManagedVirtualNetworksCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ManagedVirtualNetworksCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ManagedVirtualNetworksCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ManagedVirtualNetworksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, managedVirtualNetwork ManagedVirtualNetworkResource, options *ManagedVirtualNetworksCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *ManagedVirtualNetworksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, managedVirtualNetwork ManagedVirtualNetworkResource, options *ManagedVirtualNetworksCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,41 +70,40 @@ func (client *ManagedVirtualNetworksClient) createOrUpdateCreateRequest(ctx cont
 		return nil, errors.New("parameter managedVirtualNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managedVirtualNetworkName}", url.PathEscape(managedVirtualNetworkName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header.Set("If-Match", *options.IfMatch)
 	}
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(managedVirtualNetwork)
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, managedVirtualNetwork)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ManagedVirtualNetworksClient) createOrUpdateHandleResponse(resp *azcore.Response) (ManagedVirtualNetworksCreateOrUpdateResponse, error) {
-	result := ManagedVirtualNetworksCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedVirtualNetworkResource); err != nil {
+func (client *ManagedVirtualNetworksClient) createOrUpdateHandleResponse(resp *http.Response) (ManagedVirtualNetworksCreateOrUpdateResponse, error) {
+	result := ManagedVirtualNetworksCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedVirtualNetworkResource); err != nil {
 		return ManagedVirtualNetworksCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ManagedVirtualNetworksClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedVirtualNetworksClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets a managed Virtual Network.
@@ -111,18 +113,18 @@ func (client *ManagedVirtualNetworksClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return ManagedVirtualNetworksGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ManagedVirtualNetworksGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ManagedVirtualNetworksGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedVirtualNetworksClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, options *ManagedVirtualNetworksGetOptions) (*azcore.Request, error) {
+func (client *ManagedVirtualNetworksClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, options *ManagedVirtualNetworksGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,59 +142,58 @@ func (client *ManagedVirtualNetworksClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter managedVirtualNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{managedVirtualNetworkName}", url.PathEscape(managedVirtualNetworkName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfNoneMatch != nil {
-		req.Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
 	}
-	req.Header.Set("Accept", "application/json")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedVirtualNetworksClient) getHandleResponse(resp *azcore.Response) (ManagedVirtualNetworksGetResponse, error) {
-	result := ManagedVirtualNetworksGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedVirtualNetworkResource); err != nil {
+func (client *ManagedVirtualNetworksClient) getHandleResponse(resp *http.Response) (ManagedVirtualNetworksGetResponse, error) {
+	result := ManagedVirtualNetworksGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedVirtualNetworkResource); err != nil {
 		return ManagedVirtualNetworksGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ManagedVirtualNetworksClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedVirtualNetworksClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByFactory - Lists managed Virtual Networks.
 // If the operation fails it returns the *CloudError error type.
-func (client *ManagedVirtualNetworksClient) ListByFactory(resourceGroupName string, factoryName string, options *ManagedVirtualNetworksListByFactoryOptions) ManagedVirtualNetworksListByFactoryPager {
-	return &managedVirtualNetworksListByFactoryPager{
+func (client *ManagedVirtualNetworksClient) ListByFactory(resourceGroupName string, factoryName string, options *ManagedVirtualNetworksListByFactoryOptions) *ManagedVirtualNetworksListByFactoryPager {
+	return &ManagedVirtualNetworksListByFactoryPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
 		},
-		advancer: func(ctx context.Context, resp ManagedVirtualNetworksListByFactoryResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ManagedVirtualNetworkListResponse.NextLink)
+		advancer: func(ctx context.Context, resp ManagedVirtualNetworksListByFactoryResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ManagedVirtualNetworkListResponse.NextLink)
 		},
 	}
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
-func (client *ManagedVirtualNetworksClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *ManagedVirtualNetworksListByFactoryOptions) (*azcore.Request, error) {
+func (client *ManagedVirtualNetworksClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *ManagedVirtualNetworksListByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -206,36 +207,35 @@ func (client *ManagedVirtualNetworksClient) listByFactoryCreateRequest(ctx conte
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByFactoryHandleResponse handles the ListByFactory response.
-func (client *ManagedVirtualNetworksClient) listByFactoryHandleResponse(resp *azcore.Response) (ManagedVirtualNetworksListByFactoryResponse, error) {
-	result := ManagedVirtualNetworksListByFactoryResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ManagedVirtualNetworkListResponse); err != nil {
+func (client *ManagedVirtualNetworksClient) listByFactoryHandleResponse(resp *http.Response) (ManagedVirtualNetworksListByFactoryResponse, error) {
+	result := ManagedVirtualNetworksListByFactoryResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedVirtualNetworkListResponse); err != nil {
 		return ManagedVirtualNetworksListByFactoryResponse{}, err
 	}
 	return result, nil
 }
 
 // listByFactoryHandleError handles the ListByFactory error response.
-func (client *ManagedVirtualNetworksClient) listByFactoryHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ManagedVirtualNetworksClient) listByFactoryHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

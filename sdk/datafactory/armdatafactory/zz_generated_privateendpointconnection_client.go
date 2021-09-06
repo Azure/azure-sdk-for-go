@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PrivateEndpointConnectionClient contains the methods for the PrivateEndpointConnection group.
 // Don't use this type directly, use NewPrivateEndpointConnectionClient() instead.
 type PrivateEndpointConnectionClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewPrivateEndpointConnectionClient creates a new instance of PrivateEndpointConnectionClient with the specified values.
-func NewPrivateEndpointConnectionClient(con *armcore.Connection, subscriptionID string) *PrivateEndpointConnectionClient {
-	return &PrivateEndpointConnectionClient{con: con, subscriptionID: subscriptionID}
+func NewPrivateEndpointConnectionClient(con *arm.Connection, subscriptionID string) *PrivateEndpointConnectionClient {
+	return &PrivateEndpointConnectionClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Approves or rejects a private endpoint connection
@@ -38,18 +41,18 @@ func (client *PrivateEndpointConnectionClient) CreateOrUpdate(ctx context.Contex
 	if err != nil {
 		return PrivateEndpointConnectionCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PrivateEndpointConnectionCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PrivateEndpointConnectionCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PrivateEndpointConnectionClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *PrivateEndpointConnectionCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *PrivateEndpointConnectionClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *PrivateEndpointConnectionCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,41 +70,40 @@ func (client *PrivateEndpointConnectionClient) createOrUpdateCreateRequest(ctx c
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header.Set("If-Match", *options.IfMatch)
 	}
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(privateEndpointWrapper)
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, privateEndpointWrapper)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *PrivateEndpointConnectionClient) createOrUpdateHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionCreateOrUpdateResponse, error) {
-	result := PrivateEndpointConnectionCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PrivateEndpointConnectionResource); err != nil {
+func (client *PrivateEndpointConnectionClient) createOrUpdateHandleResponse(resp *http.Response) (PrivateEndpointConnectionCreateOrUpdateResponse, error) {
+	result := PrivateEndpointConnectionCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionResource); err != nil {
 		return PrivateEndpointConnectionCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *PrivateEndpointConnectionClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PrivateEndpointConnectionClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Deletes a private endpoint connection
@@ -111,18 +113,18 @@ func (client *PrivateEndpointConnectionClient) Delete(ctx context.Context, resou
 	if err != nil {
 		return PrivateEndpointConnectionDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PrivateEndpointConnectionDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return PrivateEndpointConnectionDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return PrivateEndpointConnectionDeleteResponse{RawResponse: resp.Response}, nil
+	return PrivateEndpointConnectionDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PrivateEndpointConnectionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionDeleteOptions) (*azcore.Request, error) {
+func (client *PrivateEndpointConnectionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -140,29 +142,28 @@ func (client *PrivateEndpointConnectionClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *PrivateEndpointConnectionClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PrivateEndpointConnectionClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets a private endpoint connection
@@ -172,18 +173,18 @@ func (client *PrivateEndpointConnectionClient) Get(ctx context.Context, resource
 	if err != nil {
 		return PrivateEndpointConnectionGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PrivateEndpointConnectionGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PrivateEndpointConnectionGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateEndpointConnectionClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionGetOptions) (*azcore.Request, error) {
+func (client *PrivateEndpointConnectionClient) getCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -201,39 +202,38 @@ func (client *PrivateEndpointConnectionClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfNoneMatch != nil {
-		req.Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
 	}
-	req.Header.Set("Accept", "application/json")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateEndpointConnectionClient) getHandleResponse(resp *azcore.Response) (PrivateEndpointConnectionGetResponse, error) {
-	result := PrivateEndpointConnectionGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PrivateEndpointConnectionResource); err != nil {
+func (client *PrivateEndpointConnectionClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionGetResponse, error) {
+	result := PrivateEndpointConnectionGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionResource); err != nil {
 		return PrivateEndpointConnectionGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *PrivateEndpointConnectionClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PrivateEndpointConnectionClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

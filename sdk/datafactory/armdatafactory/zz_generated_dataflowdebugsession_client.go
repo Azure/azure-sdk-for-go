@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DataFlowDebugSessionClient contains the methods for the DataFlowDebugSession group.
 // Don't use this type directly, use NewDataFlowDebugSessionClient() instead.
 type DataFlowDebugSessionClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewDataFlowDebugSessionClient creates a new instance of DataFlowDebugSessionClient with the specified values.
-func NewDataFlowDebugSessionClient(con *armcore.Connection, subscriptionID string) *DataFlowDebugSessionClient {
-	return &DataFlowDebugSessionClient{con: con, subscriptionID: subscriptionID}
+func NewDataFlowDebugSessionClient(con *arm.Connection, subscriptionID string) *DataFlowDebugSessionClient {
+	return &DataFlowDebugSessionClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // AddDataFlow - Add a data flow into debug session.
@@ -39,18 +42,18 @@ func (client *DataFlowDebugSessionClient) AddDataFlow(ctx context.Context, resou
 	if err != nil {
 		return DataFlowDebugSessionAddDataFlowResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DataFlowDebugSessionAddDataFlowResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DataFlowDebugSessionAddDataFlowResponse{}, client.addDataFlowHandleError(resp)
 	}
 	return client.addDataFlowHandleResponse(resp)
 }
 
 // addDataFlowCreateRequest creates the AddDataFlow request.
-func (client *DataFlowDebugSessionClient) addDataFlowCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugPackage, options *DataFlowDebugSessionAddDataFlowOptions) (*azcore.Request, error) {
+func (client *DataFlowDebugSessionClient) addDataFlowCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugPackage, options *DataFlowDebugSessionAddDataFlowOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/addDataFlowToDebugSession"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -64,38 +67,37 @@ func (client *DataFlowDebugSessionClient) addDataFlowCreateRequest(ctx context.C
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(request)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, request)
 }
 
 // addDataFlowHandleResponse handles the AddDataFlow response.
-func (client *DataFlowDebugSessionClient) addDataFlowHandleResponse(resp *azcore.Response) (DataFlowDebugSessionAddDataFlowResponse, error) {
-	result := DataFlowDebugSessionAddDataFlowResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AddDataFlowToDebugSessionResponse); err != nil {
+func (client *DataFlowDebugSessionClient) addDataFlowHandleResponse(resp *http.Response) (DataFlowDebugSessionAddDataFlowResponse, error) {
+	result := DataFlowDebugSessionAddDataFlowResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AddDataFlowToDebugSessionResponse); err != nil {
 		return DataFlowDebugSessionAddDataFlowResponse{}, err
 	}
 	return result, nil
 }
 
 // addDataFlowHandleError handles the AddDataFlow error response.
-func (client *DataFlowDebugSessionClient) addDataFlowHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DataFlowDebugSessionClient) addDataFlowHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginCreate - Creates a data flow debug session.
@@ -106,65 +108,37 @@ func (client *DataFlowDebugSessionClient) BeginCreate(ctx context.Context, resou
 		return DataFlowDebugSessionCreatePollerResponse{}, err
 	}
 	result := DataFlowDebugSessionCreatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DataFlowDebugSessionClient.Create", "", resp, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return DataFlowDebugSessionCreatePollerResponse{}, err
-	}
-	poller := &dataFlowDebugSessionCreatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DataFlowDebugSessionCreateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreate creates a new DataFlowDebugSessionCreatePoller from the specified resume token.
-// token - The value must come from a previous call to DataFlowDebugSessionCreatePoller.ResumeToken().
-func (client *DataFlowDebugSessionClient) ResumeCreate(ctx context.Context, token string) (DataFlowDebugSessionCreatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DataFlowDebugSessionClient.Create", token, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return DataFlowDebugSessionCreatePollerResponse{}, err
-	}
-	poller := &dataFlowDebugSessionCreatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return DataFlowDebugSessionCreatePollerResponse{}, err
-	}
-	result := DataFlowDebugSessionCreatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DataFlowDebugSessionCreateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DataFlowDebugSessionClient.Create", "", resp, client.pl, client.createHandleError)
+	if err != nil {
+		return DataFlowDebugSessionCreatePollerResponse{}, err
+	}
+	result.Poller = &DataFlowDebugSessionCreatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a data flow debug session.
 // If the operation fails it returns the *CloudError error type.
-func (client *DataFlowDebugSessionClient) create(ctx context.Context, resourceGroupName string, factoryName string, request CreateDataFlowDebugSessionRequest, options *DataFlowDebugSessionBeginCreateOptions) (*azcore.Response, error) {
+func (client *DataFlowDebugSessionClient) create(ctx context.Context, resourceGroupName string, factoryName string, request CreateDataFlowDebugSessionRequest, options *DataFlowDebugSessionBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, factoryName, request, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.createHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *DataFlowDebugSessionClient) createCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, request CreateDataFlowDebugSessionRequest, options *DataFlowDebugSessionBeginCreateOptions) (*azcore.Request, error) {
+func (client *DataFlowDebugSessionClient) createCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, request CreateDataFlowDebugSessionRequest, options *DataFlowDebugSessionBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/createDataFlowDebugSession"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -178,29 +152,28 @@ func (client *DataFlowDebugSessionClient) createCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(request)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, request)
 }
 
 // createHandleError handles the Create error response.
-func (client *DataFlowDebugSessionClient) createHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DataFlowDebugSessionClient) createHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Deletes a data flow debug session.
@@ -210,18 +183,18 @@ func (client *DataFlowDebugSessionClient) Delete(ctx context.Context, resourceGr
 	if err != nil {
 		return DataFlowDebugSessionDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DataFlowDebugSessionDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DataFlowDebugSessionDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return DataFlowDebugSessionDeleteResponse{RawResponse: resp.Response}, nil
+	return DataFlowDebugSessionDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DataFlowDebugSessionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, request DeleteDataFlowDebugSessionRequest, options *DataFlowDebugSessionDeleteOptions) (*azcore.Request, error) {
+func (client *DataFlowDebugSessionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, request DeleteDataFlowDebugSessionRequest, options *DataFlowDebugSessionDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/deleteDataFlowDebugSession"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -235,29 +208,28 @@ func (client *DataFlowDebugSessionClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(request)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, request)
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *DataFlowDebugSessionClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DataFlowDebugSessionClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginExecuteCommand - Execute a data flow debug command.
@@ -268,65 +240,37 @@ func (client *DataFlowDebugSessionClient) BeginExecuteCommand(ctx context.Contex
 		return DataFlowDebugSessionExecuteCommandPollerResponse{}, err
 	}
 	result := DataFlowDebugSessionExecuteCommandPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DataFlowDebugSessionClient.ExecuteCommand", "", resp, client.con.Pipeline(), client.executeCommandHandleError)
-	if err != nil {
-		return DataFlowDebugSessionExecuteCommandPollerResponse{}, err
-	}
-	poller := &dataFlowDebugSessionExecuteCommandPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DataFlowDebugSessionExecuteCommandResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeExecuteCommand creates a new DataFlowDebugSessionExecuteCommandPoller from the specified resume token.
-// token - The value must come from a previous call to DataFlowDebugSessionExecuteCommandPoller.ResumeToken().
-func (client *DataFlowDebugSessionClient) ResumeExecuteCommand(ctx context.Context, token string) (DataFlowDebugSessionExecuteCommandPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DataFlowDebugSessionClient.ExecuteCommand", token, client.con.Pipeline(), client.executeCommandHandleError)
-	if err != nil {
-		return DataFlowDebugSessionExecuteCommandPollerResponse{}, err
-	}
-	poller := &dataFlowDebugSessionExecuteCommandPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return DataFlowDebugSessionExecuteCommandPollerResponse{}, err
-	}
-	result := DataFlowDebugSessionExecuteCommandPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DataFlowDebugSessionExecuteCommandResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DataFlowDebugSessionClient.ExecuteCommand", "", resp, client.pl, client.executeCommandHandleError)
+	if err != nil {
+		return DataFlowDebugSessionExecuteCommandPollerResponse{}, err
+	}
+	result.Poller = &DataFlowDebugSessionExecuteCommandPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // ExecuteCommand - Execute a data flow debug command.
 // If the operation fails it returns the *CloudError error type.
-func (client *DataFlowDebugSessionClient) executeCommand(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugCommandRequest, options *DataFlowDebugSessionBeginExecuteCommandOptions) (*azcore.Response, error) {
+func (client *DataFlowDebugSessionClient) executeCommand(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugCommandRequest, options *DataFlowDebugSessionBeginExecuteCommandOptions) (*http.Response, error) {
 	req, err := client.executeCommandCreateRequest(ctx, resourceGroupName, factoryName, request, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.executeCommandHandleError(resp)
 	}
 	return resp, nil
 }
 
 // executeCommandCreateRequest creates the ExecuteCommand request.
-func (client *DataFlowDebugSessionClient) executeCommandCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugCommandRequest, options *DataFlowDebugSessionBeginExecuteCommandOptions) (*azcore.Request, error) {
+func (client *DataFlowDebugSessionClient) executeCommandCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugCommandRequest, options *DataFlowDebugSessionBeginExecuteCommandOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/executeDataFlowDebugCommand"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -340,47 +284,46 @@ func (client *DataFlowDebugSessionClient) executeCommandCreateRequest(ctx contex
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(request)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, request)
 }
 
 // executeCommandHandleError handles the ExecuteCommand error response.
-func (client *DataFlowDebugSessionClient) executeCommandHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DataFlowDebugSessionClient) executeCommandHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // QueryByFactory - Query all active data flow debug sessions.
 // If the operation fails it returns the *CloudError error type.
-func (client *DataFlowDebugSessionClient) QueryByFactory(resourceGroupName string, factoryName string, options *DataFlowDebugSessionQueryByFactoryOptions) DataFlowDebugSessionQueryByFactoryPager {
-	return &dataFlowDebugSessionQueryByFactoryPager{
+func (client *DataFlowDebugSessionClient) QueryByFactory(resourceGroupName string, factoryName string, options *DataFlowDebugSessionQueryByFactoryOptions) *DataFlowDebugSessionQueryByFactoryPager {
+	return &DataFlowDebugSessionQueryByFactoryPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.queryByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
 		},
-		advancer: func(ctx context.Context, resp DataFlowDebugSessionQueryByFactoryResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.QueryDataFlowDebugSessionsResponse.NextLink)
+		advancer: func(ctx context.Context, resp DataFlowDebugSessionQueryByFactoryResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.QueryDataFlowDebugSessionsResponse.NextLink)
 		},
 	}
 }
 
 // queryByFactoryCreateRequest creates the QueryByFactory request.
-func (client *DataFlowDebugSessionClient) queryByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *DataFlowDebugSessionQueryByFactoryOptions) (*azcore.Request, error) {
+func (client *DataFlowDebugSessionClient) queryByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, options *DataFlowDebugSessionQueryByFactoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/queryDataFlowDebugSessions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -394,36 +337,35 @@ func (client *DataFlowDebugSessionClient) queryByFactoryCreateRequest(ctx contex
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // queryByFactoryHandleResponse handles the QueryByFactory response.
-func (client *DataFlowDebugSessionClient) queryByFactoryHandleResponse(resp *azcore.Response) (DataFlowDebugSessionQueryByFactoryResponse, error) {
-	result := DataFlowDebugSessionQueryByFactoryResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.QueryDataFlowDebugSessionsResponse); err != nil {
+func (client *DataFlowDebugSessionClient) queryByFactoryHandleResponse(resp *http.Response) (DataFlowDebugSessionQueryByFactoryResponse, error) {
+	result := DataFlowDebugSessionQueryByFactoryResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.QueryDataFlowDebugSessionsResponse); err != nil {
 		return DataFlowDebugSessionQueryByFactoryResponse{}, err
 	}
 	return result, nil
 }
 
 // queryByFactoryHandleError handles the QueryByFactory error response.
-func (client *DataFlowDebugSessionClient) queryByFactoryHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DataFlowDebugSessionClient) queryByFactoryHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

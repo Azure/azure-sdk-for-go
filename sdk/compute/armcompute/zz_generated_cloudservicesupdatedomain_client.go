@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,47 +12,50 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CloudServicesUpdateDomainClient contains the methods for the CloudServicesUpdateDomain group.
 // Don't use this type directly, use NewCloudServicesUpdateDomainClient() instead.
 type CloudServicesUpdateDomainClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewCloudServicesUpdateDomainClient creates a new instance of CloudServicesUpdateDomainClient with the specified values.
-func NewCloudServicesUpdateDomainClient(con *armcore.Connection, subscriptionID string) *CloudServicesUpdateDomainClient {
-	return &CloudServicesUpdateDomainClient{con: con, subscriptionID: subscriptionID}
+func NewCloudServicesUpdateDomainClient(con *arm.Connection, subscriptionID string) *CloudServicesUpdateDomainClient {
+	return &CloudServicesUpdateDomainClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // GetUpdateDomain - Gets the specified update domain of a cloud service. Use nextLink property in the response to get the next page of update domains.
 // Do this till nextLink is null to fetch all the update domains.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesUpdateDomainClient) GetUpdateDomain(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainGetUpdateDomainOptions) (UpdateDomainResponse, error) {
+func (client *CloudServicesUpdateDomainClient) GetUpdateDomain(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainGetUpdateDomainOptions) (CloudServicesUpdateDomainGetUpdateDomainResponse, error) {
 	req, err := client.getUpdateDomainCreateRequest(ctx, resourceGroupName, cloudServiceName, updateDomain, options)
 	if err != nil {
-		return UpdateDomainResponse{}, err
+		return CloudServicesUpdateDomainGetUpdateDomainResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return UpdateDomainResponse{}, err
+		return CloudServicesUpdateDomainGetUpdateDomainResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return UpdateDomainResponse{}, client.getUpdateDomainHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return CloudServicesUpdateDomainGetUpdateDomainResponse{}, client.getUpdateDomainHandleError(resp)
 	}
 	return client.getUpdateDomainHandleResponse(resp)
 }
 
 // getUpdateDomainCreateRequest creates the GetUpdateDomain request.
-func (client *CloudServicesUpdateDomainClient) getUpdateDomainCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainGetUpdateDomainOptions) (*azcore.Request, error) {
+func (client *CloudServicesUpdateDomainClient) getUpdateDomainCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainGetUpdateDomainOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/updateDomains/{updateDomain}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -66,59 +70,55 @@ func (client *CloudServicesUpdateDomainClient) getUpdateDomainCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getUpdateDomainHandleResponse handles the GetUpdateDomain response.
-func (client *CloudServicesUpdateDomainClient) getUpdateDomainHandleResponse(resp *azcore.Response) (UpdateDomainResponse, error) {
-	var val *UpdateDomain
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return UpdateDomainResponse{}, err
+func (client *CloudServicesUpdateDomainClient) getUpdateDomainHandleResponse(resp *http.Response) (CloudServicesUpdateDomainGetUpdateDomainResponse, error) {
+	result := CloudServicesUpdateDomainGetUpdateDomainResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.UpdateDomain); err != nil {
+		return CloudServicesUpdateDomainGetUpdateDomainResponse{}, err
 	}
-	return UpdateDomainResponse{RawResponse: resp.Response, UpdateDomain: val}, nil
+	return result, nil
 }
 
 // getUpdateDomainHandleError handles the GetUpdateDomain error response.
-func (client *CloudServicesUpdateDomainClient) getUpdateDomainHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CloudServicesUpdateDomainClient) getUpdateDomainHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListUpdateDomains - Gets a list of all update domains in a cloud service.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesUpdateDomainClient) ListUpdateDomains(resourceGroupName string, cloudServiceName string, options *CloudServicesUpdateDomainListUpdateDomainsOptions) UpdateDomainListResultPager {
-	return &updateDomainListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *CloudServicesUpdateDomainClient) ListUpdateDomains(resourceGroupName string, cloudServiceName string, options *CloudServicesUpdateDomainListUpdateDomainsOptions) *CloudServicesUpdateDomainListUpdateDomainsPager {
+	return &CloudServicesUpdateDomainListUpdateDomainsPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listUpdateDomainsCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
 		},
-		responder: client.listUpdateDomainsHandleResponse,
-		errorer:   client.listUpdateDomainsHandleError,
-		advancer: func(ctx context.Context, resp UpdateDomainListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.UpdateDomainListResult.NextLink)
+		advancer: func(ctx context.Context, resp CloudServicesUpdateDomainListUpdateDomainsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.UpdateDomainListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listUpdateDomainsCreateRequest creates the ListUpdateDomains request.
-func (client *CloudServicesUpdateDomainClient) listUpdateDomainsCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesUpdateDomainListUpdateDomainsOptions) (*azcore.Request, error) {
+func (client *CloudServicesUpdateDomainClient) listUpdateDomainsCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, options *CloudServicesUpdateDomainListUpdateDomainsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/updateDomains"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -132,107 +132,78 @@ func (client *CloudServicesUpdateDomainClient) listUpdateDomainsCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listUpdateDomainsHandleResponse handles the ListUpdateDomains response.
-func (client *CloudServicesUpdateDomainClient) listUpdateDomainsHandleResponse(resp *azcore.Response) (UpdateDomainListResultResponse, error) {
-	var val *UpdateDomainListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return UpdateDomainListResultResponse{}, err
-	}
-	return UpdateDomainListResultResponse{RawResponse: resp.Response, UpdateDomainListResult: val}, nil
-}
-
-// listUpdateDomainsHandleError handles the ListUpdateDomains error response.
-func (client *CloudServicesUpdateDomainClient) listUpdateDomainsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
-	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
-	}
-	return azcore.NewResponseError(&errType, resp.Response)
-}
-
-// BeginWalkUpdateDomain - Updates the role instances in the specified update domain.
-// If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesUpdateDomainClient) BeginWalkUpdateDomain(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainBeginWalkUpdateDomainOptions) (HTTPPollerResponse, error) {
-	resp, err := client.walkUpdateDomain(ctx, resourceGroupName, cloudServiceName, updateDomain, options)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("CloudServicesUpdateDomainClient.WalkUpdateDomain", "", resp, client.con.Pipeline(), client.walkUpdateDomainHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+func (client *CloudServicesUpdateDomainClient) listUpdateDomainsHandleResponse(resp *http.Response) (CloudServicesUpdateDomainListUpdateDomainsResponse, error) {
+	result := CloudServicesUpdateDomainListUpdateDomainsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.UpdateDomainListResult); err != nil {
+		return CloudServicesUpdateDomainListUpdateDomainsResponse{}, err
 	}
 	return result, nil
 }
 
-// ResumeWalkUpdateDomain creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *CloudServicesUpdateDomainClient) ResumeWalkUpdateDomain(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("CloudServicesUpdateDomainClient.WalkUpdateDomain", token, client.con.Pipeline(), client.walkUpdateDomainHandleError)
+// listUpdateDomainsHandleError handles the ListUpdateDomains error response.
+func (client *CloudServicesUpdateDomainClient) listUpdateDomainsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return runtime.NewResponseError(err, resp)
 	}
-	poller := &httpPoller{
-		pt: pt,
+	errType := CloudError{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	resp, err := poller.Poll(ctx)
+	return runtime.NewResponseError(&errType, resp)
+}
+
+// BeginWalkUpdateDomain - Updates the role instances in the specified update domain.
+// If the operation fails it returns the *CloudError error type.
+func (client *CloudServicesUpdateDomainClient) BeginWalkUpdateDomain(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainBeginWalkUpdateDomainOptions) (CloudServicesUpdateDomainWalkUpdateDomainPollerResponse, error) {
+	resp, err := client.walkUpdateDomain(ctx, resourceGroupName, cloudServiceName, updateDomain, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return CloudServicesUpdateDomainWalkUpdateDomainPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := CloudServicesUpdateDomainWalkUpdateDomainPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("CloudServicesUpdateDomainClient.WalkUpdateDomain", "", resp, client.pl, client.walkUpdateDomainHandleError)
+	if err != nil {
+		return CloudServicesUpdateDomainWalkUpdateDomainPollerResponse{}, err
+	}
+	result.Poller = &CloudServicesUpdateDomainWalkUpdateDomainPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // WalkUpdateDomain - Updates the role instances in the specified update domain.
 // If the operation fails it returns the *CloudError error type.
-func (client *CloudServicesUpdateDomainClient) walkUpdateDomain(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainBeginWalkUpdateDomainOptions) (*azcore.Response, error) {
+func (client *CloudServicesUpdateDomainClient) walkUpdateDomain(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainBeginWalkUpdateDomainOptions) (*http.Response, error) {
 	req, err := client.walkUpdateDomainCreateRequest(ctx, resourceGroupName, cloudServiceName, updateDomain, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.walkUpdateDomainHandleError(resp)
 	}
 	return resp, nil
 }
 
 // walkUpdateDomainCreateRequest creates the WalkUpdateDomain request.
-func (client *CloudServicesUpdateDomainClient) walkUpdateDomainCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainBeginWalkUpdateDomainOptions) (*azcore.Request, error) {
+func (client *CloudServicesUpdateDomainClient) walkUpdateDomainCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, updateDomain int32, options *CloudServicesUpdateDomainBeginWalkUpdateDomainOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/cloudServices/{cloudServiceName}/updateDomains/{updateDomain}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -247,30 +218,29 @@ func (client *CloudServicesUpdateDomainClient) walkUpdateDomainCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Parameters != nil {
-		return req, req.MarshalAsJSON(*options.Parameters)
+		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
 	return req, nil
 }
 
 // walkUpdateDomainHandleError handles the WalkUpdateDomain error response.
-func (client *CloudServicesUpdateDomainClient) walkUpdateDomainHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CloudServicesUpdateDomainClient) walkUpdateDomainHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

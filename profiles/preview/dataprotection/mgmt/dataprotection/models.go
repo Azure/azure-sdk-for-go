@@ -12,7 +12,7 @@ package dataprotection
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/dataprotection/mgmt/2021-01-01/dataprotection"
+	original "github.com/Azure/azure-sdk-for-go/services/dataprotection/mgmt/2021-07-01/dataprotection"
 )
 
 const (
@@ -22,57 +22,57 @@ const (
 type AbsoluteMarker = original.AbsoluteMarker
 
 const (
-	AllBackup    AbsoluteMarker = original.AllBackup
-	FirstOfDay   AbsoluteMarker = original.FirstOfDay
-	FirstOfMonth AbsoluteMarker = original.FirstOfMonth
-	FirstOfWeek  AbsoluteMarker = original.FirstOfWeek
-	FirstOfYear  AbsoluteMarker = original.FirstOfYear
+	AbsoluteMarkerAllBackup    AbsoluteMarker = original.AbsoluteMarkerAllBackup
+	AbsoluteMarkerFirstOfDay   AbsoluteMarker = original.AbsoluteMarkerFirstOfDay
+	AbsoluteMarkerFirstOfMonth AbsoluteMarker = original.AbsoluteMarkerFirstOfMonth
+	AbsoluteMarkerFirstOfWeek  AbsoluteMarker = original.AbsoluteMarkerFirstOfWeek
+	AbsoluteMarkerFirstOfYear  AbsoluteMarker = original.AbsoluteMarkerFirstOfYear
 )
 
 type CreatedByType = original.CreatedByType
 
 const (
-	Application     CreatedByType = original.Application
-	Key             CreatedByType = original.Key
-	ManagedIdentity CreatedByType = original.ManagedIdentity
-	User            CreatedByType = original.User
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type CurrentProtectionState = original.CurrentProtectionState
 
 const (
-	BackupSchedulesSuspended    CurrentProtectionState = original.BackupSchedulesSuspended
-	ConfiguringProtection       CurrentProtectionState = original.ConfiguringProtection
-	ConfiguringProtectionFailed CurrentProtectionState = original.ConfiguringProtectionFailed
-	Invalid                     CurrentProtectionState = original.Invalid
-	NotProtected                CurrentProtectionState = original.NotProtected
-	ProtectionConfigured        CurrentProtectionState = original.ProtectionConfigured
-	ProtectionError             CurrentProtectionState = original.ProtectionError
-	ProtectionStopped           CurrentProtectionState = original.ProtectionStopped
-	RetentionSchedulesSuspended CurrentProtectionState = original.RetentionSchedulesSuspended
-	SoftDeleted                 CurrentProtectionState = original.SoftDeleted
-	SoftDeleting                CurrentProtectionState = original.SoftDeleting
-	UpdatingProtection          CurrentProtectionState = original.UpdatingProtection
+	CurrentProtectionStateBackupSchedulesSuspended    CurrentProtectionState = original.CurrentProtectionStateBackupSchedulesSuspended
+	CurrentProtectionStateConfiguringProtection       CurrentProtectionState = original.CurrentProtectionStateConfiguringProtection
+	CurrentProtectionStateConfiguringProtectionFailed CurrentProtectionState = original.CurrentProtectionStateConfiguringProtectionFailed
+	CurrentProtectionStateInvalid                     CurrentProtectionState = original.CurrentProtectionStateInvalid
+	CurrentProtectionStateNotProtected                CurrentProtectionState = original.CurrentProtectionStateNotProtected
+	CurrentProtectionStateProtectionConfigured        CurrentProtectionState = original.CurrentProtectionStateProtectionConfigured
+	CurrentProtectionStateProtectionError             CurrentProtectionState = original.CurrentProtectionStateProtectionError
+	CurrentProtectionStateProtectionStopped           CurrentProtectionState = original.CurrentProtectionStateProtectionStopped
+	CurrentProtectionStateRetentionSchedulesSuspended CurrentProtectionState = original.CurrentProtectionStateRetentionSchedulesSuspended
+	CurrentProtectionStateSoftDeleted                 CurrentProtectionState = original.CurrentProtectionStateSoftDeleted
+	CurrentProtectionStateSoftDeleting                CurrentProtectionState = original.CurrentProtectionStateSoftDeleting
+	CurrentProtectionStateUpdatingProtection          CurrentProtectionState = original.CurrentProtectionStateUpdatingProtection
 )
 
 type DataStoreTypes = original.DataStoreTypes
 
 const (
-	ArchiveStore     DataStoreTypes = original.ArchiveStore
-	OperationalStore DataStoreTypes = original.OperationalStore
-	VaultStore       DataStoreTypes = original.VaultStore
+	DataStoreTypesArchiveStore     DataStoreTypes = original.DataStoreTypesArchiveStore
+	DataStoreTypesOperationalStore DataStoreTypes = original.DataStoreTypesOperationalStore
+	DataStoreTypesVaultStore       DataStoreTypes = original.DataStoreTypesVaultStore
 )
 
 type DayOfWeek = original.DayOfWeek
 
 const (
-	Friday    DayOfWeek = original.Friday
-	Monday    DayOfWeek = original.Monday
-	Saturday  DayOfWeek = original.Saturday
-	Sunday    DayOfWeek = original.Sunday
-	Thursday  DayOfWeek = original.Thursday
-	Tuesday   DayOfWeek = original.Tuesday
-	Wednesday DayOfWeek = original.Wednesday
+	DayOfWeekFriday    DayOfWeek = original.DayOfWeekFriday
+	DayOfWeekMonday    DayOfWeek = original.DayOfWeekMonday
+	DayOfWeekSaturday  DayOfWeek = original.DayOfWeekSaturday
+	DayOfWeekSunday    DayOfWeek = original.DayOfWeekSunday
+	DayOfWeekThursday  DayOfWeek = original.DayOfWeekThursday
+	DayOfWeekTuesday   DayOfWeek = original.DayOfWeekTuesday
+	DayOfWeekWednesday DayOfWeek = original.DayOfWeekWednesday
 )
 
 type FeatureSupportStatus = original.FeatureSupportStatus
@@ -96,134 +96,148 @@ const (
 type Month = original.Month
 
 const (
-	April     Month = original.April
-	August    Month = original.August
-	December  Month = original.December
-	February  Month = original.February
-	January   Month = original.January
-	July      Month = original.July
-	June      Month = original.June
-	March     Month = original.March
-	May       Month = original.May
-	November  Month = original.November
-	October   Month = original.October
-	September Month = original.September
+	MonthApril     Month = original.MonthApril
+	MonthAugust    Month = original.MonthAugust
+	MonthDecember  Month = original.MonthDecember
+	MonthFebruary  Month = original.MonthFebruary
+	MonthJanuary   Month = original.MonthJanuary
+	MonthJuly      Month = original.MonthJuly
+	MonthJune      Month = original.MonthJune
+	MonthMarch     Month = original.MonthMarch
+	MonthMay       Month = original.MonthMay
+	MonthNovember  Month = original.MonthNovember
+	MonthOctober   Month = original.MonthOctober
+	MonthSeptember Month = original.MonthSeptember
 )
 
 type ObjectType = original.ObjectType
 
 const (
-	ObjectTypeAzureBackupDiscreteRecoveryPoint ObjectType = original.ObjectTypeAzureBackupDiscreteRecoveryPoint
-	ObjectTypeAzureBackupRecoveryPoint         ObjectType = original.ObjectTypeAzureBackupRecoveryPoint
+	ObjectTypeAuthCredentials                 ObjectType = original.ObjectTypeAuthCredentials
+	ObjectTypeSecretStoreBasedAuthCredentials ObjectType = original.ObjectTypeSecretStoreBasedAuthCredentials
+)
+
+type ObjectTypeBasicAzureBackupRecoveryPoint = original.ObjectTypeBasicAzureBackupRecoveryPoint
+
+const (
+	ObjectTypeBasicAzureBackupRecoveryPointObjectTypeAzureBackupDiscreteRecoveryPoint ObjectTypeBasicAzureBackupRecoveryPoint = original.ObjectTypeBasicAzureBackupRecoveryPointObjectTypeAzureBackupDiscreteRecoveryPoint
+	ObjectTypeBasicAzureBackupRecoveryPointObjectTypeAzureBackupRecoveryPoint         ObjectTypeBasicAzureBackupRecoveryPoint = original.ObjectTypeBasicAzureBackupRecoveryPointObjectTypeAzureBackupRecoveryPoint
 )
 
 type ObjectTypeBasicAzureBackupRestoreRequest = original.ObjectTypeBasicAzureBackupRestoreRequest
 
 const (
-	ObjectTypeAzureBackupRecoveryPointBasedRestoreRequest ObjectTypeBasicAzureBackupRestoreRequest = original.ObjectTypeAzureBackupRecoveryPointBasedRestoreRequest
-	ObjectTypeAzureBackupRecoveryTimeBasedRestoreRequest  ObjectTypeBasicAzureBackupRestoreRequest = original.ObjectTypeAzureBackupRecoveryTimeBasedRestoreRequest
-	ObjectTypeAzureBackupRestoreRequest                   ObjectTypeBasicAzureBackupRestoreRequest = original.ObjectTypeAzureBackupRestoreRequest
-	ObjectTypeAzureBackupRestoreWithRehydrationRequest    ObjectTypeBasicAzureBackupRestoreRequest = original.ObjectTypeAzureBackupRestoreWithRehydrationRequest
+	ObjectTypeBasicAzureBackupRestoreRequestObjectTypeAzureBackupRecoveryPointBasedRestoreRequest ObjectTypeBasicAzureBackupRestoreRequest = original.ObjectTypeBasicAzureBackupRestoreRequestObjectTypeAzureBackupRecoveryPointBasedRestoreRequest
+	ObjectTypeBasicAzureBackupRestoreRequestObjectTypeAzureBackupRecoveryTimeBasedRestoreRequest  ObjectTypeBasicAzureBackupRestoreRequest = original.ObjectTypeBasicAzureBackupRestoreRequestObjectTypeAzureBackupRecoveryTimeBasedRestoreRequest
+	ObjectTypeBasicAzureBackupRestoreRequestObjectTypeAzureBackupRestoreRequest                   ObjectTypeBasicAzureBackupRestoreRequest = original.ObjectTypeBasicAzureBackupRestoreRequestObjectTypeAzureBackupRestoreRequest
+	ObjectTypeBasicAzureBackupRestoreRequestObjectTypeAzureBackupRestoreWithRehydrationRequest    ObjectTypeBasicAzureBackupRestoreRequest = original.ObjectTypeBasicAzureBackupRestoreRequestObjectTypeAzureBackupRestoreWithRehydrationRequest
 )
 
 type ObjectTypeBasicBackupCriteria = original.ObjectTypeBasicBackupCriteria
 
 const (
-	ObjectTypeBackupCriteria              ObjectTypeBasicBackupCriteria = original.ObjectTypeBackupCriteria
-	ObjectTypeScheduleBasedBackupCriteria ObjectTypeBasicBackupCriteria = original.ObjectTypeScheduleBasedBackupCriteria
+	ObjectTypeBasicBackupCriteriaObjectTypeBackupCriteria              ObjectTypeBasicBackupCriteria = original.ObjectTypeBasicBackupCriteriaObjectTypeBackupCriteria
+	ObjectTypeBasicBackupCriteriaObjectTypeScheduleBasedBackupCriteria ObjectTypeBasicBackupCriteria = original.ObjectTypeBasicBackupCriteriaObjectTypeScheduleBasedBackupCriteria
 )
 
 type ObjectTypeBasicBackupParameters = original.ObjectTypeBasicBackupParameters
 
 const (
-	ObjectTypeAzureBackupParams ObjectTypeBasicBackupParameters = original.ObjectTypeAzureBackupParams
-	ObjectTypeBackupParameters  ObjectTypeBasicBackupParameters = original.ObjectTypeBackupParameters
+	ObjectTypeBasicBackupParametersObjectTypeAzureBackupParams ObjectTypeBasicBackupParameters = original.ObjectTypeBasicBackupParametersObjectTypeAzureBackupParams
+	ObjectTypeBasicBackupParametersObjectTypeBackupParameters  ObjectTypeBasicBackupParameters = original.ObjectTypeBasicBackupParametersObjectTypeBackupParameters
 )
 
 type ObjectTypeBasicBaseBackupPolicy = original.ObjectTypeBasicBaseBackupPolicy
 
 const (
-	ObjectTypeBackupPolicy     ObjectTypeBasicBaseBackupPolicy = original.ObjectTypeBackupPolicy
-	ObjectTypeBaseBackupPolicy ObjectTypeBasicBaseBackupPolicy = original.ObjectTypeBaseBackupPolicy
+	ObjectTypeBasicBaseBackupPolicyObjectTypeBackupPolicy     ObjectTypeBasicBaseBackupPolicy = original.ObjectTypeBasicBaseBackupPolicyObjectTypeBackupPolicy
+	ObjectTypeBasicBaseBackupPolicyObjectTypeBaseBackupPolicy ObjectTypeBasicBaseBackupPolicy = original.ObjectTypeBasicBaseBackupPolicyObjectTypeBaseBackupPolicy
 )
 
 type ObjectTypeBasicBasePolicyRule = original.ObjectTypeBasicBasePolicyRule
 
 const (
-	ObjectTypeAzureBackupRule    ObjectTypeBasicBasePolicyRule = original.ObjectTypeAzureBackupRule
-	ObjectTypeAzureRetentionRule ObjectTypeBasicBasePolicyRule = original.ObjectTypeAzureRetentionRule
-	ObjectTypeBasePolicyRule     ObjectTypeBasicBasePolicyRule = original.ObjectTypeBasePolicyRule
+	ObjectTypeBasicBasePolicyRuleObjectTypeAzureBackupRule    ObjectTypeBasicBasePolicyRule = original.ObjectTypeBasicBasePolicyRuleObjectTypeAzureBackupRule
+	ObjectTypeBasicBasePolicyRuleObjectTypeAzureRetentionRule ObjectTypeBasicBasePolicyRule = original.ObjectTypeBasicBasePolicyRuleObjectTypeAzureRetentionRule
+	ObjectTypeBasicBasePolicyRuleObjectTypeBasePolicyRule     ObjectTypeBasicBasePolicyRule = original.ObjectTypeBasicBasePolicyRuleObjectTypeBasePolicyRule
 )
 
 type ObjectTypeBasicCopyOption = original.ObjectTypeBasicCopyOption
 
 const (
-	ObjectTypeCopyOnExpiryOption  ObjectTypeBasicCopyOption = original.ObjectTypeCopyOnExpiryOption
-	ObjectTypeCopyOption          ObjectTypeBasicCopyOption = original.ObjectTypeCopyOption
-	ObjectTypeCustomCopyOption    ObjectTypeBasicCopyOption = original.ObjectTypeCustomCopyOption
-	ObjectTypeImmediateCopyOption ObjectTypeBasicCopyOption = original.ObjectTypeImmediateCopyOption
+	ObjectTypeBasicCopyOptionObjectTypeCopyOnExpiryOption  ObjectTypeBasicCopyOption = original.ObjectTypeBasicCopyOptionObjectTypeCopyOnExpiryOption
+	ObjectTypeBasicCopyOptionObjectTypeCopyOption          ObjectTypeBasicCopyOption = original.ObjectTypeBasicCopyOptionObjectTypeCopyOption
+	ObjectTypeBasicCopyOptionObjectTypeCustomCopyOption    ObjectTypeBasicCopyOption = original.ObjectTypeBasicCopyOptionObjectTypeCustomCopyOption
+	ObjectTypeBasicCopyOptionObjectTypeImmediateCopyOption ObjectTypeBasicCopyOption = original.ObjectTypeBasicCopyOptionObjectTypeImmediateCopyOption
 )
 
 type ObjectTypeBasicDataStoreParameters = original.ObjectTypeBasicDataStoreParameters
 
 const (
-	ObjectTypeAzureOperationalStoreParameters ObjectTypeBasicDataStoreParameters = original.ObjectTypeAzureOperationalStoreParameters
-	ObjectTypeDataStoreParameters             ObjectTypeBasicDataStoreParameters = original.ObjectTypeDataStoreParameters
+	ObjectTypeBasicDataStoreParametersObjectTypeAzureOperationalStoreParameters ObjectTypeBasicDataStoreParameters = original.ObjectTypeBasicDataStoreParametersObjectTypeAzureOperationalStoreParameters
+	ObjectTypeBasicDataStoreParametersObjectTypeDataStoreParameters             ObjectTypeBasicDataStoreParameters = original.ObjectTypeBasicDataStoreParametersObjectTypeDataStoreParameters
 )
 
 type ObjectTypeBasicDeleteOption = original.ObjectTypeBasicDeleteOption
 
 const (
-	ObjectTypeAbsoluteDeleteOption ObjectTypeBasicDeleteOption = original.ObjectTypeAbsoluteDeleteOption
-	ObjectTypeDeleteOption         ObjectTypeBasicDeleteOption = original.ObjectTypeDeleteOption
+	ObjectTypeBasicDeleteOptionObjectTypeAbsoluteDeleteOption ObjectTypeBasicDeleteOption = original.ObjectTypeBasicDeleteOptionObjectTypeAbsoluteDeleteOption
+	ObjectTypeBasicDeleteOptionObjectTypeDeleteOption         ObjectTypeBasicDeleteOption = original.ObjectTypeBasicDeleteOptionObjectTypeDeleteOption
 )
 
 type ObjectTypeBasicFeatureValidationRequestBase = original.ObjectTypeBasicFeatureValidationRequestBase
 
 const (
-	ObjectTypeFeatureValidationRequest     ObjectTypeBasicFeatureValidationRequestBase = original.ObjectTypeFeatureValidationRequest
-	ObjectTypeFeatureValidationRequestBase ObjectTypeBasicFeatureValidationRequestBase = original.ObjectTypeFeatureValidationRequestBase
+	ObjectTypeBasicFeatureValidationRequestBaseObjectTypeFeatureValidationRequest     ObjectTypeBasicFeatureValidationRequestBase = original.ObjectTypeBasicFeatureValidationRequestBaseObjectTypeFeatureValidationRequest
+	ObjectTypeBasicFeatureValidationRequestBaseObjectTypeFeatureValidationRequestBase ObjectTypeBasicFeatureValidationRequestBase = original.ObjectTypeBasicFeatureValidationRequestBaseObjectTypeFeatureValidationRequestBase
 )
 
 type ObjectTypeBasicFeatureValidationResponseBase = original.ObjectTypeBasicFeatureValidationResponseBase
 
 const (
-	ObjectTypeFeatureValidationResponse     ObjectTypeBasicFeatureValidationResponseBase = original.ObjectTypeFeatureValidationResponse
-	ObjectTypeFeatureValidationResponseBase ObjectTypeBasicFeatureValidationResponseBase = original.ObjectTypeFeatureValidationResponseBase
+	ObjectTypeBasicFeatureValidationResponseBaseObjectTypeFeatureValidationResponse     ObjectTypeBasicFeatureValidationResponseBase = original.ObjectTypeBasicFeatureValidationResponseBaseObjectTypeFeatureValidationResponse
+	ObjectTypeBasicFeatureValidationResponseBaseObjectTypeFeatureValidationResponseBase ObjectTypeBasicFeatureValidationResponseBase = original.ObjectTypeBasicFeatureValidationResponseBaseObjectTypeFeatureValidationResponseBase
 )
 
 type ObjectTypeBasicItemLevelRestoreCriteria = original.ObjectTypeBasicItemLevelRestoreCriteria
 
 const (
-	ObjectTypeItemLevelRestoreCriteria           ObjectTypeBasicItemLevelRestoreCriteria = original.ObjectTypeItemLevelRestoreCriteria
-	ObjectTypeRangeBasedItemLevelRestoreCriteria ObjectTypeBasicItemLevelRestoreCriteria = original.ObjectTypeRangeBasedItemLevelRestoreCriteria
+	ObjectTypeBasicItemLevelRestoreCriteriaObjectTypeItemLevelRestoreCriteria           ObjectTypeBasicItemLevelRestoreCriteria = original.ObjectTypeBasicItemLevelRestoreCriteriaObjectTypeItemLevelRestoreCriteria
+	ObjectTypeBasicItemLevelRestoreCriteriaObjectTypeRangeBasedItemLevelRestoreCriteria ObjectTypeBasicItemLevelRestoreCriteria = original.ObjectTypeBasicItemLevelRestoreCriteriaObjectTypeRangeBasedItemLevelRestoreCriteria
+)
+
+type ObjectTypeBasicOperationExtendedInfo = original.ObjectTypeBasicOperationExtendedInfo
+
+const (
+	ObjectTypeBasicOperationExtendedInfoObjectTypeOperationExtendedInfo    ObjectTypeBasicOperationExtendedInfo = original.ObjectTypeBasicOperationExtendedInfoObjectTypeOperationExtendedInfo
+	ObjectTypeBasicOperationExtendedInfoObjectTypeOperationJobExtendedInfo ObjectTypeBasicOperationExtendedInfo = original.ObjectTypeBasicOperationExtendedInfoObjectTypeOperationJobExtendedInfo
 )
 
 type ObjectTypeBasicRestoreTargetInfoBase = original.ObjectTypeBasicRestoreTargetInfoBase
 
 const (
-	ObjectTypeItemLevelRestoreTargetInfo ObjectTypeBasicRestoreTargetInfoBase = original.ObjectTypeItemLevelRestoreTargetInfo
-	ObjectTypeRestoreFilesTargetInfo     ObjectTypeBasicRestoreTargetInfoBase = original.ObjectTypeRestoreFilesTargetInfo
-	ObjectTypeRestoreTargetInfo          ObjectTypeBasicRestoreTargetInfoBase = original.ObjectTypeRestoreTargetInfo
-	ObjectTypeRestoreTargetInfoBase      ObjectTypeBasicRestoreTargetInfoBase = original.ObjectTypeRestoreTargetInfoBase
+	ObjectTypeBasicRestoreTargetInfoBaseObjectTypeItemLevelRestoreTargetInfo ObjectTypeBasicRestoreTargetInfoBase = original.ObjectTypeBasicRestoreTargetInfoBaseObjectTypeItemLevelRestoreTargetInfo
+	ObjectTypeBasicRestoreTargetInfoBaseObjectTypeRestoreFilesTargetInfo     ObjectTypeBasicRestoreTargetInfoBase = original.ObjectTypeBasicRestoreTargetInfoBaseObjectTypeRestoreFilesTargetInfo
+	ObjectTypeBasicRestoreTargetInfoBaseObjectTypeRestoreTargetInfo          ObjectTypeBasicRestoreTargetInfoBase = original.ObjectTypeBasicRestoreTargetInfoBaseObjectTypeRestoreTargetInfo
+	ObjectTypeBasicRestoreTargetInfoBaseObjectTypeRestoreTargetInfoBase      ObjectTypeBasicRestoreTargetInfoBase = original.ObjectTypeBasicRestoreTargetInfoBaseObjectTypeRestoreTargetInfoBase
 )
 
 type ObjectTypeBasicTriggerContext = original.ObjectTypeBasicTriggerContext
 
 const (
-	ObjectTypeAdhocBasedTriggerContext    ObjectTypeBasicTriggerContext = original.ObjectTypeAdhocBasedTriggerContext
-	ObjectTypeScheduleBasedTriggerContext ObjectTypeBasicTriggerContext = original.ObjectTypeScheduleBasedTriggerContext
-	ObjectTypeTriggerContext              ObjectTypeBasicTriggerContext = original.ObjectTypeTriggerContext
+	ObjectTypeBasicTriggerContextObjectTypeAdhocBasedTriggerContext    ObjectTypeBasicTriggerContext = original.ObjectTypeBasicTriggerContextObjectTypeAdhocBasedTriggerContext
+	ObjectTypeBasicTriggerContextObjectTypeScheduleBasedTriggerContext ObjectTypeBasicTriggerContext = original.ObjectTypeBasicTriggerContextObjectTypeScheduleBasedTriggerContext
+	ObjectTypeBasicTriggerContextObjectTypeTriggerContext              ObjectTypeBasicTriggerContext = original.ObjectTypeBasicTriggerContextObjectTypeTriggerContext
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Failed       ProvisioningState = original.Failed
-	Provisioning ProvisioningState = original.Provisioning
-	Succeeded    ProvisioningState = original.Succeeded
-	Unknown      ProvisioningState = original.Unknown
-	Updating     ProvisioningState = original.Updating
+	ProvisioningStateFailed       ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateProvisioning ProvisioningState = original.ProvisioningStateProvisioning
+	ProvisioningStateSucceeded    ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUnknown      ProvisioningState = original.ProvisioningStateUnknown
+	ProvisioningStateUpdating     ProvisioningState = original.ProvisioningStateUpdating
 )
 
 type RehydrationPriority = original.RehydrationPriority
@@ -237,11 +251,26 @@ const (
 type RehydrationStatus = original.RehydrationStatus
 
 const (
-	COMPLETED        RehydrationStatus = original.COMPLETED
-	CREATEINPROGRESS RehydrationStatus = original.CREATEINPROGRESS
-	DELETED          RehydrationStatus = original.DELETED
-	DELETEINPROGRESS RehydrationStatus = original.DELETEINPROGRESS
-	FAILED           RehydrationStatus = original.FAILED
+	RehydrationStatusCOMPLETED        RehydrationStatus = original.RehydrationStatusCOMPLETED
+	RehydrationStatusCREATEINPROGRESS RehydrationStatus = original.RehydrationStatusCREATEINPROGRESS
+	RehydrationStatusDELETED          RehydrationStatus = original.RehydrationStatusDELETED
+	RehydrationStatusDELETEINPROGRESS RehydrationStatus = original.RehydrationStatusDELETEINPROGRESS
+	RehydrationStatusFAILED           RehydrationStatus = original.RehydrationStatusFAILED
+)
+
+type ResourceMoveState = original.ResourceMoveState
+
+const (
+	ResourceMoveStateCommitFailed    ResourceMoveState = original.ResourceMoveStateCommitFailed
+	ResourceMoveStateCommitTimedout  ResourceMoveState = original.ResourceMoveStateCommitTimedout
+	ResourceMoveStateCriticalFailure ResourceMoveState = original.ResourceMoveStateCriticalFailure
+	ResourceMoveStateFailed          ResourceMoveState = original.ResourceMoveStateFailed
+	ResourceMoveStateInProgress      ResourceMoveState = original.ResourceMoveStateInProgress
+	ResourceMoveStateMoveSucceeded   ResourceMoveState = original.ResourceMoveStateMoveSucceeded
+	ResourceMoveStatePartialSuccess  ResourceMoveState = original.ResourceMoveStatePartialSuccess
+	ResourceMoveStatePrepareFailed   ResourceMoveState = original.ResourceMoveStatePrepareFailed
+	ResourceMoveStatePrepareTimedout ResourceMoveState = original.ResourceMoveStatePrepareTimedout
+	ResourceMoveStateUnknown         ResourceMoveState = original.ResourceMoveStateUnknown
 )
 
 type RestoreSourceDataStoreType = original.RestoreSourceDataStoreType
@@ -258,6 +287,13 @@ const (
 	RestoreTargetLocationTypeAzureBlobs RestoreTargetLocationType = original.RestoreTargetLocationTypeAzureBlobs
 	RestoreTargetLocationTypeAzureFiles RestoreTargetLocationType = original.RestoreTargetLocationTypeAzureFiles
 	RestoreTargetLocationTypeInvalid    RestoreTargetLocationType = original.RestoreTargetLocationTypeInvalid
+)
+
+type SecretStoreType = original.SecretStoreType
+
+const (
+	SecretStoreTypeAzureKeyVault SecretStoreType = original.SecretStoreTypeAzureKeyVault
+	SecretStoreTypeInvalid       SecretStoreType = original.SecretStoreTypeInvalid
 )
 
 type SourceDataStoreType = original.SourceDataStoreType
@@ -290,18 +326,18 @@ const (
 type StorageSettingTypes = original.StorageSettingTypes
 
 const (
-	GeoRedundant     StorageSettingTypes = original.GeoRedundant
-	LocallyRedundant StorageSettingTypes = original.LocallyRedundant
+	StorageSettingTypesGeoRedundant     StorageSettingTypes = original.StorageSettingTypesGeoRedundant
+	StorageSettingTypesLocallyRedundant StorageSettingTypes = original.StorageSettingTypesLocallyRedundant
 )
 
 type WeekNumber = original.WeekNumber
 
 const (
-	First  WeekNumber = original.First
-	Fourth WeekNumber = original.Fourth
-	Last   WeekNumber = original.Last
-	Second WeekNumber = original.Second
-	Third  WeekNumber = original.Third
+	WeekNumberFirst  WeekNumber = original.WeekNumberFirst
+	WeekNumberFourth WeekNumber = original.WeekNumberFourth
+	WeekNumberLast   WeekNumber = original.WeekNumberLast
+	WeekNumberSecond WeekNumber = original.WeekNumberSecond
+	WeekNumberThird  WeekNumber = original.WeekNumberThird
 )
 
 type AbsoluteDeleteOption = original.AbsoluteDeleteOption
@@ -309,6 +345,7 @@ type AdHocBackupRuleOptions = original.AdHocBackupRuleOptions
 type AdhocBackupTriggerOption = original.AdhocBackupTriggerOption
 type AdhocBasedTaggingCriteria = original.AdhocBasedTaggingCriteria
 type AdhocBasedTriggerContext = original.AdhocBasedTriggerContext
+type AuthCredentials = original.AuthCredentials
 type AzureBackupDiscreteRecoveryPoint = original.AzureBackupDiscreteRecoveryPoint
 type AzureBackupFindRestorableTimeRangesRequest = original.AzureBackupFindRestorableTimeRangesRequest
 type AzureBackupFindRestorableTimeRangesRequestResource = original.AzureBackupFindRestorableTimeRangesRequestResource
@@ -346,19 +383,20 @@ type BackupInstancesDeleteFuture = original.BackupInstancesDeleteFuture
 type BackupInstancesTriggerRehydrateFuture = original.BackupInstancesTriggerRehydrateFuture
 type BackupInstancesTriggerRestoreFuture = original.BackupInstancesTriggerRestoreFuture
 type BackupInstancesValidateForBackupFuture = original.BackupInstancesValidateForBackupFuture
-type BackupInstancesValidateRestoreFuture = original.BackupInstancesValidateRestoreFuture
+type BackupInstancesValidateForRestoreFuture = original.BackupInstancesValidateForRestoreFuture
 type BackupParameters = original.BackupParameters
 type BackupPoliciesClient = original.BackupPoliciesClient
 type BackupPolicy = original.BackupPolicy
 type BackupSchedule = original.BackupSchedule
 type BackupVault = original.BackupVault
+type BackupVaultOperationResultsClient = original.BackupVaultOperationResultsClient
 type BackupVaultResource = original.BackupVaultResource
 type BackupVaultResourceList = original.BackupVaultResourceList
 type BackupVaultResourceListIterator = original.BackupVaultResourceListIterator
 type BackupVaultResourceListPage = original.BackupVaultResourceListPage
 type BackupVaultsClient = original.BackupVaultsClient
 type BackupVaultsCreateOrUpdateFuture = original.BackupVaultsCreateOrUpdateFuture
-type BackupVaultsPatchFuture = original.BackupVaultsPatchFuture
+type BackupVaultsUpdateFuture = original.BackupVaultsUpdateFuture
 type BaseBackupPolicy = original.BaseBackupPolicy
 type BaseBackupPolicyResource = original.BaseBackupPolicyResource
 type BaseBackupPolicyResourceList = original.BaseBackupPolicyResourceList
@@ -366,6 +404,7 @@ type BaseBackupPolicyResourceListIterator = original.BaseBackupPolicyResourceLis
 type BaseBackupPolicyResourceListPage = original.BaseBackupPolicyResourceListPage
 type BaseClient = original.BaseClient
 type BasePolicyRule = original.BasePolicyRule
+type BasicAuthCredentials = original.BasicAuthCredentials
 type BasicAzureBackupRecoveryPoint = original.BasicAzureBackupRecoveryPoint
 type BasicAzureBackupRecoveryPointBasedRestoreRequest = original.BasicAzureBackupRecoveryPointBasedRestoreRequest
 type BasicAzureBackupRestoreRequest = original.BasicAzureBackupRestoreRequest
@@ -379,10 +418,12 @@ type BasicDeleteOption = original.BasicDeleteOption
 type BasicFeatureValidationRequestBase = original.BasicFeatureValidationRequestBase
 type BasicFeatureValidationResponseBase = original.BasicFeatureValidationResponseBase
 type BasicItemLevelRestoreCriteria = original.BasicItemLevelRestoreCriteria
+type BasicOperationExtendedInfo = original.BasicOperationExtendedInfo
 type BasicRestoreTargetInfoBase = original.BasicRestoreTargetInfoBase
 type BasicTriggerContext = original.BasicTriggerContext
 type CheckNameAvailabilityRequest = original.CheckNameAvailabilityRequest
 type CheckNameAvailabilityResult = original.CheckNameAvailabilityResult
+type Client = original.Client
 type ClientDiscoveryDisplay = original.ClientDiscoveryDisplay
 type ClientDiscoveryForLogSpecification = original.ClientDiscoveryForLogSpecification
 type ClientDiscoveryForProperties = original.ClientDiscoveryForProperties
@@ -401,6 +442,10 @@ type Datasource = original.Datasource
 type DatasourceSet = original.DatasourceSet
 type Day = original.Day
 type DeleteOption = original.DeleteOption
+type DppBaseResource = original.DppBaseResource
+type DppBaseResourceList = original.DppBaseResourceList
+type DppBaseResourceListIterator = original.DppBaseResourceListIterator
+type DppBaseResourceListPage = original.DppBaseResourceListPage
 type DppIdentityDetails = original.DppIdentityDetails
 type DppResource = original.DppResource
 type DppResourceList = original.DppResourceList
@@ -418,12 +463,10 @@ type FeatureValidationRequestBase = original.FeatureValidationRequestBase
 type FeatureValidationResponse = original.FeatureValidationResponse
 type FeatureValidationResponseBase = original.FeatureValidationResponseBase
 type FeatureValidationResponseBaseModel = original.FeatureValidationResponseBaseModel
-type FindRestorableTimeRangesClient = original.FindRestorableTimeRangesClient
 type ImmediateCopyOption = original.ImmediateCopyOption
 type InnerError = original.InnerError
 type ItemLevelRestoreCriteria = original.ItemLevelRestoreCriteria
 type ItemLevelRestoreTargetInfo = original.ItemLevelRestoreTargetInfo
-type JobClient = original.JobClient
 type JobExtendedInfo = original.JobExtendedInfo
 type JobSubTask = original.JobSubTask
 type JobsClient = original.JobsClient
@@ -431,17 +474,26 @@ type OperationExtendedInfo = original.OperationExtendedInfo
 type OperationJobExtendedInfo = original.OperationJobExtendedInfo
 type OperationResource = original.OperationResource
 type OperationResultClient = original.OperationResultClient
+type OperationStatusClient = original.OperationStatusClient
 type OperationsClient = original.OperationsClient
 type PatchResourceRequestInput = original.PatchResourceRequestInput
 type PolicyInfo = original.PolicyInfo
 type PolicyParameters = original.PolicyParameters
 type ProtectionStatusDetails = original.ProtectionStatusDetails
 type RangeBasedItemLevelRestoreCriteria = original.RangeBasedItemLevelRestoreCriteria
-type RecoveryPointClient = original.RecoveryPointClient
 type RecoveryPointDataStoreDetails = original.RecoveryPointDataStoreDetails
 type RecoveryPointsClient = original.RecoveryPointsClient
 type RecoveryPointsFilters = original.RecoveryPointsFilters
+type ResourceGuard = original.ResourceGuard
+type ResourceGuardOperation = original.ResourceGuardOperation
+type ResourceGuardResource = original.ResourceGuardResource
+type ResourceGuardResourceList = original.ResourceGuardResourceList
+type ResourceGuardResourceListIterator = original.ResourceGuardResourceListIterator
+type ResourceGuardResourceListPage = original.ResourceGuardResourceListPage
+type ResourceGuardsClient = original.ResourceGuardsClient
+type ResourceMoveDetails = original.ResourceMoveDetails
 type RestorableTimeRange = original.RestorableTimeRange
+type RestorableTimeRangesClient = original.RestorableTimeRangesClient
 type RestoreFilesTargetInfo = original.RestoreFilesTargetInfo
 type RestoreJobRecoveryPointDetails = original.RestoreJobRecoveryPointDetails
 type RestoreTargetInfo = original.RestoreTargetInfo
@@ -449,6 +501,8 @@ type RestoreTargetInfoBase = original.RestoreTargetInfoBase
 type RetentionTag = original.RetentionTag
 type ScheduleBasedBackupCriteria = original.ScheduleBasedBackupCriteria
 type ScheduleBasedTriggerContext = original.ScheduleBasedTriggerContext
+type SecretStoreBasedAuthCredentials = original.SecretStoreBasedAuthCredentials
+type SecretStoreResource = original.SecretStoreResource
 type SourceLifeCycle = original.SourceLifeCycle
 type StorageSetting = original.StorageSetting
 type SupportedFeature = original.SupportedFeature
@@ -495,6 +549,12 @@ func NewBackupPoliciesClient(subscriptionID string) BackupPoliciesClient {
 func NewBackupPoliciesClientWithBaseURI(baseURI string, subscriptionID string) BackupPoliciesClient {
 	return original.NewBackupPoliciesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewBackupVaultOperationResultsClient(subscriptionID string) BackupVaultOperationResultsClient {
+	return original.NewBackupVaultOperationResultsClient(subscriptionID)
+}
+func NewBackupVaultOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) BackupVaultOperationResultsClient {
+	return original.NewBackupVaultOperationResultsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewBackupVaultResourceListIterator(page BackupVaultResourceListPage) BackupVaultResourceListIterator {
 	return original.NewBackupVaultResourceListIterator(page)
 }
@@ -513,11 +573,23 @@ func NewBaseBackupPolicyResourceListIterator(page BaseBackupPolicyResourceListPa
 func NewBaseBackupPolicyResourceListPage(cur BaseBackupPolicyResourceList, getNextPage func(context.Context, BaseBackupPolicyResourceList) (BaseBackupPolicyResourceList, error)) BaseBackupPolicyResourceListPage {
 	return original.NewBaseBackupPolicyResourceListPage(cur, getNextPage)
 }
+func NewClient(subscriptionID string) Client {
+	return original.NewClient(subscriptionID)
+}
 func NewClientDiscoveryResponseIterator(page ClientDiscoveryResponsePage) ClientDiscoveryResponseIterator {
 	return original.NewClientDiscoveryResponseIterator(page)
 }
 func NewClientDiscoveryResponsePage(cur ClientDiscoveryResponse, getNextPage func(context.Context, ClientDiscoveryResponse) (ClientDiscoveryResponse, error)) ClientDiscoveryResponsePage {
 	return original.NewClientDiscoveryResponsePage(cur, getNextPage)
+}
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return original.NewClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewDppBaseResourceListIterator(page DppBaseResourceListPage) DppBaseResourceListIterator {
+	return original.NewDppBaseResourceListIterator(page)
+}
+func NewDppBaseResourceListPage(cur DppBaseResourceList, getNextPage func(context.Context, DppBaseResourceList) (DppBaseResourceList, error)) DppBaseResourceListPage {
+	return original.NewDppBaseResourceListPage(cur, getNextPage)
 }
 func NewExportJobsClient(subscriptionID string) ExportJobsClient {
 	return original.NewExportJobsClient(subscriptionID)
@@ -531,18 +603,6 @@ func NewExportJobsOperationResultClient(subscriptionID string) ExportJobsOperati
 func NewExportJobsOperationResultClientWithBaseURI(baseURI string, subscriptionID string) ExportJobsOperationResultClient {
 	return original.NewExportJobsOperationResultClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewFindRestorableTimeRangesClient(subscriptionID string) FindRestorableTimeRangesClient {
-	return original.NewFindRestorableTimeRangesClient(subscriptionID)
-}
-func NewFindRestorableTimeRangesClientWithBaseURI(baseURI string, subscriptionID string) FindRestorableTimeRangesClient {
-	return original.NewFindRestorableTimeRangesClientWithBaseURI(baseURI, subscriptionID)
-}
-func NewJobClient(subscriptionID string) JobClient {
-	return original.NewJobClient(subscriptionID)
-}
-func NewJobClientWithBaseURI(baseURI string, subscriptionID string) JobClient {
-	return original.NewJobClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewJobsClient(subscriptionID string) JobsClient {
 	return original.NewJobsClient(subscriptionID)
 }
@@ -555,23 +615,41 @@ func NewOperationResultClient(subscriptionID string) OperationResultClient {
 func NewOperationResultClientWithBaseURI(baseURI string, subscriptionID string) OperationResultClient {
 	return original.NewOperationResultClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewOperationStatusClient(subscriptionID string) OperationStatusClient {
+	return original.NewOperationStatusClient(subscriptionID)
+}
+func NewOperationStatusClientWithBaseURI(baseURI string, subscriptionID string) OperationStatusClient {
+	return original.NewOperationStatusClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewRecoveryPointClient(subscriptionID string) RecoveryPointClient {
-	return original.NewRecoveryPointClient(subscriptionID)
-}
-func NewRecoveryPointClientWithBaseURI(baseURI string, subscriptionID string) RecoveryPointClient {
-	return original.NewRecoveryPointClientWithBaseURI(baseURI, subscriptionID)
-}
 func NewRecoveryPointsClient(subscriptionID string) RecoveryPointsClient {
 	return original.NewRecoveryPointsClient(subscriptionID)
 }
 func NewRecoveryPointsClientWithBaseURI(baseURI string, subscriptionID string) RecoveryPointsClient {
 	return original.NewRecoveryPointsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewResourceGuardResourceListIterator(page ResourceGuardResourceListPage) ResourceGuardResourceListIterator {
+	return original.NewResourceGuardResourceListIterator(page)
+}
+func NewResourceGuardResourceListPage(cur ResourceGuardResourceList, getNextPage func(context.Context, ResourceGuardResourceList) (ResourceGuardResourceList, error)) ResourceGuardResourceListPage {
+	return original.NewResourceGuardResourceListPage(cur, getNextPage)
+}
+func NewResourceGuardsClient(subscriptionID string) ResourceGuardsClient {
+	return original.NewResourceGuardsClient(subscriptionID)
+}
+func NewResourceGuardsClientWithBaseURI(baseURI string, subscriptionID string) ResourceGuardsClient {
+	return original.NewResourceGuardsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewRestorableTimeRangesClient(subscriptionID string) RestorableTimeRangesClient {
+	return original.NewRestorableTimeRangesClient(subscriptionID)
+}
+func NewRestorableTimeRangesClientWithBaseURI(baseURI string, subscriptionID string) RestorableTimeRangesClient {
+	return original.NewRestorableTimeRangesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -599,6 +677,9 @@ func PossibleFeatureTypeValues() []FeatureType {
 }
 func PossibleMonthValues() []Month {
 	return original.PossibleMonthValues()
+}
+func PossibleObjectTypeBasicAzureBackupRecoveryPointValues() []ObjectTypeBasicAzureBackupRecoveryPoint {
+	return original.PossibleObjectTypeBasicAzureBackupRecoveryPointValues()
 }
 func PossibleObjectTypeBasicAzureBackupRestoreRequestValues() []ObjectTypeBasicAzureBackupRestoreRequest {
 	return original.PossibleObjectTypeBasicAzureBackupRestoreRequestValues()
@@ -633,6 +714,9 @@ func PossibleObjectTypeBasicFeatureValidationResponseBaseValues() []ObjectTypeBa
 func PossibleObjectTypeBasicItemLevelRestoreCriteriaValues() []ObjectTypeBasicItemLevelRestoreCriteria {
 	return original.PossibleObjectTypeBasicItemLevelRestoreCriteriaValues()
 }
+func PossibleObjectTypeBasicOperationExtendedInfoValues() []ObjectTypeBasicOperationExtendedInfo {
+	return original.PossibleObjectTypeBasicOperationExtendedInfoValues()
+}
 func PossibleObjectTypeBasicRestoreTargetInfoBaseValues() []ObjectTypeBasicRestoreTargetInfoBase {
 	return original.PossibleObjectTypeBasicRestoreTargetInfoBaseValues()
 }
@@ -651,11 +735,17 @@ func PossibleRehydrationPriorityValues() []RehydrationPriority {
 func PossibleRehydrationStatusValues() []RehydrationStatus {
 	return original.PossibleRehydrationStatusValues()
 }
+func PossibleResourceMoveStateValues() []ResourceMoveState {
+	return original.PossibleResourceMoveStateValues()
+}
 func PossibleRestoreSourceDataStoreTypeValues() []RestoreSourceDataStoreType {
 	return original.PossibleRestoreSourceDataStoreTypeValues()
 }
 func PossibleRestoreTargetLocationTypeValues() []RestoreTargetLocationType {
 	return original.PossibleRestoreTargetLocationTypeValues()
+}
+func PossibleSecretStoreTypeValues() []SecretStoreType {
+	return original.PossibleSecretStoreTypeValues()
 }
 func PossibleSourceDataStoreTypeValues() []SourceDataStoreType {
 	return original.PossibleSourceDataStoreTypeValues()

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,28 +10,29 @@ package armstorage
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 type AccessPolicy struct {
 	// Expiry time of the access policy
-	Expiry *time.Time `json:"expiry,omitempty"`
+	ExpiryTime *time.Time `json:"expiryTime,omitempty"`
 
 	// List of abbreviated permissions.
 	Permission *string `json:"permission,omitempty"`
 
 	// Start time of the access policy
-	Start *time.Time `json:"start,omitempty"`
+	StartTime *time.Time `json:"startTime,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AccessPolicy.
 func (a AccessPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "expiry", (*timeRFC3339)(a.Expiry))
+	populate(objectMap, "expiryTime", (*timeRFC3339)(a.ExpiryTime))
 	populate(objectMap, "permission", a.Permission)
-	populate(objectMap, "start", (*timeRFC3339)(a.Start))
+	populate(objectMap, "startTime", (*timeRFC3339)(a.StartTime))
 	return json.Marshal(objectMap)
 }
 
@@ -43,18 +45,18 @@ func (a *AccessPolicy) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "expiry":
+		case "expiryTime":
 			var aux timeRFC3339
 			err = unpopulate(val, &aux)
-			a.Expiry = (*time.Time)(&aux)
+			a.ExpiryTime = (*time.Time)(&aux)
 			delete(rawMsg, key)
 		case "permission":
 			err = unpopulate(val, &a.Permission)
 			delete(rawMsg, key)
-		case "start":
+		case "startTime":
 			var aux timeRFC3339
 			err = unpopulate(val, &aux)
-			a.Start = (*time.Time)(&aux)
+			a.StartTime = (*time.Time)(&aux)
 			delete(rawMsg, key)
 		}
 		if err != nil {

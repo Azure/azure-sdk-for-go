@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,7 +8,10 @@
 
 package armkeyvault
 
-const telemetryInfo = "azsdk-go-armkeyvault/v0.1.1"
+const (
+	module  = "armkeyvault"
+	version = "v0.2.0"
+)
 
 type AccessPolicyUpdateKind string
 
@@ -53,6 +57,7 @@ func (c ActionsRequired) ToPtr() *ActionsRequired {
 type CertificatePermissions string
 
 const (
+	CertificatePermissionsAll            CertificatePermissions = "all"
 	CertificatePermissionsBackup         CertificatePermissions = "backup"
 	CertificatePermissionsCreate         CertificatePermissions = "create"
 	CertificatePermissionsDelete         CertificatePermissions = "delete"
@@ -74,6 +79,7 @@ const (
 // PossibleCertificatePermissionsValues returns the possible values for the CertificatePermissions const type.
 func PossibleCertificatePermissionsValues() []CertificatePermissions {
 	return []CertificatePermissions{
+		CertificatePermissionsAll,
 		CertificatePermissionsBackup,
 		CertificatePermissionsCreate,
 		CertificatePermissionsDelete,
@@ -119,6 +125,33 @@ func (c CreateMode) ToPtr() *CreateMode {
 	return &c
 }
 
+// DeletionRecoveryLevel - The deletion recovery level currently in effect for the object. If it contains 'Purgeable', then the object can be permanently
+// deleted by a privileged user; otherwise, only the system can purge the
+// object at the end of the retention interval.
+type DeletionRecoveryLevel string
+
+const (
+	DeletionRecoveryLevelPurgeable                        DeletionRecoveryLevel = "Purgeable"
+	DeletionRecoveryLevelRecoverable                      DeletionRecoveryLevel = "Recoverable"
+	DeletionRecoveryLevelRecoverableProtectedSubscription DeletionRecoveryLevel = "Recoverable+ProtectedSubscription"
+	DeletionRecoveryLevelRecoverablePurgeable             DeletionRecoveryLevel = "Recoverable+Purgeable"
+)
+
+// PossibleDeletionRecoveryLevelValues returns the possible values for the DeletionRecoveryLevel const type.
+func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
+	return []DeletionRecoveryLevel{
+		DeletionRecoveryLevelPurgeable,
+		DeletionRecoveryLevelRecoverable,
+		DeletionRecoveryLevelRecoverableProtectedSubscription,
+		DeletionRecoveryLevelRecoverablePurgeable,
+	}
+}
+
+// ToPtr returns a *DeletionRecoveryLevel pointing to the current value.
+func (c DeletionRecoveryLevel) ToPtr() *DeletionRecoveryLevel {
+	return &c
+}
+
 // IdentityType - The type of identity.
 type IdentityType string
 
@@ -144,9 +177,91 @@ func (c IdentityType) ToPtr() *IdentityType {
 	return &c
 }
 
+// JSONWebKeyCurveName - The elliptic curve name. For valid values, see JsonWebKeyCurveName.
+type JSONWebKeyCurveName string
+
+const (
+	JSONWebKeyCurveNameP256  JSONWebKeyCurveName = "P-256"
+	JSONWebKeyCurveNameP256K JSONWebKeyCurveName = "P-256K"
+	JSONWebKeyCurveNameP384  JSONWebKeyCurveName = "P-384"
+	JSONWebKeyCurveNameP521  JSONWebKeyCurveName = "P-521"
+)
+
+// PossibleJSONWebKeyCurveNameValues returns the possible values for the JSONWebKeyCurveName const type.
+func PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName {
+	return []JSONWebKeyCurveName{
+		JSONWebKeyCurveNameP256,
+		JSONWebKeyCurveNameP256K,
+		JSONWebKeyCurveNameP384,
+		JSONWebKeyCurveNameP521,
+	}
+}
+
+// ToPtr returns a *JSONWebKeyCurveName pointing to the current value.
+func (c JSONWebKeyCurveName) ToPtr() *JSONWebKeyCurveName {
+	return &c
+}
+
+// JSONWebKeyOperation - The permitted JSON web key operations of the key. For more information, see JsonWebKeyOperation.
+type JSONWebKeyOperation string
+
+const (
+	JSONWebKeyOperationDecrypt   JSONWebKeyOperation = "decrypt"
+	JSONWebKeyOperationEncrypt   JSONWebKeyOperation = "encrypt"
+	JSONWebKeyOperationImport    JSONWebKeyOperation = "import"
+	JSONWebKeyOperationSign      JSONWebKeyOperation = "sign"
+	JSONWebKeyOperationUnwrapKey JSONWebKeyOperation = "unwrapKey"
+	JSONWebKeyOperationVerify    JSONWebKeyOperation = "verify"
+	JSONWebKeyOperationWrapKey   JSONWebKeyOperation = "wrapKey"
+)
+
+// PossibleJSONWebKeyOperationValues returns the possible values for the JSONWebKeyOperation const type.
+func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
+	return []JSONWebKeyOperation{
+		JSONWebKeyOperationDecrypt,
+		JSONWebKeyOperationEncrypt,
+		JSONWebKeyOperationImport,
+		JSONWebKeyOperationSign,
+		JSONWebKeyOperationUnwrapKey,
+		JSONWebKeyOperationVerify,
+		JSONWebKeyOperationWrapKey,
+	}
+}
+
+// ToPtr returns a *JSONWebKeyOperation pointing to the current value.
+func (c JSONWebKeyOperation) ToPtr() *JSONWebKeyOperation {
+	return &c
+}
+
+// JSONWebKeyType - The type of the key. For valid values, see JsonWebKeyType.
+type JSONWebKeyType string
+
+const (
+	JSONWebKeyTypeEC     JSONWebKeyType = "EC"
+	JSONWebKeyTypeECHSM  JSONWebKeyType = "EC-HSM"
+	JSONWebKeyTypeRSA    JSONWebKeyType = "RSA"
+	JSONWebKeyTypeRSAHSM JSONWebKeyType = "RSA-HSM"
+)
+
+// PossibleJSONWebKeyTypeValues returns the possible values for the JSONWebKeyType const type.
+func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
+	return []JSONWebKeyType{
+		JSONWebKeyTypeEC,
+		JSONWebKeyTypeECHSM,
+		JSONWebKeyTypeRSA,
+		JSONWebKeyTypeRSAHSM,
+	}
+}
+
+// ToPtr returns a *JSONWebKeyType pointing to the current value.
+func (c JSONWebKeyType) ToPtr() *JSONWebKeyType {
+	return &c
+}
+
 type KeyPermissions string
 
 const (
+	KeyPermissionsAll       KeyPermissions = "all"
 	KeyPermissionsBackup    KeyPermissions = "backup"
 	KeyPermissionsCreate    KeyPermissions = "create"
 	KeyPermissionsDecrypt   KeyPermissions = "decrypt"
@@ -157,7 +272,9 @@ const (
 	KeyPermissionsList      KeyPermissions = "list"
 	KeyPermissionsPurge     KeyPermissions = "purge"
 	KeyPermissionsRecover   KeyPermissions = "recover"
+	KeyPermissionsRelease   KeyPermissions = "release"
 	KeyPermissionsRestore   KeyPermissions = "restore"
+	KeyPermissionsRotate    KeyPermissions = "rotate"
 	KeyPermissionsSign      KeyPermissions = "sign"
 	KeyPermissionsUnwrapKey KeyPermissions = "unwrapKey"
 	KeyPermissionsUpdate    KeyPermissions = "update"
@@ -168,6 +285,7 @@ const (
 // PossibleKeyPermissionsValues returns the possible values for the KeyPermissions const type.
 func PossibleKeyPermissionsValues() []KeyPermissions {
 	return []KeyPermissions{
+		KeyPermissionsAll,
 		KeyPermissionsBackup,
 		KeyPermissionsCreate,
 		KeyPermissionsDecrypt,
@@ -178,7 +296,9 @@ func PossibleKeyPermissionsValues() []KeyPermissions {
 		KeyPermissionsList,
 		KeyPermissionsPurge,
 		KeyPermissionsRecover,
+		KeyPermissionsRelease,
 		KeyPermissionsRestore,
+		KeyPermissionsRotate,
 		KeyPermissionsSign,
 		KeyPermissionsUnwrapKey,
 		KeyPermissionsUpdate,
@@ -189,6 +309,27 @@ func PossibleKeyPermissionsValues() []KeyPermissions {
 
 // ToPtr returns a *KeyPermissions pointing to the current value.
 func (c KeyPermissions) ToPtr() *KeyPermissions {
+	return &c
+}
+
+// KeyRotationPolicyActionType - The type of action.
+type KeyRotationPolicyActionType string
+
+const (
+	KeyRotationPolicyActionTypeRotate KeyRotationPolicyActionType = "rotate"
+	KeyRotationPolicyActionTypeNotify KeyRotationPolicyActionType = "notify"
+)
+
+// PossibleKeyRotationPolicyActionTypeValues returns the possible values for the KeyRotationPolicyActionType const type.
+func PossibleKeyRotationPolicyActionTypeValues() []KeyRotationPolicyActionType {
+	return []KeyRotationPolicyActionType{
+		KeyRotationPolicyActionTypeRotate,
+		KeyRotationPolicyActionTypeNotify,
+	}
+}
+
+// ToPtr returns a *KeyRotationPolicyActionType pointing to the current value.
+func (c KeyRotationPolicyActionType) ToPtr() *KeyRotationPolicyActionType {
 	return &c
 }
 
@@ -455,6 +596,7 @@ func (c SKUName) ToPtr() *SKUName {
 type SecretPermissions string
 
 const (
+	SecretPermissionsAll     SecretPermissions = "all"
 	SecretPermissionsBackup  SecretPermissions = "backup"
 	SecretPermissionsDelete  SecretPermissions = "delete"
 	SecretPermissionsGet     SecretPermissions = "get"
@@ -468,6 +610,7 @@ const (
 // PossibleSecretPermissionsValues returns the possible values for the SecretPermissions const type.
 func PossibleSecretPermissionsValues() []SecretPermissions {
 	return []SecretPermissions{
+		SecretPermissionsAll,
 		SecretPermissionsBackup,
 		SecretPermissionsDelete,
 		SecretPermissionsGet,
@@ -487,6 +630,7 @@ func (c SecretPermissions) ToPtr() *SecretPermissions {
 type StoragePermissions string
 
 const (
+	StoragePermissionsAll           StoragePermissions = "all"
 	StoragePermissionsBackup        StoragePermissions = "backup"
 	StoragePermissionsDelete        StoragePermissions = "delete"
 	StoragePermissionsDeletesas     StoragePermissions = "deletesas"
@@ -506,6 +650,7 @@ const (
 // PossibleStoragePermissionsValues returns the possible values for the StoragePermissions const type.
 func PossibleStoragePermissionsValues() []StoragePermissions {
 	return []StoragePermissions{
+		StoragePermissionsAll,
 		StoragePermissionsBackup,
 		StoragePermissionsDelete,
 		StoragePermissionsDeletesas,

@@ -12,7 +12,7 @@ package netapp
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-04-01/netapp"
+	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-06-01/netapp"
 )
 
 const (
@@ -27,6 +27,13 @@ const (
 	ActiveDirectoryStatusError    ActiveDirectoryStatus = original.ActiveDirectoryStatusError
 	ActiveDirectoryStatusInUse    ActiveDirectoryStatus = original.ActiveDirectoryStatusInUse
 	ActiveDirectoryStatusUpdating ActiveDirectoryStatus = original.ActiveDirectoryStatusUpdating
+)
+
+type AvsDataStore = original.AvsDataStore
+
+const (
+	AvsDataStoreDisabled AvsDataStore = original.AvsDataStoreDisabled
+	AvsDataStoreEnabled  AvsDataStore = original.AvsDataStoreEnabled
 )
 
 type BackupType = original.BackupType
@@ -70,6 +77,13 @@ const (
 	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
+type EncryptionType = original.EncryptionType
+
+const (
+	EncryptionTypeDouble EncryptionType = original.EncryptionTypeDouble
+	EncryptionTypeSingle EncryptionType = original.EncryptionTypeSingle
+)
+
 type EndpointType = original.EndpointType
 
 const (
@@ -82,6 +96,12 @@ type InAvailabilityReasonType = original.InAvailabilityReasonType
 const (
 	InAvailabilityReasonTypeAlreadyExists InAvailabilityReasonType = original.InAvailabilityReasonTypeAlreadyExists
 	InAvailabilityReasonTypeInvalid       InAvailabilityReasonType = original.InAvailabilityReasonTypeInvalid
+)
+
+type MetricAggregationType = original.MetricAggregationType
+
+const (
+	MetricAggregationTypeAverage MetricAggregationType = original.MetricAggregationTypeAverage
 )
 
 type MirrorState = original.MirrorState
@@ -124,9 +144,10 @@ const (
 type ServiceLevel = original.ServiceLevel
 
 const (
-	ServiceLevelPremium  ServiceLevel = original.ServiceLevelPremium
-	ServiceLevelStandard ServiceLevel = original.ServiceLevelStandard
-	ServiceLevelUltra    ServiceLevel = original.ServiceLevelUltra
+	ServiceLevelPremium     ServiceLevel = original.ServiceLevelPremium
+	ServiceLevelStandard    ServiceLevel = original.ServiceLevelStandard
+	ServiceLevelStandardZRS ServiceLevel = original.ServiceLevelStandardZRS
+	ServiceLevelUltra       ServiceLevel = original.ServiceLevelUltra
 )
 
 type Account = original.Account
@@ -343,6 +364,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleActiveDirectoryStatusValues() []ActiveDirectoryStatus {
 	return original.PossibleActiveDirectoryStatusValues()
 }
+func PossibleAvsDataStoreValues() []AvsDataStore {
+	return original.PossibleAvsDataStoreValues()
+}
 func PossibleBackupTypeValues() []BackupType {
 	return original.PossibleBackupTypeValues()
 }
@@ -358,11 +382,17 @@ func PossibleChownModeValues() []ChownMode {
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
 }
+func PossibleEncryptionTypeValues() []EncryptionType {
+	return original.PossibleEncryptionTypeValues()
+}
 func PossibleEndpointTypeValues() []EndpointType {
 	return original.PossibleEndpointTypeValues()
 }
 func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
 	return original.PossibleInAvailabilityReasonTypeValues()
+}
+func PossibleMetricAggregationTypeValues() []MetricAggregationType {
+	return original.PossibleMetricAggregationTypeValues()
 }
 func PossibleMirrorStateValues() []MirrorState {
 	return original.PossibleMirrorStateValues()

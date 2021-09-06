@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,7 +8,10 @@
 
 package armstorage
 
-const telemetryInfo = "azsdk-go-armstorage/v0.1.1"
+const (
+	module  = "armstorage"
+	version = "v0.2.0"
+)
 
 // AccessTier - Required for storage accounts where kind = BlobStorage. The access tier used for billing.
 type AccessTier string

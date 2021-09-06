@@ -12,7 +12,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -44,10 +45,10 @@ func TestClientCertificateCredential_CreateAuthRequestSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpectedly received an error: %v", err)
 	}
-	if req.Request.Header.Get(headerContentType) != headerURLEncoded {
+	if req.Raw().Header.Get(headerContentType) != headerURLEncoded {
 		t.Fatalf("Unexpected value for Content-Type header")
 	}
-	body, err := ioutil.ReadAll(req.Request.Body)
+	body, err := ioutil.ReadAll(req.Raw().Body)
 	if err != nil {
 		t.Fatalf("Unable to read request body")
 	}
@@ -71,10 +72,10 @@ func TestClientCertificateCredential_CreateAuthRequestSuccess(t *testing.T) {
 	if len(reqQueryParams[qpClientAssertion][0]) == 0 {
 		t.Fatalf("Client assertion is not present on the request")
 	}
-	if req.Request.URL.Host != defaultTestAuthorityHost {
+	if req.Raw().URL.Host != defaultTestAuthorityHost {
 		t.Fatalf("Unexpected default authority host")
 	}
-	if req.Request.URL.Scheme != "https" {
+	if req.Raw().URL.Scheme != "https" {
 		t.Fatalf("Wrong request scheme")
 	}
 }
@@ -90,13 +91,13 @@ func TestClientCertificateCredential_CreateAuthRequestSuccess_withCertificateCha
 	if err != nil {
 		t.Fatalf("Unexpectedly received an error: %v", err)
 	}
-	if req.Request.Header.Get(headerContentType) != headerURLEncoded {
+	if req.Raw().Header.Get(headerContentType) != headerURLEncoded {
 		t.Fatalf("Unexpected value for Content-Type header")
 	}
 	if len(cred.cert.publicCertificates) != 1 {
 		t.Fatalf("Wrong number of public certificates. Expected: %v, Received: %v", 1, len(cred.cert.publicCertificates))
 	}
-	body, err := ioutil.ReadAll(req.Request.Body)
+	body, err := ioutil.ReadAll(req.Raw().Body)
 	if err != nil {
 		t.Fatalf("Unable to read request body")
 	}
@@ -123,7 +124,7 @@ func TestClientCertificateCredential_CreateAuthRequestSuccess_withCertificateCha
 	if err != nil {
 		t.Fatalf("Failed extract data from PEM file: %v", err)
 	}
-	assertion, err := createClientAssertionJWT(clientID, azcore.JoinPaths(AzurePublicCloud, tenantID, tokenEndpoint(oauthPath(tenantID))), cert, true)
+	assertion, err := createClientAssertionJWT(clientID, runtime.JoinPaths(AzurePublicCloud, tenantID, tokenEndpoint(oauthPath(tenantID))), cert, true)
 	if err != nil {
 		t.Fatalf("Failed to create client assertion: %v", err)
 	}
@@ -143,10 +144,10 @@ func TestClientCertificateCredential_CreateAuthRequestSuccess_withCertificateCha
 	if len(reqQueryParams[qpClientAssertion][0]) == 0 {
 		t.Fatalf("Client assertion is not present on the request")
 	}
-	if req.Request.URL.Host != defaultTestAuthorityHost {
+	if req.Raw().URL.Host != defaultTestAuthorityHost {
 		t.Fatalf("Unexpected default authority host")
 	}
-	if req.Request.URL.Scheme != "https" {
+	if req.Raw().URL.Scheme != "https" {
 		t.Fatalf("Wrong request scheme")
 	}
 }
@@ -162,7 +163,7 @@ func TestClientCertificateCredential_GetTokenSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
@@ -180,7 +181,7 @@ func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain(t *tes
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
@@ -197,7 +198,7 @@ func TestClientCertificateCredential_GetTokenInvalidCredentials(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Did not expect an error but received one: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected to receive a nil error, but received: %v", err)
 	}
@@ -231,7 +232,7 @@ func TestClientCertificateCredential_GetTokenCheckPrivateKeyBlocks(t *testing.T)
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
@@ -248,7 +249,7 @@ func TestClientCertificateCredential_GetTokenCheckCertificateBlocks(t *testing.T
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
@@ -293,7 +294,7 @@ func TestBearerPolicy_ClientCertificateCredential(t *testing.T) {
 		t.Fatalf("Did not expect an error but received: %v", err)
 	}
 	pipeline := defaultTestPipeline(srv, cred, scope)
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}

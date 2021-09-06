@@ -1,0 +1,33 @@
+parameters:
+  DependsOn: Build
+  ServiceDirectory: ''
+
+stages:
+  - ${{if and(eq(variables['Build.Reason'], 'Manual'), eq(variables['System.TeamProject'], 'internal'))}}:
+    - stage: Release
+      displayName: 'Release: ${{parameters.ServiceDirectory}}'
+      dependsOn: ${{parameters.DependsOn}}
+      condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-go-pr'))
+      jobs:
+        - deployment: TagRepository
+          displayName: "Create release tag"
+          condition: ne(variables['Skip.TagRepository'], 'true')
+          environment: github
+
+          pool:
+            name: azsdk-pool-mms-ubuntu-2004-general
+            vmImage: MMSUbuntu20.04
+
+          strategy:
+            runOnce:
+              deploy:
+                steps:
+                  - checkout: self
+                  - template: /eng/common/pipelines/templates/steps/retain-run.yml
+                  - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
+                    parameters:
+                      ArtifactLocation: $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
+                      ReleaseSha: $(Build.SourceVersion)
+                      RepoId: Azure/azure-sdk-for-go
+                      WorkingDirectory: $(System.DefaultWorkingDirectory)
+                

@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ObjectDataTypesClient contains the methods for the ObjectDataTypes group.
 // Don't use this type directly, use NewObjectDataTypesClient() instead.
 type ObjectDataTypesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewObjectDataTypesClient creates a new instance of ObjectDataTypesClient with the specified values.
-func NewObjectDataTypesClient(con *armcore.Connection, subscriptionID string) *ObjectDataTypesClient {
-	return &ObjectDataTypesClient{con: con, subscriptionID: subscriptionID}
+func NewObjectDataTypesClient(con *arm.Connection, subscriptionID string) *ObjectDataTypesClient {
+	return &ObjectDataTypesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // ListFieldsByModuleAndType - Retrieve a list of fields of a given type identified by module name.
@@ -38,18 +41,18 @@ func (client *ObjectDataTypesClient) ListFieldsByModuleAndType(ctx context.Conte
 	if err != nil {
 		return ObjectDataTypesListFieldsByModuleAndTypeResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ObjectDataTypesListFieldsByModuleAndTypeResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ObjectDataTypesListFieldsByModuleAndTypeResponse{}, client.listFieldsByModuleAndTypeHandleError(resp)
 	}
 	return client.listFieldsByModuleAndTypeHandleResponse(resp)
 }
 
 // listFieldsByModuleAndTypeCreateRequest creates the ListFieldsByModuleAndType request.
-func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, typeName string, options *ObjectDataTypesListFieldsByModuleAndTypeOptions) (*azcore.Request, error) {
+func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, typeName string, options *ObjectDataTypesListFieldsByModuleAndTypeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/objectDataTypes/{typeName}/fields"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -71,38 +74,37 @@ func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listFieldsByModuleAndTypeHandleResponse handles the ListFieldsByModuleAndType response.
-func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeHandleResponse(resp *azcore.Response) (ObjectDataTypesListFieldsByModuleAndTypeResponse, error) {
-	result := ObjectDataTypesListFieldsByModuleAndTypeResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TypeFieldListResult); err != nil {
+func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeHandleResponse(resp *http.Response) (ObjectDataTypesListFieldsByModuleAndTypeResponse, error) {
+	result := ObjectDataTypesListFieldsByModuleAndTypeResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TypeFieldListResult); err != nil {
 		return ObjectDataTypesListFieldsByModuleAndTypeResponse{}, err
 	}
 	return result, nil
 }
 
 // listFieldsByModuleAndTypeHandleError handles the ListFieldsByModuleAndType error response.
-func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ObjectDataTypesClient) listFieldsByModuleAndTypeHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListFieldsByType - Retrieve a list of fields of a given type across all accessible modules.
@@ -112,18 +114,18 @@ func (client *ObjectDataTypesClient) ListFieldsByType(ctx context.Context, resou
 	if err != nil {
 		return ObjectDataTypesListFieldsByTypeResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ObjectDataTypesListFieldsByTypeResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ObjectDataTypesListFieldsByTypeResponse{}, client.listFieldsByTypeHandleError(resp)
 	}
 	return client.listFieldsByTypeHandleResponse(resp)
 }
 
 // listFieldsByTypeCreateRequest creates the ListFieldsByType request.
-func (client *ObjectDataTypesClient) listFieldsByTypeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, typeName string, options *ObjectDataTypesListFieldsByTypeOptions) (*azcore.Request, error) {
+func (client *ObjectDataTypesClient) listFieldsByTypeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, typeName string, options *ObjectDataTypesListFieldsByTypeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/objectDataTypes/{typeName}/fields"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -141,36 +143,35 @@ func (client *ObjectDataTypesClient) listFieldsByTypeCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listFieldsByTypeHandleResponse handles the ListFieldsByType response.
-func (client *ObjectDataTypesClient) listFieldsByTypeHandleResponse(resp *azcore.Response) (ObjectDataTypesListFieldsByTypeResponse, error) {
-	result := ObjectDataTypesListFieldsByTypeResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TypeFieldListResult); err != nil {
+func (client *ObjectDataTypesClient) listFieldsByTypeHandleResponse(resp *http.Response) (ObjectDataTypesListFieldsByTypeResponse, error) {
+	result := ObjectDataTypesListFieldsByTypeResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TypeFieldListResult); err != nil {
 		return ObjectDataTypesListFieldsByTypeResponse{}, err
 	}
 	return result, nil
 }
 
 // listFieldsByTypeHandleError handles the ListFieldsByType error response.
-func (client *ObjectDataTypesClient) listFieldsByTypeHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ObjectDataTypesClient) listFieldsByTypeHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

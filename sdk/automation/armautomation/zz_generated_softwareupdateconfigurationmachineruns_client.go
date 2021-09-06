@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SoftwareUpdateConfigurationMachineRunsClient contains the methods for the SoftwareUpdateConfigurationMachineRuns group.
 // Don't use this type directly, use NewSoftwareUpdateConfigurationMachineRunsClient() instead.
 type SoftwareUpdateConfigurationMachineRunsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewSoftwareUpdateConfigurationMachineRunsClient creates a new instance of SoftwareUpdateConfigurationMachineRunsClient with the specified values.
-func NewSoftwareUpdateConfigurationMachineRunsClient(con *armcore.Connection, subscriptionID string) *SoftwareUpdateConfigurationMachineRunsClient {
-	return &SoftwareUpdateConfigurationMachineRunsClient{con: con, subscriptionID: subscriptionID}
+func NewSoftwareUpdateConfigurationMachineRunsClient(con *arm.Connection, subscriptionID string) *SoftwareUpdateConfigurationMachineRunsClient {
+	return &SoftwareUpdateConfigurationMachineRunsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // GetByID - Get a single software update configuration machine run by Id.
@@ -38,18 +41,18 @@ func (client *SoftwareUpdateConfigurationMachineRunsClient) GetByID(ctx context.
 	if err != nil {
 		return SoftwareUpdateConfigurationMachineRunsGetByIDResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return SoftwareUpdateConfigurationMachineRunsGetByIDResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SoftwareUpdateConfigurationMachineRunsGetByIDResponse{}, client.getByIDHandleError(resp)
 	}
 	return client.getByIDHandleResponse(resp)
 }
 
 // getByIDCreateRequest creates the GetByID request.
-func (client *SoftwareUpdateConfigurationMachineRunsClient) getByIDCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, softwareUpdateConfigurationMachineRunID string, options *SoftwareUpdateConfigurationMachineRunsGetByIDOptions) (*azcore.Request, error) {
+func (client *SoftwareUpdateConfigurationMachineRunsClient) getByIDCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, softwareUpdateConfigurationMachineRunID string, options *SoftwareUpdateConfigurationMachineRunsGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/softwareUpdateConfigurationMachineRuns/{softwareUpdateConfigurationMachineRunId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -64,41 +67,40 @@ func (client *SoftwareUpdateConfigurationMachineRunsClient) getByIDCreateRequest
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
 	urlPath = strings.ReplaceAll(urlPath, "{softwareUpdateConfigurationMachineRunId}", url.PathEscape(softwareUpdateConfigurationMachineRunID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
 	}
-	req.Header.Set("Accept", "application/json")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getByIDHandleResponse handles the GetByID response.
-func (client *SoftwareUpdateConfigurationMachineRunsClient) getByIDHandleResponse(resp *azcore.Response) (SoftwareUpdateConfigurationMachineRunsGetByIDResponse, error) {
-	result := SoftwareUpdateConfigurationMachineRunsGetByIDResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SoftwareUpdateConfigurationMachineRun); err != nil {
+func (client *SoftwareUpdateConfigurationMachineRunsClient) getByIDHandleResponse(resp *http.Response) (SoftwareUpdateConfigurationMachineRunsGetByIDResponse, error) {
+	result := SoftwareUpdateConfigurationMachineRunsGetByIDResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwareUpdateConfigurationMachineRun); err != nil {
 		return SoftwareUpdateConfigurationMachineRunsGetByIDResponse{}, err
 	}
 	return result, nil
 }
 
 // getByIDHandleError handles the GetByID error response.
-func (client *SoftwareUpdateConfigurationMachineRunsClient) getByIDHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SoftwareUpdateConfigurationMachineRunsClient) getByIDHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Return list of software update configuration machine runs
@@ -108,18 +110,18 @@ func (client *SoftwareUpdateConfigurationMachineRunsClient) List(ctx context.Con
 	if err != nil {
 		return SoftwareUpdateConfigurationMachineRunsListResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return SoftwareUpdateConfigurationMachineRunsListResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SoftwareUpdateConfigurationMachineRunsListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *SoftwareUpdateConfigurationMachineRunsClient) listCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *SoftwareUpdateConfigurationMachineRunsListOptions) (*azcore.Request, error) {
+func (client *SoftwareUpdateConfigurationMachineRunsClient) listCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *SoftwareUpdateConfigurationMachineRunsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/softwareUpdateConfigurationMachineRuns"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -133,12 +135,11 @@ func (client *SoftwareUpdateConfigurationMachineRunsClient) listCreateRequest(ct
 		return nil, errors.New("parameter automationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
@@ -149,32 +150,32 @@ func (client *SoftwareUpdateConfigurationMachineRunsClient) listCreateRequest(ct
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", *options.Top)
 	}
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.ClientRequestID != nil {
-		req.Header.Set("clientRequestId", *options.ClientRequestID)
+		req.Raw().Header.Set("clientRequestId", *options.ClientRequestID)
 	}
-	req.Header.Set("Accept", "application/json")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SoftwareUpdateConfigurationMachineRunsClient) listHandleResponse(resp *azcore.Response) (SoftwareUpdateConfigurationMachineRunsListResponse, error) {
-	result := SoftwareUpdateConfigurationMachineRunsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SoftwareUpdateConfigurationMachineRunListResult); err != nil {
+func (client *SoftwareUpdateConfigurationMachineRunsClient) listHandleResponse(resp *http.Response) (SoftwareUpdateConfigurationMachineRunsListResponse, error) {
+	result := SoftwareUpdateConfigurationMachineRunsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwareUpdateConfigurationMachineRunListResult); err != nil {
 		return SoftwareUpdateConfigurationMachineRunsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *SoftwareUpdateConfigurationMachineRunsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SoftwareUpdateConfigurationMachineRunsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

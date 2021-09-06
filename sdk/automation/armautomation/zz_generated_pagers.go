@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,31 +10,31 @@ package armautomation
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"reflect"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-type ActivityListByModulePager interface {
-	azcore.Pager
-	// PageResponse returns the current ActivityListByModuleResponse.
-	PageResponse() ActivityListByModuleResponse
-}
-
-type activityListByModulePager struct {
+// ActivityListByModulePager provides operations for iterating over paged responses.
+type ActivityListByModulePager struct {
 	client    *ActivityClient
 	current   ActivityListByModuleResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, ActivityListByModuleResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ActivityListByModuleResponse) (*policy.Request, error)
 }
 
-func (p *activityListByModulePager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *ActivityListByModulePager) Err() error {
 	return p.err
 }
 
-func (p *activityListByModulePager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ActivityListByModulePager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.ActivityListResult.NextLink == nil || len(*p.current.ActivityListResult.NextLink) == 0 {
@@ -48,12 +48,12 @@ func (p *activityListByModulePager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByModuleHandleError(resp)
 		return false
 	}
@@ -66,30 +66,29 @@ func (p *activityListByModulePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *activityListByModulePager) PageResponse() ActivityListByModuleResponse {
+// PageResponse returns the current ActivityListByModuleResponse page.
+func (p *ActivityListByModulePager) PageResponse() ActivityListByModuleResponse {
 	return p.current
 }
 
-type AutomationAccountListByResourceGroupPager interface {
-	azcore.Pager
-	// PageResponse returns the current AutomationAccountListByResourceGroupResponse.
-	PageResponse() AutomationAccountListByResourceGroupResponse
-}
-
-type automationAccountListByResourceGroupPager struct {
+// AutomationAccountListByResourceGroupPager provides operations for iterating over paged responses.
+type AutomationAccountListByResourceGroupPager struct {
 	client    *AutomationAccountClient
 	current   AutomationAccountListByResourceGroupResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, AutomationAccountListByResourceGroupResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, AutomationAccountListByResourceGroupResponse) (*policy.Request, error)
 }
 
-func (p *automationAccountListByResourceGroupPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *AutomationAccountListByResourceGroupPager) Err() error {
 	return p.err
 }
 
-func (p *automationAccountListByResourceGroupPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *AutomationAccountListByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.AutomationAccountListResult.NextLink == nil || len(*p.current.AutomationAccountListResult.NextLink) == 0 {
@@ -103,12 +102,12 @@ func (p *automationAccountListByResourceGroupPager) NextPage(ctx context.Context
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByResourceGroupHandleError(resp)
 		return false
 	}
@@ -121,30 +120,29 @@ func (p *automationAccountListByResourceGroupPager) NextPage(ctx context.Context
 	return true
 }
 
-func (p *automationAccountListByResourceGroupPager) PageResponse() AutomationAccountListByResourceGroupResponse {
+// PageResponse returns the current AutomationAccountListByResourceGroupResponse page.
+func (p *AutomationAccountListByResourceGroupPager) PageResponse() AutomationAccountListByResourceGroupResponse {
 	return p.current
 }
 
-type AutomationAccountListPager interface {
-	azcore.Pager
-	// PageResponse returns the current AutomationAccountListResponse.
-	PageResponse() AutomationAccountListResponse
-}
-
-type automationAccountListPager struct {
+// AutomationAccountListPager provides operations for iterating over paged responses.
+type AutomationAccountListPager struct {
 	client    *AutomationAccountClient
 	current   AutomationAccountListResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, AutomationAccountListResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, AutomationAccountListResponse) (*policy.Request, error)
 }
 
-func (p *automationAccountListPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *AutomationAccountListPager) Err() error {
 	return p.err
 }
 
-func (p *automationAccountListPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *AutomationAccountListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.AutomationAccountListResult.NextLink == nil || len(*p.current.AutomationAccountListResult.NextLink) == 0 {
@@ -158,12 +156,12 @@ func (p *automationAccountListPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listHandleError(resp)
 		return false
 	}
@@ -176,30 +174,29 @@ func (p *automationAccountListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *automationAccountListPager) PageResponse() AutomationAccountListResponse {
+// PageResponse returns the current AutomationAccountListResponse page.
+func (p *AutomationAccountListPager) PageResponse() AutomationAccountListResponse {
 	return p.current
 }
 
-type CertificateListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current CertificateListByAutomationAccountResponse.
-	PageResponse() CertificateListByAutomationAccountResponse
-}
-
-type certificateListByAutomationAccountPager struct {
+// CertificateListByAutomationAccountPager provides operations for iterating over paged responses.
+type CertificateListByAutomationAccountPager struct {
 	client    *CertificateClient
 	current   CertificateListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, CertificateListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, CertificateListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *certificateListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *CertificateListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *certificateListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *CertificateListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.CertificateListResult.NextLink == nil || len(*p.current.CertificateListResult.NextLink) == 0 {
@@ -213,12 +210,12 @@ func (p *certificateListByAutomationAccountPager) NextPage(ctx context.Context) 
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -231,30 +228,29 @@ func (p *certificateListByAutomationAccountPager) NextPage(ctx context.Context) 
 	return true
 }
 
-func (p *certificateListByAutomationAccountPager) PageResponse() CertificateListByAutomationAccountResponse {
+// PageResponse returns the current CertificateListByAutomationAccountResponse page.
+func (p *CertificateListByAutomationAccountPager) PageResponse() CertificateListByAutomationAccountResponse {
 	return p.current
 }
 
-type ConnectionListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current ConnectionListByAutomationAccountResponse.
-	PageResponse() ConnectionListByAutomationAccountResponse
-}
-
-type connectionListByAutomationAccountPager struct {
+// ConnectionListByAutomationAccountPager provides operations for iterating over paged responses.
+type ConnectionListByAutomationAccountPager struct {
 	client    *ConnectionClient
 	current   ConnectionListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, ConnectionListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ConnectionListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *connectionListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *ConnectionListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *connectionListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ConnectionListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.ConnectionListResult.NextLink == nil || len(*p.current.ConnectionListResult.NextLink) == 0 {
@@ -268,12 +264,12 @@ func (p *connectionListByAutomationAccountPager) NextPage(ctx context.Context) b
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -286,30 +282,29 @@ func (p *connectionListByAutomationAccountPager) NextPage(ctx context.Context) b
 	return true
 }
 
-func (p *connectionListByAutomationAccountPager) PageResponse() ConnectionListByAutomationAccountResponse {
+// PageResponse returns the current ConnectionListByAutomationAccountResponse page.
+func (p *ConnectionListByAutomationAccountPager) PageResponse() ConnectionListByAutomationAccountResponse {
 	return p.current
 }
 
-type ConnectionTypeListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current ConnectionTypeListByAutomationAccountResponse.
-	PageResponse() ConnectionTypeListByAutomationAccountResponse
-}
-
-type connectionTypeListByAutomationAccountPager struct {
+// ConnectionTypeListByAutomationAccountPager provides operations for iterating over paged responses.
+type ConnectionTypeListByAutomationAccountPager struct {
 	client    *ConnectionTypeClient
 	current   ConnectionTypeListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, ConnectionTypeListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ConnectionTypeListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *connectionTypeListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *ConnectionTypeListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *connectionTypeListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ConnectionTypeListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.ConnectionTypeListResult.NextLink == nil || len(*p.current.ConnectionTypeListResult.NextLink) == 0 {
@@ -323,12 +318,12 @@ func (p *connectionTypeListByAutomationAccountPager) NextPage(ctx context.Contex
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -341,30 +336,29 @@ func (p *connectionTypeListByAutomationAccountPager) NextPage(ctx context.Contex
 	return true
 }
 
-func (p *connectionTypeListByAutomationAccountPager) PageResponse() ConnectionTypeListByAutomationAccountResponse {
+// PageResponse returns the current ConnectionTypeListByAutomationAccountResponse page.
+func (p *ConnectionTypeListByAutomationAccountPager) PageResponse() ConnectionTypeListByAutomationAccountResponse {
 	return p.current
 }
 
-type CredentialListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current CredentialListByAutomationAccountResponse.
-	PageResponse() CredentialListByAutomationAccountResponse
-}
-
-type credentialListByAutomationAccountPager struct {
+// CredentialListByAutomationAccountPager provides operations for iterating over paged responses.
+type CredentialListByAutomationAccountPager struct {
 	client    *CredentialClient
 	current   CredentialListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, CredentialListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, CredentialListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *credentialListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *CredentialListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *credentialListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *CredentialListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.CredentialListResult.NextLink == nil || len(*p.current.CredentialListResult.NextLink) == 0 {
@@ -378,12 +372,12 @@ func (p *credentialListByAutomationAccountPager) NextPage(ctx context.Context) b
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -396,30 +390,29 @@ func (p *credentialListByAutomationAccountPager) NextPage(ctx context.Context) b
 	return true
 }
 
-func (p *credentialListByAutomationAccountPager) PageResponse() CredentialListByAutomationAccountResponse {
+// PageResponse returns the current CredentialListByAutomationAccountResponse page.
+func (p *CredentialListByAutomationAccountPager) PageResponse() CredentialListByAutomationAccountResponse {
 	return p.current
 }
 
-type DscCompilationJobListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current DscCompilationJobListByAutomationAccountResponse.
-	PageResponse() DscCompilationJobListByAutomationAccountResponse
-}
-
-type dscCompilationJobListByAutomationAccountPager struct {
+// DscCompilationJobListByAutomationAccountPager provides operations for iterating over paged responses.
+type DscCompilationJobListByAutomationAccountPager struct {
 	client    *DscCompilationJobClient
 	current   DscCompilationJobListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, DscCompilationJobListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, DscCompilationJobListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *dscCompilationJobListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *DscCompilationJobListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *dscCompilationJobListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *DscCompilationJobListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.DscCompilationJobListResult.NextLink == nil || len(*p.current.DscCompilationJobListResult.NextLink) == 0 {
@@ -433,12 +426,12 @@ func (p *dscCompilationJobListByAutomationAccountPager) NextPage(ctx context.Con
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -451,30 +444,29 @@ func (p *dscCompilationJobListByAutomationAccountPager) NextPage(ctx context.Con
 	return true
 }
 
-func (p *dscCompilationJobListByAutomationAccountPager) PageResponse() DscCompilationJobListByAutomationAccountResponse {
+// PageResponse returns the current DscCompilationJobListByAutomationAccountResponse page.
+func (p *DscCompilationJobListByAutomationAccountPager) PageResponse() DscCompilationJobListByAutomationAccountResponse {
 	return p.current
 }
 
-type DscConfigurationListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current DscConfigurationListByAutomationAccountResponse.
-	PageResponse() DscConfigurationListByAutomationAccountResponse
-}
-
-type dscConfigurationListByAutomationAccountPager struct {
+// DscConfigurationListByAutomationAccountPager provides operations for iterating over paged responses.
+type DscConfigurationListByAutomationAccountPager struct {
 	client    *DscConfigurationClient
 	current   DscConfigurationListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, DscConfigurationListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, DscConfigurationListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *dscConfigurationListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *DscConfigurationListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *dscConfigurationListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *DscConfigurationListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.DscConfigurationListResult.NextLink == nil || len(*p.current.DscConfigurationListResult.NextLink) == 0 {
@@ -488,12 +480,12 @@ func (p *dscConfigurationListByAutomationAccountPager) NextPage(ctx context.Cont
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -506,30 +498,29 @@ func (p *dscConfigurationListByAutomationAccountPager) NextPage(ctx context.Cont
 	return true
 }
 
-func (p *dscConfigurationListByAutomationAccountPager) PageResponse() DscConfigurationListByAutomationAccountResponse {
+// PageResponse returns the current DscConfigurationListByAutomationAccountResponse page.
+func (p *DscConfigurationListByAutomationAccountPager) PageResponse() DscConfigurationListByAutomationAccountResponse {
 	return p.current
 }
 
-type DscNodeConfigurationListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current DscNodeConfigurationListByAutomationAccountResponse.
-	PageResponse() DscNodeConfigurationListByAutomationAccountResponse
-}
-
-type dscNodeConfigurationListByAutomationAccountPager struct {
+// DscNodeConfigurationListByAutomationAccountPager provides operations for iterating over paged responses.
+type DscNodeConfigurationListByAutomationAccountPager struct {
 	client    *DscNodeConfigurationClient
 	current   DscNodeConfigurationListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, DscNodeConfigurationListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, DscNodeConfigurationListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *dscNodeConfigurationListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *DscNodeConfigurationListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *dscNodeConfigurationListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *DscNodeConfigurationListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.DscNodeConfigurationListResult.NextLink == nil || len(*p.current.DscNodeConfigurationListResult.NextLink) == 0 {
@@ -543,12 +534,12 @@ func (p *dscNodeConfigurationListByAutomationAccountPager) NextPage(ctx context.
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -561,30 +552,29 @@ func (p *dscNodeConfigurationListByAutomationAccountPager) NextPage(ctx context.
 	return true
 }
 
-func (p *dscNodeConfigurationListByAutomationAccountPager) PageResponse() DscNodeConfigurationListByAutomationAccountResponse {
+// PageResponse returns the current DscNodeConfigurationListByAutomationAccountResponse page.
+func (p *DscNodeConfigurationListByAutomationAccountPager) PageResponse() DscNodeConfigurationListByAutomationAccountResponse {
 	return p.current
 }
 
-type DscNodeListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current DscNodeListByAutomationAccountResponse.
-	PageResponse() DscNodeListByAutomationAccountResponse
-}
-
-type dscNodeListByAutomationAccountPager struct {
+// DscNodeListByAutomationAccountPager provides operations for iterating over paged responses.
+type DscNodeListByAutomationAccountPager struct {
 	client    *DscNodeClient
 	current   DscNodeListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, DscNodeListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, DscNodeListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *dscNodeListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *DscNodeListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *dscNodeListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *DscNodeListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.DscNodeListResult.NextLink == nil || len(*p.current.DscNodeListResult.NextLink) == 0 {
@@ -598,12 +588,12 @@ func (p *dscNodeListByAutomationAccountPager) NextPage(ctx context.Context) bool
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -616,30 +606,29 @@ func (p *dscNodeListByAutomationAccountPager) NextPage(ctx context.Context) bool
 	return true
 }
 
-func (p *dscNodeListByAutomationAccountPager) PageResponse() DscNodeListByAutomationAccountResponse {
+// PageResponse returns the current DscNodeListByAutomationAccountResponse page.
+func (p *DscNodeListByAutomationAccountPager) PageResponse() DscNodeListByAutomationAccountResponse {
 	return p.current
 }
 
-type HybridRunbookWorkerGroupListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current HybridRunbookWorkerGroupListByAutomationAccountResponse.
-	PageResponse() HybridRunbookWorkerGroupListByAutomationAccountResponse
-}
-
-type hybridRunbookWorkerGroupListByAutomationAccountPager struct {
+// HybridRunbookWorkerGroupListByAutomationAccountPager provides operations for iterating over paged responses.
+type HybridRunbookWorkerGroupListByAutomationAccountPager struct {
 	client    *HybridRunbookWorkerGroupClient
 	current   HybridRunbookWorkerGroupListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, HybridRunbookWorkerGroupListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, HybridRunbookWorkerGroupListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *hybridRunbookWorkerGroupListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *HybridRunbookWorkerGroupListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *hybridRunbookWorkerGroupListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *HybridRunbookWorkerGroupListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.HybridRunbookWorkerGroupsListResult.NextLink == nil || len(*p.current.HybridRunbookWorkerGroupsListResult.NextLink) == 0 {
@@ -653,12 +642,12 @@ func (p *hybridRunbookWorkerGroupListByAutomationAccountPager) NextPage(ctx cont
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -671,30 +660,29 @@ func (p *hybridRunbookWorkerGroupListByAutomationAccountPager) NextPage(ctx cont
 	return true
 }
 
-func (p *hybridRunbookWorkerGroupListByAutomationAccountPager) PageResponse() HybridRunbookWorkerGroupListByAutomationAccountResponse {
+// PageResponse returns the current HybridRunbookWorkerGroupListByAutomationAccountResponse page.
+func (p *HybridRunbookWorkerGroupListByAutomationAccountPager) PageResponse() HybridRunbookWorkerGroupListByAutomationAccountResponse {
 	return p.current
 }
 
-type JobListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current JobListByAutomationAccountResponse.
-	PageResponse() JobListByAutomationAccountResponse
-}
-
-type jobListByAutomationAccountPager struct {
+// JobListByAutomationAccountPager provides operations for iterating over paged responses.
+type JobListByAutomationAccountPager struct {
 	client    *JobClient
 	current   JobListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, JobListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, JobListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *jobListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *JobListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *jobListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *JobListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.JobListResultV2.NextLink == nil || len(*p.current.JobListResultV2.NextLink) == 0 {
@@ -708,12 +696,12 @@ func (p *jobListByAutomationAccountPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -726,30 +714,29 @@ func (p *jobListByAutomationAccountPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *jobListByAutomationAccountPager) PageResponse() JobListByAutomationAccountResponse {
+// PageResponse returns the current JobListByAutomationAccountResponse page.
+func (p *JobListByAutomationAccountPager) PageResponse() JobListByAutomationAccountResponse {
 	return p.current
 }
 
-type JobScheduleListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current JobScheduleListByAutomationAccountResponse.
-	PageResponse() JobScheduleListByAutomationAccountResponse
-}
-
-type jobScheduleListByAutomationAccountPager struct {
+// JobScheduleListByAutomationAccountPager provides operations for iterating over paged responses.
+type JobScheduleListByAutomationAccountPager struct {
 	client    *JobScheduleClient
 	current   JobScheduleListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, JobScheduleListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, JobScheduleListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *jobScheduleListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *JobScheduleListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *jobScheduleListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *JobScheduleListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.JobScheduleListResult.NextLink == nil || len(*p.current.JobScheduleListResult.NextLink) == 0 {
@@ -763,12 +750,12 @@ func (p *jobScheduleListByAutomationAccountPager) NextPage(ctx context.Context) 
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -781,30 +768,29 @@ func (p *jobScheduleListByAutomationAccountPager) NextPage(ctx context.Context) 
 	return true
 }
 
-func (p *jobScheduleListByAutomationAccountPager) PageResponse() JobScheduleListByAutomationAccountResponse {
+// PageResponse returns the current JobScheduleListByAutomationAccountResponse page.
+func (p *JobScheduleListByAutomationAccountPager) PageResponse() JobScheduleListByAutomationAccountResponse {
 	return p.current
 }
 
-type JobStreamListByJobPager interface {
-	azcore.Pager
-	// PageResponse returns the current JobStreamListByJobResponse.
-	PageResponse() JobStreamListByJobResponse
-}
-
-type jobStreamListByJobPager struct {
+// JobStreamListByJobPager provides operations for iterating over paged responses.
+type JobStreamListByJobPager struct {
 	client    *JobStreamClient
 	current   JobStreamListByJobResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, JobStreamListByJobResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, JobStreamListByJobResponse) (*policy.Request, error)
 }
 
-func (p *jobStreamListByJobPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *JobStreamListByJobPager) Err() error {
 	return p.err
 }
 
-func (p *jobStreamListByJobPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *JobStreamListByJobPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.JobStreamListResult.NextLink == nil || len(*p.current.JobStreamListResult.NextLink) == 0 {
@@ -818,12 +804,12 @@ func (p *jobStreamListByJobPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByJobHandleError(resp)
 		return false
 	}
@@ -836,30 +822,29 @@ func (p *jobStreamListByJobPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *jobStreamListByJobPager) PageResponse() JobStreamListByJobResponse {
+// PageResponse returns the current JobStreamListByJobResponse page.
+func (p *JobStreamListByJobPager) PageResponse() JobStreamListByJobResponse {
 	return p.current
 }
 
-type ModuleListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current ModuleListByAutomationAccountResponse.
-	PageResponse() ModuleListByAutomationAccountResponse
-}
-
-type moduleListByAutomationAccountPager struct {
+// ModuleListByAutomationAccountPager provides operations for iterating over paged responses.
+type ModuleListByAutomationAccountPager struct {
 	client    *ModuleClient
 	current   ModuleListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, ModuleListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ModuleListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *moduleListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *ModuleListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *moduleListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ModuleListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.ModuleListResult.NextLink == nil || len(*p.current.ModuleListResult.NextLink) == 0 {
@@ -873,12 +858,12 @@ func (p *moduleListByAutomationAccountPager) NextPage(ctx context.Context) bool 
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -891,30 +876,29 @@ func (p *moduleListByAutomationAccountPager) NextPage(ctx context.Context) bool 
 	return true
 }
 
-func (p *moduleListByAutomationAccountPager) PageResponse() ModuleListByAutomationAccountResponse {
+// PageResponse returns the current ModuleListByAutomationAccountResponse page.
+func (p *ModuleListByAutomationAccountPager) PageResponse() ModuleListByAutomationAccountResponse {
 	return p.current
 }
 
-type NodeReportsListByNodePager interface {
-	azcore.Pager
-	// PageResponse returns the current NodeReportsListByNodeResponse.
-	PageResponse() NodeReportsListByNodeResponse
-}
-
-type nodeReportsListByNodePager struct {
+// NodeReportsListByNodePager provides operations for iterating over paged responses.
+type NodeReportsListByNodePager struct {
 	client    *NodeReportsClient
 	current   NodeReportsListByNodeResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, NodeReportsListByNodeResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, NodeReportsListByNodeResponse) (*policy.Request, error)
 }
 
-func (p *nodeReportsListByNodePager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *NodeReportsListByNodePager) Err() error {
 	return p.err
 }
 
-func (p *nodeReportsListByNodePager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *NodeReportsListByNodePager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.DscNodeReportListResult.NextLink == nil || len(*p.current.DscNodeReportListResult.NextLink) == 0 {
@@ -928,12 +912,12 @@ func (p *nodeReportsListByNodePager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByNodeHandleError(resp)
 		return false
 	}
@@ -946,30 +930,29 @@ func (p *nodeReportsListByNodePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *nodeReportsListByNodePager) PageResponse() NodeReportsListByNodeResponse {
+// PageResponse returns the current NodeReportsListByNodeResponse page.
+func (p *NodeReportsListByNodePager) PageResponse() NodeReportsListByNodeResponse {
 	return p.current
 }
 
-type Python2PackageListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current Python2PackageListByAutomationAccountResponse.
-	PageResponse() Python2PackageListByAutomationAccountResponse
-}
-
-type python2PackageListByAutomationAccountPager struct {
+// Python2PackageListByAutomationAccountPager provides operations for iterating over paged responses.
+type Python2PackageListByAutomationAccountPager struct {
 	client    *Python2PackageClient
 	current   Python2PackageListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, Python2PackageListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, Python2PackageListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *python2PackageListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *Python2PackageListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *python2PackageListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *Python2PackageListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.ModuleListResult.NextLink == nil || len(*p.current.ModuleListResult.NextLink) == 0 {
@@ -983,12 +966,12 @@ func (p *python2PackageListByAutomationAccountPager) NextPage(ctx context.Contex
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -1001,30 +984,29 @@ func (p *python2PackageListByAutomationAccountPager) NextPage(ctx context.Contex
 	return true
 }
 
-func (p *python2PackageListByAutomationAccountPager) PageResponse() Python2PackageListByAutomationAccountResponse {
+// PageResponse returns the current Python2PackageListByAutomationAccountResponse page.
+func (p *Python2PackageListByAutomationAccountPager) PageResponse() Python2PackageListByAutomationAccountResponse {
 	return p.current
 }
 
-type RunbookListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current RunbookListByAutomationAccountResponse.
-	PageResponse() RunbookListByAutomationAccountResponse
-}
-
-type runbookListByAutomationAccountPager struct {
+// RunbookListByAutomationAccountPager provides operations for iterating over paged responses.
+type RunbookListByAutomationAccountPager struct {
 	client    *RunbookClient
 	current   RunbookListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, RunbookListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, RunbookListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *runbookListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *RunbookListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *runbookListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *RunbookListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.RunbookListResult.NextLink == nil || len(*p.current.RunbookListResult.NextLink) == 0 {
@@ -1038,12 +1020,12 @@ func (p *runbookListByAutomationAccountPager) NextPage(ctx context.Context) bool
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -1056,30 +1038,29 @@ func (p *runbookListByAutomationAccountPager) NextPage(ctx context.Context) bool
 	return true
 }
 
-func (p *runbookListByAutomationAccountPager) PageResponse() RunbookListByAutomationAccountResponse {
+// PageResponse returns the current RunbookListByAutomationAccountResponse page.
+func (p *RunbookListByAutomationAccountPager) PageResponse() RunbookListByAutomationAccountResponse {
 	return p.current
 }
 
-type ScheduleListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current ScheduleListByAutomationAccountResponse.
-	PageResponse() ScheduleListByAutomationAccountResponse
-}
-
-type scheduleListByAutomationAccountPager struct {
+// ScheduleListByAutomationAccountPager provides operations for iterating over paged responses.
+type ScheduleListByAutomationAccountPager struct {
 	client    *ScheduleClient
 	current   ScheduleListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, ScheduleListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ScheduleListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *scheduleListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *ScheduleListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *scheduleListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ScheduleListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.ScheduleListResult.NextLink == nil || len(*p.current.ScheduleListResult.NextLink) == 0 {
@@ -1093,12 +1074,12 @@ func (p *scheduleListByAutomationAccountPager) NextPage(ctx context.Context) boo
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -1111,30 +1092,29 @@ func (p *scheduleListByAutomationAccountPager) NextPage(ctx context.Context) boo
 	return true
 }
 
-func (p *scheduleListByAutomationAccountPager) PageResponse() ScheduleListByAutomationAccountResponse {
+// PageResponse returns the current ScheduleListByAutomationAccountResponse page.
+func (p *ScheduleListByAutomationAccountPager) PageResponse() ScheduleListByAutomationAccountResponse {
 	return p.current
 }
 
-type SourceControlListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current SourceControlListByAutomationAccountResponse.
-	PageResponse() SourceControlListByAutomationAccountResponse
-}
-
-type sourceControlListByAutomationAccountPager struct {
+// SourceControlListByAutomationAccountPager provides operations for iterating over paged responses.
+type SourceControlListByAutomationAccountPager struct {
 	client    *SourceControlClient
 	current   SourceControlListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, SourceControlListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, SourceControlListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *sourceControlListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *SourceControlListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *sourceControlListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *SourceControlListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.SourceControlListResult.NextLink == nil || len(*p.current.SourceControlListResult.NextLink) == 0 {
@@ -1148,12 +1128,12 @@ func (p *sourceControlListByAutomationAccountPager) NextPage(ctx context.Context
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -1166,30 +1146,29 @@ func (p *sourceControlListByAutomationAccountPager) NextPage(ctx context.Context
 	return true
 }
 
-func (p *sourceControlListByAutomationAccountPager) PageResponse() SourceControlListByAutomationAccountResponse {
+// PageResponse returns the current SourceControlListByAutomationAccountResponse page.
+func (p *SourceControlListByAutomationAccountPager) PageResponse() SourceControlListByAutomationAccountResponse {
 	return p.current
 }
 
-type SourceControlSyncJobListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current SourceControlSyncJobListByAutomationAccountResponse.
-	PageResponse() SourceControlSyncJobListByAutomationAccountResponse
-}
-
-type sourceControlSyncJobListByAutomationAccountPager struct {
+// SourceControlSyncJobListByAutomationAccountPager provides operations for iterating over paged responses.
+type SourceControlSyncJobListByAutomationAccountPager struct {
 	client    *SourceControlSyncJobClient
 	current   SourceControlSyncJobListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, SourceControlSyncJobListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, SourceControlSyncJobListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *sourceControlSyncJobListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *SourceControlSyncJobListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *sourceControlSyncJobListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *SourceControlSyncJobListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.SourceControlSyncJobListResult.NextLink == nil || len(*p.current.SourceControlSyncJobListResult.NextLink) == 0 {
@@ -1203,12 +1182,12 @@ func (p *sourceControlSyncJobListByAutomationAccountPager) NextPage(ctx context.
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -1221,30 +1200,29 @@ func (p *sourceControlSyncJobListByAutomationAccountPager) NextPage(ctx context.
 	return true
 }
 
-func (p *sourceControlSyncJobListByAutomationAccountPager) PageResponse() SourceControlSyncJobListByAutomationAccountResponse {
+// PageResponse returns the current SourceControlSyncJobListByAutomationAccountResponse page.
+func (p *SourceControlSyncJobListByAutomationAccountPager) PageResponse() SourceControlSyncJobListByAutomationAccountResponse {
 	return p.current
 }
 
-type SourceControlSyncJobStreamsListBySyncJobPager interface {
-	azcore.Pager
-	// PageResponse returns the current SourceControlSyncJobStreamsListBySyncJobResponse.
-	PageResponse() SourceControlSyncJobStreamsListBySyncJobResponse
-}
-
-type sourceControlSyncJobStreamsListBySyncJobPager struct {
+// SourceControlSyncJobStreamsListBySyncJobPager provides operations for iterating over paged responses.
+type SourceControlSyncJobStreamsListBySyncJobPager struct {
 	client    *SourceControlSyncJobStreamsClient
 	current   SourceControlSyncJobStreamsListBySyncJobResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, SourceControlSyncJobStreamsListBySyncJobResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, SourceControlSyncJobStreamsListBySyncJobResponse) (*policy.Request, error)
 }
 
-func (p *sourceControlSyncJobStreamsListBySyncJobPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *SourceControlSyncJobStreamsListBySyncJobPager) Err() error {
 	return p.err
 }
 
-func (p *sourceControlSyncJobStreamsListBySyncJobPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *SourceControlSyncJobStreamsListBySyncJobPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.SourceControlSyncJobStreamsListBySyncJob.NextLink == nil || len(*p.current.SourceControlSyncJobStreamsListBySyncJob.NextLink) == 0 {
@@ -1258,12 +1236,12 @@ func (p *sourceControlSyncJobStreamsListBySyncJobPager) NextPage(ctx context.Con
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listBySyncJobHandleError(resp)
 		return false
 	}
@@ -1276,30 +1254,29 @@ func (p *sourceControlSyncJobStreamsListBySyncJobPager) NextPage(ctx context.Con
 	return true
 }
 
-func (p *sourceControlSyncJobStreamsListBySyncJobPager) PageResponse() SourceControlSyncJobStreamsListBySyncJobResponse {
+// PageResponse returns the current SourceControlSyncJobStreamsListBySyncJobResponse page.
+func (p *SourceControlSyncJobStreamsListBySyncJobPager) PageResponse() SourceControlSyncJobStreamsListBySyncJobResponse {
 	return p.current
 }
 
-type TestJobStreamsListByTestJobPager interface {
-	azcore.Pager
-	// PageResponse returns the current TestJobStreamsListByTestJobResponse.
-	PageResponse() TestJobStreamsListByTestJobResponse
-}
-
-type testJobStreamsListByTestJobPager struct {
+// TestJobStreamsListByTestJobPager provides operations for iterating over paged responses.
+type TestJobStreamsListByTestJobPager struct {
 	client    *TestJobStreamsClient
 	current   TestJobStreamsListByTestJobResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, TestJobStreamsListByTestJobResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, TestJobStreamsListByTestJobResponse) (*policy.Request, error)
 }
 
-func (p *testJobStreamsListByTestJobPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *TestJobStreamsListByTestJobPager) Err() error {
 	return p.err
 }
 
-func (p *testJobStreamsListByTestJobPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *TestJobStreamsListByTestJobPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.JobStreamListResult.NextLink == nil || len(*p.current.JobStreamListResult.NextLink) == 0 {
@@ -1313,12 +1290,12 @@ func (p *testJobStreamsListByTestJobPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByTestJobHandleError(resp)
 		return false
 	}
@@ -1331,30 +1308,29 @@ func (p *testJobStreamsListByTestJobPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *testJobStreamsListByTestJobPager) PageResponse() TestJobStreamsListByTestJobResponse {
+// PageResponse returns the current TestJobStreamsListByTestJobResponse page.
+func (p *TestJobStreamsListByTestJobPager) PageResponse() TestJobStreamsListByTestJobResponse {
 	return p.current
 }
 
-type VariableListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current VariableListByAutomationAccountResponse.
-	PageResponse() VariableListByAutomationAccountResponse
-}
-
-type variableListByAutomationAccountPager struct {
+// VariableListByAutomationAccountPager provides operations for iterating over paged responses.
+type VariableListByAutomationAccountPager struct {
 	client    *VariableClient
 	current   VariableListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, VariableListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, VariableListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *variableListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *VariableListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *variableListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *VariableListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.VariableListResult.NextLink == nil || len(*p.current.VariableListResult.NextLink) == 0 {
@@ -1368,12 +1344,12 @@ func (p *variableListByAutomationAccountPager) NextPage(ctx context.Context) boo
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -1386,30 +1362,29 @@ func (p *variableListByAutomationAccountPager) NextPage(ctx context.Context) boo
 	return true
 }
 
-func (p *variableListByAutomationAccountPager) PageResponse() VariableListByAutomationAccountResponse {
+// PageResponse returns the current VariableListByAutomationAccountResponse page.
+func (p *VariableListByAutomationAccountPager) PageResponse() VariableListByAutomationAccountResponse {
 	return p.current
 }
 
-type WatcherListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current WatcherListByAutomationAccountResponse.
-	PageResponse() WatcherListByAutomationAccountResponse
-}
-
-type watcherListByAutomationAccountPager struct {
+// WatcherListByAutomationAccountPager provides operations for iterating over paged responses.
+type WatcherListByAutomationAccountPager struct {
 	client    *WatcherClient
 	current   WatcherListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, WatcherListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, WatcherListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *watcherListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *WatcherListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *watcherListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *WatcherListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.WatcherListResult.NextLink == nil || len(*p.current.WatcherListResult.NextLink) == 0 {
@@ -1423,12 +1398,12 @@ func (p *watcherListByAutomationAccountPager) NextPage(ctx context.Context) bool
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -1441,30 +1416,29 @@ func (p *watcherListByAutomationAccountPager) NextPage(ctx context.Context) bool
 	return true
 }
 
-func (p *watcherListByAutomationAccountPager) PageResponse() WatcherListByAutomationAccountResponse {
+// PageResponse returns the current WatcherListByAutomationAccountResponse page.
+func (p *WatcherListByAutomationAccountPager) PageResponse() WatcherListByAutomationAccountResponse {
 	return p.current
 }
 
-type WebhookListByAutomationAccountPager interface {
-	azcore.Pager
-	// PageResponse returns the current WebhookListByAutomationAccountResponse.
-	PageResponse() WebhookListByAutomationAccountResponse
-}
-
-type webhookListByAutomationAccountPager struct {
+// WebhookListByAutomationAccountPager provides operations for iterating over paged responses.
+type WebhookListByAutomationAccountPager struct {
 	client    *WebhookClient
 	current   WebhookListByAutomationAccountResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, WebhookListByAutomationAccountResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, WebhookListByAutomationAccountResponse) (*policy.Request, error)
 }
 
-func (p *webhookListByAutomationAccountPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *WebhookListByAutomationAccountPager) Err() error {
 	return p.err
 }
 
-func (p *webhookListByAutomationAccountPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *WebhookListByAutomationAccountPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.WebhookListResult.NextLink == nil || len(*p.current.WebhookListResult.NextLink) == 0 {
@@ -1478,12 +1452,12 @@ func (p *webhookListByAutomationAccountPager) NextPage(ctx context.Context) bool
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByAutomationAccountHandleError(resp)
 		return false
 	}
@@ -1496,6 +1470,7 @@ func (p *webhookListByAutomationAccountPager) NextPage(ctx context.Context) bool
 	return true
 }
 
-func (p *webhookListByAutomationAccountPager) PageResponse() WebhookListByAutomationAccountResponse {
+// PageResponse returns the current WebhookListByAutomationAccountResponse page.
+func (p *WebhookListByAutomationAccountPager) PageResponse() WebhookListByAutomationAccountResponse {
 	return p.current
 }

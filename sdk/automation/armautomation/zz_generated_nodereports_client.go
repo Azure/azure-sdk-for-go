@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // NodeReportsClient contains the methods for the NodeReports group.
 // Don't use this type directly, use NewNodeReportsClient() instead.
 type NodeReportsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewNodeReportsClient creates a new instance of NodeReportsClient with the specified values.
-func NewNodeReportsClient(con *armcore.Connection, subscriptionID string) *NodeReportsClient {
-	return &NodeReportsClient{con: con, subscriptionID: subscriptionID}
+func NewNodeReportsClient(con *arm.Connection, subscriptionID string) *NodeReportsClient {
+	return &NodeReportsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Retrieve the Dsc node report data by node id and report id.
@@ -38,18 +41,18 @@ func (client *NodeReportsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return NodeReportsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return NodeReportsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return NodeReportsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *NodeReportsClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, reportID string, options *NodeReportsGetOptions) (*azcore.Request, error) {
+func (client *NodeReportsClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, reportID string, options *NodeReportsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}/reports/{reportId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -71,38 +74,37 @@ func (client *NodeReportsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *NodeReportsClient) getHandleResponse(resp *azcore.Response) (NodeReportsGetResponse, error) {
-	result := NodeReportsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DscNodeReport); err != nil {
+func (client *NodeReportsClient) getHandleResponse(resp *http.Response) (NodeReportsGetResponse, error) {
+	result := NodeReportsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DscNodeReport); err != nil {
 		return NodeReportsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *NodeReportsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *NodeReportsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetContent - Retrieve the Dsc node reports by node id and report id.
@@ -112,18 +114,18 @@ func (client *NodeReportsClient) GetContent(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return NodeReportsGetContentResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return NodeReportsGetContentResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return NodeReportsGetContentResponse{}, client.getContentHandleError(resp)
 	}
 	return client.getContentHandleResponse(resp)
 }
 
 // getContentCreateRequest creates the GetContent request.
-func (client *NodeReportsClient) getContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, reportID string, options *NodeReportsGetContentOptions) (*azcore.Request, error) {
+func (client *NodeReportsClient) getContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, reportID string, options *NodeReportsGetContentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}/reports/{reportId}/content"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -145,56 +147,55 @@ func (client *NodeReportsClient) getContentCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getContentHandleResponse handles the GetContent response.
-func (client *NodeReportsClient) getContentHandleResponse(resp *azcore.Response) (NodeReportsGetContentResponse, error) {
-	result := NodeReportsGetContentResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Object); err != nil {
+func (client *NodeReportsClient) getContentHandleResponse(resp *http.Response) (NodeReportsGetContentResponse, error) {
+	result := NodeReportsGetContentResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Object); err != nil {
 		return NodeReportsGetContentResponse{}, err
 	}
 	return result, nil
 }
 
 // getContentHandleError handles the GetContent error response.
-func (client *NodeReportsClient) getContentHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *NodeReportsClient) getContentHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByNode - Retrieve the Dsc node report list by node id.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *NodeReportsClient) ListByNode(resourceGroupName string, automationAccountName string, nodeID string, options *NodeReportsListByNodeOptions) NodeReportsListByNodePager {
-	return &nodeReportsListByNodePager{
+func (client *NodeReportsClient) ListByNode(resourceGroupName string, automationAccountName string, nodeID string, options *NodeReportsListByNodeOptions) *NodeReportsListByNodePager {
+	return &NodeReportsListByNodePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByNodeCreateRequest(ctx, resourceGroupName, automationAccountName, nodeID, options)
 		},
-		advancer: func(ctx context.Context, resp NodeReportsListByNodeResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DscNodeReportListResult.NextLink)
+		advancer: func(ctx context.Context, resp NodeReportsListByNodeResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DscNodeReportListResult.NextLink)
 		},
 	}
 }
 
 // listByNodeCreateRequest creates the ListByNode request.
-func (client *NodeReportsClient) listByNodeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, options *NodeReportsListByNodeOptions) (*azcore.Request, error) {
+func (client *NodeReportsClient) listByNodeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nodeID string, options *NodeReportsListByNodeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}/reports"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -212,39 +213,38 @@ func (client *NodeReportsClient) listByNodeCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
 	reqQP.Set("api-version", "2020-01-13-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByNodeHandleResponse handles the ListByNode response.
-func (client *NodeReportsClient) listByNodeHandleResponse(resp *azcore.Response) (NodeReportsListByNodeResponse, error) {
-	result := NodeReportsListByNodeResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DscNodeReportListResult); err != nil {
+func (client *NodeReportsClient) listByNodeHandleResponse(resp *http.Response) (NodeReportsListByNodeResponse, error) {
+	result := NodeReportsListByNodeResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DscNodeReportListResult); err != nil {
 		return NodeReportsListByNodeResponse{}, err
 	}
 	return result, nil
 }
 
 // listByNodeHandleError handles the ListByNode error response.
-func (client *NodeReportsClient) listByNodeHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *NodeReportsClient) listByNodeHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

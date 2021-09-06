@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // LinkedWorkspaceClient contains the methods for the LinkedWorkspace group.
 // Don't use this type directly, use NewLinkedWorkspaceClient() instead.
 type LinkedWorkspaceClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewLinkedWorkspaceClient creates a new instance of LinkedWorkspaceClient with the specified values.
-func NewLinkedWorkspaceClient(con *armcore.Connection, subscriptionID string) *LinkedWorkspaceClient {
-	return &LinkedWorkspaceClient{con: con, subscriptionID: subscriptionID}
+func NewLinkedWorkspaceClient(con *arm.Connection, subscriptionID string) *LinkedWorkspaceClient {
+	return &LinkedWorkspaceClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Retrieve the linked workspace for the account id.
@@ -38,18 +41,18 @@ func (client *LinkedWorkspaceClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return LinkedWorkspaceGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return LinkedWorkspaceGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return LinkedWorkspaceGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LinkedWorkspaceClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *LinkedWorkspaceGetOptions) (*azcore.Request, error) {
+func (client *LinkedWorkspaceClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *LinkedWorkspaceGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/linkedWorkspace"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -63,36 +66,35 @@ func (client *LinkedWorkspaceClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-01-13-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *LinkedWorkspaceClient) getHandleResponse(resp *azcore.Response) (LinkedWorkspaceGetResponse, error) {
-	result := LinkedWorkspaceGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.LinkedWorkspace); err != nil {
+func (client *LinkedWorkspaceClient) getHandleResponse(resp *http.Response) (LinkedWorkspaceGetResponse, error) {
+	result := LinkedWorkspaceGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedWorkspace); err != nil {
 		return LinkedWorkspaceGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *LinkedWorkspaceClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *LinkedWorkspaceClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

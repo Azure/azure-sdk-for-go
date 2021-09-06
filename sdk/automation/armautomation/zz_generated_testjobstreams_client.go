@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TestJobStreamsClient contains the methods for the TestJobStreams group.
 // Don't use this type directly, use NewTestJobStreamsClient() instead.
 type TestJobStreamsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewTestJobStreamsClient creates a new instance of TestJobStreamsClient with the specified values.
-func NewTestJobStreamsClient(con *armcore.Connection, subscriptionID string) *TestJobStreamsClient {
-	return &TestJobStreamsClient{con: con, subscriptionID: subscriptionID}
+func NewTestJobStreamsClient(con *arm.Connection, subscriptionID string) *TestJobStreamsClient {
+	return &TestJobStreamsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Retrieve a test job stream of the test job identified by runbook name and stream id.
@@ -38,18 +41,18 @@ func (client *TestJobStreamsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return TestJobStreamsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TestJobStreamsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TestJobStreamsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TestJobStreamsClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, jobStreamID string, options *TestJobStreamsGetOptions) (*azcore.Request, error) {
+func (client *TestJobStreamsClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, jobStreamID string, options *TestJobStreamsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob/streams/{jobStreamId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -71,56 +74,55 @@ func (client *TestJobStreamsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter jobStreamID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobStreamId}", url.PathEscape(jobStreamID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-30")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *TestJobStreamsClient) getHandleResponse(resp *azcore.Response) (TestJobStreamsGetResponse, error) {
-	result := TestJobStreamsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JobStream); err != nil {
+func (client *TestJobStreamsClient) getHandleResponse(resp *http.Response) (TestJobStreamsGetResponse, error) {
+	result := TestJobStreamsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobStream); err != nil {
 		return TestJobStreamsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *TestJobStreamsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TestJobStreamsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByTestJob - Retrieve a list of test job streams identified by runbook name.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *TestJobStreamsClient) ListByTestJob(resourceGroupName string, automationAccountName string, runbookName string, options *TestJobStreamsListByTestJobOptions) TestJobStreamsListByTestJobPager {
-	return &testJobStreamsListByTestJobPager{
+func (client *TestJobStreamsClient) ListByTestJob(resourceGroupName string, automationAccountName string, runbookName string, options *TestJobStreamsListByTestJobOptions) *TestJobStreamsListByTestJobPager {
+	return &TestJobStreamsListByTestJobPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByTestJobCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, options)
 		},
-		advancer: func(ctx context.Context, resp TestJobStreamsListByTestJobResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.JobStreamListResult.NextLink)
+		advancer: func(ctx context.Context, resp TestJobStreamsListByTestJobResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.JobStreamListResult.NextLink)
 		},
 	}
 }
 
 // listByTestJobCreateRequest creates the ListByTestJob request.
-func (client *TestJobStreamsClient) listByTestJobCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobStreamsListByTestJobOptions) (*azcore.Request, error) {
+func (client *TestJobStreamsClient) listByTestJobCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobStreamsListByTestJobOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob/streams"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -138,39 +140,38 @@ func (client *TestJobStreamsClient) listByTestJobCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
 	reqQP.Set("api-version", "2018-06-30")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByTestJobHandleResponse handles the ListByTestJob response.
-func (client *TestJobStreamsClient) listByTestJobHandleResponse(resp *azcore.Response) (TestJobStreamsListByTestJobResponse, error) {
-	result := TestJobStreamsListByTestJobResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.JobStreamListResult); err != nil {
+func (client *TestJobStreamsClient) listByTestJobHandleResponse(resp *http.Response) (TestJobStreamsListByTestJobResponse, error) {
+	result := TestJobStreamsListByTestJobResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobStreamListResult); err != nil {
 		return TestJobStreamsListByTestJobResponse{}, err
 	}
 	return result, nil
 }
 
 // listByTestJobHandleError handles the ListByTestJob error response.
-func (client *TestJobStreamsClient) listByTestJobHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TestJobStreamsClient) listByTestJobHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

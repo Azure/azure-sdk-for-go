@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,24 +12,28 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 )
 
 // RunbookDraftClient contains the methods for the RunbookDraft group.
 // Don't use this type directly, use NewRunbookDraftClient() instead.
 type RunbookDraftClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewRunbookDraftClient creates a new instance of RunbookDraftClient with the specified values.
-func NewRunbookDraftClient(con *armcore.Connection, subscriptionID string) *RunbookDraftClient {
-	return &RunbookDraftClient{con: con, subscriptionID: subscriptionID}
+func NewRunbookDraftClient(con *arm.Connection, subscriptionID string) *RunbookDraftClient {
+	return &RunbookDraftClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Retrieve the runbook draft identified by runbook name.
@@ -39,18 +43,18 @@ func (client *RunbookDraftClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return RunbookDraftGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RunbookDraftGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RunbookDraftGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RunbookDraftClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookDraftGetOptions) (*azcore.Request, error) {
+func (client *RunbookDraftClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookDraftGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -68,38 +72,37 @@ func (client *RunbookDraftClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-30")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RunbookDraftClient) getHandleResponse(resp *azcore.Response) (RunbookDraftGetResponse, error) {
-	result := RunbookDraftGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RunbookDraft); err != nil {
+func (client *RunbookDraftClient) getHandleResponse(resp *http.Response) (RunbookDraftGetResponse, error) {
+	result := RunbookDraftGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RunbookDraft); err != nil {
 		return RunbookDraftGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *RunbookDraftClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RunbookDraftClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetContent - Retrieve the content of runbook draft identified by runbook name.
@@ -109,18 +112,18 @@ func (client *RunbookDraftClient) GetContent(ctx context.Context, resourceGroupN
 	if err != nil {
 		return RunbookDraftGetContentResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RunbookDraftGetContentResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent) {
 		return RunbookDraftGetContentResponse{}, client.getContentHandleError(resp)
 	}
-	return RunbookDraftGetContentResponse{RawResponse: resp.Response}, nil
+	return RunbookDraftGetContentResponse{RawResponse: resp}, nil
 }
 
 // getContentCreateRequest creates the GetContent request.
-func (client *RunbookDraftClient) getContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookDraftGetContentOptions) (*azcore.Request, error) {
+func (client *RunbookDraftClient) getContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookDraftGetContentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/content"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -138,28 +141,27 @@ func (client *RunbookDraftClient) getContentCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-30")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "text/powershell")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "text/powershell")
 	return req, nil
 }
 
 // getContentHandleError handles the GetContent error response.
-func (client *RunbookDraftClient) getContentHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RunbookDraftClient) getContentHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginReplaceContent - Replaces the runbook draft content.
@@ -170,65 +172,37 @@ func (client *RunbookDraftClient) BeginReplaceContent(ctx context.Context, resou
 		return RunbookDraftReplaceContentPollerResponse{}, err
 	}
 	result := RunbookDraftReplaceContentPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("RunbookDraftClient.ReplaceContent", "", resp, client.con.Pipeline(), client.replaceContentHandleError)
-	if err != nil {
-		return RunbookDraftReplaceContentPollerResponse{}, err
-	}
-	poller := &runbookDraftReplaceContentPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RunbookDraftReplaceContentResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeReplaceContent creates a new RunbookDraftReplaceContentPoller from the specified resume token.
-// token - The value must come from a previous call to RunbookDraftReplaceContentPoller.ResumeToken().
-func (client *RunbookDraftClient) ResumeReplaceContent(ctx context.Context, token string) (RunbookDraftReplaceContentPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("RunbookDraftClient.ReplaceContent", token, client.con.Pipeline(), client.replaceContentHandleError)
-	if err != nil {
-		return RunbookDraftReplaceContentPollerResponse{}, err
-	}
-	poller := &runbookDraftReplaceContentPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return RunbookDraftReplaceContentPollerResponse{}, err
-	}
-	result := RunbookDraftReplaceContentPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RunbookDraftReplaceContentResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("RunbookDraftClient.ReplaceContent", "", resp, client.pl, client.replaceContentHandleError)
+	if err != nil {
+		return RunbookDraftReplaceContentPollerResponse{}, err
+	}
+	result.Poller = &RunbookDraftReplaceContentPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // ReplaceContent - Replaces the runbook draft content.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *RunbookDraftClient) replaceContent(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent string, options *RunbookDraftBeginReplaceContentOptions) (*azcore.Response, error) {
+func (client *RunbookDraftClient) replaceContent(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent string, options *RunbookDraftBeginReplaceContentOptions) (*http.Response, error) {
 	req, err := client.replaceContentCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, runbookContent, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.replaceContentHandleError(resp)
 	}
 	return resp, nil
 }
 
 // replaceContentCreateRequest creates the ReplaceContent request.
-func (client *RunbookDraftClient) replaceContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent string, options *RunbookDraftBeginReplaceContentOptions) (*azcore.Request, error) {
+func (client *RunbookDraftClient) replaceContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, runbookContent string, options *RunbookDraftBeginReplaceContentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/content"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -246,31 +220,30 @@ func (client *RunbookDraftClient) replaceContentCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-30")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.SkipBodyDownload()
-	req.Header.Set("Accept", "application/json")
-	body := azcore.NopCloser(strings.NewReader(runbookContent))
+	req.Raw().Header.Set("Accept", "application/json")
+	body := streaming.NopCloser(strings.NewReader(runbookContent))
 	return req, req.SetBody(body, "text/plain; encoding=UTF-8")
 }
 
 // replaceContentHandleError handles the ReplaceContent error response.
-func (client *RunbookDraftClient) replaceContentHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RunbookDraftClient) replaceContentHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // UndoEdit - Undo draft edit to last known published state identified by runbook name.
@@ -280,18 +253,18 @@ func (client *RunbookDraftClient) UndoEdit(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return RunbookDraftUndoEditResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RunbookDraftUndoEditResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RunbookDraftUndoEditResponse{}, client.undoEditHandleError(resp)
 	}
 	return client.undoEditHandleResponse(resp)
 }
 
 // undoEditCreateRequest creates the UndoEdit request.
-func (client *RunbookDraftClient) undoEditCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookDraftUndoEditOptions) (*azcore.Request, error) {
+func (client *RunbookDraftClient) undoEditCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *RunbookDraftUndoEditOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/undoEdit"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -309,36 +282,35 @@ func (client *RunbookDraftClient) undoEditCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter runbookName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-06-30")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // undoEditHandleResponse handles the UndoEdit response.
-func (client *RunbookDraftClient) undoEditHandleResponse(resp *azcore.Response) (RunbookDraftUndoEditResponse, error) {
-	result := RunbookDraftUndoEditResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RunbookDraftUndoEditResult); err != nil {
+func (client *RunbookDraftClient) undoEditHandleResponse(resp *http.Response) (RunbookDraftUndoEditResponse, error) {
+	result := RunbookDraftUndoEditResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RunbookDraftUndoEditResult); err != nil {
 		return RunbookDraftUndoEditResponse{}, err
 	}
 	return result, nil
 }
 
 // undoEditHandleError handles the UndoEdit error response.
-func (client *RunbookDraftClient) undoEditHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RunbookDraftClient) undoEditHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

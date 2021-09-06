@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,24 +12,28 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 )
 
 // DscConfigurationClient contains the methods for the DscConfiguration group.
 // Don't use this type directly, use NewDscConfigurationClient() instead.
 type DscConfigurationClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewDscConfigurationClient creates a new instance of DscConfigurationClient with the specified values.
-func NewDscConfigurationClient(con *armcore.Connection, subscriptionID string) *DscConfigurationClient {
-	return &DscConfigurationClient{con: con, subscriptionID: subscriptionID}
+func NewDscConfigurationClient(con *arm.Connection, subscriptionID string) *DscConfigurationClient {
+	return &DscConfigurationClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Create the configuration identified by configuration name.
@@ -39,18 +43,18 @@ func (client *DscConfigurationClient) CreateOrUpdate(ctx context.Context, resour
 	if err != nil {
 		return DscConfigurationCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DscConfigurationCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return DscConfigurationCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DscConfigurationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters string, options *DscConfigurationCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *DscConfigurationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters string, options *DscConfigurationCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -68,39 +72,38 @@ func (client *DscConfigurationClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	body := azcore.NopCloser(strings.NewReader(parameters))
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	body := streaming.NopCloser(strings.NewReader(parameters))
 	return req, req.SetBody(body, "text/plain; encoding=UTF-8")
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DscConfigurationClient) createOrUpdateHandleResponse(resp *azcore.Response) (DscConfigurationCreateOrUpdateResponse, error) {
-	result := DscConfigurationCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DscConfiguration); err != nil {
+func (client *DscConfigurationClient) createOrUpdateHandleResponse(resp *http.Response) (DscConfigurationCreateOrUpdateResponse, error) {
+	result := DscConfigurationCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
 		return DscConfigurationCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DscConfigurationClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DscConfigurationClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // CreateOrUpdateWithDscConfigurationCreateOrUpdateParameters - Create the configuration identified by configuration name.
@@ -110,18 +113,18 @@ func (client *DscConfigurationClient) CreateOrUpdateWithDscConfigurationCreateOr
 	if err != nil {
 		return DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersResponse{}, client.createOrUpdateWithDscConfigurationCreateOrUpdateParametersHandleError(resp)
 	}
 	return client.createOrUpdateWithDscConfigurationCreateOrUpdateParametersHandleResponse(resp)
 }
 
 // createOrUpdateWithDscConfigurationCreateOrUpdateParametersCreateRequest creates the CreateOrUpdateWithDscConfigurationCreateOrUpdateParameters request.
-func (client *DscConfigurationClient) createOrUpdateWithDscConfigurationCreateOrUpdateParametersCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters DscConfigurationCreateOrUpdateParameters, options *DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersOptions) (*azcore.Request, error) {
+func (client *DscConfigurationClient) createOrUpdateWithDscConfigurationCreateOrUpdateParametersCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, parameters DscConfigurationCreateOrUpdateParameters, options *DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -139,38 +142,37 @@ func (client *DscConfigurationClient) createOrUpdateWithDscConfigurationCreateOr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateWithDscConfigurationCreateOrUpdateParametersHandleResponse handles the CreateOrUpdateWithDscConfigurationCreateOrUpdateParameters response.
-func (client *DscConfigurationClient) createOrUpdateWithDscConfigurationCreateOrUpdateParametersHandleResponse(resp *azcore.Response) (DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersResponse, error) {
-	result := DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DscConfiguration); err != nil {
+func (client *DscConfigurationClient) createOrUpdateWithDscConfigurationCreateOrUpdateParametersHandleResponse(resp *http.Response) (DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersResponse, error) {
+	result := DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
 		return DscConfigurationCreateOrUpdateWithDscConfigurationCreateOrUpdateParametersResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateWithDscConfigurationCreateOrUpdateParametersHandleError handles the CreateOrUpdateWithDscConfigurationCreateOrUpdateParameters error response.
-func (client *DscConfigurationClient) createOrUpdateWithDscConfigurationCreateOrUpdateParametersHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DscConfigurationClient) createOrUpdateWithDscConfigurationCreateOrUpdateParametersHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Delete the dsc configuration identified by configuration name.
@@ -180,18 +182,18 @@ func (client *DscConfigurationClient) Delete(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DscConfigurationDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DscConfigurationDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DscConfigurationDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return DscConfigurationDeleteResponse{RawResponse: resp.Response}, nil
+	return DscConfigurationDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DscConfigurationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, options *DscConfigurationDeleteOptions) (*azcore.Request, error) {
+func (client *DscConfigurationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, options *DscConfigurationDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -209,29 +211,28 @@ func (client *DscConfigurationClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *DscConfigurationClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DscConfigurationClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Retrieve the configuration identified by configuration name.
@@ -241,18 +242,18 @@ func (client *DscConfigurationClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return DscConfigurationGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DscConfigurationGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DscConfigurationGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DscConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, options *DscConfigurationGetOptions) (*azcore.Request, error) {
+func (client *DscConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, options *DscConfigurationGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -270,38 +271,37 @@ func (client *DscConfigurationClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DscConfigurationClient) getHandleResponse(resp *azcore.Response) (DscConfigurationGetResponse, error) {
-	result := DscConfigurationGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DscConfiguration); err != nil {
+func (client *DscConfigurationClient) getHandleResponse(resp *http.Response) (DscConfigurationGetResponse, error) {
+	result := DscConfigurationGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
 		return DscConfigurationGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *DscConfigurationClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DscConfigurationClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetContent - Retrieve the configuration script identified by configuration name.
@@ -311,18 +311,18 @@ func (client *DscConfigurationClient) GetContent(ctx context.Context, resourceGr
 	if err != nil {
 		return DscConfigurationGetContentResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DscConfigurationGetContentResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DscConfigurationGetContentResponse{}, client.getContentHandleError(resp)
 	}
 	return client.getContentHandleResponse(resp)
 }
 
 // getContentCreateRequest creates the GetContent request.
-func (client *DscConfigurationClient) getContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, options *DscConfigurationGetContentOptions) (*azcore.Request, error) {
+func (client *DscConfigurationClient) getContentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, options *DscConfigurationGetContentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}/content"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -340,52 +340,51 @@ func (client *DscConfigurationClient) getContentCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "text/powershell")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "text/powershell")
 	return req, nil
 }
 
 // getContentHandleResponse handles the GetContent response.
-func (client *DscConfigurationClient) getContentHandleResponse(resp *azcore.Response) (DscConfigurationGetContentResponse, error) {
-	result := DscConfigurationGetContentResponse{RawResponse: resp.Response}
+func (client *DscConfigurationClient) getContentHandleResponse(resp *http.Response) (DscConfigurationGetContentResponse, error) {
+	result := DscConfigurationGetContentResponse{RawResponse: resp}
 	return result, nil
 }
 
 // getContentHandleError handles the GetContent error response.
-func (client *DscConfigurationClient) getContentHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DscConfigurationClient) getContentHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByAutomationAccount - Retrieve a list of configurations.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *DscConfigurationClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *DscConfigurationListByAutomationAccountOptions) DscConfigurationListByAutomationAccountPager {
-	return &dscConfigurationListByAutomationAccountPager{
+func (client *DscConfigurationClient) ListByAutomationAccount(resourceGroupName string, automationAccountName string, options *DscConfigurationListByAutomationAccountOptions) *DscConfigurationListByAutomationAccountPager {
+	return &DscConfigurationListByAutomationAccountPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 		},
-		advancer: func(ctx context.Context, resp DscConfigurationListByAutomationAccountResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DscConfigurationListResult.NextLink)
+		advancer: func(ctx context.Context, resp DscConfigurationListByAutomationAccountResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DscConfigurationListResult.NextLink)
 		},
 	}
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *DscConfigurationClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *DscConfigurationListByAutomationAccountOptions) (*azcore.Request, error) {
+func (client *DscConfigurationClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *DscConfigurationListByAutomationAccountOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -399,12 +398,11 @@ func (client *DscConfigurationClient) listByAutomationAccountCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
@@ -418,31 +416,31 @@ func (client *DscConfigurationClient) listByAutomationAccountCreateRequest(ctx c
 	if options != nil && options.Inlinecount != nil {
 		reqQP.Set("$inlinecount", *options.Inlinecount)
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *DscConfigurationClient) listByAutomationAccountHandleResponse(resp *azcore.Response) (DscConfigurationListByAutomationAccountResponse, error) {
-	result := DscConfigurationListByAutomationAccountResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DscConfigurationListResult); err != nil {
+func (client *DscConfigurationClient) listByAutomationAccountHandleResponse(resp *http.Response) (DscConfigurationListByAutomationAccountResponse, error) {
+	result := DscConfigurationListByAutomationAccountResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfigurationListResult); err != nil {
 		return DscConfigurationListByAutomationAccountResponse{}, err
 	}
 	return result, nil
 }
 
 // listByAutomationAccountHandleError handles the ListByAutomationAccount error response.
-func (client *DscConfigurationClient) listByAutomationAccountHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DscConfigurationClient) listByAutomationAccountHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Update - Create the configuration identified by configuration name.
@@ -452,18 +450,18 @@ func (client *DscConfigurationClient) Update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DscConfigurationUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DscConfigurationUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DscConfigurationUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DscConfigurationClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, options *DscConfigurationUpdateOptions) (*azcore.Request, error) {
+func (client *DscConfigurationClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, options *DscConfigurationUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -481,42 +479,41 @@ func (client *DscConfigurationClient) updateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Parameters != nil {
-		body := azcore.NopCloser(strings.NewReader(*options.Parameters))
+		body := streaming.NopCloser(strings.NewReader(*options.Parameters))
 		return req, req.SetBody(body, "text/plain; encoding=UTF-8")
 	}
 	return req, nil
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DscConfigurationClient) updateHandleResponse(resp *azcore.Response) (DscConfigurationUpdateResponse, error) {
-	result := DscConfigurationUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DscConfiguration); err != nil {
+func (client *DscConfigurationClient) updateHandleResponse(resp *http.Response) (DscConfigurationUpdateResponse, error) {
+	result := DscConfigurationUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
 		return DscConfigurationUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *DscConfigurationClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DscConfigurationClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // UpdateWithDscConfigurationUpdateParameters - Create the configuration identified by configuration name.
@@ -526,18 +523,18 @@ func (client *DscConfigurationClient) UpdateWithDscConfigurationUpdateParameters
 	if err != nil {
 		return DscConfigurationUpdateWithDscConfigurationUpdateParametersResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DscConfigurationUpdateWithDscConfigurationUpdateParametersResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DscConfigurationUpdateWithDscConfigurationUpdateParametersResponse{}, client.updateWithDscConfigurationUpdateParametersHandleError(resp)
 	}
 	return client.updateWithDscConfigurationUpdateParametersHandleResponse(resp)
 }
 
 // updateWithDscConfigurationUpdateParametersCreateRequest creates the UpdateWithDscConfigurationUpdateParameters request.
-func (client *DscConfigurationClient) updateWithDscConfigurationUpdateParametersCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, options *DscConfigurationUpdateWithDscConfigurationUpdateParametersOptions) (*azcore.Request, error) {
+func (client *DscConfigurationClient) updateWithDscConfigurationUpdateParametersCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, configurationName string, options *DscConfigurationUpdateWithDscConfigurationUpdateParametersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/configurations/{configurationName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -555,39 +552,38 @@ func (client *DscConfigurationClient) updateWithDscConfigurationUpdateParameters
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Parameters != nil {
-		return req, req.MarshalAsJSON(*options.Parameters)
+		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
 	return req, nil
 }
 
 // updateWithDscConfigurationUpdateParametersHandleResponse handles the UpdateWithDscConfigurationUpdateParameters response.
-func (client *DscConfigurationClient) updateWithDscConfigurationUpdateParametersHandleResponse(resp *azcore.Response) (DscConfigurationUpdateWithDscConfigurationUpdateParametersResponse, error) {
-	result := DscConfigurationUpdateWithDscConfigurationUpdateParametersResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DscConfiguration); err != nil {
+func (client *DscConfigurationClient) updateWithDscConfigurationUpdateParametersHandleResponse(resp *http.Response) (DscConfigurationUpdateWithDscConfigurationUpdateParametersResponse, error) {
+	result := DscConfigurationUpdateWithDscConfigurationUpdateParametersResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DscConfiguration); err != nil {
 		return DscConfigurationUpdateWithDscConfigurationUpdateParametersResponse{}, err
 	}
 	return result, nil
 }
 
 // updateWithDscConfigurationUpdateParametersHandleError handles the UpdateWithDscConfigurationUpdateParameters error response.
-func (client *DscConfigurationClient) updateWithDscConfigurationUpdateParametersHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DscConfigurationClient) updateWithDscConfigurationUpdateParametersHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

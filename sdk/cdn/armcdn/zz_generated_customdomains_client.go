@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CustomDomainsClient contains the methods for the CustomDomains group.
 // Don't use this type directly, use NewCustomDomainsClient() instead.
 type CustomDomainsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewCustomDomainsClient creates a new instance of CustomDomainsClient with the specified values.
-func NewCustomDomainsClient(con *armcore.Connection, subscriptionID string) *CustomDomainsClient {
-	return &CustomDomainsClient{con: con, subscriptionID: subscriptionID}
+func NewCustomDomainsClient(con *arm.Connection, subscriptionID string) *CustomDomainsClient {
+	return &CustomDomainsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreate - Creates a new custom domain within an endpoint.
@@ -40,65 +43,37 @@ func (client *CustomDomainsClient) BeginCreate(ctx context.Context, resourceGrou
 		return CustomDomainsCreatePollerResponse{}, err
 	}
 	result := CustomDomainsCreatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("CustomDomainsClient.Create", "", resp, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return CustomDomainsCreatePollerResponse{}, err
-	}
-	poller := &customDomainsCreatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CustomDomainsCreateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreate creates a new CustomDomainsCreatePoller from the specified resume token.
-// token - The value must come from a previous call to CustomDomainsCreatePoller.ResumeToken().
-func (client *CustomDomainsClient) ResumeCreate(ctx context.Context, token string) (CustomDomainsCreatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("CustomDomainsClient.Create", token, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return CustomDomainsCreatePollerResponse{}, err
-	}
-	poller := &customDomainsCreatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return CustomDomainsCreatePollerResponse{}, err
-	}
-	result := CustomDomainsCreatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CustomDomainsCreateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("CustomDomainsClient.Create", "", resp, client.pl, client.createHandleError)
+	if err != nil {
+		return CustomDomainsCreatePollerResponse{}, err
+	}
+	result.Poller = &CustomDomainsCreatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a new custom domain within an endpoint.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainProperties CustomDomainParameters, options *CustomDomainsBeginCreateOptions) (*azcore.Response, error) {
+func (client *CustomDomainsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainProperties CustomDomainParameters, options *CustomDomainsBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainName, customDomainProperties, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *CustomDomainsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainProperties CustomDomainParameters, options *CustomDomainsBeginCreateOptions) (*azcore.Request, error) {
+func (client *CustomDomainsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, customDomainProperties CustomDomainParameters, options *CustomDomainsBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -120,29 +95,28 @@ func (client *CustomDomainsClient) createCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(customDomainProperties)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, customDomainProperties)
 }
 
 // createHandleError handles the Create error response.
-func (client *CustomDomainsClient) createHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CustomDomainsClient) createHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDelete - Deletes an existing custom domain within an endpoint.
@@ -153,65 +127,37 @@ func (client *CustomDomainsClient) BeginDelete(ctx context.Context, resourceGrou
 		return CustomDomainsDeletePollerResponse{}, err
 	}
 	result := CustomDomainsDeletePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("CustomDomainsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return CustomDomainsDeletePollerResponse{}, err
-	}
-	poller := &customDomainsDeletePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CustomDomainsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new CustomDomainsDeletePoller from the specified resume token.
-// token - The value must come from a previous call to CustomDomainsDeletePoller.ResumeToken().
-func (client *CustomDomainsClient) ResumeDelete(ctx context.Context, token string) (CustomDomainsDeletePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("CustomDomainsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return CustomDomainsDeletePollerResponse{}, err
-	}
-	poller := &customDomainsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return CustomDomainsDeletePollerResponse{}, err
-	}
-	result := CustomDomainsDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CustomDomainsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("CustomDomainsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return CustomDomainsDeletePollerResponse{}, err
+	}
+	result.Poller = &CustomDomainsDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes an existing custom domain within an endpoint.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginDeleteOptions) (*azcore.Response, error) {
+func (client *CustomDomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CustomDomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginDeleteOptions) (*azcore.Request, error) {
+func (client *CustomDomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -233,29 +179,28 @@ func (client *CustomDomainsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *CustomDomainsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CustomDomainsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDisableCustomHTTPS - Disable https delivery of the custom domain.
@@ -266,65 +211,37 @@ func (client *CustomDomainsClient) BeginDisableCustomHTTPS(ctx context.Context, 
 		return CustomDomainsDisableCustomHTTPSPollerResponse{}, err
 	}
 	result := CustomDomainsDisableCustomHTTPSPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("CustomDomainsClient.DisableCustomHTTPS", "", resp, client.con.Pipeline(), client.disableCustomHTTPSHandleError)
-	if err != nil {
-		return CustomDomainsDisableCustomHTTPSPollerResponse{}, err
-	}
-	poller := &customDomainsDisableCustomHTTPSPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CustomDomainsDisableCustomHTTPSResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDisableCustomHTTPS creates a new CustomDomainsDisableCustomHTTPSPoller from the specified resume token.
-// token - The value must come from a previous call to CustomDomainsDisableCustomHTTPSPoller.ResumeToken().
-func (client *CustomDomainsClient) ResumeDisableCustomHTTPS(ctx context.Context, token string) (CustomDomainsDisableCustomHTTPSPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("CustomDomainsClient.DisableCustomHTTPS", token, client.con.Pipeline(), client.disableCustomHTTPSHandleError)
-	if err != nil {
-		return CustomDomainsDisableCustomHTTPSPollerResponse{}, err
-	}
-	poller := &customDomainsDisableCustomHTTPSPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return CustomDomainsDisableCustomHTTPSPollerResponse{}, err
-	}
-	result := CustomDomainsDisableCustomHTTPSPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CustomDomainsDisableCustomHTTPSResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("CustomDomainsClient.DisableCustomHTTPS", "", resp, client.pl, client.disableCustomHTTPSHandleError)
+	if err != nil {
+		return CustomDomainsDisableCustomHTTPSPollerResponse{}, err
+	}
+	result.Poller = &CustomDomainsDisableCustomHTTPSPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // DisableCustomHTTPS - Disable https delivery of the custom domain.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) disableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginDisableCustomHTTPSOptions) (*azcore.Response, error) {
+func (client *CustomDomainsClient) disableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginDisableCustomHTTPSOptions) (*http.Response, error) {
 	req, err := client.disableCustomHTTPSCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.disableCustomHTTPSHandleError(resp)
 	}
 	return resp, nil
 }
 
 // disableCustomHTTPSCreateRequest creates the DisableCustomHTTPS request.
-func (client *CustomDomainsClient) disableCustomHTTPSCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginDisableCustomHTTPSOptions) (*azcore.Request, error) {
+func (client *CustomDomainsClient) disableCustomHTTPSCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginDisableCustomHTTPSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/disableCustomHttps"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -346,29 +263,28 @@ func (client *CustomDomainsClient) disableCustomHTTPSCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // disableCustomHTTPSHandleError handles the DisableCustomHTTPS error response.
-func (client *CustomDomainsClient) disableCustomHTTPSHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CustomDomainsClient) disableCustomHTTPSHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginEnableCustomHTTPS - Enable https delivery of the custom domain.
@@ -379,65 +295,37 @@ func (client *CustomDomainsClient) BeginEnableCustomHTTPS(ctx context.Context, r
 		return CustomDomainsEnableCustomHTTPSPollerResponse{}, err
 	}
 	result := CustomDomainsEnableCustomHTTPSPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("CustomDomainsClient.EnableCustomHTTPS", "", resp, client.con.Pipeline(), client.enableCustomHTTPSHandleError)
-	if err != nil {
-		return CustomDomainsEnableCustomHTTPSPollerResponse{}, err
-	}
-	poller := &customDomainsEnableCustomHTTPSPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CustomDomainsEnableCustomHTTPSResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeEnableCustomHTTPS creates a new CustomDomainsEnableCustomHTTPSPoller from the specified resume token.
-// token - The value must come from a previous call to CustomDomainsEnableCustomHTTPSPoller.ResumeToken().
-func (client *CustomDomainsClient) ResumeEnableCustomHTTPS(ctx context.Context, token string) (CustomDomainsEnableCustomHTTPSPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("CustomDomainsClient.EnableCustomHTTPS", token, client.con.Pipeline(), client.enableCustomHTTPSHandleError)
-	if err != nil {
-		return CustomDomainsEnableCustomHTTPSPollerResponse{}, err
-	}
-	poller := &customDomainsEnableCustomHTTPSPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return CustomDomainsEnableCustomHTTPSPollerResponse{}, err
-	}
-	result := CustomDomainsEnableCustomHTTPSPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (CustomDomainsEnableCustomHTTPSResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("CustomDomainsClient.EnableCustomHTTPS", "", resp, client.pl, client.enableCustomHTTPSHandleError)
+	if err != nil {
+		return CustomDomainsEnableCustomHTTPSPollerResponse{}, err
+	}
+	result.Poller = &CustomDomainsEnableCustomHTTPSPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // EnableCustomHTTPS - Enable https delivery of the custom domain.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) enableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginEnableCustomHTTPSOptions) (*azcore.Response, error) {
+func (client *CustomDomainsClient) enableCustomHTTPS(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginEnableCustomHTTPSOptions) (*http.Response, error) {
 	req, err := client.enableCustomHTTPSCreateRequest(ctx, resourceGroupName, profileName, endpointName, customDomainName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.enableCustomHTTPSHandleError(resp)
 	}
 	return resp, nil
 }
 
 // enableCustomHTTPSCreateRequest creates the EnableCustomHTTPS request.
-func (client *CustomDomainsClient) enableCustomHTTPSCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginEnableCustomHTTPSOptions) (*azcore.Request, error) {
+func (client *CustomDomainsClient) enableCustomHTTPSCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsBeginEnableCustomHTTPSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/enableCustomHttps"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -459,32 +347,31 @@ func (client *CustomDomainsClient) enableCustomHTTPSCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.CustomDomainHTTPSParameters != nil {
-		return req, req.MarshalAsJSON(options.CustomDomainHTTPSParameters)
+		return req, runtime.MarshalAsJSON(req, options.CustomDomainHTTPSParameters)
 	}
 	return req, nil
 }
 
 // enableCustomHTTPSHandleError handles the EnableCustomHTTPS error response.
-func (client *CustomDomainsClient) enableCustomHTTPSHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CustomDomainsClient) enableCustomHTTPSHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets an existing custom domain within an endpoint.
@@ -494,18 +381,18 @@ func (client *CustomDomainsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return CustomDomainsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return CustomDomainsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return CustomDomainsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CustomDomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsGetOptions) (*azcore.Request, error) {
+func (client *CustomDomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainName string, options *CustomDomainsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -527,56 +414,55 @@ func (client *CustomDomainsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *CustomDomainsClient) getHandleResponse(resp *azcore.Response) (CustomDomainsGetResponse, error) {
-	result := CustomDomainsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.CustomDomain); err != nil {
+func (client *CustomDomainsClient) getHandleResponse(resp *http.Response) (CustomDomainsGetResponse, error) {
+	result := CustomDomainsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CustomDomain); err != nil {
 		return CustomDomainsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *CustomDomainsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CustomDomainsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByEndpoint - Lists all of the existing custom domains within an endpoint.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *CustomDomainsClient) ListByEndpoint(resourceGroupName string, profileName string, endpointName string, options *CustomDomainsListByEndpointOptions) CustomDomainsListByEndpointPager {
-	return &customDomainsListByEndpointPager{
+func (client *CustomDomainsClient) ListByEndpoint(resourceGroupName string, profileName string, endpointName string, options *CustomDomainsListByEndpointOptions) *CustomDomainsListByEndpointPager {
+	return &CustomDomainsListByEndpointPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByEndpointCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
 		},
-		advancer: func(ctx context.Context, resp CustomDomainsListByEndpointResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.CustomDomainListResult.NextLink)
+		advancer: func(ctx context.Context, resp CustomDomainsListByEndpointResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.CustomDomainListResult.NextLink)
 		},
 	}
 }
 
 // listByEndpointCreateRequest creates the ListByEndpoint request.
-func (client *CustomDomainsClient) listByEndpointCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *CustomDomainsListByEndpointOptions) (*azcore.Request, error) {
+func (client *CustomDomainsClient) listByEndpointCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *CustomDomainsListByEndpointOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -594,36 +480,35 @@ func (client *CustomDomainsClient) listByEndpointCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByEndpointHandleResponse handles the ListByEndpoint response.
-func (client *CustomDomainsClient) listByEndpointHandleResponse(resp *azcore.Response) (CustomDomainsListByEndpointResponse, error) {
-	result := CustomDomainsListByEndpointResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.CustomDomainListResult); err != nil {
+func (client *CustomDomainsClient) listByEndpointHandleResponse(resp *http.Response) (CustomDomainsListByEndpointResponse, error) {
+	result := CustomDomainsListByEndpointResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CustomDomainListResult); err != nil {
 		return CustomDomainsListByEndpointResponse{}, err
 	}
 	return result, nil
 }
 
 // listByEndpointHandleError handles the ListByEndpoint error response.
-func (client *CustomDomainsClient) listByEndpointHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CustomDomainsClient) listByEndpointHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

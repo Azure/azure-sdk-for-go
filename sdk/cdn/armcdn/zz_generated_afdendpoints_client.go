@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AFDEndpointsClient contains the methods for the AFDEndpoints group.
 // Don't use this type directly, use NewAFDEndpointsClient() instead.
 type AFDEndpointsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewAFDEndpointsClient creates a new instance of AFDEndpointsClient with the specified values.
-func NewAFDEndpointsClient(con *armcore.Connection, subscriptionID string) *AFDEndpointsClient {
-	return &AFDEndpointsClient{con: con, subscriptionID: subscriptionID}
+func NewAFDEndpointsClient(con *arm.Connection, subscriptionID string) *AFDEndpointsClient {
+	return &AFDEndpointsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreate - Creates a new AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource group and profile.
@@ -40,65 +43,37 @@ func (client *AFDEndpointsClient) BeginCreate(ctx context.Context, resourceGroup
 		return AFDEndpointsCreatePollerResponse{}, err
 	}
 	result := AFDEndpointsCreatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("AFDEndpointsClient.Create", "azure-async-operation", resp, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return AFDEndpointsCreatePollerResponse{}, err
-	}
-	poller := &afdEndpointsCreatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AFDEndpointsCreateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreate creates a new AFDEndpointsCreatePoller from the specified resume token.
-// token - The value must come from a previous call to AFDEndpointsCreatePoller.ResumeToken().
-func (client *AFDEndpointsClient) ResumeCreate(ctx context.Context, token string) (AFDEndpointsCreatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("AFDEndpointsClient.Create", token, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return AFDEndpointsCreatePollerResponse{}, err
-	}
-	poller := &afdEndpointsCreatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return AFDEndpointsCreatePollerResponse{}, err
-	}
-	result := AFDEndpointsCreatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AFDEndpointsCreateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("AFDEndpointsClient.Create", "azure-async-operation", resp, client.pl, client.createHandleError)
+	if err != nil {
+		return AFDEndpointsCreatePollerResponse{}, err
+	}
+	result.Poller = &AFDEndpointsCreatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a new AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource group and profile.
 // If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDEndpointsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint AFDEndpoint, options *AFDEndpointsBeginCreateOptions) (*azcore.Response, error) {
+func (client *AFDEndpointsClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint AFDEndpoint, options *AFDEndpointsBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, endpointName, endpoint, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *AFDEndpointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint AFDEndpoint, options *AFDEndpointsBeginCreateOptions) (*azcore.Request, error) {
+func (client *AFDEndpointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpoint AFDEndpoint, options *AFDEndpointsBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -116,29 +91,28 @@ func (client *AFDEndpointsClient) createCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(endpoint)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, endpoint)
 }
 
 // createHandleError handles the Create error response.
-func (client *AFDEndpointsClient) createHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AFDEndpointsClient) createHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDelete - Deletes an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource group and profile.
@@ -149,65 +123,37 @@ func (client *AFDEndpointsClient) BeginDelete(ctx context.Context, resourceGroup
 		return AFDEndpointsDeletePollerResponse{}, err
 	}
 	result := AFDEndpointsDeletePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("AFDEndpointsClient.Delete", "azure-async-operation", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return AFDEndpointsDeletePollerResponse{}, err
-	}
-	poller := &afdEndpointsDeletePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AFDEndpointsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new AFDEndpointsDeletePoller from the specified resume token.
-// token - The value must come from a previous call to AFDEndpointsDeletePoller.ResumeToken().
-func (client *AFDEndpointsClient) ResumeDelete(ctx context.Context, token string) (AFDEndpointsDeletePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("AFDEndpointsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return AFDEndpointsDeletePollerResponse{}, err
-	}
-	poller := &afdEndpointsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return AFDEndpointsDeletePollerResponse{}, err
-	}
-	result := AFDEndpointsDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AFDEndpointsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("AFDEndpointsClient.Delete", "azure-async-operation", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return AFDEndpointsDeletePollerResponse{}, err
+	}
+	result.Poller = &AFDEndpointsDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource group and profile.
 // If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsBeginDeleteOptions) (*azcore.Response, error) {
+func (client *AFDEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AFDEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsBeginDeleteOptions) (*azcore.Request, error) {
+func (client *AFDEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -225,29 +171,28 @@ func (client *AFDEndpointsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *AFDEndpointsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AFDEndpointsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource group and profile.
@@ -257,18 +202,18 @@ func (client *AFDEndpointsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return AFDEndpointsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AFDEndpointsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AFDEndpointsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AFDEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsGetOptions) (*azcore.Request, error) {
+func (client *AFDEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -286,56 +231,55 @@ func (client *AFDEndpointsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AFDEndpointsClient) getHandleResponse(resp *azcore.Response) (AFDEndpointsGetResponse, error) {
-	result := AFDEndpointsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AFDEndpoint); err != nil {
+func (client *AFDEndpointsClient) getHandleResponse(resp *http.Response) (AFDEndpointsGetResponse, error) {
+	result := AFDEndpointsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AFDEndpoint); err != nil {
 		return AFDEndpointsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *AFDEndpointsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AFDEndpointsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByProfile - Lists existing AzureFrontDoor endpoints.
 // If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDEndpointsClient) ListByProfile(resourceGroupName string, profileName string, options *AFDEndpointsListByProfileOptions) AFDEndpointsListByProfilePager {
-	return &afdEndpointsListByProfilePager{
+func (client *AFDEndpointsClient) ListByProfile(resourceGroupName string, profileName string, options *AFDEndpointsListByProfileOptions) *AFDEndpointsListByProfilePager {
+	return &AFDEndpointsListByProfilePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
 		},
-		advancer: func(ctx context.Context, resp AFDEndpointsListByProfileResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.AFDEndpointListResult.NextLink)
+		advancer: func(ctx context.Context, resp AFDEndpointsListByProfileResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AFDEndpointListResult.NextLink)
 		},
 	}
 }
 
 // listByProfileCreateRequest creates the ListByProfile request.
-func (client *AFDEndpointsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *AFDEndpointsListByProfileOptions) (*azcore.Request, error) {
+func (client *AFDEndpointsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *AFDEndpointsListByProfileOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -349,56 +293,55 @@ func (client *AFDEndpointsClient) listByProfileCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByProfileHandleResponse handles the ListByProfile response.
-func (client *AFDEndpointsClient) listByProfileHandleResponse(resp *azcore.Response) (AFDEndpointsListByProfileResponse, error) {
-	result := AFDEndpointsListByProfileResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AFDEndpointListResult); err != nil {
+func (client *AFDEndpointsClient) listByProfileHandleResponse(resp *http.Response) (AFDEndpointsListByProfileResponse, error) {
+	result := AFDEndpointsListByProfileResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AFDEndpointListResult); err != nil {
 		return AFDEndpointsListByProfileResponse{}, err
 	}
 	return result, nil
 }
 
 // listByProfileHandleError handles the ListByProfile error response.
-func (client *AFDEndpointsClient) listByProfileHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AFDEndpointsClient) listByProfileHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListResourceUsage - Checks the quota and actual usage of endpoints under the given CDN profile.
 // If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDEndpointsClient) ListResourceUsage(resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsListResourceUsageOptions) AFDEndpointsListResourceUsagePager {
-	return &afdEndpointsListResourceUsagePager{
+func (client *AFDEndpointsClient) ListResourceUsage(resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsListResourceUsageOptions) *AFDEndpointsListResourceUsagePager {
+	return &AFDEndpointsListResourceUsagePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, endpointName, options)
 		},
-		advancer: func(ctx context.Context, resp AFDEndpointsListResourceUsageResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.UsagesListResult.NextLink)
+		advancer: func(ctx context.Context, resp AFDEndpointsListResourceUsageResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.UsagesListResult.NextLink)
 		},
 	}
 }
 
 // listResourceUsageCreateRequest creates the ListResourceUsage request.
-func (client *AFDEndpointsClient) listResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsListResourceUsageOptions) (*azcore.Request, error) {
+func (client *AFDEndpointsClient) listResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, options *AFDEndpointsListResourceUsageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/usages"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -416,38 +359,37 @@ func (client *AFDEndpointsClient) listResourceUsageCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listResourceUsageHandleResponse handles the ListResourceUsage response.
-func (client *AFDEndpointsClient) listResourceUsageHandleResponse(resp *azcore.Response) (AFDEndpointsListResourceUsageResponse, error) {
-	result := AFDEndpointsListResourceUsageResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.UsagesListResult); err != nil {
+func (client *AFDEndpointsClient) listResourceUsageHandleResponse(resp *http.Response) (AFDEndpointsListResourceUsageResponse, error) {
+	result := AFDEndpointsListResourceUsageResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesListResult); err != nil {
 		return AFDEndpointsListResourceUsageResponse{}, err
 	}
 	return result, nil
 }
 
 // listResourceUsageHandleError handles the ListResourceUsage error response.
-func (client *AFDEndpointsClient) listResourceUsageHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AFDEndpointsClient) listResourceUsageHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginPurgeContent - Removes a content from AzureFrontDoor.
@@ -458,65 +400,37 @@ func (client *AFDEndpointsClient) BeginPurgeContent(ctx context.Context, resourc
 		return AFDEndpointsPurgeContentPollerResponse{}, err
 	}
 	result := AFDEndpointsPurgeContentPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("AFDEndpointsClient.PurgeContent", "azure-async-operation", resp, client.con.Pipeline(), client.purgeContentHandleError)
-	if err != nil {
-		return AFDEndpointsPurgeContentPollerResponse{}, err
-	}
-	poller := &afdEndpointsPurgeContentPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AFDEndpointsPurgeContentResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumePurgeContent creates a new AFDEndpointsPurgeContentPoller from the specified resume token.
-// token - The value must come from a previous call to AFDEndpointsPurgeContentPoller.ResumeToken().
-func (client *AFDEndpointsClient) ResumePurgeContent(ctx context.Context, token string) (AFDEndpointsPurgeContentPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("AFDEndpointsClient.PurgeContent", token, client.con.Pipeline(), client.purgeContentHandleError)
-	if err != nil {
-		return AFDEndpointsPurgeContentPollerResponse{}, err
-	}
-	poller := &afdEndpointsPurgeContentPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return AFDEndpointsPurgeContentPollerResponse{}, err
-	}
-	result := AFDEndpointsPurgeContentPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AFDEndpointsPurgeContentResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("AFDEndpointsClient.PurgeContent", "azure-async-operation", resp, client.pl, client.purgeContentHandleError)
+	if err != nil {
+		return AFDEndpointsPurgeContentPollerResponse{}, err
+	}
+	result.Poller = &AFDEndpointsPurgeContentPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // PurgeContent - Removes a content from AzureFrontDoor.
 // If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDEndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contents AfdPurgeParameters, options *AFDEndpointsBeginPurgeContentOptions) (*azcore.Response, error) {
+func (client *AFDEndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contents AfdPurgeParameters, options *AFDEndpointsBeginPurgeContentOptions) (*http.Response, error) {
 	req, err := client.purgeContentCreateRequest(ctx, resourceGroupName, profileName, endpointName, contents, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.purgeContentHandleError(resp)
 	}
 	return resp, nil
 }
 
 // purgeContentCreateRequest creates the PurgeContent request.
-func (client *AFDEndpointsClient) purgeContentCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contents AfdPurgeParameters, options *AFDEndpointsBeginPurgeContentOptions) (*azcore.Request, error) {
+func (client *AFDEndpointsClient) purgeContentCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, contents AfdPurgeParameters, options *AFDEndpointsBeginPurgeContentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/purge"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -534,29 +448,28 @@ func (client *AFDEndpointsClient) purgeContentCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(contents)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, contents)
 }
 
 // purgeContentHandleError handles the PurgeContent error response.
-func (client *AFDEndpointsClient) purgeContentHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AFDEndpointsClient) purgeContentHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginUpdate - Updates an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription, resource group and profile.
@@ -570,42 +483,14 @@ func (client *AFDEndpointsClient) BeginUpdate(ctx context.Context, resourceGroup
 		return AFDEndpointsUpdatePollerResponse{}, err
 	}
 	result := AFDEndpointsUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("AFDEndpointsClient.Update", "azure-async-operation", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return AFDEndpointsUpdatePollerResponse{}, err
-	}
-	poller := &afdEndpointsUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AFDEndpointsUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdate creates a new AFDEndpointsUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to AFDEndpointsUpdatePoller.ResumeToken().
-func (client *AFDEndpointsClient) ResumeUpdate(ctx context.Context, token string) (AFDEndpointsUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("AFDEndpointsClient.Update", token, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return AFDEndpointsUpdatePollerResponse{}, err
-	}
-	poller := &afdEndpointsUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return AFDEndpointsUpdatePollerResponse{}, err
-	}
-	result := AFDEndpointsUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AFDEndpointsUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("AFDEndpointsClient.Update", "azure-async-operation", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return AFDEndpointsUpdatePollerResponse{}, err
+	}
+	result.Poller = &AFDEndpointsUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
@@ -615,23 +500,23 @@ func (client *AFDEndpointsClient) ResumeUpdate(ctx context.Context, token string
 // update origins, use the Update Origin operation. To update origin groups, use the Update Origin group operation. To update domains, use the Update Custom
 // Domain operation.
 // If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDEndpointsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties AFDEndpointUpdateParameters, options *AFDEndpointsBeginUpdateOptions) (*azcore.Response, error) {
+func (client *AFDEndpointsClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties AFDEndpointUpdateParameters, options *AFDEndpointsBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, endpointName, endpointUpdateProperties, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AFDEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties AFDEndpointUpdateParameters, options *AFDEndpointsBeginUpdateOptions) (*azcore.Request, error) {
+func (client *AFDEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, endpointUpdateProperties AFDEndpointUpdateParameters, options *AFDEndpointsBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -649,29 +534,28 @@ func (client *AFDEndpointsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(endpointUpdateProperties)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, endpointUpdateProperties)
 }
 
 // updateHandleError handles the Update error response.
-func (client *AFDEndpointsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AFDEndpointsClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ValidateCustomDomain - Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
@@ -681,18 +565,18 @@ func (client *AFDEndpointsClient) ValidateCustomDomain(ctx context.Context, reso
 	if err != nil {
 		return AFDEndpointsValidateCustomDomainResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AFDEndpointsValidateCustomDomainResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AFDEndpointsValidateCustomDomainResponse{}, client.validateCustomDomainHandleError(resp)
 	}
 	return client.validateCustomDomainHandleResponse(resp)
 }
 
 // validateCustomDomainCreateRequest creates the ValidateCustomDomain request.
-func (client *AFDEndpointsClient) validateCustomDomainCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainProperties ValidateCustomDomainInput, options *AFDEndpointsValidateCustomDomainOptions) (*azcore.Request, error) {
+func (client *AFDEndpointsClient) validateCustomDomainCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, customDomainProperties ValidateCustomDomainInput, options *AFDEndpointsValidateCustomDomainOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/validateCustomDomain"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -710,36 +594,35 @@ func (client *AFDEndpointsClient) validateCustomDomainCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(customDomainProperties)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, customDomainProperties)
 }
 
 // validateCustomDomainHandleResponse handles the ValidateCustomDomain response.
-func (client *AFDEndpointsClient) validateCustomDomainHandleResponse(resp *azcore.Response) (AFDEndpointsValidateCustomDomainResponse, error) {
-	result := AFDEndpointsValidateCustomDomainResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ValidateCustomDomainOutput); err != nil {
+func (client *AFDEndpointsClient) validateCustomDomainHandleResponse(resp *http.Response) (AFDEndpointsValidateCustomDomainResponse, error) {
+	result := AFDEndpointsValidateCustomDomainResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateCustomDomainOutput); err != nil {
 		return AFDEndpointsValidateCustomDomainResponse{}, err
 	}
 	return result, nil
 }
 
 // validateCustomDomainHandleError handles the ValidateCustomDomain error response.
-func (client *AFDEndpointsClient) validateCustomDomainHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AFDEndpointsClient) validateCustomDomainHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

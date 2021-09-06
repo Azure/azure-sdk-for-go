@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CdnManagementClient contains the methods for the CdnManagementClient group.
 // Don't use this type directly, use NewCdnManagementClient() instead.
 type CdnManagementClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewCdnManagementClient creates a new instance of CdnManagementClient with the specified values.
-func NewCdnManagementClient(con *armcore.Connection, subscriptionID string) *CdnManagementClient {
-	return &CdnManagementClient{con: con, subscriptionID: subscriptionID}
+func NewCdnManagementClient(con *arm.Connection, subscriptionID string) *CdnManagementClient {
+	return &CdnManagementClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CheckNameAvailability - Check the availability of a resource name. This is needed for resources where name is globally unique, such as a CDN endpoint.
@@ -38,51 +41,50 @@ func (client *CdnManagementClient) CheckNameAvailability(ctx context.Context, ch
 	if err != nil {
 		return CdnManagementClientCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return CdnManagementClientCheckNameAvailabilityResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return CdnManagementClientCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *CdnManagementClient) checkNameAvailabilityCreateRequest(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput, options *CdnManagementClientCheckNameAvailabilityOptions) (*azcore.Request, error) {
+func (client *CdnManagementClient) checkNameAvailabilityCreateRequest(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput, options *CdnManagementClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Cdn/checkNameAvailability"
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(checkNameAvailabilityInput)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, checkNameAvailabilityInput)
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *CdnManagementClient) checkNameAvailabilityHandleResponse(resp *azcore.Response) (CdnManagementClientCheckNameAvailabilityResponse, error) {
-	result := CdnManagementClientCheckNameAvailabilityResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.CheckNameAvailabilityOutput); err != nil {
+func (client *CdnManagementClient) checkNameAvailabilityHandleResponse(resp *http.Response) (CdnManagementClientCheckNameAvailabilityResponse, error) {
+	result := CdnManagementClientCheckNameAvailabilityResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityOutput); err != nil {
 		return CdnManagementClientCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
 // checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *CdnManagementClient) checkNameAvailabilityHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CdnManagementClient) checkNameAvailabilityHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // CheckNameAvailabilityWithSubscription - Check the availability of a resource name. This is needed for resources where name is globally unique, such as
@@ -93,55 +95,54 @@ func (client *CdnManagementClient) CheckNameAvailabilityWithSubscription(ctx con
 	if err != nil {
 		return CdnManagementClientCheckNameAvailabilityWithSubscriptionResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return CdnManagementClientCheckNameAvailabilityWithSubscriptionResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return CdnManagementClientCheckNameAvailabilityWithSubscriptionResponse{}, client.checkNameAvailabilityWithSubscriptionHandleError(resp)
 	}
 	return client.checkNameAvailabilityWithSubscriptionHandleResponse(resp)
 }
 
 // checkNameAvailabilityWithSubscriptionCreateRequest creates the CheckNameAvailabilityWithSubscription request.
-func (client *CdnManagementClient) checkNameAvailabilityWithSubscriptionCreateRequest(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput, options *CdnManagementClientCheckNameAvailabilityWithSubscriptionOptions) (*azcore.Request, error) {
+func (client *CdnManagementClient) checkNameAvailabilityWithSubscriptionCreateRequest(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput, options *CdnManagementClientCheckNameAvailabilityWithSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(checkNameAvailabilityInput)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, checkNameAvailabilityInput)
 }
 
 // checkNameAvailabilityWithSubscriptionHandleResponse handles the CheckNameAvailabilityWithSubscription response.
-func (client *CdnManagementClient) checkNameAvailabilityWithSubscriptionHandleResponse(resp *azcore.Response) (CdnManagementClientCheckNameAvailabilityWithSubscriptionResponse, error) {
-	result := CdnManagementClientCheckNameAvailabilityWithSubscriptionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.CheckNameAvailabilityOutput); err != nil {
+func (client *CdnManagementClient) checkNameAvailabilityWithSubscriptionHandleResponse(resp *http.Response) (CdnManagementClientCheckNameAvailabilityWithSubscriptionResponse, error) {
+	result := CdnManagementClientCheckNameAvailabilityWithSubscriptionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityOutput); err != nil {
 		return CdnManagementClientCheckNameAvailabilityWithSubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
 // checkNameAvailabilityWithSubscriptionHandleError handles the CheckNameAvailabilityWithSubscription error response.
-func (client *CdnManagementClient) checkNameAvailabilityWithSubscriptionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CdnManagementClient) checkNameAvailabilityWithSubscriptionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ValidateProbe - Check if the probe path is a valid path and the file can be accessed. Probe path is the path to a file hosted on the origin server to
@@ -153,53 +154,52 @@ func (client *CdnManagementClient) ValidateProbe(ctx context.Context, validatePr
 	if err != nil {
 		return CdnManagementClientValidateProbeResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return CdnManagementClientValidateProbeResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return CdnManagementClientValidateProbeResponse{}, client.validateProbeHandleError(resp)
 	}
 	return client.validateProbeHandleResponse(resp)
 }
 
 // validateProbeCreateRequest creates the ValidateProbe request.
-func (client *CdnManagementClient) validateProbeCreateRequest(ctx context.Context, validateProbeInput ValidateProbeInput, options *CdnManagementClientValidateProbeOptions) (*azcore.Request, error) {
+func (client *CdnManagementClient) validateProbeCreateRequest(ctx context.Context, validateProbeInput ValidateProbeInput, options *CdnManagementClientValidateProbeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/validateProbe"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(validateProbeInput)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, validateProbeInput)
 }
 
 // validateProbeHandleResponse handles the ValidateProbe response.
-func (client *CdnManagementClient) validateProbeHandleResponse(resp *azcore.Response) (CdnManagementClientValidateProbeResponse, error) {
-	result := CdnManagementClientValidateProbeResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ValidateProbeOutput); err != nil {
+func (client *CdnManagementClient) validateProbeHandleResponse(resp *http.Response) (CdnManagementClientValidateProbeResponse, error) {
+	result := CdnManagementClientValidateProbeResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateProbeOutput); err != nil {
 		return CdnManagementClientValidateProbeResponse{}, err
 	}
 	return result, nil
 }
 
 // validateProbeHandleError handles the ValidateProbe error response.
-func (client *CdnManagementClient) validateProbeHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CdnManagementClient) validateProbeHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

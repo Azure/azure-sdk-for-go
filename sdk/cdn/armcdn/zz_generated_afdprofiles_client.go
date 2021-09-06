@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AFDProfilesClient contains the methods for the AFDProfiles group.
 // Don't use this type directly, use NewAFDProfilesClient() instead.
 type AFDProfilesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewAFDProfilesClient creates a new instance of AFDProfilesClient with the specified values.
-func NewAFDProfilesClient(con *armcore.Connection, subscriptionID string) *AFDProfilesClient {
-	return &AFDProfilesClient{con: con, subscriptionID: subscriptionID}
+func NewAFDProfilesClient(con *arm.Connection, subscriptionID string) *AFDProfilesClient {
+	return &AFDProfilesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CheckHostNameAvailability - Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
@@ -38,18 +41,18 @@ func (client *AFDProfilesClient) CheckHostNameAvailability(ctx context.Context, 
 	if err != nil {
 		return AFDProfilesCheckHostNameAvailabilityResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AFDProfilesCheckHostNameAvailabilityResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AFDProfilesCheckHostNameAvailabilityResponse{}, client.checkHostNameAvailabilityHandleError(resp)
 	}
 	return client.checkHostNameAvailabilityHandleResponse(resp)
 }
 
 // checkHostNameAvailabilityCreateRequest creates the CheckHostNameAvailability request.
-func (client *AFDProfilesClient) checkHostNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, profileName string, checkHostNameAvailabilityInput ValidateCustomDomainInput, options *AFDProfilesCheckHostNameAvailabilityOptions) (*azcore.Request, error) {
+func (client *AFDProfilesClient) checkHostNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, profileName string, checkHostNameAvailabilityInput ValidateCustomDomainInput, options *AFDProfilesCheckHostNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/checkHostNameAvailability"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -63,56 +66,55 @@ func (client *AFDProfilesClient) checkHostNameAvailabilityCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(checkHostNameAvailabilityInput)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, checkHostNameAvailabilityInput)
 }
 
 // checkHostNameAvailabilityHandleResponse handles the CheckHostNameAvailability response.
-func (client *AFDProfilesClient) checkHostNameAvailabilityHandleResponse(resp *azcore.Response) (AFDProfilesCheckHostNameAvailabilityResponse, error) {
-	result := AFDProfilesCheckHostNameAvailabilityResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ValidateCustomDomainOutput); err != nil {
+func (client *AFDProfilesClient) checkHostNameAvailabilityHandleResponse(resp *http.Response) (AFDProfilesCheckHostNameAvailabilityResponse, error) {
+	result := AFDProfilesCheckHostNameAvailabilityResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateCustomDomainOutput); err != nil {
 		return AFDProfilesCheckHostNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
 // checkHostNameAvailabilityHandleError handles the CheckHostNameAvailability error response.
-func (client *AFDProfilesClient) checkHostNameAvailabilityHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AFDProfilesClient) checkHostNameAvailabilityHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListResourceUsage - Checks the quota and actual usage of endpoints under the given CDN profile.
 // If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDProfilesClient) ListResourceUsage(resourceGroupName string, profileName string, options *AFDProfilesListResourceUsageOptions) AFDProfilesListResourceUsagePager {
-	return &afdProfilesListResourceUsagePager{
+func (client *AFDProfilesClient) ListResourceUsage(resourceGroupName string, profileName string, options *AFDProfilesListResourceUsageOptions) *AFDProfilesListResourceUsagePager {
+	return &AFDProfilesListResourceUsagePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, options)
 		},
-		advancer: func(ctx context.Context, resp AFDProfilesListResourceUsageResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.UsagesListResult.NextLink)
+		advancer: func(ctx context.Context, resp AFDProfilesListResourceUsageResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.UsagesListResult.NextLink)
 		},
 	}
 }
 
 // listResourceUsageCreateRequest creates the ListResourceUsage request.
-func (client *AFDProfilesClient) listResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *AFDProfilesListResourceUsageOptions) (*azcore.Request, error) {
+func (client *AFDProfilesClient) listResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *AFDProfilesListResourceUsageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/usages"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -126,36 +128,35 @@ func (client *AFDProfilesClient) listResourceUsageCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listResourceUsageHandleResponse handles the ListResourceUsage response.
-func (client *AFDProfilesClient) listResourceUsageHandleResponse(resp *azcore.Response) (AFDProfilesListResourceUsageResponse, error) {
-	result := AFDProfilesListResourceUsageResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.UsagesListResult); err != nil {
+func (client *AFDProfilesClient) listResourceUsageHandleResponse(resp *http.Response) (AFDProfilesListResourceUsageResponse, error) {
+	result := AFDProfilesListResourceUsageResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesListResult); err != nil {
 		return AFDProfilesListResourceUsageResponse{}, err
 	}
 	return result, nil
 }
 
 // listResourceUsageHandleError handles the ListResourceUsage error response.
-func (client *AFDProfilesClient) listResourceUsageHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AFDProfilesClient) listResourceUsageHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,9 +10,10 @@ package armcdn
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AFDCustomDomainsBeginCreateOptions contains the optional parameters for the AFDCustomDomains.BeginCreate method.
@@ -544,7 +545,7 @@ type CacheExpirationActionParameters struct {
 	CacheType *CacheType `json:"cacheType,omitempty"`
 
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// The duration for which the content needs to be cached. Allowed format is [d.]hh:mm:ss
 	CacheDuration *string `json:"cacheDuration,omitempty"`
@@ -553,7 +554,7 @@ type CacheExpirationActionParameters struct {
 // CacheKeyQueryStringActionParameters - Defines the parameters for the cache-key query string action.
 type CacheKeyQueryStringActionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Caching behavior for the requests
 	QueryStringBehavior *QueryStringBehavior `json:"queryStringBehavior,omitempty"`
@@ -568,7 +569,7 @@ type CdnCertificateSourceParameters struct {
 	CertificateType *CertificateType `json:"certificateType,omitempty"`
 
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 }
 
 // CdnEndpoint - Defines the ARM Resource ID for the linked endpoints
@@ -900,7 +901,7 @@ type ContinentsResponseCountryOrRegionsItem struct {
 // CookiesMatchConditionParameters - Defines the parameters for Cookies match conditions
 type CookiesMatchConditionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Describes operator to be matched
 	Operator *CookiesOperator `json:"operator,omitempty"`
@@ -923,7 +924,7 @@ func (c CookiesMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", c.MatchValues)
 	populate(objectMap, "negateCondition", c.NegateCondition)
-	populate(objectMap, "@odata.type", c.OdataType)
+	populate(objectMap, "@odata.type", c.ODataType)
 	populate(objectMap, "operator", c.Operator)
 	populate(objectMap, "selector", c.Selector)
 	populate(objectMap, "transforms", c.Transforms)
@@ -2434,7 +2435,7 @@ type HTTPErrorRangeParameters struct {
 // HTTPVersionMatchConditionParameters - Defines the parameters for HttpVersion match conditions
 type HTTPVersionMatchConditionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Describes operator to be matched
 	Operator *HTTPVersionOperator `json:"operator,omitempty"`
@@ -2451,7 +2452,7 @@ func (h HTTPVersionMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", h.MatchValues)
 	populate(objectMap, "negateCondition", h.NegateCondition)
-	populate(objectMap, "@odata.type", h.OdataType)
+	populate(objectMap, "@odata.type", h.ODataType)
 	populate(objectMap, "operator", h.Operator)
 	return json.Marshal(objectMap)
 }
@@ -2465,7 +2466,7 @@ type HeaderActionParameters struct {
 	HeaderName *string `json:"headerName,omitempty"`
 
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// Value for the specified action
 	Value *string `json:"value,omitempty"`
@@ -2510,7 +2511,7 @@ func (i IPAddressGroup) MarshalJSON() ([]byte, error) {
 // IsDeviceMatchConditionParameters - Defines the parameters for IsDevice match conditions
 type IsDeviceMatchConditionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Describes operator to be matched
 	Operator *IsDeviceOperator `json:"operator,omitempty"`
@@ -2530,7 +2531,7 @@ func (i IsDeviceMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", i.MatchValues)
 	populate(objectMap, "negateCondition", i.NegateCondition)
-	populate(objectMap, "@odata.type", i.OdataType)
+	populate(objectMap, "@odata.type", i.ODataType)
 	populate(objectMap, "operator", i.Operator)
 	populate(objectMap, "transforms", i.Transforms)
 	return json.Marshal(objectMap)
@@ -2542,7 +2543,7 @@ type KeyVaultCertificateSourceParameters struct {
 	DeleteRule *DeleteRule `json:"deleteRule,omitempty"`
 
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Resource group of the user's Key Vault containing the SSL certificate
 	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
@@ -2566,7 +2567,7 @@ type KeyVaultCertificateSourceParameters struct {
 // KeyVaultSigningKeyParameters - Describes the parameters for using a user's KeyVault for URL Signing Key.
 type KeyVaultSigningKeyParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Resource group of the user's Key Vault containing the secret
 	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
@@ -3056,7 +3057,7 @@ func (o *OriginGroupOverrideAction) UnmarshalJSON(data []byte) error {
 // OriginGroupOverrideActionParameters - Defines the parameters for the origin group override action.
 type OriginGroupOverrideActionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; defines the OriginGroup that would override the DefaultOriginGroup.
 	OriginGroup *ResourceReference `json:"originGroup,omitempty"`
@@ -3302,7 +3303,7 @@ type PolicySettings struct {
 // PostArgsMatchConditionParameters - Defines the parameters for PostArgs match conditions
 type PostArgsMatchConditionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Describes operator to be matched
 	Operator *PostArgsOperator `json:"operator,omitempty"`
@@ -3325,7 +3326,7 @@ func (p PostArgsMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", p.MatchValues)
 	populate(objectMap, "negateCondition", p.NegateCondition)
-	populate(objectMap, "@odata.type", p.OdataType)
+	populate(objectMap, "@odata.type", p.ODataType)
 	populate(objectMap, "operator", p.Operator)
 	populate(objectMap, "selector", p.Selector)
 	populate(objectMap, "transforms", p.Transforms)
@@ -3463,7 +3464,7 @@ func (p PurgeParameters) MarshalJSON() ([]byte, error) {
 // QueryStringMatchConditionParameters - Defines the parameters for QueryString match conditions
 type QueryStringMatchConditionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Describes operator to be matched
 	Operator *QueryStringOperator `json:"operator,omitempty"`
@@ -3483,7 +3484,7 @@ func (q QueryStringMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", q.MatchValues)
 	populate(objectMap, "negateCondition", q.NegateCondition)
-	populate(objectMap, "@odata.type", q.OdataType)
+	populate(objectMap, "@odata.type", q.ODataType)
 	populate(objectMap, "operator", q.Operator)
 	populate(objectMap, "transforms", q.Transforms)
 	return json.Marshal(objectMap)
@@ -3601,7 +3602,7 @@ func (r RateLimitRuleList) MarshalJSON() ([]byte, error) {
 // RemoteAddressMatchConditionParameters - Defines the parameters for RemoteAddress match conditions
 type RemoteAddressMatchConditionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Describes operator to be matched
 	Operator *RemoteAddressOperator `json:"operator,omitempty"`
@@ -3622,7 +3623,7 @@ func (r RemoteAddressMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", r.MatchValues)
 	populate(objectMap, "negateCondition", r.NegateCondition)
-	populate(objectMap, "@odata.type", r.OdataType)
+	populate(objectMap, "@odata.type", r.ODataType)
 	populate(objectMap, "operator", r.Operator)
 	populate(objectMap, "transforms", r.Transforms)
 	return json.Marshal(objectMap)
@@ -3631,7 +3632,7 @@ func (r RemoteAddressMatchConditionParameters) MarshalJSON() ([]byte, error) {
 // RequestBodyMatchConditionParameters - Defines the parameters for RequestBody match conditions
 type RequestBodyMatchConditionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Describes operator to be matched
 	Operator *RequestBodyOperator `json:"operator,omitempty"`
@@ -3651,7 +3652,7 @@ func (r RequestBodyMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", r.MatchValues)
 	populate(objectMap, "negateCondition", r.NegateCondition)
-	populate(objectMap, "@odata.type", r.OdataType)
+	populate(objectMap, "@odata.type", r.ODataType)
 	populate(objectMap, "operator", r.Operator)
 	populate(objectMap, "transforms", r.Transforms)
 	return json.Marshal(objectMap)
@@ -3660,7 +3661,7 @@ func (r RequestBodyMatchConditionParameters) MarshalJSON() ([]byte, error) {
 // RequestHeaderMatchConditionParameters - Defines the parameters for RequestHeader match conditions
 type RequestHeaderMatchConditionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Describes operator to be matched
 	Operator *RequestHeaderOperator `json:"operator,omitempty"`
@@ -3683,7 +3684,7 @@ func (r RequestHeaderMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", r.MatchValues)
 	populate(objectMap, "negateCondition", r.NegateCondition)
-	populate(objectMap, "@odata.type", r.OdataType)
+	populate(objectMap, "@odata.type", r.ODataType)
 	populate(objectMap, "operator", r.Operator)
 	populate(objectMap, "selector", r.Selector)
 	populate(objectMap, "transforms", r.Transforms)
@@ -3693,7 +3694,7 @@ func (r RequestHeaderMatchConditionParameters) MarshalJSON() ([]byte, error) {
 // RequestMethodMatchConditionParameters - Defines the parameters for RequestMethod match conditions
 type RequestMethodMatchConditionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Describes operator to be matched
 	Operator *RequestMethodOperator `json:"operator,omitempty"`
@@ -3710,7 +3711,7 @@ func (r RequestMethodMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", r.MatchValues)
 	populate(objectMap, "negateCondition", r.NegateCondition)
-	populate(objectMap, "@odata.type", r.OdataType)
+	populate(objectMap, "@odata.type", r.ODataType)
 	populate(objectMap, "operator", r.Operator)
 	return json.Marshal(objectMap)
 }
@@ -3718,7 +3719,7 @@ func (r RequestMethodMatchConditionParameters) MarshalJSON() ([]byte, error) {
 // RequestSchemeMatchConditionParameters - Defines the parameters for RequestScheme match conditions
 type RequestSchemeMatchConditionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Describes operator to be matched
 	Operator *string `json:"operator,omitempty"`
@@ -3735,7 +3736,7 @@ func (r RequestSchemeMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", r.MatchValues)
 	populate(objectMap, "negateCondition", r.NegateCondition)
-	populate(objectMap, "@odata.type", r.OdataType)
+	populate(objectMap, "@odata.type", r.ODataType)
 	populate(objectMap, "operator", r.Operator)
 	return json.Marshal(objectMap)
 }
@@ -3743,7 +3744,7 @@ func (r RequestSchemeMatchConditionParameters) MarshalJSON() ([]byte, error) {
 // RequestURIMatchConditionParameters - Defines the parameters for RequestUri match conditions
 type RequestURIMatchConditionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Describes operator to be matched
 	Operator *RequestURIOperator `json:"operator,omitempty"`
@@ -3763,7 +3764,7 @@ func (r RequestURIMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", r.MatchValues)
 	populate(objectMap, "negateCondition", r.NegateCondition)
-	populate(objectMap, "@odata.type", r.OdataType)
+	populate(objectMap, "@odata.type", r.ODataType)
 	populate(objectMap, "operator", r.Operator)
 	populate(objectMap, "transforms", r.Transforms)
 	return json.Marshal(objectMap)
@@ -4727,7 +4728,7 @@ func (t TrackedResource) marshalInternal() map[string]interface{} {
 // URLFileExtensionMatchConditionParameters - Defines the parameters for UrlFileExtension match conditions
 type URLFileExtensionMatchConditionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Describes operator to be matched
 	Operator *URLFileExtensionOperator `json:"operator,omitempty"`
@@ -4747,7 +4748,7 @@ func (u URLFileExtensionMatchConditionParameters) MarshalJSON() ([]byte, error) 
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", u.MatchValues)
 	populate(objectMap, "negateCondition", u.NegateCondition)
-	populate(objectMap, "@odata.type", u.OdataType)
+	populate(objectMap, "@odata.type", u.ODataType)
 	populate(objectMap, "operator", u.Operator)
 	populate(objectMap, "transforms", u.Transforms)
 	return json.Marshal(objectMap)
@@ -4756,7 +4757,7 @@ func (u URLFileExtensionMatchConditionParameters) MarshalJSON() ([]byte, error) 
 // URLFileNameMatchConditionParameters - Defines the parameters for UrlFilename match conditions
 type URLFileNameMatchConditionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Describes operator to be matched
 	Operator *URLFileNameOperator `json:"operator,omitempty"`
@@ -4776,7 +4777,7 @@ func (u URLFileNameMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", u.MatchValues)
 	populate(objectMap, "negateCondition", u.NegateCondition)
-	populate(objectMap, "@odata.type", u.OdataType)
+	populate(objectMap, "@odata.type", u.ODataType)
 	populate(objectMap, "operator", u.Operator)
 	populate(objectMap, "transforms", u.Transforms)
 	return json.Marshal(objectMap)
@@ -4785,7 +4786,7 @@ func (u URLFileNameMatchConditionParameters) MarshalJSON() ([]byte, error) {
 // URLPathMatchConditionParameters - Defines the parameters for UrlPath match conditions
 type URLPathMatchConditionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; Describes operator to be matched
 	Operator *URLPathOperator `json:"operator,omitempty"`
@@ -4805,7 +4806,7 @@ func (u URLPathMatchConditionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "matchValues", u.MatchValues)
 	populate(objectMap, "negateCondition", u.NegateCondition)
-	populate(objectMap, "@odata.type", u.OdataType)
+	populate(objectMap, "@odata.type", u.ODataType)
 	populate(objectMap, "operator", u.Operator)
 	populate(objectMap, "transforms", u.Transforms)
 	return json.Marshal(objectMap)
@@ -4848,7 +4849,7 @@ func (u *URLRedirectAction) UnmarshalJSON(data []byte) error {
 // URLRedirectActionParameters - Defines the parameters for the url redirect action.
 type URLRedirectActionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; The redirect type the rule will use when redirecting traffic.
 	RedirectType *RedirectType `json:"redirectType,omitempty"`
@@ -4911,7 +4912,7 @@ type URLRewriteActionParameters struct {
 	Destination *string `json:"destination,omitempty"`
 
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// REQUIRED; define a request URI pattern that identifies the type of requests that may be rewritten. If value is blank, all strings are matched.
 	SourcePattern *string `json:"sourcePattern,omitempty"`
@@ -4957,7 +4958,7 @@ func (u *URLSigningAction) UnmarshalJSON(data []byte) error {
 // URLSigningActionParameters - Defines the parameters for the Url Signing action.
 type URLSigningActionParameters struct {
 	// REQUIRED
-	OdataType *string `json:"@odata.type,omitempty"`
+	ODataType *string `json:"@odata.type,omitempty"`
 
 	// Algorithm to use for URL signing
 	Algorithm *Algorithm `json:"algorithm,omitempty"`
@@ -4970,7 +4971,7 @@ type URLSigningActionParameters struct {
 func (u URLSigningActionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "algorithm", u.Algorithm)
-	populate(objectMap, "@odata.type", u.OdataType)
+	populate(objectMap, "@odata.type", u.ODataType)
 	populate(objectMap, "parameterNameOverride", u.ParameterNameOverride)
 	return json.Marshal(objectMap)
 }

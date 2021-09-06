@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,25 +12,28 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // LogAnalyticsClient contains the methods for the LogAnalytics group.
 // Don't use this type directly, use NewLogAnalyticsClient() instead.
 type LogAnalyticsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewLogAnalyticsClient creates a new instance of LogAnalyticsClient with the specified values.
-func NewLogAnalyticsClient(con *armcore.Connection, subscriptionID string) *LogAnalyticsClient {
-	return &LogAnalyticsClient{con: con, subscriptionID: subscriptionID}
+func NewLogAnalyticsClient(con *arm.Connection, subscriptionID string) *LogAnalyticsClient {
+	return &LogAnalyticsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // GetLogAnalyticsLocations - Get all available location names for AFD log analytics report.
@@ -40,18 +43,18 @@ func (client *LogAnalyticsClient) GetLogAnalyticsLocations(ctx context.Context, 
 	if err != nil {
 		return LogAnalyticsGetLogAnalyticsLocationsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return LogAnalyticsGetLogAnalyticsLocationsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return LogAnalyticsGetLogAnalyticsLocationsResponse{}, client.getLogAnalyticsLocationsHandleError(resp)
 	}
 	return client.getLogAnalyticsLocationsHandleResponse(resp)
 }
 
 // getLogAnalyticsLocationsCreateRequest creates the GetLogAnalyticsLocations request.
-func (client *LogAnalyticsClient) getLogAnalyticsLocationsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *LogAnalyticsGetLogAnalyticsLocationsOptions) (*azcore.Request, error) {
+func (client *LogAnalyticsClient) getLogAnalyticsLocationsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *LogAnalyticsGetLogAnalyticsLocationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsLocations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -65,38 +68,37 @@ func (client *LogAnalyticsClient) getLogAnalyticsLocationsCreateRequest(ctx cont
 		return nil, errors.New("parameter profileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getLogAnalyticsLocationsHandleResponse handles the GetLogAnalyticsLocations response.
-func (client *LogAnalyticsClient) getLogAnalyticsLocationsHandleResponse(resp *azcore.Response) (LogAnalyticsGetLogAnalyticsLocationsResponse, error) {
-	result := LogAnalyticsGetLogAnalyticsLocationsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ContinentsResponse); err != nil {
+func (client *LogAnalyticsClient) getLogAnalyticsLocationsHandleResponse(resp *http.Response) (LogAnalyticsGetLogAnalyticsLocationsResponse, error) {
+	result := LogAnalyticsGetLogAnalyticsLocationsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ContinentsResponse); err != nil {
 		return LogAnalyticsGetLogAnalyticsLocationsResponse{}, err
 	}
 	return result, nil
 }
 
 // getLogAnalyticsLocationsHandleError handles the GetLogAnalyticsLocations error response.
-func (client *LogAnalyticsClient) getLogAnalyticsLocationsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *LogAnalyticsClient) getLogAnalyticsLocationsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetLogAnalyticsMetrics - Get log report for AFD profile
@@ -106,18 +108,18 @@ func (client *LogAnalyticsClient) GetLogAnalyticsMetrics(ctx context.Context, re
 	if err != nil {
 		return LogAnalyticsGetLogAnalyticsMetricsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return LogAnalyticsGetLogAnalyticsMetricsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return LogAnalyticsGetLogAnalyticsMetricsResponse{}, client.getLogAnalyticsMetricsHandleError(resp)
 	}
 	return client.getLogAnalyticsMetricsHandleResponse(resp)
 }
 
 // getLogAnalyticsMetricsCreateRequest creates the GetLogAnalyticsMetrics request.
-func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, metrics []LogMetric, dateTimeBegin time.Time, dateTimeEnd time.Time, granularity LogMetricsGranularity, customDomains []string, protocols []string, options *LogAnalyticsGetLogAnalyticsMetricsOptions) (*azcore.Request, error) {
+func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, metrics []LogMetric, dateTimeBegin time.Time, dateTimeEnd time.Time, granularity LogMetricsGranularity, customDomains []string, protocols []string, options *LogAnalyticsGetLogAnalyticsMetricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsMetrics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -131,12 +133,11 @@ func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx contex
 		return nil, errors.New("parameter profileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	for _, qv := range metrics {
 		reqQP.Add("metrics", qv)
@@ -165,31 +166,31 @@ func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx contex
 	for _, qv := range protocols {
 		reqQP.Add("protocols", qv)
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getLogAnalyticsMetricsHandleResponse handles the GetLogAnalyticsMetrics response.
-func (client *LogAnalyticsClient) getLogAnalyticsMetricsHandleResponse(resp *azcore.Response) (LogAnalyticsGetLogAnalyticsMetricsResponse, error) {
-	result := LogAnalyticsGetLogAnalyticsMetricsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.MetricsResponse); err != nil {
+func (client *LogAnalyticsClient) getLogAnalyticsMetricsHandleResponse(resp *http.Response) (LogAnalyticsGetLogAnalyticsMetricsResponse, error) {
+	result := LogAnalyticsGetLogAnalyticsMetricsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MetricsResponse); err != nil {
 		return LogAnalyticsGetLogAnalyticsMetricsResponse{}, err
 	}
 	return result, nil
 }
 
 // getLogAnalyticsMetricsHandleError handles the GetLogAnalyticsMetrics error response.
-func (client *LogAnalyticsClient) getLogAnalyticsMetricsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *LogAnalyticsClient) getLogAnalyticsMetricsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetLogAnalyticsRankings - Get log analytics ranking report for AFD profile
@@ -199,18 +200,18 @@ func (client *LogAnalyticsClient) GetLogAnalyticsRankings(ctx context.Context, r
 	if err != nil {
 		return LogAnalyticsGetLogAnalyticsRankingsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return LogAnalyticsGetLogAnalyticsRankingsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return LogAnalyticsGetLogAnalyticsRankingsResponse{}, client.getLogAnalyticsRankingsHandleError(resp)
 	}
 	return client.getLogAnalyticsRankingsHandleResponse(resp)
 }
 
 // getLogAnalyticsRankingsCreateRequest creates the GetLogAnalyticsRankings request.
-func (client *LogAnalyticsClient) getLogAnalyticsRankingsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, rankings []LogRanking, metrics []LogRankingMetric, maxRanking int32, dateTimeBegin time.Time, dateTimeEnd time.Time, options *LogAnalyticsGetLogAnalyticsRankingsOptions) (*azcore.Request, error) {
+func (client *LogAnalyticsClient) getLogAnalyticsRankingsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, rankings []LogRanking, metrics []LogRankingMetric, maxRanking int32, dateTimeBegin time.Time, dateTimeEnd time.Time, options *LogAnalyticsGetLogAnalyticsRankingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsRankings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -224,12 +225,11 @@ func (client *LogAnalyticsClient) getLogAnalyticsRankingsCreateRequest(ctx conte
 		return nil, errors.New("parameter profileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	for _, qv := range rankings {
 		reqQP.Add("rankings", qv)
@@ -245,31 +245,31 @@ func (client *LogAnalyticsClient) getLogAnalyticsRankingsCreateRequest(ctx conte
 			reqQP.Add("customDomains", qv)
 		}
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getLogAnalyticsRankingsHandleResponse handles the GetLogAnalyticsRankings response.
-func (client *LogAnalyticsClient) getLogAnalyticsRankingsHandleResponse(resp *azcore.Response) (LogAnalyticsGetLogAnalyticsRankingsResponse, error) {
-	result := LogAnalyticsGetLogAnalyticsRankingsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RankingsResponse); err != nil {
+func (client *LogAnalyticsClient) getLogAnalyticsRankingsHandleResponse(resp *http.Response) (LogAnalyticsGetLogAnalyticsRankingsResponse, error) {
+	result := LogAnalyticsGetLogAnalyticsRankingsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RankingsResponse); err != nil {
 		return LogAnalyticsGetLogAnalyticsRankingsResponse{}, err
 	}
 	return result, nil
 }
 
 // getLogAnalyticsRankingsHandleError handles the GetLogAnalyticsRankings error response.
-func (client *LogAnalyticsClient) getLogAnalyticsRankingsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *LogAnalyticsClient) getLogAnalyticsRankingsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetLogAnalyticsResources - Get all endpoints and custom domains available for AFD log report
@@ -279,18 +279,18 @@ func (client *LogAnalyticsClient) GetLogAnalyticsResources(ctx context.Context, 
 	if err != nil {
 		return LogAnalyticsGetLogAnalyticsResourcesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return LogAnalyticsGetLogAnalyticsResourcesResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return LogAnalyticsGetLogAnalyticsResourcesResponse{}, client.getLogAnalyticsResourcesHandleError(resp)
 	}
 	return client.getLogAnalyticsResourcesHandleResponse(resp)
 }
 
 // getLogAnalyticsResourcesCreateRequest creates the GetLogAnalyticsResources request.
-func (client *LogAnalyticsClient) getLogAnalyticsResourcesCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *LogAnalyticsGetLogAnalyticsResourcesOptions) (*azcore.Request, error) {
+func (client *LogAnalyticsClient) getLogAnalyticsResourcesCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *LogAnalyticsGetLogAnalyticsResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -304,38 +304,37 @@ func (client *LogAnalyticsClient) getLogAnalyticsResourcesCreateRequest(ctx cont
 		return nil, errors.New("parameter profileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getLogAnalyticsResourcesHandleResponse handles the GetLogAnalyticsResources response.
-func (client *LogAnalyticsClient) getLogAnalyticsResourcesHandleResponse(resp *azcore.Response) (LogAnalyticsGetLogAnalyticsResourcesResponse, error) {
-	result := LogAnalyticsGetLogAnalyticsResourcesResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ResourcesResponse); err != nil {
+func (client *LogAnalyticsClient) getLogAnalyticsResourcesHandleResponse(resp *http.Response) (LogAnalyticsGetLogAnalyticsResourcesResponse, error) {
+	result := LogAnalyticsGetLogAnalyticsResourcesResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourcesResponse); err != nil {
 		return LogAnalyticsGetLogAnalyticsResourcesResponse{}, err
 	}
 	return result, nil
 }
 
 // getLogAnalyticsResourcesHandleError handles the GetLogAnalyticsResources error response.
-func (client *LogAnalyticsClient) getLogAnalyticsResourcesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *LogAnalyticsClient) getLogAnalyticsResourcesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetWafLogAnalyticsMetrics - Get Waf related log analytics report for AFD profile.
@@ -345,18 +344,18 @@ func (client *LogAnalyticsClient) GetWafLogAnalyticsMetrics(ctx context.Context,
 	if err != nil {
 		return LogAnalyticsGetWafLogAnalyticsMetricsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return LogAnalyticsGetWafLogAnalyticsMetricsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return LogAnalyticsGetWafLogAnalyticsMetricsResponse{}, client.getWafLogAnalyticsMetricsHandleError(resp)
 	}
 	return client.getWafLogAnalyticsMetricsHandleResponse(resp)
 }
 
 // getWafLogAnalyticsMetricsCreateRequest creates the GetWafLogAnalyticsMetrics request.
-func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, metrics []WafMetric, dateTimeBegin time.Time, dateTimeEnd time.Time, granularity WafGranularity, options *LogAnalyticsGetWafLogAnalyticsMetricsOptions) (*azcore.Request, error) {
+func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, metrics []WafMetric, dateTimeBegin time.Time, dateTimeEnd time.Time, granularity WafGranularity, options *LogAnalyticsGetWafLogAnalyticsMetricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getWafLogAnalyticsMetrics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -370,12 +369,11 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsCreateRequest(ctx con
 		return nil, errors.New("parameter profileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	for _, qv := range metrics {
 		reqQP.Add("metrics", qv)
@@ -398,31 +396,31 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsCreateRequest(ctx con
 			reqQP.Add("ruleTypes", qv)
 		}
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getWafLogAnalyticsMetricsHandleResponse handles the GetWafLogAnalyticsMetrics response.
-func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsHandleResponse(resp *azcore.Response) (LogAnalyticsGetWafLogAnalyticsMetricsResponse, error) {
-	result := LogAnalyticsGetWafLogAnalyticsMetricsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WafMetricsResponse); err != nil {
+func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsHandleResponse(resp *http.Response) (LogAnalyticsGetWafLogAnalyticsMetricsResponse, error) {
+	result := LogAnalyticsGetWafLogAnalyticsMetricsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WafMetricsResponse); err != nil {
 		return LogAnalyticsGetWafLogAnalyticsMetricsResponse{}, err
 	}
 	return result, nil
 }
 
 // getWafLogAnalyticsMetricsHandleError handles the GetWafLogAnalyticsMetrics error response.
-func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetWafLogAnalyticsRankings - Get WAF log analytics charts for AFD profile
@@ -432,18 +430,18 @@ func (client *LogAnalyticsClient) GetWafLogAnalyticsRankings(ctx context.Context
 	if err != nil {
 		return LogAnalyticsGetWafLogAnalyticsRankingsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return LogAnalyticsGetWafLogAnalyticsRankingsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return LogAnalyticsGetWafLogAnalyticsRankingsResponse{}, client.getWafLogAnalyticsRankingsHandleError(resp)
 	}
 	return client.getWafLogAnalyticsRankingsHandleResponse(resp)
 }
 
 // getWafLogAnalyticsRankingsCreateRequest creates the GetWafLogAnalyticsRankings request.
-func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, metrics []WafMetric, dateTimeBegin time.Time, dateTimeEnd time.Time, maxRanking int32, rankings []WafRankingType, options *LogAnalyticsGetWafLogAnalyticsRankingsOptions) (*azcore.Request, error) {
+func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsCreateRequest(ctx context.Context, resourceGroupName string, profileName string, metrics []WafMetric, dateTimeBegin time.Time, dateTimeEnd time.Time, maxRanking int32, rankings []WafRankingType, options *LogAnalyticsGetWafLogAnalyticsRankingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getWafLogAnalyticsRankings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -457,12 +455,11 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsCreateRequest(ctx co
 		return nil, errors.New("parameter profileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	for _, qv := range metrics {
 		reqQP.Add("metrics", qv)
@@ -483,29 +480,29 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsCreateRequest(ctx co
 			reqQP.Add("ruleTypes", qv)
 		}
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getWafLogAnalyticsRankingsHandleResponse handles the GetWafLogAnalyticsRankings response.
-func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsHandleResponse(resp *azcore.Response) (LogAnalyticsGetWafLogAnalyticsRankingsResponse, error) {
-	result := LogAnalyticsGetWafLogAnalyticsRankingsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WafRankingsResponse); err != nil {
+func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsHandleResponse(resp *http.Response) (LogAnalyticsGetWafLogAnalyticsRankingsResponse, error) {
+	result := LogAnalyticsGetWafLogAnalyticsRankingsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WafRankingsResponse); err != nil {
 		return LogAnalyticsGetWafLogAnalyticsRankingsResponse{}, err
 	}
 	return result, nil
 }
 
 // getWafLogAnalyticsRankingsHandleError handles the GetWafLogAnalyticsRankings error response.
-func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

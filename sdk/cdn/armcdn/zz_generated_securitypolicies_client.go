@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SecurityPoliciesClient contains the methods for the SecurityPolicies group.
 // Don't use this type directly, use NewSecurityPoliciesClient() instead.
 type SecurityPoliciesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewSecurityPoliciesClient creates a new instance of SecurityPoliciesClient with the specified values.
-func NewSecurityPoliciesClient(con *armcore.Connection, subscriptionID string) *SecurityPoliciesClient {
-	return &SecurityPoliciesClient{con: con, subscriptionID: subscriptionID}
+func NewSecurityPoliciesClient(con *arm.Connection, subscriptionID string) *SecurityPoliciesClient {
+	return &SecurityPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreate - Creates a new security policy within the specified profile.
@@ -40,65 +43,37 @@ func (client *SecurityPoliciesClient) BeginCreate(ctx context.Context, resourceG
 		return SecurityPoliciesCreatePollerResponse{}, err
 	}
 	result := SecurityPoliciesCreatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("SecurityPoliciesClient.Create", "azure-async-operation", resp, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return SecurityPoliciesCreatePollerResponse{}, err
-	}
-	poller := &securityPoliciesCreatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SecurityPoliciesCreateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreate creates a new SecurityPoliciesCreatePoller from the specified resume token.
-// token - The value must come from a previous call to SecurityPoliciesCreatePoller.ResumeToken().
-func (client *SecurityPoliciesClient) ResumeCreate(ctx context.Context, token string) (SecurityPoliciesCreatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("SecurityPoliciesClient.Create", token, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return SecurityPoliciesCreatePollerResponse{}, err
-	}
-	poller := &securityPoliciesCreatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return SecurityPoliciesCreatePollerResponse{}, err
-	}
-	result := SecurityPoliciesCreatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SecurityPoliciesCreateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("SecurityPoliciesClient.Create", "azure-async-operation", resp, client.pl, client.createHandleError)
+	if err != nil {
+		return SecurityPoliciesCreatePollerResponse{}, err
+	}
+	result.Poller = &SecurityPoliciesCreatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a new security policy within the specified profile.
 // If the operation fails it returns the *AfdErrorResponse error type.
-func (client *SecurityPoliciesClient) create(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicy SecurityPolicy, options *SecurityPoliciesBeginCreateOptions) (*azcore.Response, error) {
+func (client *SecurityPoliciesClient) create(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicy SecurityPolicy, options *SecurityPoliciesBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, securityPolicyName, securityPolicy, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *SecurityPoliciesClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicy SecurityPolicy, options *SecurityPoliciesBeginCreateOptions) (*azcore.Request, error) {
+func (client *SecurityPoliciesClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicy SecurityPolicy, options *SecurityPoliciesBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/securityPolicies/{securityPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -116,29 +91,28 @@ func (client *SecurityPoliciesClient) createCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(securityPolicy)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, securityPolicy)
 }
 
 // createHandleError handles the Create error response.
-func (client *SecurityPoliciesClient) createHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SecurityPoliciesClient) createHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDelete - Deletes an existing security policy within profile.
@@ -149,65 +123,37 @@ func (client *SecurityPoliciesClient) BeginDelete(ctx context.Context, resourceG
 		return SecurityPoliciesDeletePollerResponse{}, err
 	}
 	result := SecurityPoliciesDeletePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("SecurityPoliciesClient.Delete", "azure-async-operation", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return SecurityPoliciesDeletePollerResponse{}, err
-	}
-	poller := &securityPoliciesDeletePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SecurityPoliciesDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new SecurityPoliciesDeletePoller from the specified resume token.
-// token - The value must come from a previous call to SecurityPoliciesDeletePoller.ResumeToken().
-func (client *SecurityPoliciesClient) ResumeDelete(ctx context.Context, token string) (SecurityPoliciesDeletePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("SecurityPoliciesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return SecurityPoliciesDeletePollerResponse{}, err
-	}
-	poller := &securityPoliciesDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return SecurityPoliciesDeletePollerResponse{}, err
-	}
-	result := SecurityPoliciesDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SecurityPoliciesDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("SecurityPoliciesClient.Delete", "azure-async-operation", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return SecurityPoliciesDeletePollerResponse{}, err
+	}
+	result.Poller = &SecurityPoliciesDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes an existing security policy within profile.
 // If the operation fails it returns the *AfdErrorResponse error type.
-func (client *SecurityPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, options *SecurityPoliciesBeginDeleteOptions) (*azcore.Response, error) {
+func (client *SecurityPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, options *SecurityPoliciesBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, securityPolicyName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SecurityPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, options *SecurityPoliciesBeginDeleteOptions) (*azcore.Request, error) {
+func (client *SecurityPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, options *SecurityPoliciesBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/securityPolicies/{securityPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -225,29 +171,28 @@ func (client *SecurityPoliciesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *SecurityPoliciesClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SecurityPoliciesClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets an existing security policy within a profile.
@@ -257,18 +202,18 @@ func (client *SecurityPoliciesClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return SecurityPoliciesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return SecurityPoliciesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SecurityPoliciesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SecurityPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, options *SecurityPoliciesGetOptions) (*azcore.Request, error) {
+func (client *SecurityPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, options *SecurityPoliciesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/securityPolicies/{securityPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -286,56 +231,55 @@ func (client *SecurityPoliciesClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SecurityPoliciesClient) getHandleResponse(resp *azcore.Response) (SecurityPoliciesGetResponse, error) {
-	result := SecurityPoliciesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SecurityPolicy); err != nil {
+func (client *SecurityPoliciesClient) getHandleResponse(resp *http.Response) (SecurityPoliciesGetResponse, error) {
+	result := SecurityPoliciesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPolicy); err != nil {
 		return SecurityPoliciesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *SecurityPoliciesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SecurityPoliciesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByProfile - Lists security policies associated with the profile
 // If the operation fails it returns the *AfdErrorResponse error type.
-func (client *SecurityPoliciesClient) ListByProfile(resourceGroupName string, profileName string, options *SecurityPoliciesListByProfileOptions) SecurityPoliciesListByProfilePager {
-	return &securityPoliciesListByProfilePager{
+func (client *SecurityPoliciesClient) ListByProfile(resourceGroupName string, profileName string, options *SecurityPoliciesListByProfileOptions) *SecurityPoliciesListByProfilePager {
+	return &SecurityPoliciesListByProfilePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
 		},
-		advancer: func(ctx context.Context, resp SecurityPoliciesListByProfileResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.SecurityPolicyListResult.NextLink)
+		advancer: func(ctx context.Context, resp SecurityPoliciesListByProfileResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecurityPolicyListResult.NextLink)
 		},
 	}
 }
 
 // listByProfileCreateRequest creates the ListByProfile request.
-func (client *SecurityPoliciesClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *SecurityPoliciesListByProfileOptions) (*azcore.Request, error) {
+func (client *SecurityPoliciesClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *SecurityPoliciesListByProfileOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/securityPolicies"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -349,38 +293,37 @@ func (client *SecurityPoliciesClient) listByProfileCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByProfileHandleResponse handles the ListByProfile response.
-func (client *SecurityPoliciesClient) listByProfileHandleResponse(resp *azcore.Response) (SecurityPoliciesListByProfileResponse, error) {
-	result := SecurityPoliciesListByProfileResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SecurityPolicyListResult); err != nil {
+func (client *SecurityPoliciesClient) listByProfileHandleResponse(resp *http.Response) (SecurityPoliciesListByProfileResponse, error) {
+	result := SecurityPoliciesListByProfileResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPolicyListResult); err != nil {
 		return SecurityPoliciesListByProfileResponse{}, err
 	}
 	return result, nil
 }
 
 // listByProfileHandleError handles the ListByProfile error response.
-func (client *SecurityPoliciesClient) listByProfileHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SecurityPoliciesClient) listByProfileHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginPatch - Updates an existing Secret within a profile.
@@ -391,65 +334,37 @@ func (client *SecurityPoliciesClient) BeginPatch(ctx context.Context, resourceGr
 		return SecurityPoliciesPatchPollerResponse{}, err
 	}
 	result := SecurityPoliciesPatchPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("SecurityPoliciesClient.Patch", "azure-async-operation", resp, client.con.Pipeline(), client.patchHandleError)
-	if err != nil {
-		return SecurityPoliciesPatchPollerResponse{}, err
-	}
-	poller := &securityPoliciesPatchPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SecurityPoliciesPatchResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumePatch creates a new SecurityPoliciesPatchPoller from the specified resume token.
-// token - The value must come from a previous call to SecurityPoliciesPatchPoller.ResumeToken().
-func (client *SecurityPoliciesClient) ResumePatch(ctx context.Context, token string) (SecurityPoliciesPatchPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("SecurityPoliciesClient.Patch", token, client.con.Pipeline(), client.patchHandleError)
-	if err != nil {
-		return SecurityPoliciesPatchPollerResponse{}, err
-	}
-	poller := &securityPoliciesPatchPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return SecurityPoliciesPatchPollerResponse{}, err
-	}
-	result := SecurityPoliciesPatchPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (SecurityPoliciesPatchResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("SecurityPoliciesClient.Patch", "azure-async-operation", resp, client.pl, client.patchHandleError)
+	if err != nil {
+		return SecurityPoliciesPatchPollerResponse{}, err
+	}
+	result.Poller = &SecurityPoliciesPatchPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Patch - Updates an existing Secret within a profile.
 // If the operation fails it returns the *AfdErrorResponse error type.
-func (client *SecurityPoliciesClient) patch(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicyProperties SecurityPolicyProperties, options *SecurityPoliciesBeginPatchOptions) (*azcore.Response, error) {
+func (client *SecurityPoliciesClient) patch(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicyProperties SecurityPolicyProperties, options *SecurityPoliciesBeginPatchOptions) (*http.Response, error) {
 	req, err := client.patchCreateRequest(ctx, resourceGroupName, profileName, securityPolicyName, securityPolicyProperties, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.patchHandleError(resp)
 	}
 	return resp, nil
 }
 
 // patchCreateRequest creates the Patch request.
-func (client *SecurityPoliciesClient) patchCreateRequest(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicyProperties SecurityPolicyProperties, options *SecurityPoliciesBeginPatchOptions) (*azcore.Request, error) {
+func (client *SecurityPoliciesClient) patchCreateRequest(ctx context.Context, resourceGroupName string, profileName string, securityPolicyName string, securityPolicyProperties SecurityPolicyProperties, options *SecurityPoliciesBeginPatchOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/securityPolicies/{securityPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -467,27 +382,26 @@ func (client *SecurityPoliciesClient) patchCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(securityPolicyProperties)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, securityPolicyProperties)
 }
 
 // patchHandleError handles the Patch error response.
-func (client *SecurityPoliciesClient) patchHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SecurityPoliciesClient) patchHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

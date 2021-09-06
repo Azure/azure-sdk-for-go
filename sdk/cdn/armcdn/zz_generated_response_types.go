@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,18 +12,46 @@ import (
 	"context"
 	"net/http"
 	"time"
+
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // AFDCustomDomainsCreatePollerResponse contains the response from method AFDCustomDomains.Create.
 type AFDCustomDomainsCreatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AFDCustomDomainsCreateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AFDCustomDomainsCreatePoller
+	Poller *AFDCustomDomainsCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AFDCustomDomainsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AFDCustomDomainsCreateResponse, error) {
+	respType := AFDCustomDomainsCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AFDDomain)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AFDCustomDomainsCreatePollerResponse from the provided client and resume token.
+func (l *AFDCustomDomainsCreatePollerResponse) Resume(ctx context.Context, client *AFDCustomDomainsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AFDCustomDomainsClient.Create", token, client.pl, client.createHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AFDCustomDomainsCreatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AFDCustomDomainsCreateResponse contains the response from method AFDCustomDomains.Create.
@@ -40,14 +68,40 @@ type AFDCustomDomainsCreateResult struct {
 
 // AFDCustomDomainsDeletePollerResponse contains the response from method AFDCustomDomains.Delete.
 type AFDCustomDomainsDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AFDCustomDomainsDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AFDCustomDomainsDeletePoller
+	Poller *AFDCustomDomainsDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AFDCustomDomainsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AFDCustomDomainsDeleteResponse, error) {
+	respType := AFDCustomDomainsDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AFDCustomDomainsDeletePollerResponse from the provided client and resume token.
+func (l *AFDCustomDomainsDeletePollerResponse) Resume(ctx context.Context, client *AFDCustomDomainsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AFDCustomDomainsClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AFDCustomDomainsDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AFDCustomDomainsDeleteResponse contains the response from method AFDCustomDomains.Delete.
@@ -82,14 +136,40 @@ type AFDCustomDomainsListByProfileResult struct {
 
 // AFDCustomDomainsRefreshValidationTokenPollerResponse contains the response from method AFDCustomDomains.RefreshValidationToken.
 type AFDCustomDomainsRefreshValidationTokenPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AFDCustomDomainsRefreshValidationTokenResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AFDCustomDomainsRefreshValidationTokenPoller
+	Poller *AFDCustomDomainsRefreshValidationTokenPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AFDCustomDomainsRefreshValidationTokenPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AFDCustomDomainsRefreshValidationTokenResponse, error) {
+	respType := AFDCustomDomainsRefreshValidationTokenResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ValidationToken)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AFDCustomDomainsRefreshValidationTokenPollerResponse from the provided client and resume token.
+func (l *AFDCustomDomainsRefreshValidationTokenPollerResponse) Resume(ctx context.Context, client *AFDCustomDomainsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AFDCustomDomainsClient.RefreshValidationToken", token, client.pl, client.refreshValidationTokenHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AFDCustomDomainsRefreshValidationTokenPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AFDCustomDomainsRefreshValidationTokenResponse contains the response from method AFDCustomDomains.RefreshValidationToken.
@@ -106,14 +186,40 @@ type AFDCustomDomainsRefreshValidationTokenResult struct {
 
 // AFDCustomDomainsUpdatePollerResponse contains the response from method AFDCustomDomains.Update.
 type AFDCustomDomainsUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AFDCustomDomainsUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AFDCustomDomainsUpdatePoller
+	Poller *AFDCustomDomainsUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AFDCustomDomainsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AFDCustomDomainsUpdateResponse, error) {
+	respType := AFDCustomDomainsUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AFDDomain)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AFDCustomDomainsUpdatePollerResponse from the provided client and resume token.
+func (l *AFDCustomDomainsUpdatePollerResponse) Resume(ctx context.Context, client *AFDCustomDomainsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AFDCustomDomainsClient.Update", token, client.pl, client.updateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AFDCustomDomainsUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AFDCustomDomainsUpdateResponse contains the response from method AFDCustomDomains.Update.
@@ -130,14 +236,40 @@ type AFDCustomDomainsUpdateResult struct {
 
 // AFDEndpointsCreatePollerResponse contains the response from method AFDEndpoints.Create.
 type AFDEndpointsCreatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AFDEndpointsCreateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AFDEndpointsCreatePoller
+	Poller *AFDEndpointsCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AFDEndpointsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AFDEndpointsCreateResponse, error) {
+	respType := AFDEndpointsCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AFDEndpoint)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AFDEndpointsCreatePollerResponse from the provided client and resume token.
+func (l *AFDEndpointsCreatePollerResponse) Resume(ctx context.Context, client *AFDEndpointsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AFDEndpointsClient.Create", token, client.pl, client.createHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AFDEndpointsCreatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AFDEndpointsCreateResponse contains the response from method AFDEndpoints.Create.
@@ -154,14 +286,40 @@ type AFDEndpointsCreateResult struct {
 
 // AFDEndpointsDeletePollerResponse contains the response from method AFDEndpoints.Delete.
 type AFDEndpointsDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AFDEndpointsDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AFDEndpointsDeletePoller
+	Poller *AFDEndpointsDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AFDEndpointsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AFDEndpointsDeleteResponse, error) {
+	respType := AFDEndpointsDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AFDEndpointsDeletePollerResponse from the provided client and resume token.
+func (l *AFDEndpointsDeletePollerResponse) Resume(ctx context.Context, client *AFDEndpointsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AFDEndpointsClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AFDEndpointsDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AFDEndpointsDeleteResponse contains the response from method AFDEndpoints.Delete.
@@ -208,14 +366,40 @@ type AFDEndpointsListResourceUsageResult struct {
 
 // AFDEndpointsPurgeContentPollerResponse contains the response from method AFDEndpoints.PurgeContent.
 type AFDEndpointsPurgeContentPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AFDEndpointsPurgeContentResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AFDEndpointsPurgeContentPoller
+	Poller *AFDEndpointsPurgeContentPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AFDEndpointsPurgeContentPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AFDEndpointsPurgeContentResponse, error) {
+	respType := AFDEndpointsPurgeContentResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AFDEndpointsPurgeContentPollerResponse from the provided client and resume token.
+func (l *AFDEndpointsPurgeContentPollerResponse) Resume(ctx context.Context, client *AFDEndpointsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AFDEndpointsClient.PurgeContent", token, client.pl, client.purgeContentHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AFDEndpointsPurgeContentPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AFDEndpointsPurgeContentResponse contains the response from method AFDEndpoints.PurgeContent.
@@ -226,14 +410,40 @@ type AFDEndpointsPurgeContentResponse struct {
 
 // AFDEndpointsUpdatePollerResponse contains the response from method AFDEndpoints.Update.
 type AFDEndpointsUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AFDEndpointsUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AFDEndpointsUpdatePoller
+	Poller *AFDEndpointsUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AFDEndpointsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AFDEndpointsUpdateResponse, error) {
+	respType := AFDEndpointsUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AFDEndpoint)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AFDEndpointsUpdatePollerResponse from the provided client and resume token.
+func (l *AFDEndpointsUpdatePollerResponse) Resume(ctx context.Context, client *AFDEndpointsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AFDEndpointsClient.Update", token, client.pl, client.updateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AFDEndpointsUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AFDEndpointsUpdateResponse contains the response from method AFDEndpoints.Update.
@@ -262,14 +472,40 @@ type AFDEndpointsValidateCustomDomainResult struct {
 
 // AFDOriginGroupsCreatePollerResponse contains the response from method AFDOriginGroups.Create.
 type AFDOriginGroupsCreatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AFDOriginGroupsCreateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AFDOriginGroupsCreatePoller
+	Poller *AFDOriginGroupsCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AFDOriginGroupsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AFDOriginGroupsCreateResponse, error) {
+	respType := AFDOriginGroupsCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AFDOriginGroup)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AFDOriginGroupsCreatePollerResponse from the provided client and resume token.
+func (l *AFDOriginGroupsCreatePollerResponse) Resume(ctx context.Context, client *AFDOriginGroupsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AFDOriginGroupsClient.Create", token, client.pl, client.createHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AFDOriginGroupsCreatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AFDOriginGroupsCreateResponse contains the response from method AFDOriginGroups.Create.
@@ -286,14 +522,40 @@ type AFDOriginGroupsCreateResult struct {
 
 // AFDOriginGroupsDeletePollerResponse contains the response from method AFDOriginGroups.Delete.
 type AFDOriginGroupsDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AFDOriginGroupsDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AFDOriginGroupsDeletePoller
+	Poller *AFDOriginGroupsDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AFDOriginGroupsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AFDOriginGroupsDeleteResponse, error) {
+	respType := AFDOriginGroupsDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AFDOriginGroupsDeletePollerResponse from the provided client and resume token.
+func (l *AFDOriginGroupsDeletePollerResponse) Resume(ctx context.Context, client *AFDOriginGroupsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AFDOriginGroupsClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AFDOriginGroupsDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AFDOriginGroupsDeleteResponse contains the response from method AFDOriginGroups.Delete.
@@ -340,14 +602,40 @@ type AFDOriginGroupsListResourceUsageResult struct {
 
 // AFDOriginGroupsUpdatePollerResponse contains the response from method AFDOriginGroups.Update.
 type AFDOriginGroupsUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AFDOriginGroupsUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AFDOriginGroupsUpdatePoller
+	Poller *AFDOriginGroupsUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AFDOriginGroupsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AFDOriginGroupsUpdateResponse, error) {
+	respType := AFDOriginGroupsUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AFDOriginGroup)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AFDOriginGroupsUpdatePollerResponse from the provided client and resume token.
+func (l *AFDOriginGroupsUpdatePollerResponse) Resume(ctx context.Context, client *AFDOriginGroupsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AFDOriginGroupsClient.Update", token, client.pl, client.updateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AFDOriginGroupsUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AFDOriginGroupsUpdateResponse contains the response from method AFDOriginGroups.Update.
@@ -364,14 +652,40 @@ type AFDOriginGroupsUpdateResult struct {
 
 // AFDOriginsCreatePollerResponse contains the response from method AFDOrigins.Create.
 type AFDOriginsCreatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AFDOriginsCreateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AFDOriginsCreatePoller
+	Poller *AFDOriginsCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AFDOriginsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AFDOriginsCreateResponse, error) {
+	respType := AFDOriginsCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AFDOrigin)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AFDOriginsCreatePollerResponse from the provided client and resume token.
+func (l *AFDOriginsCreatePollerResponse) Resume(ctx context.Context, client *AFDOriginsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AFDOriginsClient.Create", token, client.pl, client.createHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AFDOriginsCreatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AFDOriginsCreateResponse contains the response from method AFDOrigins.Create.
@@ -388,14 +702,40 @@ type AFDOriginsCreateResult struct {
 
 // AFDOriginsDeletePollerResponse contains the response from method AFDOrigins.Delete.
 type AFDOriginsDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AFDOriginsDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AFDOriginsDeletePoller
+	Poller *AFDOriginsDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AFDOriginsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AFDOriginsDeleteResponse, error) {
+	respType := AFDOriginsDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AFDOriginsDeletePollerResponse from the provided client and resume token.
+func (l *AFDOriginsDeletePollerResponse) Resume(ctx context.Context, client *AFDOriginsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AFDOriginsClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AFDOriginsDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AFDOriginsDeleteResponse contains the response from method AFDOrigins.Delete.
@@ -430,14 +770,40 @@ type AFDOriginsListByOriginGroupResult struct {
 
 // AFDOriginsUpdatePollerResponse contains the response from method AFDOrigins.Update.
 type AFDOriginsUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AFDOriginsUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AFDOriginsUpdatePoller
+	Poller *AFDOriginsUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AFDOriginsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AFDOriginsUpdateResponse, error) {
+	respType := AFDOriginsUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AFDOrigin)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AFDOriginsUpdatePollerResponse from the provided client and resume token.
+func (l *AFDOriginsUpdatePollerResponse) Resume(ctx context.Context, client *AFDOriginsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AFDOriginsClient.Update", token, client.pl, client.updateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AFDOriginsUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AFDOriginsUpdateResponse contains the response from method AFDOrigins.Update.
@@ -514,14 +880,40 @@ type CdnManagementClientValidateProbeResult struct {
 
 // CustomDomainsCreatePollerResponse contains the response from method CustomDomains.Create.
 type CustomDomainsCreatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (CustomDomainsCreateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller CustomDomainsCreatePoller
+	Poller *CustomDomainsCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l CustomDomainsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CustomDomainsCreateResponse, error) {
+	respType := CustomDomainsCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CustomDomain)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a CustomDomainsCreatePollerResponse from the provided client and resume token.
+func (l *CustomDomainsCreatePollerResponse) Resume(ctx context.Context, client *CustomDomainsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CustomDomainsClient.Create", token, client.pl, client.createHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &CustomDomainsCreatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // CustomDomainsCreateResponse contains the response from method CustomDomains.Create.
@@ -538,14 +930,40 @@ type CustomDomainsCreateResult struct {
 
 // CustomDomainsDeletePollerResponse contains the response from method CustomDomains.Delete.
 type CustomDomainsDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (CustomDomainsDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller CustomDomainsDeletePoller
+	Poller *CustomDomainsDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l CustomDomainsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CustomDomainsDeleteResponse, error) {
+	respType := CustomDomainsDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CustomDomain)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a CustomDomainsDeletePollerResponse from the provided client and resume token.
+func (l *CustomDomainsDeletePollerResponse) Resume(ctx context.Context, client *CustomDomainsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CustomDomainsClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &CustomDomainsDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // CustomDomainsDeleteResponse contains the response from method CustomDomains.Delete.
@@ -562,14 +980,40 @@ type CustomDomainsDeleteResult struct {
 
 // CustomDomainsDisableCustomHTTPSPollerResponse contains the response from method CustomDomains.DisableCustomHTTPS.
 type CustomDomainsDisableCustomHTTPSPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (CustomDomainsDisableCustomHTTPSResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller CustomDomainsDisableCustomHTTPSPoller
+	Poller *CustomDomainsDisableCustomHTTPSPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l CustomDomainsDisableCustomHTTPSPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CustomDomainsDisableCustomHTTPSResponse, error) {
+	respType := CustomDomainsDisableCustomHTTPSResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CustomDomain)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a CustomDomainsDisableCustomHTTPSPollerResponse from the provided client and resume token.
+func (l *CustomDomainsDisableCustomHTTPSPollerResponse) Resume(ctx context.Context, client *CustomDomainsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CustomDomainsClient.DisableCustomHTTPS", token, client.pl, client.disableCustomHTTPSHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &CustomDomainsDisableCustomHTTPSPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // CustomDomainsDisableCustomHTTPSResponse contains the response from method CustomDomains.DisableCustomHTTPS.
@@ -586,14 +1030,40 @@ type CustomDomainsDisableCustomHTTPSResult struct {
 
 // CustomDomainsEnableCustomHTTPSPollerResponse contains the response from method CustomDomains.EnableCustomHTTPS.
 type CustomDomainsEnableCustomHTTPSPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (CustomDomainsEnableCustomHTTPSResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller CustomDomainsEnableCustomHTTPSPoller
+	Poller *CustomDomainsEnableCustomHTTPSPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l CustomDomainsEnableCustomHTTPSPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (CustomDomainsEnableCustomHTTPSResponse, error) {
+	respType := CustomDomainsEnableCustomHTTPSResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CustomDomain)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a CustomDomainsEnableCustomHTTPSPollerResponse from the provided client and resume token.
+func (l *CustomDomainsEnableCustomHTTPSPollerResponse) Resume(ctx context.Context, client *CustomDomainsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("CustomDomainsClient.EnableCustomHTTPS", token, client.pl, client.enableCustomHTTPSHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &CustomDomainsEnableCustomHTTPSPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // CustomDomainsEnableCustomHTTPSResponse contains the response from method CustomDomains.EnableCustomHTTPS.
@@ -646,14 +1116,40 @@ type EdgeNodesListResult struct {
 
 // EndpointsCreatePollerResponse contains the response from method Endpoints.Create.
 type EndpointsCreatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (EndpointsCreateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller EndpointsCreatePoller
+	Poller *EndpointsCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l EndpointsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EndpointsCreateResponse, error) {
+	respType := EndpointsCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Endpoint)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a EndpointsCreatePollerResponse from the provided client and resume token.
+func (l *EndpointsCreatePollerResponse) Resume(ctx context.Context, client *EndpointsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("EndpointsClient.Create", token, client.pl, client.createHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &EndpointsCreatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // EndpointsCreateResponse contains the response from method Endpoints.Create.
@@ -670,14 +1166,40 @@ type EndpointsCreateResult struct {
 
 // EndpointsDeletePollerResponse contains the response from method Endpoints.Delete.
 type EndpointsDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (EndpointsDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller EndpointsDeletePoller
+	Poller *EndpointsDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l EndpointsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EndpointsDeleteResponse, error) {
+	respType := EndpointsDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a EndpointsDeletePollerResponse from the provided client and resume token.
+func (l *EndpointsDeletePollerResponse) Resume(ctx context.Context, client *EndpointsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("EndpointsClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &EndpointsDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // EndpointsDeleteResponse contains the response from method Endpoints.Delete.
@@ -724,14 +1246,40 @@ type EndpointsListResourceUsageResult struct {
 
 // EndpointsLoadContentPollerResponse contains the response from method Endpoints.LoadContent.
 type EndpointsLoadContentPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (EndpointsLoadContentResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller EndpointsLoadContentPoller
+	Poller *EndpointsLoadContentPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l EndpointsLoadContentPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EndpointsLoadContentResponse, error) {
+	respType := EndpointsLoadContentResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a EndpointsLoadContentPollerResponse from the provided client and resume token.
+func (l *EndpointsLoadContentPollerResponse) Resume(ctx context.Context, client *EndpointsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("EndpointsClient.LoadContent", token, client.pl, client.loadContentHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &EndpointsLoadContentPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // EndpointsLoadContentResponse contains the response from method Endpoints.LoadContent.
@@ -742,14 +1290,40 @@ type EndpointsLoadContentResponse struct {
 
 // EndpointsPurgeContentPollerResponse contains the response from method Endpoints.PurgeContent.
 type EndpointsPurgeContentPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (EndpointsPurgeContentResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller EndpointsPurgeContentPoller
+	Poller *EndpointsPurgeContentPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l EndpointsPurgeContentPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EndpointsPurgeContentResponse, error) {
+	respType := EndpointsPurgeContentResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a EndpointsPurgeContentPollerResponse from the provided client and resume token.
+func (l *EndpointsPurgeContentPollerResponse) Resume(ctx context.Context, client *EndpointsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("EndpointsClient.PurgeContent", token, client.pl, client.purgeContentHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &EndpointsPurgeContentPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // EndpointsPurgeContentResponse contains the response from method Endpoints.PurgeContent.
@@ -760,14 +1334,40 @@ type EndpointsPurgeContentResponse struct {
 
 // EndpointsStartPollerResponse contains the response from method Endpoints.Start.
 type EndpointsStartPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (EndpointsStartResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller EndpointsStartPoller
+	Poller *EndpointsStartPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l EndpointsStartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EndpointsStartResponse, error) {
+	respType := EndpointsStartResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Endpoint)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a EndpointsStartPollerResponse from the provided client and resume token.
+func (l *EndpointsStartPollerResponse) Resume(ctx context.Context, client *EndpointsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("EndpointsClient.Start", token, client.pl, client.startHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &EndpointsStartPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // EndpointsStartResponse contains the response from method Endpoints.Start.
@@ -784,14 +1384,40 @@ type EndpointsStartResult struct {
 
 // EndpointsStopPollerResponse contains the response from method Endpoints.Stop.
 type EndpointsStopPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (EndpointsStopResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller EndpointsStopPoller
+	Poller *EndpointsStopPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l EndpointsStopPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EndpointsStopResponse, error) {
+	respType := EndpointsStopResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Endpoint)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a EndpointsStopPollerResponse from the provided client and resume token.
+func (l *EndpointsStopPollerResponse) Resume(ctx context.Context, client *EndpointsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("EndpointsClient.Stop", token, client.pl, client.stopHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &EndpointsStopPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // EndpointsStopResponse contains the response from method Endpoints.Stop.
@@ -808,14 +1434,40 @@ type EndpointsStopResult struct {
 
 // EndpointsUpdatePollerResponse contains the response from method Endpoints.Update.
 type EndpointsUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (EndpointsUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller EndpointsUpdatePoller
+	Poller *EndpointsUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l EndpointsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (EndpointsUpdateResponse, error) {
+	respType := EndpointsUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Endpoint)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a EndpointsUpdatePollerResponse from the provided client and resume token.
+func (l *EndpointsUpdatePollerResponse) Resume(ctx context.Context, client *EndpointsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("EndpointsClient.Update", token, client.pl, client.updateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &EndpointsUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // EndpointsUpdateResponse contains the response from method Endpoints.Update.
@@ -940,14 +1592,40 @@ type OperationsListResultEnvelope struct {
 
 // OriginGroupsCreatePollerResponse contains the response from method OriginGroups.Create.
 type OriginGroupsCreatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (OriginGroupsCreateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller OriginGroupsCreatePoller
+	Poller *OriginGroupsCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l OriginGroupsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OriginGroupsCreateResponse, error) {
+	respType := OriginGroupsCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OriginGroup)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a OriginGroupsCreatePollerResponse from the provided client and resume token.
+func (l *OriginGroupsCreatePollerResponse) Resume(ctx context.Context, client *OriginGroupsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("OriginGroupsClient.Create", token, client.pl, client.createHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &OriginGroupsCreatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // OriginGroupsCreateResponse contains the response from method OriginGroups.Create.
@@ -964,14 +1642,40 @@ type OriginGroupsCreateResult struct {
 
 // OriginGroupsDeletePollerResponse contains the response from method OriginGroups.Delete.
 type OriginGroupsDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (OriginGroupsDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller OriginGroupsDeletePoller
+	Poller *OriginGroupsDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l OriginGroupsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OriginGroupsDeleteResponse, error) {
+	respType := OriginGroupsDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a OriginGroupsDeletePollerResponse from the provided client and resume token.
+func (l *OriginGroupsDeletePollerResponse) Resume(ctx context.Context, client *OriginGroupsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("OriginGroupsClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &OriginGroupsDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // OriginGroupsDeleteResponse contains the response from method OriginGroups.Delete.
@@ -1006,14 +1710,40 @@ type OriginGroupsListByEndpointResult struct {
 
 // OriginGroupsUpdatePollerResponse contains the response from method OriginGroups.Update.
 type OriginGroupsUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (OriginGroupsUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller OriginGroupsUpdatePoller
+	Poller *OriginGroupsUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l OriginGroupsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OriginGroupsUpdateResponse, error) {
+	respType := OriginGroupsUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.OriginGroup)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a OriginGroupsUpdatePollerResponse from the provided client and resume token.
+func (l *OriginGroupsUpdatePollerResponse) Resume(ctx context.Context, client *OriginGroupsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("OriginGroupsClient.Update", token, client.pl, client.updateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &OriginGroupsUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // OriginGroupsUpdateResponse contains the response from method OriginGroups.Update.
@@ -1030,14 +1760,40 @@ type OriginGroupsUpdateResult struct {
 
 // OriginsCreatePollerResponse contains the response from method Origins.Create.
 type OriginsCreatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (OriginsCreateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller OriginsCreatePoller
+	Poller *OriginsCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l OriginsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OriginsCreateResponse, error) {
+	respType := OriginsCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Origin)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a OriginsCreatePollerResponse from the provided client and resume token.
+func (l *OriginsCreatePollerResponse) Resume(ctx context.Context, client *OriginsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("OriginsClient.Create", token, client.pl, client.createHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &OriginsCreatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // OriginsCreateResponse contains the response from method Origins.Create.
@@ -1054,14 +1810,40 @@ type OriginsCreateResult struct {
 
 // OriginsDeletePollerResponse contains the response from method Origins.Delete.
 type OriginsDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (OriginsDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller OriginsDeletePoller
+	Poller *OriginsDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l OriginsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OriginsDeleteResponse, error) {
+	respType := OriginsDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a OriginsDeletePollerResponse from the provided client and resume token.
+func (l *OriginsDeletePollerResponse) Resume(ctx context.Context, client *OriginsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("OriginsClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &OriginsDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // OriginsDeleteResponse contains the response from method Origins.Delete.
@@ -1096,14 +1878,40 @@ type OriginsListByEndpointResult struct {
 
 // OriginsUpdatePollerResponse contains the response from method Origins.Update.
 type OriginsUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (OriginsUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller OriginsUpdatePoller
+	Poller *OriginsUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l OriginsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (OriginsUpdateResponse, error) {
+	respType := OriginsUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Origin)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a OriginsUpdatePollerResponse from the provided client and resume token.
+func (l *OriginsUpdatePollerResponse) Resume(ctx context.Context, client *OriginsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("OriginsClient.Update", token, client.pl, client.updateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &OriginsUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // OriginsUpdateResponse contains the response from method Origins.Update.
@@ -1120,14 +1928,40 @@ type OriginsUpdateResult struct {
 
 // PoliciesCreateOrUpdatePollerResponse contains the response from method Policies.CreateOrUpdate.
 type PoliciesCreateOrUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (PoliciesCreateOrUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller PoliciesCreateOrUpdatePoller
+	Poller *PoliciesCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l PoliciesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PoliciesCreateOrUpdateResponse, error) {
+	respType := PoliciesCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CdnWebApplicationFirewallPolicy)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a PoliciesCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *PoliciesCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *PoliciesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PoliciesClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &PoliciesCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // PoliciesCreateOrUpdateResponse contains the response from method Policies.CreateOrUpdate.
@@ -1174,14 +2008,40 @@ type PoliciesListResult struct {
 
 // PoliciesUpdatePollerResponse contains the response from method Policies.Update.
 type PoliciesUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (PoliciesUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller PoliciesUpdatePoller
+	Poller *PoliciesUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l PoliciesUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PoliciesUpdateResponse, error) {
+	respType := PoliciesUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.CdnWebApplicationFirewallPolicy)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a PoliciesUpdatePollerResponse from the provided client and resume token.
+func (l *PoliciesUpdatePollerResponse) Resume(ctx context.Context, client *PoliciesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PoliciesClient.Update", token, client.pl, client.updateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &PoliciesUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // PoliciesUpdateResponse contains the response from method Policies.Update.
@@ -1198,14 +2058,40 @@ type PoliciesUpdateResult struct {
 
 // ProfilesCreatePollerResponse contains the response from method Profiles.Create.
 type ProfilesCreatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (ProfilesCreateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller ProfilesCreatePoller
+	Poller *ProfilesCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l ProfilesCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ProfilesCreateResponse, error) {
+	respType := ProfilesCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Profile)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ProfilesCreatePollerResponse from the provided client and resume token.
+func (l *ProfilesCreatePollerResponse) Resume(ctx context.Context, client *ProfilesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ProfilesClient.Create", token, client.pl, client.createHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &ProfilesCreatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // ProfilesCreateResponse contains the response from method Profiles.Create.
@@ -1222,14 +2108,40 @@ type ProfilesCreateResult struct {
 
 // ProfilesDeletePollerResponse contains the response from method Profiles.Delete.
 type ProfilesDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (ProfilesDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller ProfilesDeletePoller
+	Poller *ProfilesDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l ProfilesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ProfilesDeleteResponse, error) {
+	respType := ProfilesDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ProfilesDeletePollerResponse from the provided client and resume token.
+func (l *ProfilesDeletePollerResponse) Resume(ctx context.Context, client *ProfilesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ProfilesClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &ProfilesDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // ProfilesDeleteResponse contains the response from method Profiles.Delete.
@@ -1312,14 +2224,40 @@ type ProfilesListSupportedOptimizationTypesResult struct {
 
 // ProfilesUpdatePollerResponse contains the response from method Profiles.Update.
 type ProfilesUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (ProfilesUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller ProfilesUpdatePoller
+	Poller *ProfilesUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l ProfilesUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ProfilesUpdateResponse, error) {
+	respType := ProfilesUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Profile)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ProfilesUpdatePollerResponse from the provided client and resume token.
+func (l *ProfilesUpdatePollerResponse) Resume(ctx context.Context, client *ProfilesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ProfilesClient.Update", token, client.pl, client.updateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &ProfilesUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // ProfilesUpdateResponse contains the response from method Profiles.Update.
@@ -1348,14 +2286,40 @@ type ResourceUsageListResultEnvelope struct {
 
 // RoutesCreatePollerResponse contains the response from method Routes.Create.
 type RoutesCreatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (RoutesCreateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller RoutesCreatePoller
+	Poller *RoutesCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l RoutesCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RoutesCreateResponse, error) {
+	respType := RoutesCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Route)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a RoutesCreatePollerResponse from the provided client and resume token.
+func (l *RoutesCreatePollerResponse) Resume(ctx context.Context, client *RoutesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RoutesClient.Create", token, client.pl, client.createHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &RoutesCreatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // RoutesCreateResponse contains the response from method Routes.Create.
@@ -1372,14 +2336,40 @@ type RoutesCreateResult struct {
 
 // RoutesDeletePollerResponse contains the response from method Routes.Delete.
 type RoutesDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (RoutesDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller RoutesDeletePoller
+	Poller *RoutesDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l RoutesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RoutesDeleteResponse, error) {
+	respType := RoutesDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a RoutesDeletePollerResponse from the provided client and resume token.
+func (l *RoutesDeletePollerResponse) Resume(ctx context.Context, client *RoutesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RoutesClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &RoutesDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // RoutesDeleteResponse contains the response from method Routes.Delete.
@@ -1414,14 +2404,40 @@ type RoutesListByEndpointResult struct {
 
 // RoutesUpdatePollerResponse contains the response from method Routes.Update.
 type RoutesUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (RoutesUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller RoutesUpdatePoller
+	Poller *RoutesUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l RoutesUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RoutesUpdateResponse, error) {
+	respType := RoutesUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Route)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a RoutesUpdatePollerResponse from the provided client and resume token.
+func (l *RoutesUpdatePollerResponse) Resume(ctx context.Context, client *RoutesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RoutesClient.Update", token, client.pl, client.updateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &RoutesUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // RoutesUpdateResponse contains the response from method Routes.Update.
@@ -1438,14 +2454,40 @@ type RoutesUpdateResult struct {
 
 // RuleSetsCreatePollerResponse contains the response from method RuleSets.Create.
 type RuleSetsCreatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (RuleSetsCreateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller RuleSetsCreatePoller
+	Poller *RuleSetsCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l RuleSetsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RuleSetsCreateResponse, error) {
+	respType := RuleSetsCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RuleSet)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a RuleSetsCreatePollerResponse from the provided client and resume token.
+func (l *RuleSetsCreatePollerResponse) Resume(ctx context.Context, client *RuleSetsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RuleSetsClient.Create", token, client.pl, client.createHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &RuleSetsCreatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // RuleSetsCreateResponse contains the response from method RuleSets.Create.
@@ -1462,14 +2504,40 @@ type RuleSetsCreateResult struct {
 
 // RuleSetsDeletePollerResponse contains the response from method RuleSets.Delete.
 type RuleSetsDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (RuleSetsDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller RuleSetsDeletePoller
+	Poller *RuleSetsDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l RuleSetsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RuleSetsDeleteResponse, error) {
+	respType := RuleSetsDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a RuleSetsDeletePollerResponse from the provided client and resume token.
+func (l *RuleSetsDeletePollerResponse) Resume(ctx context.Context, client *RuleSetsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RuleSetsClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &RuleSetsDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // RuleSetsDeleteResponse contains the response from method RuleSets.Delete.
@@ -1516,14 +2584,40 @@ type RuleSetsListResourceUsageResult struct {
 
 // RulesCreatePollerResponse contains the response from method Rules.Create.
 type RulesCreatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (RulesCreateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller RulesCreatePoller
+	Poller *RulesCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l RulesCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RulesCreateResponse, error) {
+	respType := RulesCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Rule)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a RulesCreatePollerResponse from the provided client and resume token.
+func (l *RulesCreatePollerResponse) Resume(ctx context.Context, client *RulesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RulesClient.Create", token, client.pl, client.createHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &RulesCreatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // RulesCreateResponse contains the response from method Rules.Create.
@@ -1540,14 +2634,40 @@ type RulesCreateResult struct {
 
 // RulesDeletePollerResponse contains the response from method Rules.Delete.
 type RulesDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (RulesDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller RulesDeletePoller
+	Poller *RulesDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l RulesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RulesDeleteResponse, error) {
+	respType := RulesDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a RulesDeletePollerResponse from the provided client and resume token.
+func (l *RulesDeletePollerResponse) Resume(ctx context.Context, client *RulesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RulesClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &RulesDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // RulesDeleteResponse contains the response from method Rules.Delete.
@@ -1582,14 +2702,40 @@ type RulesListByRuleSetResult struct {
 
 // RulesUpdatePollerResponse contains the response from method Rules.Update.
 type RulesUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (RulesUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller RulesUpdatePoller
+	Poller *RulesUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l RulesUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RulesUpdateResponse, error) {
+	respType := RulesUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Rule)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a RulesUpdatePollerResponse from the provided client and resume token.
+func (l *RulesUpdatePollerResponse) Resume(ctx context.Context, client *RulesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RulesClient.Update", token, client.pl, client.updateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &RulesUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // RulesUpdateResponse contains the response from method Rules.Update.
@@ -1606,14 +2752,40 @@ type RulesUpdateResult struct {
 
 // SecretsCreatePollerResponse contains the response from method Secrets.Create.
 type SecretsCreatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (SecretsCreateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller SecretsCreatePoller
+	Poller *SecretsCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l SecretsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SecretsCreateResponse, error) {
+	respType := SecretsCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Secret)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SecretsCreatePollerResponse from the provided client and resume token.
+func (l *SecretsCreatePollerResponse) Resume(ctx context.Context, client *SecretsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SecretsClient.Create", token, client.pl, client.createHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &SecretsCreatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // SecretsCreateResponse contains the response from method Secrets.Create.
@@ -1630,14 +2802,40 @@ type SecretsCreateResult struct {
 
 // SecretsDeletePollerResponse contains the response from method Secrets.Delete.
 type SecretsDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (SecretsDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller SecretsDeletePoller
+	Poller *SecretsDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l SecretsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SecretsDeleteResponse, error) {
+	respType := SecretsDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SecretsDeletePollerResponse from the provided client and resume token.
+func (l *SecretsDeletePollerResponse) Resume(ctx context.Context, client *SecretsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SecretsClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &SecretsDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // SecretsDeleteResponse contains the response from method Secrets.Delete.
@@ -1672,14 +2870,40 @@ type SecretsListByProfileResult struct {
 
 // SecretsUpdatePollerResponse contains the response from method Secrets.Update.
 type SecretsUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (SecretsUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller SecretsUpdatePoller
+	Poller *SecretsUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l SecretsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SecretsUpdateResponse, error) {
+	respType := SecretsUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Secret)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SecretsUpdatePollerResponse from the provided client and resume token.
+func (l *SecretsUpdatePollerResponse) Resume(ctx context.Context, client *SecretsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SecretsClient.Update", token, client.pl, client.updateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &SecretsUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // SecretsUpdateResponse contains the response from method Secrets.Update.
@@ -1696,14 +2920,40 @@ type SecretsUpdateResult struct {
 
 // SecurityPoliciesCreatePollerResponse contains the response from method SecurityPolicies.Create.
 type SecurityPoliciesCreatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (SecurityPoliciesCreateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller SecurityPoliciesCreatePoller
+	Poller *SecurityPoliciesCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l SecurityPoliciesCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SecurityPoliciesCreateResponse, error) {
+	respType := SecurityPoliciesCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SecurityPolicy)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SecurityPoliciesCreatePollerResponse from the provided client and resume token.
+func (l *SecurityPoliciesCreatePollerResponse) Resume(ctx context.Context, client *SecurityPoliciesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SecurityPoliciesClient.Create", token, client.pl, client.createHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &SecurityPoliciesCreatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // SecurityPoliciesCreateResponse contains the response from method SecurityPolicies.Create.
@@ -1720,14 +2970,40 @@ type SecurityPoliciesCreateResult struct {
 
 // SecurityPoliciesDeletePollerResponse contains the response from method SecurityPolicies.Delete.
 type SecurityPoliciesDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (SecurityPoliciesDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller SecurityPoliciesDeletePoller
+	Poller *SecurityPoliciesDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l SecurityPoliciesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SecurityPoliciesDeleteResponse, error) {
+	respType := SecurityPoliciesDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SecurityPoliciesDeletePollerResponse from the provided client and resume token.
+func (l *SecurityPoliciesDeletePollerResponse) Resume(ctx context.Context, client *SecurityPoliciesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SecurityPoliciesClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &SecurityPoliciesDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // SecurityPoliciesDeleteResponse contains the response from method SecurityPolicies.Delete.
@@ -1762,14 +3038,40 @@ type SecurityPoliciesListByProfileResult struct {
 
 // SecurityPoliciesPatchPollerResponse contains the response from method SecurityPolicies.Patch.
 type SecurityPoliciesPatchPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (SecurityPoliciesPatchResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller SecurityPoliciesPatchPoller
+	Poller *SecurityPoliciesPatchPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l SecurityPoliciesPatchPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (SecurityPoliciesPatchResponse, error) {
+	respType := SecurityPoliciesPatchResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SecurityPolicy)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a SecurityPoliciesPatchPollerResponse from the provided client and resume token.
+func (l *SecurityPoliciesPatchPollerResponse) Resume(ctx context.Context, client *SecurityPoliciesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("SecurityPoliciesClient.Patch", token, client.pl, client.patchHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &SecurityPoliciesPatchPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // SecurityPoliciesPatchResponse contains the response from method SecurityPolicies.Patch.

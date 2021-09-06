@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -12,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AFDOriginGroupsClient contains the methods for the AFDOriginGroups group.
 // Don't use this type directly, use NewAFDOriginGroupsClient() instead.
 type AFDOriginGroupsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewAFDOriginGroupsClient creates a new instance of AFDOriginGroupsClient with the specified values.
-func NewAFDOriginGroupsClient(con *armcore.Connection, subscriptionID string) *AFDOriginGroupsClient {
-	return &AFDOriginGroupsClient{con: con, subscriptionID: subscriptionID}
+func NewAFDOriginGroupsClient(con *arm.Connection, subscriptionID string) *AFDOriginGroupsClient {
+	return &AFDOriginGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreate - Creates a new origin group within the specified profile.
@@ -40,65 +43,37 @@ func (client *AFDOriginGroupsClient) BeginCreate(ctx context.Context, resourceGr
 		return AFDOriginGroupsCreatePollerResponse{}, err
 	}
 	result := AFDOriginGroupsCreatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("AFDOriginGroupsClient.Create", "azure-async-operation", resp, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return AFDOriginGroupsCreatePollerResponse{}, err
-	}
-	poller := &afdOriginGroupsCreatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AFDOriginGroupsCreateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreate creates a new AFDOriginGroupsCreatePoller from the specified resume token.
-// token - The value must come from a previous call to AFDOriginGroupsCreatePoller.ResumeToken().
-func (client *AFDOriginGroupsClient) ResumeCreate(ctx context.Context, token string) (AFDOriginGroupsCreatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("AFDOriginGroupsClient.Create", token, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return AFDOriginGroupsCreatePollerResponse{}, err
-	}
-	poller := &afdOriginGroupsCreatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return AFDOriginGroupsCreatePollerResponse{}, err
-	}
-	result := AFDOriginGroupsCreatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AFDOriginGroupsCreateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("AFDOriginGroupsClient.Create", "azure-async-operation", resp, client.pl, client.createHandleError)
+	if err != nil {
+		return AFDOriginGroupsCreatePollerResponse{}, err
+	}
+	result.Poller = &AFDOriginGroupsCreatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a new origin group within the specified profile.
 // If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDOriginGroupsClient) create(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroup AFDOriginGroup, options *AFDOriginGroupsBeginCreateOptions) (*azcore.Response, error) {
+func (client *AFDOriginGroupsClient) create(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroup AFDOriginGroup, options *AFDOriginGroupsBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, originGroupName, originGroup, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *AFDOriginGroupsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroup AFDOriginGroup, options *AFDOriginGroupsBeginCreateOptions) (*azcore.Request, error) {
+func (client *AFDOriginGroupsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroup AFDOriginGroup, options *AFDOriginGroupsBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -116,29 +91,28 @@ func (client *AFDOriginGroupsClient) createCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(originGroup)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, originGroup)
 }
 
 // createHandleError handles the Create error response.
-func (client *AFDOriginGroupsClient) createHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AFDOriginGroupsClient) createHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDelete - Deletes an existing origin group within a profile.
@@ -149,65 +123,37 @@ func (client *AFDOriginGroupsClient) BeginDelete(ctx context.Context, resourceGr
 		return AFDOriginGroupsDeletePollerResponse{}, err
 	}
 	result := AFDOriginGroupsDeletePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("AFDOriginGroupsClient.Delete", "azure-async-operation", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return AFDOriginGroupsDeletePollerResponse{}, err
-	}
-	poller := &afdOriginGroupsDeletePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AFDOriginGroupsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new AFDOriginGroupsDeletePoller from the specified resume token.
-// token - The value must come from a previous call to AFDOriginGroupsDeletePoller.ResumeToken().
-func (client *AFDOriginGroupsClient) ResumeDelete(ctx context.Context, token string) (AFDOriginGroupsDeletePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("AFDOriginGroupsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return AFDOriginGroupsDeletePollerResponse{}, err
-	}
-	poller := &afdOriginGroupsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return AFDOriginGroupsDeletePollerResponse{}, err
-	}
-	result := AFDOriginGroupsDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AFDOriginGroupsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("AFDOriginGroupsClient.Delete", "azure-async-operation", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return AFDOriginGroupsDeletePollerResponse{}, err
+	}
+	result.Poller = &AFDOriginGroupsDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes an existing origin group within a profile.
 // If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDOriginGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsBeginDeleteOptions) (*azcore.Response, error) {
+func (client *AFDOriginGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, profileName, originGroupName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AFDOriginGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsBeginDeleteOptions) (*azcore.Request, error) {
+func (client *AFDOriginGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -225,29 +171,28 @@ func (client *AFDOriginGroupsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *AFDOriginGroupsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AFDOriginGroupsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets an existing origin group within a profile.
@@ -257,18 +202,18 @@ func (client *AFDOriginGroupsClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return AFDOriginGroupsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AFDOriginGroupsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AFDOriginGroupsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AFDOriginGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsGetOptions) (*azcore.Request, error) {
+func (client *AFDOriginGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -286,56 +231,55 @@ func (client *AFDOriginGroupsClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AFDOriginGroupsClient) getHandleResponse(resp *azcore.Response) (AFDOriginGroupsGetResponse, error) {
-	result := AFDOriginGroupsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AFDOriginGroup); err != nil {
+func (client *AFDOriginGroupsClient) getHandleResponse(resp *http.Response) (AFDOriginGroupsGetResponse, error) {
+	result := AFDOriginGroupsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AFDOriginGroup); err != nil {
 		return AFDOriginGroupsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *AFDOriginGroupsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AFDOriginGroupsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByProfile - Lists all of the existing origin groups within a profile.
 // If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDOriginGroupsClient) ListByProfile(resourceGroupName string, profileName string, options *AFDOriginGroupsListByProfileOptions) AFDOriginGroupsListByProfilePager {
-	return &afdOriginGroupsListByProfilePager{
+func (client *AFDOriginGroupsClient) ListByProfile(resourceGroupName string, profileName string, options *AFDOriginGroupsListByProfileOptions) *AFDOriginGroupsListByProfilePager {
+	return &AFDOriginGroupsListByProfilePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
 		},
-		advancer: func(ctx context.Context, resp AFDOriginGroupsListByProfileResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.AFDOriginGroupListResult.NextLink)
+		advancer: func(ctx context.Context, resp AFDOriginGroupsListByProfileResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AFDOriginGroupListResult.NextLink)
 		},
 	}
 }
 
 // listByProfileCreateRequest creates the ListByProfile request.
-func (client *AFDOriginGroupsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *AFDOriginGroupsListByProfileOptions) (*azcore.Request, error) {
+func (client *AFDOriginGroupsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, options *AFDOriginGroupsListByProfileOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -349,56 +293,55 @@ func (client *AFDOriginGroupsClient) listByProfileCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByProfileHandleResponse handles the ListByProfile response.
-func (client *AFDOriginGroupsClient) listByProfileHandleResponse(resp *azcore.Response) (AFDOriginGroupsListByProfileResponse, error) {
-	result := AFDOriginGroupsListByProfileResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AFDOriginGroupListResult); err != nil {
+func (client *AFDOriginGroupsClient) listByProfileHandleResponse(resp *http.Response) (AFDOriginGroupsListByProfileResponse, error) {
+	result := AFDOriginGroupsListByProfileResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AFDOriginGroupListResult); err != nil {
 		return AFDOriginGroupsListByProfileResponse{}, err
 	}
 	return result, nil
 }
 
 // listByProfileHandleError handles the ListByProfile error response.
-func (client *AFDOriginGroupsClient) listByProfileHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AFDOriginGroupsClient) listByProfileHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListResourceUsage - Checks the quota and actual usage of endpoints under the given CDN profile.
 // If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDOriginGroupsClient) ListResourceUsage(resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsListResourceUsageOptions) AFDOriginGroupsListResourceUsagePager {
-	return &afdOriginGroupsListResourceUsagePager{
+func (client *AFDOriginGroupsClient) ListResourceUsage(resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsListResourceUsageOptions) *AFDOriginGroupsListResourceUsagePager {
+	return &AFDOriginGroupsListResourceUsagePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listResourceUsageCreateRequest(ctx, resourceGroupName, profileName, originGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp AFDOriginGroupsListResourceUsageResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.UsagesListResult.NextLink)
+		advancer: func(ctx context.Context, resp AFDOriginGroupsListResourceUsageResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.UsagesListResult.NextLink)
 		},
 	}
 }
 
 // listResourceUsageCreateRequest creates the ListResourceUsage request.
-func (client *AFDOriginGroupsClient) listResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsListResourceUsageOptions) (*azcore.Request, error) {
+func (client *AFDOriginGroupsClient) listResourceUsageCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, options *AFDOriginGroupsListResourceUsageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}/usages"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -416,38 +359,37 @@ func (client *AFDOriginGroupsClient) listResourceUsageCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listResourceUsageHandleResponse handles the ListResourceUsage response.
-func (client *AFDOriginGroupsClient) listResourceUsageHandleResponse(resp *azcore.Response) (AFDOriginGroupsListResourceUsageResponse, error) {
-	result := AFDOriginGroupsListResourceUsageResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.UsagesListResult); err != nil {
+func (client *AFDOriginGroupsClient) listResourceUsageHandleResponse(resp *http.Response) (AFDOriginGroupsListResourceUsageResponse, error) {
+	result := AFDOriginGroupsListResourceUsageResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesListResult); err != nil {
 		return AFDOriginGroupsListResourceUsageResponse{}, err
 	}
 	return result, nil
 }
 
 // listResourceUsageHandleError handles the ListResourceUsage error response.
-func (client *AFDOriginGroupsClient) listResourceUsageHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AFDOriginGroupsClient) listResourceUsageHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginUpdate - Updates an existing origin group within a profile.
@@ -458,65 +400,37 @@ func (client *AFDOriginGroupsClient) BeginUpdate(ctx context.Context, resourceGr
 		return AFDOriginGroupsUpdatePollerResponse{}, err
 	}
 	result := AFDOriginGroupsUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("AFDOriginGroupsClient.Update", "azure-async-operation", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return AFDOriginGroupsUpdatePollerResponse{}, err
-	}
-	poller := &afdOriginGroupsUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AFDOriginGroupsUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdate creates a new AFDOriginGroupsUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to AFDOriginGroupsUpdatePoller.ResumeToken().
-func (client *AFDOriginGroupsClient) ResumeUpdate(ctx context.Context, token string) (AFDOriginGroupsUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("AFDOriginGroupsClient.Update", token, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return AFDOriginGroupsUpdatePollerResponse{}, err
-	}
-	poller := &afdOriginGroupsUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return AFDOriginGroupsUpdatePollerResponse{}, err
-	}
-	result := AFDOriginGroupsUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AFDOriginGroupsUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("AFDOriginGroupsClient.Update", "azure-async-operation", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return AFDOriginGroupsUpdatePollerResponse{}, err
+	}
+	result.Poller = &AFDOriginGroupsUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates an existing origin group within a profile.
 // If the operation fails it returns the *AfdErrorResponse error type.
-func (client *AFDOriginGroupsClient) update(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroupUpdateProperties AFDOriginGroupUpdateParameters, options *AFDOriginGroupsBeginUpdateOptions) (*azcore.Response, error) {
+func (client *AFDOriginGroupsClient) update(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroupUpdateProperties AFDOriginGroupUpdateParameters, options *AFDOriginGroupsBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, originGroupName, originGroupUpdateProperties, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AFDOriginGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroupUpdateProperties AFDOriginGroupUpdateParameters, options *AFDOriginGroupsBeginUpdateOptions) (*azcore.Request, error) {
+func (client *AFDOriginGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, originGroupName string, originGroupUpdateProperties AFDOriginGroupUpdateParameters, options *AFDOriginGroupsBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/originGroups/{originGroupName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -534,27 +448,26 @@ func (client *AFDOriginGroupsClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(originGroupUpdateProperties)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, originGroupUpdateProperties)
 }
 
 // updateHandleError handles the Update error response.
-func (client *AFDOriginGroupsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AFDOriginGroupsClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := AfdErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

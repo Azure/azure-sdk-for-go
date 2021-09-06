@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,10 +11,10 @@ import (
 	"log"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/armstorage"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
 func ExampleStorageAccountsClient_BeginCreate() {
@@ -21,7 +22,7 @@ func ExampleStorageAccountsClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armstorage.NewStorageAccountsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	poller, err := client.BeginCreate(
 		context.Background(),
 		"<resource group name>",
@@ -52,7 +53,7 @@ func ExampleStorageAccountsClient_List() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armstorage.NewStorageAccountsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	pager := client.List(nil)
 	for pager.NextPage(context.Background()) {
 		resp := pager.PageResponse()
@@ -73,7 +74,7 @@ func ExampleStorageAccountsClient_ListByResourceGroup() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armstorage.NewStorageAccountsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	pager := client.ListByResourceGroup("<resource group name>", nil)
 	for pager.NextPage(context.Background()) {
 		resp := pager.PageResponse()
@@ -94,7 +95,7 @@ func ExampleStorageAccountsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armstorage.NewStorageAccountsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	resp, err := client.CheckNameAvailability(
 		context.Background(),
 		armstorage.StorageAccountCheckNameAvailabilityParameters{
@@ -113,7 +114,7 @@ func ExampleStorageAccountsClient_ListKeys() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armstorage.NewStorageAccountsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	resp, err := client.ListKeys(context.Background(), "<resource group name>", "<storage account name>", nil)
 	if err != nil {
 		log.Fatalf("failed to delete account: %v", err)
@@ -128,7 +129,7 @@ func ExampleStorageAccountsClient_GetProperties() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armstorage.NewStorageAccountsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	resp, err := client.GetProperties(context.Background(), "<resource group name>", "<storage account name>", nil)
 	if err != nil {
 		log.Fatalf("failed to delete account: %v", err)
@@ -141,7 +142,7 @@ func ExampleStorageAccountsClient_RegenerateKey() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armstorage.NewStorageAccountsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	resp, err := client.RegenerateKey(context.Background(), "<resource group name>", "<storage account name>", armstorage.StorageAccountRegenerateKeyParameters{KeyName: to.StringPtr("<key name>")}, nil)
 	if err != nil {
 		log.Fatalf("failed to delete account: %v", err)
@@ -156,7 +157,7 @@ func ExampleStorageAccountsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armstorage.NewStorageAccountsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	resp, err := client.Update(
 		context.Background(),
 		"<resource group name>",
@@ -175,7 +176,7 @@ func ExampleStorageAccountsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient(armcore.NewDefaultConnection(cred, nil), "<subscription ID>")
+	client := armstorage.NewStorageAccountsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
 	_, err = client.Delete(context.Background(), "<resource group name>", "<storage account name>", nil)
 	if err != nil {
 		log.Fatalf("failed to delete account: %v", err)

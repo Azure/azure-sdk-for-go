@@ -9,6 +9,8 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ManagedIdentityIDKind is used to specify the type of identifier that is passed in for a user-assigned managed identity.
@@ -32,13 +34,13 @@ type ManagedIdentityCredentialOptions struct {
 
 	// HTTPClient sets the transport for making HTTP requests.
 	// Leave this as nil to use the default HTTP transport.
-	HTTPClient azcore.Transport
+	HTTPClient policy.Transporter
 
 	// Telemetry configures the built-in telemetry policy behavior.
-	Telemetry azcore.TelemetryOptions
+	Telemetry policy.TelemetryOptions
 
 	// Logging configures the built-in logging policy behavior.
-	Logging azcore.LogOptions
+	Logging policy.LogOptions
 }
 
 // ManagedIdentityCredential attempts authentication using a managed identity that has been assigned to the deployment environment. This authentication type works in several
@@ -84,7 +86,7 @@ func NewManagedIdentityCredential(id string, options *ManagedIdentityCredentialO
 // GetToken obtains an AccessToken from the Managed Identity service if available.
 // scopes: The list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
-func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if opts.Scopes == nil {
 		err := &AuthenticationFailedError{msg: "must specify a resource in order to authenticate"}
 		addGetTokenFailureLogs("Managed Identity Credential", err, true)
@@ -95,9 +97,9 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.To
 		addGetTokenFailureLogs("Managed Identity Credential", err, true)
 		return nil, err
 	}
-	// The following code will remove the /.default suffix from any scopes passed into the method since ManagedIdentityCredentials expect a resource string instead of a scope string
-	opts.Scopes[0] = strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
-	tk, err := c.client.authenticate(ctx, c.id, opts.Scopes)
+	// managed identity endpoints require an AADv1 resource (i.e. token audience), not a v2 scope, so we remove "/.default" here
+	scopes := []string{strings.TrimSuffix(opts.Scopes[0], defaultSuffix)}
+	tk, err := c.client.authenticate(ctx, c.id, scopes)
 	if err != nil {
 		addGetTokenFailureLogs("Managed Identity Credential", err, true)
 		return nil, err
@@ -109,7 +111,7 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts azcore.To
 
 // NewAuthenticationPolicy implements the azcore.Credential interface on ManagedIdentityCredential.
 // NOTE: The TokenRequestOptions included in AuthenticationOptions must be a slice of resources in this case and not scopes.
-func (c *ManagedIdentityCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
+func (c *ManagedIdentityCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
 	return newBearerTokenPolicy(c, options)
 }
 

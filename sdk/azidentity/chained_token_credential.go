@@ -8,6 +8,8 @@ import (
 	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ChainedTokenCredential provides a TokenCredential implementation that chains multiple TokenCredential sources to be tried in order
@@ -34,7 +36,7 @@ func NewChainedTokenCredential(sources ...azcore.TokenCredential) (*ChainedToken
 }
 
 // GetToken sequentially calls TokenCredential.GetToken on all the specified sources, returning the token from the first successful call to GetToken().
-func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (token *azcore.AccessToken, err error) {
+func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
 	var errList []*CredentialUnavailableError
 	// loop through all of the credentials provided in sources
 	for _, cred := range c.sources {
@@ -69,7 +71,7 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 }
 
 // NewAuthenticationPolicy implements the azcore.Credential interface on ChainedTokenCredential and sets the bearer token
-func (c *ChainedTokenCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
+func (c *ChainedTokenCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
 	return newBearerTokenPolicy(c, options)
 }
 

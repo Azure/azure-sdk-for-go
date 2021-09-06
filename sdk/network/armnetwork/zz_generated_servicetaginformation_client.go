@@ -14,6 +14,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
@@ -21,36 +22,36 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// UsagesClient contains the methods for the Usages group.
-// Don't use this type directly, use NewUsagesClient() instead.
-type UsagesClient struct {
+// ServiceTagInformationClient contains the methods for the ServiceTagInformation group.
+// Don't use this type directly, use NewServiceTagInformationClient() instead.
+type ServiceTagInformationClient struct {
 	ep             string
 	pl             runtime.Pipeline
 	subscriptionID string
 }
 
-// NewUsagesClient creates a new instance of UsagesClient with the specified values.
-func NewUsagesClient(con *arm.Connection, subscriptionID string) *UsagesClient {
-	return &UsagesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+// NewServiceTagInformationClient creates a new instance of ServiceTagInformationClient with the specified values.
+func NewServiceTagInformationClient(con *arm.Connection, subscriptionID string) *ServiceTagInformationClient {
+	return &ServiceTagInformationClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
-// List - List network usages for a subscription.
+// List - Gets a list of service tag information resources with pagination.
 // If the operation fails it returns the *CloudError error type.
-func (client *UsagesClient) List(location string, options *UsagesListOptions) *UsagesListPager {
-	return &UsagesListPager{
+func (client *ServiceTagInformationClient) List(location string, options *ServiceTagInformationListOptions) *ServiceTagInformationListPager {
+	return &ServiceTagInformationListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, location, options)
 		},
-		advancer: func(ctx context.Context, resp UsagesListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.UsagesListResult.NextLink)
+		advancer: func(ctx context.Context, resp ServiceTagInformationListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ServiceTagInformationListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *UsagesClient) listCreateRequest(ctx context.Context, location string, options *UsagesListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/usages"
+func (client *ServiceTagInformationClient) listCreateRequest(ctx context.Context, location string, options *ServiceTagInformationListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/serviceTagDetails"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
 	}
@@ -65,22 +66,28 @@ func (client *UsagesClient) listCreateRequest(ctx context.Context, location stri
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-03-01")
+	if options != nil && options.NoAddressPrefixes != nil {
+		reqQP.Set("noAddressPrefixes", strconv.FormatBool(*options.NoAddressPrefixes))
+	}
+	if options != nil && options.TagName != nil {
+		reqQP.Set("tagName", *options.TagName)
+	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *UsagesClient) listHandleResponse(resp *http.Response) (UsagesListResponse, error) {
-	result := UsagesListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesListResult); err != nil {
-		return UsagesListResponse{}, err
+func (client *ServiceTagInformationClient) listHandleResponse(resp *http.Response) (ServiceTagInformationListResponse, error) {
+	result := ServiceTagInformationListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceTagInformationListResult); err != nil {
+		return ServiceTagInformationListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *UsagesClient) listHandleError(resp *http.Response) error {
+func (client *ServiceTagInformationClient) listHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)

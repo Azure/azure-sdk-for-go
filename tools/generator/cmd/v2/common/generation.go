@@ -14,31 +14,25 @@ import (
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/template"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
 	"github.com/Masterminds/semver"
 )
 
 type GenerateContext struct {
-	SdkPath    string
-	SpecPath   string
-	CommitHash string
+	SDKPath        string
+	SDKRepo        repo.SDKRepository
+	SpecPath       string
+	SpecCommitHash string
 }
 
 type GenerateResult struct {
 	Version        string
-	RpName         string
+	RPName         string
 	PackageName    string
 	PackageAbsPath string
 	Changelog      model.Changelog
-	ChangelogMd    string
-}
-
-func (ctx GenerateContext) SDKRoot() string {
-	return ctx.SdkPath
-}
-
-func (ctx GenerateContext) SpecRoot() string {
-	return ctx.SpecPath
+	ChangelogMD    string
 }
 
 func (ctx GenerateContext) GenerateForAutomation(readme string, repo string) ([]GenerateResult, []error) {
@@ -59,7 +53,7 @@ func (ctx GenerateContext) GenerateForAutomation(readme string, repo string) ([]
 	for rpName, namespaceNames := range rpMap {
 		for _, namespaceName := range namespaceNames {
 			log.Printf("Process rp: %s, namespace: %s", rpName, namespaceName)
-			singleResult, err := ctx.GenerateForSingleRpNamespace(rpName, namespaceName, "", "", repo)
+			singleResult, err := ctx.GenerateForSingleRPNamespace(rpName, namespaceName, "", "", repo)
 			if err != nil {
 				errors = append(errors, err)
 				continue
@@ -70,8 +64,8 @@ func (ctx GenerateContext) GenerateForAutomation(readme string, repo string) ([]
 	return result, errors
 }
 
-func (ctx GenerateContext) GenerateForSingleRpNamespace(rpName, namespaceName, specficPackageTitle, specficVersion, specficRepoURL string) (*GenerateResult, error) {
-	packagePath := filepath.Join(ctx.SdkPath, "sdk", rpName, namespaceName)
+func (ctx GenerateContext) GenerateForSingleRPNamespace(rpName, namespaceName, specficPackageTitle, specficVersion, specficRepoURL string) (*GenerateResult, error) {
+	packagePath := filepath.Join(ctx.SDKPath, "sdk", rpName, namespaceName)
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
 		log.Printf("Package '%s' changelog not exist, do onboard process", packagePath)
@@ -82,10 +76,10 @@ func (ctx GenerateContext) GenerateForSingleRpNamespace(rpName, namespaceName, s
 
 		log.Printf("Use template to generate new rp folder and basic package files...")
 		if err = template.GeneratePackageByTemplate(rpName, namespaceName, template.Flags{
-			SDKRoot:      ctx.SdkPath,
+			SDKRoot:      ctx.SDKPath,
 			TemplatePath: "tools/generator/template/rpName/packageName",
 			PackageTitle: specficPackageTitle,
-			Commit:       ctx.CommitHash,
+			Commit:       ctx.SpecCommitHash,
 		}); err != nil {
 			return nil, err
 		}
@@ -120,18 +114,27 @@ func (ctx GenerateContext) GenerateForSingleRpNamespace(rpName, namespaceName, s
 
 		return &GenerateResult{
 			Version:        "0.1.0",
-			RpName:         rpName,
+			RPName:         rpName,
 			PackageName:    namespaceName,
 			PackageAbsPath: packagePath,
 			Changelog:      *changelog,
-			ChangelogMd:    changelog.ToCompactMarkdown(),
+			ChangelogMD:    changelog.ToCompactMarkdown(),
 		}, nil
 	} else {
 		log.Printf("Package '%s' existed, do update process", packagePath)
 
 		log.Printf("Get ori exports for changelog generation...")
+		if err := ctx.SDKRepo.Add(fmt.Sprintf("sdk\\%s\\%s", rpName, namespaceName)); err != nil {
+			return nil, err
+		}
+		if err := ctx.SDKRepo.Stash(); err != nil {
+			return nil, err
+		}
 		oriExports, err := exports.Get(packagePath)
 		if err != nil {
+			return nil, err
+		}
+		if err := ctx.SDKRepo.StashPop(); err != nil {
 			return nil, err
 		}
 
@@ -142,7 +145,7 @@ func (ctx GenerateContext) GenerateForSingleRpNamespace(rpName, namespaceName, s
 
 		log.Printf("Change the commit hash in `autorest.md` to a new commit that corresponds to the new release...")
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
-		if err = ReplaceCommitID(autorestMdPath, ctx.CommitHash); err != nil {
+		if err = ReplaceCommitID(autorestMdPath, ctx.SpecCommitHash); err != nil {
 			return nil, err
 		}
 
@@ -206,11 +209,11 @@ func (ctx GenerateContext) GenerateForSingleRpNamespace(rpName, namespaceName, s
 
 		return &GenerateResult{
 			Version:        version.String(),
-			RpName:         rpName,
+			RPName:         rpName,
 			PackageName:    namespaceName,
 			PackageAbsPath: packagePath,
 			Changelog:      *changelog,
-			ChangelogMd:    changelogMd,
+			ChangelogMD:    changelogMd,
 		}, nil
 	}
 }

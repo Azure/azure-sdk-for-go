@@ -28,7 +28,7 @@ const (
 var (
 	v2BeginRegex                   = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\((track2|v2)\\)")
 	v2EndRegex                     = regexp.MustCompile("^\\s*```\\s*$")
-	autorestMdSwaggerURLBeginRegex = regexp.MustCompile(`https://github.com/.+/azure-rest-api-specs/`)
+	autorestMdSwaggerURLBeginRegex = regexp.MustCompile(`https:\/\/github.com\/.+\/azure-rest-api-specs\/?`)
 	newClientMethodNameRegex       = regexp.MustCompile("^New.+Client$")
 )
 
@@ -171,7 +171,7 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.HasPrefix(line, autorest_md_module_version_prefix) {
-			lines[i] = line[:len(autorest_md_module_version_prefix)] + newVersion + "\n"
+			lines[i] = line[:len(autorest_md_module_version_prefix)] + newVersion
 			break
 		}
 	}
@@ -233,7 +233,7 @@ func ReplaceNewClientMethodPlaceholder(packageRootPath string, exports exports.C
 	path := filepath.Join(packageRootPath, "README.md")
 	var clientName string
 	for k, v := range exports.Funcs {
-		if newClientMethodNameRegex.MatchString(k) && *v.Params == "*armcore.Connection, string" {
+		if newClientMethodNameRegex.MatchString(k) && *v.Params == "*arm.Connection, string" {
 			clientName = k
 			break
 		}

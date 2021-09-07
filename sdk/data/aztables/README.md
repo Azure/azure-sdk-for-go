@@ -131,7 +131,7 @@ Entities are similar to rows. An entity has a **`PartitionKey`**, a **`RowKey`**
 aztables.EDMEntity{
     Entity: aztables.Entity{
         PartitionKey: "pencils",
-        RowKey: "id-003",
+        RowKey: "Wooden Pencils",
     },
     Properties: map[string]interface{}{
         "Product": "Ticonderoga Pencils",
@@ -207,7 +207,7 @@ handle(err)
 client, err := aztables.NewClient("https://myAccountName.table.core.windows.net/myTable", cred, nil)
 handle(err)
 
-filter := "PartitionKey eq 'markers' or RowKey eq 'id-001'"
+filter := "PartitionKey eq 'markers' or RowKey eq 'Markers'"
 options := &ListEntitiesOptions{
     Filter: &filter,
     Select: to.StringPtr("RowKey,Value,Product,Available"),
@@ -224,7 +224,7 @@ for pager.NextPage(context.Background()) {
         err = json.Unmarshal(entity, &myEntity)
         handle(err)
 
-        fmt.Printf("Received: %v, %v, %v, %v\n", myEntity.Properties["RowKey"], myEntity.Properties["Value"], myEntity.Properties["Product"], myEntity.Properties["Available"])
+        fmt.Printf("Received: %v, %v, %v, %v\n", myEntity.RowKey, myEntity.Properties["Value"], myEntity.Properties["Product"], myEntity.Properties["Available"])
     }
 }
 

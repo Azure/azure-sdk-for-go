@@ -117,7 +117,7 @@ use of a dedicated client object.
 ### Clients
 Two different clients are provided to interact with the various components of the Table Service:
 1. **`ServiceClient`** -
-    * Get and set account setting
+    * Get and set account settings
     * Query, create, and delete tables within the account.
     * Get a `Client` to access a specific table using the `NewClient` method.
 2. **`Client`** -

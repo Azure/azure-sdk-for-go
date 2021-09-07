@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,20 +11,23 @@ package armpostgresqlflexibleservers
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // GetPrivateDNSZoneSuffixClient contains the methods for the GetPrivateDNSZoneSuffix group.
 // Don't use this type directly, use NewGetPrivateDNSZoneSuffixClient() instead.
 type GetPrivateDNSZoneSuffixClient struct {
-	con *armcore.Connection
+	ep string
+	pl runtime.Pipeline
 }
 
 // NewGetPrivateDNSZoneSuffixClient creates a new instance of GetPrivateDNSZoneSuffixClient with the specified values.
-func NewGetPrivateDNSZoneSuffixClient(con *armcore.Connection) *GetPrivateDNSZoneSuffixClient {
-	return &GetPrivateDNSZoneSuffixClient{con: con}
+func NewGetPrivateDNSZoneSuffixClient(con *arm.Connection) *GetPrivateDNSZoneSuffixClient {
+	return &GetPrivateDNSZoneSuffixClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
 }
 
 // Execute - Get private DNS zone suffix in the cloud
@@ -33,49 +37,48 @@ func (client *GetPrivateDNSZoneSuffixClient) Execute(ctx context.Context, option
 	if err != nil {
 		return GetPrivateDNSZoneSuffixExecuteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return GetPrivateDNSZoneSuffixExecuteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return GetPrivateDNSZoneSuffixExecuteResponse{}, client.executeHandleError(resp)
 	}
 	return client.executeHandleResponse(resp)
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *GetPrivateDNSZoneSuffixClient) executeCreateRequest(ctx context.Context, options *GetPrivateDNSZoneSuffixExecuteOptions) (*azcore.Request, error) {
+func (client *GetPrivateDNSZoneSuffixClient) executeCreateRequest(ctx context.Context, options *GetPrivateDNSZoneSuffixExecuteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.DBforPostgreSQL/getPrivateDnsZoneSuffix"
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // executeHandleResponse handles the Execute response.
-func (client *GetPrivateDNSZoneSuffixClient) executeHandleResponse(resp *azcore.Response) (GetPrivateDNSZoneSuffixExecuteResponse, error) {
-	result := GetPrivateDNSZoneSuffixExecuteResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Value); err != nil {
+func (client *GetPrivateDNSZoneSuffixClient) executeHandleResponse(resp *http.Response) (GetPrivateDNSZoneSuffixExecuteResponse, error) {
+	result := GetPrivateDNSZoneSuffixExecuteResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
 		return GetPrivateDNSZoneSuffixExecuteResponse{}, err
 	}
 	return result, nil
 }
 
 // executeHandleError handles the Execute error response.
-func (client *GetPrivateDNSZoneSuffixClient) executeHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *GetPrivateDNSZoneSuffixClient) executeHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

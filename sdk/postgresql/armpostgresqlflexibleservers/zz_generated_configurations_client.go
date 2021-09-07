@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ConfigurationsClient contains the methods for the Configurations group.
 // Don't use this type directly, use NewConfigurationsClient() instead.
 type ConfigurationsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewConfigurationsClient creates a new instance of ConfigurationsClient with the specified values.
-func NewConfigurationsClient(con *armcore.Connection, subscriptionID string) *ConfigurationsClient {
-	return &ConfigurationsClient{con: con, subscriptionID: subscriptionID}
+func NewConfigurationsClient(con *arm.Connection, subscriptionID string) *ConfigurationsClient {
+	return &ConfigurationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Gets information about a configuration of server.
@@ -38,18 +42,18 @@ func (client *ConfigurationsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ConfigurationsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ConfigurationsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ConfigurationsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, configurationName string, options *ConfigurationsGetOptions) (*azcore.Request, error) {
+func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, configurationName string, options *ConfigurationsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/configurations/{configurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,56 +71,55 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter configurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(configurationName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConfigurationsClient) getHandleResponse(resp *azcore.Response) (ConfigurationsGetResponse, error) {
-	result := ConfigurationsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Configuration); err != nil {
+func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (ConfigurationsGetResponse, error) {
+	result := ConfigurationsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Configuration); err != nil {
 		return ConfigurationsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ConfigurationsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ConfigurationsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByServer - List all the configurations in a given server.
 // If the operation fails it returns the *CloudError error type.
-func (client *ConfigurationsClient) ListByServer(resourceGroupName string, serverName string, options *ConfigurationsListByServerOptions) ConfigurationsListByServerPager {
-	return &configurationsListByServerPager{
+func (client *ConfigurationsClient) ListByServer(resourceGroupName string, serverName string, options *ConfigurationsListByServerOptions) *ConfigurationsListByServerPager {
+	return &ConfigurationsListByServerPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
 		},
-		advancer: func(ctx context.Context, resp ConfigurationsListByServerResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ConfigurationListResult.NextLink)
+		advancer: func(ctx context.Context, resp ConfigurationsListByServerResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ConfigurationListResult.NextLink)
 		},
 	}
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *ConfigurationsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ConfigurationsListByServerOptions) (*azcore.Request, error) {
+func (client *ConfigurationsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ConfigurationsListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/configurations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -130,38 +133,37 @@ func (client *ConfigurationsClient) listByServerCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ConfigurationsClient) listByServerHandleResponse(resp *azcore.Response) (ConfigurationsListByServerResponse, error) {
-	result := ConfigurationsListByServerResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ConfigurationListResult); err != nil {
+func (client *ConfigurationsClient) listByServerHandleResponse(resp *http.Response) (ConfigurationsListByServerResponse, error) {
+	result := ConfigurationsListByServerResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationListResult); err != nil {
 		return ConfigurationsListByServerResponse{}, err
 	}
 	return result, nil
 }
 
 // listByServerHandleError handles the ListByServer error response.
-func (client *ConfigurationsClient) listByServerHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ConfigurationsClient) listByServerHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginPut - Updates a configuration of a server.
@@ -172,65 +174,37 @@ func (client *ConfigurationsClient) BeginPut(ctx context.Context, resourceGroupN
 		return ConfigurationsPutPollerResponse{}, err
 	}
 	result := ConfigurationsPutPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ConfigurationsClient.Put", "", resp, client.con.Pipeline(), client.putHandleError)
-	if err != nil {
-		return ConfigurationsPutPollerResponse{}, err
-	}
-	poller := &configurationsPutPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConfigurationsPutResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumePut creates a new ConfigurationsPutPoller from the specified resume token.
-// token - The value must come from a previous call to ConfigurationsPutPoller.ResumeToken().
-func (client *ConfigurationsClient) ResumePut(ctx context.Context, token string) (ConfigurationsPutPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ConfigurationsClient.Put", token, client.con.Pipeline(), client.putHandleError)
-	if err != nil {
-		return ConfigurationsPutPollerResponse{}, err
-	}
-	poller := &configurationsPutPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ConfigurationsPutPollerResponse{}, err
-	}
-	result := ConfigurationsPutPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConfigurationsPutResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ConfigurationsClient.Put", "", resp, client.pl, client.putHandleError)
+	if err != nil {
+		return ConfigurationsPutPollerResponse{}, err
+	}
+	result.Poller = &ConfigurationsPutPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Put - Updates a configuration of a server.
 // If the operation fails it returns the *CloudError error type.
-func (client *ConfigurationsClient) put(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters Configuration, options *ConfigurationsBeginPutOptions) (*azcore.Response, error) {
+func (client *ConfigurationsClient) put(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters Configuration, options *ConfigurationsBeginPutOptions) (*http.Response, error) {
 	req, err := client.putCreateRequest(ctx, resourceGroupName, serverName, configurationName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.putHandleError(resp)
 	}
 	return resp, nil
 }
 
 // putCreateRequest creates the Put request.
-func (client *ConfigurationsClient) putCreateRequest(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters Configuration, options *ConfigurationsBeginPutOptions) (*azcore.Request, error) {
+func (client *ConfigurationsClient) putCreateRequest(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters Configuration, options *ConfigurationsBeginPutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/configurations/{configurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -248,29 +222,28 @@ func (client *ConfigurationsClient) putCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter configurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(configurationName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // putHandleError handles the Put error response.
-func (client *ConfigurationsClient) putHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ConfigurationsClient) putHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginUpdate - Updates a configuration of a server.
@@ -281,65 +254,37 @@ func (client *ConfigurationsClient) BeginUpdate(ctx context.Context, resourceGro
 		return ConfigurationsUpdatePollerResponse{}, err
 	}
 	result := ConfigurationsUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ConfigurationsClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return ConfigurationsUpdatePollerResponse{}, err
-	}
-	poller := &configurationsUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConfigurationsUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdate creates a new ConfigurationsUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to ConfigurationsUpdatePoller.ResumeToken().
-func (client *ConfigurationsClient) ResumeUpdate(ctx context.Context, token string) (ConfigurationsUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ConfigurationsClient.Update", token, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return ConfigurationsUpdatePollerResponse{}, err
-	}
-	poller := &configurationsUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ConfigurationsUpdatePollerResponse{}, err
-	}
-	result := ConfigurationsUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ConfigurationsUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ConfigurationsClient.Update", "", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return ConfigurationsUpdatePollerResponse{}, err
+	}
+	result.Poller = &ConfigurationsUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates a configuration of a server.
 // If the operation fails it returns the *CloudError error type.
-func (client *ConfigurationsClient) update(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters Configuration, options *ConfigurationsBeginUpdateOptions) (*azcore.Response, error) {
+func (client *ConfigurationsClient) update(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters Configuration, options *ConfigurationsBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serverName, configurationName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ConfigurationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters Configuration, options *ConfigurationsBeginUpdateOptions) (*azcore.Request, error) {
+func (client *ConfigurationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters Configuration, options *ConfigurationsBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/configurations/{configurationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -357,27 +302,26 @@ func (client *ConfigurationsClient) updateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter configurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(configurationName))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleError handles the Update error response.
-func (client *ConfigurationsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ConfigurationsClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

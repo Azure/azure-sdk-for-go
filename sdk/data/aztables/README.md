@@ -159,7 +159,7 @@ Create a table in your account and get a `Client` to perform operations on the n
 ```golang
 cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
 handle(err)
-service, err := aztables.NewServiceClient("https://<my_account_name>.table.core.windows.net", cred, nil)
+service, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net", cred, nil)
 handle(err)
 resp, err := service.CreateTable("myTable")
 ```

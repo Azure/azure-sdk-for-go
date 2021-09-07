@@ -7,6 +7,7 @@
 package recording
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -534,6 +535,58 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 	require.Equal(t, data.Entries[0].RequestHeaders["complexregex"], "https://fakeaccount.table.core.windows.net")
 }
 
+func TestBodyKeySanitizer(t *testing.T) {
+	os.Setenv("AZURE_RECORD_MODE", "record")
+	defer os.Unsetenv("AZURE_RECORD_MODE")
+
+	err := StartRecording(t, packagePath, nil)
+	require.NoError(t, err)
+
+	err = AddUriSanitizer("replacement", "bing", nil)
+	require.NoError(t, err)
+
+	client, err := GetHTTPClient(t)
+	require.NoError(t, err)
+
+	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
+	require.NoError(t, err)
+
+	req.Header.Set(UpstreamUriHeader, "https://www.bing.com")
+	req.Header.Set(ModeHeader, GetRecordMode())
+	req.Header.Set(IdHeader, GetRecordingId(t))
+
+	bodyValue := map[string]string{
+		"key1": "value1",
+	}
+	marshalled, err := json.Marshal(bodyValue)
+	require.NoError(t, err)
+
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+
+	err = AddBodyKeySanitizer("$.key1", "Sanitized", "", "", nil)
+	require.NoError(t, err)
+
+	resp, err := client.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	require.NotNil(t, GetRecordingId(t))
+
+	err = StopRecording(t, nil)
+	require.NoError(t, err)
+
+	// Make sure the file is there
+	// jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
+	// require.NoError(t, err)
+	// defer jsonFile.Close()
+
+	// var data RecordingFileStruct
+	// byteValue, err := ioutil.ReadAll(jsonFile)
+	// require.NoError(t, err)
+	// err = json.Unmarshal(byteValue, &data)
+	// require.NoError(t, err)
+}
+
 func TestProxyCert(t *testing.T) {
 	_, err := getRootCas(t)
 	require.NoError(t, err)
@@ -614,7 +667,5 @@ func TestBackwardSlashPath(t *testing.T) {
 	packagePathBackslash := "sdk\\internal\\recordings"
 
 	err := StartRecording(t, packagePathBackslash, nil)
-	require.NoError(t, err)
-	err = StopRecording(t, nil)
-	require.NoError(t, err)
+	require.Error(t, err)
 }

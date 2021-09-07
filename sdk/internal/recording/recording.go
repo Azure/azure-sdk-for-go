@@ -655,7 +655,7 @@ func (o *RecordingOptions) Init() {
 	}
 }
 
-func AddHeaderRegexSanitizer(key, value, regex, groupForReplace string, options *RecordingOptions) error {
+func AddHeaderRegexSanitizer(key, replacementValue, regex, groupForReplace string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
@@ -668,8 +668,41 @@ func AddHeaderRegexSanitizer(key, value, regex, groupForReplace string, options 
 	bodyContent := map[string]string{
 		"key": key,
 	}
-	if value != "" {
-		bodyContent["value"] = value
+	if replacementValue != "" {
+		bodyContent["value"] = replacementValue
+	}
+	if regex != "" {
+		bodyContent["regex"] = regex
+	}
+	if groupForReplace != "" {
+		bodyContent["groupForReplace"] = groupForReplace
+	}
+
+	marshalled, err := json.Marshal(bodyContent)
+	if err != nil {
+		return err
+	}
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+	_, err = client.Do(req)
+	return err
+}
+
+func AddBodyKeySanitizer(jsonPath, replacementValue, regex, groupForReplace string, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.HostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "BodyKeySanitizer")
+	bodyContent := map[string]string{
+		"jsonPath": jsonPath,
+	}
+	if replacementValue != "" {
+		bodyContent["value"] = replacementValue
 	}
 	if regex != "" {
 		bodyContent["regex"] = regex

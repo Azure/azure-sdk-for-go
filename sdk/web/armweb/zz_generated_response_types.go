@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,18 +12,46 @@ import (
 	"context"
 	"net/http"
 	"time"
+
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse contains the response from method AppServiceCertificateOrders.CreateOrUpdateCertificate.
 type AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AppServiceCertificateOrdersCreateOrUpdateCertificateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AppServiceCertificateOrdersCreateOrUpdateCertificatePoller
+	Poller *AppServiceCertificateOrdersCreateOrUpdateCertificatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServiceCertificateOrdersCreateOrUpdateCertificateResponse, error) {
+	respType := AppServiceCertificateOrdersCreateOrUpdateCertificateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AppServiceCertificateResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse from the provided client and resume token.
+func (l *AppServiceCertificateOrdersCreateOrUpdateCertificatePollerResponse) Resume(ctx context.Context, client *AppServiceCertificateOrdersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AppServiceCertificateOrdersClient.CreateOrUpdateCertificate", token, client.pl, client.createOrUpdateCertificateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AppServiceCertificateOrdersCreateOrUpdateCertificatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AppServiceCertificateOrdersCreateOrUpdateCertificateResponse contains the response from method AppServiceCertificateOrders.CreateOrUpdateCertificate.
@@ -39,14 +68,40 @@ type AppServiceCertificateOrdersCreateOrUpdateCertificateResult struct {
 
 // AppServiceCertificateOrdersCreateOrUpdatePollerResponse contains the response from method AppServiceCertificateOrders.CreateOrUpdate.
 type AppServiceCertificateOrdersCreateOrUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AppServiceCertificateOrdersCreateOrUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AppServiceCertificateOrdersCreateOrUpdatePoller
+	Poller *AppServiceCertificateOrdersCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AppServiceCertificateOrdersCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServiceCertificateOrdersCreateOrUpdateResponse, error) {
+	respType := AppServiceCertificateOrdersCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AppServiceCertificateOrder)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AppServiceCertificateOrdersCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *AppServiceCertificateOrdersCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *AppServiceCertificateOrdersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AppServiceCertificateOrdersClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AppServiceCertificateOrdersCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AppServiceCertificateOrdersCreateOrUpdateResponse contains the response from method AppServiceCertificateOrders.CreateOrUpdate.
@@ -233,14 +288,40 @@ type AppServiceCertificateOrdersVerifyDomainOwnershipResponse struct {
 
 // AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse contains the response from method AppServiceEnvironments.ApproveOrRejectPrivateEndpointConnection.
 type AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller
+	Poller *AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse, error) {
+	respType := AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RemotePrivateEndpointConnectionARMResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse from the provided client and resume token.
+func (l *AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.ApproveOrRejectPrivateEndpointConnection", token, client.pl, client.approveOrRejectPrivateEndpointConnectionHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse contains the response from method AppServiceEnvironments.ApproveOrRejectPrivateEndpointConnection.
@@ -257,14 +338,42 @@ type AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResult struct
 
 // AppServiceEnvironmentsChangeVnetPollerResponse contains the response from method AppServiceEnvironments.ChangeVnet.
 type AppServiceEnvironmentsChangeVnetPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsChangeVnetPager, error)
-
 	// Poller contains an initialized poller.
-	Poller AppServiceEnvironmentsChangeVnetPoller
+	Poller *AppServiceEnvironmentsChangeVnetPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AppServiceEnvironmentsChangeVnetPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (*AppServiceEnvironmentsChangeVnetPager, error) {
+	respType := &AppServiceEnvironmentsChangeVnetPager{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.current.WebAppCollection)
+	if err != nil {
+		return respType, err
+	}
+	respType.current.RawResponse = resp
+	respType.client = l.Poller.client
+	return respType, nil
+}
+
+// Resume rehydrates a AppServiceEnvironmentsChangeVnetPollerResponse from the provided client and resume token.
+func (l *AppServiceEnvironmentsChangeVnetPollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.ChangeVnet", token, client.pl, client.changeVnetHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AppServiceEnvironmentsChangeVnetPoller{
+		pt:     pt,
+		client: client,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AppServiceEnvironmentsChangeVnetResponse contains the response from method AppServiceEnvironments.ChangeVnet.
@@ -281,14 +390,40 @@ type AppServiceEnvironmentsChangeVnetResult struct {
 
 // AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse contains the response from method AppServiceEnvironments.CreateOrUpdateMultiRolePool.
 type AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller
+	Poller *AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse, error) {
+	respType := AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.WorkerPoolResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse from the provided client and resume token.
+func (l *AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.CreateOrUpdateMultiRolePool", token, client.pl, client.createOrUpdateMultiRolePoolHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse contains the response from method AppServiceEnvironments.CreateOrUpdateMultiRolePool.
@@ -305,14 +440,40 @@ type AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResult struct {
 
 // AppServiceEnvironmentsCreateOrUpdatePollerResponse contains the response from method AppServiceEnvironments.CreateOrUpdate.
 type AppServiceEnvironmentsCreateOrUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsCreateOrUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AppServiceEnvironmentsCreateOrUpdatePoller
+	Poller *AppServiceEnvironmentsCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AppServiceEnvironmentsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsCreateOrUpdateResponse, error) {
+	respType := AppServiceEnvironmentsCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AppServiceEnvironmentResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AppServiceEnvironmentsCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *AppServiceEnvironmentsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AppServiceEnvironmentsCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AppServiceEnvironmentsCreateOrUpdateResponse contains the response from method AppServiceEnvironments.CreateOrUpdate.
@@ -329,14 +490,40 @@ type AppServiceEnvironmentsCreateOrUpdateResult struct {
 
 // AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse contains the response from method AppServiceEnvironments.CreateOrUpdateWorkerPool.
 type AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AppServiceEnvironmentsCreateOrUpdateWorkerPoolPoller
+	Poller *AppServiceEnvironmentsCreateOrUpdateWorkerPoolPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse, error) {
+	respType := AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.WorkerPoolResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse from the provided client and resume token.
+func (l *AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.CreateOrUpdateWorkerPool", token, client.pl, client.createOrUpdateWorkerPoolHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AppServiceEnvironmentsCreateOrUpdateWorkerPoolPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse contains the response from method AppServiceEnvironments.CreateOrUpdateWorkerPool.
@@ -353,26 +540,78 @@ type AppServiceEnvironmentsCreateOrUpdateWorkerPoolResult struct {
 
 // AppServiceEnvironmentsDeletePollerResponse contains the response from method AppServiceEnvironments.Delete.
 type AppServiceEnvironmentsDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AppServiceEnvironmentsDeletePoller
+	Poller *AppServiceEnvironmentsDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AppServiceEnvironmentsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsDeleteResponse, error) {
+	respType := AppServiceEnvironmentsDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AppServiceEnvironmentsDeletePollerResponse from the provided client and resume token.
+func (l *AppServiceEnvironmentsDeletePollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AppServiceEnvironmentsDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
+}
+
 // AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse contains the response from method AppServiceEnvironments.DeletePrivateEndpointConnection.
 type AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AppServiceEnvironmentsDeletePrivateEndpointConnectionPoller
+	Poller *AppServiceEnvironmentsDeletePrivateEndpointConnectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse, error) {
+	respType := AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Object)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse from the provided client and resume token.
+func (l *AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.DeletePrivateEndpointConnection", token, client.pl, client.deletePrivateEndpointConnectionHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AppServiceEnvironmentsDeletePrivateEndpointConnectionPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse contains the response from method AppServiceEnvironments.DeletePrivateEndpointConnection.
@@ -752,14 +991,42 @@ type AppServiceEnvironmentsRebootResponse struct {
 
 // AppServiceEnvironmentsResumePollerResponse contains the response from method AppServiceEnvironments.Resume.
 type AppServiceEnvironmentsResumePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsResumePager, error)
-
 	// Poller contains an initialized poller.
-	Poller AppServiceEnvironmentsResumePoller
+	Poller *AppServiceEnvironmentsResumePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AppServiceEnvironmentsResumePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (*AppServiceEnvironmentsResumePager, error) {
+	respType := &AppServiceEnvironmentsResumePager{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.current.WebAppCollection)
+	if err != nil {
+		return respType, err
+	}
+	respType.current.RawResponse = resp
+	respType.client = l.Poller.client
+	return respType, nil
+}
+
+// Resume rehydrates a AppServiceEnvironmentsResumePollerResponse from the provided client and resume token.
+func (l *AppServiceEnvironmentsResumePollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.Resume", token, client.pl, client.resumeHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AppServiceEnvironmentsResumePoller{
+		pt:     pt,
+		client: client,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AppServiceEnvironmentsResumeResponse contains the response from method AppServiceEnvironments.Resume.
@@ -776,14 +1043,42 @@ type AppServiceEnvironmentsResumeResult struct {
 
 // AppServiceEnvironmentsSuspendPollerResponse contains the response from method AppServiceEnvironments.Suspend.
 type AppServiceEnvironmentsSuspendPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsSuspendPager, error)
-
 	// Poller contains an initialized poller.
-	Poller AppServiceEnvironmentsSuspendPoller
+	Poller *AppServiceEnvironmentsSuspendPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AppServiceEnvironmentsSuspendPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (*AppServiceEnvironmentsSuspendPager, error) {
+	respType := &AppServiceEnvironmentsSuspendPager{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.current.WebAppCollection)
+	if err != nil {
+		return respType, err
+	}
+	respType.current.RawResponse = resp
+	respType.client = l.Poller.client
+	return respType, nil
+}
+
+// Resume rehydrates a AppServiceEnvironmentsSuspendPollerResponse from the provided client and resume token.
+func (l *AppServiceEnvironmentsSuspendPollerResponse) Resume(ctx context.Context, client *AppServiceEnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AppServiceEnvironmentsClient.Suspend", token, client.pl, client.suspendHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AppServiceEnvironmentsSuspendPoller{
+		pt:     pt,
+		client: client,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AppServiceEnvironmentsSuspendResponse contains the response from method AppServiceEnvironments.Suspend.
@@ -848,14 +1143,40 @@ type AppServiceEnvironmentsUpdateWorkerPoolResult struct {
 
 // AppServicePlansCreateOrUpdatePollerResponse contains the response from method AppServicePlans.CreateOrUpdate.
 type AppServicePlansCreateOrUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (AppServicePlansCreateOrUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller AppServicePlansCreateOrUpdatePoller
+	Poller *AppServicePlansCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l AppServicePlansCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AppServicePlansCreateOrUpdateResponse, error) {
+	respType := AppServicePlansCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AppServicePlan)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a AppServicePlansCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *AppServicePlansCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *AppServicePlansClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("AppServicePlansClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &AppServicePlansCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // AppServicePlansCreateOrUpdateResponse contains the response from method AppServicePlans.CreateOrUpdate.
@@ -971,7 +1292,7 @@ type AppServicePlansGetVnetFromServerFarmResponse struct {
 
 // AppServicePlansGetVnetFromServerFarmResult contains the result from method AppServicePlans.GetVnetFromServerFarm.
 type AppServicePlansGetVnetFromServerFarmResult struct {
-	VnetInfo
+	VnetInfoResource
 }
 
 // AppServicePlansGetVnetGatewayResponse contains the response from method AppServicePlans.GetVnetGateway.
@@ -1081,8 +1402,8 @@ type AppServicePlansListVnetsResponse struct {
 
 // AppServicePlansListVnetsResult contains the result from method AppServicePlans.ListVnets.
 type AppServicePlansListVnetsResult struct {
-	// Array of VnetInfo
-	VnetInfoArray []*VnetInfo
+	// Array of VnetInfoResource
+	VnetInfoResourceArray []*VnetInfoResource
 }
 
 // AppServicePlansListWebAppsByHybridConnectionResponse contains the response from method AppServicePlans.ListWebAppsByHybridConnection.
@@ -1412,7 +1733,7 @@ type DiagnosticsGetSiteDetectorResponseSlotResult struct {
 
 // DiagnosticsGetSiteDetectorResult contains the result from method Diagnostics.GetSiteDetector.
 type DiagnosticsGetSiteDetectorResult struct {
-	DetectorDefinition
+	DetectorDefinitionResource
 }
 
 // DiagnosticsGetSiteDetectorSlotResponse contains the response from method Diagnostics.GetSiteDetectorSlot.
@@ -1424,7 +1745,7 @@ type DiagnosticsGetSiteDetectorSlotResponse struct {
 
 // DiagnosticsGetSiteDetectorSlotResult contains the result from method Diagnostics.GetSiteDetectorSlot.
 type DiagnosticsGetSiteDetectorSlotResult struct {
-	DetectorDefinition
+	DetectorDefinitionResource
 }
 
 // DiagnosticsGetSiteDiagnosticCategoryResponse contains the response from method Diagnostics.GetSiteDiagnosticCategory.
@@ -1597,14 +1918,40 @@ type DomainsCreateOrUpdateOwnershipIdentifierResult struct {
 
 // DomainsCreateOrUpdatePollerResponse contains the response from method Domains.CreateOrUpdate.
 type DomainsCreateOrUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (DomainsCreateOrUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller DomainsCreateOrUpdatePoller
+	Poller *DomainsCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l DomainsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (DomainsCreateOrUpdateResponse, error) {
+	respType := DomainsCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Domain)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a DomainsCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *DomainsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *DomainsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("DomainsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &DomainsCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // DomainsCreateOrUpdateResponse contains the response from method Domains.CreateOrUpdate.
@@ -1778,14 +2125,40 @@ type GlobalGetSubscriptionOperationWithAsyncResponseResponse struct {
 
 // KubeEnvironmentsCreateOrUpdatePollerResponse contains the response from method KubeEnvironments.CreateOrUpdate.
 type KubeEnvironmentsCreateOrUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (KubeEnvironmentsCreateOrUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller KubeEnvironmentsCreateOrUpdatePoller
+	Poller *KubeEnvironmentsCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l KubeEnvironmentsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (KubeEnvironmentsCreateOrUpdateResponse, error) {
+	respType := KubeEnvironmentsCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.KubeEnvironment)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a KubeEnvironmentsCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *KubeEnvironmentsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *KubeEnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("KubeEnvironmentsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &KubeEnvironmentsCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // KubeEnvironmentsCreateOrUpdateResponse contains the response from method KubeEnvironments.CreateOrUpdate.
@@ -1802,14 +2175,40 @@ type KubeEnvironmentsCreateOrUpdateResult struct {
 
 // KubeEnvironmentsDeletePollerResponse contains the response from method KubeEnvironments.Delete.
 type KubeEnvironmentsDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (KubeEnvironmentsDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller KubeEnvironmentsDeletePoller
+	Poller *KubeEnvironmentsDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l KubeEnvironmentsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (KubeEnvironmentsDeleteResponse, error) {
+	respType := KubeEnvironmentsDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a KubeEnvironmentsDeletePollerResponse from the provided client and resume token.
+func (l *KubeEnvironmentsDeletePollerResponse) Resume(ctx context.Context, client *KubeEnvironmentsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("KubeEnvironmentsClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &KubeEnvironmentsDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // KubeEnvironmentsDeleteResponse contains the response from method KubeEnvironments.Delete.
@@ -2156,14 +2555,40 @@ type ResourceHealthMetadataListResult struct {
 
 // StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse contains the response from method StaticSites.ApproveOrRejectPrivateEndpointConnection.
 type StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (StaticSitesApproveOrRejectPrivateEndpointConnectionResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller StaticSitesApproveOrRejectPrivateEndpointConnectionPoller
+	Poller *StaticSitesApproveOrRejectPrivateEndpointConnectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesApproveOrRejectPrivateEndpointConnectionResponse, error) {
+	respType := StaticSitesApproveOrRejectPrivateEndpointConnectionResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RemotePrivateEndpointConnectionARMResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse from the provided client and resume token.
+func (l *StaticSitesApproveOrRejectPrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.ApproveOrRejectPrivateEndpointConnection", token, client.pl, client.approveOrRejectPrivateEndpointConnectionHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &StaticSitesApproveOrRejectPrivateEndpointConnectionPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // StaticSitesApproveOrRejectPrivateEndpointConnectionResponse contains the response from method StaticSites.ApproveOrRejectPrivateEndpointConnection.
@@ -2216,14 +2641,40 @@ type StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsResult struct {
 
 // StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse contains the response from method StaticSites.CreateOrUpdateStaticSiteCustomDomain.
 type StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller StaticSitesCreateOrUpdateStaticSiteCustomDomainPoller
+	Poller *StaticSitesCreateOrUpdateStaticSiteCustomDomainPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse, error) {
+	respType := StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StaticSiteCustomDomainOverviewARMResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse from the provided client and resume token.
+func (l *StaticSitesCreateOrUpdateStaticSiteCustomDomainPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.CreateOrUpdateStaticSiteCustomDomain", token, client.pl, client.createOrUpdateStaticSiteCustomDomainHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &StaticSitesCreateOrUpdateStaticSiteCustomDomainPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // StaticSitesCreateOrUpdateStaticSiteCustomDomainResponse contains the response from method StaticSites.CreateOrUpdateStaticSiteCustomDomain.
@@ -2252,14 +2703,40 @@ type StaticSitesCreateOrUpdateStaticSiteFunctionAppSettingsResult struct {
 
 // StaticSitesCreateOrUpdateStaticSitePollerResponse contains the response from method StaticSites.CreateOrUpdateStaticSite.
 type StaticSitesCreateOrUpdateStaticSitePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (StaticSitesCreateOrUpdateStaticSiteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller StaticSitesCreateOrUpdateStaticSitePoller
+	Poller *StaticSitesCreateOrUpdateStaticSitePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l StaticSitesCreateOrUpdateStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesCreateOrUpdateStaticSiteResponse, error) {
+	respType := StaticSitesCreateOrUpdateStaticSiteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StaticSiteARMResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a StaticSitesCreateOrUpdateStaticSitePollerResponse from the provided client and resume token.
+func (l *StaticSitesCreateOrUpdateStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.CreateOrUpdateStaticSite", token, client.pl, client.createOrUpdateStaticSiteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &StaticSitesCreateOrUpdateStaticSitePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // StaticSitesCreateOrUpdateStaticSiteResponse contains the response from method StaticSites.CreateOrUpdateStaticSite.
@@ -2288,14 +2765,40 @@ type StaticSitesCreateUserRolesInvitationLinkResult struct {
 
 // StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse contains the response from method StaticSites.CreateZipDeploymentForStaticSiteBuild.
 type StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (StaticSitesCreateZipDeploymentForStaticSiteBuildResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller StaticSitesCreateZipDeploymentForStaticSiteBuildPoller
+	Poller *StaticSitesCreateZipDeploymentForStaticSiteBuildPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesCreateZipDeploymentForStaticSiteBuildResponse, error) {
+	respType := StaticSitesCreateZipDeploymentForStaticSiteBuildResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse from the provided client and resume token.
+func (l *StaticSitesCreateZipDeploymentForStaticSiteBuildPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.CreateZipDeploymentForStaticSiteBuild", token, client.pl, client.createZipDeploymentForStaticSiteBuildHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &StaticSitesCreateZipDeploymentForStaticSiteBuildPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // StaticSitesCreateZipDeploymentForStaticSiteBuildResponse contains the response from method StaticSites.CreateZipDeploymentForStaticSiteBuild.
@@ -2306,14 +2809,40 @@ type StaticSitesCreateZipDeploymentForStaticSiteBuildResponse struct {
 
 // StaticSitesCreateZipDeploymentForStaticSitePollerResponse contains the response from method StaticSites.CreateZipDeploymentForStaticSite.
 type StaticSitesCreateZipDeploymentForStaticSitePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (StaticSitesCreateZipDeploymentForStaticSiteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller StaticSitesCreateZipDeploymentForStaticSitePoller
+	Poller *StaticSitesCreateZipDeploymentForStaticSitePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l StaticSitesCreateZipDeploymentForStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesCreateZipDeploymentForStaticSiteResponse, error) {
+	respType := StaticSitesCreateZipDeploymentForStaticSiteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a StaticSitesCreateZipDeploymentForStaticSitePollerResponse from the provided client and resume token.
+func (l *StaticSitesCreateZipDeploymentForStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.CreateZipDeploymentForStaticSite", token, client.pl, client.createZipDeploymentForStaticSiteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &StaticSitesCreateZipDeploymentForStaticSitePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // StaticSitesCreateZipDeploymentForStaticSiteResponse contains the response from method StaticSites.CreateZipDeploymentForStaticSite.
@@ -2324,14 +2853,40 @@ type StaticSitesCreateZipDeploymentForStaticSiteResponse struct {
 
 // StaticSitesDeletePrivateEndpointConnectionPollerResponse contains the response from method StaticSites.DeletePrivateEndpointConnection.
 type StaticSitesDeletePrivateEndpointConnectionPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (StaticSitesDeletePrivateEndpointConnectionResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller StaticSitesDeletePrivateEndpointConnectionPoller
+	Poller *StaticSitesDeletePrivateEndpointConnectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l StaticSitesDeletePrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesDeletePrivateEndpointConnectionResponse, error) {
+	respType := StaticSitesDeletePrivateEndpointConnectionResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Object)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a StaticSitesDeletePrivateEndpointConnectionPollerResponse from the provided client and resume token.
+func (l *StaticSitesDeletePrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.DeletePrivateEndpointConnection", token, client.pl, client.deletePrivateEndpointConnectionHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &StaticSitesDeletePrivateEndpointConnectionPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // StaticSitesDeletePrivateEndpointConnectionResponse contains the response from method StaticSites.DeletePrivateEndpointConnection.
@@ -2349,14 +2904,40 @@ type StaticSitesDeletePrivateEndpointConnectionResult struct {
 
 // StaticSitesDeleteStaticSiteBuildPollerResponse contains the response from method StaticSites.DeleteStaticSiteBuild.
 type StaticSitesDeleteStaticSiteBuildPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (StaticSitesDeleteStaticSiteBuildResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller StaticSitesDeleteStaticSiteBuildPoller
+	Poller *StaticSitesDeleteStaticSiteBuildPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l StaticSitesDeleteStaticSiteBuildPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesDeleteStaticSiteBuildResponse, error) {
+	respType := StaticSitesDeleteStaticSiteBuildResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a StaticSitesDeleteStaticSiteBuildPollerResponse from the provided client and resume token.
+func (l *StaticSitesDeleteStaticSiteBuildPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.DeleteStaticSiteBuild", token, client.pl, client.deleteStaticSiteBuildHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &StaticSitesDeleteStaticSiteBuildPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // StaticSitesDeleteStaticSiteBuildResponse contains the response from method StaticSites.DeleteStaticSiteBuild.
@@ -2367,14 +2948,40 @@ type StaticSitesDeleteStaticSiteBuildResponse struct {
 
 // StaticSitesDeleteStaticSiteCustomDomainPollerResponse contains the response from method StaticSites.DeleteStaticSiteCustomDomain.
 type StaticSitesDeleteStaticSiteCustomDomainPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (StaticSitesDeleteStaticSiteCustomDomainResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller StaticSitesDeleteStaticSiteCustomDomainPoller
+	Poller *StaticSitesDeleteStaticSiteCustomDomainPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l StaticSitesDeleteStaticSiteCustomDomainPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesDeleteStaticSiteCustomDomainResponse, error) {
+	respType := StaticSitesDeleteStaticSiteCustomDomainResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a StaticSitesDeleteStaticSiteCustomDomainPollerResponse from the provided client and resume token.
+func (l *StaticSitesDeleteStaticSiteCustomDomainPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.DeleteStaticSiteCustomDomain", token, client.pl, client.deleteStaticSiteCustomDomainHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &StaticSitesDeleteStaticSiteCustomDomainPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // StaticSitesDeleteStaticSiteCustomDomainResponse contains the response from method StaticSites.DeleteStaticSiteCustomDomain.
@@ -2385,14 +2992,40 @@ type StaticSitesDeleteStaticSiteCustomDomainResponse struct {
 
 // StaticSitesDeleteStaticSitePollerResponse contains the response from method StaticSites.DeleteStaticSite.
 type StaticSitesDeleteStaticSitePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (StaticSitesDeleteStaticSiteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller StaticSitesDeleteStaticSitePoller
+	Poller *StaticSitesDeleteStaticSitePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l StaticSitesDeleteStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesDeleteStaticSiteResponse, error) {
+	respType := StaticSitesDeleteStaticSiteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a StaticSitesDeleteStaticSitePollerResponse from the provided client and resume token.
+func (l *StaticSitesDeleteStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.DeleteStaticSite", token, client.pl, client.deleteStaticSiteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &StaticSitesDeleteStaticSitePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // StaticSitesDeleteStaticSiteResponse contains the response from method StaticSites.DeleteStaticSite.
@@ -2409,14 +3042,40 @@ type StaticSitesDeleteStaticSiteUserResponse struct {
 
 // StaticSitesDetachStaticSitePollerResponse contains the response from method StaticSites.DetachStaticSite.
 type StaticSitesDetachStaticSitePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (StaticSitesDetachStaticSiteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller StaticSitesDetachStaticSitePoller
+	Poller *StaticSitesDetachStaticSitePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l StaticSitesDetachStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesDetachStaticSiteResponse, error) {
+	respType := StaticSitesDetachStaticSiteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a StaticSitesDetachStaticSitePollerResponse from the provided client and resume token.
+func (l *StaticSitesDetachStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.DetachStaticSite", token, client.pl, client.detachStaticSiteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &StaticSitesDetachStaticSitePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // StaticSitesDetachStaticSiteResponse contains the response from method StaticSites.DetachStaticSite.
@@ -2727,14 +3386,40 @@ type StaticSitesPreviewWorkflowResult struct {
 
 // StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse contains the response from method StaticSites.RegisterUserProvidedFunctionAppWithStaticSiteBuild.
 type StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller
+	Poller *StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse, error) {
+	respType := StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StaticSiteUserProvidedFunctionAppARMResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse from the provided client and resume token.
+func (l *StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.RegisterUserProvidedFunctionAppWithStaticSiteBuild", token, client.pl, client.registerUserProvidedFunctionAppWithStaticSiteBuildHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse contains the response from method StaticSites.RegisterUserProvidedFunctionAppWithStaticSiteBuild.
@@ -2751,14 +3436,40 @@ type StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteBuildResult struct 
 
 // StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse contains the response from method StaticSites.RegisterUserProvidedFunctionAppWithStaticSite.
 type StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller
+	Poller *StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResponse, error) {
+	respType := StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StaticSiteUserProvidedFunctionAppARMResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse from the provided client and resume token.
+func (l *StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.RegisterUserProvidedFunctionAppWithStaticSite", token, client.pl, client.registerUserProvidedFunctionAppWithStaticSiteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &StaticSitesRegisterUserProvidedFunctionAppWithStaticSitePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // StaticSitesRegisterUserProvidedFunctionAppWithStaticSiteResponse contains the response from method StaticSites.RegisterUserProvidedFunctionAppWithStaticSite.
@@ -2805,14 +3516,40 @@ type StaticSitesUpdateStaticSiteUserResult struct {
 
 // StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse contains the response from method StaticSites.ValidateCustomDomainCanBeAddedToStaticSite.
 type StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (StaticSitesValidateCustomDomainCanBeAddedToStaticSiteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller StaticSitesValidateCustomDomainCanBeAddedToStaticSitePoller
+	Poller *StaticSitesValidateCustomDomainCanBeAddedToStaticSitePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StaticSitesValidateCustomDomainCanBeAddedToStaticSiteResponse, error) {
+	respType := StaticSitesValidateCustomDomainCanBeAddedToStaticSiteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse from the provided client and resume token.
+func (l *StaticSitesValidateCustomDomainCanBeAddedToStaticSitePollerResponse) Resume(ctx context.Context, client *StaticSitesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("StaticSitesClient.ValidateCustomDomainCanBeAddedToStaticSite", token, client.pl, client.validateCustomDomainCanBeAddedToStaticSiteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &StaticSitesValidateCustomDomainCanBeAddedToStaticSitePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // StaticSitesValidateCustomDomainCanBeAddedToStaticSiteResponse contains the response from method StaticSites.ValidateCustomDomainCanBeAddedToStaticSite.
@@ -2919,14 +3656,40 @@ type WebAppsApplySlotConfigurationSlotResponse struct {
 
 // WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse contains the response from method WebApps.ApproveOrRejectPrivateEndpointConnection.
 type WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsApproveOrRejectPrivateEndpointConnectionResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsApproveOrRejectPrivateEndpointConnectionPoller
+	Poller *WebAppsApproveOrRejectPrivateEndpointConnectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsApproveOrRejectPrivateEndpointConnectionResponse, error) {
+	respType := WebAppsApproveOrRejectPrivateEndpointConnectionResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RemotePrivateEndpointConnectionARMResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse from the provided client and resume token.
+func (l *WebAppsApproveOrRejectPrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.ApproveOrRejectPrivateEndpointConnection", token, client.pl, client.approveOrRejectPrivateEndpointConnectionHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsApproveOrRejectPrivateEndpointConnectionPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsApproveOrRejectPrivateEndpointConnectionResponse contains the response from method WebApps.ApproveOrRejectPrivateEndpointConnection.
@@ -2943,14 +3706,40 @@ type WebAppsApproveOrRejectPrivateEndpointConnectionResult struct {
 
 // WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse contains the response from method WebApps.ApproveOrRejectPrivateEndpointConnectionSlot.
 type WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsApproveOrRejectPrivateEndpointConnectionSlotPoller
+	Poller *WebAppsApproveOrRejectPrivateEndpointConnectionSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse, error) {
+	respType := WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RemotePrivateEndpointConnectionARMResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsApproveOrRejectPrivateEndpointConnectionSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.ApproveOrRejectPrivateEndpointConnectionSlot", token, client.pl, client.approveOrRejectPrivateEndpointConnectionSlotHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsApproveOrRejectPrivateEndpointConnectionSlotPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsApproveOrRejectPrivateEndpointConnectionSlotResponse contains the response from method WebApps.ApproveOrRejectPrivateEndpointConnectionSlot.
@@ -3015,14 +3804,40 @@ type WebAppsCreateDeploymentSlotResult struct {
 
 // WebAppsCreateFunctionPollerResponse contains the response from method WebApps.CreateFunction.
 type WebAppsCreateFunctionPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsCreateFunctionResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsCreateFunctionPoller
+	Poller *WebAppsCreateFunctionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsCreateFunctionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateFunctionResponse, error) {
+	respType := WebAppsCreateFunctionResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.FunctionEnvelope)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsCreateFunctionPollerResponse from the provided client and resume token.
+func (l *WebAppsCreateFunctionPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateFunction", token, client.pl, client.createFunctionHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsCreateFunctionPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsCreateFunctionResponse contains the response from method WebApps.CreateFunction.
@@ -3039,14 +3854,40 @@ type WebAppsCreateFunctionResult struct {
 
 // WebAppsCreateInstanceFunctionSlotPollerResponse contains the response from method WebApps.CreateInstanceFunctionSlot.
 type WebAppsCreateInstanceFunctionSlotPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsCreateInstanceFunctionSlotResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsCreateInstanceFunctionSlotPoller
+	Poller *WebAppsCreateInstanceFunctionSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsCreateInstanceFunctionSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateInstanceFunctionSlotResponse, error) {
+	respType := WebAppsCreateInstanceFunctionSlotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.FunctionEnvelope)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsCreateInstanceFunctionSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsCreateInstanceFunctionSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateInstanceFunctionSlot", token, client.pl, client.createInstanceFunctionSlotHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsCreateInstanceFunctionSlotPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsCreateInstanceFunctionSlotResponse contains the response from method WebApps.CreateInstanceFunctionSlot.
@@ -3063,14 +3904,40 @@ type WebAppsCreateInstanceFunctionSlotResult struct {
 
 // WebAppsCreateInstanceMSDeployOperationPollerResponse contains the response from method WebApps.CreateInstanceMSDeployOperation.
 type WebAppsCreateInstanceMSDeployOperationPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsCreateInstanceMSDeployOperationResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsCreateInstanceMSDeployOperationPoller
+	Poller *WebAppsCreateInstanceMSDeployOperationPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsCreateInstanceMSDeployOperationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateInstanceMSDeployOperationResponse, error) {
+	respType := WebAppsCreateInstanceMSDeployOperationResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MSDeployStatus)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsCreateInstanceMSDeployOperationPollerResponse from the provided client and resume token.
+func (l *WebAppsCreateInstanceMSDeployOperationPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateInstanceMSDeployOperation", token, client.pl, client.createInstanceMSDeployOperationHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsCreateInstanceMSDeployOperationPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsCreateInstanceMSDeployOperationResponse contains the response from method WebApps.CreateInstanceMSDeployOperation.
@@ -3087,14 +3954,40 @@ type WebAppsCreateInstanceMSDeployOperationResult struct {
 
 // WebAppsCreateInstanceMSDeployOperationSlotPollerResponse contains the response from method WebApps.CreateInstanceMSDeployOperationSlot.
 type WebAppsCreateInstanceMSDeployOperationSlotPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsCreateInstanceMSDeployOperationSlotResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsCreateInstanceMSDeployOperationSlotPoller
+	Poller *WebAppsCreateInstanceMSDeployOperationSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsCreateInstanceMSDeployOperationSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateInstanceMSDeployOperationSlotResponse, error) {
+	respType := WebAppsCreateInstanceMSDeployOperationSlotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MSDeployStatus)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsCreateInstanceMSDeployOperationSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsCreateInstanceMSDeployOperationSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateInstanceMSDeployOperationSlot", token, client.pl, client.createInstanceMSDeployOperationSlotHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsCreateInstanceMSDeployOperationSlotPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsCreateInstanceMSDeployOperationSlotResponse contains the response from method WebApps.CreateInstanceMSDeployOperationSlot.
@@ -3111,14 +4004,40 @@ type WebAppsCreateInstanceMSDeployOperationSlotResult struct {
 
 // WebAppsCreateMSDeployOperationPollerResponse contains the response from method WebApps.CreateMSDeployOperation.
 type WebAppsCreateMSDeployOperationPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsCreateMSDeployOperationResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsCreateMSDeployOperationPoller
+	Poller *WebAppsCreateMSDeployOperationPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsCreateMSDeployOperationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateMSDeployOperationResponse, error) {
+	respType := WebAppsCreateMSDeployOperationResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MSDeployStatus)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsCreateMSDeployOperationPollerResponse from the provided client and resume token.
+func (l *WebAppsCreateMSDeployOperationPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateMSDeployOperation", token, client.pl, client.createMSDeployOperationHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsCreateMSDeployOperationPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsCreateMSDeployOperationResponse contains the response from method WebApps.CreateMSDeployOperation.
@@ -3135,14 +4054,40 @@ type WebAppsCreateMSDeployOperationResult struct {
 
 // WebAppsCreateMSDeployOperationSlotPollerResponse contains the response from method WebApps.CreateMSDeployOperationSlot.
 type WebAppsCreateMSDeployOperationSlotPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsCreateMSDeployOperationSlotResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsCreateMSDeployOperationSlotPoller
+	Poller *WebAppsCreateMSDeployOperationSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsCreateMSDeployOperationSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateMSDeployOperationSlotResponse, error) {
+	respType := WebAppsCreateMSDeployOperationSlotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MSDeployStatus)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsCreateMSDeployOperationSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsCreateMSDeployOperationSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateMSDeployOperationSlot", token, client.pl, client.createMSDeployOperationSlotHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsCreateMSDeployOperationSlotPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsCreateMSDeployOperationSlotResponse contains the response from method WebApps.CreateMSDeployOperationSlot.
@@ -3303,14 +4248,40 @@ type WebAppsCreateOrUpdateHybridConnectionSlotResult struct {
 
 // WebAppsCreateOrUpdatePollerResponse contains the response from method WebApps.CreateOrUpdate.
 type WebAppsCreateOrUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsCreateOrUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsCreateOrUpdatePoller
+	Poller *WebAppsCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateOrUpdateResponse, error) {
+	respType := WebAppsCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Site)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *WebAppsCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsCreateOrUpdatePublicCertificateResponse contains the response from method WebApps.CreateOrUpdatePublicCertificate.
@@ -3375,14 +4346,40 @@ type WebAppsCreateOrUpdateResult struct {
 
 // WebAppsCreateOrUpdateSlotPollerResponse contains the response from method WebApps.CreateOrUpdateSlot.
 type WebAppsCreateOrUpdateSlotPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsCreateOrUpdateSlotResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsCreateOrUpdateSlotPoller
+	Poller *WebAppsCreateOrUpdateSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsCreateOrUpdateSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateOrUpdateSlotResponse, error) {
+	respType := WebAppsCreateOrUpdateSlotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Site)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsCreateOrUpdateSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsCreateOrUpdateSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateOrUpdateSlot", token, client.pl, client.createOrUpdateSlotHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsCreateOrUpdateSlotPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsCreateOrUpdateSlotResponse contains the response from method WebApps.CreateOrUpdateSlot.
@@ -3399,14 +4396,40 @@ type WebAppsCreateOrUpdateSlotResult struct {
 
 // WebAppsCreateOrUpdateSourceControlPollerResponse contains the response from method WebApps.CreateOrUpdateSourceControl.
 type WebAppsCreateOrUpdateSourceControlPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsCreateOrUpdateSourceControlResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsCreateOrUpdateSourceControlPoller
+	Poller *WebAppsCreateOrUpdateSourceControlPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsCreateOrUpdateSourceControlPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateOrUpdateSourceControlResponse, error) {
+	respType := WebAppsCreateOrUpdateSourceControlResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SiteSourceControl)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsCreateOrUpdateSourceControlPollerResponse from the provided client and resume token.
+func (l *WebAppsCreateOrUpdateSourceControlPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateOrUpdateSourceControl", token, client.pl, client.createOrUpdateSourceControlHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsCreateOrUpdateSourceControlPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsCreateOrUpdateSourceControlResponse contains the response from method WebApps.CreateOrUpdateSourceControl.
@@ -3423,14 +4446,40 @@ type WebAppsCreateOrUpdateSourceControlResult struct {
 
 // WebAppsCreateOrUpdateSourceControlSlotPollerResponse contains the response from method WebApps.CreateOrUpdateSourceControlSlot.
 type WebAppsCreateOrUpdateSourceControlSlotPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsCreateOrUpdateSourceControlSlotResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsCreateOrUpdateSourceControlSlotPoller
+	Poller *WebAppsCreateOrUpdateSourceControlSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsCreateOrUpdateSourceControlSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsCreateOrUpdateSourceControlSlotResponse, error) {
+	respType := WebAppsCreateOrUpdateSourceControlSlotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SiteSourceControl)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsCreateOrUpdateSourceControlSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsCreateOrUpdateSourceControlSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.CreateOrUpdateSourceControlSlot", token, client.pl, client.createOrUpdateSourceControlSlotHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsCreateOrUpdateSourceControlSlotPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsCreateOrUpdateSourceControlSlotResponse contains the response from method WebApps.CreateOrUpdateSourceControlSlot.
@@ -3502,7 +4551,7 @@ type WebAppsCreateOrUpdateVnetConnectionResponse struct {
 
 // WebAppsCreateOrUpdateVnetConnectionResult contains the result from method WebApps.CreateOrUpdateVnetConnection.
 type WebAppsCreateOrUpdateVnetConnectionResult struct {
-	VnetInfo
+	VnetInfoResource
 }
 
 // WebAppsCreateOrUpdateVnetConnectionSlotResponse contains the response from method WebApps.CreateOrUpdateVnetConnectionSlot.
@@ -3514,7 +4563,7 @@ type WebAppsCreateOrUpdateVnetConnectionSlotResponse struct {
 
 // WebAppsCreateOrUpdateVnetConnectionSlotResult contains the result from method WebApps.CreateOrUpdateVnetConnectionSlot.
 type WebAppsCreateOrUpdateVnetConnectionSlotResult struct {
-	VnetInfo
+	VnetInfoResource
 }
 
 // WebAppsDeleteBackupConfigurationResponse contains the response from method WebApps.DeleteBackupConfiguration.
@@ -3663,14 +4712,40 @@ type WebAppsDeletePremierAddOnSlotResponse struct {
 
 // WebAppsDeletePrivateEndpointConnectionPollerResponse contains the response from method WebApps.DeletePrivateEndpointConnection.
 type WebAppsDeletePrivateEndpointConnectionPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsDeletePrivateEndpointConnectionResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsDeletePrivateEndpointConnectionPoller
+	Poller *WebAppsDeletePrivateEndpointConnectionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsDeletePrivateEndpointConnectionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsDeletePrivateEndpointConnectionResponse, error) {
+	respType := WebAppsDeletePrivateEndpointConnectionResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Object)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsDeletePrivateEndpointConnectionPollerResponse from the provided client and resume token.
+func (l *WebAppsDeletePrivateEndpointConnectionPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.DeletePrivateEndpointConnection", token, client.pl, client.deletePrivateEndpointConnectionHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsDeletePrivateEndpointConnectionPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsDeletePrivateEndpointConnectionResponse contains the response from method WebApps.DeletePrivateEndpointConnection.
@@ -3688,14 +4763,40 @@ type WebAppsDeletePrivateEndpointConnectionResult struct {
 
 // WebAppsDeletePrivateEndpointConnectionSlotPollerResponse contains the response from method WebApps.DeletePrivateEndpointConnectionSlot.
 type WebAppsDeletePrivateEndpointConnectionSlotPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsDeletePrivateEndpointConnectionSlotResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsDeletePrivateEndpointConnectionSlotPoller
+	Poller *WebAppsDeletePrivateEndpointConnectionSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsDeletePrivateEndpointConnectionSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsDeletePrivateEndpointConnectionSlotResponse, error) {
+	respType := WebAppsDeletePrivateEndpointConnectionSlotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Object)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsDeletePrivateEndpointConnectionSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsDeletePrivateEndpointConnectionSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.DeletePrivateEndpointConnectionSlot", token, client.pl, client.deletePrivateEndpointConnectionSlotHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsDeletePrivateEndpointConnectionSlotPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsDeletePrivateEndpointConnectionSlotResponse contains the response from method WebApps.DeletePrivateEndpointConnectionSlot.
@@ -5084,7 +6185,7 @@ type WebAppsGetVnetConnectionResponse struct {
 
 // WebAppsGetVnetConnectionResult contains the result from method WebApps.GetVnetConnection.
 type WebAppsGetVnetConnectionResult struct {
-	VnetInfo
+	VnetInfoResource
 }
 
 // WebAppsGetVnetConnectionSlotResponse contains the response from method WebApps.GetVnetConnectionSlot.
@@ -5096,7 +6197,7 @@ type WebAppsGetVnetConnectionSlotResponse struct {
 
 // WebAppsGetVnetConnectionSlotResult contains the result from method WebApps.GetVnetConnectionSlot.
 type WebAppsGetVnetConnectionSlotResult struct {
-	VnetInfo
+	VnetInfoResource
 }
 
 // WebAppsGetWebJobResponse contains the response from method WebApps.GetWebJob.
@@ -5137,14 +6238,40 @@ type WebAppsGetWebSiteContainerLogsSlotResponse struct {
 
 // WebAppsInstallSiteExtensionPollerResponse contains the response from method WebApps.InstallSiteExtension.
 type WebAppsInstallSiteExtensionPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsInstallSiteExtensionResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsInstallSiteExtensionPoller
+	Poller *WebAppsInstallSiteExtensionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsInstallSiteExtensionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsInstallSiteExtensionResponse, error) {
+	respType := WebAppsInstallSiteExtensionResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SiteExtensionInfo)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsInstallSiteExtensionPollerResponse from the provided client and resume token.
+func (l *WebAppsInstallSiteExtensionPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.InstallSiteExtension", token, client.pl, client.installSiteExtensionHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsInstallSiteExtensionPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsInstallSiteExtensionResponse contains the response from method WebApps.InstallSiteExtension.
@@ -5161,14 +6288,40 @@ type WebAppsInstallSiteExtensionResult struct {
 
 // WebAppsInstallSiteExtensionSlotPollerResponse contains the response from method WebApps.InstallSiteExtensionSlot.
 type WebAppsInstallSiteExtensionSlotPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsInstallSiteExtensionSlotResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsInstallSiteExtensionSlotPoller
+	Poller *WebAppsInstallSiteExtensionSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsInstallSiteExtensionSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsInstallSiteExtensionSlotResponse, error) {
+	respType := WebAppsInstallSiteExtensionSlotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SiteExtensionInfo)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsInstallSiteExtensionSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsInstallSiteExtensionSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.InstallSiteExtensionSlot", token, client.pl, client.installSiteExtensionSlotHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsInstallSiteExtensionSlotPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsInstallSiteExtensionSlotResponse contains the response from method WebApps.InstallSiteExtensionSlot.
@@ -5941,14 +7094,40 @@ type WebAppsListPublicCertificatesSlotResult struct {
 
 // WebAppsListPublishingCredentialsPollerResponse contains the response from method WebApps.ListPublishingCredentials.
 type WebAppsListPublishingCredentialsPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsListPublishingCredentialsResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsListPublishingCredentialsPoller
+	Poller *WebAppsListPublishingCredentialsPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsListPublishingCredentialsPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsListPublishingCredentialsResponse, error) {
+	respType := WebAppsListPublishingCredentialsResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.User)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsListPublishingCredentialsPollerResponse from the provided client and resume token.
+func (l *WebAppsListPublishingCredentialsPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.ListPublishingCredentials", token, client.pl, client.listPublishingCredentialsHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsListPublishingCredentialsPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsListPublishingCredentialsResponse contains the response from method WebApps.ListPublishingCredentials.
@@ -5965,14 +7144,40 @@ type WebAppsListPublishingCredentialsResult struct {
 
 // WebAppsListPublishingCredentialsSlotPollerResponse contains the response from method WebApps.ListPublishingCredentialsSlot.
 type WebAppsListPublishingCredentialsSlotPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsListPublishingCredentialsSlotResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsListPublishingCredentialsSlotPoller
+	Poller *WebAppsListPublishingCredentialsSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsListPublishingCredentialsSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsListPublishingCredentialsSlotResponse, error) {
+	respType := WebAppsListPublishingCredentialsSlotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.User)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsListPublishingCredentialsSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsListPublishingCredentialsSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.ListPublishingCredentialsSlot", token, client.pl, client.listPublishingCredentialsSlotHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsListPublishingCredentialsSlotPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsListPublishingCredentialsSlotResponse contains the response from method WebApps.ListPublishingCredentialsSlot.
@@ -6320,8 +7525,8 @@ type WebAppsListVnetConnectionsResponse struct {
 
 // WebAppsListVnetConnectionsResult contains the result from method WebApps.ListVnetConnections.
 type WebAppsListVnetConnectionsResult struct {
-	// Array of VnetInfo
-	VnetInfoArray []*VnetInfo
+	// Array of VnetInfoResource
+	VnetInfoResourceArray []*VnetInfoResource
 }
 
 // WebAppsListVnetConnectionsSlotResponse contains the response from method WebApps.ListVnetConnectionsSlot.
@@ -6333,8 +7538,8 @@ type WebAppsListVnetConnectionsSlotResponse struct {
 
 // WebAppsListVnetConnectionsSlotResult contains the result from method WebApps.ListVnetConnectionsSlot.
 type WebAppsListVnetConnectionsSlotResult struct {
-	// Array of VnetInfo
-	VnetInfoArray []*VnetInfo
+	// Array of VnetInfoResource
+	VnetInfoResourceArray []*VnetInfoResource
 }
 
 // WebAppsListWebJobsResponse contains the response from method WebApps.ListWebJobs.
@@ -6363,14 +7568,40 @@ type WebAppsListWebJobsSlotResult struct {
 
 // WebAppsMigrateMySQLPollerResponse contains the response from method WebApps.MigrateMySQL.
 type WebAppsMigrateMySQLPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsMigrateMySQLResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsMigrateMySQLPoller
+	Poller *WebAppsMigrateMySQLPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsMigrateMySQLPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsMigrateMySQLResponse, error) {
+	respType := WebAppsMigrateMySQLResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Operation)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsMigrateMySQLPollerResponse from the provided client and resume token.
+func (l *WebAppsMigrateMySQLPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.MigrateMySQL", token, client.pl, client.migrateMySQLHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsMigrateMySQLPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsMigrateMySQLResponse contains the response from method WebApps.MigrateMySQL.
@@ -6387,14 +7618,40 @@ type WebAppsMigrateMySQLResult struct {
 
 // WebAppsMigrateStoragePollerResponse contains the response from method WebApps.MigrateStorage.
 type WebAppsMigrateStoragePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsMigrateStorageResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsMigrateStoragePoller
+	Poller *WebAppsMigrateStoragePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsMigrateStoragePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsMigrateStorageResponse, error) {
+	respType := WebAppsMigrateStorageResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StorageMigrationResponse)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsMigrateStoragePollerResponse from the provided client and resume token.
+func (l *WebAppsMigrateStoragePollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.MigrateStorage", token, client.pl, client.migrateStorageHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsMigrateStoragePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsMigrateStorageResponse contains the response from method WebApps.MigrateStorage.
@@ -6471,14 +7728,40 @@ type WebAppsRestartSlotResponse struct {
 
 // WebAppsRestoreFromBackupBlobPollerResponse contains the response from method WebApps.RestoreFromBackupBlob.
 type WebAppsRestoreFromBackupBlobPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsRestoreFromBackupBlobResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsRestoreFromBackupBlobPoller
+	Poller *WebAppsRestoreFromBackupBlobPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsRestoreFromBackupBlobPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreFromBackupBlobResponse, error) {
+	respType := WebAppsRestoreFromBackupBlobResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsRestoreFromBackupBlobPollerResponse from the provided client and resume token.
+func (l *WebAppsRestoreFromBackupBlobPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreFromBackupBlob", token, client.pl, client.restoreFromBackupBlobHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsRestoreFromBackupBlobPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsRestoreFromBackupBlobResponse contains the response from method WebApps.RestoreFromBackupBlob.
@@ -6489,14 +7772,40 @@ type WebAppsRestoreFromBackupBlobResponse struct {
 
 // WebAppsRestoreFromBackupBlobSlotPollerResponse contains the response from method WebApps.RestoreFromBackupBlobSlot.
 type WebAppsRestoreFromBackupBlobSlotPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsRestoreFromBackupBlobSlotResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsRestoreFromBackupBlobSlotPoller
+	Poller *WebAppsRestoreFromBackupBlobSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsRestoreFromBackupBlobSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreFromBackupBlobSlotResponse, error) {
+	respType := WebAppsRestoreFromBackupBlobSlotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsRestoreFromBackupBlobSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsRestoreFromBackupBlobSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreFromBackupBlobSlot", token, client.pl, client.restoreFromBackupBlobSlotHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsRestoreFromBackupBlobSlotPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsRestoreFromBackupBlobSlotResponse contains the response from method WebApps.RestoreFromBackupBlobSlot.
@@ -6507,14 +7816,40 @@ type WebAppsRestoreFromBackupBlobSlotResponse struct {
 
 // WebAppsRestoreFromDeletedAppPollerResponse contains the response from method WebApps.RestoreFromDeletedApp.
 type WebAppsRestoreFromDeletedAppPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsRestoreFromDeletedAppResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsRestoreFromDeletedAppPoller
+	Poller *WebAppsRestoreFromDeletedAppPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsRestoreFromDeletedAppPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreFromDeletedAppResponse, error) {
+	respType := WebAppsRestoreFromDeletedAppResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsRestoreFromDeletedAppPollerResponse from the provided client and resume token.
+func (l *WebAppsRestoreFromDeletedAppPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreFromDeletedApp", token, client.pl, client.restoreFromDeletedAppHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsRestoreFromDeletedAppPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsRestoreFromDeletedAppResponse contains the response from method WebApps.RestoreFromDeletedApp.
@@ -6525,14 +7860,40 @@ type WebAppsRestoreFromDeletedAppResponse struct {
 
 // WebAppsRestoreFromDeletedAppSlotPollerResponse contains the response from method WebApps.RestoreFromDeletedAppSlot.
 type WebAppsRestoreFromDeletedAppSlotPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsRestoreFromDeletedAppSlotResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsRestoreFromDeletedAppSlotPoller
+	Poller *WebAppsRestoreFromDeletedAppSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsRestoreFromDeletedAppSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreFromDeletedAppSlotResponse, error) {
+	respType := WebAppsRestoreFromDeletedAppSlotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsRestoreFromDeletedAppSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsRestoreFromDeletedAppSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreFromDeletedAppSlot", token, client.pl, client.restoreFromDeletedAppSlotHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsRestoreFromDeletedAppSlotPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsRestoreFromDeletedAppSlotResponse contains the response from method WebApps.RestoreFromDeletedAppSlot.
@@ -6543,14 +7904,40 @@ type WebAppsRestoreFromDeletedAppSlotResponse struct {
 
 // WebAppsRestorePollerResponse contains the response from method WebApps.Restore.
 type WebAppsRestorePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsRestoreResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsRestorePoller
+	Poller *WebAppsRestorePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsRestorePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreResponse, error) {
+	respType := WebAppsRestoreResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsRestorePollerResponse from the provided client and resume token.
+func (l *WebAppsRestorePollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.Restore", token, client.pl, client.restoreHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsRestorePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsRestoreResponse contains the response from method WebApps.Restore.
@@ -6561,14 +7948,40 @@ type WebAppsRestoreResponse struct {
 
 // WebAppsRestoreSlotPollerResponse contains the response from method WebApps.RestoreSlot.
 type WebAppsRestoreSlotPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsRestoreSlotResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsRestoreSlotPoller
+	Poller *WebAppsRestoreSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsRestoreSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreSlotResponse, error) {
+	respType := WebAppsRestoreSlotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsRestoreSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsRestoreSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreSlot", token, client.pl, client.restoreSlotHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsRestoreSlotPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsRestoreSlotResponse contains the response from method WebApps.RestoreSlot.
@@ -6579,14 +7992,40 @@ type WebAppsRestoreSlotResponse struct {
 
 // WebAppsRestoreSnapshotPollerResponse contains the response from method WebApps.RestoreSnapshot.
 type WebAppsRestoreSnapshotPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsRestoreSnapshotResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsRestoreSnapshotPoller
+	Poller *WebAppsRestoreSnapshotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsRestoreSnapshotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreSnapshotResponse, error) {
+	respType := WebAppsRestoreSnapshotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsRestoreSnapshotPollerResponse from the provided client and resume token.
+func (l *WebAppsRestoreSnapshotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreSnapshot", token, client.pl, client.restoreSnapshotHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsRestoreSnapshotPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsRestoreSnapshotResponse contains the response from method WebApps.RestoreSnapshot.
@@ -6597,14 +8036,40 @@ type WebAppsRestoreSnapshotResponse struct {
 
 // WebAppsRestoreSnapshotSlotPollerResponse contains the response from method WebApps.RestoreSnapshotSlot.
 type WebAppsRestoreSnapshotSlotPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsRestoreSnapshotSlotResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsRestoreSnapshotSlotPoller
+	Poller *WebAppsRestoreSnapshotSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsRestoreSnapshotSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsRestoreSnapshotSlotResponse, error) {
+	respType := WebAppsRestoreSnapshotSlotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsRestoreSnapshotSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsRestoreSnapshotSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.RestoreSnapshotSlot", token, client.pl, client.restoreSnapshotSlotHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsRestoreSnapshotSlotPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsRestoreSnapshotSlotResponse contains the response from method WebApps.RestoreSnapshotSlot.
@@ -6639,14 +8104,40 @@ type WebAppsStartContinuousWebJobSlotResponse struct {
 
 // WebAppsStartNetworkTracePollerResponse contains the response from method WebApps.StartNetworkTrace.
 type WebAppsStartNetworkTracePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsStartNetworkTraceResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsStartNetworkTracePoller
+	Poller *WebAppsStartNetworkTracePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsStartNetworkTracePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsStartNetworkTraceResponse, error) {
+	respType := WebAppsStartNetworkTraceResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.NetworkTraceArray)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsStartNetworkTracePollerResponse from the provided client and resume token.
+func (l *WebAppsStartNetworkTracePollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.StartNetworkTrace", token, client.pl, client.startNetworkTraceHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsStartNetworkTracePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsStartNetworkTraceResponse contains the response from method WebApps.StartNetworkTrace.
@@ -6664,14 +8155,40 @@ type WebAppsStartNetworkTraceResult struct {
 
 // WebAppsStartNetworkTraceSlotPollerResponse contains the response from method WebApps.StartNetworkTraceSlot.
 type WebAppsStartNetworkTraceSlotPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsStartNetworkTraceSlotResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsStartNetworkTraceSlotPoller
+	Poller *WebAppsStartNetworkTraceSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsStartNetworkTraceSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsStartNetworkTraceSlotResponse, error) {
+	respType := WebAppsStartNetworkTraceSlotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.NetworkTraceArray)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsStartNetworkTraceSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsStartNetworkTraceSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.StartNetworkTraceSlot", token, client.pl, client.startNetworkTraceSlotHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsStartNetworkTraceSlotPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsStartNetworkTraceSlotResponse contains the response from method WebApps.StartNetworkTraceSlot.
@@ -6701,14 +8218,40 @@ type WebAppsStartSlotResponse struct {
 
 // WebAppsStartWebSiteNetworkTraceOperationPollerResponse contains the response from method WebApps.StartWebSiteNetworkTraceOperation.
 type WebAppsStartWebSiteNetworkTraceOperationPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsStartWebSiteNetworkTraceOperationResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsStartWebSiteNetworkTraceOperationPoller
+	Poller *WebAppsStartWebSiteNetworkTraceOperationPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsStartWebSiteNetworkTraceOperationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsStartWebSiteNetworkTraceOperationResponse, error) {
+	respType := WebAppsStartWebSiteNetworkTraceOperationResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.NetworkTraceArray)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsStartWebSiteNetworkTraceOperationPollerResponse from the provided client and resume token.
+func (l *WebAppsStartWebSiteNetworkTraceOperationPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.StartWebSiteNetworkTraceOperation", token, client.pl, client.startWebSiteNetworkTraceOperationHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsStartWebSiteNetworkTraceOperationPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsStartWebSiteNetworkTraceOperationResponse contains the response from method WebApps.StartWebSiteNetworkTraceOperation.
@@ -6726,14 +8269,40 @@ type WebAppsStartWebSiteNetworkTraceOperationResult struct {
 
 // WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse contains the response from method WebApps.StartWebSiteNetworkTraceOperationSlot.
 type WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsStartWebSiteNetworkTraceOperationSlotResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsStartWebSiteNetworkTraceOperationSlotPoller
+	Poller *WebAppsStartWebSiteNetworkTraceOperationSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsStartWebSiteNetworkTraceOperationSlotResponse, error) {
+	respType := WebAppsStartWebSiteNetworkTraceOperationSlotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.NetworkTraceArray)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsStartWebSiteNetworkTraceOperationSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.StartWebSiteNetworkTraceOperationSlot", token, client.pl, client.startWebSiteNetworkTraceOperationSlotHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsStartWebSiteNetworkTraceOperationSlotPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsStartWebSiteNetworkTraceOperationSlotResponse contains the response from method WebApps.StartWebSiteNetworkTraceOperationSlot.
@@ -6823,14 +8392,40 @@ type WebAppsStopWebSiteNetworkTraceSlotResponse struct {
 
 // WebAppsSwapSlotPollerResponse contains the response from method WebApps.SwapSlot.
 type WebAppsSwapSlotPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsSwapSlotResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsSwapSlotPoller
+	Poller *WebAppsSwapSlotPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsSwapSlotPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsSwapSlotResponse, error) {
+	respType := WebAppsSwapSlotResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsSwapSlotPollerResponse from the provided client and resume token.
+func (l *WebAppsSwapSlotPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.SwapSlot", token, client.pl, client.swapSlotHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsSwapSlotPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsSwapSlotResponse contains the response from method WebApps.SwapSlot.
@@ -6841,14 +8436,40 @@ type WebAppsSwapSlotResponse struct {
 
 // WebAppsSwapSlotWithProductionPollerResponse contains the response from method WebApps.SwapSlotWithProduction.
 type WebAppsSwapSlotWithProductionPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WebAppsSwapSlotWithProductionResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WebAppsSwapSlotWithProductionPoller
+	Poller *WebAppsSwapSlotWithProductionPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WebAppsSwapSlotWithProductionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WebAppsSwapSlotWithProductionResponse, error) {
+	respType := WebAppsSwapSlotWithProductionResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WebAppsSwapSlotWithProductionPollerResponse from the provided client and resume token.
+func (l *WebAppsSwapSlotWithProductionPollerResponse) Resume(ctx context.Context, client *WebAppsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WebAppsClient.SwapSlotWithProduction", token, client.pl, client.swapSlotWithProductionHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WebAppsSwapSlotWithProductionPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WebAppsSwapSlotWithProductionResponse contains the response from method WebApps.SwapSlotWithProduction.
@@ -7394,7 +9015,7 @@ type WebAppsUpdateVnetConnectionResponse struct {
 
 // WebAppsUpdateVnetConnectionResult contains the result from method WebApps.UpdateVnetConnection.
 type WebAppsUpdateVnetConnectionResult struct {
-	VnetInfo
+	VnetInfoResource
 }
 
 // WebAppsUpdateVnetConnectionSlotResponse contains the response from method WebApps.UpdateVnetConnectionSlot.
@@ -7406,7 +9027,7 @@ type WebAppsUpdateVnetConnectionSlotResponse struct {
 
 // WebAppsUpdateVnetConnectionSlotResult contains the result from method WebApps.UpdateVnetConnectionSlot.
 type WebAppsUpdateVnetConnectionSlotResult struct {
-	VnetInfo
+	VnetInfoResource
 }
 
 // WebSiteManagementClientCheckNameAvailabilityResponse contains the response from method WebSiteManagementClient.CheckNameAvailability.

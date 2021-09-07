@@ -133,14 +133,14 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(rpName, namespaceName, s
 			return nil, err
 		}
 		if err := ctx.SDKRepo.Stash(); err != nil {
-			return nil, err
+			log.Printf("failed to stash changes: %+v", err)
 		}
 		oriExports, err := exports.Get(packagePath)
 		if err != nil {
 			return nil, err
 		}
 		if err := ctx.SDKRepo.StashPop(); err != nil {
-			return nil, err
+			log.Printf("failed to stash pop changes: %+v", err)
 		}
 
 		log.Printf("Remove all the files that start with `zz_generated_`...")

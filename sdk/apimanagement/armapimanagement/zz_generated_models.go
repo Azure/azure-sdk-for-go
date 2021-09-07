@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,9 +10,10 @@ package armapimanagement
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // APIBeginCreateOrUpdateOptions contains the optional parameters for the API.BeginCreateOrUpdate method.
@@ -20,7 +22,7 @@ type APIBeginCreateOrUpdateOptions struct {
 	IfMatch *string
 }
 
-// APICollection - Paged Api list representation.
+// APICollection - Paged API list representation.
 type APICollection struct {
 	// Total record count number across all pages.
 	Count *int64 `json:"count,omitempty"`
@@ -41,10 +43,22 @@ func (a APICollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// APIContract - Api details.
+// APIContactInformation - API contact information
+type APIContactInformation struct {
+	// The email address of the contact person/organization. MUST be in the format of an email address
+	Email *string `json:"email,omitempty"`
+
+	// The identifying name of the contact person/organization
+	Name *string `json:"name,omitempty"`
+
+	// The URL pointing to the contact information. MUST be in the format of a URL
+	URL *string `json:"url,omitempty"`
+}
+
+// APIContract - API details.
 type APIContract struct {
 	Resource
-	// Api entity contract properties.
+	// API entity contract properties.
 	Properties *APIContractProperties `json:"properties,omitempty"`
 }
 
@@ -55,7 +69,7 @@ func (a APIContract) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// APIContractProperties - Api Entity Properties
+// APIContractProperties - API Entity Properties
 type APIContractProperties struct {
 	APIEntityBaseContract
 	// REQUIRED; Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It is appended to the
@@ -126,19 +140,20 @@ func (a APIContractUpdateProperties) MarshalJSON() ([]byte, error) {
 
 // APICreateOrUpdateParameter - API Create or Update Parameters.
 type APICreateOrUpdateParameter struct {
-	// Api entity create of update properties.
+	// API entity create of update properties.
 	Properties *APICreateOrUpdateProperties `json:"properties,omitempty"`
 }
 
-// APICreateOrUpdateProperties - Api Create or Update Properties.
+// APICreateOrUpdateProperties - API Create or Update Properties.
 type APICreateOrUpdateProperties struct {
 	APIContractProperties
 	// Format of the Content in which the API is getting imported.
 	Format *ContentFormat `json:"format,omitempty"`
 
-	// Type of Api to create.
-	// * http creates a SOAP to REST API
-	// * soap creates a SOAP pass-through API .
+	// Type of API to create.
+	// * http creates a REST API
+	// * soap creates a SOAP pass-through API
+	// * websocket creates websocket API.
 	SoapAPIType *SoapAPIType `json:"apiType,omitempty"`
 
 	// Content value when Importing an API.
@@ -212,19 +227,19 @@ type APIDiagnosticUpdateOptions struct {
 
 // APIEntityBaseContract - API base contract details.
 type APIEntityBaseContract struct {
-	// Describes the Revision of the Api. If no value is provided, default revision 1 is created
+	// Describes the revision of the API. If no value is provided, default revision 1 is created
 	APIRevision *string `json:"apiRevision,omitempty"`
 
-	// Description of the Api Revision.
+	// Description of the API Revision.
 	APIRevisionDescription *string `json:"apiRevisionDescription,omitempty"`
 
 	// Type of API.
 	APIType *APIType `json:"type,omitempty"`
 
-	// Indicates the Version identifier of the API if the API is versioned
+	// Indicates the version identifier of the API if the API is versioned
 	APIVersion *string `json:"apiVersion,omitempty"`
 
-	// Description of the Api Version.
+	// Description of the API Version.
 	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
 
 	// A resource identifier for the related ApiVersionSet.
@@ -233,17 +248,26 @@ type APIEntityBaseContract struct {
 	// Collection of authentication settings included into this API.
 	AuthenticationSettings *AuthenticationSettingsContract `json:"authenticationSettings,omitempty"`
 
+	// Contact information for the API.
+	Contact *APIContactInformation `json:"contact,omitempty"`
+
 	// Description of the API. May include HTML formatting tags.
 	Description *string `json:"description,omitempty"`
 
 	// Indicates if API revision is current api revision.
 	IsCurrent *bool `json:"isCurrent,omitempty"`
 
+	// License information for the API.
+	License *APILicenseInformation `json:"license,omitempty"`
+
 	// Protocols over which API is made available.
 	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract `json:"subscriptionKeyParameterNames,omitempty"`
 
 	// Specifies whether an API or Product subscription is required for accessing the API.
 	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
+
+	// A URL to the Terms of Service for the API. MUST be in the format of a URL.
+	TermsOfServiceURL *string `json:"termsOfServiceUrl,omitempty"`
 
 	// READ-ONLY; Indicates if API revision is accessible via the gateway.
 	IsOnline *bool `json:"isOnline,omitempty" azure:"ro"`
@@ -264,11 +288,14 @@ func (a APIEntityBaseContract) marshalInternal() map[string]interface{} {
 	populate(objectMap, "apiVersionDescription", a.APIVersionDescription)
 	populate(objectMap, "apiVersionSetId", a.APIVersionSetID)
 	populate(objectMap, "authenticationSettings", a.AuthenticationSettings)
+	populate(objectMap, "contact", a.Contact)
 	populate(objectMap, "description", a.Description)
 	populate(objectMap, "isCurrent", a.IsCurrent)
 	populate(objectMap, "isOnline", a.IsOnline)
+	populate(objectMap, "license", a.License)
 	populate(objectMap, "subscriptionKeyParameterNames", a.SubscriptionKeyParameterNames)
 	populate(objectMap, "subscriptionRequired", a.SubscriptionRequired)
+	populate(objectMap, "termsOfServiceUrl", a.TermsOfServiceURL)
 	return objectMap
 }
 
@@ -279,17 +306,17 @@ type APIExportGetOptions struct {
 
 // APIExportResult - API Export result.
 type APIExportResult struct {
-	// Format in which the Api Details are exported to the Storage Blob with Sas Key valid for 5 minutes.
+	// Format in which the API Details are exported to the Storage Blob with Sas Key valid for 5 minutes.
 	ExportResultFormat *ExportResultFormat `json:"format,omitempty"`
 
 	// ResourceId of the API which was exported.
 	ID *string `json:"id,omitempty"`
 
-	// The object defining the schema of the exported Api Detail
+	// The object defining the schema of the exported API Detail
 	Value *APIExportResultValue `json:"value,omitempty"`
 }
 
-// APIExportResultValue - The object defining the schema of the exported Api Detail
+// APIExportResultValue - The object defining the schema of the exported API Detail
 type APIExportResultValue struct {
 	// Link to the Storage Blob containing the result of the export operation. The Blob Uri is only valid for 5 minutes.
 	Link *string `json:"link,omitempty"`
@@ -410,6 +437,15 @@ type APIIssueListByServiceOptions struct {
 // APIIssueUpdateOptions contains the optional parameters for the APIIssue.Update method.
 type APIIssueUpdateOptions struct {
 	// placeholder for future optional parameters
+}
+
+// APILicenseInformation - API license information
+type APILicenseInformation struct {
+	// The license name used for the API
+	Name *string `json:"name,omitempty"`
+
+	// A URL to the license used for the API. MUST be in the format of a URL
+	URL *string `json:"url,omitempty"`
 }
 
 // APIListByServiceOptions contains the optional parameters for the API.ListByService method.
@@ -718,6 +754,10 @@ type APIManagementServiceBaseProperties struct {
 	// Email address from which the notification will be sent.
 	NotificationSenderEmail *string `json:"notificationSenderEmail,omitempty"`
 
+	// Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the region. Supported only for Developer and Premium
+	// SKU being deployed in Virtual Network.
+	PublicIPAddressID *string `json:"publicIpAddressId,omitempty"`
+
 	// Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored.
 	Restore *bool `json:"restore,omitempty"`
 
@@ -802,6 +842,7 @@ func (a APIManagementServiceBaseProperties) marshalInternal() map[string]interfa
 	populate(objectMap, "portalUrl", a.PortalURL)
 	populate(objectMap, "privateIPAddresses", a.PrivateIPAddresses)
 	populate(objectMap, "provisioningState", a.ProvisioningState)
+	populate(objectMap, "publicIpAddressId", a.PublicIPAddressID)
 	populate(objectMap, "publicIPAddresses", a.PublicIPAddresses)
 	populate(objectMap, "restore", a.Restore)
 	populate(objectMap, "scmUrl", a.ScmURL)
@@ -864,6 +905,9 @@ func (a *APIManagementServiceBaseProperties) unmarshalInternal(rawMsg map[string
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, &a.ProvisioningState)
+			delete(rawMsg, key)
+		case "publicIpAddressId":
+			err = unpopulate(val, &a.PublicIPAddressID)
 			delete(rawMsg, key)
 		case "publicIPAddresses":
 			err = unpopulate(val, &a.PublicIPAddresses)
@@ -1134,6 +1178,9 @@ type APIManagementServiceUpdateParameters struct {
 	// SKU properties of the API Management service.
 	SKU *APIManagementServiceSKUProperties `json:"sku,omitempty"`
 
+	// A list of availability zones denoting where the resource needs to come from.
+	Zones []*string `json:"zones,omitempty"`
+
 	// READ-ONLY; ETag of the resource.
 	Etag *string `json:"etag,omitempty" azure:"ro"`
 }
@@ -1145,6 +1192,7 @@ func (a APIManagementServiceUpdateParameters) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "identity", a.Identity)
 	populate(objectMap, "properties", a.Properties)
 	populate(objectMap, "sku", a.SKU)
+	populate(objectMap, "zones", a.Zones)
 	return json.Marshal(objectMap)
 }
 
@@ -1426,7 +1474,7 @@ type APIReleaseUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIRevisionCollection - Paged Api Revision list representation.
+// APIRevisionCollection - Paged API Revision list representation.
 type APIRevisionCollection struct {
 	// Total record count number across all pages.
 	Count *int64 `json:"count,omitempty"`
@@ -1681,7 +1729,7 @@ type APIVersionConstraint struct {
 	MinAPIVersion *string `json:"minApiVersion,omitempty"`
 }
 
-// APIVersionSetCollection - Paged Api Version Set list representation.
+// APIVersionSetCollection - Paged API Version Set list representation.
 type APIVersionSetCollection struct {
 	// Total record count number across all pages.
 	Count *int64 `json:"count,omitempty"`
@@ -1702,10 +1750,10 @@ func (a APIVersionSetCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// APIVersionSetContract - Api Version Set Contract details.
+// APIVersionSetContract - API Version Set Contract details.
 type APIVersionSetContract struct {
 	Resource
-	// Api VersionSet contract properties.
+	// API VersionSet contract properties.
 	Properties *APIVersionSetContractProperties `json:"properties,omitempty"`
 }
 
@@ -1758,7 +1806,7 @@ type APIVersionSetDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIVersionSetEntityBase - Api Version set base parameters
+// APIVersionSetEntityBase - API Version set base parameters
 type APIVersionSetEntityBase struct {
 	// Description of API Version Set.
 	Description *string `json:"description,omitempty"`
@@ -1795,9 +1843,9 @@ type APIVersionSetUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// APIVersionSetUpdateParameters - Parameters to update or create an Api Version Set Contract.
+// APIVersionSetUpdateParameters - Parameters to update or create an API Version Set Contract.
 type APIVersionSetUpdateParameters struct {
-	// Parameters to update or create an Api Version Set Contract.
+	// Parameters to update or create an API Version Set Contract.
 	Properties *APIVersionSetUpdateParametersProperties `json:"properties,omitempty"`
 }
 
@@ -1934,6 +1982,10 @@ type AdditionalLocation struct {
 	// Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway in this additional location.
 	DisableGateway *bool `json:"disableGateway,omitempty"`
 
+	// Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the location. Supported only for Premium SKU being
+	// deployed in Virtual Network.
+	PublicIPAddressID *string `json:"publicIpAddressId,omitempty"`
+
 	// Virtual network configuration for the location.
 	VirtualNetworkConfiguration *VirtualNetworkConfiguration `json:"virtualNetworkConfiguration,omitempty"`
 
@@ -1960,6 +2012,7 @@ func (a AdditionalLocation) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "gatewayRegionalUrl", a.GatewayRegionalURL)
 	populate(objectMap, "location", a.Location)
 	populate(objectMap, "privateIPAddresses", a.PrivateIPAddresses)
+	populate(objectMap, "publicIpAddressId", a.PublicIPAddressID)
 	populate(objectMap, "publicIPAddresses", a.PublicIPAddresses)
 	populate(objectMap, "sku", a.SKU)
 	populate(objectMap, "virtualNetworkConfiguration", a.VirtualNetworkConfiguration)
@@ -2284,7 +2337,7 @@ type BackendBaseParameters struct {
 	// Backend Proxy Contract Properties
 	Proxy *BackendProxyContract `json:"proxy,omitempty"`
 
-	// Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or Api Apps.
+	// Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or API Apps.
 	ResourceID *string `json:"resourceId,omitempty"`
 
 	// Backend TLS Properties
@@ -3114,13 +3167,13 @@ type DelegationSettingsUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeletedServiceContract - Deleted Api Management Service information.
+// DeletedServiceContract - Deleted API Management Service information.
 type DeletedServiceContract struct {
 	Resource
-	// Deleted Api Management Service details.
+	// Deleted API Management Service details.
 	Properties *DeletedServiceContractProperties `json:"properties,omitempty"`
 
-	// READ-ONLY; Api Management Service Master Location.
+	// READ-ONLY; API Management Service Master Location.
 	Location *string `json:"location,omitempty" azure:"ro"`
 }
 
@@ -3188,7 +3241,7 @@ type DeletedServicesBeginPurgeOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeletedServicesCollection - Paged deleted Api Management Services List Representation.
+// DeletedServicesCollection - Paged deleted API Management Services List Representation.
 type DeletedServicesCollection struct {
 	// READ-ONLY; Next page link if any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -3384,7 +3437,7 @@ type EmailTemplateContractProperties struct {
 	// Title of the Template.
 	Title *string `json:"title,omitempty"`
 
-	// READ-ONLY; Whether the template is the default template provided by Api Management or has been edited.
+	// READ-ONLY; Whether the template is the default template provided by API Management or has been edited.
 	IsDefault *bool `json:"isDefault,omitempty" azure:"ro"`
 }
 
@@ -4095,6 +4148,12 @@ type HostnameConfiguration struct {
 	// Certificate Password.
 	CertificatePassword *string `json:"certificatePassword,omitempty"`
 
+	// Certificate Source.
+	CertificateSource *CertificateSource `json:"certificateSource,omitempty"`
+
+	// Certificate Status.
+	CertificateStatus *CertificateStatus `json:"certificateStatus,omitempty"`
+
 	// Specify true to setup the certificate associated with this Hostname as the Default SSL Certificate. If a client does not send the SNI header, then this
 	// will be the certificate that will be challenged.
 	// The property is useful if a service has multiple custom hostname enabled and it needs to decide on the default ssl certificate. The setting only applied
@@ -4679,7 +4738,7 @@ type KeyVaultContractCreateProperties struct {
 	// SystemAssignedIdentity or UserAssignedIdentity Client Id which will be used to access key vault secret.
 	IdentityClientID *string `json:"identityClientId,omitempty"`
 
-	// Key vault secret identifier for fetching secret. Providing a versioned secret will prevent auto-refresh. This requires Api Management service to be configured
+	// Key vault secret identifier for fetching secret. Providing a versioned secret will prevent auto-refresh. This requires API Management service to be configured
 	// with aka.ms/apimmsi
 	SecretIdentifier *string `json:"secretIdentifier,omitempty"`
 }
@@ -5422,7 +5481,7 @@ func (o OperationCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// OperationContract - Api Operation details.
+// OperationContract - API Operation details.
 type OperationContract struct {
 	Resource
 	// Properties of the Operation Contract.
@@ -5473,7 +5532,7 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 }
 
-// OperationEntityBaseContract - Api Operation Entity Base Contract details.
+// OperationEntityBaseContract - API Operation Entity Base Contract details.
 type OperationEntityBaseContract struct {
 	// Description of the operation. May include HTML formatting tags.
 	Description *string `json:"description,omitempty"`
@@ -5652,13 +5711,13 @@ type OperationTagResourceContractProperties struct {
 	// Identifier of the operation in form /operations/{operationId}.
 	ID *string `json:"id,omitempty"`
 
-	// READ-ONLY; Api Name.
+	// READ-ONLY; API Name.
 	APIName *string `json:"apiName,omitempty" azure:"ro"`
 
-	// READ-ONLY; Api Revision.
+	// READ-ONLY; API Revision.
 	APIRevision *string `json:"apiRevision,omitempty" azure:"ro"`
 
-	// READ-ONLY; Api Version.
+	// READ-ONLY; API Version.
 	APIVersion *string `json:"apiVersion,omitempty" azure:"ro"`
 
 	// READ-ONLY; Operation Description.
@@ -5674,7 +5733,7 @@ type OperationTagResourceContractProperties struct {
 	URLTemplate *string `json:"urlTemplate,omitempty" azure:"ro"`
 }
 
-// OperationUpdateContract - Api Operation Update Contract details.
+// OperationUpdateContract - API Operation Update Contract details.
 type OperationUpdateContract struct {
 	// Properties of the API Operation entity that can be updated.
 	Properties *OperationUpdateContractProperties `json:"properties,omitempty"`
@@ -5723,8 +5782,17 @@ type ParameterContract struct {
 	// Parameter description.
 	Description *string `json:"description,omitempty"`
 
+	// Exampled defined for the parameter.
+	Examples map[string]*ParameterExampleContract `json:"examples,omitempty"`
+
 	// Specifies whether parameter is required or not.
 	Required *bool `json:"required,omitempty"`
+
+	// Schema identifier.
+	SchemaID *string `json:"schemaId,omitempty"`
+
+	// Type name defined by the schema.
+	TypeName *string `json:"typeName,omitempty"`
 
 	// Parameter values.
 	Values []*string `json:"values,omitempty"`
@@ -5735,11 +5803,29 @@ func (p ParameterContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "defaultValue", p.DefaultValue)
 	populate(objectMap, "description", p.Description)
+	populate(objectMap, "examples", p.Examples)
 	populate(objectMap, "name", p.Name)
 	populate(objectMap, "required", p.Required)
+	populate(objectMap, "schemaId", p.SchemaID)
 	populate(objectMap, "type", p.Type)
+	populate(objectMap, "typeName", p.TypeName)
 	populate(objectMap, "values", p.Values)
 	return json.Marshal(objectMap)
+}
+
+// ParameterExampleContract - Parameter example.
+type ParameterExampleContract struct {
+	// Long description for the example
+	Description *string `json:"description,omitempty"`
+
+	// A URL that points to the literal example
+	ExternalValue *string `json:"externalValue,omitempty"`
+
+	// Short description for the example
+	Summary *string `json:"summary,omitempty"`
+
+	// Example value. May be a primitive value, or an object.
+	Value interface{} `json:"value,omitempty"`
 }
 
 // PipelineDiagnosticSettings - Diagnostic settings for incoming/outgoing HTTP messages to the Gateway.
@@ -5924,7 +6010,7 @@ func (p PortalRevisionCollection) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// PortalRevisionContract - Portal revisions contract details.
+// PortalRevisionContract - Portal Revision's contract details.
 type PortalRevisionContract struct {
 	Resource
 	// Properties of the portal revisions.
@@ -5942,13 +6028,13 @@ type PortalRevisionContractProperties struct {
 	// Portal revision description.
 	Description *string `json:"description,omitempty"`
 
-	// Indicates if the Portal Revision is public.
+	// Indicates if the portal's revision is public.
 	IsCurrent *bool `json:"isCurrent,omitempty"`
 
-	// READ-ONLY; Portal revision creation date and time.
+	// READ-ONLY; Portal's revision creation date and time.
 	CreatedDateTime *time.Time `json:"createdDateTime,omitempty" azure:"ro"`
 
-	// READ-ONLY; Portal revision publishing status
+	// READ-ONLY; Status of the portal's revision.
 	Status *PortalRevisionStatus `json:"status,omitempty" azure:"ro"`
 
 	// READ-ONLY; Portal revision publishing status details.
@@ -6994,9 +7080,6 @@ type RepresentationContract struct {
 	// Collection of form parameters. Required if 'contentType' value is either 'application/x-www-form-urlencoded' or 'multipart/form-data'..
 	FormParameters []*ParameterContract `json:"formParameters,omitempty"`
 
-	// An example of the representation.
-	Sample *string `json:"sample,omitempty"`
-
 	// Schema identifier. Applicable only if 'contentType' value is neither 'application/x-www-form-urlencoded' nor 'multipart/form-data'.
 	SchemaID *string `json:"schemaId,omitempty"`
 
@@ -7009,7 +7092,6 @@ func (r RepresentationContract) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "contentType", r.ContentType)
 	populate(objectMap, "formParameters", r.FormParameters)
-	populate(objectMap, "sample", r.Sample)
 	populate(objectMap, "schemaId", r.SchemaID)
 	populate(objectMap, "typeName", r.TypeName)
 	return json.Marshal(objectMap)
@@ -7362,7 +7444,7 @@ type SchemaCollection struct {
 	// READ-ONLY; Next page link if any.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
-	// READ-ONLY; Api Schema Contract value.
+	// READ-ONLY; API Schema Contract value.
 	Value []*SchemaContract `json:"value,omitempty" azure:"ro"`
 }
 
@@ -7400,16 +7482,7 @@ type SchemaContractProperties struct {
 	ContentType *string `json:"contentType,omitempty"`
 
 	// Create or update Properties of the Schema Document.
-	Document *SchemaDocumentProperties `json:"document,omitempty"`
-}
-
-// SchemaDocumentProperties - Schema Document Properties.
-type SchemaDocumentProperties struct {
-	// Types definitions. Used for Swagger/OpenAPI schemas only, null otherwise.
-	Definitions map[string]interface{} `json:"definitions,omitempty"`
-
-	// Json escaped string defining the document representing the Schema. Used for schemas other than Swagger/OpenAPI.
-	Value *string `json:"value,omitempty"`
+	Document map[string]interface{} `json:"document,omitempty"`
 }
 
 // SignInSettingsCreateOrUpdateOptions contains the optional parameters for the SignInSettings.CreateOrUpdate method.
@@ -8137,7 +8210,7 @@ type TagResourceContract struct {
 	// REQUIRED; Tag associated with the resource.
 	Tag *TagResourceContractProperties `json:"tag,omitempty"`
 
-	// Api associated with the tag.
+	// API associated with the tag.
 	API *APITagResourceContractProperties `json:"api,omitempty"`
 
 	// Operation associated with the tag.

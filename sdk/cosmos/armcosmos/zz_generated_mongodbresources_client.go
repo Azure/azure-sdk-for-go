@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // MongoDBResourcesClient contains the methods for the MongoDBResources group.
 // Don't use this type directly, use NewMongoDBResourcesClient() instead.
 type MongoDBResourcesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewMongoDBResourcesClient creates a new instance of MongoDBResourcesClient with the specified values.
-func NewMongoDBResourcesClient(con *armcore.Connection, subscriptionID string) *MongoDBResourcesClient {
-	return &MongoDBResourcesClient{con: con, subscriptionID: subscriptionID}
+func NewMongoDBResourcesClient(con *arm.Connection, subscriptionID string) *MongoDBResourcesClient {
+	return &MongoDBResourcesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateUpdateMongoDBCollection - Create or update an Azure Cosmos DB MongoDB Collection
@@ -39,65 +43,37 @@ func (client *MongoDBResourcesClient) BeginCreateUpdateMongoDBCollection(ctx con
 		return MongoDBResourcesCreateUpdateMongoDBCollectionPollerResponse{}, err
 	}
 	result := MongoDBResourcesCreateUpdateMongoDBCollectionPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("MongoDBResourcesClient.CreateUpdateMongoDBCollection", "", resp, client.con.Pipeline(), client.createUpdateMongoDBCollectionHandleError)
-	if err != nil {
-		return MongoDBResourcesCreateUpdateMongoDBCollectionPollerResponse{}, err
-	}
-	poller := &mongoDBResourcesCreateUpdateMongoDBCollectionPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesCreateUpdateMongoDBCollectionResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateUpdateMongoDBCollection creates a new MongoDBResourcesCreateUpdateMongoDBCollectionPoller from the specified resume token.
-// token - The value must come from a previous call to MongoDBResourcesCreateUpdateMongoDBCollectionPoller.ResumeToken().
-func (client *MongoDBResourcesClient) ResumeCreateUpdateMongoDBCollection(ctx context.Context, token string) (MongoDBResourcesCreateUpdateMongoDBCollectionPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("MongoDBResourcesClient.CreateUpdateMongoDBCollection", token, client.con.Pipeline(), client.createUpdateMongoDBCollectionHandleError)
-	if err != nil {
-		return MongoDBResourcesCreateUpdateMongoDBCollectionPollerResponse{}, err
-	}
-	poller := &mongoDBResourcesCreateUpdateMongoDBCollectionPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return MongoDBResourcesCreateUpdateMongoDBCollectionPollerResponse{}, err
-	}
-	result := MongoDBResourcesCreateUpdateMongoDBCollectionPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesCreateUpdateMongoDBCollectionResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("MongoDBResourcesClient.CreateUpdateMongoDBCollection", "", resp, client.pl, client.createUpdateMongoDBCollectionHandleError)
+	if err != nil {
+		return MongoDBResourcesCreateUpdateMongoDBCollectionPollerResponse{}, err
+	}
+	result.Poller = &MongoDBResourcesCreateUpdateMongoDBCollectionPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateUpdateMongoDBCollection - Create or update an Azure Cosmos DB MongoDB Collection
 // If the operation fails it returns a generic error.
-func (client *MongoDBResourcesClient) createUpdateMongoDBCollection(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, createUpdateMongoDBCollectionParameters MongoDBCollectionCreateUpdateParameters, options *MongoDBResourcesBeginCreateUpdateMongoDBCollectionOptions) (*azcore.Response, error) {
+func (client *MongoDBResourcesClient) createUpdateMongoDBCollection(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, createUpdateMongoDBCollectionParameters MongoDBCollectionCreateUpdateParameters, options *MongoDBResourcesBeginCreateUpdateMongoDBCollectionOptions) (*http.Response, error) {
 	req, err := client.createUpdateMongoDBCollectionCreateRequest(ctx, resourceGroupName, accountName, databaseName, collectionName, createUpdateMongoDBCollectionParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.createUpdateMongoDBCollectionHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createUpdateMongoDBCollectionCreateRequest creates the CreateUpdateMongoDBCollection request.
-func (client *MongoDBResourcesClient) createUpdateMongoDBCollectionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, createUpdateMongoDBCollectionParameters MongoDBCollectionCreateUpdateParameters, options *MongoDBResourcesBeginCreateUpdateMongoDBCollectionOptions) (*azcore.Request, error) {
+func (client *MongoDBResourcesClient) createUpdateMongoDBCollectionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, createUpdateMongoDBCollectionParameters MongoDBCollectionCreateUpdateParameters, options *MongoDBResourcesBeginCreateUpdateMongoDBCollectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -119,28 +95,27 @@ func (client *MongoDBResourcesClient) createUpdateMongoDBCollectionCreateRequest
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(createUpdateMongoDBCollectionParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, createUpdateMongoDBCollectionParameters)
 }
 
 // createUpdateMongoDBCollectionHandleError handles the CreateUpdateMongoDBCollection error response.
-func (client *MongoDBResourcesClient) createUpdateMongoDBCollectionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MongoDBResourcesClient) createUpdateMongoDBCollectionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginCreateUpdateMongoDBDatabase - Create or updates Azure Cosmos DB MongoDB database
@@ -151,65 +126,37 @@ func (client *MongoDBResourcesClient) BeginCreateUpdateMongoDBDatabase(ctx conte
 		return MongoDBResourcesCreateUpdateMongoDBDatabasePollerResponse{}, err
 	}
 	result := MongoDBResourcesCreateUpdateMongoDBDatabasePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("MongoDBResourcesClient.CreateUpdateMongoDBDatabase", "", resp, client.con.Pipeline(), client.createUpdateMongoDBDatabaseHandleError)
-	if err != nil {
-		return MongoDBResourcesCreateUpdateMongoDBDatabasePollerResponse{}, err
-	}
-	poller := &mongoDBResourcesCreateUpdateMongoDBDatabasePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesCreateUpdateMongoDBDatabaseResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateUpdateMongoDBDatabase creates a new MongoDBResourcesCreateUpdateMongoDBDatabasePoller from the specified resume token.
-// token - The value must come from a previous call to MongoDBResourcesCreateUpdateMongoDBDatabasePoller.ResumeToken().
-func (client *MongoDBResourcesClient) ResumeCreateUpdateMongoDBDatabase(ctx context.Context, token string) (MongoDBResourcesCreateUpdateMongoDBDatabasePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("MongoDBResourcesClient.CreateUpdateMongoDBDatabase", token, client.con.Pipeline(), client.createUpdateMongoDBDatabaseHandleError)
-	if err != nil {
-		return MongoDBResourcesCreateUpdateMongoDBDatabasePollerResponse{}, err
-	}
-	poller := &mongoDBResourcesCreateUpdateMongoDBDatabasePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return MongoDBResourcesCreateUpdateMongoDBDatabasePollerResponse{}, err
-	}
-	result := MongoDBResourcesCreateUpdateMongoDBDatabasePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesCreateUpdateMongoDBDatabaseResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("MongoDBResourcesClient.CreateUpdateMongoDBDatabase", "", resp, client.pl, client.createUpdateMongoDBDatabaseHandleError)
+	if err != nil {
+		return MongoDBResourcesCreateUpdateMongoDBDatabasePollerResponse{}, err
+	}
+	result.Poller = &MongoDBResourcesCreateUpdateMongoDBDatabasePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateUpdateMongoDBDatabase - Create or updates Azure Cosmos DB MongoDB database
 // If the operation fails it returns a generic error.
-func (client *MongoDBResourcesClient) createUpdateMongoDBDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateMongoDBDatabaseParameters MongoDBDatabaseCreateUpdateParameters, options *MongoDBResourcesBeginCreateUpdateMongoDBDatabaseOptions) (*azcore.Response, error) {
+func (client *MongoDBResourcesClient) createUpdateMongoDBDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateMongoDBDatabaseParameters MongoDBDatabaseCreateUpdateParameters, options *MongoDBResourcesBeginCreateUpdateMongoDBDatabaseOptions) (*http.Response, error) {
 	req, err := client.createUpdateMongoDBDatabaseCreateRequest(ctx, resourceGroupName, accountName, databaseName, createUpdateMongoDBDatabaseParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.createUpdateMongoDBDatabaseHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createUpdateMongoDBDatabaseCreateRequest creates the CreateUpdateMongoDBDatabase request.
-func (client *MongoDBResourcesClient) createUpdateMongoDBDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateMongoDBDatabaseParameters MongoDBDatabaseCreateUpdateParameters, options *MongoDBResourcesBeginCreateUpdateMongoDBDatabaseOptions) (*azcore.Request, error) {
+func (client *MongoDBResourcesClient) createUpdateMongoDBDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateMongoDBDatabaseParameters MongoDBDatabaseCreateUpdateParameters, options *MongoDBResourcesBeginCreateUpdateMongoDBDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -227,28 +174,27 @@ func (client *MongoDBResourcesClient) createUpdateMongoDBDatabaseCreateRequest(c
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(createUpdateMongoDBDatabaseParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, createUpdateMongoDBDatabaseParameters)
 }
 
 // createUpdateMongoDBDatabaseHandleError handles the CreateUpdateMongoDBDatabase error response.
-func (client *MongoDBResourcesClient) createUpdateMongoDBDatabaseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MongoDBResourcesClient) createUpdateMongoDBDatabaseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginDeleteMongoDBCollection - Deletes an existing Azure Cosmos DB MongoDB Collection.
@@ -259,65 +205,37 @@ func (client *MongoDBResourcesClient) BeginDeleteMongoDBCollection(ctx context.C
 		return MongoDBResourcesDeleteMongoDBCollectionPollerResponse{}, err
 	}
 	result := MongoDBResourcesDeleteMongoDBCollectionPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("MongoDBResourcesClient.DeleteMongoDBCollection", "", resp, client.con.Pipeline(), client.deleteMongoDBCollectionHandleError)
-	if err != nil {
-		return MongoDBResourcesDeleteMongoDBCollectionPollerResponse{}, err
-	}
-	poller := &mongoDBResourcesDeleteMongoDBCollectionPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesDeleteMongoDBCollectionResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDeleteMongoDBCollection creates a new MongoDBResourcesDeleteMongoDBCollectionPoller from the specified resume token.
-// token - The value must come from a previous call to MongoDBResourcesDeleteMongoDBCollectionPoller.ResumeToken().
-func (client *MongoDBResourcesClient) ResumeDeleteMongoDBCollection(ctx context.Context, token string) (MongoDBResourcesDeleteMongoDBCollectionPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("MongoDBResourcesClient.DeleteMongoDBCollection", token, client.con.Pipeline(), client.deleteMongoDBCollectionHandleError)
-	if err != nil {
-		return MongoDBResourcesDeleteMongoDBCollectionPollerResponse{}, err
-	}
-	poller := &mongoDBResourcesDeleteMongoDBCollectionPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return MongoDBResourcesDeleteMongoDBCollectionPollerResponse{}, err
-	}
-	result := MongoDBResourcesDeleteMongoDBCollectionPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesDeleteMongoDBCollectionResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("MongoDBResourcesClient.DeleteMongoDBCollection", "", resp, client.pl, client.deleteMongoDBCollectionHandleError)
+	if err != nil {
+		return MongoDBResourcesDeleteMongoDBCollectionPollerResponse{}, err
+	}
+	result.Poller = &MongoDBResourcesDeleteMongoDBCollectionPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // DeleteMongoDBCollection - Deletes an existing Azure Cosmos DB MongoDB Collection.
 // If the operation fails it returns a generic error.
-func (client *MongoDBResourcesClient) deleteMongoDBCollection(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesBeginDeleteMongoDBCollectionOptions) (*azcore.Response, error) {
+func (client *MongoDBResourcesClient) deleteMongoDBCollection(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesBeginDeleteMongoDBCollectionOptions) (*http.Response, error) {
 	req, err := client.deleteMongoDBCollectionCreateRequest(ctx, resourceGroupName, accountName, databaseName, collectionName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteMongoDBCollectionHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteMongoDBCollectionCreateRequest creates the DeleteMongoDBCollection request.
-func (client *MongoDBResourcesClient) deleteMongoDBCollectionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesBeginDeleteMongoDBCollectionOptions) (*azcore.Request, error) {
+func (client *MongoDBResourcesClient) deleteMongoDBCollectionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesBeginDeleteMongoDBCollectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -339,27 +257,26 @@ func (client *MongoDBResourcesClient) deleteMongoDBCollectionCreateRequest(ctx c
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteMongoDBCollectionHandleError handles the DeleteMongoDBCollection error response.
-func (client *MongoDBResourcesClient) deleteMongoDBCollectionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MongoDBResourcesClient) deleteMongoDBCollectionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginDeleteMongoDBDatabase - Deletes an existing Azure Cosmos DB MongoDB database.
@@ -370,65 +287,37 @@ func (client *MongoDBResourcesClient) BeginDeleteMongoDBDatabase(ctx context.Con
 		return MongoDBResourcesDeleteMongoDBDatabasePollerResponse{}, err
 	}
 	result := MongoDBResourcesDeleteMongoDBDatabasePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("MongoDBResourcesClient.DeleteMongoDBDatabase", "", resp, client.con.Pipeline(), client.deleteMongoDBDatabaseHandleError)
-	if err != nil {
-		return MongoDBResourcesDeleteMongoDBDatabasePollerResponse{}, err
-	}
-	poller := &mongoDBResourcesDeleteMongoDBDatabasePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesDeleteMongoDBDatabaseResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDeleteMongoDBDatabase creates a new MongoDBResourcesDeleteMongoDBDatabasePoller from the specified resume token.
-// token - The value must come from a previous call to MongoDBResourcesDeleteMongoDBDatabasePoller.ResumeToken().
-func (client *MongoDBResourcesClient) ResumeDeleteMongoDBDatabase(ctx context.Context, token string) (MongoDBResourcesDeleteMongoDBDatabasePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("MongoDBResourcesClient.DeleteMongoDBDatabase", token, client.con.Pipeline(), client.deleteMongoDBDatabaseHandleError)
-	if err != nil {
-		return MongoDBResourcesDeleteMongoDBDatabasePollerResponse{}, err
-	}
-	poller := &mongoDBResourcesDeleteMongoDBDatabasePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return MongoDBResourcesDeleteMongoDBDatabasePollerResponse{}, err
-	}
-	result := MongoDBResourcesDeleteMongoDBDatabasePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesDeleteMongoDBDatabaseResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("MongoDBResourcesClient.DeleteMongoDBDatabase", "", resp, client.pl, client.deleteMongoDBDatabaseHandleError)
+	if err != nil {
+		return MongoDBResourcesDeleteMongoDBDatabasePollerResponse{}, err
+	}
+	result.Poller = &MongoDBResourcesDeleteMongoDBDatabasePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // DeleteMongoDBDatabase - Deletes an existing Azure Cosmos DB MongoDB database.
 // If the operation fails it returns a generic error.
-func (client *MongoDBResourcesClient) deleteMongoDBDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesBeginDeleteMongoDBDatabaseOptions) (*azcore.Response, error) {
+func (client *MongoDBResourcesClient) deleteMongoDBDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesBeginDeleteMongoDBDatabaseOptions) (*http.Response, error) {
 	req, err := client.deleteMongoDBDatabaseCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteMongoDBDatabaseHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteMongoDBDatabaseCreateRequest creates the DeleteMongoDBDatabase request.
-func (client *MongoDBResourcesClient) deleteMongoDBDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesBeginDeleteMongoDBDatabaseOptions) (*azcore.Request, error) {
+func (client *MongoDBResourcesClient) deleteMongoDBDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesBeginDeleteMongoDBDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -446,27 +335,26 @@ func (client *MongoDBResourcesClient) deleteMongoDBDatabaseCreateRequest(ctx con
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteMongoDBDatabaseHandleError handles the DeleteMongoDBDatabase error response.
-func (client *MongoDBResourcesClient) deleteMongoDBDatabaseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MongoDBResourcesClient) deleteMongoDBDatabaseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // GetMongoDBCollection - Gets the MongoDB collection under an existing Azure Cosmos DB database account.
@@ -476,18 +364,18 @@ func (client *MongoDBResourcesClient) GetMongoDBCollection(ctx context.Context, 
 	if err != nil {
 		return MongoDBResourcesGetMongoDBCollectionResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return MongoDBResourcesGetMongoDBCollectionResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return MongoDBResourcesGetMongoDBCollectionResponse{}, client.getMongoDBCollectionHandleError(resp)
 	}
 	return client.getMongoDBCollectionHandleResponse(resp)
 }
 
 // getMongoDBCollectionCreateRequest creates the GetMongoDBCollection request.
-func (client *MongoDBResourcesClient) getMongoDBCollectionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesGetMongoDBCollectionOptions) (*azcore.Request, error) {
+func (client *MongoDBResourcesClient) getMongoDBCollectionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesGetMongoDBCollectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -509,37 +397,36 @@ func (client *MongoDBResourcesClient) getMongoDBCollectionCreateRequest(ctx cont
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getMongoDBCollectionHandleResponse handles the GetMongoDBCollection response.
-func (client *MongoDBResourcesClient) getMongoDBCollectionHandleResponse(resp *azcore.Response) (MongoDBResourcesGetMongoDBCollectionResponse, error) {
-	result := MongoDBResourcesGetMongoDBCollectionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.MongoDBCollectionGetResults); err != nil {
+func (client *MongoDBResourcesClient) getMongoDBCollectionHandleResponse(resp *http.Response) (MongoDBResourcesGetMongoDBCollectionResponse, error) {
+	result := MongoDBResourcesGetMongoDBCollectionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MongoDBCollectionGetResults); err != nil {
 		return MongoDBResourcesGetMongoDBCollectionResponse{}, err
 	}
 	return result, nil
 }
 
 // getMongoDBCollectionHandleError handles the GetMongoDBCollection error response.
-func (client *MongoDBResourcesClient) getMongoDBCollectionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MongoDBResourcesClient) getMongoDBCollectionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // GetMongoDBCollectionThroughput - Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database account with the provided
@@ -550,18 +437,18 @@ func (client *MongoDBResourcesClient) GetMongoDBCollectionThroughput(ctx context
 	if err != nil {
 		return MongoDBResourcesGetMongoDBCollectionThroughputResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return MongoDBResourcesGetMongoDBCollectionThroughputResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return MongoDBResourcesGetMongoDBCollectionThroughputResponse{}, client.getMongoDBCollectionThroughputHandleError(resp)
 	}
 	return client.getMongoDBCollectionThroughputHandleResponse(resp)
 }
 
 // getMongoDBCollectionThroughputCreateRequest creates the GetMongoDBCollectionThroughput request.
-func (client *MongoDBResourcesClient) getMongoDBCollectionThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesGetMongoDBCollectionThroughputOptions) (*azcore.Request, error) {
+func (client *MongoDBResourcesClient) getMongoDBCollectionThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesGetMongoDBCollectionThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -583,37 +470,36 @@ func (client *MongoDBResourcesClient) getMongoDBCollectionThroughputCreateReques
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getMongoDBCollectionThroughputHandleResponse handles the GetMongoDBCollectionThroughput response.
-func (client *MongoDBResourcesClient) getMongoDBCollectionThroughputHandleResponse(resp *azcore.Response) (MongoDBResourcesGetMongoDBCollectionThroughputResponse, error) {
-	result := MongoDBResourcesGetMongoDBCollectionThroughputResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ThroughputSettingsGetResults); err != nil {
+func (client *MongoDBResourcesClient) getMongoDBCollectionThroughputHandleResponse(resp *http.Response) (MongoDBResourcesGetMongoDBCollectionThroughputResponse, error) {
+	result := MongoDBResourcesGetMongoDBCollectionThroughputResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
 		return MongoDBResourcesGetMongoDBCollectionThroughputResponse{}, err
 	}
 	return result, nil
 }
 
 // getMongoDBCollectionThroughputHandleError handles the GetMongoDBCollectionThroughput error response.
-func (client *MongoDBResourcesClient) getMongoDBCollectionThroughputHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MongoDBResourcesClient) getMongoDBCollectionThroughputHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // GetMongoDBDatabase - Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
@@ -623,18 +509,18 @@ func (client *MongoDBResourcesClient) GetMongoDBDatabase(ctx context.Context, re
 	if err != nil {
 		return MongoDBResourcesGetMongoDBDatabaseResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return MongoDBResourcesGetMongoDBDatabaseResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return MongoDBResourcesGetMongoDBDatabaseResponse{}, client.getMongoDBDatabaseHandleError(resp)
 	}
 	return client.getMongoDBDatabaseHandleResponse(resp)
 }
 
 // getMongoDBDatabaseCreateRequest creates the GetMongoDBDatabase request.
-func (client *MongoDBResourcesClient) getMongoDBDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesGetMongoDBDatabaseOptions) (*azcore.Request, error) {
+func (client *MongoDBResourcesClient) getMongoDBDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesGetMongoDBDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -652,37 +538,36 @@ func (client *MongoDBResourcesClient) getMongoDBDatabaseCreateRequest(ctx contex
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getMongoDBDatabaseHandleResponse handles the GetMongoDBDatabase response.
-func (client *MongoDBResourcesClient) getMongoDBDatabaseHandleResponse(resp *azcore.Response) (MongoDBResourcesGetMongoDBDatabaseResponse, error) {
-	result := MongoDBResourcesGetMongoDBDatabaseResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.MongoDBDatabaseGetResults); err != nil {
+func (client *MongoDBResourcesClient) getMongoDBDatabaseHandleResponse(resp *http.Response) (MongoDBResourcesGetMongoDBDatabaseResponse, error) {
+	result := MongoDBResourcesGetMongoDBDatabaseResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MongoDBDatabaseGetResults); err != nil {
 		return MongoDBResourcesGetMongoDBDatabaseResponse{}, err
 	}
 	return result, nil
 }
 
 // getMongoDBDatabaseHandleError handles the GetMongoDBDatabase error response.
-func (client *MongoDBResourcesClient) getMongoDBDatabaseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MongoDBResourcesClient) getMongoDBDatabaseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // GetMongoDBDatabaseThroughput - Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database account with the provided name.
@@ -692,18 +577,18 @@ func (client *MongoDBResourcesClient) GetMongoDBDatabaseThroughput(ctx context.C
 	if err != nil {
 		return MongoDBResourcesGetMongoDBDatabaseThroughputResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return MongoDBResourcesGetMongoDBDatabaseThroughputResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return MongoDBResourcesGetMongoDBDatabaseThroughputResponse{}, client.getMongoDBDatabaseThroughputHandleError(resp)
 	}
 	return client.getMongoDBDatabaseThroughputHandleResponse(resp)
 }
 
 // getMongoDBDatabaseThroughputCreateRequest creates the GetMongoDBDatabaseThroughput request.
-func (client *MongoDBResourcesClient) getMongoDBDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesGetMongoDBDatabaseThroughputOptions) (*azcore.Request, error) {
+func (client *MongoDBResourcesClient) getMongoDBDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesGetMongoDBDatabaseThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -721,37 +606,36 @@ func (client *MongoDBResourcesClient) getMongoDBDatabaseThroughputCreateRequest(
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getMongoDBDatabaseThroughputHandleResponse handles the GetMongoDBDatabaseThroughput response.
-func (client *MongoDBResourcesClient) getMongoDBDatabaseThroughputHandleResponse(resp *azcore.Response) (MongoDBResourcesGetMongoDBDatabaseThroughputResponse, error) {
-	result := MongoDBResourcesGetMongoDBDatabaseThroughputResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ThroughputSettingsGetResults); err != nil {
+func (client *MongoDBResourcesClient) getMongoDBDatabaseThroughputHandleResponse(resp *http.Response) (MongoDBResourcesGetMongoDBDatabaseThroughputResponse, error) {
+	result := MongoDBResourcesGetMongoDBDatabaseThroughputResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
 		return MongoDBResourcesGetMongoDBDatabaseThroughputResponse{}, err
 	}
 	return result, nil
 }
 
 // getMongoDBDatabaseThroughputHandleError handles the GetMongoDBDatabaseThroughput error response.
-func (client *MongoDBResourcesClient) getMongoDBDatabaseThroughputHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MongoDBResourcesClient) getMongoDBDatabaseThroughputHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListMongoDBCollections - Lists the MongoDB collection under an existing Azure Cosmos DB database account.
@@ -761,18 +645,18 @@ func (client *MongoDBResourcesClient) ListMongoDBCollections(ctx context.Context
 	if err != nil {
 		return MongoDBResourcesListMongoDBCollectionsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return MongoDBResourcesListMongoDBCollectionsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return MongoDBResourcesListMongoDBCollectionsResponse{}, client.listMongoDBCollectionsHandleError(resp)
 	}
 	return client.listMongoDBCollectionsHandleResponse(resp)
 }
 
 // listMongoDBCollectionsCreateRequest creates the ListMongoDBCollections request.
-func (client *MongoDBResourcesClient) listMongoDBCollectionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesListMongoDBCollectionsOptions) (*azcore.Request, error) {
+func (client *MongoDBResourcesClient) listMongoDBCollectionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesListMongoDBCollectionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -790,37 +674,36 @@ func (client *MongoDBResourcesClient) listMongoDBCollectionsCreateRequest(ctx co
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listMongoDBCollectionsHandleResponse handles the ListMongoDBCollections response.
-func (client *MongoDBResourcesClient) listMongoDBCollectionsHandleResponse(resp *azcore.Response) (MongoDBResourcesListMongoDBCollectionsResponse, error) {
-	result := MongoDBResourcesListMongoDBCollectionsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.MongoDBCollectionListResult); err != nil {
+func (client *MongoDBResourcesClient) listMongoDBCollectionsHandleResponse(resp *http.Response) (MongoDBResourcesListMongoDBCollectionsResponse, error) {
+	result := MongoDBResourcesListMongoDBCollectionsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MongoDBCollectionListResult); err != nil {
 		return MongoDBResourcesListMongoDBCollectionsResponse{}, err
 	}
 	return result, nil
 }
 
 // listMongoDBCollectionsHandleError handles the ListMongoDBCollections error response.
-func (client *MongoDBResourcesClient) listMongoDBCollectionsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MongoDBResourcesClient) listMongoDBCollectionsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListMongoDBDatabases - Lists the MongoDB databases under an existing Azure Cosmos DB database account.
@@ -830,18 +713,18 @@ func (client *MongoDBResourcesClient) ListMongoDBDatabases(ctx context.Context, 
 	if err != nil {
 		return MongoDBResourcesListMongoDBDatabasesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return MongoDBResourcesListMongoDBDatabasesResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return MongoDBResourcesListMongoDBDatabasesResponse{}, client.listMongoDBDatabasesHandleError(resp)
 	}
 	return client.listMongoDBDatabasesHandleResponse(resp)
 }
 
 // listMongoDBDatabasesCreateRequest creates the ListMongoDBDatabases request.
-func (client *MongoDBResourcesClient) listMongoDBDatabasesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *MongoDBResourcesListMongoDBDatabasesOptions) (*azcore.Request, error) {
+func (client *MongoDBResourcesClient) listMongoDBDatabasesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *MongoDBResourcesListMongoDBDatabasesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -855,37 +738,36 @@ func (client *MongoDBResourcesClient) listMongoDBDatabasesCreateRequest(ctx cont
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listMongoDBDatabasesHandleResponse handles the ListMongoDBDatabases response.
-func (client *MongoDBResourcesClient) listMongoDBDatabasesHandleResponse(resp *azcore.Response) (MongoDBResourcesListMongoDBDatabasesResponse, error) {
-	result := MongoDBResourcesListMongoDBDatabasesResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.MongoDBDatabaseListResult); err != nil {
+func (client *MongoDBResourcesClient) listMongoDBDatabasesHandleResponse(resp *http.Response) (MongoDBResourcesListMongoDBDatabasesResponse, error) {
+	result := MongoDBResourcesListMongoDBDatabasesResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MongoDBDatabaseListResult); err != nil {
 		return MongoDBResourcesListMongoDBDatabasesResponse{}, err
 	}
 	return result, nil
 }
 
 // listMongoDBDatabasesHandleError handles the ListMongoDBDatabases error response.
-func (client *MongoDBResourcesClient) listMongoDBDatabasesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MongoDBResourcesClient) listMongoDBDatabasesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginMigrateMongoDBCollectionToAutoscale - Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale
@@ -896,65 +778,37 @@ func (client *MongoDBResourcesClient) BeginMigrateMongoDBCollectionToAutoscale(c
 		return MongoDBResourcesMigrateMongoDBCollectionToAutoscalePollerResponse{}, err
 	}
 	result := MongoDBResourcesMigrateMongoDBCollectionToAutoscalePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("MongoDBResourcesClient.MigrateMongoDBCollectionToAutoscale", "", resp, client.con.Pipeline(), client.migrateMongoDBCollectionToAutoscaleHandleError)
-	if err != nil {
-		return MongoDBResourcesMigrateMongoDBCollectionToAutoscalePollerResponse{}, err
-	}
-	poller := &mongoDBResourcesMigrateMongoDBCollectionToAutoscalePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesMigrateMongoDBCollectionToAutoscaleResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeMigrateMongoDBCollectionToAutoscale creates a new MongoDBResourcesMigrateMongoDBCollectionToAutoscalePoller from the specified resume token.
-// token - The value must come from a previous call to MongoDBResourcesMigrateMongoDBCollectionToAutoscalePoller.ResumeToken().
-func (client *MongoDBResourcesClient) ResumeMigrateMongoDBCollectionToAutoscale(ctx context.Context, token string) (MongoDBResourcesMigrateMongoDBCollectionToAutoscalePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("MongoDBResourcesClient.MigrateMongoDBCollectionToAutoscale", token, client.con.Pipeline(), client.migrateMongoDBCollectionToAutoscaleHandleError)
-	if err != nil {
-		return MongoDBResourcesMigrateMongoDBCollectionToAutoscalePollerResponse{}, err
-	}
-	poller := &mongoDBResourcesMigrateMongoDBCollectionToAutoscalePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return MongoDBResourcesMigrateMongoDBCollectionToAutoscalePollerResponse{}, err
-	}
-	result := MongoDBResourcesMigrateMongoDBCollectionToAutoscalePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesMigrateMongoDBCollectionToAutoscaleResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("MongoDBResourcesClient.MigrateMongoDBCollectionToAutoscale", "", resp, client.pl, client.migrateMongoDBCollectionToAutoscaleHandleError)
+	if err != nil {
+		return MongoDBResourcesMigrateMongoDBCollectionToAutoscalePollerResponse{}, err
+	}
+	result.Poller = &MongoDBResourcesMigrateMongoDBCollectionToAutoscalePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // MigrateMongoDBCollectionToAutoscale - Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale
 // If the operation fails it returns the *CloudError error type.
-func (client *MongoDBResourcesClient) migrateMongoDBCollectionToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesBeginMigrateMongoDBCollectionToAutoscaleOptions) (*azcore.Response, error) {
+func (client *MongoDBResourcesClient) migrateMongoDBCollectionToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesBeginMigrateMongoDBCollectionToAutoscaleOptions) (*http.Response, error) {
 	req, err := client.migrateMongoDBCollectionToAutoscaleCreateRequest(ctx, resourceGroupName, accountName, databaseName, collectionName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.migrateMongoDBCollectionToAutoscaleHandleError(resp)
 	}
 	return resp, nil
 }
 
 // migrateMongoDBCollectionToAutoscaleCreateRequest creates the MigrateMongoDBCollectionToAutoscale request.
-func (client *MongoDBResourcesClient) migrateMongoDBCollectionToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesBeginMigrateMongoDBCollectionToAutoscaleOptions) (*azcore.Request, error) {
+func (client *MongoDBResourcesClient) migrateMongoDBCollectionToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesBeginMigrateMongoDBCollectionToAutoscaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default/migrateToAutoscale"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -976,29 +830,28 @@ func (client *MongoDBResourcesClient) migrateMongoDBCollectionToAutoscaleCreateR
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // migrateMongoDBCollectionToAutoscaleHandleError handles the MigrateMongoDBCollectionToAutoscale error response.
-func (client *MongoDBResourcesClient) migrateMongoDBCollectionToAutoscaleHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MongoDBResourcesClient) migrateMongoDBCollectionToAutoscaleHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginMigrateMongoDBCollectionToManualThroughput - Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput
@@ -1009,65 +862,37 @@ func (client *MongoDBResourcesClient) BeginMigrateMongoDBCollectionToManualThrou
 		return MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPollerResponse{}, err
 	}
 	result := MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("MongoDBResourcesClient.MigrateMongoDBCollectionToManualThroughput", "", resp, client.con.Pipeline(), client.migrateMongoDBCollectionToManualThroughputHandleError)
-	if err != nil {
-		return MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPollerResponse{}, err
-	}
-	poller := &mongoDBResourcesMigrateMongoDBCollectionToManualThroughputPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesMigrateMongoDBCollectionToManualThroughputResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeMigrateMongoDBCollectionToManualThroughput creates a new MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPoller from the specified resume token.
-// token - The value must come from a previous call to MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPoller.ResumeToken().
-func (client *MongoDBResourcesClient) ResumeMigrateMongoDBCollectionToManualThroughput(ctx context.Context, token string) (MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("MongoDBResourcesClient.MigrateMongoDBCollectionToManualThroughput", token, client.con.Pipeline(), client.migrateMongoDBCollectionToManualThroughputHandleError)
-	if err != nil {
-		return MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPollerResponse{}, err
-	}
-	poller := &mongoDBResourcesMigrateMongoDBCollectionToManualThroughputPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPollerResponse{}, err
-	}
-	result := MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesMigrateMongoDBCollectionToManualThroughputResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("MongoDBResourcesClient.MigrateMongoDBCollectionToManualThroughput", "", resp, client.pl, client.migrateMongoDBCollectionToManualThroughputHandleError)
+	if err != nil {
+		return MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPollerResponse{}, err
+	}
+	result.Poller = &MongoDBResourcesMigrateMongoDBCollectionToManualThroughputPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // MigrateMongoDBCollectionToManualThroughput - Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput
 // If the operation fails it returns the *CloudError error type.
-func (client *MongoDBResourcesClient) migrateMongoDBCollectionToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesBeginMigrateMongoDBCollectionToManualThroughputOptions) (*azcore.Response, error) {
+func (client *MongoDBResourcesClient) migrateMongoDBCollectionToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesBeginMigrateMongoDBCollectionToManualThroughputOptions) (*http.Response, error) {
 	req, err := client.migrateMongoDBCollectionToManualThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, collectionName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.migrateMongoDBCollectionToManualThroughputHandleError(resp)
 	}
 	return resp, nil
 }
 
 // migrateMongoDBCollectionToManualThroughputCreateRequest creates the MigrateMongoDBCollectionToManualThroughput request.
-func (client *MongoDBResourcesClient) migrateMongoDBCollectionToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesBeginMigrateMongoDBCollectionToManualThroughputOptions) (*azcore.Request, error) {
+func (client *MongoDBResourcesClient) migrateMongoDBCollectionToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesBeginMigrateMongoDBCollectionToManualThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default/migrateToManualThroughput"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1089,29 +914,28 @@ func (client *MongoDBResourcesClient) migrateMongoDBCollectionToManualThroughput
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // migrateMongoDBCollectionToManualThroughputHandleError handles the MigrateMongoDBCollectionToManualThroughput error response.
-func (client *MongoDBResourcesClient) migrateMongoDBCollectionToManualThroughputHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MongoDBResourcesClient) migrateMongoDBCollectionToManualThroughputHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginMigrateMongoDBDatabaseToAutoscale - Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale
@@ -1122,65 +946,37 @@ func (client *MongoDBResourcesClient) BeginMigrateMongoDBDatabaseToAutoscale(ctx
 		return MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePollerResponse{}, err
 	}
 	result := MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("MongoDBResourcesClient.MigrateMongoDBDatabaseToAutoscale", "", resp, client.con.Pipeline(), client.migrateMongoDBDatabaseToAutoscaleHandleError)
-	if err != nil {
-		return MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePollerResponse{}, err
-	}
-	poller := &mongoDBResourcesMigrateMongoDBDatabaseToAutoscalePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeMigrateMongoDBDatabaseToAutoscale creates a new MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePoller from the specified resume token.
-// token - The value must come from a previous call to MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePoller.ResumeToken().
-func (client *MongoDBResourcesClient) ResumeMigrateMongoDBDatabaseToAutoscale(ctx context.Context, token string) (MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("MongoDBResourcesClient.MigrateMongoDBDatabaseToAutoscale", token, client.con.Pipeline(), client.migrateMongoDBDatabaseToAutoscaleHandleError)
-	if err != nil {
-		return MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePollerResponse{}, err
-	}
-	poller := &mongoDBResourcesMigrateMongoDBDatabaseToAutoscalePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePollerResponse{}, err
-	}
-	result := MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesMigrateMongoDBDatabaseToAutoscaleResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("MongoDBResourcesClient.MigrateMongoDBDatabaseToAutoscale", "", resp, client.pl, client.migrateMongoDBDatabaseToAutoscaleHandleError)
+	if err != nil {
+		return MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePollerResponse{}, err
+	}
+	result.Poller = &MongoDBResourcesMigrateMongoDBDatabaseToAutoscalePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // MigrateMongoDBDatabaseToAutoscale - Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale
 // If the operation fails it returns the *CloudError error type.
-func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesBeginMigrateMongoDBDatabaseToAutoscaleOptions) (*azcore.Response, error) {
+func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesBeginMigrateMongoDBDatabaseToAutoscaleOptions) (*http.Response, error) {
 	req, err := client.migrateMongoDBDatabaseToAutoscaleCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.migrateMongoDBDatabaseToAutoscaleHandleError(resp)
 	}
 	return resp, nil
 }
 
 // migrateMongoDBDatabaseToAutoscaleCreateRequest creates the MigrateMongoDBDatabaseToAutoscale request.
-func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesBeginMigrateMongoDBDatabaseToAutoscaleOptions) (*azcore.Request, error) {
+func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesBeginMigrateMongoDBDatabaseToAutoscaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default/migrateToAutoscale"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1198,29 +994,28 @@ func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToAutoscaleCreateReq
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // migrateMongoDBDatabaseToAutoscaleHandleError handles the MigrateMongoDBDatabaseToAutoscale error response.
-func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToAutoscaleHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToAutoscaleHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginMigrateMongoDBDatabaseToManualThroughput - Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput
@@ -1231,65 +1026,37 @@ func (client *MongoDBResourcesClient) BeginMigrateMongoDBDatabaseToManualThrough
 		return MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPollerResponse{}, err
 	}
 	result := MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("MongoDBResourcesClient.MigrateMongoDBDatabaseToManualThroughput", "", resp, client.con.Pipeline(), client.migrateMongoDBDatabaseToManualThroughputHandleError)
-	if err != nil {
-		return MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPollerResponse{}, err
-	}
-	poller := &mongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeMigrateMongoDBDatabaseToManualThroughput creates a new MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPoller from the specified resume token.
-// token - The value must come from a previous call to MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPoller.ResumeToken().
-func (client *MongoDBResourcesClient) ResumeMigrateMongoDBDatabaseToManualThroughput(ctx context.Context, token string) (MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("MongoDBResourcesClient.MigrateMongoDBDatabaseToManualThroughput", token, client.con.Pipeline(), client.migrateMongoDBDatabaseToManualThroughputHandleError)
-	if err != nil {
-		return MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPollerResponse{}, err
-	}
-	poller := &mongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPollerResponse{}, err
-	}
-	result := MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("MongoDBResourcesClient.MigrateMongoDBDatabaseToManualThroughput", "", resp, client.pl, client.migrateMongoDBDatabaseToManualThroughputHandleError)
+	if err != nil {
+		return MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPollerResponse{}, err
+	}
+	result.Poller = &MongoDBResourcesMigrateMongoDBDatabaseToManualThroughputPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // MigrateMongoDBDatabaseToManualThroughput - Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput
 // If the operation fails it returns the *CloudError error type.
-func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesBeginMigrateMongoDBDatabaseToManualThroughputOptions) (*azcore.Response, error) {
+func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesBeginMigrateMongoDBDatabaseToManualThroughputOptions) (*http.Response, error) {
 	req, err := client.migrateMongoDBDatabaseToManualThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.migrateMongoDBDatabaseToManualThroughputHandleError(resp)
 	}
 	return resp, nil
 }
 
 // migrateMongoDBDatabaseToManualThroughputCreateRequest creates the MigrateMongoDBDatabaseToManualThroughput request.
-func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesBeginMigrateMongoDBDatabaseToManualThroughputOptions) (*azcore.Request, error) {
+func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesBeginMigrateMongoDBDatabaseToManualThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default/migrateToManualThroughput"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1307,29 +1074,28 @@ func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToManualThroughputCr
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // migrateMongoDBDatabaseToManualThroughputHandleError handles the MigrateMongoDBDatabaseToManualThroughput error response.
-func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToManualThroughputHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToManualThroughputHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginUpdateMongoDBCollectionThroughput - Update the RUs per second of an Azure Cosmos DB MongoDB collection
@@ -1340,65 +1106,37 @@ func (client *MongoDBResourcesClient) BeginUpdateMongoDBCollectionThroughput(ctx
 		return MongoDBResourcesUpdateMongoDBCollectionThroughputPollerResponse{}, err
 	}
 	result := MongoDBResourcesUpdateMongoDBCollectionThroughputPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("MongoDBResourcesClient.UpdateMongoDBCollectionThroughput", "", resp, client.con.Pipeline(), client.updateMongoDBCollectionThroughputHandleError)
-	if err != nil {
-		return MongoDBResourcesUpdateMongoDBCollectionThroughputPollerResponse{}, err
-	}
-	poller := &mongoDBResourcesUpdateMongoDBCollectionThroughputPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesUpdateMongoDBCollectionThroughputResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdateMongoDBCollectionThroughput creates a new MongoDBResourcesUpdateMongoDBCollectionThroughputPoller from the specified resume token.
-// token - The value must come from a previous call to MongoDBResourcesUpdateMongoDBCollectionThroughputPoller.ResumeToken().
-func (client *MongoDBResourcesClient) ResumeUpdateMongoDBCollectionThroughput(ctx context.Context, token string) (MongoDBResourcesUpdateMongoDBCollectionThroughputPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("MongoDBResourcesClient.UpdateMongoDBCollectionThroughput", token, client.con.Pipeline(), client.updateMongoDBCollectionThroughputHandleError)
-	if err != nil {
-		return MongoDBResourcesUpdateMongoDBCollectionThroughputPollerResponse{}, err
-	}
-	poller := &mongoDBResourcesUpdateMongoDBCollectionThroughputPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return MongoDBResourcesUpdateMongoDBCollectionThroughputPollerResponse{}, err
-	}
-	result := MongoDBResourcesUpdateMongoDBCollectionThroughputPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesUpdateMongoDBCollectionThroughputResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("MongoDBResourcesClient.UpdateMongoDBCollectionThroughput", "", resp, client.pl, client.updateMongoDBCollectionThroughputHandleError)
+	if err != nil {
+		return MongoDBResourcesUpdateMongoDBCollectionThroughputPollerResponse{}, err
+	}
+	result.Poller = &MongoDBResourcesUpdateMongoDBCollectionThroughputPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // UpdateMongoDBCollectionThroughput - Update the RUs per second of an Azure Cosmos DB MongoDB collection
 // If the operation fails it returns a generic error.
-func (client *MongoDBResourcesClient) updateMongoDBCollectionThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *MongoDBResourcesBeginUpdateMongoDBCollectionThroughputOptions) (*azcore.Response, error) {
+func (client *MongoDBResourcesClient) updateMongoDBCollectionThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *MongoDBResourcesBeginUpdateMongoDBCollectionThroughputOptions) (*http.Response, error) {
 	req, err := client.updateMongoDBCollectionThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, collectionName, updateThroughputParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateMongoDBCollectionThroughputHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateMongoDBCollectionThroughputCreateRequest creates the UpdateMongoDBCollectionThroughput request.
-func (client *MongoDBResourcesClient) updateMongoDBCollectionThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *MongoDBResourcesBeginUpdateMongoDBCollectionThroughputOptions) (*azcore.Request, error) {
+func (client *MongoDBResourcesClient) updateMongoDBCollectionThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *MongoDBResourcesBeginUpdateMongoDBCollectionThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1420,28 +1158,27 @@ func (client *MongoDBResourcesClient) updateMongoDBCollectionThroughputCreateReq
 		return nil, errors.New("parameter collectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionName}", url.PathEscape(collectionName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(updateThroughputParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, updateThroughputParameters)
 }
 
 // updateMongoDBCollectionThroughputHandleError handles the UpdateMongoDBCollectionThroughput error response.
-func (client *MongoDBResourcesClient) updateMongoDBCollectionThroughputHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MongoDBResourcesClient) updateMongoDBCollectionThroughputHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginUpdateMongoDBDatabaseThroughput - Update RUs per second of the an Azure Cosmos DB MongoDB database
@@ -1452,65 +1189,37 @@ func (client *MongoDBResourcesClient) BeginUpdateMongoDBDatabaseThroughput(ctx c
 		return MongoDBResourcesUpdateMongoDBDatabaseThroughputPollerResponse{}, err
 	}
 	result := MongoDBResourcesUpdateMongoDBDatabaseThroughputPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("MongoDBResourcesClient.UpdateMongoDBDatabaseThroughput", "", resp, client.con.Pipeline(), client.updateMongoDBDatabaseThroughputHandleError)
-	if err != nil {
-		return MongoDBResourcesUpdateMongoDBDatabaseThroughputPollerResponse{}, err
-	}
-	poller := &mongoDBResourcesUpdateMongoDBDatabaseThroughputPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesUpdateMongoDBDatabaseThroughputResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdateMongoDBDatabaseThroughput creates a new MongoDBResourcesUpdateMongoDBDatabaseThroughputPoller from the specified resume token.
-// token - The value must come from a previous call to MongoDBResourcesUpdateMongoDBDatabaseThroughputPoller.ResumeToken().
-func (client *MongoDBResourcesClient) ResumeUpdateMongoDBDatabaseThroughput(ctx context.Context, token string) (MongoDBResourcesUpdateMongoDBDatabaseThroughputPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("MongoDBResourcesClient.UpdateMongoDBDatabaseThroughput", token, client.con.Pipeline(), client.updateMongoDBDatabaseThroughputHandleError)
-	if err != nil {
-		return MongoDBResourcesUpdateMongoDBDatabaseThroughputPollerResponse{}, err
-	}
-	poller := &mongoDBResourcesUpdateMongoDBDatabaseThroughputPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return MongoDBResourcesUpdateMongoDBDatabaseThroughputPollerResponse{}, err
-	}
-	result := MongoDBResourcesUpdateMongoDBDatabaseThroughputPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MongoDBResourcesUpdateMongoDBDatabaseThroughputResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("MongoDBResourcesClient.UpdateMongoDBDatabaseThroughput", "", resp, client.pl, client.updateMongoDBDatabaseThroughputHandleError)
+	if err != nil {
+		return MongoDBResourcesUpdateMongoDBDatabaseThroughputPollerResponse{}, err
+	}
+	result.Poller = &MongoDBResourcesUpdateMongoDBDatabaseThroughputPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // UpdateMongoDBDatabaseThroughput - Update RUs per second of the an Azure Cosmos DB MongoDB database
 // If the operation fails it returns the *CloudError error type.
-func (client *MongoDBResourcesClient) updateMongoDBDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *MongoDBResourcesBeginUpdateMongoDBDatabaseThroughputOptions) (*azcore.Response, error) {
+func (client *MongoDBResourcesClient) updateMongoDBDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *MongoDBResourcesBeginUpdateMongoDBDatabaseThroughputOptions) (*http.Response, error) {
 	req, err := client.updateMongoDBDatabaseThroughputCreateRequest(ctx, resourceGroupName, accountName, databaseName, updateThroughputParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateMongoDBDatabaseThroughputHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateMongoDBDatabaseThroughputCreateRequest creates the UpdateMongoDBDatabaseThroughput request.
-func (client *MongoDBResourcesClient) updateMongoDBDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *MongoDBResourcesBeginUpdateMongoDBDatabaseThroughputOptions) (*azcore.Request, error) {
+func (client *MongoDBResourcesClient) updateMongoDBDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *MongoDBResourcesBeginUpdateMongoDBDatabaseThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1528,27 +1237,26 @@ func (client *MongoDBResourcesClient) updateMongoDBDatabaseThroughputCreateReque
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(updateThroughputParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, updateThroughputParameters)
 }
 
 // updateMongoDBDatabaseThroughputHandleError handles the UpdateMongoDBDatabaseThroughput error response.
-func (client *MongoDBResourcesClient) updateMongoDBDatabaseThroughputHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MongoDBResourcesClient) updateMongoDBDatabaseThroughputHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

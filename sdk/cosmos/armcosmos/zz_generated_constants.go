@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,7 +8,10 @@
 
 package armcosmos
 
-const telemetryInfo = "azsdk-go-armcosmos/v0.1.0"
+const (
+	module  = "armcosmos"
+	version = "v0.2.0"
+)
 
 // APIType - Enum to indicate the API type of the restorable database account.
 type APIType string

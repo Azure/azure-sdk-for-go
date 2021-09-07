@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,31 +10,31 @@ package armcosmos
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"reflect"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-type OperationsListPager interface {
-	azcore.Pager
-	// PageResponse returns the current OperationsListResponse.
-	PageResponse() OperationsListResponse
-}
-
-type operationsListPager struct {
+// OperationsListPager provides operations for iterating over paged responses.
+type OperationsListPager struct {
 	client    *OperationsClient
 	current   OperationsListResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
 }
 
-func (p *operationsListPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *OperationsListPager) Err() error {
 	return p.err
 }
 
-func (p *operationsListPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.OperationListResult.NextLink == nil || len(*p.current.OperationListResult.NextLink) == 0 {
@@ -47,12 +48,12 @@ func (p *operationsListPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listHandleError(resp)
 		return false
 	}
@@ -65,6 +66,7 @@ func (p *operationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *operationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsListResponse page.
+func (p *OperationsListPager) PageResponse() OperationsListResponse {
 	return p.current
 }

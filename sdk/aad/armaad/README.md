@@ -54,7 +54,7 @@ client := armaad.NewDiagnosticSettingsClient(con, "<subscription ID>")
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Azure Active Directory` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Active Directory` label.
 
 # Contributing
 

@@ -7,6 +7,10 @@
 package recording
 
 import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/dnaeon/go-vcr/cassette"
@@ -86,3 +90,155 @@ func (s *Sanitizer) applySaveFilter(i *cassette.Interaction) error {
 }
 
 func DefaultStringSanitizer(s *string) {}
+
+func AddUriSanitizer(replacement, regex string, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%v/Admin/AddSanitizer", options.HostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "UriRegexSanitizer")
+	bodyContent := map[string]string{
+		"value": replacement,
+		"regex": regex,
+	}
+	marshalled, err := json.Marshal(bodyContent)
+	if err != nil {
+		return err
+	}
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+	_, err = client.Do(req)
+	return err
+}
+
+func AddHeaderRegexSanitizer(key, replacementValue, regex, groupForReplace string, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.HostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "HeaderRegexSanitizer")
+	bodyContent := map[string]string{
+		"key": key,
+	}
+	if replacementValue != "" {
+		bodyContent["value"] = replacementValue
+	}
+	if regex != "" {
+		bodyContent["regex"] = regex
+	}
+	if groupForReplace != "" {
+		bodyContent["groupForReplace"] = groupForReplace
+	}
+
+	marshalled, err := json.Marshal(bodyContent)
+	if err != nil {
+		return err
+	}
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+	_, err = client.Do(req)
+	return err
+}
+
+func AddBodyKeySanitizer(jsonPath, replacementValue, regex, groupForReplace string, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.HostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "BodyKeySanitizer")
+	bodyContent := map[string]string{
+		"jsonPath": jsonPath,
+	}
+	if replacementValue != "" {
+		bodyContent["value"] = replacementValue
+	}
+	if regex != "" {
+		bodyContent["regex"] = regex
+	}
+	if groupForReplace != "" {
+		bodyContent["groupForReplace"] = groupForReplace
+	}
+
+	marshalled, err := json.Marshal(bodyContent)
+	if err != nil {
+		return err
+	}
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+	_, err = client.Do(req)
+	return err
+}
+
+// value: the substitution value
+// regex: the regex to match on request/response entries
+// groupForReplace: If your regex has multiple groups, the named group which to replace. If your regex does not, make this an empty string
+func AddBodyRegexSanitizer(value, regex, groupForReplace string, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.HostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "BodyRegexSanitizer")
+	bodyContent := map[string]string{
+		"value": value,
+	}
+	if regex != "" {
+		bodyContent["regex"] = regex
+	}
+	if groupForReplace != "" {
+		bodyContent["groupForReplace"] = groupForReplace
+	}
+
+	marshalled, err := json.Marshal(bodyContent)
+	if err != nil {
+		return err
+	}
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+	_, err = client.Do(req)
+	return err
+}
+
+// value: the substitution value
+// regex: the regex to match on request/response entries
+// groupForReplace: If your regex has multiple groups, the named group which to replace. If your regex does not, make this an empty string
+func AddContinuationSanitizer(key, method string, resetAfterFirst bool, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.HostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "ContinuationSanitizer")
+	bodyContent := map[string]string{
+		"key":             key,
+		"method":          method,
+		"resetAfterFirst": fmt.Sprintf("%v", resetAfterFirst),
+	}
+
+	marshalled, err := json.Marshal(bodyContent)
+	if err != nil {
+		return err
+	}
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+	req.ContentLength = int64(len(marshalled))
+	_, err = client.Do(req)
+	return err
+}

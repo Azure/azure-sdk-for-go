@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // NotificationRecipientUserClient contains the methods for the NotificationRecipientUser group.
 // Don't use this type directly, use NewNotificationRecipientUserClient() instead.
 type NotificationRecipientUserClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewNotificationRecipientUserClient creates a new instance of NotificationRecipientUserClient with the specified values.
-func NewNotificationRecipientUserClient(con *armcore.Connection, subscriptionID string) *NotificationRecipientUserClient {
-	return &NotificationRecipientUserClient{con: con, subscriptionID: subscriptionID}
+func NewNotificationRecipientUserClient(con *arm.Connection, subscriptionID string) *NotificationRecipientUserClient {
+	return &NotificationRecipientUserClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CheckEntityExists - Determine if the Notification Recipient User is subscribed to the notification.
@@ -37,11 +41,11 @@ func (client *NotificationRecipientUserClient) CheckEntityExists(ctx context.Con
 	if err != nil {
 		return NotificationRecipientUserCheckEntityExistsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return NotificationRecipientUserCheckEntityExistsResponse{}, err
 	}
-	result := NotificationRecipientUserCheckEntityExistsResponse{RawResponse: resp.Response}
+	result := NotificationRecipientUserCheckEntityExistsResponse{RawResponse: resp}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -49,7 +53,7 @@ func (client *NotificationRecipientUserClient) CheckEntityExists(ctx context.Con
 }
 
 // checkEntityExistsCreateRequest creates the CheckEntityExists request.
-func (client *NotificationRecipientUserClient) checkEntityExistsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, userID string, options *NotificationRecipientUserCheckEntityExistsOptions) (*azcore.Request, error) {
+func (client *NotificationRecipientUserClient) checkEntityExistsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, userID string, options *NotificationRecipientUserCheckEntityExistsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientUsers/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -71,15 +75,14 @@ func (client *NotificationRecipientUserClient) checkEntityExistsCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
@@ -90,18 +93,18 @@ func (client *NotificationRecipientUserClient) CreateOrUpdate(ctx context.Contex
 	if err != nil {
 		return NotificationRecipientUserCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return NotificationRecipientUserCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return NotificationRecipientUserCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *NotificationRecipientUserClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, userID string, options *NotificationRecipientUserCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *NotificationRecipientUserClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, userID string, options *NotificationRecipientUserCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientUsers/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -123,38 +126,37 @@ func (client *NotificationRecipientUserClient) createOrUpdateCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *NotificationRecipientUserClient) createOrUpdateHandleResponse(resp *azcore.Response) (NotificationRecipientUserCreateOrUpdateResponse, error) {
-	result := NotificationRecipientUserCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RecipientUserContract); err != nil {
+func (client *NotificationRecipientUserClient) createOrUpdateHandleResponse(resp *http.Response) (NotificationRecipientUserCreateOrUpdateResponse, error) {
+	result := NotificationRecipientUserCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecipientUserContract); err != nil {
 		return NotificationRecipientUserCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *NotificationRecipientUserClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *NotificationRecipientUserClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Removes the API Management user from the list of Notification.
@@ -164,18 +166,18 @@ func (client *NotificationRecipientUserClient) Delete(ctx context.Context, resou
 	if err != nil {
 		return NotificationRecipientUserDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return NotificationRecipientUserDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return NotificationRecipientUserDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return NotificationRecipientUserDeleteResponse{RawResponse: resp.Response}, nil
+	return NotificationRecipientUserDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *NotificationRecipientUserClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, userID string, options *NotificationRecipientUserDeleteOptions) (*azcore.Request, error) {
+func (client *NotificationRecipientUserClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, userID string, options *NotificationRecipientUserDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientUsers/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -197,29 +199,28 @@ func (client *NotificationRecipientUserClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *NotificationRecipientUserClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *NotificationRecipientUserClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByNotification - Gets the list of the Notification Recipient User subscribed to the notification.
@@ -229,18 +230,18 @@ func (client *NotificationRecipientUserClient) ListByNotification(ctx context.Co
 	if err != nil {
 		return NotificationRecipientUserListByNotificationResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return NotificationRecipientUserListByNotificationResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return NotificationRecipientUserListByNotificationResponse{}, client.listByNotificationHandleError(resp)
 	}
 	return client.listByNotificationHandleResponse(resp)
 }
 
 // listByNotificationCreateRequest creates the ListByNotification request.
-func (client *NotificationRecipientUserClient) listByNotificationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, options *NotificationRecipientUserListByNotificationOptions) (*azcore.Request, error) {
+func (client *NotificationRecipientUserClient) listByNotificationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, notificationName NotificationName, options *NotificationRecipientUserListByNotificationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/notifications/{notificationName}/recipientUsers"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -258,36 +259,35 @@ func (client *NotificationRecipientUserClient) listByNotificationCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByNotificationHandleResponse handles the ListByNotification response.
-func (client *NotificationRecipientUserClient) listByNotificationHandleResponse(resp *azcore.Response) (NotificationRecipientUserListByNotificationResponse, error) {
-	result := NotificationRecipientUserListByNotificationResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RecipientUserCollection); err != nil {
+func (client *NotificationRecipientUserClient) listByNotificationHandleResponse(resp *http.Response) (NotificationRecipientUserListByNotificationResponse, error) {
+	result := NotificationRecipientUserListByNotificationResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecipientUserCollection); err != nil {
 		return NotificationRecipientUserListByNotificationResponse{}, err
 	}
 	return result, nil
 }
 
 // listByNotificationHandleError handles the ListByNotification error response.
-func (client *NotificationRecipientUserClient) listByNotificationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *NotificationRecipientUserClient) listByNotificationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

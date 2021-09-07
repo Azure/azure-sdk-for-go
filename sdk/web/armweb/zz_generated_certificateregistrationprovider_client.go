@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,69 +11,71 @@ package armweb
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CertificateRegistrationProviderClient contains the methods for the CertificateRegistrationProvider group.
 // Don't use this type directly, use NewCertificateRegistrationProviderClient() instead.
 type CertificateRegistrationProviderClient struct {
-	con *armcore.Connection
+	ep string
+	pl runtime.Pipeline
 }
 
 // NewCertificateRegistrationProviderClient creates a new instance of CertificateRegistrationProviderClient with the specified values.
-func NewCertificateRegistrationProviderClient(con *armcore.Connection) *CertificateRegistrationProviderClient {
-	return &CertificateRegistrationProviderClient{con: con}
+func NewCertificateRegistrationProviderClient(con *arm.Connection) *CertificateRegistrationProviderClient {
+	return &CertificateRegistrationProviderClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
 }
 
 // ListOperations - Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *CertificateRegistrationProviderClient) ListOperations(options *CertificateRegistrationProviderListOperationsOptions) CertificateRegistrationProviderListOperationsPager {
-	return &certificateRegistrationProviderListOperationsPager{
+func (client *CertificateRegistrationProviderClient) ListOperations(options *CertificateRegistrationProviderListOperationsOptions) *CertificateRegistrationProviderListOperationsPager {
+	return &CertificateRegistrationProviderListOperationsPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listOperationsCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp CertificateRegistrationProviderListOperationsResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.CsmOperationCollection.NextLink)
+		advancer: func(ctx context.Context, resp CertificateRegistrationProviderListOperationsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.CsmOperationCollection.NextLink)
 		},
 	}
 }
 
 // listOperationsCreateRequest creates the ListOperations request.
-func (client *CertificateRegistrationProviderClient) listOperationsCreateRequest(ctx context.Context, options *CertificateRegistrationProviderListOperationsOptions) (*azcore.Request, error) {
+func (client *CertificateRegistrationProviderClient) listOperationsCreateRequest(ctx context.Context, options *CertificateRegistrationProviderListOperationsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.CertificateRegistration/operations"
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listOperationsHandleResponse handles the ListOperations response.
-func (client *CertificateRegistrationProviderClient) listOperationsHandleResponse(resp *azcore.Response) (CertificateRegistrationProviderListOperationsResponse, error) {
-	result := CertificateRegistrationProviderListOperationsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.CsmOperationCollection); err != nil {
+func (client *CertificateRegistrationProviderClient) listOperationsHandleResponse(resp *http.Response) (CertificateRegistrationProviderListOperationsResponse, error) {
+	result := CertificateRegistrationProviderListOperationsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CsmOperationCollection); err != nil {
 		return CertificateRegistrationProviderListOperationsResponse{}, err
 	}
 	return result, nil
 }
 
 // listOperationsHandleError handles the ListOperations error response.
-func (client *CertificateRegistrationProviderClient) listOperationsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CertificateRegistrationProviderClient) listOperationsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

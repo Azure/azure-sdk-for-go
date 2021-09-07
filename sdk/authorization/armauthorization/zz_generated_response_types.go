@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,182 +10,836 @@ package armauthorization
 
 import "net/http"
 
-// EligibleChildResourcesListResultResponse is the response envelope for operations that return a EligibleChildResourcesListResult type.
-type EligibleChildResourcesListResultResponse struct {
-	// Eligible child resources list operation result.
-	EligibleChildResourcesListResult *EligibleChildResourcesListResult
-
+// AccessReviewDefaultSettingsGetResponse contains the response from method AccessReviewDefaultSettings.Get.
+type AccessReviewDefaultSettingsGetResponse struct {
+	AccessReviewDefaultSettingsGetResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RoleAssignmentListResultResponse is the response envelope for operations that return a RoleAssignmentListResult type.
-type RoleAssignmentListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// Role assignment list operation result.
-	RoleAssignmentListResult *RoleAssignmentListResult
+// AccessReviewDefaultSettingsGetResult contains the result from method AccessReviewDefaultSettings.Get.
+type AccessReviewDefaultSettingsGetResult struct {
+	AccessReviewDefaultSettings
 }
 
-// RoleAssignmentResponse is the response envelope for operations that return a RoleAssignment type.
-type RoleAssignmentResponse struct {
+// AccessReviewDefaultSettingsPutResponse contains the response from method AccessReviewDefaultSettings.Put.
+type AccessReviewDefaultSettingsPutResponse struct {
+	AccessReviewDefaultSettingsPutResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Role Assignments
-	RoleAssignment *RoleAssignment
 }
 
-// RoleAssignmentScheduleInstanceListResultResponse is the response envelope for operations that return a RoleAssignmentScheduleInstanceListResult type.
-type RoleAssignmentScheduleInstanceListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// Role assignment schedule instance list operation result.
-	RoleAssignmentScheduleInstanceListResult *RoleAssignmentScheduleInstanceListResult
+// AccessReviewDefaultSettingsPutResult contains the result from method AccessReviewDefaultSettings.Put.
+type AccessReviewDefaultSettingsPutResult struct {
+	AccessReviewDefaultSettings
 }
 
-// RoleAssignmentScheduleInstanceResponse is the response envelope for operations that return a RoleAssignmentScheduleInstance type.
-type RoleAssignmentScheduleInstanceResponse struct {
+// AccessReviewInstanceAcceptRecommendationsResponse contains the response from method AccessReviewInstance.AcceptRecommendations.
+type AccessReviewInstanceAcceptRecommendationsResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Information about current or upcoming role assignment schedule instance
-	RoleAssignmentScheduleInstance *RoleAssignmentScheduleInstance
 }
 
-// RoleAssignmentScheduleListResultResponse is the response envelope for operations that return a RoleAssignmentScheduleListResult type.
-type RoleAssignmentScheduleListResultResponse struct {
+// AccessReviewInstanceApplyDecisionsResponse contains the response from method AccessReviewInstance.ApplyDecisions.
+type AccessReviewInstanceApplyDecisionsResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Role assignment schedule list operation result.
-	RoleAssignmentScheduleListResult *RoleAssignmentScheduleListResult
 }
 
-// RoleAssignmentScheduleRequestListResultResponse is the response envelope for operations that return a RoleAssignmentScheduleRequestListResult type.
-type RoleAssignmentScheduleRequestListResultResponse struct {
+// AccessReviewInstanceDecisionsListResponse contains the response from method AccessReviewInstanceDecisions.List.
+type AccessReviewInstanceDecisionsListResponse struct {
+	AccessReviewInstanceDecisionsListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Role assignment schedule request list operation result.
-	RoleAssignmentScheduleRequestListResult *RoleAssignmentScheduleRequestListResult
 }
 
-// RoleAssignmentScheduleRequestResponse is the response envelope for operations that return a RoleAssignmentScheduleRequest type.
-type RoleAssignmentScheduleRequestResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// Role Assignment schedule request
-	RoleAssignmentScheduleRequest *RoleAssignmentScheduleRequest
+// AccessReviewInstanceDecisionsListResult contains the result from method AccessReviewInstanceDecisions.List.
+type AccessReviewInstanceDecisionsListResult struct {
+	AccessReviewDecisionListResult
 }
 
-// RoleAssignmentScheduleResponse is the response envelope for operations that return a RoleAssignmentSchedule type.
-type RoleAssignmentScheduleResponse struct {
+// AccessReviewInstanceMyDecisionsGetByIDResponse contains the response from method AccessReviewInstanceMyDecisions.GetByID.
+type AccessReviewInstanceMyDecisionsGetByIDResponse struct {
+	AccessReviewInstanceMyDecisionsGetByIDResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Role Assignment schedule
-	RoleAssignmentSchedule *RoleAssignmentSchedule
 }
 
-// RoleEligibilityScheduleInstanceListResultResponse is the response envelope for operations that return a RoleEligibilityScheduleInstanceListResult type.
-type RoleEligibilityScheduleInstanceListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// Role eligibility schedule instance list operation result.
-	RoleEligibilityScheduleInstanceListResult *RoleEligibilityScheduleInstanceListResult
+// AccessReviewInstanceMyDecisionsGetByIDResult contains the result from method AccessReviewInstanceMyDecisions.GetByID.
+type AccessReviewInstanceMyDecisionsGetByIDResult struct {
+	AccessReviewDecision
 }
 
-// RoleEligibilityScheduleInstanceResponse is the response envelope for operations that return a RoleEligibilityScheduleInstance type.
-type RoleEligibilityScheduleInstanceResponse struct {
+// AccessReviewInstanceMyDecisionsListResponse contains the response from method AccessReviewInstanceMyDecisions.List.
+type AccessReviewInstanceMyDecisionsListResponse struct {
+	AccessReviewInstanceMyDecisionsListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Information about current or upcoming role eligibility schedule instance
-	RoleEligibilityScheduleInstance *RoleEligibilityScheduleInstance
 }
 
-// RoleEligibilityScheduleListResultResponse is the response envelope for operations that return a RoleEligibilityScheduleListResult type.
-type RoleEligibilityScheduleListResultResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// role eligibility schedule list operation result.
-	RoleEligibilityScheduleListResult *RoleEligibilityScheduleListResult
+// AccessReviewInstanceMyDecisionsListResult contains the result from method AccessReviewInstanceMyDecisions.List.
+type AccessReviewInstanceMyDecisionsListResult struct {
+	AccessReviewDecisionListResult
 }
 
-// RoleEligibilityScheduleRequestListResultResponse is the response envelope for operations that return a RoleEligibilityScheduleRequestListResult type.
-type RoleEligibilityScheduleRequestListResultResponse struct {
+// AccessReviewInstanceMyDecisionsPatchResponse contains the response from method AccessReviewInstanceMyDecisions.Patch.
+type AccessReviewInstanceMyDecisionsPatchResponse struct {
+	AccessReviewInstanceMyDecisionsPatchResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Role eligibility schedule request list operation result.
-	RoleEligibilityScheduleRequestListResult *RoleEligibilityScheduleRequestListResult
 }
 
-// RoleEligibilityScheduleRequestResponse is the response envelope for operations that return a RoleEligibilityScheduleRequest type.
-type RoleEligibilityScheduleRequestResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// Role Eligibility schedule request
-	RoleEligibilityScheduleRequest *RoleEligibilityScheduleRequest
+// AccessReviewInstanceMyDecisionsPatchResult contains the result from method AccessReviewInstanceMyDecisions.Patch.
+type AccessReviewInstanceMyDecisionsPatchResult struct {
+	AccessReviewDecision
 }
 
-// RoleEligibilityScheduleResponse is the response envelope for operations that return a RoleEligibilitySchedule type.
-type RoleEligibilityScheduleResponse struct {
+// AccessReviewInstanceResetDecisionsResponse contains the response from method AccessReviewInstance.ResetDecisions.
+type AccessReviewInstanceResetDecisionsResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Role eligibility schedule
-	RoleEligibilitySchedule *RoleEligibilitySchedule
 }
 
-// RoleManagementPolicyAssignmentListResultResponse is the response envelope for operations that return a RoleManagementPolicyAssignmentListResult type.
-type RoleManagementPolicyAssignmentListResultResponse struct {
+// AccessReviewInstanceSendRemindersResponse contains the response from method AccessReviewInstance.SendReminders.
+type AccessReviewInstanceSendRemindersResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Role management policy assignment list operation result.
-	RoleManagementPolicyAssignmentListResult *RoleManagementPolicyAssignmentListResult
 }
 
-// RoleManagementPolicyAssignmentResponse is the response envelope for operations that return a RoleManagementPolicyAssignment type.
-type RoleManagementPolicyAssignmentResponse struct {
+// AccessReviewInstanceStopResponse contains the response from method AccessReviewInstance.Stop.
+type AccessReviewInstanceStopResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Role management policy
-	RoleManagementPolicyAssignment *RoleManagementPolicyAssignment
 }
 
-// RoleManagementPolicyListResultResponse is the response envelope for operations that return a RoleManagementPolicyListResult type.
-type RoleManagementPolicyListResultResponse struct {
+// AccessReviewInstancesAssignedForMyApprovalGetByIDResponse contains the response from method AccessReviewInstancesAssignedForMyApproval.GetByID.
+type AccessReviewInstancesAssignedForMyApprovalGetByIDResponse struct {
+	AccessReviewInstancesAssignedForMyApprovalGetByIDResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
-
-	// Role management policy list operation result.
-	RoleManagementPolicyListResult *RoleManagementPolicyListResult
 }
 
-// RoleManagementPolicyResponse is the response envelope for operations that return a RoleManagementPolicy type.
-type RoleManagementPolicyResponse struct {
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-
-	// Role management policy
-	RoleManagementPolicy *RoleManagementPolicy
+// AccessReviewInstancesAssignedForMyApprovalGetByIDResult contains the result from method AccessReviewInstancesAssignedForMyApproval.GetByID.
+type AccessReviewInstancesAssignedForMyApprovalGetByIDResult struct {
+	AccessReviewInstance
 }
 
-// ValidationResponseResponse is the response envelope for operations that return a ValidationResponse type.
-type ValidationResponseResponse struct {
+// AccessReviewInstancesAssignedForMyApprovalListResponse contains the response from method AccessReviewInstancesAssignedForMyApproval.List.
+type AccessReviewInstancesAssignedForMyApprovalListResponse struct {
+	AccessReviewInstancesAssignedForMyApprovalListResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
 
-	// Validation response
-	ValidationResponse *ValidationResponse
+// AccessReviewInstancesAssignedForMyApprovalListResult contains the result from method AccessReviewInstancesAssignedForMyApproval.List.
+type AccessReviewInstancesAssignedForMyApprovalListResult struct {
+	AccessReviewInstanceListResult
+}
+
+// AccessReviewInstancesGetByIDResponse contains the response from method AccessReviewInstances.GetByID.
+type AccessReviewInstancesGetByIDResponse struct {
+	AccessReviewInstancesGetByIDResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AccessReviewInstancesGetByIDResult contains the result from method AccessReviewInstances.GetByID.
+type AccessReviewInstancesGetByIDResult struct {
+	AccessReviewInstance
+}
+
+// AccessReviewInstancesListResponse contains the response from method AccessReviewInstances.List.
+type AccessReviewInstancesListResponse struct {
+	AccessReviewInstancesListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AccessReviewInstancesListResult contains the result from method AccessReviewInstances.List.
+type AccessReviewInstancesListResult struct {
+	AccessReviewInstanceListResult
+}
+
+// AccessReviewScheduleDefinitionsAssignedForMyApprovalListResponse contains the response from method AccessReviewScheduleDefinitionsAssignedForMyApproval.List.
+type AccessReviewScheduleDefinitionsAssignedForMyApprovalListResponse struct {
+	AccessReviewScheduleDefinitionsAssignedForMyApprovalListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AccessReviewScheduleDefinitionsAssignedForMyApprovalListResult contains the result from method AccessReviewScheduleDefinitionsAssignedForMyApproval.List.
+type AccessReviewScheduleDefinitionsAssignedForMyApprovalListResult struct {
+	AccessReviewScheduleDefinitionListResult
+}
+
+// AccessReviewScheduleDefinitionsCreateOrUpdateByIDResponse contains the response from method AccessReviewScheduleDefinitions.CreateOrUpdateByID.
+type AccessReviewScheduleDefinitionsCreateOrUpdateByIDResponse struct {
+	AccessReviewScheduleDefinitionsCreateOrUpdateByIDResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AccessReviewScheduleDefinitionsCreateOrUpdateByIDResult contains the result from method AccessReviewScheduleDefinitions.CreateOrUpdateByID.
+type AccessReviewScheduleDefinitionsCreateOrUpdateByIDResult struct {
+	AccessReviewScheduleDefinition
+}
+
+// AccessReviewScheduleDefinitionsDeleteByIDResponse contains the response from method AccessReviewScheduleDefinitions.DeleteByID.
+type AccessReviewScheduleDefinitionsDeleteByIDResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AccessReviewScheduleDefinitionsGetByIDResponse contains the response from method AccessReviewScheduleDefinitions.GetByID.
+type AccessReviewScheduleDefinitionsGetByIDResponse struct {
+	AccessReviewScheduleDefinitionsGetByIDResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AccessReviewScheduleDefinitionsGetByIDResult contains the result from method AccessReviewScheduleDefinitions.GetByID.
+type AccessReviewScheduleDefinitionsGetByIDResult struct {
+	AccessReviewScheduleDefinition
+}
+
+// AccessReviewScheduleDefinitionsListResponse contains the response from method AccessReviewScheduleDefinitions.List.
+type AccessReviewScheduleDefinitionsListResponse struct {
+	AccessReviewScheduleDefinitionsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// AccessReviewScheduleDefinitionsListResult contains the result from method AccessReviewScheduleDefinitions.List.
+type AccessReviewScheduleDefinitionsListResult struct {
+	AccessReviewScheduleDefinitionListResult
+}
+
+// AccessReviewScheduleDefinitionsStopResponse contains the response from method AccessReviewScheduleDefinitions.Stop.
+type AccessReviewScheduleDefinitionsStopResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DenyAssignmentsGetByIDResponse contains the response from method DenyAssignments.GetByID.
+type DenyAssignmentsGetByIDResponse struct {
+	DenyAssignmentsGetByIDResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DenyAssignmentsGetByIDResult contains the result from method DenyAssignments.GetByID.
+type DenyAssignmentsGetByIDResult struct {
+	DenyAssignment
+}
+
+// DenyAssignmentsGetResponse contains the response from method DenyAssignments.Get.
+type DenyAssignmentsGetResponse struct {
+	DenyAssignmentsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DenyAssignmentsGetResult contains the result from method DenyAssignments.Get.
+type DenyAssignmentsGetResult struct {
+	DenyAssignment
+}
+
+// DenyAssignmentsListForResourceGroupResponse contains the response from method DenyAssignments.ListForResourceGroup.
+type DenyAssignmentsListForResourceGroupResponse struct {
+	DenyAssignmentsListForResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DenyAssignmentsListForResourceGroupResult contains the result from method DenyAssignments.ListForResourceGroup.
+type DenyAssignmentsListForResourceGroupResult struct {
+	DenyAssignmentListResult
+}
+
+// DenyAssignmentsListForResourceResponse contains the response from method DenyAssignments.ListForResource.
+type DenyAssignmentsListForResourceResponse struct {
+	DenyAssignmentsListForResourceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DenyAssignmentsListForResourceResult contains the result from method DenyAssignments.ListForResource.
+type DenyAssignmentsListForResourceResult struct {
+	DenyAssignmentListResult
+}
+
+// DenyAssignmentsListForScopeResponse contains the response from method DenyAssignments.ListForScope.
+type DenyAssignmentsListForScopeResponse struct {
+	DenyAssignmentsListForScopeResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DenyAssignmentsListForScopeResult contains the result from method DenyAssignments.ListForScope.
+type DenyAssignmentsListForScopeResult struct {
+	DenyAssignmentListResult
+}
+
+// DenyAssignmentsListResponse contains the response from method DenyAssignments.List.
+type DenyAssignmentsListResponse struct {
+	DenyAssignmentsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// DenyAssignmentsListResult contains the result from method DenyAssignments.List.
+type DenyAssignmentsListResult struct {
+	DenyAssignmentListResult
+}
+
+// EligibleChildResourcesGetResponse contains the response from method EligibleChildResources.Get.
+type EligibleChildResourcesGetResponse struct {
+	EligibleChildResourcesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// EligibleChildResourcesGetResult contains the result from method EligibleChildResources.Get.
+type EligibleChildResourcesGetResult struct {
+	EligibleChildResourcesListResult
+}
+
+// OperationsListResponse contains the response from method Operations.List.
+type OperationsListResponse struct {
+	OperationsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationsListResult contains the result from method Operations.List.
+type OperationsListResult struct {
+	OperationListResult
+}
+
+// PermissionsListForResourceGroupResponse contains the response from method Permissions.ListForResourceGroup.
+type PermissionsListForResourceGroupResponse struct {
+	PermissionsListForResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PermissionsListForResourceGroupResult contains the result from method Permissions.ListForResourceGroup.
+type PermissionsListForResourceGroupResult struct {
+	PermissionGetResult
+}
+
+// PermissionsListForResourceResponse contains the response from method Permissions.ListForResource.
+type PermissionsListForResourceResponse struct {
+	PermissionsListForResourceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// PermissionsListForResourceResult contains the result from method Permissions.ListForResource.
+type PermissionsListForResourceResult struct {
+	PermissionGetResult
+}
+
+// ProviderOperationsMetadataGetResponse contains the response from method ProviderOperationsMetadata.Get.
+type ProviderOperationsMetadataGetResponse struct {
+	ProviderOperationsMetadataGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ProviderOperationsMetadataGetResult contains the result from method ProviderOperationsMetadata.Get.
+type ProviderOperationsMetadataGetResult struct {
+	ProviderOperationsMetadata
+}
+
+// ProviderOperationsMetadataListResponse contains the response from method ProviderOperationsMetadata.List.
+type ProviderOperationsMetadataListResponse struct {
+	ProviderOperationsMetadataListResultEnvelope
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ProviderOperationsMetadataListResultEnvelope contains the result from method ProviderOperationsMetadata.List.
+type ProviderOperationsMetadataListResultEnvelope struct {
+	ProviderOperationsMetadataListResult
+}
+
+// RoleAssignmentMetricsGetMetricsForSubscriptionResponse contains the response from method RoleAssignmentMetrics.GetMetricsForSubscription.
+type RoleAssignmentMetricsGetMetricsForSubscriptionResponse struct {
+	RoleAssignmentMetricsGetMetricsForSubscriptionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentMetricsGetMetricsForSubscriptionResult contains the result from method RoleAssignmentMetrics.GetMetricsForSubscription.
+type RoleAssignmentMetricsGetMetricsForSubscriptionResult struct {
+	RoleAssignmentMetricsResult
+}
+
+// RoleAssignmentScheduleInstancesGetResponse contains the response from method RoleAssignmentScheduleInstances.Get.
+type RoleAssignmentScheduleInstancesGetResponse struct {
+	RoleAssignmentScheduleInstancesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentScheduleInstancesGetResult contains the result from method RoleAssignmentScheduleInstances.Get.
+type RoleAssignmentScheduleInstancesGetResult struct {
+	RoleAssignmentScheduleInstance
+}
+
+// RoleAssignmentScheduleInstancesListForScopeResponse contains the response from method RoleAssignmentScheduleInstances.ListForScope.
+type RoleAssignmentScheduleInstancesListForScopeResponse struct {
+	RoleAssignmentScheduleInstancesListForScopeResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentScheduleInstancesListForScopeResult contains the result from method RoleAssignmentScheduleInstances.ListForScope.
+type RoleAssignmentScheduleInstancesListForScopeResult struct {
+	RoleAssignmentScheduleInstanceListResult
+}
+
+// RoleAssignmentScheduleRequestsCancelResponse contains the response from method RoleAssignmentScheduleRequests.Cancel.
+type RoleAssignmentScheduleRequestsCancelResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentScheduleRequestsCreateResponse contains the response from method RoleAssignmentScheduleRequests.Create.
+type RoleAssignmentScheduleRequestsCreateResponse struct {
+	RoleAssignmentScheduleRequestsCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentScheduleRequestsCreateResult contains the result from method RoleAssignmentScheduleRequests.Create.
+type RoleAssignmentScheduleRequestsCreateResult struct {
+	RoleAssignmentScheduleRequest
+}
+
+// RoleAssignmentScheduleRequestsGetResponse contains the response from method RoleAssignmentScheduleRequests.Get.
+type RoleAssignmentScheduleRequestsGetResponse struct {
+	RoleAssignmentScheduleRequestsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentScheduleRequestsGetResult contains the result from method RoleAssignmentScheduleRequests.Get.
+type RoleAssignmentScheduleRequestsGetResult struct {
+	RoleAssignmentScheduleRequest
+}
+
+// RoleAssignmentScheduleRequestsListForScopeResponse contains the response from method RoleAssignmentScheduleRequests.ListForScope.
+type RoleAssignmentScheduleRequestsListForScopeResponse struct {
+	RoleAssignmentScheduleRequestsListForScopeResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentScheduleRequestsListForScopeResult contains the result from method RoleAssignmentScheduleRequests.ListForScope.
+type RoleAssignmentScheduleRequestsListForScopeResult struct {
+	RoleAssignmentScheduleRequestListResult
+}
+
+// RoleAssignmentSchedulesGetResponse contains the response from method RoleAssignmentSchedules.Get.
+type RoleAssignmentSchedulesGetResponse struct {
+	RoleAssignmentSchedulesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentSchedulesGetResult contains the result from method RoleAssignmentSchedules.Get.
+type RoleAssignmentSchedulesGetResult struct {
+	RoleAssignmentSchedule
+}
+
+// RoleAssignmentSchedulesListForScopeResponse contains the response from method RoleAssignmentSchedules.ListForScope.
+type RoleAssignmentSchedulesListForScopeResponse struct {
+	RoleAssignmentSchedulesListForScopeResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentSchedulesListForScopeResult contains the result from method RoleAssignmentSchedules.ListForScope.
+type RoleAssignmentSchedulesListForScopeResult struct {
+	RoleAssignmentScheduleListResult
+}
+
+// RoleAssignmentsCreateByIDResponse contains the response from method RoleAssignments.CreateByID.
+type RoleAssignmentsCreateByIDResponse struct {
+	RoleAssignmentsCreateByIDResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentsCreateByIDResult contains the result from method RoleAssignments.CreateByID.
+type RoleAssignmentsCreateByIDResult struct {
+	RoleAssignment
+}
+
+// RoleAssignmentsCreateResponse contains the response from method RoleAssignments.Create.
+type RoleAssignmentsCreateResponse struct {
+	RoleAssignmentsCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentsCreateResult contains the result from method RoleAssignments.Create.
+type RoleAssignmentsCreateResult struct {
+	RoleAssignment
+}
+
+// RoleAssignmentsDeleteByIDResponse contains the response from method RoleAssignments.DeleteByID.
+type RoleAssignmentsDeleteByIDResponse struct {
+	RoleAssignmentsDeleteByIDResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentsDeleteByIDResult contains the result from method RoleAssignments.DeleteByID.
+type RoleAssignmentsDeleteByIDResult struct {
+	RoleAssignment
+}
+
+// RoleAssignmentsDeleteResponse contains the response from method RoleAssignments.Delete.
+type RoleAssignmentsDeleteResponse struct {
+	RoleAssignmentsDeleteResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentsDeleteResult contains the result from method RoleAssignments.Delete.
+type RoleAssignmentsDeleteResult struct {
+	RoleAssignment
+}
+
+// RoleAssignmentsGetByIDResponse contains the response from method RoleAssignments.GetByID.
+type RoleAssignmentsGetByIDResponse struct {
+	RoleAssignmentsGetByIDResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentsGetByIDResult contains the result from method RoleAssignments.GetByID.
+type RoleAssignmentsGetByIDResult struct {
+	RoleAssignment
+}
+
+// RoleAssignmentsGetResponse contains the response from method RoleAssignments.Get.
+type RoleAssignmentsGetResponse struct {
+	RoleAssignmentsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentsGetResult contains the result from method RoleAssignments.Get.
+type RoleAssignmentsGetResult struct {
+	RoleAssignment
+}
+
+// RoleAssignmentsListForResourceGroupResponse contains the response from method RoleAssignments.ListForResourceGroup.
+type RoleAssignmentsListForResourceGroupResponse struct {
+	RoleAssignmentsListForResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentsListForResourceGroupResult contains the result from method RoleAssignments.ListForResourceGroup.
+type RoleAssignmentsListForResourceGroupResult struct {
+	RoleAssignmentListResult
+}
+
+// RoleAssignmentsListForResourceResponse contains the response from method RoleAssignments.ListForResource.
+type RoleAssignmentsListForResourceResponse struct {
+	RoleAssignmentsListForResourceResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentsListForResourceResult contains the result from method RoleAssignments.ListForResource.
+type RoleAssignmentsListForResourceResult struct {
+	RoleAssignmentListResult
+}
+
+// RoleAssignmentsListForScopeResponse contains the response from method RoleAssignments.ListForScope.
+type RoleAssignmentsListForScopeResponse struct {
+	RoleAssignmentsListForScopeResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentsListForScopeResult contains the result from method RoleAssignments.ListForScope.
+type RoleAssignmentsListForScopeResult struct {
+	RoleAssignmentListResult
+}
+
+// RoleAssignmentsListForSubscriptionResponse contains the response from method RoleAssignments.ListForSubscription.
+type RoleAssignmentsListForSubscriptionResponse struct {
+	RoleAssignmentsListForSubscriptionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentsListForSubscriptionResult contains the result from method RoleAssignments.ListForSubscription.
+type RoleAssignmentsListForSubscriptionResult struct {
+	RoleAssignmentListResult
+}
+
+// RoleAssignmentsValidateByIDResponse contains the response from method RoleAssignments.ValidateByID.
+type RoleAssignmentsValidateByIDResponse struct {
+	RoleAssignmentsValidateByIDResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentsValidateByIDResult contains the result from method RoleAssignments.ValidateByID.
+type RoleAssignmentsValidateByIDResult struct {
+	ValidationResponse
+}
+
+// RoleAssignmentsValidateResponse contains the response from method RoleAssignments.Validate.
+type RoleAssignmentsValidateResponse struct {
+	RoleAssignmentsValidateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleAssignmentsValidateResult contains the result from method RoleAssignments.Validate.
+type RoleAssignmentsValidateResult struct {
+	ValidationResponse
+}
+
+// RoleDefinitionsCreateOrUpdateResponse contains the response from method RoleDefinitions.CreateOrUpdate.
+type RoleDefinitionsCreateOrUpdateResponse struct {
+	RoleDefinitionsCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleDefinitionsCreateOrUpdateResult contains the result from method RoleDefinitions.CreateOrUpdate.
+type RoleDefinitionsCreateOrUpdateResult struct {
+	RoleDefinition
+}
+
+// RoleDefinitionsDeleteResponse contains the response from method RoleDefinitions.Delete.
+type RoleDefinitionsDeleteResponse struct {
+	RoleDefinitionsDeleteResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleDefinitionsDeleteResult contains the result from method RoleDefinitions.Delete.
+type RoleDefinitionsDeleteResult struct {
+	RoleDefinition
+}
+
+// RoleDefinitionsGetByIDResponse contains the response from method RoleDefinitions.GetByID.
+type RoleDefinitionsGetByIDResponse struct {
+	RoleDefinitionsGetByIDResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleDefinitionsGetByIDResult contains the result from method RoleDefinitions.GetByID.
+type RoleDefinitionsGetByIDResult struct {
+	RoleDefinition
+}
+
+// RoleDefinitionsGetResponse contains the response from method RoleDefinitions.Get.
+type RoleDefinitionsGetResponse struct {
+	RoleDefinitionsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleDefinitionsGetResult contains the result from method RoleDefinitions.Get.
+type RoleDefinitionsGetResult struct {
+	RoleDefinition
+}
+
+// RoleDefinitionsListResponse contains the response from method RoleDefinitions.List.
+type RoleDefinitionsListResponse struct {
+	RoleDefinitionsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleDefinitionsListResult contains the result from method RoleDefinitions.List.
+type RoleDefinitionsListResult struct {
+	RoleDefinitionListResult
+}
+
+// RoleEligibilityScheduleInstancesGetResponse contains the response from method RoleEligibilityScheduleInstances.Get.
+type RoleEligibilityScheduleInstancesGetResponse struct {
+	RoleEligibilityScheduleInstancesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleEligibilityScheduleInstancesGetResult contains the result from method RoleEligibilityScheduleInstances.Get.
+type RoleEligibilityScheduleInstancesGetResult struct {
+	RoleEligibilityScheduleInstance
+}
+
+// RoleEligibilityScheduleInstancesListForScopeResponse contains the response from method RoleEligibilityScheduleInstances.ListForScope.
+type RoleEligibilityScheduleInstancesListForScopeResponse struct {
+	RoleEligibilityScheduleInstancesListForScopeResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleEligibilityScheduleInstancesListForScopeResult contains the result from method RoleEligibilityScheduleInstances.ListForScope.
+type RoleEligibilityScheduleInstancesListForScopeResult struct {
+	RoleEligibilityScheduleInstanceListResult
+}
+
+// RoleEligibilityScheduleRequestsCancelResponse contains the response from method RoleEligibilityScheduleRequests.Cancel.
+type RoleEligibilityScheduleRequestsCancelResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleEligibilityScheduleRequestsCreateResponse contains the response from method RoleEligibilityScheduleRequests.Create.
+type RoleEligibilityScheduleRequestsCreateResponse struct {
+	RoleEligibilityScheduleRequestsCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleEligibilityScheduleRequestsCreateResult contains the result from method RoleEligibilityScheduleRequests.Create.
+type RoleEligibilityScheduleRequestsCreateResult struct {
+	RoleEligibilityScheduleRequest
+}
+
+// RoleEligibilityScheduleRequestsGetResponse contains the response from method RoleEligibilityScheduleRequests.Get.
+type RoleEligibilityScheduleRequestsGetResponse struct {
+	RoleEligibilityScheduleRequestsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleEligibilityScheduleRequestsGetResult contains the result from method RoleEligibilityScheduleRequests.Get.
+type RoleEligibilityScheduleRequestsGetResult struct {
+	RoleEligibilityScheduleRequest
+}
+
+// RoleEligibilityScheduleRequestsListForScopeResponse contains the response from method RoleEligibilityScheduleRequests.ListForScope.
+type RoleEligibilityScheduleRequestsListForScopeResponse struct {
+	RoleEligibilityScheduleRequestsListForScopeResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleEligibilityScheduleRequestsListForScopeResult contains the result from method RoleEligibilityScheduleRequests.ListForScope.
+type RoleEligibilityScheduleRequestsListForScopeResult struct {
+	RoleEligibilityScheduleRequestListResult
+}
+
+// RoleEligibilitySchedulesGetResponse contains the response from method RoleEligibilitySchedules.Get.
+type RoleEligibilitySchedulesGetResponse struct {
+	RoleEligibilitySchedulesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleEligibilitySchedulesGetResult contains the result from method RoleEligibilitySchedules.Get.
+type RoleEligibilitySchedulesGetResult struct {
+	RoleEligibilitySchedule
+}
+
+// RoleEligibilitySchedulesListForScopeResponse contains the response from method RoleEligibilitySchedules.ListForScope.
+type RoleEligibilitySchedulesListForScopeResponse struct {
+	RoleEligibilitySchedulesListForScopeResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleEligibilitySchedulesListForScopeResult contains the result from method RoleEligibilitySchedules.ListForScope.
+type RoleEligibilitySchedulesListForScopeResult struct {
+	RoleEligibilityScheduleListResult
+}
+
+// RoleManagementPoliciesDeleteResponse contains the response from method RoleManagementPolicies.Delete.
+type RoleManagementPoliciesDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleManagementPoliciesGetResponse contains the response from method RoleManagementPolicies.Get.
+type RoleManagementPoliciesGetResponse struct {
+	RoleManagementPoliciesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleManagementPoliciesGetResult contains the result from method RoleManagementPolicies.Get.
+type RoleManagementPoliciesGetResult struct {
+	RoleManagementPolicy
+}
+
+// RoleManagementPoliciesListForScopeResponse contains the response from method RoleManagementPolicies.ListForScope.
+type RoleManagementPoliciesListForScopeResponse struct {
+	RoleManagementPoliciesListForScopeResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleManagementPoliciesListForScopeResult contains the result from method RoleManagementPolicies.ListForScope.
+type RoleManagementPoliciesListForScopeResult struct {
+	RoleManagementPolicyListResult
+}
+
+// RoleManagementPoliciesUpdateResponse contains the response from method RoleManagementPolicies.Update.
+type RoleManagementPoliciesUpdateResponse struct {
+	RoleManagementPoliciesUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleManagementPoliciesUpdateResult contains the result from method RoleManagementPolicies.Update.
+type RoleManagementPoliciesUpdateResult struct {
+	RoleManagementPolicy
+}
+
+// RoleManagementPolicyAssignmentsCreateResponse contains the response from method RoleManagementPolicyAssignments.Create.
+type RoleManagementPolicyAssignmentsCreateResponse struct {
+	RoleManagementPolicyAssignmentsCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleManagementPolicyAssignmentsCreateResult contains the result from method RoleManagementPolicyAssignments.Create.
+type RoleManagementPolicyAssignmentsCreateResult struct {
+	RoleManagementPolicyAssignment
+}
+
+// RoleManagementPolicyAssignmentsDeleteResponse contains the response from method RoleManagementPolicyAssignments.Delete.
+type RoleManagementPolicyAssignmentsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleManagementPolicyAssignmentsGetResponse contains the response from method RoleManagementPolicyAssignments.Get.
+type RoleManagementPolicyAssignmentsGetResponse struct {
+	RoleManagementPolicyAssignmentsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleManagementPolicyAssignmentsGetResult contains the result from method RoleManagementPolicyAssignments.Get.
+type RoleManagementPolicyAssignmentsGetResult struct {
+	RoleManagementPolicyAssignment
+}
+
+// RoleManagementPolicyAssignmentsListForScopeResponse contains the response from method RoleManagementPolicyAssignments.ListForScope.
+type RoleManagementPolicyAssignmentsListForScopeResponse struct {
+	RoleManagementPolicyAssignmentsListForScopeResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// RoleManagementPolicyAssignmentsListForScopeResult contains the result from method RoleManagementPolicyAssignments.ListForScope.
+type RoleManagementPolicyAssignmentsListForScopeResult struct {
+	RoleManagementPolicyAssignmentListResult
 }

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ConfigurationClient contains the methods for the Configuration group.
 // Don't use this type directly, use NewConfigurationClient() instead.
 type ConfigurationClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewConfigurationClient creates a new instance of ConfigurationClient with the specified values.
-func NewConfigurationClient(con *armcore.Connection, subscriptionID string) *ConfigurationClient {
-	return &ConfigurationClient{con: con, subscriptionID: subscriptionID}
+func NewConfigurationClient(con *arm.Connection, subscriptionID string) *ConfigurationClient {
+	return &ConfigurationClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Get all Event Hubs Cluster settings - a collection of key/value pairs which represent the quotas and settings imposed on the cluster.
@@ -37,18 +41,18 @@ func (client *ConfigurationClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ConfigurationGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ConfigurationGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ConfigurationGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ConfigurationGetOptions) (*azcore.Request, error) {
+func (client *ConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ConfigurationGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}/quotaConfiguration/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -62,38 +66,37 @@ func (client *ConfigurationClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConfigurationClient) getHandleResponse(resp *azcore.Response) (ConfigurationGetResponse, error) {
-	result := ConfigurationGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ClusterQuotaConfigurationProperties); err != nil {
+func (client *ConfigurationClient) getHandleResponse(resp *http.Response) (ConfigurationGetResponse, error) {
+	result := ConfigurationGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterQuotaConfigurationProperties); err != nil {
 		return ConfigurationGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ConfigurationClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ConfigurationClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Patch - Replace all specified Event Hubs Cluster settings with those contained in the request body. Leaves the settings not specified in the request
@@ -104,18 +107,18 @@ func (client *ConfigurationClient) Patch(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ConfigurationPatchResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ConfigurationPatchResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return ConfigurationPatchResponse{}, client.patchHandleError(resp)
 	}
 	return client.patchHandleResponse(resp)
 }
 
 // patchCreateRequest creates the Patch request.
-func (client *ConfigurationClient) patchCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterQuotaConfigurationProperties, options *ConfigurationPatchOptions) (*azcore.Request, error) {
+func (client *ConfigurationClient) patchCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, parameters ClusterQuotaConfigurationProperties, options *ConfigurationPatchOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}/quotaConfiguration/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -129,36 +132,35 @@ func (client *ConfigurationClient) patchCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // patchHandleResponse handles the Patch response.
-func (client *ConfigurationClient) patchHandleResponse(resp *azcore.Response) (ConfigurationPatchResponse, error) {
-	result := ConfigurationPatchResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ClusterQuotaConfigurationProperties); err != nil {
+func (client *ConfigurationClient) patchHandleResponse(resp *http.Response) (ConfigurationPatchResponse, error) {
+	result := ConfigurationPatchResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterQuotaConfigurationProperties); err != nil {
 		return ConfigurationPatchResponse{}, err
 	}
 	return result, nil
 }
 
 // patchHandleError handles the Patch error response.
-func (client *ConfigurationClient) patchHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ConfigurationClient) patchHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

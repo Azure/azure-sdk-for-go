@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TenantConfigurationClient contains the methods for the TenantConfiguration group.
 // Don't use this type directly, use NewTenantConfigurationClient() instead.
 type TenantConfigurationClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewTenantConfigurationClient creates a new instance of TenantConfigurationClient with the specified values.
-func NewTenantConfigurationClient(con *armcore.Connection, subscriptionID string) *TenantConfigurationClient {
-	return &TenantConfigurationClient{con: con, subscriptionID: subscriptionID}
+func NewTenantConfigurationClient(con *arm.Connection, subscriptionID string) *TenantConfigurationClient {
+	return &TenantConfigurationClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginDeploy - This operation applies changes from the specified Git branch to the configuration database. This is a long running operation and could
@@ -40,42 +44,14 @@ func (client *TenantConfigurationClient) BeginDeploy(ctx context.Context, resour
 		return TenantConfigurationDeployPollerResponse{}, err
 	}
 	result := TenantConfigurationDeployPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("TenantConfigurationClient.Deploy", "location", resp, client.con.Pipeline(), client.deployHandleError)
-	if err != nil {
-		return TenantConfigurationDeployPollerResponse{}, err
-	}
-	poller := &tenantConfigurationDeployPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TenantConfigurationDeployResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDeploy creates a new TenantConfigurationDeployPoller from the specified resume token.
-// token - The value must come from a previous call to TenantConfigurationDeployPoller.ResumeToken().
-func (client *TenantConfigurationClient) ResumeDeploy(ctx context.Context, token string) (TenantConfigurationDeployPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("TenantConfigurationClient.Deploy", token, client.con.Pipeline(), client.deployHandleError)
-	if err != nil {
-		return TenantConfigurationDeployPollerResponse{}, err
-	}
-	poller := &tenantConfigurationDeployPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return TenantConfigurationDeployPollerResponse{}, err
-	}
-	result := TenantConfigurationDeployPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TenantConfigurationDeployResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("TenantConfigurationClient.Deploy", "location", resp, client.pl, client.deployHandleError)
+	if err != nil {
+		return TenantConfigurationDeployPollerResponse{}, err
+	}
+	result.Poller = &TenantConfigurationDeployPoller{
+		pt: pt,
 	}
 	return result, nil
 }
@@ -83,23 +59,23 @@ func (client *TenantConfigurationClient) ResumeDeploy(ctx context.Context, token
 // Deploy - This operation applies changes from the specified Git branch to the configuration database. This is a long running operation and could take
 // several minutes to complete.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *TenantConfigurationClient) deploy(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, parameters DeployConfigurationParameters, options *TenantConfigurationBeginDeployOptions) (*azcore.Response, error) {
+func (client *TenantConfigurationClient) deploy(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, parameters DeployConfigurationParameters, options *TenantConfigurationBeginDeployOptions) (*http.Response, error) {
 	req, err := client.deployCreateRequest(ctx, resourceGroupName, serviceName, configurationName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.deployHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deployCreateRequest creates the Deploy request.
-func (client *TenantConfigurationClient) deployCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, parameters DeployConfigurationParameters, options *TenantConfigurationBeginDeployOptions) (*azcore.Request, error) {
+func (client *TenantConfigurationClient) deployCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, parameters DeployConfigurationParameters, options *TenantConfigurationBeginDeployOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{configurationName}/deploy"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -117,29 +93,28 @@ func (client *TenantConfigurationClient) deployCreateRequest(ctx context.Context
 		return nil, errors.New("parameter configurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(string(configurationName)))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // deployHandleError handles the Deploy error response.
-func (client *TenantConfigurationClient) deployHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TenantConfigurationClient) deployHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetSyncState - Gets the status of the most recent synchronization between the configuration database and the Git repository.
@@ -149,18 +124,18 @@ func (client *TenantConfigurationClient) GetSyncState(ctx context.Context, resou
 	if err != nil {
 		return TenantConfigurationGetSyncStateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TenantConfigurationGetSyncStateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TenantConfigurationGetSyncStateResponse{}, client.getSyncStateHandleError(resp)
 	}
 	return client.getSyncStateHandleResponse(resp)
 }
 
 // getSyncStateCreateRequest creates the GetSyncState request.
-func (client *TenantConfigurationClient) getSyncStateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, options *TenantConfigurationGetSyncStateOptions) (*azcore.Request, error) {
+func (client *TenantConfigurationClient) getSyncStateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, options *TenantConfigurationGetSyncStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{configurationName}/syncState"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -178,38 +153,37 @@ func (client *TenantConfigurationClient) getSyncStateCreateRequest(ctx context.C
 		return nil, errors.New("parameter configurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(string(configurationName)))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getSyncStateHandleResponse handles the GetSyncState response.
-func (client *TenantConfigurationClient) getSyncStateHandleResponse(resp *azcore.Response) (TenantConfigurationGetSyncStateResponse, error) {
-	result := TenantConfigurationGetSyncStateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TenantConfigurationSyncStateContract); err != nil {
+func (client *TenantConfigurationClient) getSyncStateHandleResponse(resp *http.Response) (TenantConfigurationGetSyncStateResponse, error) {
+	result := TenantConfigurationGetSyncStateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TenantConfigurationSyncStateContract); err != nil {
 		return TenantConfigurationGetSyncStateResponse{}, err
 	}
 	return result, nil
 }
 
 // getSyncStateHandleError handles the GetSyncState error response.
-func (client *TenantConfigurationClient) getSyncStateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TenantConfigurationClient) getSyncStateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginSave - This operation creates a commit with the current configuration snapshot to the specified branch in the repository. This is a long running
@@ -221,42 +195,14 @@ func (client *TenantConfigurationClient) BeginSave(ctx context.Context, resource
 		return TenantConfigurationSavePollerResponse{}, err
 	}
 	result := TenantConfigurationSavePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("TenantConfigurationClient.Save", "location", resp, client.con.Pipeline(), client.saveHandleError)
-	if err != nil {
-		return TenantConfigurationSavePollerResponse{}, err
-	}
-	poller := &tenantConfigurationSavePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TenantConfigurationSaveResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeSave creates a new TenantConfigurationSavePoller from the specified resume token.
-// token - The value must come from a previous call to TenantConfigurationSavePoller.ResumeToken().
-func (client *TenantConfigurationClient) ResumeSave(ctx context.Context, token string) (TenantConfigurationSavePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("TenantConfigurationClient.Save", token, client.con.Pipeline(), client.saveHandleError)
-	if err != nil {
-		return TenantConfigurationSavePollerResponse{}, err
-	}
-	poller := &tenantConfigurationSavePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return TenantConfigurationSavePollerResponse{}, err
-	}
-	result := TenantConfigurationSavePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TenantConfigurationSaveResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("TenantConfigurationClient.Save", "location", resp, client.pl, client.saveHandleError)
+	if err != nil {
+		return TenantConfigurationSavePollerResponse{}, err
+	}
+	result.Poller = &TenantConfigurationSavePoller{
+		pt: pt,
 	}
 	return result, nil
 }
@@ -264,23 +210,23 @@ func (client *TenantConfigurationClient) ResumeSave(ctx context.Context, token s
 // Save - This operation creates a commit with the current configuration snapshot to the specified branch in the repository. This is a long running operation
 // and could take several minutes to complete.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *TenantConfigurationClient) save(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, parameters SaveConfigurationParameter, options *TenantConfigurationBeginSaveOptions) (*azcore.Response, error) {
+func (client *TenantConfigurationClient) save(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, parameters SaveConfigurationParameter, options *TenantConfigurationBeginSaveOptions) (*http.Response, error) {
 	req, err := client.saveCreateRequest(ctx, resourceGroupName, serviceName, configurationName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.saveHandleError(resp)
 	}
 	return resp, nil
 }
 
 // saveCreateRequest creates the Save request.
-func (client *TenantConfigurationClient) saveCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, parameters SaveConfigurationParameter, options *TenantConfigurationBeginSaveOptions) (*azcore.Request, error) {
+func (client *TenantConfigurationClient) saveCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, parameters SaveConfigurationParameter, options *TenantConfigurationBeginSaveOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{configurationName}/save"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -298,29 +244,28 @@ func (client *TenantConfigurationClient) saveCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter configurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(string(configurationName)))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // saveHandleError handles the Save error response.
-func (client *TenantConfigurationClient) saveHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TenantConfigurationClient) saveHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginValidate - This operation validates the changes in the specified Git branch. This is a long running operation and could take several minutes to
@@ -332,65 +277,37 @@ func (client *TenantConfigurationClient) BeginValidate(ctx context.Context, reso
 		return TenantConfigurationValidatePollerResponse{}, err
 	}
 	result := TenantConfigurationValidatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("TenantConfigurationClient.Validate", "location", resp, client.con.Pipeline(), client.validateHandleError)
-	if err != nil {
-		return TenantConfigurationValidatePollerResponse{}, err
-	}
-	poller := &tenantConfigurationValidatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TenantConfigurationValidateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeValidate creates a new TenantConfigurationValidatePoller from the specified resume token.
-// token - The value must come from a previous call to TenantConfigurationValidatePoller.ResumeToken().
-func (client *TenantConfigurationClient) ResumeValidate(ctx context.Context, token string) (TenantConfigurationValidatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("TenantConfigurationClient.Validate", token, client.con.Pipeline(), client.validateHandleError)
-	if err != nil {
-		return TenantConfigurationValidatePollerResponse{}, err
-	}
-	poller := &tenantConfigurationValidatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return TenantConfigurationValidatePollerResponse{}, err
-	}
-	result := TenantConfigurationValidatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TenantConfigurationValidateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("TenantConfigurationClient.Validate", "location", resp, client.pl, client.validateHandleError)
+	if err != nil {
+		return TenantConfigurationValidatePollerResponse{}, err
+	}
+	result.Poller = &TenantConfigurationValidatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Validate - This operation validates the changes in the specified Git branch. This is a long running operation and could take several minutes to complete.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *TenantConfigurationClient) validate(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, parameters DeployConfigurationParameters, options *TenantConfigurationBeginValidateOptions) (*azcore.Response, error) {
+func (client *TenantConfigurationClient) validate(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, parameters DeployConfigurationParameters, options *TenantConfigurationBeginValidateOptions) (*http.Response, error) {
 	req, err := client.validateCreateRequest(ctx, resourceGroupName, serviceName, configurationName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.validateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // validateCreateRequest creates the Validate request.
-func (client *TenantConfigurationClient) validateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, parameters DeployConfigurationParameters, options *TenantConfigurationBeginValidateOptions) (*azcore.Request, error) {
+func (client *TenantConfigurationClient) validateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, configurationName ConfigurationIDName, parameters DeployConfigurationParameters, options *TenantConfigurationBeginValidateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{configurationName}/validate"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -408,27 +325,26 @@ func (client *TenantConfigurationClient) validateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter configurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(string(configurationName)))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // validateHandleError handles the Validate error response.
-func (client *TenantConfigurationClient) validateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TenantConfigurationClient) validateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

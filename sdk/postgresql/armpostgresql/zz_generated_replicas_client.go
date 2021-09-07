@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ReplicasClient contains the methods for the Replicas group.
 // Don't use this type directly, use NewReplicasClient() instead.
 type ReplicasClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewReplicasClient creates a new instance of ReplicasClient with the specified values.
-func NewReplicasClient(con *armcore.Connection, subscriptionID string) *ReplicasClient {
-	return &ReplicasClient{con: con, subscriptionID: subscriptionID}
+func NewReplicasClient(con *arm.Connection, subscriptionID string) *ReplicasClient {
+	return &ReplicasClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // ListByServer - List all the replicas for a given server.
@@ -37,18 +41,18 @@ func (client *ReplicasClient) ListByServer(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ReplicasListByServerResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ReplicasListByServerResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ReplicasListByServerResponse{}, client.listByServerHandleError(resp)
 	}
 	return client.listByServerHandleResponse(resp)
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *ReplicasClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ReplicasListByServerOptions) (*azcore.Request, error) {
+func (client *ReplicasClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ReplicasListByServerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/replicas"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -62,36 +66,35 @@ func (client *ReplicasClient) listByServerCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ReplicasClient) listByServerHandleResponse(resp *azcore.Response) (ReplicasListByServerResponse, error) {
-	result := ReplicasListByServerResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ServerListResult); err != nil {
+func (client *ReplicasClient) listByServerHandleResponse(resp *http.Response) (ReplicasListByServerResponse, error) {
+	result := ReplicasListByServerResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServerListResult); err != nil {
 		return ReplicasListByServerResponse{}, err
 	}
 	return result, nil
 }
 
 // listByServerHandleError handles the ListByServer error response.
-func (client *ReplicasClient) listByServerHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ReplicasClient) listByServerHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

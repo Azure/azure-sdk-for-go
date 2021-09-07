@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,8 +12,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -21,34 +23,35 @@ import (
 // DataCollectionRuleAssociationsClient contains the methods for the DataCollectionRuleAssociations group.
 // Don't use this type directly, use NewDataCollectionRuleAssociationsClient() instead.
 type DataCollectionRuleAssociationsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewDataCollectionRuleAssociationsClient creates a new instance of DataCollectionRuleAssociationsClient with the specified values.
-func NewDataCollectionRuleAssociationsClient(con *armcore.Connection, subscriptionID string) *DataCollectionRuleAssociationsClient {
-	return &DataCollectionRuleAssociationsClient{con: con, subscriptionID: subscriptionID}
+func NewDataCollectionRuleAssociationsClient(con *arm.Connection, subscriptionID string) *DataCollectionRuleAssociationsClient {
+	return &DataCollectionRuleAssociationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Create - Creates or updates an association.
 // If the operation fails it returns the *ErrorResponseCommonV2 error type.
-func (client *DataCollectionRuleAssociationsClient) Create(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsCreateOptions) (DataCollectionRuleAssociationProxyOnlyResourceResponse, error) {
+func (client *DataCollectionRuleAssociationsClient) Create(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsCreateOptions) (DataCollectionRuleAssociationsCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceURI, associationName, options)
 	if err != nil {
-		return DataCollectionRuleAssociationProxyOnlyResourceResponse{}, err
+		return DataCollectionRuleAssociationsCreateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataCollectionRuleAssociationProxyOnlyResourceResponse{}, err
+		return DataCollectionRuleAssociationsCreateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return DataCollectionRuleAssociationProxyOnlyResourceResponse{}, client.createHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
+		return DataCollectionRuleAssociationsCreateResponse{}, client.createHandleError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *DataCollectionRuleAssociationsClient) createCreateRequest(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsCreateOptions) (*azcore.Request, error) {
+func (client *DataCollectionRuleAssociationsClient) createCreateRequest(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsCreateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/dataCollectionRuleAssociations/{associationName}"
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
@@ -58,62 +61,61 @@ func (client *DataCollectionRuleAssociationsClient) createCreateRequest(ctx cont
 		return nil, errors.New("parameter associationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Body != nil {
-		return req, req.MarshalAsJSON(*options.Body)
+		return req, runtime.MarshalAsJSON(req, *options.Body)
 	}
 	return req, nil
 }
 
 // createHandleResponse handles the Create response.
-func (client *DataCollectionRuleAssociationsClient) createHandleResponse(resp *azcore.Response) (DataCollectionRuleAssociationProxyOnlyResourceResponse, error) {
-	var val *DataCollectionRuleAssociationProxyOnlyResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DataCollectionRuleAssociationProxyOnlyResourceResponse{}, err
+func (client *DataCollectionRuleAssociationsClient) createHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsCreateResponse, error) {
+	result := DataCollectionRuleAssociationsCreateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResource); err != nil {
+		return DataCollectionRuleAssociationsCreateResponse{}, err
 	}
-	return DataCollectionRuleAssociationProxyOnlyResourceResponse{RawResponse: resp.Response, DataCollectionRuleAssociationProxyOnlyResource: val}, nil
+	return result, nil
 }
 
 // createHandleError handles the Create error response.
-func (client *DataCollectionRuleAssociationsClient) createHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DataCollectionRuleAssociationsClient) createHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponseCommonV2{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Deletes an association.
 // If the operation fails it returns the *ErrorResponseCommonV2 error type.
-func (client *DataCollectionRuleAssociationsClient) Delete(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsDeleteOptions) (*http.Response, error) {
+func (client *DataCollectionRuleAssociationsClient) Delete(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsDeleteOptions) (DataCollectionRuleAssociationsDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceURI, associationName, options)
 	if err != nil {
-		return nil, err
+		return DataCollectionRuleAssociationsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return DataCollectionRuleAssociationsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
+		return DataCollectionRuleAssociationsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return resp.Response, nil
+	return DataCollectionRuleAssociationsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DataCollectionRuleAssociationsClient) deleteCreateRequest(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsDeleteOptions) (*azcore.Request, error) {
+func (client *DataCollectionRuleAssociationsClient) deleteCreateRequest(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/dataCollectionRuleAssociations/{associationName}"
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
@@ -123,50 +125,49 @@ func (client *DataCollectionRuleAssociationsClient) deleteCreateRequest(ctx cont
 		return nil, errors.New("parameter associationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *DataCollectionRuleAssociationsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DataCollectionRuleAssociationsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponseCommonV2{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Returns the specified association.
 // If the operation fails it returns the *ErrorResponseCommonV2 error type.
-func (client *DataCollectionRuleAssociationsClient) Get(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsGetOptions) (DataCollectionRuleAssociationProxyOnlyResourceResponse, error) {
+func (client *DataCollectionRuleAssociationsClient) Get(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsGetOptions) (DataCollectionRuleAssociationsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceURI, associationName, options)
 	if err != nil {
-		return DataCollectionRuleAssociationProxyOnlyResourceResponse{}, err
+		return DataCollectionRuleAssociationsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DataCollectionRuleAssociationProxyOnlyResourceResponse{}, err
+		return DataCollectionRuleAssociationsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return DataCollectionRuleAssociationProxyOnlyResourceResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return DataCollectionRuleAssociationsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DataCollectionRuleAssociationsClient) getCreateRequest(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsGetOptions) (*azcore.Request, error) {
+func (client *DataCollectionRuleAssociationsClient) getCreateRequest(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/dataCollectionRuleAssociations/{associationName}"
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
@@ -176,117 +177,109 @@ func (client *DataCollectionRuleAssociationsClient) getCreateRequest(ctx context
 		return nil, errors.New("parameter associationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{associationName}", url.PathEscape(associationName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataCollectionRuleAssociationsClient) getHandleResponse(resp *azcore.Response) (DataCollectionRuleAssociationProxyOnlyResourceResponse, error) {
-	var val *DataCollectionRuleAssociationProxyOnlyResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DataCollectionRuleAssociationProxyOnlyResourceResponse{}, err
+func (client *DataCollectionRuleAssociationsClient) getHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsGetResponse, error) {
+	result := DataCollectionRuleAssociationsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResource); err != nil {
+		return DataCollectionRuleAssociationsGetResponse{}, err
 	}
-	return DataCollectionRuleAssociationProxyOnlyResourceResponse{RawResponse: resp.Response, DataCollectionRuleAssociationProxyOnlyResource: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *DataCollectionRuleAssociationsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DataCollectionRuleAssociationsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponseCommonV2{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByResource - Lists associations for the specified resource.
 // If the operation fails it returns the *ErrorResponseCommonV2 error type.
-func (client *DataCollectionRuleAssociationsClient) ListByResource(resourceURI string, options *DataCollectionRuleAssociationsListByResourceOptions) DataCollectionRuleAssociationProxyOnlyResourceListResultPager {
-	return &dataCollectionRuleAssociationProxyOnlyResourceListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *DataCollectionRuleAssociationsClient) ListByResource(resourceURI string, options *DataCollectionRuleAssociationsListByResourceOptions) *DataCollectionRuleAssociationsListByResourcePager {
+	return &DataCollectionRuleAssociationsListByResourcePager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceCreateRequest(ctx, resourceURI, options)
 		},
-		responder: client.listByResourceHandleResponse,
-		errorer:   client.listByResourceHandleError,
-		advancer: func(ctx context.Context, resp DataCollectionRuleAssociationProxyOnlyResourceListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DataCollectionRuleAssociationProxyOnlyResourceListResult.NextLink)
+		advancer: func(ctx context.Context, resp DataCollectionRuleAssociationsListByResourceResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataCollectionRuleAssociationProxyOnlyResourceListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listByResourceCreateRequest creates the ListByResource request.
-func (client *DataCollectionRuleAssociationsClient) listByResourceCreateRequest(ctx context.Context, resourceURI string, options *DataCollectionRuleAssociationsListByResourceOptions) (*azcore.Request, error) {
+func (client *DataCollectionRuleAssociationsClient) listByResourceCreateRequest(ctx context.Context, resourceURI string, options *DataCollectionRuleAssociationsListByResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/dataCollectionRuleAssociations"
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceHandleResponse handles the ListByResource response.
-func (client *DataCollectionRuleAssociationsClient) listByResourceHandleResponse(resp *azcore.Response) (DataCollectionRuleAssociationProxyOnlyResourceListResultResponse, error) {
-	var val *DataCollectionRuleAssociationProxyOnlyResourceListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DataCollectionRuleAssociationProxyOnlyResourceListResultResponse{}, err
+func (client *DataCollectionRuleAssociationsClient) listByResourceHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsListByResourceResponse, error) {
+	result := DataCollectionRuleAssociationsListByResourceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResourceListResult); err != nil {
+		return DataCollectionRuleAssociationsListByResourceResponse{}, err
 	}
-	return DataCollectionRuleAssociationProxyOnlyResourceListResultResponse{RawResponse: resp.Response, DataCollectionRuleAssociationProxyOnlyResourceListResult: val}, nil
+	return result, nil
 }
 
 // listByResourceHandleError handles the ListByResource error response.
-func (client *DataCollectionRuleAssociationsClient) listByResourceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DataCollectionRuleAssociationsClient) listByResourceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponseCommonV2{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByRule - Lists associations for the specified data collection rule.
 // If the operation fails it returns the *ErrorResponseCommonV2 error type.
-func (client *DataCollectionRuleAssociationsClient) ListByRule(resourceGroupName string, dataCollectionRuleName string, options *DataCollectionRuleAssociationsListByRuleOptions) DataCollectionRuleAssociationProxyOnlyResourceListResultPager {
-	return &dataCollectionRuleAssociationProxyOnlyResourceListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *DataCollectionRuleAssociationsClient) ListByRule(resourceGroupName string, dataCollectionRuleName string, options *DataCollectionRuleAssociationsListByRuleOptions) *DataCollectionRuleAssociationsListByRulePager {
+	return &DataCollectionRuleAssociationsListByRulePager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByRuleCreateRequest(ctx, resourceGroupName, dataCollectionRuleName, options)
 		},
-		responder: client.listByRuleHandleResponse,
-		errorer:   client.listByRuleHandleError,
-		advancer: func(ctx context.Context, resp DataCollectionRuleAssociationProxyOnlyResourceListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DataCollectionRuleAssociationProxyOnlyResourceListResult.NextLink)
+		advancer: func(ctx context.Context, resp DataCollectionRuleAssociationsListByRuleResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DataCollectionRuleAssociationProxyOnlyResourceListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listByRuleCreateRequest creates the ListByRule request.
-func (client *DataCollectionRuleAssociationsClient) listByRuleCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionRuleName string, options *DataCollectionRuleAssociationsListByRuleOptions) (*azcore.Request, error) {
+func (client *DataCollectionRuleAssociationsClient) listByRuleCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionRuleName string, options *DataCollectionRuleAssociationsListByRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dataCollectionRuleName}/associations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -300,36 +293,35 @@ func (client *DataCollectionRuleAssociationsClient) listByRuleCreateRequest(ctx 
 		return nil, errors.New("parameter dataCollectionRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionRuleName}", url.PathEscape(dataCollectionRuleName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByRuleHandleResponse handles the ListByRule response.
-func (client *DataCollectionRuleAssociationsClient) listByRuleHandleResponse(resp *azcore.Response) (DataCollectionRuleAssociationProxyOnlyResourceListResultResponse, error) {
-	var val *DataCollectionRuleAssociationProxyOnlyResourceListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DataCollectionRuleAssociationProxyOnlyResourceListResultResponse{}, err
+func (client *DataCollectionRuleAssociationsClient) listByRuleHandleResponse(resp *http.Response) (DataCollectionRuleAssociationsListByRuleResponse, error) {
+	result := DataCollectionRuleAssociationsListByRuleResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleAssociationProxyOnlyResourceListResult); err != nil {
+		return DataCollectionRuleAssociationsListByRuleResponse{}, err
 	}
-	return DataCollectionRuleAssociationProxyOnlyResourceListResultResponse{RawResponse: resp.Response, DataCollectionRuleAssociationProxyOnlyResourceListResult: val}, nil
+	return result, nil
 }
 
 // listByRuleHandleError handles the ListByRule error response.
-func (client *DataCollectionRuleAssociationsClient) listByRuleHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DataCollectionRuleAssociationsClient) listByRuleHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponseCommonV2{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

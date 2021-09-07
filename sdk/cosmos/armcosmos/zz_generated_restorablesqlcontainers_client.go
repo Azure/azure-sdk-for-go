@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RestorableSQLContainersClient contains the methods for the RestorableSQLContainers group.
 // Don't use this type directly, use NewRestorableSQLContainersClient() instead.
 type RestorableSQLContainersClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewRestorableSQLContainersClient creates a new instance of RestorableSQLContainersClient with the specified values.
-func NewRestorableSQLContainersClient(con *armcore.Connection, subscriptionID string) *RestorableSQLContainersClient {
-	return &RestorableSQLContainersClient{con: con, subscriptionID: subscriptionID}
+func NewRestorableSQLContainersClient(con *arm.Connection, subscriptionID string) *RestorableSQLContainersClient {
+	return &RestorableSQLContainersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // List - Show the event feed of all mutations done on all the Azure Cosmos DB SQL containers under a specific database. This helps in scenario where container
@@ -39,18 +43,18 @@ func (client *RestorableSQLContainersClient) List(ctx context.Context, location 
 	if err != nil {
 		return RestorableSQLContainersListResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RestorableSQLContainersListResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RestorableSQLContainersListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *RestorableSQLContainersClient) listCreateRequest(ctx context.Context, location string, instanceID string, options *RestorableSQLContainersListOptions) (*azcore.Request, error) {
+func (client *RestorableSQLContainersClient) listCreateRequest(ctx context.Context, location string, instanceID string, options *RestorableSQLContainersListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableSqlContainers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -64,12 +68,11 @@ func (client *RestorableSQLContainersClient) listCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter instanceID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
 	if options != nil && options.RestorableSQLDatabaseRid != nil {
 		reqQP.Set("restorableSqlDatabaseRid", *options.RestorableSQLDatabaseRid)
@@ -80,29 +83,29 @@ func (client *RestorableSQLContainersClient) listCreateRequest(ctx context.Conte
 	if options != nil && options.EndTime != nil {
 		reqQP.Set("endTime", *options.EndTime)
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RestorableSQLContainersClient) listHandleResponse(resp *azcore.Response) (RestorableSQLContainersListResponse, error) {
-	result := RestorableSQLContainersListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RestorableSQLContainersListResult); err != nil {
+func (client *RestorableSQLContainersClient) listHandleResponse(resp *http.Response) (RestorableSQLContainersListResponse, error) {
+	result := RestorableSQLContainersListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RestorableSQLContainersListResult); err != nil {
 		return RestorableSQLContainersListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *RestorableSQLContainersClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RestorableSQLContainersClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

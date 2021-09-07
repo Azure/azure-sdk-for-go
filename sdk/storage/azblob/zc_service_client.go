@@ -15,19 +15,25 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
-//const (
-//	// ContainerNameRoot is the special Azure Storage name used to identify a storage account's root container.
-//	ContainerNameRoot = "$root"
-//
-//	// ContainerNameLogs is the special Azure Storage name used to identify a storage account's logs container.
-//	ContainerNameLogs = "$logs"
-//)
+//nolint
+const (
+	// ContainerNameRoot is the special Azure Storage name used to identify a storage account's root container.
+	ContainerNameRoot = "$root"
+
+	// ContainerNameLogs is the special Azure Storage name used to identify a storage account's logs container.
+	ContainerNameLogs = "$logs"
+)
 
 // A ServiceClient represents a URL to the Azure Storage Blob service allowing you to manipulate blob containers.
 type ServiceClient struct {
 	client *serviceClient
 	u      url.URL
 	cred   StorageAccountCredential
+}
+
+// URL returns the URL endpoint used by the ServiceClient object.
+func (s ServiceClient) URL() string {
+	return s.client.con.u
 }
 
 // NewServiceClient creates a ServiceClient object using the specified URL, credential, and options.
@@ -45,9 +51,16 @@ func NewServiceClient(serviceURL string, cred azcore.Credential, options *Client
 	}, u: *u, cred: c}, nil
 }
 
-// URL returns the URL endpoint used by the ServiceClient object.
-func (s ServiceClient) URL() string {
-	return s.client.con.u
+// NewServiceClientFromConnectionString creates a service client from the given connection string.
+//nolint
+func NewServiceClientFromConnectionString(connectionString string, options *ClientOptions) (ServiceClient, error) {
+	primaryURL, _, cred, err := ParseConnectionString(connectionString, "")
+	if err != nil {
+		return ServiceClient{}, nil
+	}
+
+	svcClient, err := NewServiceClient(primaryURL, cred, options)
+	return svcClient, err
 }
 
 // NewContainerClient creates a new ContainerClient object by concatenating containerName to the end of
@@ -64,6 +77,25 @@ func (s ServiceClient) NewContainerClient(containerName string) ContainerClient 
 		},
 		cred: s.cred,
 	}
+}
+
+// CreateContainer is a lifecycle method to creates a new container under the specified account.
+// If the container with the same name already exists, a ResourceExistsError will
+// be raised. This method returns a client with which to interact with the newly
+// created container.
+func (s ServiceClient) CreateContainer(ctx context.Context, containerName string, options *CreateContainerOptions) (ContainerCreateResponse, error) {
+	containerClient := s.NewContainerClient(containerName)
+	containerCreateResp, err := containerClient.Create(ctx, options)
+	return containerCreateResp, err
+}
+
+// DeleteContainer is a lifecycle method that marks the specified container for deletion.
+// The container and any blobs contained within it are later deleted during garbage collection.
+// If the container is not found, a ResourceNotFoundError will be raised.
+func (s ServiceClient) DeleteContainer(ctx context.Context, containerName string, options *DeleteContainerOptions) (ContainerDeleteResponse, error) {
+	containerClient := s.NewContainerClient(containerName)
+	containerDeleteResp, err := containerClient.Delete(ctx, options)
+	return containerDeleteResp, err
 }
 
 func (s ServiceClient) NewContainerLeaseClient(containerName string, leaseID *string) ContainerLeaseClient {
@@ -160,18 +192,36 @@ func (s ServiceClient) ListContainersSegment(o *ListContainersSegmentOptions) *S
 	return pager
 }
 
+// GetProperties - gets the properties of a storage account's Blob service, including properties for Storage Analytics
+// and CORS (Cross-Origin Resource Sharing) rules.
 func (s ServiceClient) GetProperties(ctx context.Context) (ServiceGetPropertiesResponse, error) {
 	resp, err := s.client.GetProperties(ctx, nil)
 
 	return resp, handleError(err)
 }
 
+// SetProperties Sets the properties of a storage account's Blob service, including Azure Storage Analytics.
+// If an element (e.g. analytics_logging) is left as None, the existing settings on the service for that functionality are preserved.
 func (s ServiceClient) SetProperties(ctx context.Context, properties StorageServiceProperties) (ServiceSetPropertiesResponse, error) {
 	resp, err := s.client.SetProperties(ctx, properties, nil)
 
 	return resp, handleError(err)
 }
 
+// GetStatistics Retrieves statistics related to replication for the Blob service.
+// It is only available when read-access geo-redundant replication is enabled for  the storage account.
+// With geo-redundant replication, Azure Storage maintains your data durable
+// in two locations. In both locations, Azure Storage constantly maintains
+// multiple healthy replicas of your data. The location where you read,
+// create, update, or delete data is the primary storage account location.
+// The primary location exists in the region you choose at the time you
+// create an account via the Azure Management Azure classic portal, for
+// example, North Central US. The location to which your data is replicated
+// is the secondary location. The secondary location is automatically
+// determined based on the location of the primary; it is in a second data
+// center that resides in the same region as the primary location. Read-only
+// access is available from the secondary location, if read-access geo-redundant
+// replication is enabled for your storage account.
 func (s ServiceClient) GetStatistics(ctx context.Context) (ServiceGetStatisticsResponse, error) {
 	resp, err := s.client.GetStatistics(ctx, nil)
 

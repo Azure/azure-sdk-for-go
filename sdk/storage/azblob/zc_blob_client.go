@@ -27,6 +27,16 @@ func NewBlobClient(blobURL string, cred azcore.Credential, options *ClientOption
 	return BlobClient{client: &blobClient{con, nil}, cred: c}, nil
 }
 
+// NewBlobClientFromConnectionString creates BlobClient from a Connection String
+//nolint
+func NewBlobClientFromConnectionString(connectionString, containerName, blobName string, options *ClientOptions) (BlobClient, error) {
+	containerClient, err := NewContainerClientFromConnectionString(connectionString, containerName, options)
+	if err != nil {
+		return BlobClient{}, err
+	}
+	return containerClient.NewBlobClient(blobName), nil
+}
+
 // URL returns the URL endpoint used by the BlobClient object.
 func (b BlobClient) URL() string {
 	return b.client.con.u

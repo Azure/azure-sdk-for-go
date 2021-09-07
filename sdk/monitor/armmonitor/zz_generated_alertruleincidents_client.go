@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,8 +12,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -21,34 +23,35 @@ import (
 // AlertRuleIncidentsClient contains the methods for the AlertRuleIncidents group.
 // Don't use this type directly, use NewAlertRuleIncidentsClient() instead.
 type AlertRuleIncidentsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewAlertRuleIncidentsClient creates a new instance of AlertRuleIncidentsClient with the specified values.
-func NewAlertRuleIncidentsClient(con *armcore.Connection, subscriptionID string) *AlertRuleIncidentsClient {
-	return &AlertRuleIncidentsClient{con: con, subscriptionID: subscriptionID}
+func NewAlertRuleIncidentsClient(con *arm.Connection, subscriptionID string) *AlertRuleIncidentsClient {
+	return &AlertRuleIncidentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Gets an incident associated to an alert rule
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *AlertRuleIncidentsClient) Get(ctx context.Context, resourceGroupName string, ruleName string, incidentName string, options *AlertRuleIncidentsGetOptions) (IncidentResponse, error) {
+func (client *AlertRuleIncidentsClient) Get(ctx context.Context, resourceGroupName string, ruleName string, incidentName string, options *AlertRuleIncidentsGetOptions) (AlertRuleIncidentsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, ruleName, incidentName, options)
 	if err != nil {
-		return IncidentResponse{}, err
+		return AlertRuleIncidentsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IncidentResponse{}, err
+		return AlertRuleIncidentsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return IncidentResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return AlertRuleIncidentsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AlertRuleIncidentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, incidentName string, options *AlertRuleIncidentsGetOptions) (*azcore.Request, error) {
+func (client *AlertRuleIncidentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, incidentName string, options *AlertRuleIncidentsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}/incidents/{incidentName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -66,59 +69,58 @@ func (client *AlertRuleIncidentsClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AlertRuleIncidentsClient) getHandleResponse(resp *azcore.Response) (IncidentResponse, error) {
-	var val *Incident
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return IncidentResponse{}, err
+func (client *AlertRuleIncidentsClient) getHandleResponse(resp *http.Response) (AlertRuleIncidentsGetResponse, error) {
+	result := AlertRuleIncidentsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Incident); err != nil {
+		return AlertRuleIncidentsGetResponse{}, err
 	}
-	return IncidentResponse{RawResponse: resp.Response, Incident: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *AlertRuleIncidentsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AlertRuleIncidentsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByAlertRule - Gets a list of incidents associated to an alert rule
 // If the operation fails it returns a generic error.
-func (client *AlertRuleIncidentsClient) ListByAlertRule(ctx context.Context, resourceGroupName string, ruleName string, options *AlertRuleIncidentsListByAlertRuleOptions) (IncidentListResultResponse, error) {
+func (client *AlertRuleIncidentsClient) ListByAlertRule(ctx context.Context, resourceGroupName string, ruleName string, options *AlertRuleIncidentsListByAlertRuleOptions) (AlertRuleIncidentsListByAlertRuleResponse, error) {
 	req, err := client.listByAlertRuleCreateRequest(ctx, resourceGroupName, ruleName, options)
 	if err != nil {
-		return IncidentListResultResponse{}, err
+		return AlertRuleIncidentsListByAlertRuleResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return IncidentListResultResponse{}, err
+		return AlertRuleIncidentsListByAlertRuleResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return IncidentListResultResponse{}, client.listByAlertRuleHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return AlertRuleIncidentsListByAlertRuleResponse{}, client.listByAlertRuleHandleError(resp)
 	}
 	return client.listByAlertRuleHandleResponse(resp)
 }
 
 // listByAlertRuleCreateRequest creates the ListByAlertRule request.
-func (client *AlertRuleIncidentsClient) listByAlertRuleCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, options *AlertRuleIncidentsListByAlertRuleOptions) (*azcore.Request, error) {
+func (client *AlertRuleIncidentsClient) listByAlertRuleCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, options *AlertRuleIncidentsListByAlertRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/microsoft.insights/alertrules/{ruleName}/incidents"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -132,35 +134,34 @@ func (client *AlertRuleIncidentsClient) listByAlertRuleCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2016-03-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByAlertRuleHandleResponse handles the ListByAlertRule response.
-func (client *AlertRuleIncidentsClient) listByAlertRuleHandleResponse(resp *azcore.Response) (IncidentListResultResponse, error) {
-	var val *IncidentListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return IncidentListResultResponse{}, err
+func (client *AlertRuleIncidentsClient) listByAlertRuleHandleResponse(resp *http.Response) (AlertRuleIncidentsListByAlertRuleResponse, error) {
+	result := AlertRuleIncidentsListByAlertRuleResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IncidentListResult); err != nil {
+		return AlertRuleIncidentsListByAlertRuleResponse{}, err
 	}
-	return IncidentListResultResponse{RawResponse: resp.Response, IncidentListResult: val}, nil
+	return result, nil
 }
 
 // listByAlertRuleHandleError handles the ListByAlertRule error response.
-func (client *AlertRuleIncidentsClient) listByAlertRuleHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AlertRuleIncidentsClient) listByAlertRuleHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

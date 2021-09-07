@@ -7,7 +7,7 @@ The Azure Tables client can be used to access Azure Storage or Cosmos accounts.
 [Source code][source_code] | [Package][Tables_gopackage] | [API reference documentation][Tables_ref_docs]
 
 ## Getting started
-The Azure Data Tables SDK can access an Azure Storage or CosmosDB account.
+The Azure Tables SDK can access an Azure Storage or CosmosDB account.
 
 ### Prerequisites
 * Go versions 1.16 or higher

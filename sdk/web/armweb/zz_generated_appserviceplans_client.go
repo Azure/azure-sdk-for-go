@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,25 +12,28 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AppServicePlansClient contains the methods for the AppServicePlans group.
 // Don't use this type directly, use NewAppServicePlansClient() instead.
 type AppServicePlansClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewAppServicePlansClient creates a new instance of AppServicePlansClient with the specified values.
-func NewAppServicePlansClient(con *armcore.Connection, subscriptionID string) *AppServicePlansClient {
-	return &AppServicePlansClient{con: con, subscriptionID: subscriptionID}
+func NewAppServicePlansClient(con *arm.Connection, subscriptionID string) *AppServicePlansClient {
+	return &AppServicePlansClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Description for Creates or updates an App Service Plan.
@@ -40,65 +44,37 @@ func (client *AppServicePlansClient) BeginCreateOrUpdate(ctx context.Context, re
 		return AppServicePlansCreateOrUpdatePollerResponse{}, err
 	}
 	result := AppServicePlansCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("AppServicePlansClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return AppServicePlansCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &appServicePlansCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServicePlansCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new AppServicePlansCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to AppServicePlansCreateOrUpdatePoller.ResumeToken().
-func (client *AppServicePlansClient) ResumeCreateOrUpdate(ctx context.Context, token string) (AppServicePlansCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("AppServicePlansClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return AppServicePlansCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &appServicePlansCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return AppServicePlansCreateOrUpdatePollerResponse{}, err
-	}
-	result := AppServicePlansCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServicePlansCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("AppServicePlansClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return AppServicePlansCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &AppServicePlansCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Description for Creates or updates an App Service Plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, appServicePlan AppServicePlan, options *AppServicePlansBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *AppServicePlansClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, appServicePlan AppServicePlan, options *AppServicePlansBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, appServicePlan, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AppServicePlansClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, appServicePlan AppServicePlan, options *AppServicePlansBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, appServicePlan AppServicePlan, options *AppServicePlansBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -112,29 +88,28 @@ func (client *AppServicePlansClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(appServicePlan)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, appServicePlan)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AppServicePlansClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // CreateOrUpdateVnetRoute - Description for Create or update a Virtual Network route in an App Service plan.
@@ -144,18 +119,18 @@ func (client *AppServicePlansClient) CreateOrUpdateVnetRoute(ctx context.Context
 	if err != nil {
 		return AppServicePlansCreateOrUpdateVnetRouteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansCreateOrUpdateVnetRouteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServicePlansCreateOrUpdateVnetRouteResponse{}, client.createOrUpdateVnetRouteHandleError(resp)
 	}
 	return client.createOrUpdateVnetRouteHandleResponse(resp)
 }
 
 // createOrUpdateVnetRouteCreateRequest creates the CreateOrUpdateVnetRoute request.
-func (client *AppServicePlansClient) createOrUpdateVnetRouteCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, options *AppServicePlansCreateOrUpdateVnetRouteOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) createOrUpdateVnetRouteCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, options *AppServicePlansCreateOrUpdateVnetRouteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -177,45 +152,44 @@ func (client *AppServicePlansClient) createOrUpdateVnetRouteCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(route)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, route)
 }
 
 // createOrUpdateVnetRouteHandleResponse handles the CreateOrUpdateVnetRoute response.
-func (client *AppServicePlansClient) createOrUpdateVnetRouteHandleResponse(resp *azcore.Response) (AppServicePlansCreateOrUpdateVnetRouteResponse, error) {
-	result := AppServicePlansCreateOrUpdateVnetRouteResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.VnetRoute); err != nil {
+func (client *AppServicePlansClient) createOrUpdateVnetRouteHandleResponse(resp *http.Response) (AppServicePlansCreateOrUpdateVnetRouteResponse, error) {
+	result := AppServicePlansCreateOrUpdateVnetRouteResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRoute); err != nil {
 		return AppServicePlansCreateOrUpdateVnetRouteResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateVnetRouteHandleError handles the CreateOrUpdateVnetRoute error response.
-func (client *AppServicePlansClient) createOrUpdateVnetRouteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) createOrUpdateVnetRouteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	switch resp.StatusCode {
 	case http.StatusBadRequest, http.StatusNotFound:
 		if len(body) == 0 {
-			return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+			return runtime.NewResponseError(errors.New(resp.Status), resp)
 		}
-		return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+		return runtime.NewResponseError(errors.New(string(body)), resp)
 	default:
 		errType := DefaultErrorResponse{raw: string(body)}
-		if err := resp.UnmarshalAsJSON(&errType); err != nil {
-			return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+		if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+			return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 		}
-		return azcore.NewResponseError(&errType, resp.Response)
+		return runtime.NewResponseError(&errType, resp)
 	}
 }
 
@@ -226,18 +200,18 @@ func (client *AppServicePlansClient) Delete(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AppServicePlansDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return AppServicePlansDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return AppServicePlansDeleteResponse{RawResponse: resp.Response}, nil
+	return AppServicePlansDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AppServicePlansClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansDeleteOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -251,29 +225,28 @@ func (client *AppServicePlansClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *AppServicePlansClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // DeleteHybridConnection - Description for Delete a Hybrid Connection in use in an App Service plan.
@@ -283,18 +256,18 @@ func (client *AppServicePlansClient) DeleteHybridConnection(ctx context.Context,
 	if err != nil {
 		return AppServicePlansDeleteHybridConnectionResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansDeleteHybridConnectionResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return AppServicePlansDeleteHybridConnectionResponse{}, client.deleteHybridConnectionHandleError(resp)
 	}
-	return AppServicePlansDeleteHybridConnectionResponse{RawResponse: resp.Response}, nil
+	return AppServicePlansDeleteHybridConnectionResponse{RawResponse: resp}, nil
 }
 
 // deleteHybridConnectionCreateRequest creates the DeleteHybridConnection request.
-func (client *AppServicePlansClient) deleteHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansDeleteHybridConnectionOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) deleteHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansDeleteHybridConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -316,29 +289,28 @@ func (client *AppServicePlansClient) deleteHybridConnectionCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHybridConnectionHandleError handles the DeleteHybridConnection error response.
-func (client *AppServicePlansClient) deleteHybridConnectionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) deleteHybridConnectionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // DeleteVnetRoute - Description for Delete a Virtual Network route in an App Service plan.
@@ -348,18 +320,18 @@ func (client *AppServicePlansClient) DeleteVnetRoute(ctx context.Context, resour
 	if err != nil {
 		return AppServicePlansDeleteVnetRouteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansDeleteVnetRouteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServicePlansDeleteVnetRouteResponse{}, client.deleteVnetRouteHandleError(resp)
 	}
-	return AppServicePlansDeleteVnetRouteResponse{RawResponse: resp.Response}, nil
+	return AppServicePlansDeleteVnetRouteResponse{RawResponse: resp}, nil
 }
 
 // deleteVnetRouteCreateRequest creates the DeleteVnetRoute request.
-func (client *AppServicePlansClient) deleteVnetRouteCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, options *AppServicePlansDeleteVnetRouteOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) deleteVnetRouteCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, options *AppServicePlansDeleteVnetRouteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -381,36 +353,35 @@ func (client *AppServicePlansClient) deleteVnetRouteCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteVnetRouteHandleError handles the DeleteVnetRoute error response.
-func (client *AppServicePlansClient) deleteVnetRouteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) deleteVnetRouteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	switch resp.StatusCode {
 	case http.StatusNotFound:
 		if len(body) == 0 {
-			return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+			return runtime.NewResponseError(errors.New(resp.Status), resp)
 		}
-		return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+		return runtime.NewResponseError(errors.New(string(body)), resp)
 	default:
 		errType := DefaultErrorResponse{raw: string(body)}
-		if err := resp.UnmarshalAsJSON(&errType); err != nil {
-			return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+		if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+			return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 		}
-		return azcore.NewResponseError(&errType, resp.Response)
+		return runtime.NewResponseError(&errType, resp)
 	}
 }
 
@@ -421,18 +392,18 @@ func (client *AppServicePlansClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return AppServicePlansGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServicePlansGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AppServicePlansClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansGetOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -446,45 +417,44 @@ func (client *AppServicePlansClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AppServicePlansClient) getHandleResponse(resp *azcore.Response) (AppServicePlansGetResponse, error) {
-	result := AppServicePlansGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AppServicePlan); err != nil {
+func (client *AppServicePlansClient) getHandleResponse(resp *http.Response) (AppServicePlansGetResponse, error) {
+	result := AppServicePlansGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppServicePlan); err != nil {
 		return AppServicePlansGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *AppServicePlansClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	switch resp.StatusCode {
 	case http.StatusNotFound:
 		if len(body) == 0 {
-			return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+			return runtime.NewResponseError(errors.New(resp.Status), resp)
 		}
-		return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+		return runtime.NewResponseError(errors.New(string(body)), resp)
 	default:
 		errType := DefaultErrorResponse{raw: string(body)}
-		if err := resp.UnmarshalAsJSON(&errType); err != nil {
-			return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+		if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+			return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 		}
-		return azcore.NewResponseError(&errType, resp.Response)
+		return runtime.NewResponseError(&errType, resp)
 	}
 }
 
@@ -495,18 +465,18 @@ func (client *AppServicePlansClient) GetHybridConnection(ctx context.Context, re
 	if err != nil {
 		return AppServicePlansGetHybridConnectionResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansGetHybridConnectionResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServicePlansGetHybridConnectionResponse{}, client.getHybridConnectionHandleError(resp)
 	}
 	return client.getHybridConnectionHandleResponse(resp)
 }
 
 // getHybridConnectionCreateRequest creates the GetHybridConnection request.
-func (client *AppServicePlansClient) getHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansGetHybridConnectionOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) getHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansGetHybridConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -528,38 +498,37 @@ func (client *AppServicePlansClient) getHybridConnectionCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHybridConnectionHandleResponse handles the GetHybridConnection response.
-func (client *AppServicePlansClient) getHybridConnectionHandleResponse(resp *azcore.Response) (AppServicePlansGetHybridConnectionResponse, error) {
-	result := AppServicePlansGetHybridConnectionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.HybridConnection); err != nil {
+func (client *AppServicePlansClient) getHybridConnectionHandleResponse(resp *http.Response) (AppServicePlansGetHybridConnectionResponse, error) {
+	result := AppServicePlansGetHybridConnectionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
 		return AppServicePlansGetHybridConnectionResponse{}, err
 	}
 	return result, nil
 }
 
 // getHybridConnectionHandleError handles the GetHybridConnection error response.
-func (client *AppServicePlansClient) getHybridConnectionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) getHybridConnectionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetHybridConnectionPlanLimit - Description for Get the maximum number of Hybrid Connections allowed in an App Service plan.
@@ -569,18 +538,18 @@ func (client *AppServicePlansClient) GetHybridConnectionPlanLimit(ctx context.Co
 	if err != nil {
 		return AppServicePlansGetHybridConnectionPlanLimitResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansGetHybridConnectionPlanLimitResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServicePlansGetHybridConnectionPlanLimitResponse{}, client.getHybridConnectionPlanLimitHandleError(resp)
 	}
 	return client.getHybridConnectionPlanLimitHandleResponse(resp)
 }
 
 // getHybridConnectionPlanLimitCreateRequest creates the GetHybridConnectionPlanLimit request.
-func (client *AppServicePlansClient) getHybridConnectionPlanLimitCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansGetHybridConnectionPlanLimitOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) getHybridConnectionPlanLimitCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansGetHybridConnectionPlanLimitOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionPlanLimits/limit"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -594,38 +563,37 @@ func (client *AppServicePlansClient) getHybridConnectionPlanLimitCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHybridConnectionPlanLimitHandleResponse handles the GetHybridConnectionPlanLimit response.
-func (client *AppServicePlansClient) getHybridConnectionPlanLimitHandleResponse(resp *azcore.Response) (AppServicePlansGetHybridConnectionPlanLimitResponse, error) {
-	result := AppServicePlansGetHybridConnectionPlanLimitResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.HybridConnectionLimits); err != nil {
+func (client *AppServicePlansClient) getHybridConnectionPlanLimitHandleResponse(resp *http.Response) (AppServicePlansGetHybridConnectionPlanLimitResponse, error) {
+	result := AppServicePlansGetHybridConnectionPlanLimitResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionLimits); err != nil {
 		return AppServicePlansGetHybridConnectionPlanLimitResponse{}, err
 	}
 	return result, nil
 }
 
 // getHybridConnectionPlanLimitHandleError handles the GetHybridConnectionPlanLimit error response.
-func (client *AppServicePlansClient) getHybridConnectionPlanLimitHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) getHybridConnectionPlanLimitHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetRouteForVnet - Description for Get a Virtual Network route in an App Service plan.
@@ -635,18 +603,18 @@ func (client *AppServicePlansClient) GetRouteForVnet(ctx context.Context, resour
 	if err != nil {
 		return AppServicePlansGetRouteForVnetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansGetRouteForVnetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServicePlansGetRouteForVnetResponse{}, client.getRouteForVnetHandleError(resp)
 	}
 	return client.getRouteForVnetHandleResponse(resp)
 }
 
 // getRouteForVnetCreateRequest creates the GetRouteForVnet request.
-func (client *AppServicePlansClient) getRouteForVnetCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, options *AppServicePlansGetRouteForVnetOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) getRouteForVnetCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, options *AppServicePlansGetRouteForVnetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -668,45 +636,44 @@ func (client *AppServicePlansClient) getRouteForVnetCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getRouteForVnetHandleResponse handles the GetRouteForVnet response.
-func (client *AppServicePlansClient) getRouteForVnetHandleResponse(resp *azcore.Response) (AppServicePlansGetRouteForVnetResponse, error) {
-	result := AppServicePlansGetRouteForVnetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.VnetRouteArray); err != nil {
+func (client *AppServicePlansClient) getRouteForVnetHandleResponse(resp *http.Response) (AppServicePlansGetRouteForVnetResponse, error) {
+	result := AppServicePlansGetRouteForVnetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRouteArray); err != nil {
 		return AppServicePlansGetRouteForVnetResponse{}, err
 	}
 	return result, nil
 }
 
 // getRouteForVnetHandleError handles the GetRouteForVnet error response.
-func (client *AppServicePlansClient) getRouteForVnetHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) getRouteForVnetHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	switch resp.StatusCode {
 	case http.StatusNotFound:
 		if len(body) == 0 {
-			return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+			return runtime.NewResponseError(errors.New(resp.Status), resp)
 		}
-		return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+		return runtime.NewResponseError(errors.New(string(body)), resp)
 	default:
 		errType := DefaultErrorResponse{raw: string(body)}
-		if err := resp.UnmarshalAsJSON(&errType); err != nil {
-			return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+		if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+			return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 		}
-		return azcore.NewResponseError(&errType, resp.Response)
+		return runtime.NewResponseError(&errType, resp)
 	}
 }
 
@@ -717,18 +684,18 @@ func (client *AppServicePlansClient) GetServerFarmSKUs(ctx context.Context, reso
 	if err != nil {
 		return AppServicePlansGetServerFarmSKUsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansGetServerFarmSKUsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServicePlansGetServerFarmSKUsResponse{}, client.getServerFarmSKUsHandleError(resp)
 	}
 	return client.getServerFarmSKUsHandleResponse(resp)
 }
 
 // getServerFarmSKUsCreateRequest creates the GetServerFarmSKUs request.
-func (client *AppServicePlansClient) getServerFarmSKUsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansGetServerFarmSKUsOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) getServerFarmSKUsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansGetServerFarmSKUsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/skus"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -742,38 +709,37 @@ func (client *AppServicePlansClient) getServerFarmSKUsCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getServerFarmSKUsHandleResponse handles the GetServerFarmSKUs response.
-func (client *AppServicePlansClient) getServerFarmSKUsHandleResponse(resp *azcore.Response) (AppServicePlansGetServerFarmSKUsResponse, error) {
-	result := AppServicePlansGetServerFarmSKUsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Object); err != nil {
+func (client *AppServicePlansClient) getServerFarmSKUsHandleResponse(resp *http.Response) (AppServicePlansGetServerFarmSKUsResponse, error) {
+	result := AppServicePlansGetServerFarmSKUsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Object); err != nil {
 		return AppServicePlansGetServerFarmSKUsResponse{}, err
 	}
 	return result, nil
 }
 
 // getServerFarmSKUsHandleError handles the GetServerFarmSKUs error response.
-func (client *AppServicePlansClient) getServerFarmSKUsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) getServerFarmSKUsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetVnetFromServerFarm - Description for Get a Virtual Network associated with an App Service plan.
@@ -783,18 +749,18 @@ func (client *AppServicePlansClient) GetVnetFromServerFarm(ctx context.Context, 
 	if err != nil {
 		return AppServicePlansGetVnetFromServerFarmResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansGetVnetFromServerFarmResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServicePlansGetVnetFromServerFarmResponse{}, client.getVnetFromServerFarmHandleError(resp)
 	}
 	return client.getVnetFromServerFarmHandleResponse(resp)
 }
 
 // getVnetFromServerFarmCreateRequest creates the GetVnetFromServerFarm request.
-func (client *AppServicePlansClient) getVnetFromServerFarmCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, options *AppServicePlansGetVnetFromServerFarmOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) getVnetFromServerFarmCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, options *AppServicePlansGetVnetFromServerFarmOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -812,45 +778,44 @@ func (client *AppServicePlansClient) getVnetFromServerFarmCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getVnetFromServerFarmHandleResponse handles the GetVnetFromServerFarm response.
-func (client *AppServicePlansClient) getVnetFromServerFarmHandleResponse(resp *azcore.Response) (AppServicePlansGetVnetFromServerFarmResponse, error) {
-	result := AppServicePlansGetVnetFromServerFarmResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.VnetInfo); err != nil {
+func (client *AppServicePlansClient) getVnetFromServerFarmHandleResponse(resp *http.Response) (AppServicePlansGetVnetFromServerFarmResponse, error) {
+	result := AppServicePlansGetVnetFromServerFarmResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResource); err != nil {
 		return AppServicePlansGetVnetFromServerFarmResponse{}, err
 	}
 	return result, nil
 }
 
 // getVnetFromServerFarmHandleError handles the GetVnetFromServerFarm error response.
-func (client *AppServicePlansClient) getVnetFromServerFarmHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) getVnetFromServerFarmHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	switch resp.StatusCode {
 	case http.StatusNotFound:
 		if len(body) == 0 {
-			return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+			return runtime.NewResponseError(errors.New(resp.Status), resp)
 		}
-		return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+		return runtime.NewResponseError(errors.New(string(body)), resp)
 	default:
 		errType := DefaultErrorResponse{raw: string(body)}
-		if err := resp.UnmarshalAsJSON(&errType); err != nil {
-			return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+		if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+			return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 		}
-		return azcore.NewResponseError(&errType, resp.Response)
+		return runtime.NewResponseError(&errType, resp)
 	}
 }
 
@@ -861,18 +826,18 @@ func (client *AppServicePlansClient) GetVnetGateway(ctx context.Context, resourc
 	if err != nil {
 		return AppServicePlansGetVnetGatewayResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansGetVnetGatewayResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServicePlansGetVnetGatewayResponse{}, client.getVnetGatewayHandleError(resp)
 	}
 	return client.getVnetGatewayHandleResponse(resp)
 }
 
 // getVnetGatewayCreateRequest creates the GetVnetGateway request.
-func (client *AppServicePlansClient) getVnetGatewayCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, options *AppServicePlansGetVnetGatewayOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) getVnetGatewayCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, options *AppServicePlansGetVnetGatewayOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -894,114 +859,112 @@ func (client *AppServicePlansClient) getVnetGatewayCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getVnetGatewayHandleResponse handles the GetVnetGateway response.
-func (client *AppServicePlansClient) getVnetGatewayHandleResponse(resp *azcore.Response) (AppServicePlansGetVnetGatewayResponse, error) {
-	result := AppServicePlansGetVnetGatewayResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.VnetGateway); err != nil {
+func (client *AppServicePlansClient) getVnetGatewayHandleResponse(resp *http.Response) (AppServicePlansGetVnetGatewayResponse, error) {
+	result := AppServicePlansGetVnetGatewayResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VnetGateway); err != nil {
 		return AppServicePlansGetVnetGatewayResponse{}, err
 	}
 	return result, nil
 }
 
 // getVnetGatewayHandleError handles the GetVnetGateway error response.
-func (client *AppServicePlansClient) getVnetGatewayHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) getVnetGatewayHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Description for Get all App Service plans for a subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) List(options *AppServicePlansListOptions) AppServicePlansListPager {
-	return &appServicePlansListPager{
+func (client *AppServicePlansClient) List(options *AppServicePlansListOptions) *AppServicePlansListPager {
+	return &AppServicePlansListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp AppServicePlansListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.AppServicePlanCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServicePlansListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AppServicePlanCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AppServicePlansClient) listCreateRequest(ctx context.Context, options *AppServicePlansListOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) listCreateRequest(ctx context.Context, options *AppServicePlansListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Detailed != nil {
 		reqQP.Set("detailed", strconv.FormatBool(*options.Detailed))
 	}
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AppServicePlansClient) listHandleResponse(resp *azcore.Response) (AppServicePlansListResponse, error) {
-	result := AppServicePlansListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AppServicePlanCollection); err != nil {
+func (client *AppServicePlansClient) listHandleResponse(resp *http.Response) (AppServicePlansListResponse, error) {
+	result := AppServicePlansListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppServicePlanCollection); err != nil {
 		return AppServicePlansListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *AppServicePlansClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByResourceGroup - Description for Get all App Service plans in a resource group.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) ListByResourceGroup(resourceGroupName string, options *AppServicePlansListByResourceGroupOptions) AppServicePlansListByResourceGroupPager {
-	return &appServicePlansListByResourceGroupPager{
+func (client *AppServicePlansClient) ListByResourceGroup(resourceGroupName string, options *AppServicePlansListByResourceGroupOptions) *AppServicePlansListByResourceGroupPager {
+	return &AppServicePlansListByResourceGroupPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp AppServicePlansListByResourceGroupResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.AppServicePlanCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServicePlansListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AppServicePlanCollection.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AppServicePlansClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AppServicePlansListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AppServicePlansListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1011,38 +974,37 @@ func (client *AppServicePlansClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AppServicePlansClient) listByResourceGroupHandleResponse(resp *azcore.Response) (AppServicePlansListByResourceGroupResponse, error) {
-	result := AppServicePlansListByResourceGroupResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AppServicePlanCollection); err != nil {
+func (client *AppServicePlansClient) listByResourceGroupHandleResponse(resp *http.Response) (AppServicePlansListByResourceGroupResponse, error) {
+	result := AppServicePlansListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppServicePlanCollection); err != nil {
 		return AppServicePlansListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *AppServicePlansClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListCapabilities - Description for List all capabilities of an App Service plan.
@@ -1052,18 +1014,18 @@ func (client *AppServicePlansClient) ListCapabilities(ctx context.Context, resou
 	if err != nil {
 		return AppServicePlansListCapabilitiesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansListCapabilitiesResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServicePlansListCapabilitiesResponse{}, client.listCapabilitiesHandleError(resp)
 	}
 	return client.listCapabilitiesHandleResponse(resp)
 }
 
 // listCapabilitiesCreateRequest creates the ListCapabilities request.
-func (client *AppServicePlansClient) listCapabilitiesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansListCapabilitiesOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) listCapabilitiesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansListCapabilitiesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/capabilities"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1077,38 +1039,37 @@ func (client *AppServicePlansClient) listCapabilitiesCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listCapabilitiesHandleResponse handles the ListCapabilities response.
-func (client *AppServicePlansClient) listCapabilitiesHandleResponse(resp *azcore.Response) (AppServicePlansListCapabilitiesResponse, error) {
-	result := AppServicePlansListCapabilitiesResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.CapabilityArray); err != nil {
+func (client *AppServicePlansClient) listCapabilitiesHandleResponse(resp *http.Response) (AppServicePlansListCapabilitiesResponse, error) {
+	result := AppServicePlansListCapabilitiesResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CapabilityArray); err != nil {
 		return AppServicePlansListCapabilitiesResponse{}, err
 	}
 	return result, nil
 }
 
 // listCapabilitiesHandleError handles the ListCapabilities error response.
-func (client *AppServicePlansClient) listCapabilitiesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) listCapabilitiesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListHybridConnectionKeys - Description for Get the send key name and value of a Hybrid Connection.
@@ -1118,18 +1079,18 @@ func (client *AppServicePlansClient) ListHybridConnectionKeys(ctx context.Contex
 	if err != nil {
 		return AppServicePlansListHybridConnectionKeysResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansListHybridConnectionKeysResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServicePlansListHybridConnectionKeysResponse{}, client.listHybridConnectionKeysHandleError(resp)
 	}
 	return client.listHybridConnectionKeysHandleResponse(resp)
 }
 
 // listHybridConnectionKeysCreateRequest creates the ListHybridConnectionKeys request.
-func (client *AppServicePlansClient) listHybridConnectionKeysCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansListHybridConnectionKeysOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) listHybridConnectionKeysCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansListHybridConnectionKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/listKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1151,56 +1112,55 @@ func (client *AppServicePlansClient) listHybridConnectionKeysCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHybridConnectionKeysHandleResponse handles the ListHybridConnectionKeys response.
-func (client *AppServicePlansClient) listHybridConnectionKeysHandleResponse(resp *azcore.Response) (AppServicePlansListHybridConnectionKeysResponse, error) {
-	result := AppServicePlansListHybridConnectionKeysResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.HybridConnectionKey); err != nil {
+func (client *AppServicePlansClient) listHybridConnectionKeysHandleResponse(resp *http.Response) (AppServicePlansListHybridConnectionKeysResponse, error) {
+	result := AppServicePlansListHybridConnectionKeysResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionKey); err != nil {
 		return AppServicePlansListHybridConnectionKeysResponse{}, err
 	}
 	return result, nil
 }
 
 // listHybridConnectionKeysHandleError handles the ListHybridConnectionKeys error response.
-func (client *AppServicePlansClient) listHybridConnectionKeysHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) listHybridConnectionKeysHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListHybridConnections - Description for Retrieve all Hybrid Connections in use in an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) ListHybridConnections(resourceGroupName string, name string, options *AppServicePlansListHybridConnectionsOptions) AppServicePlansListHybridConnectionsPager {
-	return &appServicePlansListHybridConnectionsPager{
+func (client *AppServicePlansClient) ListHybridConnections(resourceGroupName string, name string, options *AppServicePlansListHybridConnectionsOptions) *AppServicePlansListHybridConnectionsPager {
+	return &AppServicePlansListHybridConnectionsPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listHybridConnectionsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp AppServicePlansListHybridConnectionsResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.HybridConnectionCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServicePlansListHybridConnectionsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.HybridConnectionCollection.NextLink)
 		},
 	}
 }
 
 // listHybridConnectionsCreateRequest creates the ListHybridConnections request.
-func (client *AppServicePlansClient) listHybridConnectionsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansListHybridConnectionsOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) listHybridConnectionsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansListHybridConnectionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionRelays"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1214,38 +1174,37 @@ func (client *AppServicePlansClient) listHybridConnectionsCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHybridConnectionsHandleResponse handles the ListHybridConnections response.
-func (client *AppServicePlansClient) listHybridConnectionsHandleResponse(resp *azcore.Response) (AppServicePlansListHybridConnectionsResponse, error) {
-	result := AppServicePlansListHybridConnectionsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.HybridConnectionCollection); err != nil {
+func (client *AppServicePlansClient) listHybridConnectionsHandleResponse(resp *http.Response) (AppServicePlansListHybridConnectionsResponse, error) {
+	result := AppServicePlansListHybridConnectionsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionCollection); err != nil {
 		return AppServicePlansListHybridConnectionsResponse{}, err
 	}
 	return result, nil
 }
 
 // listHybridConnectionsHandleError handles the ListHybridConnections error response.
-func (client *AppServicePlansClient) listHybridConnectionsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) listHybridConnectionsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListRoutesForVnet - Description for Get all routes that are associated with a Virtual Network in an App Service plan.
@@ -1255,18 +1214,18 @@ func (client *AppServicePlansClient) ListRoutesForVnet(ctx context.Context, reso
 	if err != nil {
 		return AppServicePlansListRoutesForVnetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansListRoutesForVnetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServicePlansListRoutesForVnetResponse{}, client.listRoutesForVnetHandleError(resp)
 	}
 	return client.listRoutesForVnetHandleResponse(resp)
 }
 
 // listRoutesForVnetCreateRequest creates the ListRoutesForVnet request.
-func (client *AppServicePlansClient) listRoutesForVnetCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, options *AppServicePlansListRoutesForVnetOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) listRoutesForVnetCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, options *AppServicePlansListRoutesForVnetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1284,56 +1243,55 @@ func (client *AppServicePlansClient) listRoutesForVnetCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listRoutesForVnetHandleResponse handles the ListRoutesForVnet response.
-func (client *AppServicePlansClient) listRoutesForVnetHandleResponse(resp *azcore.Response) (AppServicePlansListRoutesForVnetResponse, error) {
-	result := AppServicePlansListRoutesForVnetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.VnetRouteArray); err != nil {
+func (client *AppServicePlansClient) listRoutesForVnetHandleResponse(resp *http.Response) (AppServicePlansListRoutesForVnetResponse, error) {
+	result := AppServicePlansListRoutesForVnetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRouteArray); err != nil {
 		return AppServicePlansListRoutesForVnetResponse{}, err
 	}
 	return result, nil
 }
 
 // listRoutesForVnetHandleError handles the ListRoutesForVnet error response.
-func (client *AppServicePlansClient) listRoutesForVnetHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) listRoutesForVnetHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListUsages - Description for Gets server farm usage information
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) ListUsages(resourceGroupName string, name string, options *AppServicePlansListUsagesOptions) AppServicePlansListUsagesPager {
-	return &appServicePlansListUsagesPager{
+func (client *AppServicePlansClient) ListUsages(resourceGroupName string, name string, options *AppServicePlansListUsagesOptions) *AppServicePlansListUsagesPager {
+	return &AppServicePlansListUsagesPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listUsagesCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp AppServicePlansListUsagesResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.CsmUsageQuotaCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServicePlansListUsagesResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.CsmUsageQuotaCollection.NextLink)
 		},
 	}
 }
 
 // listUsagesCreateRequest creates the ListUsages request.
-func (client *AppServicePlansClient) listUsagesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansListUsagesOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) listUsagesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansListUsagesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/usages"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1347,43 +1305,42 @@ func (client *AppServicePlansClient) listUsagesCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	unencodedParams := []string{req.URL.RawQuery}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	unencodedParams := []string{req.Raw().URL.RawQuery}
 	if options != nil && options.Filter != nil {
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
-	req.URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listUsagesHandleResponse handles the ListUsages response.
-func (client *AppServicePlansClient) listUsagesHandleResponse(resp *azcore.Response) (AppServicePlansListUsagesResponse, error) {
-	result := AppServicePlansListUsagesResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.CsmUsageQuotaCollection); err != nil {
+func (client *AppServicePlansClient) listUsagesHandleResponse(resp *http.Response) (AppServicePlansListUsagesResponse, error) {
+	result := AppServicePlansListUsagesResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CsmUsageQuotaCollection); err != nil {
 		return AppServicePlansListUsagesResponse{}, err
 	}
 	return result, nil
 }
 
 // listUsagesHandleError handles the ListUsages error response.
-func (client *AppServicePlansClient) listUsagesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) listUsagesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListVnets - Description for Get all Virtual Networks associated with an App Service plan.
@@ -1393,18 +1350,18 @@ func (client *AppServicePlansClient) ListVnets(ctx context.Context, resourceGrou
 	if err != nil {
 		return AppServicePlansListVnetsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansListVnetsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServicePlansListVnetsResponse{}, client.listVnetsHandleError(resp)
 	}
 	return client.listVnetsHandleResponse(resp)
 }
 
 // listVnetsCreateRequest creates the ListVnets request.
-func (client *AppServicePlansClient) listVnetsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansListVnetsOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) listVnetsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansListVnetsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1418,56 +1375,55 @@ func (client *AppServicePlansClient) listVnetsCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listVnetsHandleResponse handles the ListVnets response.
-func (client *AppServicePlansClient) listVnetsHandleResponse(resp *azcore.Response) (AppServicePlansListVnetsResponse, error) {
-	result := AppServicePlansListVnetsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.VnetInfoArray); err != nil {
+func (client *AppServicePlansClient) listVnetsHandleResponse(resp *http.Response) (AppServicePlansListVnetsResponse, error) {
+	result := AppServicePlansListVnetsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResourceArray); err != nil {
 		return AppServicePlansListVnetsResponse{}, err
 	}
 	return result, nil
 }
 
 // listVnetsHandleError handles the ListVnets error response.
-func (client *AppServicePlansClient) listVnetsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) listVnetsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListWebApps - Description for Get all apps associated with an App Service plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) ListWebApps(resourceGroupName string, name string, options *AppServicePlansListWebAppsOptions) AppServicePlansListWebAppsPager {
-	return &appServicePlansListWebAppsPager{
+func (client *AppServicePlansClient) ListWebApps(resourceGroupName string, name string, options *AppServicePlansListWebAppsOptions) *AppServicePlansListWebAppsPager {
+	return &AppServicePlansListWebAppsPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listWebAppsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp AppServicePlansListWebAppsResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.WebAppCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServicePlansListWebAppsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.WebAppCollection.NextLink)
 		},
 	}
 }
 
 // listWebAppsCreateRequest creates the ListWebApps request.
-func (client *AppServicePlansClient) listWebAppsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansListWebAppsOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) listWebAppsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansListWebAppsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/sites"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1481,67 +1437,66 @@ func (client *AppServicePlansClient) listWebAppsCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", *options.Top)
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	unencodedParams := []string{req.URL.RawQuery}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	unencodedParams := []string{req.Raw().URL.RawQuery}
 	if options != nil && options.Filter != nil {
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
-	req.URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listWebAppsHandleResponse handles the ListWebApps response.
-func (client *AppServicePlansClient) listWebAppsHandleResponse(resp *azcore.Response) (AppServicePlansListWebAppsResponse, error) {
-	result := AppServicePlansListWebAppsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WebAppCollection); err != nil {
+func (client *AppServicePlansClient) listWebAppsHandleResponse(resp *http.Response) (AppServicePlansListWebAppsResponse, error) {
+	result := AppServicePlansListWebAppsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
 		return AppServicePlansListWebAppsResponse{}, err
 	}
 	return result, nil
 }
 
 // listWebAppsHandleError handles the ListWebApps error response.
-func (client *AppServicePlansClient) listWebAppsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) listWebAppsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListWebAppsByHybridConnection - Description for Get all apps that use a Hybrid Connection in an App Service Plan.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServicePlansClient) ListWebAppsByHybridConnection(resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansListWebAppsByHybridConnectionOptions) AppServicePlansListWebAppsByHybridConnectionPager {
-	return &appServicePlansListWebAppsByHybridConnectionPager{
+func (client *AppServicePlansClient) ListWebAppsByHybridConnection(resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansListWebAppsByHybridConnectionOptions) *AppServicePlansListWebAppsByHybridConnectionPager {
+	return &AppServicePlansListWebAppsByHybridConnectionPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listWebAppsByHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
 		},
-		advancer: func(ctx context.Context, resp AppServicePlansListWebAppsByHybridConnectionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServicePlansListWebAppsByHybridConnectionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceCollection.NextLink)
 		},
 	}
 }
 
 // listWebAppsByHybridConnectionCreateRequest creates the ListWebAppsByHybridConnection request.
-func (client *AppServicePlansClient) listWebAppsByHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansListWebAppsByHybridConnectionOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) listWebAppsByHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *AppServicePlansListWebAppsByHybridConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/sites"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1563,38 +1518,37 @@ func (client *AppServicePlansClient) listWebAppsByHybridConnectionCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listWebAppsByHybridConnectionHandleResponse handles the ListWebAppsByHybridConnection response.
-func (client *AppServicePlansClient) listWebAppsByHybridConnectionHandleResponse(resp *azcore.Response) (AppServicePlansListWebAppsByHybridConnectionResponse, error) {
-	result := AppServicePlansListWebAppsByHybridConnectionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ResourceCollection); err != nil {
+func (client *AppServicePlansClient) listWebAppsByHybridConnectionHandleResponse(resp *http.Response) (AppServicePlansListWebAppsByHybridConnectionResponse, error) {
+	result := AppServicePlansListWebAppsByHybridConnectionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceCollection); err != nil {
 		return AppServicePlansListWebAppsByHybridConnectionResponse{}, err
 	}
 	return result, nil
 }
 
 // listWebAppsByHybridConnectionHandleError handles the ListWebAppsByHybridConnection error response.
-func (client *AppServicePlansClient) listWebAppsByHybridConnectionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) listWebAppsByHybridConnectionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // RebootWorker - Description for Reboot a worker machine in an App Service plan.
@@ -1604,18 +1558,18 @@ func (client *AppServicePlansClient) RebootWorker(ctx context.Context, resourceG
 	if err != nil {
 		return AppServicePlansRebootWorkerResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansRebootWorkerResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return AppServicePlansRebootWorkerResponse{}, client.rebootWorkerHandleError(resp)
 	}
-	return AppServicePlansRebootWorkerResponse{RawResponse: resp.Response}, nil
+	return AppServicePlansRebootWorkerResponse{RawResponse: resp}, nil
 }
 
 // rebootWorkerCreateRequest creates the RebootWorker request.
-func (client *AppServicePlansClient) rebootWorkerCreateRequest(ctx context.Context, resourceGroupName string, name string, workerName string, options *AppServicePlansRebootWorkerOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) rebootWorkerCreateRequest(ctx context.Context, resourceGroupName string, name string, workerName string, options *AppServicePlansRebootWorkerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/workers/{workerName}/reboot"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1633,29 +1587,28 @@ func (client *AppServicePlansClient) rebootWorkerCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // rebootWorkerHandleError handles the RebootWorker error response.
-func (client *AppServicePlansClient) rebootWorkerHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) rebootWorkerHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // RestartWebApps - Description for Restart all apps in an App Service plan.
@@ -1665,18 +1618,18 @@ func (client *AppServicePlansClient) RestartWebApps(ctx context.Context, resourc
 	if err != nil {
 		return AppServicePlansRestartWebAppsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansRestartWebAppsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return AppServicePlansRestartWebAppsResponse{}, client.restartWebAppsHandleError(resp)
 	}
-	return AppServicePlansRestartWebAppsResponse{RawResponse: resp.Response}, nil
+	return AppServicePlansRestartWebAppsResponse{RawResponse: resp}, nil
 }
 
 // restartWebAppsCreateRequest creates the RestartWebApps request.
-func (client *AppServicePlansClient) restartWebAppsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansRestartWebAppsOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) restartWebAppsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServicePlansRestartWebAppsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/restartSites"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1690,32 +1643,31 @@ func (client *AppServicePlansClient) restartWebAppsCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.SoftRestart != nil {
 		reqQP.Set("softRestart", strconv.FormatBool(*options.SoftRestart))
 	}
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // restartWebAppsHandleError handles the RestartWebApps error response.
-func (client *AppServicePlansClient) restartWebAppsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) restartWebAppsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Update - Description for Creates or updates an App Service Plan.
@@ -1725,18 +1677,18 @@ func (client *AppServicePlansClient) Update(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AppServicePlansUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return AppServicePlansUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AppServicePlansClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, appServicePlan AppServicePlanPatchResource, options *AppServicePlansUpdateOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, appServicePlan AppServicePlanPatchResource, options *AppServicePlansUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1750,38 +1702,37 @@ func (client *AppServicePlansClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(appServicePlan)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, appServicePlan)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AppServicePlansClient) updateHandleResponse(resp *azcore.Response) (AppServicePlansUpdateResponse, error) {
-	result := AppServicePlansUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AppServicePlan); err != nil {
+func (client *AppServicePlansClient) updateHandleResponse(resp *http.Response) (AppServicePlansUpdateResponse, error) {
+	result := AppServicePlansUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppServicePlan); err != nil {
 		return AppServicePlansUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *AppServicePlansClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // UpdateVnetGateway - Description for Update a Virtual Network gateway.
@@ -1791,18 +1742,18 @@ func (client *AppServicePlansClient) UpdateVnetGateway(ctx context.Context, reso
 	if err != nil {
 		return AppServicePlansUpdateVnetGatewayResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansUpdateVnetGatewayResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServicePlansUpdateVnetGatewayResponse{}, client.updateVnetGatewayHandleError(resp)
 	}
 	return client.updateVnetGatewayHandleResponse(resp)
 }
 
 // updateVnetGatewayCreateRequest creates the UpdateVnetGateway request.
-func (client *AppServicePlansClient) updateVnetGatewayCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, options *AppServicePlansUpdateVnetGatewayOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) updateVnetGatewayCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, options *AppServicePlansUpdateVnetGatewayOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1824,38 +1775,37 @@ func (client *AppServicePlansClient) updateVnetGatewayCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(connectionEnvelope)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, connectionEnvelope)
 }
 
 // updateVnetGatewayHandleResponse handles the UpdateVnetGateway response.
-func (client *AppServicePlansClient) updateVnetGatewayHandleResponse(resp *azcore.Response) (AppServicePlansUpdateVnetGatewayResponse, error) {
-	result := AppServicePlansUpdateVnetGatewayResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.VnetGateway); err != nil {
+func (client *AppServicePlansClient) updateVnetGatewayHandleResponse(resp *http.Response) (AppServicePlansUpdateVnetGatewayResponse, error) {
+	result := AppServicePlansUpdateVnetGatewayResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VnetGateway); err != nil {
 		return AppServicePlansUpdateVnetGatewayResponse{}, err
 	}
 	return result, nil
 }
 
 // updateVnetGatewayHandleError handles the UpdateVnetGateway error response.
-func (client *AppServicePlansClient) updateVnetGatewayHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) updateVnetGatewayHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // UpdateVnetRoute - Description for Create or update a Virtual Network route in an App Service plan.
@@ -1865,18 +1815,18 @@ func (client *AppServicePlansClient) UpdateVnetRoute(ctx context.Context, resour
 	if err != nil {
 		return AppServicePlansUpdateVnetRouteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServicePlansUpdateVnetRouteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServicePlansUpdateVnetRouteResponse{}, client.updateVnetRouteHandleError(resp)
 	}
 	return client.updateVnetRouteHandleResponse(resp)
 }
 
 // updateVnetRouteCreateRequest creates the UpdateVnetRoute request.
-func (client *AppServicePlansClient) updateVnetRouteCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, options *AppServicePlansUpdateVnetRouteOptions) (*azcore.Request, error) {
+func (client *AppServicePlansClient) updateVnetRouteCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, options *AppServicePlansUpdateVnetRouteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1898,44 +1848,43 @@ func (client *AppServicePlansClient) updateVnetRouteCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(route)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, route)
 }
 
 // updateVnetRouteHandleResponse handles the UpdateVnetRoute response.
-func (client *AppServicePlansClient) updateVnetRouteHandleResponse(resp *azcore.Response) (AppServicePlansUpdateVnetRouteResponse, error) {
-	result := AppServicePlansUpdateVnetRouteResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.VnetRoute); err != nil {
+func (client *AppServicePlansClient) updateVnetRouteHandleResponse(resp *http.Response) (AppServicePlansUpdateVnetRouteResponse, error) {
+	result := AppServicePlansUpdateVnetRouteResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRoute); err != nil {
 		return AppServicePlansUpdateVnetRouteResponse{}, err
 	}
 	return result, nil
 }
 
 // updateVnetRouteHandleError handles the UpdateVnetRoute error response.
-func (client *AppServicePlansClient) updateVnetRouteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServicePlansClient) updateVnetRouteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	switch resp.StatusCode {
 	case http.StatusBadRequest, http.StatusNotFound:
 		if len(body) == 0 {
-			return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+			return runtime.NewResponseError(errors.New(resp.Status), resp)
 		}
-		return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+		return runtime.NewResponseError(errors.New(string(body)), resp)
 	default:
 		errType := DefaultErrorResponse{raw: string(body)}
-		if err := resp.UnmarshalAsJSON(&errType); err != nil {
-			return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+		if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+			return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 		}
-		return azcore.NewResponseError(&errType, resp.Response)
+		return runtime.NewResponseError(&errType, resp)
 	}
 }

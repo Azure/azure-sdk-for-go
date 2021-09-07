@@ -75,7 +75,7 @@ az storage account show-connection-string -g MyResourceGroup -n MyStorageAccount
 ```
 
 ```golang
-connStr := "DefaultEndpointsProtocol=https;AccountName=<my_account_name>;AccountKey=<my_account_key>;EndpointSuffix=core.windows.net"
+connStr := "DefaultEndpointsProtocol=https;AccountName=<myAccountName>;AccountKey=<myAccountKey>;EndpointSuffix=core.windows.net"
 serviceClient, err := aztables.NewServiceClientFromConnectionString(connStr, nil)
 ```
 

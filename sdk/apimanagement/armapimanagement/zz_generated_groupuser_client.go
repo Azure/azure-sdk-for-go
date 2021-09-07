@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // GroupUserClient contains the methods for the GroupUser group.
 // Don't use this type directly, use NewGroupUserClient() instead.
 type GroupUserClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewGroupUserClient creates a new instance of GroupUserClient with the specified values.
-func NewGroupUserClient(con *armcore.Connection, subscriptionID string) *GroupUserClient {
-	return &GroupUserClient{con: con, subscriptionID: subscriptionID}
+func NewGroupUserClient(con *arm.Connection, subscriptionID string) *GroupUserClient {
+	return &GroupUserClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CheckEntityExists - Checks that user entity specified by identifier is associated with the group entity.
@@ -38,11 +42,11 @@ func (client *GroupUserClient) CheckEntityExists(ctx context.Context, resourceGr
 	if err != nil {
 		return GroupUserCheckEntityExistsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return GroupUserCheckEntityExistsResponse{}, err
 	}
-	result := GroupUserCheckEntityExistsResponse{RawResponse: resp.Response}
+	result := GroupUserCheckEntityExistsResponse{RawResponse: resp}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -50,7 +54,7 @@ func (client *GroupUserClient) CheckEntityExists(ctx context.Context, resourceGr
 }
 
 // checkEntityExistsCreateRequest creates the CheckEntityExists request.
-func (client *GroupUserClient) checkEntityExistsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserCheckEntityExistsOptions) (*azcore.Request, error) {
+func (client *GroupUserClient) checkEntityExistsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserCheckEntityExistsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}/users/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -72,15 +76,14 @@ func (client *GroupUserClient) checkEntityExistsCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
@@ -91,18 +94,18 @@ func (client *GroupUserClient) Create(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return GroupUserCreateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return GroupUserCreateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return GroupUserCreateResponse{}, client.createHandleError(resp)
 	}
 	return client.createHandleResponse(resp)
 }
 
 // createCreateRequest creates the Create request.
-func (client *GroupUserClient) createCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserCreateOptions) (*azcore.Request, error) {
+func (client *GroupUserClient) createCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}/users/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -124,38 +127,37 @@ func (client *GroupUserClient) createCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // createHandleResponse handles the Create response.
-func (client *GroupUserClient) createHandleResponse(resp *azcore.Response) (GroupUserCreateResponse, error) {
-	result := GroupUserCreateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.UserContract); err != nil {
+func (client *GroupUserClient) createHandleResponse(resp *http.Response) (GroupUserCreateResponse, error) {
+	result := GroupUserCreateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.UserContract); err != nil {
 		return GroupUserCreateResponse{}, err
 	}
 	return result, nil
 }
 
 // createHandleError handles the Create error response.
-func (client *GroupUserClient) createHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *GroupUserClient) createHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Remove existing user from existing group.
@@ -165,18 +167,18 @@ func (client *GroupUserClient) Delete(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return GroupUserDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return GroupUserDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return GroupUserDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return GroupUserDeleteResponse{RawResponse: resp.Response}, nil
+	return GroupUserDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *GroupUserClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserDeleteOptions) (*azcore.Request, error) {
+func (client *GroupUserClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, userID string, options *GroupUserDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}/users/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -198,47 +200,46 @@ func (client *GroupUserClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *GroupUserClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *GroupUserClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Lists a collection of user entities associated with the group.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *GroupUserClient) List(resourceGroupName string, serviceName string, groupID string, options *GroupUserListOptions) GroupUserListPager {
-	return &groupUserListPager{
+func (client *GroupUserClient) List(resourceGroupName string, serviceName string, groupID string, options *GroupUserListOptions) *GroupUserListPager {
+	return &GroupUserListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, serviceName, groupID, options)
 		},
-		advancer: func(ctx context.Context, resp GroupUserListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.UserCollection.NextLink)
+		advancer: func(ctx context.Context, resp GroupUserListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.UserCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *GroupUserClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, options *GroupUserListOptions) (*azcore.Request, error) {
+func (client *GroupUserClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, groupID string, options *GroupUserListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/groups/{groupId}/users"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -256,12 +257,11 @@ func (client *GroupUserClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -271,30 +271,30 @@ func (client *GroupUserClient) listCreateRequest(ctx context.Context, resourceGr
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *GroupUserClient) listHandleResponse(resp *azcore.Response) (GroupUserListResponse, error) {
-	result := GroupUserListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.UserCollection); err != nil {
+func (client *GroupUserClient) listHandleResponse(resp *http.Response) (GroupUserListResponse, error) {
+	result := GroupUserListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.UserCollection); err != nil {
 		return GroupUserListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *GroupUserClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *GroupUserClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

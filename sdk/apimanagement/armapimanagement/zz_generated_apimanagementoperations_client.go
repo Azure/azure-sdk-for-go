@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,69 +11,71 @@ package armapimanagement
 import (
 	"context"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // APIManagementOperationsClient contains the methods for the APIManagementOperations group.
 // Don't use this type directly, use NewAPIManagementOperationsClient() instead.
 type APIManagementOperationsClient struct {
-	con *armcore.Connection
+	ep string
+	pl runtime.Pipeline
 }
 
 // NewAPIManagementOperationsClient creates a new instance of APIManagementOperationsClient with the specified values.
-func NewAPIManagementOperationsClient(con *armcore.Connection) *APIManagementOperationsClient {
-	return &APIManagementOperationsClient{con: con}
+func NewAPIManagementOperationsClient(con *arm.Connection) *APIManagementOperationsClient {
+	return &APIManagementOperationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
 }
 
 // List - Lists all of the available REST API operations of the Microsoft.ApiManagement provider.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *APIManagementOperationsClient) List(options *APIManagementOperationsListOptions) APIManagementOperationsListPager {
-	return &apiManagementOperationsListPager{
+func (client *APIManagementOperationsClient) List(options *APIManagementOperationsListOptions) *APIManagementOperationsListPager {
+	return &APIManagementOperationsListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp APIManagementOperationsListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.OperationListResult.NextLink)
+		advancer: func(ctx context.Context, resp APIManagementOperationsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.OperationListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *APIManagementOperationsClient) listCreateRequest(ctx context.Context, options *APIManagementOperationsListOptions) (*azcore.Request, error) {
+func (client *APIManagementOperationsClient) listCreateRequest(ctx context.Context, options *APIManagementOperationsListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.ApiManagement/operations"
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *APIManagementOperationsClient) listHandleResponse(resp *azcore.Response) (APIManagementOperationsListResponse, error) {
-	result := APIManagementOperationsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.OperationListResult); err != nil {
+func (client *APIManagementOperationsClient) listHandleResponse(resp *http.Response) (APIManagementOperationsListResponse, error) {
+	result := APIManagementOperationsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperationListResult); err != nil {
 		return APIManagementOperationsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *APIManagementOperationsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIManagementOperationsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

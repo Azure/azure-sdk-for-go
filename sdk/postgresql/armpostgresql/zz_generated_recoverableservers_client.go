@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RecoverableServersClient contains the methods for the RecoverableServers group.
 // Don't use this type directly, use NewRecoverableServersClient() instead.
 type RecoverableServersClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewRecoverableServersClient creates a new instance of RecoverableServersClient with the specified values.
-func NewRecoverableServersClient(con *armcore.Connection, subscriptionID string) *RecoverableServersClient {
-	return &RecoverableServersClient{con: con, subscriptionID: subscriptionID}
+func NewRecoverableServersClient(con *arm.Connection, subscriptionID string) *RecoverableServersClient {
+	return &RecoverableServersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Gets a recoverable PostgreSQL Server.
@@ -37,18 +41,18 @@ func (client *RecoverableServersClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return RecoverableServersGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecoverableServersGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RecoverableServersGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RecoverableServersClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *RecoverableServersGetOptions) (*azcore.Request, error) {
+func (client *RecoverableServersClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *RecoverableServersGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/servers/{serverName}/recoverableServers"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -62,36 +66,35 @@ func (client *RecoverableServersClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RecoverableServersClient) getHandleResponse(resp *azcore.Response) (RecoverableServersGetResponse, error) {
-	result := RecoverableServersGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RecoverableServerResource); err != nil {
+func (client *RecoverableServersClient) getHandleResponse(resp *http.Response) (RecoverableServersGetResponse, error) {
+	result := RecoverableServersGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableServerResource); err != nil {
 		return RecoverableServersGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *RecoverableServersClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecoverableServersClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

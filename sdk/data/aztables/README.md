@@ -4,7 +4,7 @@ Azure Data Tables is a NoSQL data storage service that can be accessed from anyw
 Tables scales as needed to support the amount of data inserted, and allow for the storing of data with non-complex accessing.
 The Azure Data Tables client can be used to access Azure Storage or Cosmos accounts.
 
-[Source code][source_code] | [Package][Tables_gopackage] | [API reference documentation][Tables_ref_docs] | [Samples][Tables_samples]
+[Source code][source_code] | [Package][Tables_gopackage] | [API reference documentation][Tables_ref_docs]
 
 ## Getting started
 The Azure Data Tables SDK can access an Azure Storage or CosmosDB account.
@@ -267,10 +267,6 @@ azlog.SetClassifications(azidentity.LogCredential)
 
 ## Next steps
 
-Get started with our [Table samples][tables_samples].
-
-Several Azure Data Tables Go SDK samples are available to you in the SDK's GitHub repository. These samples provide example code for additional scenarios commonly encountered while working with Tables.
-
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
@@ -313,7 +309,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][msft_oss_co
 [Tables_gopackage]:https://aka.ms/azsdk/go/tables
 [Tables_ref_docs]:https://aka.ms/azsdk/go/tables
 [Tables_product_doc]:https://docs.microsoft.com/azure/cosmos-db/table-introduction
-[Tables_samples]:https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples
 
 [azure_subscription]:https://azure.microsoft.com/free/
 [azure_storage_account]:https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal

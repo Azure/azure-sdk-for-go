@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,10 +10,619 @@ package armauthorization
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
+
+// AccessReviewActorIdentity - Details of the actor identity
+type AccessReviewActorIdentity struct {
+	// READ-ONLY; The identity id
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The identity display name
+	PrincipalName *string `json:"principalName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The identity type : user/servicePrincipal
+	PrincipalType *AccessReviewActorIdentityType `json:"principalType,omitempty" azure:"ro"`
+
+	// READ-ONLY; The user principal name(if valid)
+	UserPrincipalName *string `json:"userPrincipalName,omitempty" azure:"ro"`
+}
+
+// AccessReviewDecision - Access Review.
+type AccessReviewDecision struct {
+	// Access Review Decision properties.
+	Properties *AccessReviewDecisionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The access review decision id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The access review decision name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// AccessReviewDecisionListResult - List of access review decisions.
+type AccessReviewDecisionListResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Access Review Decision list.
+	Value []*AccessReviewDecision `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccessReviewDecisionListResult.
+func (a AccessReviewDecisionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// AccessReviewDecisionProperties - Approval Step.
+type AccessReviewDecisionProperties struct {
+	// The decision on the approval step. This value is initially set to NotReviewed. Approvers can take action of Approve/Deny
+	Decision *AccessReviewResult `json:"decision,omitempty"`
+
+	// Justification provided by approvers for their action
+	Justification *string `json:"justification,omitempty"`
+
+	// READ-ONLY; Details of the applier.
+	AppliedBy *AccessReviewActorIdentity `json:"appliedBy,omitempty" azure:"ro"`
+
+	// READ-ONLY; The date and time when the review decision was applied.
+	AppliedDateTime *time.Time `json:"appliedDateTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; The outcome of applying the decision.
+	ApplyResult *AccessReviewApplyResult `json:"applyResult,omitempty" azure:"ro"`
+
+	// READ-ONLY; The feature- generated recommendation shown to the reviewer.
+	Recommendation *AccessRecommendationType `json:"recommendation,omitempty" azure:"ro"`
+
+	// READ-ONLY; Details of the approver.
+	ReviewedBy *AccessReviewActorIdentity `json:"reviewedBy,omitempty" azure:"ro"`
+
+	// READ-ONLY; Date Time when a decision was taken.
+	ReviewedDateTime *time.Time `json:"reviewedDateTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; Target of this decision record. Can be UserDecisionTarget or ServicePrincipalDecisionTarget
+	Target AccessReviewDecisionTargetClassification `json:"target,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccessReviewDecisionProperties.
+func (a AccessReviewDecisionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "appliedBy", a.AppliedBy)
+	populate(objectMap, "appliedDateTime", (*timeRFC3339)(a.AppliedDateTime))
+	populate(objectMap, "applyResult", a.ApplyResult)
+	populate(objectMap, "decision", a.Decision)
+	populate(objectMap, "justification", a.Justification)
+	populate(objectMap, "recommendation", a.Recommendation)
+	populate(objectMap, "reviewedBy", a.ReviewedBy)
+	populate(objectMap, "reviewedDateTime", (*timeRFC3339)(a.ReviewedDateTime))
+	populate(objectMap, "target", a.Target)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AccessReviewDecisionProperties.
+func (a *AccessReviewDecisionProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "appliedBy":
+			err = unpopulate(val, &a.AppliedBy)
+			delete(rawMsg, key)
+		case "appliedDateTime":
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			a.AppliedDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "applyResult":
+			err = unpopulate(val, &a.ApplyResult)
+			delete(rawMsg, key)
+		case "decision":
+			err = unpopulate(val, &a.Decision)
+			delete(rawMsg, key)
+		case "justification":
+			err = unpopulate(val, &a.Justification)
+			delete(rawMsg, key)
+		case "recommendation":
+			err = unpopulate(val, &a.Recommendation)
+			delete(rawMsg, key)
+		case "reviewedBy":
+			err = unpopulate(val, &a.ReviewedBy)
+			delete(rawMsg, key)
+		case "reviewedDateTime":
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			a.ReviewedDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "target":
+			a.Target, err = unmarshalAccessReviewDecisionTargetClassification(val)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// AccessReviewDecisionTargetClassification provides polymorphic access to related types.
+// Call the interface's GetAccessReviewDecisionTarget() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *AccessReviewDecisionTarget, *ServicePrincipalDecisionTarget, *UserDecisionTarget
+type AccessReviewDecisionTargetClassification interface {
+	// GetAccessReviewDecisionTarget returns the AccessReviewDecisionTarget content of the underlying type.
+	GetAccessReviewDecisionTarget() *AccessReviewDecisionTarget
+}
+
+// AccessReviewDecisionTarget - Target of the decision.
+type AccessReviewDecisionTarget struct {
+	// REQUIRED; The type of decision target : User/ServicePrincipal
+	Type *DecisionTargetType `json:"type,omitempty"`
+}
+
+// GetAccessReviewDecisionTarget implements the AccessReviewDecisionTargetClassification interface for type AccessReviewDecisionTarget.
+func (a *AccessReviewDecisionTarget) GetAccessReviewDecisionTarget() *AccessReviewDecisionTarget {
+	return a
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AccessReviewDecisionTarget.
+func (a *AccessReviewDecisionTarget) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	return a.unmarshalInternal(rawMsg)
+}
+
+func (a AccessReviewDecisionTarget) marshalInternal(discValue DecisionTargetType) map[string]interface{} {
+	objectMap := make(map[string]interface{})
+	a.Type = &discValue
+	objectMap["type"] = a.Type
+	return objectMap
+}
+
+func (a *AccessReviewDecisionTarget) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "type":
+			err = unpopulate(val, &a.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// AccessReviewDefaultSettings - Access Review Default Settings.
+type AccessReviewDefaultSettings struct {
+	// Access Review properties.
+	Properties *AccessReviewScheduleSettings `json:"properties,omitempty"`
+
+	// READ-ONLY; The access review default settings id. This is only going to be default
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The access review default settings name. This is always going to be Access Review Default Settings
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// AccessReviewDefaultSettingsGetOptions contains the optional parameters for the AccessReviewDefaultSettings.Get method.
+type AccessReviewDefaultSettingsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewDefaultSettingsPutOptions contains the optional parameters for the AccessReviewDefaultSettings.Put method.
+type AccessReviewDefaultSettingsPutOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstance - Access Review Instance.
+type AccessReviewInstance struct {
+	// Access Review properties.
+	Properties *AccessReviewInstanceProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The access review instance id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The access review instance name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// AccessReviewInstanceAcceptRecommendationsOptions contains the optional parameters for the AccessReviewInstance.AcceptRecommendations method.
+type AccessReviewInstanceAcceptRecommendationsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceApplyDecisionsOptions contains the optional parameters for the AccessReviewInstance.ApplyDecisions method.
+type AccessReviewInstanceApplyDecisionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceDecisionsListOptions contains the optional parameters for the AccessReviewInstanceDecisions.List method.
+type AccessReviewInstanceDecisionsListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceListResult - List of Access Review Instances.
+type AccessReviewInstanceListResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Access Review Instance list.
+	Value []*AccessReviewInstance `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccessReviewInstanceListResult.
+func (a AccessReviewInstanceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// AccessReviewInstanceMyDecisionsGetByIDOptions contains the optional parameters for the AccessReviewInstanceMyDecisions.GetByID method.
+type AccessReviewInstanceMyDecisionsGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceMyDecisionsListOptions contains the optional parameters for the AccessReviewInstanceMyDecisions.List method.
+type AccessReviewInstanceMyDecisionsListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceMyDecisionsPatchOptions contains the optional parameters for the AccessReviewInstanceMyDecisions.Patch method.
+type AccessReviewInstanceMyDecisionsPatchOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceProperties - Access Review Instance properties.
+type AccessReviewInstanceProperties struct {
+	// The DateTime when the review instance is scheduled to end.
+	EndDateTime *time.Time `json:"endDateTime,omitempty"`
+
+	// The DateTime when the review instance is scheduled to be start.
+	StartDateTime *time.Time `json:"startDateTime,omitempty"`
+
+	// READ-ONLY; This read-only field specifies the status of an access review instance.
+	Status *AccessReviewInstanceStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccessReviewInstanceProperties.
+func (a AccessReviewInstanceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "endDateTime", (*timeRFC3339)(a.EndDateTime))
+	populate(objectMap, "startDateTime", (*timeRFC3339)(a.StartDateTime))
+	populate(objectMap, "status", a.Status)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AccessReviewInstanceProperties.
+func (a *AccessReviewInstanceProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "endDateTime":
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			a.EndDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "startDateTime":
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			a.StartDateTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "status":
+			err = unpopulate(val, &a.Status)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// AccessReviewInstanceResetDecisionsOptions contains the optional parameters for the AccessReviewInstance.ResetDecisions method.
+type AccessReviewInstanceResetDecisionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceSendRemindersOptions contains the optional parameters for the AccessReviewInstance.SendReminders method.
+type AccessReviewInstanceSendRemindersOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstanceStopOptions contains the optional parameters for the AccessReviewInstance.Stop method.
+type AccessReviewInstanceStopOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstancesAssignedForMyApprovalGetByIDOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApproval.GetByID
+// method.
+type AccessReviewInstancesAssignedForMyApprovalGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstancesAssignedForMyApprovalListOptions contains the optional parameters for the AccessReviewInstancesAssignedForMyApproval.List method.
+type AccessReviewInstancesAssignedForMyApprovalListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstancesGetByIDOptions contains the optional parameters for the AccessReviewInstances.GetByID method.
+type AccessReviewInstancesGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewInstancesListOptions contains the optional parameters for the AccessReviewInstances.List method.
+type AccessReviewInstancesListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewRecurrencePattern - Recurrence Pattern of an Access Review Schedule Definition.
+type AccessReviewRecurrencePattern struct {
+	// The interval for recurrence. For a quarterly review, the interval is 3 for type : absoluteMonthly.
+	Interval *int32 `json:"interval,omitempty"`
+
+	// The recurrence type : weekly, monthly, etc.
+	Type *AccessReviewRecurrencePatternType `json:"type,omitempty"`
+}
+
+// AccessReviewRecurrenceRange - Recurrence Range of an Access Review Schedule Definition.
+type AccessReviewRecurrenceRange struct {
+	// The DateTime when the review is scheduled to end. Required if type is endDate
+	EndDate *time.Time `json:"endDate,omitempty"`
+
+	// The number of times to repeat the access review. Required and must be positive if type is numbered.
+	NumberOfOccurrences *int32 `json:"numberOfOccurrences,omitempty"`
+
+	// The DateTime when the review is scheduled to be start. This could be a date in the future. Required on create.
+	StartDate *time.Time `json:"startDate,omitempty"`
+
+	// The recurrence range type. The possible values are: endDate, noEnd, numbered.
+	Type *AccessReviewRecurrenceRangeType `json:"type,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccessReviewRecurrenceRange.
+func (a AccessReviewRecurrenceRange) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "endDate", (*timeRFC3339)(a.EndDate))
+	populate(objectMap, "numberOfOccurrences", a.NumberOfOccurrences)
+	populate(objectMap, "startDate", (*timeRFC3339)(a.StartDate))
+	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AccessReviewRecurrenceRange.
+func (a *AccessReviewRecurrenceRange) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "endDate":
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			a.EndDate = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "numberOfOccurrences":
+			err = unpopulate(val, &a.NumberOfOccurrences)
+			delete(rawMsg, key)
+		case "startDate":
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			a.StartDate = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, &a.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// AccessReviewRecurrenceSettings - Recurrence Settings of an Access Review Schedule Definition.
+type AccessReviewRecurrenceSettings struct {
+	// Access Review schedule definition recurrence pattern.
+	Pattern *AccessReviewRecurrencePattern `json:"pattern,omitempty"`
+
+	// Access Review schedule definition recurrence range.
+	Range *AccessReviewRecurrenceRange `json:"range,omitempty"`
+}
+
+// AccessReviewReviewer - Descriptor for what needs to be reviewed
+type AccessReviewReviewer struct {
+	// The id of the reviewer(user/servicePrincipal)
+	PrincipalID *string `json:"principalId,omitempty"`
+
+	// READ-ONLY; The identity type : user/servicePrincipal
+	PrincipalType *AccessReviewReviewerType `json:"principalType,omitempty" azure:"ro"`
+}
+
+// AccessReviewScheduleDefinition - Access Review Schedule Definition.
+type AccessReviewScheduleDefinition struct {
+	// Access Review properties.
+	Properties *AccessReviewScheduleDefinitionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The access review schedule definition id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The access review schedule definition unique id.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// AccessReviewScheduleDefinitionListResult - List of Access Review Schedule Definitions.
+type AccessReviewScheduleDefinitionListResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Access Review Schedule Definition list.
+	Value []*AccessReviewScheduleDefinition `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccessReviewScheduleDefinitionListResult.
+func (a AccessReviewScheduleDefinitionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// AccessReviewScheduleDefinitionProperties - Access Review.
+type AccessReviewScheduleDefinitionProperties struct {
+	// The description provided by the access review creator and visible to admins.
+	DescriptionForAdmins *string `json:"descriptionForAdmins,omitempty"`
+
+	// The description provided by the access review creator to be shown to reviewers.
+	DescriptionForReviewers *string `json:"descriptionForReviewers,omitempty"`
+
+	// The display name for the schedule definition.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// This is the collection of instances returned when one does an expand on it.
+	Instances []*AccessReviewInstance `json:"instances,omitempty"`
+
+	// This is the collection of reviewers.
+	Reviewers []*AccessReviewReviewer `json:"reviewers,omitempty"`
+
+	// Access Review Settings.
+	Settings *AccessReviewScheduleSettings `json:"settings,omitempty"`
+
+	// READ-ONLY; The user or other identity who created this review.
+	CreatedBy *AccessReviewActorIdentity `json:"createdBy,omitempty" azure:"ro"`
+
+	// READ-ONLY; This field specifies the type of reviewers for a review. Usually for a review, reviewers are explicitly assigned. However, in some cases,
+	// the reviewers may not be assigned and instead be chosen
+	// dynamically. For example managers review or self review.
+	ReviewersType *AccessReviewScheduleDefinitionReviewersType `json:"reviewersType,omitempty" azure:"ro"`
+
+	// READ-ONLY; This is used to define what to include in scope of the review. The scope definition includes the resourceId and roleDefinitionId.
+	Scope *AccessReviewScope `json:"scope,omitempty" azure:"ro"`
+
+	// READ-ONLY; This read-only field specifies the status of an accessReview.
+	Status *AccessReviewScheduleDefinitionStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AccessReviewScheduleDefinitionProperties.
+func (a AccessReviewScheduleDefinitionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "createdBy", a.CreatedBy)
+	populate(objectMap, "descriptionForAdmins", a.DescriptionForAdmins)
+	populate(objectMap, "descriptionForReviewers", a.DescriptionForReviewers)
+	populate(objectMap, "displayName", a.DisplayName)
+	populate(objectMap, "instances", a.Instances)
+	populate(objectMap, "reviewers", a.Reviewers)
+	populate(objectMap, "reviewersType", a.ReviewersType)
+	populate(objectMap, "scope", a.Scope)
+	populate(objectMap, "settings", a.Settings)
+	populate(objectMap, "status", a.Status)
+	return json.Marshal(objectMap)
+}
+
+// AccessReviewScheduleDefinitionsAssignedForMyApprovalListOptions contains the optional parameters for the AccessReviewScheduleDefinitionsAssignedForMyApproval.List
+// method.
+type AccessReviewScheduleDefinitionsAssignedForMyApprovalListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewScheduleDefinitionsCreateOrUpdateByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitions.CreateOrUpdateByID
+// method.
+type AccessReviewScheduleDefinitionsCreateOrUpdateByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewScheduleDefinitionsDeleteByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitions.DeleteByID method.
+type AccessReviewScheduleDefinitionsDeleteByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewScheduleDefinitionsGetByIDOptions contains the optional parameters for the AccessReviewScheduleDefinitions.GetByID method.
+type AccessReviewScheduleDefinitionsGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewScheduleDefinitionsListOptions contains the optional parameters for the AccessReviewScheduleDefinitions.List method.
+type AccessReviewScheduleDefinitionsListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewScheduleDefinitionsStopOptions contains the optional parameters for the AccessReviewScheduleDefinitions.Stop method.
+type AccessReviewScheduleDefinitionsStopOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessReviewScheduleSettings - Settings of an Access Review.
+type AccessReviewScheduleSettings struct {
+	// Flag to indicate whether auto-apply capability, to automatically change the target object access resource, is enabled. If not enabled, a user must, after
+	// the review completes, apply the access review.
+	AutoApplyDecisionsEnabled *bool `json:"autoApplyDecisionsEnabled,omitempty"`
+
+	// This specifies the behavior for the autoReview feature when an access review completes.
+	DefaultDecision *DefaultDecisionType `json:"defaultDecision,omitempty"`
+
+	// Flag to indicate whether reviewers are required to provide a justification when reviewing access.
+	DefaultDecisionEnabled *bool `json:"defaultDecisionEnabled,omitempty"`
+
+	// The duration in days for an instance.
+	InstanceDurationInDays *int32 `json:"instanceDurationInDays,omitempty"`
+
+	// Flag to indicate whether the reviewer is required to pass justification when recording a decision.
+	JustificationRequiredOnApproval *bool `json:"justificationRequiredOnApproval,omitempty"`
+
+	// Flag to indicate whether sending mails to reviewers and the review creator is enabled.
+	MailNotificationsEnabled *bool `json:"mailNotificationsEnabled,omitempty"`
+
+	// Flag to indicate whether showing recommendations to reviewers is enabled.
+	RecommendationsEnabled *bool `json:"recommendationsEnabled,omitempty"`
+
+	// Access Review Settings.
+	Recurrence *AccessReviewRecurrenceSettings `json:"recurrence,omitempty"`
+
+	// Flag to indicate whether sending reminder emails to reviewers are enabled.
+	ReminderNotificationsEnabled *bool `json:"reminderNotificationsEnabled,omitempty"`
+}
+
+// AccessReviewScope - Descriptor for what needs to be reviewed
+type AccessReviewScope struct {
+	// READ-ONLY; The identity type user/servicePrincipal to review
+	PrincipalType *AccessReviewScopePrincipalType `json:"principalType,omitempty" azure:"ro"`
+
+	// READ-ONLY; ResourceId in which this review is getting created
+	ResourceID *string `json:"resourceId,omitempty" azure:"ro"`
+
+	// READ-ONLY; This is used to indicate the role being reviewed
+	RoleDefinitionID *string `json:"roleDefinitionId,omitempty" azure:"ro"`
+}
 
 // ApprovalSettings - The approval settings.
 type ApprovalSettings struct {
@@ -99,6 +709,170 @@ type CloudErrorBody struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// DenyAssignment - Deny Assignment
+type DenyAssignment struct {
+	// Deny assignment properties.
+	Properties *DenyAssignmentProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The deny assignment ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The deny assignment name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The deny assignment type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// DenyAssignmentFilter - Deny Assignments filter
+type DenyAssignmentFilter struct {
+	// Return deny assignment with specified name.
+	DenyAssignmentName *string `json:"denyAssignmentName,omitempty"`
+
+	// Return all deny assignments where the specified principal is listed either in the principals list or exclude principals list of deny assignments.
+	GdprExportPrincipalID *string `json:"gdprExportPrincipalId,omitempty"`
+
+	// Return all deny assignments where the specified principal is listed in the principals list of deny assignments.
+	PrincipalID *string `json:"principalId,omitempty"`
+}
+
+// DenyAssignmentListResult - Deny assignment list operation result.
+type DenyAssignmentListResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Deny assignment list.
+	Value []*DenyAssignment `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DenyAssignmentListResult.
+func (d DenyAssignmentListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", d.NextLink)
+	populate(objectMap, "value", d.Value)
+	return json.Marshal(objectMap)
+}
+
+// DenyAssignmentPermission - Deny assignment permissions.
+type DenyAssignmentPermission struct {
+	// Actions to which the deny assignment does not grant access.
+	Actions []*string `json:"actions,omitempty"`
+
+	// Data actions to which the deny assignment does not grant access.
+	DataActions []*string `json:"dataActions,omitempty"`
+
+	// Actions to exclude from that the deny assignment does not grant access.
+	NotActions []*string `json:"notActions,omitempty"`
+
+	// Data actions to exclude from that the deny assignment does not grant access.
+	NotDataActions []*string `json:"notDataActions,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DenyAssignmentPermission.
+func (d DenyAssignmentPermission) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "actions", d.Actions)
+	populate(objectMap, "dataActions", d.DataActions)
+	populate(objectMap, "notActions", d.NotActions)
+	populate(objectMap, "notDataActions", d.NotDataActions)
+	return json.Marshal(objectMap)
+}
+
+// DenyAssignmentProperties - Deny assignment properties.
+type DenyAssignmentProperties struct {
+	// The display name of the deny assignment.
+	DenyAssignmentName *string `json:"denyAssignmentName,omitempty"`
+
+	// The description of the deny assignment.
+	Description *string `json:"description,omitempty"`
+
+	// Determines if the deny assignment applies to child scopes. Default value is false.
+	DoNotApplyToChildScopes *bool `json:"doNotApplyToChildScopes,omitempty"`
+
+	// Array of principals to which the deny assignment does not apply.
+	ExcludePrincipals []*Principal `json:"excludePrincipals,omitempty"`
+
+	// Specifies whether this deny assignment was created by Azure and cannot be edited or deleted.
+	IsSystemProtected *bool `json:"isSystemProtected,omitempty"`
+
+	// An array of permissions that are denied by the deny assignment.
+	Permissions []*DenyAssignmentPermission `json:"permissions,omitempty"`
+
+	// Array of principals to which the deny assignment applies.
+	Principals []*Principal `json:"principals,omitempty"`
+
+	// The deny assignment scope.
+	Scope *string `json:"scope,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DenyAssignmentProperties.
+func (d DenyAssignmentProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "denyAssignmentName", d.DenyAssignmentName)
+	populate(objectMap, "description", d.Description)
+	populate(objectMap, "doNotApplyToChildScopes", d.DoNotApplyToChildScopes)
+	populate(objectMap, "excludePrincipals", d.ExcludePrincipals)
+	populate(objectMap, "isSystemProtected", d.IsSystemProtected)
+	populate(objectMap, "permissions", d.Permissions)
+	populate(objectMap, "principals", d.Principals)
+	populate(objectMap, "scope", d.Scope)
+	return json.Marshal(objectMap)
+}
+
+// DenyAssignmentsGetByIDOptions contains the optional parameters for the DenyAssignments.GetByID method.
+type DenyAssignmentsGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DenyAssignmentsGetOptions contains the optional parameters for the DenyAssignments.Get method.
+type DenyAssignmentsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DenyAssignmentsListForResourceGroupOptions contains the optional parameters for the DenyAssignments.ListForResourceGroup method.
+type DenyAssignmentsListForResourceGroupOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName eq '{name}'
+	// to search deny assignments by name at specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope
+	// for the specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all deny assignments at, above and below the scope for the specified
+	// principal. This filter is different from the principalId filter as it returns not only those deny assignments that contain the specified principal is
+	// the Principals list but also those deny assignments that contain the specified principal is the ExcludePrincipals list. Additionally, when gdprExportPrincipalId
+	// filter is used, only the deny assignment name and description properties are returned.
+	Filter *string
+}
+
+// DenyAssignmentsListForResourceOptions contains the optional parameters for the DenyAssignments.ListForResource method.
+type DenyAssignmentsListForResourceOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName eq '{name}'
+	// to search deny assignments by name at specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope
+	// for the specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all deny assignments at, above and below the scope for the specified
+	// principal. This filter is different from the principalId filter as it returns not only those deny assignments that contain the specified principal is
+	// the Principals list but also those deny assignments that contain the specified principal is the ExcludePrincipals list. Additionally, when gdprExportPrincipalId
+	// filter is used, only the deny assignment name and description properties are returned.
+	Filter *string
+}
+
+// DenyAssignmentsListForScopeOptions contains the optional parameters for the DenyAssignments.ListForScope method.
+type DenyAssignmentsListForScopeOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName eq '{name}'
+	// to search deny assignments by name at specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope
+	// for the specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all deny assignments at, above and below the scope for the specified
+	// principal. This filter is different from the principalId filter as it returns not only those deny assignments that contain the specified principal is
+	// the Principals list but also those deny assignments that contain the specified principal is the ExcludePrincipals list. Additionally, when gdprExportPrincipalId
+	// filter is used, only the deny assignment name and description properties are returned.
+	Filter *string
+}
+
+// DenyAssignmentsListOptions contains the optional parameters for the DenyAssignments.List method.
+type DenyAssignmentsListOptions struct {
+	// The filter to apply on the operation. Use $filter=atScope() to return all deny assignments at or above the scope. Use $filter=denyAssignmentName eq '{name}'
+	// to search deny assignments by name at specified scope. Use $filter=principalId eq '{id}' to return all deny assignments at, above and below the scope
+	// for the specified principal. Use $filter=gdprExportPrincipalId eq '{id}' to return all deny assignments at, above and below the scope for the specified
+	// principal. This filter is different from the principalId filter as it returns not only those deny assignments that contain the specified principal is
+	// the Principals list but also those deny assignments that contain the specified principal is the ExcludePrincipals list. Additionally, when gdprExportPrincipalId
+	// filter is used, only the deny assignment name and description properties are returned.
+	Filter *string
+}
+
 // EligibleChildResource - Eligible child resource
 type EligibleChildResource struct {
 	// READ-ONLY; The resource scope Id.
@@ -142,6 +916,29 @@ type ErrorAdditionalInfo struct {
 
 	// READ-ONLY; The additional info type.
 	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// ErrorDefinition - Error description and code explaining why an operation failed.
+// Implements the error and azcore.HTTPResponse interfaces.
+type ErrorDefinition struct {
+	raw string
+	// Error of the list gateway status.
+	InnerError *ErrorDefinitionProperties `json:"error,omitempty"`
+}
+
+// Error implements the error interface for type ErrorDefinition.
+// The contents of the error text are not contractual and subject to change.
+func (e ErrorDefinition) Error() string {
+	return e.raw
+}
+
+// ErrorDefinitionProperties - Error description and code explaining why an operation failed.
+type ErrorDefinitionProperties struct {
+	// Error code of list gateway.
+	Code *string `json:"code,omitempty"`
+
+	// READ-ONLY; Description of the error.
+	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
 // ErrorDetail - The error detail.
@@ -236,6 +1033,110 @@ type ExpandedPropertiesScope struct {
 
 	// Type of the resource
 	Type *string `json:"type,omitempty"`
+}
+
+// Operation - The definition of a Microsoft.Authorization operation.
+type Operation struct {
+	// Display of the operation
+	Display *OperationDisplay `json:"display,omitempty"`
+
+	// Indicates whether the operation is a data action
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+
+	// Name of the operation
+	Name *string `json:"name,omitempty"`
+
+	// Origin of the operation
+	Origin *string `json:"origin,omitempty"`
+}
+
+// OperationDisplay - The display information for a Microsoft.Authorization operation.
+type OperationDisplay struct {
+	// READ-ONLY; The description for the operation.
+	Description *string `json:"description,omitempty" azure:"ro"`
+
+	// READ-ONLY; The operation that users can perform.
+	Operation *string `json:"operation,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource provider name: Microsoft.Authorization.
+	Provider *string `json:"provider,omitempty" azure:"ro"`
+
+	// READ-ONLY; The resource on which the operation is performed.
+	Resource *string `json:"resource,omitempty" azure:"ro"`
+}
+
+// OperationListResult - The result of a request to list Microsoft.Authorization operations.
+type OperationListResult struct {
+	// The URI that can be used to request the next set of paged results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The collection value.
+	Value []*Operation `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type OperationListResult.
+func (o OperationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", o.NextLink)
+	populate(objectMap, "value", o.Value)
+	return json.Marshal(objectMap)
+}
+
+// OperationsListOptions contains the optional parameters for the Operations.List method.
+type OperationsListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// Permission - Role definition permissions.
+type Permission struct {
+	// Allowed actions.
+	Actions []*string `json:"actions,omitempty"`
+
+	// Allowed Data actions.
+	DataActions []*string `json:"dataActions,omitempty"`
+
+	// Denied actions.
+	NotActions []*string `json:"notActions,omitempty"`
+
+	// Denied Data actions.
+	NotDataActions []*string `json:"notDataActions,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Permission.
+func (p Permission) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "actions", p.Actions)
+	populate(objectMap, "dataActions", p.DataActions)
+	populate(objectMap, "notActions", p.NotActions)
+	populate(objectMap, "notDataActions", p.NotDataActions)
+	return json.Marshal(objectMap)
+}
+
+// PermissionGetResult - Permissions information.
+type PermissionGetResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// An array of permissions.
+	Value []*Permission `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PermissionGetResult.
+func (p PermissionGetResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", p.NextLink)
+	populate(objectMap, "value", p.Value)
+	return json.Marshal(objectMap)
+}
+
+// PermissionsListForResourceGroupOptions contains the optional parameters for the Permissions.ListForResourceGroup method.
+type PermissionsListForResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PermissionsListForResourceOptions contains the optional parameters for the Permissions.ListForResource method.
+type PermissionsListForResourceOptions struct {
+	// placeholder for future optional parameters
 }
 
 type PolicyAssignmentProperties struct {
@@ -354,6 +1255,110 @@ type Principal struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// ProviderOperation - Operation
+type ProviderOperation struct {
+	// The operation description.
+	Description *string `json:"description,omitempty"`
+
+	// The operation display name.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The dataAction flag to specify the operation type.
+	IsDataAction *bool `json:"isDataAction,omitempty"`
+
+	// The operation name.
+	Name *string `json:"name,omitempty"`
+
+	// The operation origin.
+	Origin *string `json:"origin,omitempty"`
+
+	// The operation properties.
+	Properties map[string]interface{} `json:"properties,omitempty"`
+}
+
+// ProviderOperationsMetadata - Provider Operations metadata
+type ProviderOperationsMetadata struct {
+	// The provider display name.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The provider id.
+	ID *string `json:"id,omitempty"`
+
+	// The provider name.
+	Name *string `json:"name,omitempty"`
+
+	// The provider operations.
+	Operations []*ProviderOperation `json:"operations,omitempty"`
+
+	// The provider resource types
+	ResourceTypes []*ResourceType `json:"resourceTypes,omitempty"`
+
+	// The provider type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ProviderOperationsMetadata.
+func (p ProviderOperationsMetadata) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "displayName", p.DisplayName)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "name", p.Name)
+	populate(objectMap, "operations", p.Operations)
+	populate(objectMap, "resourceTypes", p.ResourceTypes)
+	populate(objectMap, "type", p.Type)
+	return json.Marshal(objectMap)
+}
+
+// ProviderOperationsMetadataGetOptions contains the optional parameters for the ProviderOperationsMetadata.Get method.
+type ProviderOperationsMetadataGetOptions struct {
+	// Specifies whether to expand the values.
+	Expand *string
+}
+
+// ProviderOperationsMetadataListOptions contains the optional parameters for the ProviderOperationsMetadata.List method.
+type ProviderOperationsMetadataListOptions struct {
+	// Specifies whether to expand the values.
+	Expand *string
+}
+
+// ProviderOperationsMetadataListResult - Provider operations metadata list
+type ProviderOperationsMetadataListResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The list of providers.
+	Value []*ProviderOperationsMetadata `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ProviderOperationsMetadataListResult.
+func (p ProviderOperationsMetadataListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", p.NextLink)
+	populate(objectMap, "value", p.Value)
+	return json.Marshal(objectMap)
+}
+
+// ResourceType - Resource Type
+type ResourceType struct {
+	// The resource type display name.
+	DisplayName *string `json:"displayName,omitempty"`
+
+	// The resource type name.
+	Name *string `json:"name,omitempty"`
+
+	// The resource type operations.
+	Operations []*ProviderOperation `json:"operations,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ResourceType.
+func (r ResourceType) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "displayName", r.DisplayName)
+	populate(objectMap, "name", r.Name)
+	populate(objectMap, "operations", r.Operations)
+	return json.Marshal(objectMap)
+}
+
 // RoleAssignment - Role Assignments
 type RoleAssignment struct {
 	// Role assignment properties.
@@ -396,6 +1401,26 @@ func (r RoleAssignmentListResult) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "nextLink", r.NextLink)
 	populate(objectMap, "value", r.Value)
 	return json.Marshal(objectMap)
+}
+
+// RoleAssignmentMetricsGetMetricsForSubscriptionOptions contains the optional parameters for the RoleAssignmentMetrics.GetMetricsForSubscription method.
+type RoleAssignmentMetricsGetMetricsForSubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleAssignmentMetricsResult - Role Assignment Metrics
+type RoleAssignmentMetricsResult struct {
+	// READ-ONLY; The number of current role assignments.
+	RoleAssignmentsCurrentCount *int64 `json:"roleAssignmentsCurrentCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; The role assignment limit.
+	RoleAssignmentsLimit *int64 `json:"roleAssignmentsLimit,omitempty" azure:"ro"`
+
+	// READ-ONLY; The number of remaining role assignments available.
+	RoleAssignmentsRemainingCount *int64 `json:"roleAssignmentsRemainingCount,omitempty" azure:"ro"`
+
+	// READ-ONLY; The subscription ID.
+	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
 }
 
 // RoleAssignmentProperties - Role assignment properties.
@@ -1337,6 +2362,102 @@ type RoleAssignmentsValidateByIDOptions struct {
 // RoleAssignmentsValidateOptions contains the optional parameters for the RoleAssignments.Validate method.
 type RoleAssignmentsValidateOptions struct {
 	// placeholder for future optional parameters
+}
+
+// RoleDefinition - Role definition.
+type RoleDefinition struct {
+	// Role definition properties.
+	Properties *RoleDefinitionProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; The role definition ID.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The role definition name.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The role definition type.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// RoleDefinitionFilter - Role Definitions filter
+type RoleDefinitionFilter struct {
+	// Returns role definition with the specific name.
+	RoleName *string `json:"roleName,omitempty"`
+
+	// Returns role definition with the specific type.
+	Type *string `json:"type,omitempty"`
+}
+
+// RoleDefinitionListResult - Role definition list operation result.
+type RoleDefinitionListResult struct {
+	// The URL to use for getting the next set of results.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// Role definition list.
+	Value []*RoleDefinition `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RoleDefinitionListResult.
+func (r RoleDefinitionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", r.NextLink)
+	populate(objectMap, "value", r.Value)
+	return json.Marshal(objectMap)
+}
+
+// RoleDefinitionProperties - Role definition properties.
+type RoleDefinitionProperties struct {
+	// Role definition assignable scopes.
+	AssignableScopes []*string `json:"assignableScopes,omitempty"`
+
+	// The role definition description.
+	Description *string `json:"description,omitempty"`
+
+	// Role definition permissions.
+	Permissions []*Permission `json:"permissions,omitempty"`
+
+	// The role name.
+	RoleName *string `json:"roleName,omitempty"`
+
+	// The role type.
+	RoleType *string `json:"type,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RoleDefinitionProperties.
+func (r RoleDefinitionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "assignableScopes", r.AssignableScopes)
+	populate(objectMap, "description", r.Description)
+	populate(objectMap, "permissions", r.Permissions)
+	populate(objectMap, "roleName", r.RoleName)
+	populate(objectMap, "type", r.RoleType)
+	return json.Marshal(objectMap)
+}
+
+// RoleDefinitionsCreateOrUpdateOptions contains the optional parameters for the RoleDefinitions.CreateOrUpdate method.
+type RoleDefinitionsCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleDefinitionsDeleteOptions contains the optional parameters for the RoleDefinitions.Delete method.
+type RoleDefinitionsDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleDefinitionsGetByIDOptions contains the optional parameters for the RoleDefinitions.GetByID method.
+type RoleDefinitionsGetByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleDefinitionsGetOptions contains the optional parameters for the RoleDefinitions.Get method.
+type RoleDefinitionsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RoleDefinitionsListOptions contains the optional parameters for the RoleDefinitions.List method.
+type RoleDefinitionsListOptions struct {
+	// The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
+	Filter *string
 }
 
 // RoleEligibilitySchedule - Role eligibility schedule
@@ -2562,6 +3683,102 @@ func (r RoleManagementPolicyRuleTarget) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "operations", r.Operations)
 	populate(objectMap, "targetObjects", r.TargetObjects)
 	return json.Marshal(objectMap)
+}
+
+// ServicePrincipalDecisionTarget - Service Principal Decision Target
+type ServicePrincipalDecisionTarget struct {
+	AccessReviewDecisionTarget
+	// READ-ONLY; The appId for the service principal entity being reviewed
+	AppID *string `json:"appId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The id of service principal whose access is reviewed.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The display name of the service principal whose access was reviewed.
+	PrincipalName *string `json:"principalName,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ServicePrincipalDecisionTarget.
+func (s ServicePrincipalDecisionTarget) MarshalJSON() ([]byte, error) {
+	objectMap := s.AccessReviewDecisionTarget.marshalInternal(DecisionTargetTypeServicePrincipal)
+	populate(objectMap, "appId", s.AppID)
+	populate(objectMap, "principalId", s.PrincipalID)
+	populate(objectMap, "principalName", s.PrincipalName)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ServicePrincipalDecisionTarget.
+func (s *ServicePrincipalDecisionTarget) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "appId":
+			err = unpopulate(val, &s.AppID)
+			delete(rawMsg, key)
+		case "principalId":
+			err = unpopulate(val, &s.PrincipalID)
+			delete(rawMsg, key)
+		case "principalName":
+			err = unpopulate(val, &s.PrincipalName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return s.AccessReviewDecisionTarget.unmarshalInternal(rawMsg)
+}
+
+// UserDecisionTarget - User Decision Target
+type UserDecisionTarget struct {
+	AccessReviewDecisionTarget
+	// READ-ONLY; The id of user whose access was reviewed.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The display name of the user whose access was reviewed.
+	PrincipalName *string `json:"principalName,omitempty" azure:"ro"`
+
+	// READ-ONLY; The user principal name of the user whose access was reviewed.
+	UserPrincipalName *string `json:"userPrincipalName,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type UserDecisionTarget.
+func (u UserDecisionTarget) MarshalJSON() ([]byte, error) {
+	objectMap := u.AccessReviewDecisionTarget.marshalInternal(DecisionTargetTypeUser)
+	populate(objectMap, "principalId", u.PrincipalID)
+	populate(objectMap, "principalName", u.PrincipalName)
+	populate(objectMap, "userPrincipalName", u.UserPrincipalName)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type UserDecisionTarget.
+func (u *UserDecisionTarget) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "principalId":
+			err = unpopulate(val, &u.PrincipalID)
+			delete(rawMsg, key)
+		case "principalName":
+			err = unpopulate(val, &u.PrincipalName)
+			delete(rawMsg, key)
+		case "userPrincipalName":
+			err = unpopulate(val, &u.UserPrincipalName)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return u.AccessReviewDecisionTarget.unmarshalInternal(rawMsg)
 }
 
 // UserSet - The detail of a user.

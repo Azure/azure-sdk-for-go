@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,31 +10,31 @@ package armredis
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"reflect"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-type FirewallRulesListPager interface {
-	azcore.Pager
-	// PageResponse returns the current FirewallRulesListResponse.
-	PageResponse() FirewallRulesListResponse
-}
-
-type firewallRulesListPager struct {
+// FirewallRulesListPager provides operations for iterating over paged responses.
+type FirewallRulesListPager struct {
 	client    *FirewallRulesClient
 	current   FirewallRulesListResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, FirewallRulesListResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, FirewallRulesListResponse) (*policy.Request, error)
 }
 
-func (p *firewallRulesListPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *FirewallRulesListPager) Err() error {
 	return p.err
 }
 
-func (p *firewallRulesListPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *FirewallRulesListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.RedisFirewallRuleListResult.NextLink == nil || len(*p.current.RedisFirewallRuleListResult.NextLink) == 0 {
@@ -47,12 +48,12 @@ func (p *firewallRulesListPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listHandleError(resp)
 		return false
 	}
@@ -65,30 +66,29 @@ func (p *firewallRulesListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *firewallRulesListPager) PageResponse() FirewallRulesListResponse {
+// PageResponse returns the current FirewallRulesListResponse page.
+func (p *FirewallRulesListPager) PageResponse() FirewallRulesListResponse {
 	return p.current
 }
 
-type LinkedServerListPager interface {
-	azcore.Pager
-	// PageResponse returns the current LinkedServerListResponse.
-	PageResponse() LinkedServerListResponse
-}
-
-type linkedServerListPager struct {
+// LinkedServerListPager provides operations for iterating over paged responses.
+type LinkedServerListPager struct {
 	client    *LinkedServerClient
 	current   LinkedServerListResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, LinkedServerListResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, LinkedServerListResponse) (*policy.Request, error)
 }
 
-func (p *linkedServerListPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *LinkedServerListPager) Err() error {
 	return p.err
 }
 
-func (p *linkedServerListPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *LinkedServerListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.RedisLinkedServerWithPropertiesList.NextLink == nil || len(*p.current.RedisLinkedServerWithPropertiesList.NextLink) == 0 {
@@ -102,12 +102,12 @@ func (p *linkedServerListPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listHandleError(resp)
 		return false
 	}
@@ -120,30 +120,29 @@ func (p *linkedServerListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *linkedServerListPager) PageResponse() LinkedServerListResponse {
+// PageResponse returns the current LinkedServerListResponse page.
+func (p *LinkedServerListPager) PageResponse() LinkedServerListResponse {
 	return p.current
 }
 
-type OperationsListPager interface {
-	azcore.Pager
-	// PageResponse returns the current OperationsListResponse.
-	PageResponse() OperationsListResponse
-}
-
-type operationsListPager struct {
+// OperationsListPager provides operations for iterating over paged responses.
+type OperationsListPager struct {
 	client    *OperationsClient
 	current   OperationsListResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
 }
 
-func (p *operationsListPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *OperationsListPager) Err() error {
 	return p.err
 }
 
-func (p *operationsListPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.OperationListResult.NextLink == nil || len(*p.current.OperationListResult.NextLink) == 0 {
@@ -157,12 +156,12 @@ func (p *operationsListPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listHandleError(resp)
 		return false
 	}
@@ -175,30 +174,29 @@ func (p *operationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *operationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsListResponse page.
+func (p *OperationsListPager) PageResponse() OperationsListResponse {
 	return p.current
 }
 
-type PatchSchedulesListByRedisResourcePager interface {
-	azcore.Pager
-	// PageResponse returns the current PatchSchedulesListByRedisResourceResponse.
-	PageResponse() PatchSchedulesListByRedisResourceResponse
-}
-
-type patchSchedulesListByRedisResourcePager struct {
+// PatchSchedulesListByRedisResourcePager provides operations for iterating over paged responses.
+type PatchSchedulesListByRedisResourcePager struct {
 	client    *PatchSchedulesClient
 	current   PatchSchedulesListByRedisResourceResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, PatchSchedulesListByRedisResourceResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, PatchSchedulesListByRedisResourceResponse) (*policy.Request, error)
 }
 
-func (p *patchSchedulesListByRedisResourcePager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *PatchSchedulesListByRedisResourcePager) Err() error {
 	return p.err
 }
 
-func (p *patchSchedulesListByRedisResourcePager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *PatchSchedulesListByRedisResourcePager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.RedisPatchScheduleListResult.NextLink == nil || len(*p.current.RedisPatchScheduleListResult.NextLink) == 0 {
@@ -212,12 +210,12 @@ func (p *patchSchedulesListByRedisResourcePager) NextPage(ctx context.Context) b
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByRedisResourceHandleError(resp)
 		return false
 	}
@@ -230,30 +228,29 @@ func (p *patchSchedulesListByRedisResourcePager) NextPage(ctx context.Context) b
 	return true
 }
 
-func (p *patchSchedulesListByRedisResourcePager) PageResponse() PatchSchedulesListByRedisResourceResponse {
+// PageResponse returns the current PatchSchedulesListByRedisResourceResponse page.
+func (p *PatchSchedulesListByRedisResourcePager) PageResponse() PatchSchedulesListByRedisResourceResponse {
 	return p.current
 }
 
-type RedisListByResourceGroupPager interface {
-	azcore.Pager
-	// PageResponse returns the current RedisListByResourceGroupResponse.
-	PageResponse() RedisListByResourceGroupResponse
-}
-
-type redisListByResourceGroupPager struct {
+// RedisListByResourceGroupPager provides operations for iterating over paged responses.
+type RedisListByResourceGroupPager struct {
 	client    *RedisClient
 	current   RedisListByResourceGroupResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, RedisListByResourceGroupResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, RedisListByResourceGroupResponse) (*policy.Request, error)
 }
 
-func (p *redisListByResourceGroupPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *RedisListByResourceGroupPager) Err() error {
 	return p.err
 }
 
-func (p *redisListByResourceGroupPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *RedisListByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.RedisListResult.NextLink == nil || len(*p.current.RedisListResult.NextLink) == 0 {
@@ -267,12 +264,12 @@ func (p *redisListByResourceGroupPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByResourceGroupHandleError(resp)
 		return false
 	}
@@ -285,30 +282,29 @@ func (p *redisListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *redisListByResourceGroupPager) PageResponse() RedisListByResourceGroupResponse {
+// PageResponse returns the current RedisListByResourceGroupResponse page.
+func (p *RedisListByResourceGroupPager) PageResponse() RedisListByResourceGroupResponse {
 	return p.current
 }
 
-type RedisListBySubscriptionPager interface {
-	azcore.Pager
-	// PageResponse returns the current RedisListBySubscriptionResponse.
-	PageResponse() RedisListBySubscriptionResponse
-}
-
-type redisListBySubscriptionPager struct {
+// RedisListBySubscriptionPager provides operations for iterating over paged responses.
+type RedisListBySubscriptionPager struct {
 	client    *RedisClient
 	current   RedisListBySubscriptionResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, RedisListBySubscriptionResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, RedisListBySubscriptionResponse) (*policy.Request, error)
 }
 
-func (p *redisListBySubscriptionPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *RedisListBySubscriptionPager) Err() error {
 	return p.err
 }
 
-func (p *redisListBySubscriptionPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *RedisListBySubscriptionPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.RedisListResult.NextLink == nil || len(*p.current.RedisListResult.NextLink) == 0 {
@@ -322,12 +318,12 @@ func (p *redisListBySubscriptionPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listBySubscriptionHandleError(resp)
 		return false
 	}
@@ -340,30 +336,29 @@ func (p *redisListBySubscriptionPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *redisListBySubscriptionPager) PageResponse() RedisListBySubscriptionResponse {
+// PageResponse returns the current RedisListBySubscriptionResponse page.
+func (p *RedisListBySubscriptionPager) PageResponse() RedisListBySubscriptionResponse {
 	return p.current
 }
 
-type RedisListUpgradeNotificationsPager interface {
-	azcore.Pager
-	// PageResponse returns the current RedisListUpgradeNotificationsResponse.
-	PageResponse() RedisListUpgradeNotificationsResponse
-}
-
-type redisListUpgradeNotificationsPager struct {
+// RedisListUpgradeNotificationsPager provides operations for iterating over paged responses.
+type RedisListUpgradeNotificationsPager struct {
 	client    *RedisClient
 	current   RedisListUpgradeNotificationsResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, RedisListUpgradeNotificationsResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, RedisListUpgradeNotificationsResponse) (*policy.Request, error)
 }
 
-func (p *redisListUpgradeNotificationsPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *RedisListUpgradeNotificationsPager) Err() error {
 	return p.err
 }
 
-func (p *redisListUpgradeNotificationsPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *RedisListUpgradeNotificationsPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.NotificationListResponse.NextLink == nil || len(*p.current.NotificationListResponse.NextLink) == 0 {
@@ -377,12 +372,12 @@ func (p *redisListUpgradeNotificationsPager) NextPage(ctx context.Context) bool 
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listUpgradeNotificationsHandleError(resp)
 		return false
 	}
@@ -395,6 +390,7 @@ func (p *redisListUpgradeNotificationsPager) NextPage(ctx context.Context) bool 
 	return true
 }
 
-func (p *redisListUpgradeNotificationsPager) PageResponse() RedisListUpgradeNotificationsResponse {
+// PageResponse returns the current RedisListUpgradeNotificationsResponse page.
+func (p *RedisListUpgradeNotificationsPager) PageResponse() RedisListUpgradeNotificationsResponse {
 	return p.current
 }

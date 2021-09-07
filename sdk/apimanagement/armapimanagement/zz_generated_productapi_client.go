@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ProductAPIClient contains the methods for the ProductAPI group.
 // Don't use this type directly, use NewProductAPIClient() instead.
 type ProductAPIClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewProductAPIClient creates a new instance of ProductAPIClient with the specified values.
-func NewProductAPIClient(con *armcore.Connection, subscriptionID string) *ProductAPIClient {
-	return &ProductAPIClient{con: con, subscriptionID: subscriptionID}
+func NewProductAPIClient(con *arm.Connection, subscriptionID string) *ProductAPIClient {
+	return &ProductAPIClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CheckEntityExists - Checks that API entity specified by identifier is associated with the Product entity.
@@ -38,11 +42,11 @@ func (client *ProductAPIClient) CheckEntityExists(ctx context.Context, resourceG
 	if err != nil {
 		return ProductAPICheckEntityExistsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ProductAPICheckEntityExistsResponse{}, err
 	}
-	result := ProductAPICheckEntityExistsResponse{RawResponse: resp.Response}
+	result := ProductAPICheckEntityExistsResponse{RawResponse: resp}
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		result.Success = true
 	}
@@ -50,7 +54,7 @@ func (client *ProductAPIClient) CheckEntityExists(ctx context.Context, resourceG
 }
 
 // checkEntityExistsCreateRequest creates the CheckEntityExists request.
-func (client *ProductAPIClient) checkEntityExistsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, apiID string, options *ProductAPICheckEntityExistsOptions) (*azcore.Request, error) {
+func (client *ProductAPIClient) checkEntityExistsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, apiID string, options *ProductAPICheckEntityExistsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/apis/{apiId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -72,15 +76,14 @@ func (client *ProductAPIClient) checkEntityExistsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
@@ -91,18 +94,18 @@ func (client *ProductAPIClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	if err != nil {
 		return ProductAPICreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ProductAPICreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return ProductAPICreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ProductAPIClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, apiID string, options *ProductAPICreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *ProductAPIClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, apiID string, options *ProductAPICreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/apis/{apiId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -124,38 +127,37 @@ func (client *ProductAPIClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ProductAPIClient) createOrUpdateHandleResponse(resp *azcore.Response) (ProductAPICreateOrUpdateResponse, error) {
-	result := ProductAPICreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.APIContract); err != nil {
+func (client *ProductAPIClient) createOrUpdateHandleResponse(resp *http.Response) (ProductAPICreateOrUpdateResponse, error) {
+	result := ProductAPICreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.APIContract); err != nil {
 		return ProductAPICreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ProductAPIClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ProductAPIClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Deletes the specified API from the specified product.
@@ -165,18 +167,18 @@ func (client *ProductAPIClient) Delete(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ProductAPIDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ProductAPIDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ProductAPIDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return ProductAPIDeleteResponse{RawResponse: resp.Response}, nil
+	return ProductAPIDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ProductAPIClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, apiID string, options *ProductAPIDeleteOptions) (*azcore.Request, error) {
+func (client *ProductAPIClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, apiID string, options *ProductAPIDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/apis/{apiId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -198,47 +200,46 @@ func (client *ProductAPIClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *ProductAPIClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ProductAPIClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByProduct - Lists a collection of the APIs associated with a product.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *ProductAPIClient) ListByProduct(resourceGroupName string, serviceName string, productID string, options *ProductAPIListByProductOptions) ProductAPIListByProductPager {
-	return &productAPIListByProductPager{
+func (client *ProductAPIClient) ListByProduct(resourceGroupName string, serviceName string, productID string, options *ProductAPIListByProductOptions) *ProductAPIListByProductPager {
+	return &ProductAPIListByProductPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
 		},
-		advancer: func(ctx context.Context, resp ProductAPIListByProductResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.APICollection.NextLink)
+		advancer: func(ctx context.Context, resp ProductAPIListByProductResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.APICollection.NextLink)
 		},
 	}
 }
 
 // listByProductCreateRequest creates the ListByProduct request.
-func (client *ProductAPIClient) listByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *ProductAPIListByProductOptions) (*azcore.Request, error) {
+func (client *ProductAPIClient) listByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *ProductAPIListByProductOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/apis"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -256,12 +257,11 @@ func (client *ProductAPIClient) listByProductCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -271,30 +271,30 @@ func (client *ProductAPIClient) listByProductCreateRequest(ctx context.Context, 
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByProductHandleResponse handles the ListByProduct response.
-func (client *ProductAPIClient) listByProductHandleResponse(resp *azcore.Response) (ProductAPIListByProductResponse, error) {
-	result := ProductAPIListByProductResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.APICollection); err != nil {
+func (client *ProductAPIClient) listByProductHandleResponse(resp *http.Response) (ProductAPIListByProductResponse, error) {
+	result := ProductAPIListByProductResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.APICollection); err != nil {
 		return ProductAPIListByProductResponse{}, err
 	}
 	return result, nil
 }
 
 // listByProductHandleError handles the ListByProduct error response.
-func (client *ProductAPIClient) listByProductHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ProductAPIClient) listByProductHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // UserClient contains the methods for the User group.
 // Don't use this type directly, use NewUserClient() instead.
 type UserClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewUserClient creates a new instance of UserClient with the specified values.
-func NewUserClient(con *armcore.Connection, subscriptionID string) *UserClient {
-	return &UserClient{con: con, subscriptionID: subscriptionID}
+func NewUserClient(con *arm.Connection, subscriptionID string) *UserClient {
+	return &UserClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates or Updates a user.
@@ -38,18 +42,18 @@ func (client *UserClient) CreateOrUpdate(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return UserCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return UserCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return UserCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *UserClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, parameters UserCreateParameters, options *UserCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *UserClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, parameters UserCreateParameters, options *UserCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -67,47 +71,46 @@ func (client *UserClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Notify != nil {
 		reqQP.Set("notify", strconv.FormatBool(*options.Notify))
 	}
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header.Set("If-Match", *options.IfMatch)
 	}
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *UserClient) createOrUpdateHandleResponse(resp *azcore.Response) (UserCreateOrUpdateResponse, error) {
-	result := UserCreateOrUpdateResponse{RawResponse: resp.Response}
+func (client *UserClient) createOrUpdateHandleResponse(resp *http.Response) (UserCreateOrUpdateResponse, error) {
+	result := UserCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.UserContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.UserContract); err != nil {
 		return UserCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *UserClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *UserClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Deletes specific user.
@@ -117,18 +120,18 @@ func (client *UserClient) Delete(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return UserDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return UserDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return UserDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return UserDeleteResponse{RawResponse: resp.Response}, nil
+	return UserDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *UserClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, ifMatch string, options *UserDeleteOptions) (*azcore.Request, error) {
+func (client *UserClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, ifMatch string, options *UserDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -146,39 +149,38 @@ func (client *UserClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.DeleteSubscriptions != nil {
 		reqQP.Set("deleteSubscriptions", strconv.FormatBool(*options.DeleteSubscriptions))
 	}
 	if options != nil && options.Notify != nil {
 		reqQP.Set("notify", strconv.FormatBool(*options.Notify))
 	}
-	reqQP.Set("api-version", "2020-12-01")
+	reqQP.Set("api-version", "2021-01-01-preview")
 	if options != nil && options.AppType != nil {
 		reqQP.Set("appType", string(*options.AppType))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("If-Match", ifMatch)
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("If-Match", ifMatch)
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *UserClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *UserClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GenerateSsoURL - Retrieves a redirection URL containing an authentication token for signing a given user into the developer portal.
@@ -188,18 +190,18 @@ func (client *UserClient) GenerateSsoURL(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return UserGenerateSsoURLResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return UserGenerateSsoURLResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return UserGenerateSsoURLResponse{}, client.generateSsoURLHandleError(resp)
 	}
 	return client.generateSsoURLHandleResponse(resp)
 }
 
 // generateSsoURLCreateRequest creates the GenerateSsoURL request.
-func (client *UserClient) generateSsoURLCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserGenerateSsoURLOptions) (*azcore.Request, error) {
+func (client *UserClient) generateSsoURLCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserGenerateSsoURLOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}/generateSsoUrl"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -217,38 +219,37 @@ func (client *UserClient) generateSsoURLCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // generateSsoURLHandleResponse handles the GenerateSsoURL response.
-func (client *UserClient) generateSsoURLHandleResponse(resp *azcore.Response) (UserGenerateSsoURLResponse, error) {
-	result := UserGenerateSsoURLResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.GenerateSsoURLResult); err != nil {
+func (client *UserClient) generateSsoURLHandleResponse(resp *http.Response) (UserGenerateSsoURLResponse, error) {
+	result := UserGenerateSsoURLResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GenerateSsoURLResult); err != nil {
 		return UserGenerateSsoURLResponse{}, err
 	}
 	return result, nil
 }
 
 // generateSsoURLHandleError handles the GenerateSsoURL error response.
-func (client *UserClient) generateSsoURLHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *UserClient) generateSsoURLHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets the details of the user specified by its identifier.
@@ -258,18 +259,18 @@ func (client *UserClient) Get(ctx context.Context, resourceGroupName string, ser
 	if err != nil {
 		return UserGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return UserGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return UserGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *UserClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserGetOptions) (*azcore.Request, error) {
+func (client *UserClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -287,41 +288,40 @@ func (client *UserClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *UserClient) getHandleResponse(resp *azcore.Response) (UserGetResponse, error) {
-	result := UserGetResponse{RawResponse: resp.Response}
+func (client *UserClient) getHandleResponse(resp *http.Response) (UserGetResponse, error) {
+	result := UserGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.UserContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.UserContract); err != nil {
 		return UserGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *UserClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *UserClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetEntityTag - Gets the entity state (Etag) version of the user specified by its identifier.
@@ -331,7 +331,7 @@ func (client *UserClient) GetEntityTag(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return UserGetEntityTagResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return UserGetEntityTagResponse{}, err
 	}
@@ -339,7 +339,7 @@ func (client *UserClient) GetEntityTag(ctx context.Context, resourceGroupName st
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *UserClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserGetEntityTagOptions) (*azcore.Request, error) {
+func (client *UserClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, options *UserGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -357,21 +357,20 @@ func (client *UserClient) getEntityTagCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *UserClient) getEntityTagHandleResponse(resp *azcore.Response) (UserGetEntityTagResponse, error) {
-	result := UserGetEntityTagResponse{RawResponse: resp.Response}
+func (client *UserClient) getEntityTagHandleResponse(resp *http.Response) (UserGetEntityTagResponse, error) {
+	result := UserGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -388,18 +387,18 @@ func (client *UserClient) GetSharedAccessToken(ctx context.Context, resourceGrou
 	if err != nil {
 		return UserGetSharedAccessTokenResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return UserGetSharedAccessTokenResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return UserGetSharedAccessTokenResponse{}, client.getSharedAccessTokenHandleError(resp)
 	}
 	return client.getSharedAccessTokenHandleResponse(resp)
 }
 
 // getSharedAccessTokenCreateRequest creates the GetSharedAccessToken request.
-func (client *UserClient) getSharedAccessTokenCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, parameters UserTokenParameters, options *UserGetSharedAccessTokenOptions) (*azcore.Request, error) {
+func (client *UserClient) getSharedAccessTokenCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, parameters UserTokenParameters, options *UserGetSharedAccessTokenOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}/token"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -417,56 +416,55 @@ func (client *UserClient) getSharedAccessTokenCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // getSharedAccessTokenHandleResponse handles the GetSharedAccessToken response.
-func (client *UserClient) getSharedAccessTokenHandleResponse(resp *azcore.Response) (UserGetSharedAccessTokenResponse, error) {
-	result := UserGetSharedAccessTokenResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.UserTokenResult); err != nil {
+func (client *UserClient) getSharedAccessTokenHandleResponse(resp *http.Response) (UserGetSharedAccessTokenResponse, error) {
+	result := UserGetSharedAccessTokenResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.UserTokenResult); err != nil {
 		return UserGetSharedAccessTokenResponse{}, err
 	}
 	return result, nil
 }
 
 // getSharedAccessTokenHandleError handles the GetSharedAccessToken error response.
-func (client *UserClient) getSharedAccessTokenHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *UserClient) getSharedAccessTokenHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByService - Lists a collection of registered users in the specified service instance.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *UserClient) ListByService(resourceGroupName string, serviceName string, options *UserListByServiceOptions) UserListByServicePager {
-	return &userListByServicePager{
+func (client *UserClient) ListByService(resourceGroupName string, serviceName string, options *UserListByServiceOptions) *UserListByServicePager {
+	return &UserListByServicePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp UserListByServiceResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.UserCollection.NextLink)
+		advancer: func(ctx context.Context, resp UserListByServiceResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.UserCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *UserClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *UserListByServiceOptions) (*azcore.Request, error) {
+func (client *UserClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *UserListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -480,12 +478,11 @@ func (client *UserClient) listByServiceCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -498,32 +495,32 @@ func (client *UserClient) listByServiceCreateRequest(ctx context.Context, resour
 	if options != nil && options.ExpandGroups != nil {
 		reqQP.Set("expandGroups", strconv.FormatBool(*options.ExpandGroups))
 	}
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *UserClient) listByServiceHandleResponse(resp *azcore.Response) (UserListByServiceResponse, error) {
-	result := UserListByServiceResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.UserCollection); err != nil {
+func (client *UserClient) listByServiceHandleResponse(resp *http.Response) (UserListByServiceResponse, error) {
+	result := UserListByServiceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.UserCollection); err != nil {
 		return UserListByServiceResponse{}, err
 	}
 	return result, nil
 }
 
 // listByServiceHandleError handles the ListByService error response.
-func (client *UserClient) listByServiceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *UserClient) listByServiceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Update - Updates the details of the user specified by its identifier.
@@ -533,18 +530,18 @@ func (client *UserClient) Update(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return UserUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return UserUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return UserUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *UserClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, ifMatch string, parameters UserUpdateParameters, options *UserUpdateOptions) (*azcore.Request, error) {
+func (client *UserClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, userID string, ifMatch string, parameters UserUpdateParameters, options *UserUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/users/{userId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -562,40 +559,39 @@ func (client *UserClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("If-Match", ifMatch)
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("If-Match", ifMatch)
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *UserClient) updateHandleResponse(resp *azcore.Response) (UserUpdateResponse, error) {
-	result := UserUpdateResponse{RawResponse: resp.Response}
+func (client *UserClient) updateHandleResponse(resp *http.Response) (UserUpdateResponse, error) {
+	result := UserUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.UserContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.UserContract); err != nil {
 		return UserUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *UserClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *UserClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,23 +11,26 @@ package armoperationalinsights
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SharedKeysClient contains the methods for the SharedKeys group.
 // Don't use this type directly, use NewSharedKeysClient() instead.
 type SharedKeysClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewSharedKeysClient creates a new instance of SharedKeysClient with the specified values.
-func NewSharedKeysClient(con *armcore.Connection, subscriptionID string) *SharedKeysClient {
-	return &SharedKeysClient{con: con, subscriptionID: subscriptionID}
+func NewSharedKeysClient(con *arm.Connection, subscriptionID string) *SharedKeysClient {
+	return &SharedKeysClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // GetSharedKeys - Gets the shared keys for a workspace.
@@ -36,18 +40,18 @@ func (client *SharedKeysClient) GetSharedKeys(ctx context.Context, resourceGroup
 	if err != nil {
 		return SharedKeysGetSharedKeysResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return SharedKeysGetSharedKeysResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SharedKeysGetSharedKeysResponse{}, client.getSharedKeysHandleError(resp)
 	}
 	return client.getSharedKeysHandleResponse(resp)
 }
 
 // getSharedKeysCreateRequest creates the GetSharedKeys request.
-func (client *SharedKeysClient) getSharedKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *SharedKeysGetSharedKeysOptions) (*azcore.Request, error) {
+func (client *SharedKeysClient) getSharedKeysCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *SharedKeysGetSharedKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/sharedKeys"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -61,37 +65,36 @@ func (client *SharedKeysClient) getSharedKeysCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getSharedKeysHandleResponse handles the GetSharedKeys response.
-func (client *SharedKeysClient) getSharedKeysHandleResponse(resp *azcore.Response) (SharedKeysGetSharedKeysResponse, error) {
-	result := SharedKeysGetSharedKeysResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SharedKeys); err != nil {
+func (client *SharedKeysClient) getSharedKeysHandleResponse(resp *http.Response) (SharedKeysGetSharedKeysResponse, error) {
+	result := SharedKeysGetSharedKeysResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SharedKeys); err != nil {
 		return SharedKeysGetSharedKeysResponse{}, err
 	}
 	return result, nil
 }
 
 // getSharedKeysHandleError handles the GetSharedKeys error response.
-func (client *SharedKeysClient) getSharedKeysHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SharedKeysClient) getSharedKeysHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Regenerate - Regenerates the shared keys for a Log Analytics Workspace. These keys are used to connect Microsoft Operational Insights agents to the workspace.
@@ -101,18 +104,18 @@ func (client *SharedKeysClient) Regenerate(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return SharedKeysRegenerateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return SharedKeysRegenerateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return SharedKeysRegenerateResponse{}, client.regenerateHandleError(resp)
 	}
 	return client.regenerateHandleResponse(resp)
 }
 
 // regenerateCreateRequest creates the Regenerate request.
-func (client *SharedKeysClient) regenerateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *SharedKeysRegenerateOptions) (*azcore.Request, error) {
+func (client *SharedKeysClient) regenerateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *SharedKeysRegenerateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/regenerateSharedKey"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -126,35 +129,34 @@ func (client *SharedKeysClient) regenerateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // regenerateHandleResponse handles the Regenerate response.
-func (client *SharedKeysClient) regenerateHandleResponse(resp *azcore.Response) (SharedKeysRegenerateResponse, error) {
-	result := SharedKeysRegenerateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SharedKeys); err != nil {
+func (client *SharedKeysClient) regenerateHandleResponse(resp *http.Response) (SharedKeysRegenerateResponse, error) {
+	result := SharedKeysRegenerateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SharedKeys); err != nil {
 		return SharedKeysRegenerateResponse{}, err
 	}
 	return result, nil
 }
 
 // regenerateHandleError handles the Regenerate error response.
-func (client *SharedKeysClient) regenerateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SharedKeysClient) regenerateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

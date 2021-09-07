@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,94 +12,69 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PrivateZonesClient contains the methods for the PrivateZones group.
 // Don't use this type directly, use NewPrivateZonesClient() instead.
 type PrivateZonesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewPrivateZonesClient creates a new instance of PrivateZonesClient with the specified values.
-func NewPrivateZonesClient(con *armcore.Connection, subscriptionID string) *PrivateZonesClient {
-	return &PrivateZonesClient{con: con, subscriptionID: subscriptionID}
+func NewPrivateZonesClient(con *arm.Connection, subscriptionID string) *PrivateZonesClient {
+	return &PrivateZonesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Creates or updates a Private DNS zone. Does not modify Links to virtual networks or DNS records within the zone.
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateZonesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateZoneName string, parameters PrivateZone, options *PrivateZonesBeginCreateOrUpdateOptions) (PrivateZonePollerResponse, error) {
+func (client *PrivateZonesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateZoneName string, parameters PrivateZone, options *PrivateZonesBeginCreateOrUpdateOptions) (PrivateZonesCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, privateZoneName, parameters, options)
 	if err != nil {
-		return PrivateZonePollerResponse{}, err
+		return PrivateZonesCreateOrUpdatePollerResponse{}, err
 	}
-	result := PrivateZonePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("PrivateZonesClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return PrivateZonePollerResponse{}, err
-	}
-	poller := &privateZonePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateZoneResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new PrivateZonePoller from the specified resume token.
-// token - The value must come from a previous call to PrivateZonePoller.ResumeToken().
-func (client *PrivateZonesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (PrivateZonePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("PrivateZonesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return PrivateZonePollerResponse{}, err
-	}
-	poller := &privateZonePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return PrivateZonePollerResponse{}, err
-	}
-	result := PrivateZonePollerResponse{
+	result := PrivateZonesCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateZoneResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("PrivateZonesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return PrivateZonesCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &PrivateZonesCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a Private DNS zone. Does not modify Links to virtual networks or DNS records within the zone.
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateZonesClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateZoneName string, parameters PrivateZone, options *PrivateZonesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *PrivateZonesClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateZoneName string, parameters PrivateZone, options *PrivateZonesBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateZoneName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PrivateZonesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, parameters PrivateZone, options *PrivateZonesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *PrivateZonesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, parameters PrivateZone, options *PrivateZonesBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -112,83 +88,54 @@ func (client *PrivateZonesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header.Set("If-Match", *options.IfMatch)
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
 	}
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *PrivateZonesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PrivateZonesClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDelete - Deletes a Private DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone. Private DNS zone
 // cannot be deleted unless all virtual network links to it are
 // removed.
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateZonesClient) BeginDelete(ctx context.Context, resourceGroupName string, privateZoneName string, options *PrivateZonesBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *PrivateZonesClient) BeginDelete(ctx context.Context, resourceGroupName string, privateZoneName string, options *PrivateZonesBeginDeleteOptions) (PrivateZonesDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, privateZoneName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return PrivateZonesDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("PrivateZonesClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *PrivateZonesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("PrivateZonesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := PrivateZonesDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("PrivateZonesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return PrivateZonesDeletePollerResponse{}, err
+	}
+	result.Poller = &PrivateZonesDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
@@ -197,23 +144,23 @@ func (client *PrivateZonesClient) ResumeDelete(ctx context.Context, token string
 // be deleted unless all virtual network links to it are
 // removed.
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateZonesClient) deleteOperation(ctx context.Context, resourceGroupName string, privateZoneName string, options *PrivateZonesBeginDeleteOptions) (*azcore.Response, error) {
+func (client *PrivateZonesClient) deleteOperation(ctx context.Context, resourceGroupName string, privateZoneName string, options *PrivateZonesBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateZoneName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PrivateZonesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, options *PrivateZonesBeginDeleteOptions) (*azcore.Request, error) {
+func (client *PrivateZonesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, options *PrivateZonesBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -227,53 +174,52 @@ func (client *PrivateZonesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header.Set("If-Match", *options.IfMatch)
 	}
-	req.Header.Set("Accept", "application/json")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *PrivateZonesClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PrivateZonesClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets a Private DNS zone. Retrieves the zone properties, but not the virtual networks links or the record sets within the zone.
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateZonesClient) Get(ctx context.Context, resourceGroupName string, privateZoneName string, options *PrivateZonesGetOptions) (PrivateZoneResponse, error) {
+func (client *PrivateZonesClient) Get(ctx context.Context, resourceGroupName string, privateZoneName string, options *PrivateZonesGetOptions) (PrivateZonesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateZoneName, options)
 	if err != nil {
-		return PrivateZoneResponse{}, err
+		return PrivateZonesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateZoneResponse{}, err
+		return PrivateZonesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return PrivateZoneResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return PrivateZonesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateZonesClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, options *PrivateZonesGetOptions) (*azcore.Request, error) {
+func (client *PrivateZonesClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, options *PrivateZonesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -287,120 +233,112 @@ func (client *PrivateZonesClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateZonesClient) getHandleResponse(resp *azcore.Response) (PrivateZoneResponse, error) {
-	var val *PrivateZone
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateZoneResponse{}, err
+func (client *PrivateZonesClient) getHandleResponse(resp *http.Response) (PrivateZonesGetResponse, error) {
+	result := PrivateZonesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateZone); err != nil {
+		return PrivateZonesGetResponse{}, err
 	}
-	return PrivateZoneResponse{RawResponse: resp.Response, PrivateZone: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *PrivateZonesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PrivateZonesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Lists the Private DNS zones in all resource groups in a subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateZonesClient) List(options *PrivateZonesListOptions) PrivateZoneListResultPager {
-	return &privateZoneListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *PrivateZonesClient) List(options *PrivateZonesListOptions) *PrivateZonesListPager {
+	return &PrivateZonesListPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp PrivateZoneListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.PrivateZoneListResult.NextLink)
+		advancer: func(ctx context.Context, resp PrivateZonesListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateZoneListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *PrivateZonesClient) listCreateRequest(ctx context.Context, options *PrivateZonesListOptions) (*azcore.Request, error) {
+func (client *PrivateZonesClient) listCreateRequest(ctx context.Context, options *PrivateZonesListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/privateDnsZones"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	reqQP.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PrivateZonesClient) listHandleResponse(resp *azcore.Response) (PrivateZoneListResultResponse, error) {
-	var val *PrivateZoneListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateZoneListResultResponse{}, err
+func (client *PrivateZonesClient) listHandleResponse(resp *http.Response) (PrivateZonesListResponse, error) {
+	result := PrivateZonesListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateZoneListResult); err != nil {
+		return PrivateZonesListResponse{}, err
 	}
-	return PrivateZoneListResultResponse{RawResponse: resp.Response, PrivateZoneListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *PrivateZonesClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PrivateZonesClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByResourceGroup - Lists the Private DNS zones within a resource group.
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateZonesClient) ListByResourceGroup(resourceGroupName string, options *PrivateZonesListByResourceGroupOptions) PrivateZoneListResultPager {
-	return &privateZoneListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *PrivateZonesClient) ListByResourceGroup(resourceGroupName string, options *PrivateZonesListByResourceGroupOptions) *PrivateZonesListByResourceGroupPager {
+	return &PrivateZonesListByResourceGroupPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listByResourceGroupHandleResponse,
-		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp PrivateZoneListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.PrivateZoneListResult.NextLink)
+		advancer: func(ctx context.Context, resp PrivateZonesListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateZoneListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *PrivateZonesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PrivateZonesListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *PrivateZonesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PrivateZonesListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -410,110 +348,81 @@ func (client *PrivateZonesClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
 	reqQP.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *PrivateZonesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (PrivateZoneListResultResponse, error) {
-	var val *PrivateZoneListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateZoneListResultResponse{}, err
-	}
-	return PrivateZoneListResultResponse{RawResponse: resp.Response, PrivateZoneListResult: val}, nil
-}
-
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *PrivateZonesClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
-	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
-	}
-	return azcore.NewResponseError(&errType, resp.Response)
-}
-
-// BeginUpdate - Updates a Private DNS zone. Does not modify virtual network links or DNS records within the zone.
-// If the operation fails it returns the *CloudError error type.
-func (client *PrivateZonesClient) BeginUpdate(ctx context.Context, resourceGroupName string, privateZoneName string, parameters PrivateZone, options *PrivateZonesBeginUpdateOptions) (PrivateZonePollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, privateZoneName, parameters, options)
-	if err != nil {
-		return PrivateZonePollerResponse{}, err
-	}
-	result := PrivateZonePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("PrivateZonesClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return PrivateZonePollerResponse{}, err
-	}
-	poller := &privateZonePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateZoneResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+func (client *PrivateZonesClient) listByResourceGroupHandleResponse(resp *http.Response) (PrivateZonesListByResourceGroupResponse, error) {
+	result := PrivateZonesListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateZoneListResult); err != nil {
+		return PrivateZonesListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// ResumeUpdate creates a new PrivateZonePoller from the specified resume token.
-// token - The value must come from a previous call to PrivateZonePoller.ResumeToken().
-func (client *PrivateZonesClient) ResumeUpdate(ctx context.Context, token string) (PrivateZonePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("PrivateZonesClient.Update", token, client.con.Pipeline(), client.updateHandleError)
+// listByResourceGroupHandleError handles the ListByResourceGroup error response.
+func (client *PrivateZonesClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return PrivateZonePollerResponse{}, err
+		return runtime.NewResponseError(err, resp)
 	}
-	poller := &privateZonePoller{
-		pt: pt,
+	errType := CloudError{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	resp, err := poller.Poll(ctx)
+	return runtime.NewResponseError(&errType, resp)
+}
+
+// BeginUpdate - Updates a Private DNS zone. Does not modify virtual network links or DNS records within the zone.
+// If the operation fails it returns the *CloudError error type.
+func (client *PrivateZonesClient) BeginUpdate(ctx context.Context, resourceGroupName string, privateZoneName string, parameters PrivateZone, options *PrivateZonesBeginUpdateOptions) (PrivateZonesUpdatePollerResponse, error) {
+	resp, err := client.update(ctx, resourceGroupName, privateZoneName, parameters, options)
 	if err != nil {
-		return PrivateZonePollerResponse{}, err
+		return PrivateZonesUpdatePollerResponse{}, err
 	}
-	result := PrivateZonePollerResponse{
+	result := PrivateZonesUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PrivateZoneResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("PrivateZonesClient.Update", "", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return PrivateZonesUpdatePollerResponse{}, err
+	}
+	result.Poller = &PrivateZonesUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates a Private DNS zone. Does not modify virtual network links or DNS records within the zone.
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateZonesClient) update(ctx context.Context, resourceGroupName string, privateZoneName string, parameters PrivateZone, options *PrivateZonesBeginUpdateOptions) (*azcore.Response, error) {
+func (client *PrivateZonesClient) update(ctx context.Context, resourceGroupName string, privateZoneName string, parameters PrivateZone, options *PrivateZonesBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, privateZoneName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PrivateZonesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, parameters PrivateZone, options *PrivateZonesBeginUpdateOptions) (*azcore.Request, error) {
+func (client *PrivateZonesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, parameters PrivateZone, options *PrivateZonesBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -527,30 +436,29 @@ func (client *PrivateZonesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header.Set("If-Match", *options.IfMatch)
 	}
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleError handles the Update error response.
-func (client *PrivateZonesClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PrivateZonesClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

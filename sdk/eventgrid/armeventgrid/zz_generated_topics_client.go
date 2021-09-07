@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,25 +11,28 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TopicsClient contains the methods for the Topics group.
 // Don't use this type directly, use NewTopicsClient() instead.
 type TopicsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewTopicsClient creates a new instance of TopicsClient with the specified values.
-func NewTopicsClient(con *armcore.Connection, subscriptionID string) *TopicsClient {
-	return &TopicsClient{con: con, subscriptionID: subscriptionID}
+func NewTopicsClient(con *arm.Connection, subscriptionID string) *TopicsClient {
+	return &TopicsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Asynchronously creates a new topic with the specified parameters.
@@ -39,65 +43,37 @@ func (client *TopicsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 		return TopicsCreateOrUpdatePollerResponse{}, err
 	}
 	result := TopicsCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("TopicsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return TopicsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &topicsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TopicsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new TopicsCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to TopicsCreateOrUpdatePoller.ResumeToken().
-func (client *TopicsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (TopicsCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("TopicsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return TopicsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &topicsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return TopicsCreateOrUpdatePollerResponse{}, err
-	}
-	result := TopicsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TopicsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("TopicsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return TopicsCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &TopicsCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Asynchronously creates a new topic with the specified parameters.
 // If the operation fails it returns a generic error.
-func (client *TopicsClient) createOrUpdate(ctx context.Context, resourceGroupName string, topicName string, topicInfo Topic, options *TopicsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *TopicsClient) createOrUpdate(ctx context.Context, resourceGroupName string, topicName string, topicInfo Topic, options *TopicsBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, topicName, topicInfo, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *TopicsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, topicName string, topicInfo Topic, options *TopicsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *TopicsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, topicName string, topicInfo Topic, options *TopicsBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -111,28 +87,27 @@ func (client *TopicsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter topicName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(topicInfo)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, topicInfo)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *TopicsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TopicsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginDelete - Delete existing topic.
@@ -143,65 +118,37 @@ func (client *TopicsClient) BeginDelete(ctx context.Context, resourceGroupName s
 		return TopicsDeletePollerResponse{}, err
 	}
 	result := TopicsDeletePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("TopicsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return TopicsDeletePollerResponse{}, err
-	}
-	poller := &topicsDeletePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TopicsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new TopicsDeletePoller from the specified resume token.
-// token - The value must come from a previous call to TopicsDeletePoller.ResumeToken().
-func (client *TopicsClient) ResumeDelete(ctx context.Context, token string) (TopicsDeletePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("TopicsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return TopicsDeletePollerResponse{}, err
-	}
-	poller := &topicsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return TopicsDeletePollerResponse{}, err
-	}
-	result := TopicsDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TopicsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("TopicsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return TopicsDeletePollerResponse{}, err
+	}
+	result.Poller = &TopicsDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete existing topic.
 // If the operation fails it returns a generic error.
-func (client *TopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, topicName string, options *TopicsBeginDeleteOptions) (*azcore.Response, error) {
+func (client *TopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, topicName string, options *TopicsBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, topicName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *TopicsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, topicName string, options *TopicsBeginDeleteOptions) (*azcore.Request, error) {
+func (client *TopicsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, topicName string, options *TopicsBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -215,27 +162,26 @@ func (client *TopicsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter topicName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *TopicsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TopicsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Get properties of a topic.
@@ -245,18 +191,18 @@ func (client *TopicsClient) Get(ctx context.Context, resourceGroupName string, t
 	if err != nil {
 		return TopicsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TopicsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TopicsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TopicsClient) getCreateRequest(ctx context.Context, resourceGroupName string, topicName string, options *TopicsGetOptions) (*azcore.Request, error) {
+func (client *TopicsClient) getCreateRequest(ctx context.Context, resourceGroupName string, topicName string, options *TopicsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -270,55 +216,54 @@ func (client *TopicsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter topicName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *TopicsClient) getHandleResponse(resp *azcore.Response) (TopicsGetResponse, error) {
-	result := TopicsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Topic); err != nil {
+func (client *TopicsClient) getHandleResponse(resp *http.Response) (TopicsGetResponse, error) {
+	result := TopicsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Topic); err != nil {
 		return TopicsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *TopicsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TopicsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByResourceGroup - List all the topics under a resource group.
 // If the operation fails it returns a generic error.
-func (client *TopicsClient) ListByResourceGroup(resourceGroupName string, options *TopicsListByResourceGroupOptions) TopicsListByResourceGroupPager {
-	return &topicsListByResourceGroupPager{
+func (client *TopicsClient) ListByResourceGroup(resourceGroupName string, options *TopicsListByResourceGroupOptions) *TopicsListByResourceGroupPager {
+	return &TopicsListByResourceGroupPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp TopicsListByResourceGroupResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.TopicsListResult.NextLink)
+		advancer: func(ctx context.Context, resp TopicsListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.TopicsListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *TopicsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *TopicsListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *TopicsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *TopicsListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -328,12 +273,11 @@ func (client *TopicsClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
@@ -341,59 +285,58 @@ func (client *TopicsClient) listByResourceGroupCreateRequest(ctx context.Context
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *TopicsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (TopicsListByResourceGroupResponse, error) {
-	result := TopicsListByResourceGroupResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TopicsListResult); err != nil {
+func (client *TopicsClient) listByResourceGroupHandleResponse(resp *http.Response) (TopicsListByResourceGroupResponse, error) {
+	result := TopicsListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TopicsListResult); err != nil {
 		return TopicsListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *TopicsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TopicsClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListBySubscription - List all the topics under an Azure subscription.
 // If the operation fails it returns a generic error.
-func (client *TopicsClient) ListBySubscription(options *TopicsListBySubscriptionOptions) TopicsListBySubscriptionPager {
-	return &topicsListBySubscriptionPager{
+func (client *TopicsClient) ListBySubscription(options *TopicsListBySubscriptionOptions) *TopicsListBySubscriptionPager {
+	return &TopicsListBySubscriptionPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp TopicsListBySubscriptionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.TopicsListResult.NextLink)
+		advancer: func(ctx context.Context, resp TopicsListBySubscriptionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.TopicsListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *TopicsClient) listBySubscriptionCreateRequest(ctx context.Context, options *TopicsListBySubscriptionOptions) (*azcore.Request, error) {
+func (client *TopicsClient) listBySubscriptionCreateRequest(ctx context.Context, options *TopicsListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/topics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
@@ -401,30 +344,30 @@ func (client *TopicsClient) listBySubscriptionCreateRequest(ctx context.Context,
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *TopicsClient) listBySubscriptionHandleResponse(resp *azcore.Response) (TopicsListBySubscriptionResponse, error) {
-	result := TopicsListBySubscriptionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TopicsListResult); err != nil {
+func (client *TopicsClient) listBySubscriptionHandleResponse(resp *http.Response) (TopicsListBySubscriptionResponse, error) {
+	result := TopicsListBySubscriptionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TopicsListResult); err != nil {
 		return TopicsListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *TopicsClient) listBySubscriptionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TopicsClient) listBySubscriptionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListEventTypes - List event types for a topic.
@@ -434,18 +377,18 @@ func (client *TopicsClient) ListEventTypes(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return TopicsListEventTypesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TopicsListEventTypesResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TopicsListEventTypesResponse{}, client.listEventTypesHandleError(resp)
 	}
 	return client.listEventTypesHandleResponse(resp)
 }
 
 // listEventTypesCreateRequest creates the ListEventTypes request.
-func (client *TopicsClient) listEventTypesCreateRequest(ctx context.Context, resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string, options *TopicsListEventTypesOptions) (*azcore.Request, error) {
+func (client *TopicsClient) listEventTypesCreateRequest(ctx context.Context, resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string, options *TopicsListEventTypesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerNamespace}/{resourceTypeName}/{resourceName}/providers/Microsoft.EventGrid/eventTypes"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -467,37 +410,36 @@ func (client *TopicsClient) listEventTypesCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listEventTypesHandleResponse handles the ListEventTypes response.
-func (client *TopicsClient) listEventTypesHandleResponse(resp *azcore.Response) (TopicsListEventTypesResponse, error) {
-	result := TopicsListEventTypesResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.EventTypesListResult); err != nil {
+func (client *TopicsClient) listEventTypesHandleResponse(resp *http.Response) (TopicsListEventTypesResponse, error) {
+	result := TopicsListEventTypesResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.EventTypesListResult); err != nil {
 		return TopicsListEventTypesResponse{}, err
 	}
 	return result, nil
 }
 
 // listEventTypesHandleError handles the ListEventTypes error response.
-func (client *TopicsClient) listEventTypesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TopicsClient) listEventTypesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListSharedAccessKeys - List the two keys used to publish to a topic.
@@ -507,18 +449,18 @@ func (client *TopicsClient) ListSharedAccessKeys(ctx context.Context, resourceGr
 	if err != nil {
 		return TopicsListSharedAccessKeysResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TopicsListSharedAccessKeysResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TopicsListSharedAccessKeysResponse{}, client.listSharedAccessKeysHandleError(resp)
 	}
 	return client.listSharedAccessKeysHandleResponse(resp)
 }
 
 // listSharedAccessKeysCreateRequest creates the ListSharedAccessKeys request.
-func (client *TopicsClient) listSharedAccessKeysCreateRequest(ctx context.Context, resourceGroupName string, topicName string, options *TopicsListSharedAccessKeysOptions) (*azcore.Request, error) {
+func (client *TopicsClient) listSharedAccessKeysCreateRequest(ctx context.Context, resourceGroupName string, topicName string, options *TopicsListSharedAccessKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/listKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -532,37 +474,36 @@ func (client *TopicsClient) listSharedAccessKeysCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter topicName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listSharedAccessKeysHandleResponse handles the ListSharedAccessKeys response.
-func (client *TopicsClient) listSharedAccessKeysHandleResponse(resp *azcore.Response) (TopicsListSharedAccessKeysResponse, error) {
-	result := TopicsListSharedAccessKeysResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TopicSharedAccessKeys); err != nil {
+func (client *TopicsClient) listSharedAccessKeysHandleResponse(resp *http.Response) (TopicsListSharedAccessKeysResponse, error) {
+	result := TopicsListSharedAccessKeysResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TopicSharedAccessKeys); err != nil {
 		return TopicsListSharedAccessKeysResponse{}, err
 	}
 	return result, nil
 }
 
 // listSharedAccessKeysHandleError handles the ListSharedAccessKeys error response.
-func (client *TopicsClient) listSharedAccessKeysHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TopicsClient) listSharedAccessKeysHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginRegenerateKey - Regenerate a shared access key for a topic.
@@ -573,65 +514,37 @@ func (client *TopicsClient) BeginRegenerateKey(ctx context.Context, resourceGrou
 		return TopicsRegenerateKeyPollerResponse{}, err
 	}
 	result := TopicsRegenerateKeyPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("TopicsClient.RegenerateKey", "", resp, client.con.Pipeline(), client.regenerateKeyHandleError)
-	if err != nil {
-		return TopicsRegenerateKeyPollerResponse{}, err
-	}
-	poller := &topicsRegenerateKeyPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TopicsRegenerateKeyResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeRegenerateKey creates a new TopicsRegenerateKeyPoller from the specified resume token.
-// token - The value must come from a previous call to TopicsRegenerateKeyPoller.ResumeToken().
-func (client *TopicsClient) ResumeRegenerateKey(ctx context.Context, token string) (TopicsRegenerateKeyPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("TopicsClient.RegenerateKey", token, client.con.Pipeline(), client.regenerateKeyHandleError)
-	if err != nil {
-		return TopicsRegenerateKeyPollerResponse{}, err
-	}
-	poller := &topicsRegenerateKeyPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return TopicsRegenerateKeyPollerResponse{}, err
-	}
-	result := TopicsRegenerateKeyPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TopicsRegenerateKeyResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("TopicsClient.RegenerateKey", "", resp, client.pl, client.regenerateKeyHandleError)
+	if err != nil {
+		return TopicsRegenerateKeyPollerResponse{}, err
+	}
+	result.Poller = &TopicsRegenerateKeyPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // RegenerateKey - Regenerate a shared access key for a topic.
 // If the operation fails it returns a generic error.
-func (client *TopicsClient) regenerateKey(ctx context.Context, resourceGroupName string, topicName string, regenerateKeyRequest TopicRegenerateKeyRequest, options *TopicsBeginRegenerateKeyOptions) (*azcore.Response, error) {
+func (client *TopicsClient) regenerateKey(ctx context.Context, resourceGroupName string, topicName string, regenerateKeyRequest TopicRegenerateKeyRequest, options *TopicsBeginRegenerateKeyOptions) (*http.Response, error) {
 	req, err := client.regenerateKeyCreateRequest(ctx, resourceGroupName, topicName, regenerateKeyRequest, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.regenerateKeyHandleError(resp)
 	}
 	return resp, nil
 }
 
 // regenerateKeyCreateRequest creates the RegenerateKey request.
-func (client *TopicsClient) regenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, topicName string, regenerateKeyRequest TopicRegenerateKeyRequest, options *TopicsBeginRegenerateKeyOptions) (*azcore.Request, error) {
+func (client *TopicsClient) regenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, topicName string, regenerateKeyRequest TopicRegenerateKeyRequest, options *TopicsBeginRegenerateKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/regenerateKey"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -645,28 +558,27 @@ func (client *TopicsClient) regenerateKeyCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter topicName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(regenerateKeyRequest)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, regenerateKeyRequest)
 }
 
 // regenerateKeyHandleError handles the RegenerateKey error response.
-func (client *TopicsClient) regenerateKeyHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TopicsClient) regenerateKeyHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginUpdate - Asynchronously updates a topic with the specified parameters.
@@ -677,65 +589,37 @@ func (client *TopicsClient) BeginUpdate(ctx context.Context, resourceGroupName s
 		return TopicsUpdatePollerResponse{}, err
 	}
 	result := TopicsUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("TopicsClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return TopicsUpdatePollerResponse{}, err
-	}
-	poller := &topicsUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TopicsUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdate creates a new TopicsUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to TopicsUpdatePoller.ResumeToken().
-func (client *TopicsClient) ResumeUpdate(ctx context.Context, token string) (TopicsUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("TopicsClient.Update", token, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return TopicsUpdatePollerResponse{}, err
-	}
-	poller := &topicsUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return TopicsUpdatePollerResponse{}, err
-	}
-	result := TopicsUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TopicsUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("TopicsClient.Update", "", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return TopicsUpdatePollerResponse{}, err
+	}
+	result.Poller = &TopicsUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Asynchronously updates a topic with the specified parameters.
 // If the operation fails it returns a generic error.
-func (client *TopicsClient) update(ctx context.Context, resourceGroupName string, topicName string, topicUpdateParameters TopicUpdateParameters, options *TopicsBeginUpdateOptions) (*azcore.Response, error) {
+func (client *TopicsClient) update(ctx context.Context, resourceGroupName string, topicName string, topicUpdateParameters TopicUpdateParameters, options *TopicsBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, topicName, topicUpdateParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *TopicsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, topicName string, topicUpdateParameters TopicUpdateParameters, options *TopicsBeginUpdateOptions) (*azcore.Request, error) {
+func (client *TopicsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, topicName string, topicUpdateParameters TopicUpdateParameters, options *TopicsBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -749,26 +633,25 @@ func (client *TopicsClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter topicName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(topicUpdateParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, topicUpdateParameters)
 }
 
 // updateHandleError handles the Update error response.
-func (client *TopicsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TopicsClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,22 +11,25 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TopicTypesClient contains the methods for the TopicTypes group.
 // Don't use this type directly, use NewTopicTypesClient() instead.
 type TopicTypesClient struct {
-	con *armcore.Connection
+	ep string
+	pl runtime.Pipeline
 }
 
 // NewTopicTypesClient creates a new instance of TopicTypesClient with the specified values.
-func NewTopicTypesClient(con *armcore.Connection) *TopicTypesClient {
-	return &TopicTypesClient{con: con}
+func NewTopicTypesClient(con *arm.Connection) *TopicTypesClient {
+	return &TopicTypesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
 }
 
 // Get - Get information about a topic type.
@@ -35,54 +39,53 @@ func (client *TopicTypesClient) Get(ctx context.Context, topicTypeName string, o
 	if err != nil {
 		return TopicTypesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TopicTypesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TopicTypesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TopicTypesClient) getCreateRequest(ctx context.Context, topicTypeName string, options *TopicTypesGetOptions) (*azcore.Request, error) {
+func (client *TopicTypesClient) getCreateRequest(ctx context.Context, topicTypeName string, options *TopicTypesGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.EventGrid/topicTypes/{topicTypeName}"
 	if topicTypeName == "" {
 		return nil, errors.New("parameter topicTypeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{topicTypeName}", url.PathEscape(topicTypeName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *TopicTypesClient) getHandleResponse(resp *azcore.Response) (TopicTypesGetResponse, error) {
-	result := TopicTypesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TopicTypeInfo); err != nil {
+func (client *TopicTypesClient) getHandleResponse(resp *http.Response) (TopicTypesGetResponse, error) {
+	result := TopicTypesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TopicTypeInfo); err != nil {
 		return TopicTypesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *TopicTypesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TopicTypesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // List - List all registered topic types.
@@ -92,50 +95,49 @@ func (client *TopicTypesClient) List(ctx context.Context, options *TopicTypesLis
 	if err != nil {
 		return TopicTypesListResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TopicTypesListResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TopicTypesListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *TopicTypesClient) listCreateRequest(ctx context.Context, options *TopicTypesListOptions) (*azcore.Request, error) {
+func (client *TopicTypesClient) listCreateRequest(ctx context.Context, options *TopicTypesListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.EventGrid/topicTypes"
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *TopicTypesClient) listHandleResponse(resp *azcore.Response) (TopicTypesListResponse, error) {
-	result := TopicTypesListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TopicTypesListResult); err != nil {
+func (client *TopicTypesClient) listHandleResponse(resp *http.Response) (TopicTypesListResponse, error) {
+	result := TopicTypesListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TopicTypesListResult); err != nil {
 		return TopicTypesListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *TopicTypesClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TopicTypesClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListEventTypes - List event types for a topic type.
@@ -145,52 +147,51 @@ func (client *TopicTypesClient) ListEventTypes(ctx context.Context, topicTypeNam
 	if err != nil {
 		return TopicTypesListEventTypesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TopicTypesListEventTypesResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TopicTypesListEventTypesResponse{}, client.listEventTypesHandleError(resp)
 	}
 	return client.listEventTypesHandleResponse(resp)
 }
 
 // listEventTypesCreateRequest creates the ListEventTypes request.
-func (client *TopicTypesClient) listEventTypesCreateRequest(ctx context.Context, topicTypeName string, options *TopicTypesListEventTypesOptions) (*azcore.Request, error) {
+func (client *TopicTypesClient) listEventTypesCreateRequest(ctx context.Context, topicTypeName string, options *TopicTypesListEventTypesOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.EventGrid/topicTypes/{topicTypeName}/eventTypes"
 	if topicTypeName == "" {
 		return nil, errors.New("parameter topicTypeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{topicTypeName}", url.PathEscape(topicTypeName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listEventTypesHandleResponse handles the ListEventTypes response.
-func (client *TopicTypesClient) listEventTypesHandleResponse(resp *azcore.Response) (TopicTypesListEventTypesResponse, error) {
-	result := TopicTypesListEventTypesResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.EventTypesListResult); err != nil {
+func (client *TopicTypesClient) listEventTypesHandleResponse(resp *http.Response) (TopicTypesListEventTypesResponse, error) {
+	result := TopicTypesListEventTypesResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.EventTypesListResult); err != nil {
 		return TopicTypesListEventTypesResponse{}, err
 	}
 	return result, nil
 }
 
 // listEventTypesHandleError handles the ListEventTypes error response.
-func (client *TopicTypesClient) listEventTypesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TopicTypesClient) listEventTypesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

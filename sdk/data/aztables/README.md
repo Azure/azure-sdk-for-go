@@ -106,7 +106,7 @@ Common uses of the table service include:
 * Quickly querying data using a clustered index
 * Accessing data using the OData protocol filter expressions
 
-The following components make up the Azure Data Tables Service:
+The following components make up the Azure Tables Service:
 * The account
 * A table within the account, which contains a set of entities
 * An entity within a table, as a dictionary

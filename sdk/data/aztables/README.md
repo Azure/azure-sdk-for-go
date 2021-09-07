@@ -89,8 +89,8 @@ service, err := aztables.NewServiceClient("https://<myAccountName>.table.core.wi
 
 resources := aztables.AccountSASResourceTypes{Service: true}
 permission := aztables.AccountSASPermissions{Read: true}
-start := time.Date(2021, time.August, 21, 1, 1, 0, 0, time.UTC)
-expiry := time.Date(2022, time.August, 21, 1, 1, 0, 0, time.UTC)
+start := time.Now()
+expiry := start.AddDate(1, 0, 0)
 sasUrl, err := service.GetAccountSASToken(resources, permission, start, expiry)
 handle(err)
 
@@ -116,14 +116,14 @@ use of a dedicated client object.
 
 ### Clients
 Two different clients are provided to interact with the various components of the Table Service:
-1. **`ServiceClient`** -
-    * Get and set account settings
-    * Query, create, and delete tables within the account.
-    * Get a `Client` to access a specific table using the `NewClient` method.
-2. **`Client`** -
+1. **`Client`** -
     * Interacts with a specific table (which need not exist yet).
     * Create, delete, query, and upsert entities within the specified table.
     * Create or delete the specified table itself.
+2. **`ServiceClient`** -
+    * Get and set account settings
+    * Query, create, and delete tables within the account.
+    * Get a `Client` to access a specific table using the `NewClient` method.
 
 ### Entities
 Entities are similar to rows. An entity has a **`PartitionKey`**, a **`RowKey`**, and a set of properties. A property is a name value pair, similar to a column. Every entity in a table does not need to have the same properties. Entities are returned as JSON, allowing developers to use JSON marshalling and unmarshalling techniques. Additionally, you can use the `aztables.EDMEntity` to ensure proper round-trip serialization of all properties.
@@ -169,7 +169,11 @@ Create entities in the table:
 ```golang
 cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
 handle(err)
+
 service, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net", cred, nil)
+handle(err)
+
+client, err := service.NewClient("myTable")
 handle(err)
 
 myEntity := aztables.EDMEntity{
@@ -188,9 +192,6 @@ myEntity := aztables.EDMEntity{
     }
 }
 marshalled, err := json.Marshal(myEntity)
-handle(err)
-
-client, err := service.NewClient("myTable")
 handle(err)
 
 resp, err := client.AddEntity(context.Background(), marshalled, nil)
@@ -269,7 +270,7 @@ log.SetClassifications(log.Request, log.Response)
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Azure.Identity` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Azure.Tables` label.
 
 ## Contributing
 

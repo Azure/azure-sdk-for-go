@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## `v57.2.0`
+
+No exports changed
+
 ## `v57.1.0`
 
 ### New Packages

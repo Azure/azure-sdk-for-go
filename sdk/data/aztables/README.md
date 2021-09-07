@@ -170,7 +170,7 @@ Create entities in the table:
 ```golang
 cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
 handle(err)
-service, err := aztables.NewServiceClient("https://<my_account_name>.table.core.windows.net", cred, nil)
+service, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net", cred, nil)
 handle(err)
 
 myEntity := aztables.EDMEntity{

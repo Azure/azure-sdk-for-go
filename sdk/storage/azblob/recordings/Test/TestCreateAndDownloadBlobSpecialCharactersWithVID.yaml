@@ -10,10 +10,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:00 GMT
+      - Tue, 07 Sep 2021 17:25:56 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid?restype=container
@@ -24,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 12 Aug 2021 17:57:59 GMT
+      - Tue, 07 Sep 2021 17:25:56 GMT
       Etag:
-      - '"0x8D95DBAB8F1F9D3"'
+      - '"0x8D972248DCCC21A"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:57:59 GMT
+      - Tue, 07 Sep 2021 17:25:57 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - f3a3c212-201e-0033-30a3-8f6f8c000000
+      - 4909dd34-d01e-0040-0a0d-a41f4f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -51,12 +50,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:01 GMT
+      - Tue, 07 Sep 2021 17:25:57 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc-
@@ -69,23 +67,23 @@ interactions:
       Content-Md5:
       - M21evFQ2U05h0W5j3fyjJw==
       Date:
-      - Thu, 12 Aug 2021 17:57:59 GMT
+      - Tue, 07 Sep 2021 17:25:56 GMT
       Etag:
-      - '"0x8D95DBAB9228039"'
+      - '"0x8D972248DF1E53E"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:00 GMT
+      - Tue, 07 Sep 2021 17:25:57 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - qZnwPj9XCzQ=
       X-Ms-Request-Id:
-      - f3a3c285-201e-0033-0fa3-8f6f8c000000
+      - 4909dd8e-d01e-0040-5c0d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:00.0982073Z"
+      - "2021-09-07T17:25:57.5465278Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -98,10 +96,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:01 GMT
+      - Tue, 07 Sep 2021 17:25:57 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc-
@@ -118,17 +115,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:57:59 GMT
+      - Tue, 07 Sep 2021 17:25:57 GMT
       Etag:
-      - '"0x8D95DBAB9228039"'
+      - '"0x8D972248DF1E53E"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:00 GMT
+      - Tue, 07 Sep 2021 17:25:57 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:00 GMT
+      - Tue, 07 Sep 2021 17:25:57 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -136,13 +133,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3c2cf-201e-0033-4da3-8f6f8c000000
+      - 4909de0a-d01e-0040-450d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:00.0982073Z"
+      - "2021-09-07T17:25:57.5465278Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -159,12 +156,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:01 GMT
+      - Tue, 07 Sep 2021 17:25:57 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc.
@@ -177,23 +173,23 @@ interactions:
       Content-Md5:
       - UFjxr4OIYz9gnK23WnXcnQ==
       Date:
-      - Thu, 12 Aug 2021 17:58:00 GMT
+      - Tue, 07 Sep 2021 17:25:57 GMT
       Etag:
-      - '"0x8D95DBAB970FF29"'
+      - '"0x8D972248E3B8119"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:00 GMT
+      - Tue, 07 Sep 2021 17:25:58 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - IgKubmdGuLU=
       X-Ms-Request-Id:
-      - f3a3c32e-201e-0033-17a3-8f6f8c000000
+      - 4909de7b-d01e-0040-2b0d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:00.6126377Z"
+      - "2021-09-07T17:25:58.0299313Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -206,10 +202,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:02 GMT
+      - Tue, 07 Sep 2021 17:25:57 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc.
@@ -226,17 +221,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:00 GMT
+      - Tue, 07 Sep 2021 17:25:57 GMT
       Etag:
-      - '"0x8D95DBAB970FF29"'
+      - '"0x8D972248E3B8119"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:00 GMT
+      - Tue, 07 Sep 2021 17:25:58 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:00 GMT
+      - Tue, 07 Sep 2021 17:25:58 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -244,13 +239,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3c391-201e-0033-6da3-8f6f8c000000
+      - 4909deff-d01e-0040-230d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:00.6126377Z"
+      - "2021-09-07T17:25:58.0299313Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -267,12 +262,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:02 GMT
+      - Tue, 07 Sep 2021 17:25:58 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc_
@@ -285,23 +279,23 @@ interactions:
       Content-Md5:
       - sUp7gFnZwFWVTJJnTOYAMg==
       Date:
-      - Thu, 12 Aug 2021 17:58:00 GMT
+      - Tue, 07 Sep 2021 17:25:57 GMT
       Etag:
-      - '"0x8D95DBAB9C48841"'
+      - '"0x8D972248E84A7AF"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:01 GMT
+      - Tue, 07 Sep 2021 17:25:58 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - txY3vV5trZQ=
       X-Ms-Request-Id:
-      - f3a3c3fc-201e-0033-42a3-8f6f8c000000
+      - 4909df69-d01e-0040-7b0d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:01.1600961Z"
+      - "2021-09-07T17:25:58.5083311Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -314,10 +308,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:02 GMT
+      - Tue, 07 Sep 2021 17:25:58 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc_
@@ -334,17 +327,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:00 GMT
+      - Tue, 07 Sep 2021 17:25:58 GMT
       Etag:
-      - '"0x8D95DBAB9C48841"'
+      - '"0x8D972248E84A7AF"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:01 GMT
+      - Tue, 07 Sep 2021 17:25:58 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:01 GMT
+      - Tue, 07 Sep 2021 17:25:58 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -352,13 +345,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3c470-201e-0033-20a3-8f6f8c000000
+      - 4909dfc6-d01e-0040-470d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:01.1600961Z"
+      - "2021-09-07T17:25:58.5083311Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -375,12 +368,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:02 GMT
+      - Tue, 07 Sep 2021 17:25:58 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc/
@@ -393,23 +385,23 @@ interactions:
       Content-Md5:
       - ZmbNdvlpVkaee+OddQzH2Q==
       Date:
-      - Thu, 12 Aug 2021 17:58:01 GMT
+      - Tue, 07 Sep 2021 17:25:58 GMT
       Etag:
-      - '"0x8D95DBABA1C7F1C"'
+      - '"0x8D972248ECDF551"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:01 GMT
+      - Tue, 07 Sep 2021 17:25:58 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - W4ubXq+21so=
       X-Ms-Request-Id:
-      - f3a3c4e8-201e-0033-08a3-8f6f8c000000
+      - 4909e058-d01e-0040-440d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:01.7365788Z"
+      - "2021-09-07T17:25:58.9887313Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -422,10 +414,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:03 GMT
+      - Tue, 07 Sep 2021 17:25:58 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc/
@@ -442,17 +433,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:01 GMT
+      - Tue, 07 Sep 2021 17:25:58 GMT
       Etag:
-      - '"0x8D95DBABA1C7F1C"'
+      - '"0x8D972248ECDF551"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:01 GMT
+      - Tue, 07 Sep 2021 17:25:58 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:01 GMT
+      - Tue, 07 Sep 2021 17:25:58 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -460,13 +451,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3c562-201e-0033-6ea3-8f6f8c000000
+      - 4909e0bd-d01e-0040-1e0d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:01.7365788Z"
+      - "2021-09-07T17:25:58.9887313Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -483,12 +474,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:03 GMT
+      - Tue, 07 Sep 2021 17:25:59 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc%28
@@ -501,23 +491,23 @@ interactions:
       Content-Md5:
       - hMQEc0FMry7Up7EoPki79A==
       Date:
-      - Thu, 12 Aug 2021 17:58:01 GMT
+      - Tue, 07 Sep 2021 17:25:58 GMT
       Etag:
-      - '"0x8D95DBABA6A88CB"'
+      - '"0x8D972248F174304"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:02 GMT
+      - Tue, 07 Sep 2021 17:25:59 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - X6aEloRCB4I=
       X-Ms-Request-Id:
-      - f3a3c5df-201e-0033-58a3-8f6f8c000000
+      - 4909e132-d01e-0040-010d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:02.2480075Z"
+      - "2021-09-07T17:25:59.4691332Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -530,10 +520,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:03 GMT
+      - Tue, 07 Sep 2021 17:25:59 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc%28
@@ -550,17 +539,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:01 GMT
+      - Tue, 07 Sep 2021 17:25:59 GMT
       Etag:
-      - '"0x8D95DBABA6A88CB"'
+      - '"0x8D972248F174304"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:02 GMT
+      - Tue, 07 Sep 2021 17:25:59 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:02 GMT
+      - Tue, 07 Sep 2021 17:25:59 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -568,13 +557,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3c64e-201e-0033-3aa3-8f6f8c000000
+      - 4909e195-d01e-0040-580d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:02.2480075Z"
+      - "2021-09-07T17:25:59.4691332Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -591,12 +580,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:03 GMT
+      - Tue, 07 Sep 2021 17:25:59 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc%29
@@ -609,23 +597,23 @@ interactions:
       Content-Md5:
       - k3HXouOuhqAKq0dx450lXQ==
       Date:
-      - Thu, 12 Aug 2021 17:58:02 GMT
+      - Tue, 07 Sep 2021 17:25:59 GMT
       Etag:
-      - '"0x8D95DBABAB89276"'
+      - '"0x8D972248F628CEC"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:02 GMT
+      - Tue, 07 Sep 2021 17:25:59 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - Ji+xpkyyaf0=
       X-Ms-Request-Id:
-      - f3a3c6d3-201e-0033-2fa3-8f6f8c000000
+      - 4909e1ef-d01e-0040-280d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:02.7594358Z"
+      - "2021-09-07T17:25:59.9625452Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -638,10 +626,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:04 GMT
+      - Tue, 07 Sep 2021 17:25:59 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc%29
@@ -658,17 +645,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:02 GMT
+      - Tue, 07 Sep 2021 17:25:59 GMT
       Etag:
-      - '"0x8D95DBABAB89276"'
+      - '"0x8D972248F628CEC"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:02 GMT
+      - Tue, 07 Sep 2021 17:25:59 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:02 GMT
+      - Tue, 07 Sep 2021 17:25:59 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -676,13 +663,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3c7a0-201e-0033-69a3-8f6f8c000000
+      - 4909e25c-d01e-0040-060d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:02.7594358Z"
+      - "2021-09-07T17:25:59.9625452Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -699,12 +686,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:04 GMT
+      - Tue, 07 Sep 2021 17:26:00 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc$
@@ -717,23 +703,23 @@ interactions:
       Content-Md5:
       - w+l91ul/tRJWiMl/NnIMvg==
       Date:
-      - Thu, 12 Aug 2021 17:58:02 GMT
+      - Tue, 07 Sep 2021 17:25:59 GMT
       Etag:
-      - '"0x8D95DBABB16A521"'
+      - '"0x8D972248FABDA92"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:03 GMT
+      - Tue, 07 Sep 2021 17:26:00 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - pe7RZkNLee0=
       X-Ms-Request-Id:
-      - f3a3c8a9-201e-0033-5aa3-8f6f8c000000
+      - 4909e2c3-d01e-0040-660d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:03.3759521Z"
+      - "2021-09-07T17:26:00.4429458Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -746,10 +732,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:04 GMT
+      - Tue, 07 Sep 2021 17:26:00 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc$
@@ -766,17 +751,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:03 GMT
+      - Tue, 07 Sep 2021 17:26:00 GMT
       Etag:
-      - '"0x8D95DBABB16A521"'
+      - '"0x8D972248FABDA92"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:03 GMT
+      - Tue, 07 Sep 2021 17:26:00 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:03 GMT
+      - Tue, 07 Sep 2021 17:26:00 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -784,13 +769,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3c955-201e-0033-79a3-8f6f8c000000
+      - 4909e358-d01e-0040-6c0d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:03.3759521Z"
+      - "2021-09-07T17:26:00.4429458Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -807,12 +792,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:04 GMT
+      - Tue, 07 Sep 2021 17:26:00 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc=
@@ -825,23 +809,23 @@ interactions:
       Content-Md5:
       - Q+w+Xe5ucGr3dm//6lEnIQ==
       Date:
-      - Thu, 12 Aug 2021 17:58:03 GMT
+      - Tue, 07 Sep 2021 17:26:00 GMT
       Etag:
-      - '"0x8D95DBABB6487AA"'
+      - '"0x8D972248FF54F50"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:03 GMT
+      - Tue, 07 Sep 2021 17:26:00 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - KPZOtgSo60w=
       X-Ms-Request-Id:
-      - f3a3ca03-201e-0033-18a3-8f6f8c000000
+      - 4909e3a9-d01e-0040-310d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:03.8873790Z"
+      - "2021-09-07T17:26:00.9243472Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -854,10 +838,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:05 GMT
+      - Tue, 07 Sep 2021 17:26:00 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc=
@@ -874,17 +857,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:03 GMT
+      - Tue, 07 Sep 2021 17:26:00 GMT
       Etag:
-      - '"0x8D95DBABB6487AA"'
+      - '"0x8D972248FF54F50"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:03 GMT
+      - Tue, 07 Sep 2021 17:26:00 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:03 GMT
+      - Tue, 07 Sep 2021 17:26:00 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -892,13 +875,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3ca85-201e-0033-11a3-8f6f8c000000
+      - 4909e411-d01e-0040-060d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:03.8873790Z"
+      - "2021-09-07T17:26:00.9243472Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -915,12 +898,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:05 GMT
+      - Tue, 07 Sep 2021 17:26:01 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc%27
@@ -933,23 +915,23 @@ interactions:
       Content-Md5:
       - NZDLivC7ueeMNDtSuTdzyQ==
       Date:
-      - Thu, 12 Aug 2021 17:58:03 GMT
+      - Tue, 07 Sep 2021 17:26:00 GMT
       Etag:
-      - '"0x8D95DBABBB2B876"'
+      - '"0x8D972249040721F"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:04 GMT
+      - Tue, 07 Sep 2021 17:26:01 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - LnWPNhtaymw=
       X-Ms-Request-Id:
-      - f3a3cafa-201e-0033-76a3-8f6f8c000000
+      - 4909e469-d01e-0040-560d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:04.3998090Z"
+      - "2021-09-07T17:26:01.4177596Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -962,10 +944,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:05 GMT
+      - Tue, 07 Sep 2021 17:26:01 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc%27
@@ -982,17 +963,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:04 GMT
+      - Tue, 07 Sep 2021 17:26:00 GMT
       Etag:
-      - '"0x8D95DBABBB2B876"'
+      - '"0x8D972249040721F"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:04 GMT
+      - Tue, 07 Sep 2021 17:26:01 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:04 GMT
+      - Tue, 07 Sep 2021 17:26:01 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -1000,13 +981,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3cb57-201e-0033-4da3-8f6f8c000000
+      - 4909e4ed-d01e-0040-4a0d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:04.3998090Z"
+      - "2021-09-07T17:26:01.4177596Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -1023,12 +1004,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:05 GMT
+      - Tue, 07 Sep 2021 17:26:01 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc,
@@ -1041,23 +1021,23 @@ interactions:
       Content-Md5:
       - wMtfD88jmrPZwfzTH/8e/A==
       Date:
-      - Thu, 12 Aug 2021 17:58:04 GMT
+      - Tue, 07 Sep 2021 17:26:01 GMT
       Etag:
-      - '"0x8D95DBABBFC5462"'
+      - '"0x8D97224908B1FA5"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:04 GMT
+      - Tue, 07 Sep 2021 17:26:01 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - 0BDFDvenZUs=
       X-Ms-Request-Id:
-      - f3a3cbca-201e-0033-2ca3-8f6f8c000000
+      - 4909e541-d01e-0040-0e0d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:04.8812130Z"
+      - "2021-09-07T17:26:01.9061669Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -1070,10 +1050,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:06 GMT
+      - Tue, 07 Sep 2021 17:26:01 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc,
@@ -1090,17 +1069,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:04 GMT
+      - Tue, 07 Sep 2021 17:26:01 GMT
       Etag:
-      - '"0x8D95DBABBFC5462"'
+      - '"0x8D97224908B1FA5"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:04 GMT
+      - Tue, 07 Sep 2021 17:26:01 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:04 GMT
+      - Tue, 07 Sep 2021 17:26:01 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -1108,13 +1087,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3cc6f-201e-0033-32a3-8f6f8c000000
+      - 4909e5cb-d01e-0040-090d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:04.8812130Z"
+      - "2021-09-07T17:26:01.9061669Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -1131,12 +1110,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:06 GMT
+      - Tue, 07 Sep 2021 17:26:02 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc~
@@ -1149,23 +1127,23 @@ interactions:
       Content-Md5:
       - THYfFw4BaDb/hEmCArmYJw==
       Date:
-      - Thu, 12 Aug 2021 17:58:04 GMT
+      - Tue, 07 Sep 2021 17:26:01 GMT
       Etag:
-      - '"0x8D95DBABC54E77E"'
+      - '"0x8D9722490D3F802"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:05 GMT
+      - Tue, 07 Sep 2021 17:26:02 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - zEB+nOFjAho=
       X-Ms-Request-Id:
-      - f3a3ccd0-201e-0033-0ba3-8f6f8c000000
+      - 4909e63e-d01e-0040-730d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:05.4616958Z"
+      - "2021-09-07T17:26:02.3835650Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -1178,10 +1156,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:06 GMT
+      - Tue, 07 Sep 2021 17:26:02 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc~
@@ -1198,17 +1175,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:05 GMT
+      - Tue, 07 Sep 2021 17:26:01 GMT
       Etag:
-      - '"0x8D95DBABC54E77E"'
+      - '"0x8D9722490D3F802"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:05 GMT
+      - Tue, 07 Sep 2021 17:26:02 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:05 GMT
+      - Tue, 07 Sep 2021 17:26:02 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -1216,13 +1193,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3cd38-201e-0033-69a3-8f6f8c000000
+      - 4909e6cd-d01e-0040-750d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:05.4616958Z"
+      - "2021-09-07T17:26:02.3835650Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -1239,12 +1216,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:07 GMT
+      - Tue, 07 Sep 2021 17:26:02 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc0
@@ -1257,23 +1233,23 @@ interactions:
       Content-Md5:
       - z80ghJXVZe9m59/5+Ydk2g==
       Date:
-      - Thu, 12 Aug 2021 17:58:05 GMT
+      - Tue, 07 Sep 2021 17:26:02 GMT
       Etag:
-      - '"0x8D95DBABCACB71B"'
+      - '"0x8D97224911D1E99"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:06 GMT
+      - Tue, 07 Sep 2021 17:26:02 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - qzcudgtR+1w=
       X-Ms-Request-Id:
-      - f3a3cdce-201e-0033-6ca3-8f6f8c000000
+      - 4909e71f-d01e-0040-400d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:06.0371739Z"
+      - "2021-09-07T17:26:02.8629657Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -1286,10 +1262,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:07 GMT
+      - Tue, 07 Sep 2021 17:26:02 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc0
@@ -1306,17 +1281,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:05 GMT
+      - Tue, 07 Sep 2021 17:26:02 GMT
       Etag:
-      - '"0x8D95DBABCACB71B"'
+      - '"0x8D97224911D1E99"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:06 GMT
+      - Tue, 07 Sep 2021 17:26:02 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:06 GMT
+      - Tue, 07 Sep 2021 17:26:02 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -1324,13 +1299,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3ce44-201e-0033-52a3-8f6f8c000000
+      - 4909e774-d01e-0040-0b0d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:06.0371739Z"
+      - "2021-09-07T17:26:02.8629657Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -1347,12 +1322,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:07 GMT
+      - Tue, 07 Sep 2021 17:26:03 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc1
@@ -1365,23 +1339,23 @@ interactions:
       Content-Md5:
       - xMpCOKC5I4INzFCab3WEmw==
       Date:
-      - Thu, 12 Aug 2021 17:58:06 GMT
+      - Tue, 07 Sep 2021 17:26:02 GMT
       Etag:
-      - '"0x8D95DBABD0A7B93"'
+      - '"0x8D9722491695316"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:06 GMT
+      - Tue, 07 Sep 2021 17:26:03 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - 0r4bRsOhlSM=
       X-Ms-Request-Id:
-      - f3a3cec8-201e-0033-38a3-8f6f8c000000
+      - 4909e7cf-d01e-0040-590d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:06.6516883Z"
+      - "2021-09-07T17:26:03.3633838Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -1394,10 +1368,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:08 GMT
+      - Tue, 07 Sep 2021 17:26:03 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc1
@@ -1414,17 +1387,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:06 GMT
+      - Tue, 07 Sep 2021 17:26:02 GMT
       Etag:
-      - '"0x8D95DBABD0A7B93"'
+      - '"0x8D9722491695316"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:06 GMT
+      - Tue, 07 Sep 2021 17:26:03 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:06 GMT
+      - Tue, 07 Sep 2021 17:26:03 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -1432,13 +1405,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3cf60-201e-0033-41a3-8f6f8c000000
+      - 4909e822-d01e-0040-200d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:06.6516883Z"
+      - "2021-09-07T17:26:03.3633838Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -1455,12 +1428,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:08 GMT
+      - Tue, 07 Sep 2021 17:26:03 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc2
@@ -1473,23 +1445,23 @@ interactions:
       Content-Md5:
       - yB5yjZ1ML2NvBn+JzBSGLA==
       Date:
-      - Thu, 12 Aug 2021 17:58:06 GMT
+      - Tue, 07 Sep 2021 17:26:03 GMT
       Etag:
-      - '"0x8D95DBABD6818F9"'
+      - '"0x8D9722491B2C7D9"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:07 GMT
+      - Tue, 07 Sep 2021 17:26:03 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - WSVFFpuwJqI=
       X-Ms-Request-Id:
-      - f3a3cfd1-201e-0033-25a3-8f6f8c000000
+      - 4909e86c-d01e-0040-5f0d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:07.2652025Z"
+      - "2021-09-07T17:26:03.8437849Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -1502,10 +1474,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:08 GMT
+      - Tue, 07 Sep 2021 17:26:03 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc2
@@ -1522,17 +1493,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:07 GMT
+      - Tue, 07 Sep 2021 17:26:03 GMT
       Etag:
-      - '"0x8D95DBABD6818F9"'
+      - '"0x8D9722491B2C7D9"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:07 GMT
+      - Tue, 07 Sep 2021 17:26:03 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:07 GMT
+      - Tue, 07 Sep 2021 17:26:03 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -1540,13 +1511,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3d043-201e-0033-07a3-8f6f8c000000
+      - 4909e8ce-d01e-0040-300d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:07.2652025Z"
+      - "2021-09-07T17:26:03.8437849Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -1563,12 +1534,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:08 GMT
+      - Tue, 07 Sep 2021 17:26:04 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc3
@@ -1581,23 +1551,23 @@ interactions:
       Content-Md5:
       - 7MvIfktc4v4oMI/Z8qe68w==
       Date:
-      - Thu, 12 Aug 2021 17:58:07 GMT
+      - Tue, 07 Sep 2021 17:26:03 GMT
       Etag:
-      - '"0x8D95DBABDC6048F"'
+      - '"0x8D9722491FC1583"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:07 GMT
+      - Tue, 07 Sep 2021 17:26:04 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - IKxwJlNASN0=
       X-Ms-Request-Id:
-      - f3a3d0d9-201e-0033-07a3-8f6f8c000000
+      - 4909e927-d01e-0040-770d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:07.8807183Z"
+      - "2021-09-07T17:26:04.3241859Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -1610,10 +1580,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:09 GMT
+      - Tue, 07 Sep 2021 17:26:04 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc3
@@ -1630,17 +1599,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:07 GMT
+      - Tue, 07 Sep 2021 17:26:03 GMT
       Etag:
-      - '"0x8D95DBABDC6048F"'
+      - '"0x8D9722491FC1583"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:07 GMT
+      - Tue, 07 Sep 2021 17:26:04 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:07 GMT
+      - Tue, 07 Sep 2021 17:26:04 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -1648,13 +1617,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3d14b-201e-0033-6da3-8f6f8c000000
+      - 4909e996-d01e-0040-540d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:07.8807183Z"
+      - "2021-09-07T17:26:04.3241859Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -1671,12 +1640,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:09 GMT
+      - Tue, 07 Sep 2021 17:26:04 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc4
@@ -1689,23 +1657,23 @@ interactions:
       Content-Md5:
       - qH/2eaLz5x2RgaZ7dUISLA==
       Date:
-      - Thu, 12 Aug 2021 17:58:07 GMT
+      - Tue, 07 Sep 2021 17:26:04 GMT
       Etag:
-      - '"0x8D95DBABE1A7831"'
+      - '"0x8D9722492458A46"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:08 GMT
+      - Tue, 07 Sep 2021 17:26:04 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - JIFv7ni0mZU=
       X-Ms-Request-Id:
-      - f3a3d1b2-201e-0033-46a3-8f6f8c000000
+      - 4909ea32-d01e-0040-680d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:08.4341809Z"
+      - "2021-09-07T17:26:04.8055878Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -1718,10 +1686,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:09 GMT
+      - Tue, 07 Sep 2021 17:26:04 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc4
@@ -1738,17 +1705,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:08 GMT
+      - Tue, 07 Sep 2021 17:26:04 GMT
       Etag:
-      - '"0x8D95DBABE1A7831"'
+      - '"0x8D9722492458A46"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:08 GMT
+      - Tue, 07 Sep 2021 17:26:04 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:08 GMT
+      - Tue, 07 Sep 2021 17:26:04 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -1756,13 +1723,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3d253-201e-0033-55a3-8f6f8c000000
+      - 4909ea83-d01e-0040-320d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:08.4341809Z"
+      - "2021-09-07T17:26:04.8055878Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -1779,12 +1746,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:10 GMT
+      - Tue, 07 Sep 2021 17:26:04 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc5
@@ -1797,23 +1763,23 @@ interactions:
       Content-Md5:
       - 5No7f7vOI0XXdysGdKMY1Q==
       Date:
-      - Thu, 12 Aug 2021 17:58:08 GMT
+      - Tue, 07 Sep 2021 17:26:04 GMT
       Etag:
-      - '"0x8D95DBABE643B36"'
+      - '"0x8D97224928EB0D8"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:08 GMT
+      - Tue, 07 Sep 2021 17:26:05 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - XQha3rBE9+o=
       X-Ms-Request-Id:
-      - f3a3d307-201e-0033-76a3-8f6f8c000000
+      - 4909eae0-d01e-0040-030d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:08.9175862Z"
+      - "2021-09-07T17:26:05.2849880Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -1826,10 +1792,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:10 GMT
+      - Tue, 07 Sep 2021 17:26:05 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc5
@@ -1846,17 +1811,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:08 GMT
+      - Tue, 07 Sep 2021 17:26:04 GMT
       Etag:
-      - '"0x8D95DBABE643B36"'
+      - '"0x8D97224928EB0D8"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:08 GMT
+      - Tue, 07 Sep 2021 17:26:05 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:08 GMT
+      - Tue, 07 Sep 2021 17:26:05 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -1864,13 +1829,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3d3bf-201e-0033-1da3-8f6f8c000000
+      - 4909eb49-d01e-0040-650d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:08.9175862Z"
+      - "2021-09-07T17:26:05.2849880Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -1887,12 +1852,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:10 GMT
+      - Tue, 07 Sep 2021 17:26:05 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc6
@@ -1905,23 +1869,23 @@ interactions:
       Content-Md5:
       - FnkJHFqID69vteYIfrGy3A==
       Date:
-      - Thu, 12 Aug 2021 17:58:08 GMT
+      - Tue, 07 Sep 2021 17:26:05 GMT
       Etag:
-      - '"0x8D95DBABEB096DD"'
+      - '"0x8D9722492D7D766"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:09 GMT
+      - Tue, 07 Sep 2021 17:26:05 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - 1pMEjuhVRGs=
       X-Ms-Request-Id:
-      - f3a3d482-201e-0033-53a3-8f6f8c000000
+      - 4909eba7-d01e-0040-320d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:09.4180061Z"
+      - "2021-09-07T17:26:05.7643878Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -1934,10 +1898,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:10 GMT
+      - Tue, 07 Sep 2021 17:26:05 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc6
@@ -1954,17 +1917,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:09 GMT
+      - Tue, 07 Sep 2021 17:26:05 GMT
       Etag:
-      - '"0x8D95DBABEB096DD"'
+      - '"0x8D9722492D7D766"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:09 GMT
+      - Tue, 07 Sep 2021 17:26:05 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:09 GMT
+      - Tue, 07 Sep 2021 17:26:05 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -1972,13 +1935,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3d564-201e-0033-23a3-8f6f8c000000
+      - 4909ebe7-d01e-0040-6b0d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:09.4180061Z"
+      - "2021-09-07T17:26:05.7643878Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -1995,12 +1958,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:10 GMT
+      - Tue, 07 Sep 2021 17:26:05 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc7
@@ -2013,23 +1975,23 @@ interactions:
       Content-Md5:
       - jxTkX87qFnpaNt7dS+olQw==
       Date:
-      - Thu, 12 Aug 2021 17:58:09 GMT
+      - Tue, 07 Sep 2021 17:26:05 GMT
       Etag:
-      - '"0x8D95DBABEFA59D4"'
+      - '"0x8D9722493212515"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:09 GMT
+      - Tue, 07 Sep 2021 17:26:06 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - rxoxviClKhQ=
       X-Ms-Request-Id:
-      - f3a3d621-201e-0033-52a3-8f6f8c000000
+      - 4909ec3b-d01e-0040-2f0d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:09.9014100Z"
+      - "2021-09-07T17:26:06.2447893Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -2042,10 +2004,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:11 GMT
+      - Tue, 07 Sep 2021 17:26:06 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc7
@@ -2062,17 +2023,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:09 GMT
+      - Tue, 07 Sep 2021 17:26:05 GMT
       Etag:
-      - '"0x8D95DBABEFA59D4"'
+      - '"0x8D9722493212515"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:09 GMT
+      - Tue, 07 Sep 2021 17:26:06 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:09 GMT
+      - Tue, 07 Sep 2021 17:26:06 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -2080,13 +2041,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3d764-201e-0033-7ba3-8f6f8c000000
+      - 4909ecdb-d01e-0040-3a0d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:09.9014100Z"
+      - "2021-09-07T17:26:06.2447893Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -2103,12 +2064,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:11 GMT
+      - Tue, 07 Sep 2021 17:26:06 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc8
@@ -2121,23 +2081,23 @@ interactions:
       Content-Md5:
       - yfD4lfuYq5FZ9R/QKX4jbQ==
       Date:
-      - Thu, 12 Aug 2021 17:58:10 GMT
+      - Tue, 07 Sep 2021 17:26:06 GMT
       Etag:
-      - '"0x8D95DBABF5C16C8"'
+      - '"0x8D97224936A4BA3"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:10 GMT
+      - Tue, 07 Sep 2021 17:26:06 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - 3sk6Hr+95/o=
       X-Ms-Request-Id:
-      - f3a3d869-201e-0033-6ea3-8f6f8c000000
+      - 4909ed50-d01e-0040-230d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:10.5419464Z"
+      - "2021-09-07T17:26:06.7241891Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -2150,10 +2110,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:11 GMT
+      - Tue, 07 Sep 2021 17:26:06 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc8
@@ -2170,17 +2129,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:10 GMT
+      - Tue, 07 Sep 2021 17:26:06 GMT
       Etag:
-      - '"0x8D95DBABF5C16C8"'
+      - '"0x8D97224936A4BA3"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:10 GMT
+      - Tue, 07 Sep 2021 17:26:06 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:10 GMT
+      - Tue, 07 Sep 2021 17:26:06 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -2188,13 +2147,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3d997-201e-0033-0ca3-8f6f8c000000
+      - 4909edef-d01e-0040-300d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:10.5419464Z"
+      - "2021-09-07T17:26:06.7241891Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -2211,12 +2170,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:12 GMT
+      - Tue, 07 Sep 2021 17:26:06 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc9
@@ -2229,23 +2187,23 @@ interactions:
       Content-Md5:
       - RcSMzi4tf73qGvxRx8atJg==
       Date:
-      - Thu, 12 Aug 2021 17:58:10 GMT
+      - Tue, 07 Sep 2021 17:26:06 GMT
       Etag:
-      - '"0x8D95DBABFBA0256"'
+      - '"0x8D9722493B45CD0"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:11 GMT
+      - Tue, 07 Sep 2021 17:26:07 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - p0APLndNiYU=
       X-Ms-Request-Id:
-      - f3a3daad-201e-0033-0aa3-8f6f8c000000
+      - 4909ee5c-d01e-0040-0e0d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:11.1574614Z"
+      - "2021-09-07T17:26:07.2095952Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -2258,10 +2216,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:12 GMT
+      - Tue, 07 Sep 2021 17:26:07 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid/abc9
@@ -2278,17 +2235,17 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Thu, 12 Aug 2021 17:58:10 GMT
+      - Tue, 07 Sep 2021 17:26:06 GMT
       Etag:
-      - '"0x8D95DBABFBA0256"'
+      - '"0x8D9722493B45CD0"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:58:11 GMT
+      - Tue, 07 Sep 2021 17:26:07 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Creation-Time:
-      - Thu, 12 Aug 2021 17:58:11 GMT
+      - Tue, 07 Sep 2021 17:26:07 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -2296,13 +2253,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - f3a3db77-201e-0033-45a3-8f6f8c000000
+      - 4909eed1-d01e-0040-720d-a41f4f000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:58:11.1574614Z"
+      - "2021-09-07T17:26:07.2095952Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -2315,10 +2272,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:58:12 GMT
+      - Tue, 07 Sep 2021 17:26:07 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccreateanddownloadblobspecialcharacterswithvid?restype=container
@@ -2329,11 +2285,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 12 Aug 2021 17:58:11 GMT
+      - Tue, 07 Sep 2021 17:26:07 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - f3a3dc2d-201e-0033-6da3-8f6f8c000000
+      - 4909ef3f-d01e-0040-530d-a41f4f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

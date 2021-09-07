@@ -10,10 +10,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:59:19 GMT
+      - Tue, 07 Sep 2021 17:26:23 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocputgetpages?restype=container
@@ -24,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 12 Aug 2021 17:59:17 GMT
+      - Tue, 07 Sep 2021 17:26:22 GMT
       Etag:
-      - '"0x8D95DBAE7E42C5B"'
+      - '"0x8D972249D648AFA"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:59:18 GMT
+      - Tue, 07 Sep 2021 17:26:23 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - f3a48b06-201e-0033-72a3-8f6f8c000000
+      - 490a0ff9-d01e-0040-040d-a41f4f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -49,14 +48,13 @@ interactions:
       Content-Length:
       - "0"
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Blob-Content-Length:
       - "5120"
       X-Ms-Blob-Type:
       - PageBlob
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:59:19 GMT
+      - Tue, 07 Sep 2021 17:26:23 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocputgetpages/gotestblobputgetpages
@@ -67,21 +65,21 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 12 Aug 2021 17:59:18 GMT
+      - Tue, 07 Sep 2021 17:26:23 GMT
       Etag:
-      - '"0x8D95DBAE8122B67"'
+      - '"0x8D972249D896AA3"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:59:18 GMT
+      - Tue, 07 Sep 2021 17:26:23 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - f3a48bb3-201e-0033-03a3-8f6f8c000000
+      - 490a1071-d01e-0040-690d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-08-12T17:59:18.8450948Z"
+      - "2021-09-07T17:26:23.7063603Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -98,10 +96,9 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:59:20 GMT
+      - Tue, 07 Sep 2021 17:26:23 GMT
       X-Ms-Page-Write:
       - update
       X-Ms-Range:
@@ -116,11 +113,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 12 Aug 2021 17:59:18 GMT
+      - Tue, 07 Sep 2021 17:26:23 GMT
       Etag:
-      - '"0x8D95DBAE8407142"'
+      - '"0x8D972249DAE3888"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:59:19 GMT
+      - Tue, 07 Sep 2021 17:26:23 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Sequence-Number:
@@ -128,7 +125,7 @@ interactions:
       X-Ms-Content-Crc64:
       - y9bUpbg4Hvo=
       X-Ms-Request-Id:
-      - f3a48c9f-201e-0033-58a3-8f6f8c000000
+      - 490a10f7-d01e-0040-590d-a41f4f000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
@@ -145,10 +142,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:59:20 GMT
+      - Tue, 07 Sep 2021 17:26:23 GMT
       X-Ms-Range:
       - bytes=0-1022
       X-Ms-Version:
@@ -161,17 +157,17 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Thu, 12 Aug 2021 17:59:18 GMT
+      - Tue, 07 Sep 2021 17:26:23 GMT
       Etag:
-      - '"0x8D95DBAE8407142"'
+      - '"0x8D972249DAE3888"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:59:19 GMT
+      - Tue, 07 Sep 2021 17:26:23 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Content-Length:
       - "5120"
       X-Ms-Request-Id:
-      - f3a48d46-201e-0033-64a3-8f6f8c000000
+      - 490a1193-d01e-0040-6a0d-a41f4f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -186,10 +182,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:59:20 GMT
+      - Tue, 07 Sep 2021 17:26:24 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocputgetpages?restype=container
@@ -200,11 +195,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 12 Aug 2021 17:59:19 GMT
+      - Tue, 07 Sep 2021 17:26:23 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - f3a48df0-201e-0033-7aa3-8f6f8c000000
+      - 490a1214-d01e-0040-600d-a41f4f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

@@ -8,8 +8,9 @@ package armmysql
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // ConfigurationsCreateOrUpdatePoller provides polling facilities until the operation reaches a terminal state.

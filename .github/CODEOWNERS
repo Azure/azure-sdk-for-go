@@ -19,7 +19,7 @@
 /sdk/azidentity/         @rickwinter @chlowell
 
 # PRLabel: %Internal
-/sdk/internal/           @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft
+/sdk/internal/           @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
 
 # PRLabel: %KeyVault
 /sdk/keyvault/           @rickwinter @jhendrixMSFT

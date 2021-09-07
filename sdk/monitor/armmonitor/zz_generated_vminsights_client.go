@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,8 +12,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"strings"
 )
@@ -20,68 +22,68 @@ import (
 // VMInsightsClient contains the methods for the VMInsights group.
 // Don't use this type directly, use NewVMInsightsClient() instead.
 type VMInsightsClient struct {
-	con *armcore.Connection
+	ep string
+	pl runtime.Pipeline
 }
 
 // NewVMInsightsClient creates a new instance of VMInsightsClient with the specified values.
-func NewVMInsightsClient(con *armcore.Connection) *VMInsightsClient {
-	return &VMInsightsClient{con: con}
+func NewVMInsightsClient(con *arm.Connection) *VMInsightsClient {
+	return &VMInsightsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
 }
 
 // GetOnboardingStatus - Retrieves the VM Insights onboarding status for the specified resource or resource scope.
 // If the operation fails it returns the *ResponseWithError error type.
-func (client *VMInsightsClient) GetOnboardingStatus(ctx context.Context, resourceURI string, options *VMInsightsGetOnboardingStatusOptions) (VMInsightsOnboardingStatusResponse, error) {
+func (client *VMInsightsClient) GetOnboardingStatus(ctx context.Context, resourceURI string, options *VMInsightsGetOnboardingStatusOptions) (VMInsightsGetOnboardingStatusResponse, error) {
 	req, err := client.getOnboardingStatusCreateRequest(ctx, resourceURI, options)
 	if err != nil {
-		return VMInsightsOnboardingStatusResponse{}, err
+		return VMInsightsGetOnboardingStatusResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VMInsightsOnboardingStatusResponse{}, err
+		return VMInsightsGetOnboardingStatusResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return VMInsightsOnboardingStatusResponse{}, client.getOnboardingStatusHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return VMInsightsGetOnboardingStatusResponse{}, client.getOnboardingStatusHandleError(resp)
 	}
 	return client.getOnboardingStatusHandleResponse(resp)
 }
 
 // getOnboardingStatusCreateRequest creates the GetOnboardingStatus request.
-func (client *VMInsightsClient) getOnboardingStatusCreateRequest(ctx context.Context, resourceURI string, options *VMInsightsGetOnboardingStatusOptions) (*azcore.Request, error) {
+func (client *VMInsightsClient) getOnboardingStatusCreateRequest(ctx context.Context, resourceURI string, options *VMInsightsGetOnboardingStatusOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/vmInsightsOnboardingStatuses/default"
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-11-27-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getOnboardingStatusHandleResponse handles the GetOnboardingStatus response.
-func (client *VMInsightsClient) getOnboardingStatusHandleResponse(resp *azcore.Response) (VMInsightsOnboardingStatusResponse, error) {
-	var val *VMInsightsOnboardingStatus
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VMInsightsOnboardingStatusResponse{}, err
+func (client *VMInsightsClient) getOnboardingStatusHandleResponse(resp *http.Response) (VMInsightsGetOnboardingStatusResponse, error) {
+	result := VMInsightsGetOnboardingStatusResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VMInsightsOnboardingStatus); err != nil {
+		return VMInsightsGetOnboardingStatusResponse{}, err
 	}
-	return VMInsightsOnboardingStatusResponse{RawResponse: resp.Response, VMInsightsOnboardingStatus: val}, nil
+	return result, nil
 }
 
 // getOnboardingStatusHandleError handles the GetOnboardingStatus error response.
-func (client *VMInsightsClient) getOnboardingStatusHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VMInsightsClient) getOnboardingStatusHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ResponseWithError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

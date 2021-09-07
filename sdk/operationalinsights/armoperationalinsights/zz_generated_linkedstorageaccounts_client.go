@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,23 +11,26 @@ package armoperationalinsights
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // LinkedStorageAccountsClient contains the methods for the LinkedStorageAccounts group.
 // Don't use this type directly, use NewLinkedStorageAccountsClient() instead.
 type LinkedStorageAccountsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewLinkedStorageAccountsClient creates a new instance of LinkedStorageAccountsClient with the specified values.
-func NewLinkedStorageAccountsClient(con *armcore.Connection, subscriptionID string) *LinkedStorageAccountsClient {
-	return &LinkedStorageAccountsClient{con: con, subscriptionID: subscriptionID}
+func NewLinkedStorageAccountsClient(con *arm.Connection, subscriptionID string) *LinkedStorageAccountsClient {
+	return &LinkedStorageAccountsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Create or Update a link relation between current workspace and a group of storage accounts of a specific data source type.
@@ -36,18 +40,18 @@ func (client *LinkedStorageAccountsClient) CreateOrUpdate(ctx context.Context, r
 	if err != nil {
 		return LinkedStorageAccountsCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return LinkedStorageAccountsCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return LinkedStorageAccountsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *LinkedStorageAccountsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType, parameters LinkedStorageAccountsResource, options *LinkedStorageAccountsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *LinkedStorageAccountsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType, parameters LinkedStorageAccountsResource, options *LinkedStorageAccountsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedStorageAccounts/{dataSourceType}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -65,37 +69,36 @@ func (client *LinkedStorageAccountsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *LinkedStorageAccountsClient) createOrUpdateHandleResponse(resp *azcore.Response) (LinkedStorageAccountsCreateOrUpdateResponse, error) {
-	result := LinkedStorageAccountsCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.LinkedStorageAccountsResource); err != nil {
+func (client *LinkedStorageAccountsClient) createOrUpdateHandleResponse(resp *http.Response) (LinkedStorageAccountsCreateOrUpdateResponse, error) {
+	result := LinkedStorageAccountsCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedStorageAccountsResource); err != nil {
 		return LinkedStorageAccountsCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *LinkedStorageAccountsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *LinkedStorageAccountsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Delete - Deletes all linked storage accounts of a specific data source type associated with the specified workspace.
@@ -105,18 +108,18 @@ func (client *LinkedStorageAccountsClient) Delete(ctx context.Context, resourceG
 	if err != nil {
 		return LinkedStorageAccountsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return LinkedStorageAccountsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return LinkedStorageAccountsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return LinkedStorageAccountsDeleteResponse{RawResponse: resp.Response}, nil
+	return LinkedStorageAccountsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *LinkedStorageAccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType, options *LinkedStorageAccountsDeleteOptions) (*azcore.Request, error) {
+func (client *LinkedStorageAccountsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType, options *LinkedStorageAccountsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedStorageAccounts/{dataSourceType}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -134,27 +137,26 @@ func (client *LinkedStorageAccountsClient) deleteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *LinkedStorageAccountsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *LinkedStorageAccountsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets all linked storage account of a specific data source type associated with the specified workspace.
@@ -164,18 +166,18 @@ func (client *LinkedStorageAccountsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return LinkedStorageAccountsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return LinkedStorageAccountsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return LinkedStorageAccountsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LinkedStorageAccountsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType, options *LinkedStorageAccountsGetOptions) (*azcore.Request, error) {
+func (client *LinkedStorageAccountsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, dataSourceType DataSourceType, options *LinkedStorageAccountsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedStorageAccounts/{dataSourceType}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -193,37 +195,36 @@ func (client *LinkedStorageAccountsClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *LinkedStorageAccountsClient) getHandleResponse(resp *azcore.Response) (LinkedStorageAccountsGetResponse, error) {
-	result := LinkedStorageAccountsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.LinkedStorageAccountsResource); err != nil {
+func (client *LinkedStorageAccountsClient) getHandleResponse(resp *http.Response) (LinkedStorageAccountsGetResponse, error) {
+	result := LinkedStorageAccountsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedStorageAccountsResource); err != nil {
 		return LinkedStorageAccountsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *LinkedStorageAccountsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *LinkedStorageAccountsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByWorkspace - Gets all linked storage accounts associated with the specified workspace, storage accounts will be sorted by their data source type.
@@ -233,18 +234,18 @@ func (client *LinkedStorageAccountsClient) ListByWorkspace(ctx context.Context, 
 	if err != nil {
 		return LinkedStorageAccountsListByWorkspaceResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return LinkedStorageAccountsListByWorkspaceResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return LinkedStorageAccountsListByWorkspaceResponse{}, client.listByWorkspaceHandleError(resp)
 	}
 	return client.listByWorkspaceHandleResponse(resp)
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *LinkedStorageAccountsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *LinkedStorageAccountsListByWorkspaceOptions) (*azcore.Request, error) {
+func (client *LinkedStorageAccountsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *LinkedStorageAccountsListByWorkspaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedStorageAccounts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -258,35 +259,34 @@ func (client *LinkedStorageAccountsClient) listByWorkspaceCreateRequest(ctx cont
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-08-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *LinkedStorageAccountsClient) listByWorkspaceHandleResponse(resp *azcore.Response) (LinkedStorageAccountsListByWorkspaceResponse, error) {
-	result := LinkedStorageAccountsListByWorkspaceResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.LinkedStorageAccountsListResult); err != nil {
+func (client *LinkedStorageAccountsClient) listByWorkspaceHandleResponse(resp *http.Response) (LinkedStorageAccountsListByWorkspaceResponse, error) {
+	result := LinkedStorageAccountsListByWorkspaceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedStorageAccountsListResult); err != nil {
 		return LinkedStorageAccountsListByWorkspaceResponse{}, err
 	}
 	return result, nil
 }
 
 // listByWorkspaceHandleError handles the ListByWorkspace error response.
-func (client *LinkedStorageAccountsClient) listByWorkspaceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *LinkedStorageAccountsClient) listByWorkspaceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

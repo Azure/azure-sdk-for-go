@@ -1,4 +1,4 @@
-# Azure Data Tables client library for Go
+# Azure Tables client library for Go
 
 Azure Data Tables is a NoSQL data storage service that can be accessed from anywhere in the world via authenticated calls using HTTP or HTTPS.
 Data Tables scales as needed to support the amount of data inserted, and allow for the storing of data with non-complex accessing.

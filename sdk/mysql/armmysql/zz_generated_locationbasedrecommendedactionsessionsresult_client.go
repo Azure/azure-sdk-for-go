@@ -15,6 +15,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
@@ -22,13 +23,14 @@ import (
 // LocationBasedRecommendedActionSessionsResultClient contains the methods for the LocationBasedRecommendedActionSessionsResult group.
 // Don't use this type directly, use NewLocationBasedRecommendedActionSessionsResultClient() instead.
 type LocationBasedRecommendedActionSessionsResultClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewLocationBasedRecommendedActionSessionsResultClient creates a new instance of LocationBasedRecommendedActionSessionsResultClient with the specified values.
-func NewLocationBasedRecommendedActionSessionsResultClient(con *connection, subscriptionID string) *LocationBasedRecommendedActionSessionsResultClient {
-	return &LocationBasedRecommendedActionSessionsResultClient{con: con, subscriptionID: subscriptionID}
+func NewLocationBasedRecommendedActionSessionsResultClient(con *arm.Connection, subscriptionID string) *LocationBasedRecommendedActionSessionsResultClient {
+	return &LocationBasedRecommendedActionSessionsResultClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // List - Recommendation action session operation result.
@@ -60,7 +62,7 @@ func (client *LocationBasedRecommendedActionSessionsResultClient) listCreateRequ
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

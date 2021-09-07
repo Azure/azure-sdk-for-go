@@ -16,6 +16,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -24,13 +25,14 @@ import (
 // ServerParametersClient contains the methods for the ServerParameters group.
 // Don't use this type directly, use NewServerParametersClient() instead.
 type ServerParametersClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewServerParametersClient creates a new instance of ServerParametersClient with the specified values.
-func NewServerParametersClient(con *connection, subscriptionID string) *ServerParametersClient {
-	return &ServerParametersClient{con: con, subscriptionID: subscriptionID}
+func NewServerParametersClient(con *arm.Connection, subscriptionID string) *ServerParametersClient {
+	return &ServerParametersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginListUpdateConfigurations - Update a list of configurations in a given server.
@@ -43,7 +45,7 @@ func (client *ServerParametersClient) BeginListUpdateConfigurations(ctx context.
 	result := ServerParametersListUpdateConfigurationsPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerParametersClient.ListUpdateConfigurations", "azure-async-operation", resp, client.con.Pipeline(), client.listUpdateConfigurationsHandleError)
+	pt, err := armruntime.NewPoller("ServerParametersClient.ListUpdateConfigurations", "azure-async-operation", resp, client.pl, client.listUpdateConfigurationsHandleError)
 	if err != nil {
 		return ServerParametersListUpdateConfigurationsPollerResponse{}, err
 	}
@@ -60,7 +62,7 @@ func (client *ServerParametersClient) listUpdateConfigurations(ctx context.Conte
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +87,7 @@ func (client *ServerParametersClient) listUpdateConfigurationsCreateRequest(ctx 
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -16,6 +16,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -24,13 +25,14 @@ import (
 // ServerKeysClient contains the methods for the ServerKeys group.
 // Don't use this type directly, use NewServerKeysClient() instead.
 type ServerKeysClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewServerKeysClient creates a new instance of ServerKeysClient with the specified values.
-func NewServerKeysClient(con *connection, subscriptionID string) *ServerKeysClient {
-	return &ServerKeysClient{con: con, subscriptionID: subscriptionID}
+func NewServerKeysClient(con *arm.Connection, subscriptionID string) *ServerKeysClient {
+	return &ServerKeysClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Creates or updates a MySQL Server key.
@@ -43,7 +45,7 @@ func (client *ServerKeysClient) BeginCreateOrUpdate(ctx context.Context, serverN
 	result := ServerKeysCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerKeysClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ServerKeysClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
 	if err != nil {
 		return ServerKeysCreateOrUpdatePollerResponse{}, err
 	}
@@ -60,7 +62,7 @@ func (client *ServerKeysClient) createOrUpdate(ctx context.Context, serverName s
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -89,7 +91,7 @@ func (client *ServerKeysClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,7 +125,7 @@ func (client *ServerKeysClient) BeginDelete(ctx context.Context, serverName stri
 	result := ServerKeysDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerKeysClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ServerKeysClient.Delete", "", resp, client.pl, client.deleteHandleError)
 	if err != nil {
 		return ServerKeysDeletePollerResponse{}, err
 	}
@@ -140,7 +142,7 @@ func (client *ServerKeysClient) deleteOperation(ctx context.Context, serverName 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -169,7 +171,7 @@ func (client *ServerKeysClient) deleteCreateRequest(ctx context.Context, serverN
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -200,7 +202,7 @@ func (client *ServerKeysClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return ServerKeysGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ServerKeysGetResponse{}, err
 	}
@@ -229,7 +231,7 @@ func (client *ServerKeysClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -291,7 +293,7 @@ func (client *ServerKeysClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

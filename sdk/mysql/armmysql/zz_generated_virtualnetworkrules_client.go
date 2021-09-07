@@ -15,6 +15,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -23,13 +24,14 @@ import (
 // VirtualNetworkRulesClient contains the methods for the VirtualNetworkRules group.
 // Don't use this type directly, use NewVirtualNetworkRulesClient() instead.
 type VirtualNetworkRulesClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewVirtualNetworkRulesClient creates a new instance of VirtualNetworkRulesClient with the specified values.
-func NewVirtualNetworkRulesClient(con *connection, subscriptionID string) *VirtualNetworkRulesClient {
-	return &VirtualNetworkRulesClient{con: con, subscriptionID: subscriptionID}
+func NewVirtualNetworkRulesClient(con *arm.Connection, subscriptionID string) *VirtualNetworkRulesClient {
+	return &VirtualNetworkRulesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Creates or updates an existing virtual network rule.
@@ -42,7 +44,7 @@ func (client *VirtualNetworkRulesClient) BeginCreateOrUpdate(ctx context.Context
 	result := VirtualNetworkRulesCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualNetworkRulesClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("VirtualNetworkRulesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
 	if err != nil {
 		return VirtualNetworkRulesCreateOrUpdatePollerResponse{}, err
 	}
@@ -59,7 +61,7 @@ func (client *VirtualNetworkRulesClient) createOrUpdate(ctx context.Context, res
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +90,7 @@ func (client *VirtualNetworkRulesClient) createOrUpdateCreateRequest(ctx context
 		return nil, errors.New("parameter virtualNetworkRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkRuleName}", url.PathEscape(virtualNetworkRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -121,7 +123,7 @@ func (client *VirtualNetworkRulesClient) BeginDelete(ctx context.Context, resour
 	result := VirtualNetworkRulesDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualNetworkRulesClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
+	pt, err := armruntime.NewPoller("VirtualNetworkRulesClient.Delete", "", resp, client.pl, client.deleteHandleError)
 	if err != nil {
 		return VirtualNetworkRulesDeletePollerResponse{}, err
 	}
@@ -138,7 +140,7 @@ func (client *VirtualNetworkRulesClient) deleteOperation(ctx context.Context, re
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +169,7 @@ func (client *VirtualNetworkRulesClient) deleteCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -196,7 +198,7 @@ func (client *VirtualNetworkRulesClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return VirtualNetworkRulesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return VirtualNetworkRulesGetResponse{}, err
 	}
@@ -225,7 +227,7 @@ func (client *VirtualNetworkRulesClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter virtualNetworkRuleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkRuleName}", url.PathEscape(virtualNetworkRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -286,7 +288,7 @@ func (client *VirtualNetworkRulesClient) listByServerCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

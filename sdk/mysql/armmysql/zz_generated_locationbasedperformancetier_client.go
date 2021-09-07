@@ -16,6 +16,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
@@ -23,13 +24,14 @@ import (
 // LocationBasedPerformanceTierClient contains the methods for the LocationBasedPerformanceTier group.
 // Don't use this type directly, use NewLocationBasedPerformanceTierClient() instead.
 type LocationBasedPerformanceTierClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewLocationBasedPerformanceTierClient creates a new instance of LocationBasedPerformanceTierClient with the specified values.
-func NewLocationBasedPerformanceTierClient(con *connection, subscriptionID string) *LocationBasedPerformanceTierClient {
-	return &LocationBasedPerformanceTierClient{con: con, subscriptionID: subscriptionID}
+func NewLocationBasedPerformanceTierClient(con *arm.Connection, subscriptionID string) *LocationBasedPerformanceTierClient {
+	return &LocationBasedPerformanceTierClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // List - List all the performance tiers at specified location in a given subscription.
@@ -39,7 +41,7 @@ func (client *LocationBasedPerformanceTierClient) List(ctx context.Context, loca
 	if err != nil {
 		return LocationBasedPerformanceTierListResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return LocationBasedPerformanceTierListResponse{}, err
 	}
@@ -60,7 +62,7 @@ func (client *LocationBasedPerformanceTierClient) listCreateRequest(ctx context.
 		return nil, errors.New("parameter locationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

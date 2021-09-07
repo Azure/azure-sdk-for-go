@@ -15,6 +15,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -23,13 +24,14 @@ import (
 // ServerSecurityAlertPoliciesClient contains the methods for the ServerSecurityAlertPolicies group.
 // Don't use this type directly, use NewServerSecurityAlertPoliciesClient() instead.
 type ServerSecurityAlertPoliciesClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewServerSecurityAlertPoliciesClient creates a new instance of ServerSecurityAlertPoliciesClient with the specified values.
-func NewServerSecurityAlertPoliciesClient(con *connection, subscriptionID string) *ServerSecurityAlertPoliciesClient {
-	return &ServerSecurityAlertPoliciesClient{con: con, subscriptionID: subscriptionID}
+func NewServerSecurityAlertPoliciesClient(con *arm.Connection, subscriptionID string) *ServerSecurityAlertPoliciesClient {
+	return &ServerSecurityAlertPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Creates or updates a threat detection policy.
@@ -42,7 +44,7 @@ func (client *ServerSecurityAlertPoliciesClient) BeginCreateOrUpdate(ctx context
 	result := ServerSecurityAlertPoliciesCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerSecurityAlertPoliciesClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ServerSecurityAlertPoliciesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
 	if err != nil {
 		return ServerSecurityAlertPoliciesCreateOrUpdatePollerResponse{}, err
 	}
@@ -59,7 +61,7 @@ func (client *ServerSecurityAlertPoliciesClient) createOrUpdate(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -88,7 +90,7 @@ func (client *ServerSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +120,7 @@ func (client *ServerSecurityAlertPoliciesClient) Get(ctx context.Context, resour
 	if err != nil {
 		return ServerSecurityAlertPoliciesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ServerSecurityAlertPoliciesGetResponse{}, err
 	}
@@ -147,7 +149,7 @@ func (client *ServerSecurityAlertPoliciesClient) getCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -208,7 +210,7 @@ func (client *ServerSecurityAlertPoliciesClient) listByServerCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

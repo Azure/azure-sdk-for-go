@@ -3,6 +3,7 @@
 > see https://aka.ms/autorest
 
 ``` yaml
+azure-arm: true
 require:
 - https://github.com/Azure/azure-rest-api-specs/blob/d5e70e3c12490a8c980b890cb611e85bbbae5858/specification/mysql/resource-manager/readme.md
 - https://github.com/Azure/azure-rest-api-specs/blob/d5e70e3c12490a8c980b890cb611e85bbbae5858/specification/mysql/resource-manager/readme.go.md

@@ -16,6 +16,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
@@ -23,13 +24,14 @@ import (
 // WaitStatisticsClient contains the methods for the WaitStatistics group.
 // Don't use this type directly, use NewWaitStatisticsClient() instead.
 type WaitStatisticsClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewWaitStatisticsClient creates a new instance of WaitStatisticsClient with the specified values.
-func NewWaitStatisticsClient(con *connection, subscriptionID string) *WaitStatisticsClient {
-	return &WaitStatisticsClient{con: con, subscriptionID: subscriptionID}
+func NewWaitStatisticsClient(con *arm.Connection, subscriptionID string) *WaitStatisticsClient {
+	return &WaitStatisticsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Retrieve wait statistics for specified identifier.
@@ -39,7 +41,7 @@ func (client *WaitStatisticsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return WaitStatisticsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return WaitStatisticsGetResponse{}, err
 	}
@@ -68,7 +70,7 @@ func (client *WaitStatisticsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter waitStatisticsID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{waitStatisticsId}", url.PathEscape(waitStatisticsID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +132,7 @@ func (client *WaitStatisticsClient) listByServerCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

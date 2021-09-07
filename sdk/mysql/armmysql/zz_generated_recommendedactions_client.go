@@ -15,6 +15,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
@@ -22,13 +23,14 @@ import (
 // RecommendedActionsClient contains the methods for the RecommendedActions group.
 // Don't use this type directly, use NewRecommendedActionsClient() instead.
 type RecommendedActionsClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewRecommendedActionsClient creates a new instance of RecommendedActionsClient with the specified values.
-func NewRecommendedActionsClient(con *connection, subscriptionID string) *RecommendedActionsClient {
-	return &RecommendedActionsClient{con: con, subscriptionID: subscriptionID}
+func NewRecommendedActionsClient(con *arm.Connection, subscriptionID string) *RecommendedActionsClient {
+	return &RecommendedActionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Retrieve recommended actions from the advisor.
@@ -38,7 +40,7 @@ func (client *RecommendedActionsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return RecommendedActionsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecommendedActionsGetResponse{}, err
 	}
@@ -71,7 +73,7 @@ func (client *RecommendedActionsClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter recommendedActionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{recommendedActionName}", url.PathEscape(recommendedActionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -136,7 +138,7 @@ func (client *RecommendedActionsClient) listByServerCreateRequest(ctx context.Co
 		return nil, errors.New("parameter advisorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{advisorName}", url.PathEscape(advisorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

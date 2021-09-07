@@ -15,6 +15,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
@@ -22,13 +23,14 @@ import (
 // AdvisorsClient contains the methods for the Advisors group.
 // Don't use this type directly, use NewAdvisorsClient() instead.
 type AdvisorsClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewAdvisorsClient creates a new instance of AdvisorsClient with the specified values.
-func NewAdvisorsClient(con *connection, subscriptionID string) *AdvisorsClient {
-	return &AdvisorsClient{con: con, subscriptionID: subscriptionID}
+func NewAdvisorsClient(con *arm.Connection, subscriptionID string) *AdvisorsClient {
+	return &AdvisorsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Get a recommendation action advisor.
@@ -38,7 +40,7 @@ func (client *AdvisorsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return AdvisorsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AdvisorsGetResponse{}, err
 	}
@@ -67,7 +69,7 @@ func (client *AdvisorsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter advisorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{advisorName}", url.PathEscape(advisorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -128,7 +130,7 @@ func (client *AdvisorsClient) listByServerCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

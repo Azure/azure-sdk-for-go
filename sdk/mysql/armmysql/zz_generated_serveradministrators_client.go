@@ -16,6 +16,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -24,13 +25,14 @@ import (
 // ServerAdministratorsClient contains the methods for the ServerAdministrators group.
 // Don't use this type directly, use NewServerAdministratorsClient() instead.
 type ServerAdministratorsClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewServerAdministratorsClient creates a new instance of ServerAdministratorsClient with the specified values.
-func NewServerAdministratorsClient(con *connection, subscriptionID string) *ServerAdministratorsClient {
-	return &ServerAdministratorsClient{con: con, subscriptionID: subscriptionID}
+func NewServerAdministratorsClient(con *arm.Connection, subscriptionID string) *ServerAdministratorsClient {
+	return &ServerAdministratorsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Creates or update active directory administrator on an existing server. The update action will overwrite the existing administrator.
@@ -43,7 +45,7 @@ func (client *ServerAdministratorsClient) BeginCreateOrUpdate(ctx context.Contex
 	result := ServerAdministratorsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerAdministratorsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("ServerAdministratorsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
 	if err != nil {
 		return ServerAdministratorsCreateOrUpdatePollerResponse{}, err
 	}
@@ -60,7 +62,7 @@ func (client *ServerAdministratorsClient) createOrUpdate(ctx context.Context, re
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +87,7 @@ func (client *ServerAdministratorsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +121,7 @@ func (client *ServerAdministratorsClient) BeginDelete(ctx context.Context, resou
 	result := ServerAdministratorsDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("ServerAdministratorsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
+	pt, err := armruntime.NewPoller("ServerAdministratorsClient.Delete", "", resp, client.pl, client.deleteHandleError)
 	if err != nil {
 		return ServerAdministratorsDeletePollerResponse{}, err
 	}
@@ -136,7 +138,7 @@ func (client *ServerAdministratorsClient) deleteOperation(ctx context.Context, r
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +163,7 @@ func (client *ServerAdministratorsClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -192,7 +194,7 @@ func (client *ServerAdministratorsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return ServerAdministratorsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ServerAdministratorsGetResponse{}, err
 	}
@@ -217,7 +219,7 @@ func (client *ServerAdministratorsClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -257,7 +259,7 @@ func (client *ServerAdministratorsClient) List(ctx context.Context, resourceGrou
 	if err != nil {
 		return ServerAdministratorsListResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ServerAdministratorsListResponse{}, err
 	}
@@ -282,7 +284,7 @@ func (client *ServerAdministratorsClient) listCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

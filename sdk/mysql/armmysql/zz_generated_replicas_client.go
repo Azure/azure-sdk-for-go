@@ -16,6 +16,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
@@ -23,13 +24,14 @@ import (
 // ReplicasClient contains the methods for the Replicas group.
 // Don't use this type directly, use NewReplicasClient() instead.
 type ReplicasClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewReplicasClient creates a new instance of ReplicasClient with the specified values.
-func NewReplicasClient(con *connection, subscriptionID string) *ReplicasClient {
-	return &ReplicasClient{con: con, subscriptionID: subscriptionID}
+func NewReplicasClient(con *arm.Connection, subscriptionID string) *ReplicasClient {
+	return &ReplicasClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // ListByServer - List all the replicas for a given server.
@@ -39,7 +41,7 @@ func (client *ReplicasClient) ListByServer(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ReplicasListByServerResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ReplicasListByServerResponse{}, err
 	}
@@ -64,7 +66,7 @@ func (client *ReplicasClient) listByServerCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

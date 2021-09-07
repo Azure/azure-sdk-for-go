@@ -13,6 +13,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
@@ -20,12 +21,13 @@ import (
 // OperationsClient contains the methods for the Operations group.
 // Don't use this type directly, use NewOperationsClient() instead.
 type OperationsClient struct {
-	con *connection
+	ep string
+	pl runtime.Pipeline
 }
 
 // NewOperationsClient creates a new instance of OperationsClient with the specified values.
-func NewOperationsClient(con *connection) *OperationsClient {
-	return &OperationsClient{con: con}
+func NewOperationsClient(con *arm.Connection) *OperationsClient {
+	return &OperationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
 }
 
 // List - Lists all of the available REST API operations.
@@ -35,7 +37,7 @@ func (client *OperationsClient) List(ctx context.Context, options *OperationsLis
 	if err != nil {
 		return OperationsListResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return OperationsListResponse{}, err
 	}
@@ -48,7 +50,7 @@ func (client *OperationsClient) List(ctx context.Context, options *OperationsLis
 // listCreateRequest creates the List request.
 func (client *OperationsClient) listCreateRequest(ctx context.Context, options *OperationsListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.DBforMySQL/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

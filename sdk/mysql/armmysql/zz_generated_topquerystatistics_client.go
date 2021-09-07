@@ -16,6 +16,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
@@ -23,13 +24,14 @@ import (
 // TopQueryStatisticsClient contains the methods for the TopQueryStatistics group.
 // Don't use this type directly, use NewTopQueryStatisticsClient() instead.
 type TopQueryStatisticsClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewTopQueryStatisticsClient creates a new instance of TopQueryStatisticsClient with the specified values.
-func NewTopQueryStatisticsClient(con *connection, subscriptionID string) *TopQueryStatisticsClient {
-	return &TopQueryStatisticsClient{con: con, subscriptionID: subscriptionID}
+func NewTopQueryStatisticsClient(con *arm.Connection, subscriptionID string) *TopQueryStatisticsClient {
+	return &TopQueryStatisticsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Retrieve the query statistic for specified identifier.
@@ -39,7 +41,7 @@ func (client *TopQueryStatisticsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return TopQueryStatisticsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TopQueryStatisticsGetResponse{}, err
 	}
@@ -68,7 +70,7 @@ func (client *TopQueryStatisticsClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter queryStatisticID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{queryStatisticId}", url.PathEscape(queryStatisticID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +132,7 @@ func (client *TopQueryStatisticsClient) listByServerCreateRequest(ctx context.Co
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

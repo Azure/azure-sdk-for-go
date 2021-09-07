@@ -16,6 +16,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -24,13 +25,14 @@ import (
 // MySQLManagementClient contains the methods for the MySQLManagementClient group.
 // Don't use this type directly, use NewMySQLManagementClient() instead.
 type MySQLManagementClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewMySQLManagementClient creates a new instance of MySQLManagementClient with the specified values.
-func NewMySQLManagementClient(con *connection, subscriptionID string) *MySQLManagementClient {
-	return &MySQLManagementClient{con: con, subscriptionID: subscriptionID}
+func NewMySQLManagementClient(con *arm.Connection, subscriptionID string) *MySQLManagementClient {
+	return &MySQLManagementClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateRecommendedActionSession - Create recommendation action session for the advisor.
@@ -43,7 +45,7 @@ func (client *MySQLManagementClient) BeginCreateRecommendedActionSession(ctx con
 	result := MySQLManagementClientCreateRecommendedActionSessionPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("MySQLManagementClient.CreateRecommendedActionSession", "", resp, client.con.Pipeline(), client.createRecommendedActionSessionHandleError)
+	pt, err := armruntime.NewPoller("MySQLManagementClient.CreateRecommendedActionSession", "", resp, client.pl, client.createRecommendedActionSessionHandleError)
 	if err != nil {
 		return MySQLManagementClientCreateRecommendedActionSessionPollerResponse{}, err
 	}
@@ -60,7 +62,7 @@ func (client *MySQLManagementClient) createRecommendedActionSession(ctx context.
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -89,7 +91,7 @@ func (client *MySQLManagementClient) createRecommendedActionSessionCreateRequest
 		return nil, errors.New("parameter advisorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{advisorName}", url.PathEscape(advisorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +121,7 @@ func (client *MySQLManagementClient) ResetQueryPerformanceInsightData(ctx contex
 	if err != nil {
 		return MySQLManagementClientResetQueryPerformanceInsightDataResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return MySQLManagementClientResetQueryPerformanceInsightDataResponse{}, err
 	}
@@ -144,7 +146,7 @@ func (client *MySQLManagementClient) resetQueryPerformanceInsightDataCreateReque
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

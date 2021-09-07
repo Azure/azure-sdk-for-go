@@ -15,6 +15,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
@@ -22,13 +23,14 @@ import (
 // LocationBasedRecommendedActionSessionsOperationStatusClient contains the methods for the LocationBasedRecommendedActionSessionsOperationStatus group.
 // Don't use this type directly, use NewLocationBasedRecommendedActionSessionsOperationStatusClient() instead.
 type LocationBasedRecommendedActionSessionsOperationStatusClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewLocationBasedRecommendedActionSessionsOperationStatusClient creates a new instance of LocationBasedRecommendedActionSessionsOperationStatusClient with the specified values.
-func NewLocationBasedRecommendedActionSessionsOperationStatusClient(con *connection, subscriptionID string) *LocationBasedRecommendedActionSessionsOperationStatusClient {
-	return &LocationBasedRecommendedActionSessionsOperationStatusClient{con: con, subscriptionID: subscriptionID}
+func NewLocationBasedRecommendedActionSessionsOperationStatusClient(con *arm.Connection, subscriptionID string) *LocationBasedRecommendedActionSessionsOperationStatusClient {
+	return &LocationBasedRecommendedActionSessionsOperationStatusClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Recommendation action session operation status.
@@ -38,7 +40,7 @@ func (client *LocationBasedRecommendedActionSessionsOperationStatusClient) Get(c
 	if err != nil {
 		return LocationBasedRecommendedActionSessionsOperationStatusGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return LocationBasedRecommendedActionSessionsOperationStatusGetResponse{}, err
 	}
@@ -63,7 +65,7 @@ func (client *LocationBasedRecommendedActionSessionsOperationStatusClient) getCr
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

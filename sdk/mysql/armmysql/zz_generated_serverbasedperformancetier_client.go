@@ -16,6 +16,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
@@ -23,13 +24,14 @@ import (
 // ServerBasedPerformanceTierClient contains the methods for the ServerBasedPerformanceTier group.
 // Don't use this type directly, use NewServerBasedPerformanceTierClient() instead.
 type ServerBasedPerformanceTierClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewServerBasedPerformanceTierClient creates a new instance of ServerBasedPerformanceTierClient with the specified values.
-func NewServerBasedPerformanceTierClient(con *connection, subscriptionID string) *ServerBasedPerformanceTierClient {
-	return &ServerBasedPerformanceTierClient{con: con, subscriptionID: subscriptionID}
+func NewServerBasedPerformanceTierClient(con *arm.Connection, subscriptionID string) *ServerBasedPerformanceTierClient {
+	return &ServerBasedPerformanceTierClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // List - List all the performance tiers for a MySQL server.
@@ -39,7 +41,7 @@ func (client *ServerBasedPerformanceTierClient) List(ctx context.Context, resour
 	if err != nil {
 		return ServerBasedPerformanceTierListResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ServerBasedPerformanceTierListResponse{}, err
 	}
@@ -64,7 +66,7 @@ func (client *ServerBasedPerformanceTierClient) listCreateRequest(ctx context.Co
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

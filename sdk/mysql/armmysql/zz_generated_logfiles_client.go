@@ -16,6 +16,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
@@ -23,13 +24,14 @@ import (
 // LogFilesClient contains the methods for the LogFiles group.
 // Don't use this type directly, use NewLogFilesClient() instead.
 type LogFilesClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewLogFilesClient creates a new instance of LogFilesClient with the specified values.
-func NewLogFilesClient(con *connection, subscriptionID string) *LogFilesClient {
-	return &LogFilesClient{con: con, subscriptionID: subscriptionID}
+func NewLogFilesClient(con *arm.Connection, subscriptionID string) *LogFilesClient {
+	return &LogFilesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // ListByServer - List all the log files in a given server.
@@ -39,7 +41,7 @@ func (client *LogFilesClient) ListByServer(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return LogFilesListByServerResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return LogFilesListByServerResponse{}, err
 	}
@@ -64,7 +66,7 @@ func (client *LogFilesClient) listByServerCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

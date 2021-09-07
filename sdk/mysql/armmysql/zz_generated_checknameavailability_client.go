@@ -16,6 +16,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
@@ -23,13 +24,14 @@ import (
 // CheckNameAvailabilityClient contains the methods for the CheckNameAvailability group.
 // Don't use this type directly, use NewCheckNameAvailabilityClient() instead.
 type CheckNameAvailabilityClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewCheckNameAvailabilityClient creates a new instance of CheckNameAvailabilityClient with the specified values.
-func NewCheckNameAvailabilityClient(con *connection, subscriptionID string) *CheckNameAvailabilityClient {
-	return &CheckNameAvailabilityClient{con: con, subscriptionID: subscriptionID}
+func NewCheckNameAvailabilityClient(con *arm.Connection, subscriptionID string) *CheckNameAvailabilityClient {
+	return &CheckNameAvailabilityClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Execute - Check the availability of name for resource
@@ -39,7 +41,7 @@ func (client *CheckNameAvailabilityClient) Execute(ctx context.Context, nameAvai
 	if err != nil {
 		return CheckNameAvailabilityExecuteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return CheckNameAvailabilityExecuteResponse{}, err
 	}
@@ -56,7 +58,7 @@ func (client *CheckNameAvailabilityClient) executeCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

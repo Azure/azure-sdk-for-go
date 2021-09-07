@@ -16,6 +16,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
@@ -23,13 +24,14 @@ import (
 // RecoverableServersClient contains the methods for the RecoverableServers group.
 // Don't use this type directly, use NewRecoverableServersClient() instead.
 type RecoverableServersClient struct {
-	con            *connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewRecoverableServersClient creates a new instance of RecoverableServersClient with the specified values.
-func NewRecoverableServersClient(con *connection, subscriptionID string) *RecoverableServersClient {
-	return &RecoverableServersClient{con: con, subscriptionID: subscriptionID}
+func NewRecoverableServersClient(con *arm.Connection, subscriptionID string) *RecoverableServersClient {
+	return &RecoverableServersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Gets a recoverable MySQL Server.
@@ -39,7 +41,7 @@ func (client *RecoverableServersClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return RecoverableServersGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecoverableServersGetResponse{}, err
 	}
@@ -64,7 +66,7 @@ func (client *RecoverableServersClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}

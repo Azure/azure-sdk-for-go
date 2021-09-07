@@ -93,6 +93,9 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 	// create sdk and spec git repo ref
 	if commitIDRegex.Match([]byte(sdkRepoParam)) {
 		c.sdkRepo, err = repo.CloneSDKRepository(c.flags.SDKRepo, sdkRepoParam)
+		if err != nil {
+			return fmt.Errorf("failed to get sdk repo: %+v", err)
+		}
 	} else {
 		path, err := filepath.Abs(sdkRepoParam)
 		if err != nil {
@@ -100,22 +103,25 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 		}
 
 		c.sdkRepo, err = repo.OpenSDKRepository(path)
-	}
-	if err != nil {
-		return fmt.Errorf("failed to get sdk repo: %+v", err)
+		if err != nil {
+			return fmt.Errorf("failed to get sdk repo: %+v", err)
+		}
 	}
 
 	if commitIDRegex.Match([]byte(specRepoParam)) {
 		c.specRepo, err = repo.CloneSpecRepository(c.flags.SwaggerRepo, specRepoParam)
+		if err != nil {
+			return fmt.Errorf("failed to get spec repo: %+v", err)
+		}
 	} else {
 		path, err := filepath.Abs(specRepoParam)
 		if err != nil {
 			return fmt.Errorf("failed to get the directory of azure-rest-api-specs: %v", err)
 		}
 		c.specRepo, err = repo.OpenSpecRepository(path)
-	}
-	if err != nil {
-		return fmt.Errorf("failed to get spec repo: %+v", err)
+		if err != nil {
+			return fmt.Errorf("failed to get spec repo: %+v", err)
+		}
 	}
 
 	// get sdk and spec repo head

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,31 +10,31 @@ package armpostgresqlflexibleservers
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"reflect"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-type ConfigurationsListByServerPager interface {
-	azcore.Pager
-	// PageResponse returns the current ConfigurationsListByServerResponse.
-	PageResponse() ConfigurationsListByServerResponse
-}
-
-type configurationsListByServerPager struct {
+// ConfigurationsListByServerPager provides operations for iterating over paged responses.
+type ConfigurationsListByServerPager struct {
 	client    *ConfigurationsClient
 	current   ConfigurationsListByServerResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, ConfigurationsListByServerResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ConfigurationsListByServerResponse) (*policy.Request, error)
 }
 
-func (p *configurationsListByServerPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *ConfigurationsListByServerPager) Err() error {
 	return p.err
 }
 
-func (p *configurationsListByServerPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ConfigurationsListByServerPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.ConfigurationListResult.NextLink == nil || len(*p.current.ConfigurationListResult.NextLink) == 0 {
@@ -47,12 +48,12 @@ func (p *configurationsListByServerPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByServerHandleError(resp)
 		return false
 	}
@@ -65,30 +66,29 @@ func (p *configurationsListByServerPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *configurationsListByServerPager) PageResponse() ConfigurationsListByServerResponse {
+// PageResponse returns the current ConfigurationsListByServerResponse page.
+func (p *ConfigurationsListByServerPager) PageResponse() ConfigurationsListByServerResponse {
 	return p.current
 }
 
-type DatabasesListByServerPager interface {
-	azcore.Pager
-	// PageResponse returns the current DatabasesListByServerResponse.
-	PageResponse() DatabasesListByServerResponse
-}
-
-type databasesListByServerPager struct {
+// DatabasesListByServerPager provides operations for iterating over paged responses.
+type DatabasesListByServerPager struct {
 	client    *DatabasesClient
 	current   DatabasesListByServerResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, DatabasesListByServerResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, DatabasesListByServerResponse) (*policy.Request, error)
 }
 
-func (p *databasesListByServerPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *DatabasesListByServerPager) Err() error {
 	return p.err
 }
 
-func (p *databasesListByServerPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *DatabasesListByServerPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.DatabaseListResult.NextLink == nil || len(*p.current.DatabaseListResult.NextLink) == 0 {
@@ -102,12 +102,12 @@ func (p *databasesListByServerPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByServerHandleError(resp)
 		return false
 	}
@@ -120,30 +120,29 @@ func (p *databasesListByServerPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *databasesListByServerPager) PageResponse() DatabasesListByServerResponse {
+// PageResponse returns the current DatabasesListByServerResponse page.
+func (p *DatabasesListByServerPager) PageResponse() DatabasesListByServerResponse {
 	return p.current
 }
 
-type FirewallRulesListByServerPager interface {
-	azcore.Pager
-	// PageResponse returns the current FirewallRulesListByServerResponse.
-	PageResponse() FirewallRulesListByServerResponse
-}
-
-type firewallRulesListByServerPager struct {
+// FirewallRulesListByServerPager provides operations for iterating over paged responses.
+type FirewallRulesListByServerPager struct {
 	client    *FirewallRulesClient
 	current   FirewallRulesListByServerResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, FirewallRulesListByServerResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, FirewallRulesListByServerResponse) (*policy.Request, error)
 }
 
-func (p *firewallRulesListByServerPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *FirewallRulesListByServerPager) Err() error {
 	return p.err
 }
 
-func (p *firewallRulesListByServerPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *FirewallRulesListByServerPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.FirewallRuleListResult.NextLink == nil || len(*p.current.FirewallRuleListResult.NextLink) == 0 {
@@ -157,12 +156,12 @@ func (p *firewallRulesListByServerPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByServerHandleError(resp)
 		return false
 	}
@@ -175,30 +174,29 @@ func (p *firewallRulesListByServerPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *firewallRulesListByServerPager) PageResponse() FirewallRulesListByServerResponse {
+// PageResponse returns the current FirewallRulesListByServerResponse page.
+func (p *FirewallRulesListByServerPager) PageResponse() FirewallRulesListByServerResponse {
 	return p.current
 }
 
-type LocationBasedCapabilitiesExecutePager interface {
-	azcore.Pager
-	// PageResponse returns the current LocationBasedCapabilitiesExecuteResponse.
-	PageResponse() LocationBasedCapabilitiesExecuteResponse
-}
-
-type locationBasedCapabilitiesExecutePager struct {
+// LocationBasedCapabilitiesExecutePager provides operations for iterating over paged responses.
+type LocationBasedCapabilitiesExecutePager struct {
 	client    *LocationBasedCapabilitiesClient
 	current   LocationBasedCapabilitiesExecuteResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, LocationBasedCapabilitiesExecuteResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, LocationBasedCapabilitiesExecuteResponse) (*policy.Request, error)
 }
 
-func (p *locationBasedCapabilitiesExecutePager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *LocationBasedCapabilitiesExecutePager) Err() error {
 	return p.err
 }
 
-func (p *locationBasedCapabilitiesExecutePager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *LocationBasedCapabilitiesExecutePager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.CapabilitiesListResult.NextLink == nil || len(*p.current.CapabilitiesListResult.NextLink) == 0 {
@@ -212,12 +210,12 @@ func (p *locationBasedCapabilitiesExecutePager) NextPage(ctx context.Context) bo
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.executeHandleError(resp)
 		return false
 	}
@@ -230,30 +228,29 @@ func (p *locationBasedCapabilitiesExecutePager) NextPage(ctx context.Context) bo
 	return true
 }
 
-func (p *locationBasedCapabilitiesExecutePager) PageResponse() LocationBasedCapabilitiesExecuteResponse {
+// PageResponse returns the current LocationBasedCapabilitiesExecuteResponse page.
+func (p *LocationBasedCapabilitiesExecutePager) PageResponse() LocationBasedCapabilitiesExecuteResponse {
 	return p.current
 }
 
-type ServersListByResourceGroupPager interface {
-	azcore.Pager
-	// PageResponse returns the current ServersListByResourceGroupResponse.
-	PageResponse() ServersListByResourceGroupResponse
-}
-
-type serversListByResourceGroupPager struct {
+// ServersListByResourceGroupPager provides operations for iterating over paged responses.
+type ServersListByResourceGroupPager struct {
 	client    *ServersClient
 	current   ServersListByResourceGroupResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, ServersListByResourceGroupResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ServersListByResourceGroupResponse) (*policy.Request, error)
 }
 
-func (p *serversListByResourceGroupPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *ServersListByResourceGroupPager) Err() error {
 	return p.err
 }
 
-func (p *serversListByResourceGroupPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ServersListByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.ServerListResult.NextLink == nil || len(*p.current.ServerListResult.NextLink) == 0 {
@@ -267,12 +264,12 @@ func (p *serversListByResourceGroupPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByResourceGroupHandleError(resp)
 		return false
 	}
@@ -285,30 +282,29 @@ func (p *serversListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *serversListByResourceGroupPager) PageResponse() ServersListByResourceGroupResponse {
+// PageResponse returns the current ServersListByResourceGroupResponse page.
+func (p *ServersListByResourceGroupPager) PageResponse() ServersListByResourceGroupResponse {
 	return p.current
 }
 
-type ServersListPager interface {
-	azcore.Pager
-	// PageResponse returns the current ServersListResponse.
-	PageResponse() ServersListResponse
-}
-
-type serversListPager struct {
+// ServersListPager provides operations for iterating over paged responses.
+type ServersListPager struct {
 	client    *ServersClient
 	current   ServersListResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, ServersListResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ServersListResponse) (*policy.Request, error)
 }
 
-func (p *serversListPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *ServersListPager) Err() error {
 	return p.err
 }
 
-func (p *serversListPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ServersListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.ServerListResult.NextLink == nil || len(*p.current.ServerListResult.NextLink) == 0 {
@@ -322,12 +318,12 @@ func (p *serversListPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listHandleError(resp)
 		return false
 	}
@@ -340,6 +336,7 @@ func (p *serversListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *serversListPager) PageResponse() ServersListResponse {
+// PageResponse returns the current ServersListResponse page.
+func (p *ServersListPager) PageResponse() ServersListResponse {
 	return p.current
 }

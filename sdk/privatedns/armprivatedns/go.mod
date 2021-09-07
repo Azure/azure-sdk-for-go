@@ -1,10 +1,8 @@
 module github.com/Azure/azure-sdk-for-go/sdk/privatedns/armprivatedns
 
-go 1.13
+go 1.16
 
 require (
-	github.com/Azure/azure-sdk-for-go v55.3.0+incompatible
-	github.com/Azure/azure-sdk-for-go/sdk/armcore v0.8.0
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.16.2
-	golang.org/x/net v0.0.0-20201110031124-69a78807bb2b // indirect
+	github.com/Azure/azure-sdk-for-go v57.0.0+incompatible
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.19.0
 )

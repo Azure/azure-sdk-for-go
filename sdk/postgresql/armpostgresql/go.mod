@@ -1,9 +1,8 @@
 module github.com/Azure/azure-sdk-for-go/sdk/postgresql/armpostgresql
 
-go 1.13
+go 1.16
 
 require (
-	github.com/Azure/azure-sdk-for-go v56.1.0+incompatible
-	github.com/Azure/azure-sdk-for-go/sdk/armcore v0.8.0
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.16.2
+	github.com/Azure/azure-sdk-for-go v57.1.0+incompatible
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.19.0
 )

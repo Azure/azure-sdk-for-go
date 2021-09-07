@@ -204,7 +204,7 @@ List entities in the table:
 ```golang
 cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
 handle(err)
-client, err := aztables.NewClient("https://myAccountName.table.core.windows.net/myTableName", cred, nil)
+client, err := aztables.NewClient("https://myAccountName.table.core.windows.net/myTable", cred, nil)
 handle(err)
 
 filter := "PartitionKey eq 'markers' or RowKey eq 'id-001'"

@@ -104,7 +104,7 @@ Common uses of the table service include:
 * Storing TBs of structured data capable of serving web scale applications
 * Storing datasets that do not require complex joins, foreign keys, or stored procedures and can be de-normalized for fast access
 * Quickly querying data using a clustered index
-* Accessing data using the OData protocol and LINQ filter expressions
+* Accessing data using the OData protocol filter expressions
 
 The following components make up the Azure Data Tables Service:
 * The account

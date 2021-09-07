@@ -62,7 +62,7 @@ Use AAD authentication as the credential parameter to authenticate the client:
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
 handle(err)
-serviceClient, err := aztables.NewServiceClient("https://<my_account_name>.table.core.windows.net/", cred, nil)
+serviceClient, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net/", cred, nil)
 handle(err)
 ```
 

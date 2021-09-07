@@ -100,7 +100,7 @@ handle(err)
 
 
 ## Key concepts
-Common uses of the Table service included:
+Common uses of the table service include:
 * Storing TBs of structured data capable of serving web scale applications
 * Storing datasets that do not require complex joins, foreign keys, or stored procedures and can be de-normalized for fast access
 * Quickly querying data using a clustered index

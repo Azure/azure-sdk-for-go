@@ -85,7 +85,6 @@ go get github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute
 We also recommend installing other packages for authentication and core functionalities :
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/armcore
 go get github.com/Azure/azure-sdk-for-go/sdk/azcore
 go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 go get github.com/Azure/azure-sdk-for-go/sdk/to
@@ -108,18 +107,18 @@ For more details on how authentication works in `azidentity`, please see the doc
 Connecting to Azure 
 -------------------
 
-Once you have a credential, create a connection to the desired ARM endpoint.  The `armcore` module provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
+Once you have a credential, create a connection to the desired ARM endpoint.  The `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` package provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
 
 ```go
-con := armcore.NewDefaultConnection(cred, nil)
+con := arm.NewDefaultConnection(cred, nil)
 ```
 
-For more information on ARM connections, please see the documentation for `armcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore).
+For more information on ARM connections, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
 
 Creating a Resource Management Client
 -------------------------------------
 
-Once you have a connection to ARM, you will need to decide what service to use and create a client to connect to that service. In this section, we will use `Compute` as our target service. The Compute modules consist of one or more clients. A client groups a set of related APIs, providing access to its functionality within the specified subscription. You will need to create one or more clients to access the APIs you require using your `armcore.Connection`.
+Once you have a connection to ARM, you will need to decide what service to use and create a client to connect to that service. In this section, we will use `Compute` as our target service. The Compute modules consist of one or more clients. A client groups a set of related APIs, providing access to its functionality within the specified subscription. You will need to create one or more clients to access the APIs you require using your `arm.Connection`.
 
 To show an example, we will create a client to manage Virtual Machines. The code to achieve this task would be:
 
@@ -158,7 +157,7 @@ Example: Creating a Resource Group
 ```go
 import (
     "contexts"
-    "github.com/Azure/azure-sdk-for-go/sdk/armcore"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
     "github.com/Azure/azure-sdk-for-go/sdk/resources/armresources"
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
     "github.com/Azure/azure-sdk-for-go/sdk/to"
@@ -178,7 +177,7 @@ var (
 
 ***Write a function to create a resource group***
 ```go
-func createResourceGroup(ctx context.Context, connection *armcore.Connection) (armresources.ResourceGroupResponse, error) {
+func createResourceGroup(ctx context.Context, connection *arm.Connection) (armresources.ResourceGroupResponse, error) {
 	rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
 
 	param := armresources.ResourceGroup{
@@ -196,7 +195,7 @@ func main() {
     if err != nil {
         log.Fatalf("authentication failure: %+v", err)
     }
-    conn := armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{
+    conn := arm.NewDefaultConnection(cred, &arm.ConnectionOptions{
         Logging: azcore.LogOptions{
             IncludeBody: true,
         },
@@ -218,7 +217,7 @@ Example: Managing Resource Groups
 ***Update a resource group***
 
 ```go
-func updateResourceGroup(ctx context.Context, connection *armcore.Connection) (armresources.ResourceGroupResponse, error) {
+func updateResourceGroup(ctx context.Context, connection *arm.Connection) (armresources.ResourceGroupResponse, error) {
     rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
     
     update := armresources.ResourceGroupPatchable{
@@ -233,7 +232,7 @@ func updateResourceGroup(ctx context.Context, connection *armcore.Connection) (a
 ***List all resource groups***
 
 ```go
-func listResourceGroups(ctx context.Context, connection *armcore.Connection) ([]*armresources.ResourceGroup, error) {
+func listResourceGroups(ctx context.Context, connection *arm.Connection) ([]*armresources.ResourceGroup, error) {
     rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
     
     pager := rgClient.List(nil)
@@ -252,7 +251,7 @@ func listResourceGroups(ctx context.Context, connection *armcore.Connection) ([]
 ***Delete a resource group***
 
 ```go
-func deleteResourceGroup(ctx context.Context, connection *armcore.Connection) error {
+func deleteResourceGroup(ctx context.Context, connection *arm.Connection) error {
     rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
     
     poller, err := rgClient.BeginDelete(ctx, resourceGroupName, nil)
@@ -273,7 +272,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("authentication failure: %+v", err)
 	}
-	conn := armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{
+	conn := arm.NewDefaultConnection(cred, &arm.ConnectionOptions{
 		Logging: azcore.LogOptions{
 			IncludeBody: true,
 		},

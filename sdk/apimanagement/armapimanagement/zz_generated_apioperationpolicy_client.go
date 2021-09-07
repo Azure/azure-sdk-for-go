@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // APIOperationPolicyClient contains the methods for the APIOperationPolicy group.
 // Don't use this type directly, use NewAPIOperationPolicyClient() instead.
 type APIOperationPolicyClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewAPIOperationPolicyClient creates a new instance of APIOperationPolicyClient with the specified values.
-func NewAPIOperationPolicyClient(con *armcore.Connection, subscriptionID string) *APIOperationPolicyClient {
-	return &APIOperationPolicyClient{con: con, subscriptionID: subscriptionID}
+func NewAPIOperationPolicyClient(con *arm.Connection, subscriptionID string) *APIOperationPolicyClient {
+	return &APIOperationPolicyClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates or updates policy configuration for the API Operation level.
@@ -37,18 +41,18 @@ func (client *APIOperationPolicyClient) CreateOrUpdate(ctx context.Context, reso
 	if err != nil {
 		return APIOperationPolicyCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return APIOperationPolicyCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return APIOperationPolicyCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *APIOperationPolicyClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, policyID PolicyIDName, parameters PolicyContract, options *APIOperationPolicyCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *APIOperationPolicyClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, policyID PolicyIDName, parameters PolicyContract, options *APIOperationPolicyCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/policies/{policyId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -74,44 +78,43 @@ func (client *APIOperationPolicyClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header.Set("If-Match", *options.IfMatch)
 	}
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *APIOperationPolicyClient) createOrUpdateHandleResponse(resp *azcore.Response) (APIOperationPolicyCreateOrUpdateResponse, error) {
-	result := APIOperationPolicyCreateOrUpdateResponse{RawResponse: resp.Response}
+func (client *APIOperationPolicyClient) createOrUpdateHandleResponse(resp *http.Response) (APIOperationPolicyCreateOrUpdateResponse, error) {
+	result := APIOperationPolicyCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.PolicyContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyContract); err != nil {
 		return APIOperationPolicyCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *APIOperationPolicyClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIOperationPolicyClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Deletes the policy configuration at the Api Operation.
@@ -121,18 +124,18 @@ func (client *APIOperationPolicyClient) Delete(ctx context.Context, resourceGrou
 	if err != nil {
 		return APIOperationPolicyDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return APIOperationPolicyDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return APIOperationPolicyDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return APIOperationPolicyDeleteResponse{RawResponse: resp.Response}, nil
+	return APIOperationPolicyDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *APIOperationPolicyClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, policyID PolicyIDName, ifMatch string, options *APIOperationPolicyDeleteOptions) (*azcore.Request, error) {
+func (client *APIOperationPolicyClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, policyID PolicyIDName, ifMatch string, options *APIOperationPolicyDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/policies/{policyId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -158,30 +161,29 @@ func (client *APIOperationPolicyClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("If-Match", ifMatch)
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("If-Match", ifMatch)
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *APIOperationPolicyClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIOperationPolicyClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Get the policy configuration at the API Operation level.
@@ -191,18 +193,18 @@ func (client *APIOperationPolicyClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return APIOperationPolicyGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return APIOperationPolicyGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return APIOperationPolicyGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *APIOperationPolicyClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, policyID PolicyIDName, options *APIOperationPolicyGetOptions) (*azcore.Request, error) {
+func (client *APIOperationPolicyClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, policyID PolicyIDName, options *APIOperationPolicyGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/policies/{policyId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -228,44 +230,43 @@ func (client *APIOperationPolicyClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Format != nil {
 		reqQP.Set("format", string(*options.Format))
 	}
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *APIOperationPolicyClient) getHandleResponse(resp *azcore.Response) (APIOperationPolicyGetResponse, error) {
-	result := APIOperationPolicyGetResponse{RawResponse: resp.Response}
+func (client *APIOperationPolicyClient) getHandleResponse(resp *http.Response) (APIOperationPolicyGetResponse, error) {
+	result := APIOperationPolicyGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.PolicyContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyContract); err != nil {
 		return APIOperationPolicyGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *APIOperationPolicyClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIOperationPolicyClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetEntityTag - Gets the entity state (Etag) version of the API operation policy specified by its identifier.
@@ -275,7 +276,7 @@ func (client *APIOperationPolicyClient) GetEntityTag(ctx context.Context, resour
 	if err != nil {
 		return APIOperationPolicyGetEntityTagResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return APIOperationPolicyGetEntityTagResponse{}, err
 	}
@@ -283,7 +284,7 @@ func (client *APIOperationPolicyClient) GetEntityTag(ctx context.Context, resour
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *APIOperationPolicyClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, policyID PolicyIDName, options *APIOperationPolicyGetEntityTagOptions) (*azcore.Request, error) {
+func (client *APIOperationPolicyClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, policyID PolicyIDName, options *APIOperationPolicyGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/policies/{policyId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -309,21 +310,20 @@ func (client *APIOperationPolicyClient) getEntityTagCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *APIOperationPolicyClient) getEntityTagHandleResponse(resp *azcore.Response) (APIOperationPolicyGetEntityTagResponse, error) {
-	result := APIOperationPolicyGetEntityTagResponse{RawResponse: resp.Response}
+func (client *APIOperationPolicyClient) getEntityTagHandleResponse(resp *http.Response) (APIOperationPolicyGetEntityTagResponse, error) {
+	result := APIOperationPolicyGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -340,18 +340,18 @@ func (client *APIOperationPolicyClient) ListByOperation(ctx context.Context, res
 	if err != nil {
 		return APIOperationPolicyListByOperationResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return APIOperationPolicyListByOperationResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return APIOperationPolicyListByOperationResponse{}, client.listByOperationHandleError(resp)
 	}
 	return client.listByOperationHandleResponse(resp)
 }
 
 // listByOperationCreateRequest creates the ListByOperation request.
-func (client *APIOperationPolicyClient) listByOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, options *APIOperationPolicyListByOperationOptions) (*azcore.Request, error) {
+func (client *APIOperationPolicyClient) listByOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, options *APIOperationPolicyListByOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/policies"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -373,36 +373,35 @@ func (client *APIOperationPolicyClient) listByOperationCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByOperationHandleResponse handles the ListByOperation response.
-func (client *APIOperationPolicyClient) listByOperationHandleResponse(resp *azcore.Response) (APIOperationPolicyListByOperationResponse, error) {
-	result := APIOperationPolicyListByOperationResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PolicyCollection); err != nil {
+func (client *APIOperationPolicyClient) listByOperationHandleResponse(resp *http.Response) (APIOperationPolicyListByOperationResponse, error) {
+	result := APIOperationPolicyListByOperationResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PolicyCollection); err != nil {
 		return APIOperationPolicyListByOperationResponse{}, err
 	}
 	return result, nil
 }
 
 // listByOperationHandleError handles the ListByOperation error response.
-func (client *APIOperationPolicyClient) listByOperationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIOperationPolicyClient) listByOperationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

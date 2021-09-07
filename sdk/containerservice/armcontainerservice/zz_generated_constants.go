@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,7 +8,10 @@
 
 package armcontainerservice
 
-const telemetryInfo = "azsdk-go-armcontainerservice/v0.1.0"
+const (
+	module  = "armcontainerservice"
+	version = "v0.2.0"
+)
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent pool restrictions and best practices,
 // see: https://docs.microsoft.com/azure/aks/use-system-pools

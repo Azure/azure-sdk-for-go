@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,93 +11,67 @@ package armmonitor
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // PrivateLinkScopedResourcesClient contains the methods for the PrivateLinkScopedResources group.
 // Don't use this type directly, use NewPrivateLinkScopedResourcesClient() instead.
 type PrivateLinkScopedResourcesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewPrivateLinkScopedResourcesClient creates a new instance of PrivateLinkScopedResourcesClient with the specified values.
-func NewPrivateLinkScopedResourcesClient(con *armcore.Connection, subscriptionID string) *PrivateLinkScopedResourcesClient {
-	return &PrivateLinkScopedResourcesClient{con: con, subscriptionID: subscriptionID}
+func NewPrivateLinkScopedResourcesClient(con *arm.Connection, subscriptionID string) *PrivateLinkScopedResourcesClient {
+	return &PrivateLinkScopedResourcesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Approve or reject a private endpoint connection with a given name.
 // If the operation fails it returns a generic error.
-func (client *PrivateLinkScopedResourcesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, scopeName string, name string, parameters ScopedResource, options *PrivateLinkScopedResourcesBeginCreateOrUpdateOptions) (ScopedResourcePollerResponse, error) {
+func (client *PrivateLinkScopedResourcesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, scopeName string, name string, parameters ScopedResource, options *PrivateLinkScopedResourcesBeginCreateOrUpdateOptions) (PrivateLinkScopedResourcesCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, scopeName, name, parameters, options)
 	if err != nil {
-		return ScopedResourcePollerResponse{}, err
+		return PrivateLinkScopedResourcesCreateOrUpdatePollerResponse{}, err
 	}
-	result := ScopedResourcePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("PrivateLinkScopedResourcesClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return ScopedResourcePollerResponse{}, err
-	}
-	poller := &scopedResourcePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ScopedResourceResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new ScopedResourcePoller from the specified resume token.
-// token - The value must come from a previous call to ScopedResourcePoller.ResumeToken().
-func (client *PrivateLinkScopedResourcesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (ScopedResourcePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("PrivateLinkScopedResourcesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return ScopedResourcePollerResponse{}, err
-	}
-	poller := &scopedResourcePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ScopedResourcePollerResponse{}, err
-	}
-	result := ScopedResourcePollerResponse{
+	result := PrivateLinkScopedResourcesCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ScopedResourceResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("PrivateLinkScopedResourcesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return PrivateLinkScopedResourcesCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &PrivateLinkScopedResourcesCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Approve or reject a private endpoint connection with a given name.
 // If the operation fails it returns a generic error.
-func (client *PrivateLinkScopedResourcesClient) createOrUpdate(ctx context.Context, resourceGroupName string, scopeName string, name string, parameters ScopedResource, options *PrivateLinkScopedResourcesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *PrivateLinkScopedResourcesClient) createOrUpdate(ctx context.Context, resourceGroupName string, scopeName string, name string, parameters ScopedResource, options *PrivateLinkScopedResourcesBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, scopeName, name, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PrivateLinkScopedResourcesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, name string, parameters ScopedResource, options *PrivateLinkScopedResourcesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *PrivateLinkScopedResourcesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, name string, parameters ScopedResource, options *PrivateLinkScopedResourcesBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes/{scopeName}/scopedResources/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -114,97 +89,68 @@ func (client *PrivateLinkScopedResourcesClient) createOrUpdateCreateRequest(ctx 
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-10-17-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *PrivateLinkScopedResourcesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PrivateLinkScopedResourcesClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginDelete - Deletes a private endpoint connection with a given name.
 // If the operation fails it returns a generic error.
-func (client *PrivateLinkScopedResourcesClient) BeginDelete(ctx context.Context, resourceGroupName string, scopeName string, name string, options *PrivateLinkScopedResourcesBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *PrivateLinkScopedResourcesClient) BeginDelete(ctx context.Context, resourceGroupName string, scopeName string, name string, options *PrivateLinkScopedResourcesBeginDeleteOptions) (PrivateLinkScopedResourcesDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, scopeName, name, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return PrivateLinkScopedResourcesDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("PrivateLinkScopedResourcesClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *PrivateLinkScopedResourcesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("PrivateLinkScopedResourcesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := PrivateLinkScopedResourcesDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("PrivateLinkScopedResourcesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return PrivateLinkScopedResourcesDeletePollerResponse{}, err
+	}
+	result.Poller = &PrivateLinkScopedResourcesDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a private endpoint connection with a given name.
 // If the operation fails it returns a generic error.
-func (client *PrivateLinkScopedResourcesClient) deleteOperation(ctx context.Context, resourceGroupName string, scopeName string, name string, options *PrivateLinkScopedResourcesBeginDeleteOptions) (*azcore.Response, error) {
+func (client *PrivateLinkScopedResourcesClient) deleteOperation(ctx context.Context, resourceGroupName string, scopeName string, name string, options *PrivateLinkScopedResourcesBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, scopeName, name, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PrivateLinkScopedResourcesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, name string, options *PrivateLinkScopedResourcesBeginDeleteOptions) (*azcore.Request, error) {
+func (client *PrivateLinkScopedResourcesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, name string, options *PrivateLinkScopedResourcesBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes/{scopeName}/scopedResources/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -222,48 +168,47 @@ func (client *PrivateLinkScopedResourcesClient) deleteCreateRequest(ctx context.
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-10-17-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *PrivateLinkScopedResourcesClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PrivateLinkScopedResourcesClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a scoped resource in a private link scope.
 // If the operation fails it returns a generic error.
-func (client *PrivateLinkScopedResourcesClient) Get(ctx context.Context, resourceGroupName string, scopeName string, name string, options *PrivateLinkScopedResourcesGetOptions) (ScopedResourceResponse, error) {
+func (client *PrivateLinkScopedResourcesClient) Get(ctx context.Context, resourceGroupName string, scopeName string, name string, options *PrivateLinkScopedResourcesGetOptions) (PrivateLinkScopedResourcesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, scopeName, name, options)
 	if err != nil {
-		return ScopedResourceResponse{}, err
+		return PrivateLinkScopedResourcesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ScopedResourceResponse{}, err
+		return PrivateLinkScopedResourcesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return ScopedResourceResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return PrivateLinkScopedResourcesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateLinkScopedResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, name string, options *PrivateLinkScopedResourcesGetOptions) (*azcore.Request, error) {
+func (client *PrivateLinkScopedResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, name string, options *PrivateLinkScopedResourcesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes/{scopeName}/scopedResources/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -281,58 +226,54 @@ func (client *PrivateLinkScopedResourcesClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-10-17-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateLinkScopedResourcesClient) getHandleResponse(resp *azcore.Response) (ScopedResourceResponse, error) {
-	var val *ScopedResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ScopedResourceResponse{}, err
+func (client *PrivateLinkScopedResourcesClient) getHandleResponse(resp *http.Response) (PrivateLinkScopedResourcesGetResponse, error) {
+	result := PrivateLinkScopedResourcesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ScopedResource); err != nil {
+		return PrivateLinkScopedResourcesGetResponse{}, err
 	}
-	return ScopedResourceResponse{RawResponse: resp.Response, ScopedResource: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *PrivateLinkScopedResourcesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PrivateLinkScopedResourcesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByPrivateLinkScope - Gets all private endpoint connections on a private link scope.
 // If the operation fails it returns a generic error.
-func (client *PrivateLinkScopedResourcesClient) ListByPrivateLinkScope(resourceGroupName string, scopeName string, options *PrivateLinkScopedResourcesListByPrivateLinkScopeOptions) ScopedResourceListResultPager {
-	return &scopedResourceListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *PrivateLinkScopedResourcesClient) ListByPrivateLinkScope(resourceGroupName string, scopeName string, options *PrivateLinkScopedResourcesListByPrivateLinkScopeOptions) *PrivateLinkScopedResourcesListByPrivateLinkScopePager {
+	return &PrivateLinkScopedResourcesListByPrivateLinkScopePager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByPrivateLinkScopeCreateRequest(ctx, resourceGroupName, scopeName, options)
 		},
-		responder: client.listByPrivateLinkScopeHandleResponse,
-		errorer:   client.listByPrivateLinkScopeHandleError,
-		advancer: func(ctx context.Context, resp ScopedResourceListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ScopedResourceListResult.NextLink)
+		advancer: func(ctx context.Context, resp PrivateLinkScopedResourcesListByPrivateLinkScopeResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ScopedResourceListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listByPrivateLinkScopeCreateRequest creates the ListByPrivateLinkScope request.
-func (client *PrivateLinkScopedResourcesClient) listByPrivateLinkScopeCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, options *PrivateLinkScopedResourcesListByPrivateLinkScopeOptions) (*azcore.Request, error) {
+func (client *PrivateLinkScopedResourcesClient) listByPrivateLinkScopeCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, options *PrivateLinkScopedResourcesListByPrivateLinkScopeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/privateLinkScopes/{scopeName}/scopedResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -346,35 +287,34 @@ func (client *PrivateLinkScopedResourcesClient) listByPrivateLinkScopeCreateRequ
 		return nil, errors.New("parameter scopeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scopeName}", url.PathEscape(scopeName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-10-17-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByPrivateLinkScopeHandleResponse handles the ListByPrivateLinkScope response.
-func (client *PrivateLinkScopedResourcesClient) listByPrivateLinkScopeHandleResponse(resp *azcore.Response) (ScopedResourceListResultResponse, error) {
-	var val *ScopedResourceListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ScopedResourceListResultResponse{}, err
+func (client *PrivateLinkScopedResourcesClient) listByPrivateLinkScopeHandleResponse(resp *http.Response) (PrivateLinkScopedResourcesListByPrivateLinkScopeResponse, error) {
+	result := PrivateLinkScopedResourcesListByPrivateLinkScopeResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ScopedResourceListResult); err != nil {
+		return PrivateLinkScopedResourcesListByPrivateLinkScopeResponse{}, err
 	}
-	return ScopedResourceListResultResponse{RawResponse: resp.Response, ScopedResourceListResult: val}, nil
+	return result, nil
 }
 
 // listByPrivateLinkScopeHandleError handles the ListByPrivateLinkScope error response.
-func (client *PrivateLinkScopedResourcesClient) listByPrivateLinkScopeHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PrivateLinkScopedResourcesClient) listByPrivateLinkScopeHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

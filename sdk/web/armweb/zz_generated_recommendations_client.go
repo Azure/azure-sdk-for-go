@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RecommendationsClient contains the methods for the Recommendations group.
 // Don't use this type directly, use NewRecommendationsClient() instead.
 type RecommendationsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewRecommendationsClient creates a new instance of RecommendationsClient with the specified values.
-func NewRecommendationsClient(con *armcore.Connection, subscriptionID string) *RecommendationsClient {
-	return &RecommendationsClient{con: con, subscriptionID: subscriptionID}
+func NewRecommendationsClient(con *arm.Connection, subscriptionID string) *RecommendationsClient {
+	return &RecommendationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // DisableAllForHostingEnvironment - Description for Disable all recommendations for an app.
@@ -38,18 +42,18 @@ func (client *RecommendationsClient) DisableAllForHostingEnvironment(ctx context
 	if err != nil {
 		return RecommendationsDisableAllForHostingEnvironmentResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecommendationsDisableAllForHostingEnvironmentResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return RecommendationsDisableAllForHostingEnvironmentResponse{}, client.disableAllForHostingEnvironmentHandleError(resp)
 	}
-	return RecommendationsDisableAllForHostingEnvironmentResponse{RawResponse: resp.Response}, nil
+	return RecommendationsDisableAllForHostingEnvironmentResponse{RawResponse: resp}, nil
 }
 
 // disableAllForHostingEnvironmentCreateRequest creates the DisableAllForHostingEnvironment request.
-func (client *RecommendationsClient) disableAllForHostingEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, hostingEnvironmentName string, options *RecommendationsDisableAllForHostingEnvironmentOptions) (*azcore.Request, error) {
+func (client *RecommendationsClient) disableAllForHostingEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, hostingEnvironmentName string, options *RecommendationsDisableAllForHostingEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/disable"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -63,30 +67,29 @@ func (client *RecommendationsClient) disableAllForHostingEnvironmentCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("environmentName", environmentName)
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // disableAllForHostingEnvironmentHandleError handles the DisableAllForHostingEnvironment error response.
-func (client *RecommendationsClient) disableAllForHostingEnvironmentHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecommendationsClient) disableAllForHostingEnvironmentHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // DisableAllForWebApp - Description for Disable all recommendations for an app.
@@ -96,18 +99,18 @@ func (client *RecommendationsClient) DisableAllForWebApp(ctx context.Context, re
 	if err != nil {
 		return RecommendationsDisableAllForWebAppResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecommendationsDisableAllForWebAppResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return RecommendationsDisableAllForWebAppResponse{}, client.disableAllForWebAppHandleError(resp)
 	}
-	return RecommendationsDisableAllForWebAppResponse{RawResponse: resp.Response}, nil
+	return RecommendationsDisableAllForWebAppResponse{RawResponse: resp}, nil
 }
 
 // disableAllForWebAppCreateRequest creates the DisableAllForWebApp request.
-func (client *RecommendationsClient) disableAllForWebAppCreateRequest(ctx context.Context, resourceGroupName string, siteName string, options *RecommendationsDisableAllForWebAppOptions) (*azcore.Request, error) {
+func (client *RecommendationsClient) disableAllForWebAppCreateRequest(ctx context.Context, resourceGroupName string, siteName string, options *RecommendationsDisableAllForWebAppOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/disable"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -121,29 +124,28 @@ func (client *RecommendationsClient) disableAllForWebAppCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // disableAllForWebAppHandleError handles the DisableAllForWebApp error response.
-func (client *RecommendationsClient) disableAllForWebAppHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecommendationsClient) disableAllForWebAppHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // DisableRecommendationForHostingEnvironment - Description for Disables the specific rule for a web site permanently.
@@ -153,18 +155,18 @@ func (client *RecommendationsClient) DisableRecommendationForHostingEnvironment(
 	if err != nil {
 		return RecommendationsDisableRecommendationForHostingEnvironmentResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecommendationsDisableRecommendationForHostingEnvironmentResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RecommendationsDisableRecommendationForHostingEnvironmentResponse{}, client.disableRecommendationForHostingEnvironmentHandleError(resp)
 	}
-	return RecommendationsDisableRecommendationForHostingEnvironmentResponse{RawResponse: resp.Response}, nil
+	return RecommendationsDisableRecommendationForHostingEnvironmentResponse{RawResponse: resp}, nil
 }
 
 // disableRecommendationForHostingEnvironmentCreateRequest creates the DisableRecommendationForHostingEnvironment request.
-func (client *RecommendationsClient) disableRecommendationForHostingEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, name string, hostingEnvironmentName string, options *RecommendationsDisableRecommendationForHostingEnvironmentOptions) (*azcore.Request, error) {
+func (client *RecommendationsClient) disableRecommendationForHostingEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, name string, hostingEnvironmentName string, options *RecommendationsDisableRecommendationForHostingEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/{name}/disable"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -182,30 +184,29 @@ func (client *RecommendationsClient) disableRecommendationForHostingEnvironmentC
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("environmentName", environmentName)
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // disableRecommendationForHostingEnvironmentHandleError handles the DisableRecommendationForHostingEnvironment error response.
-func (client *RecommendationsClient) disableRecommendationForHostingEnvironmentHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecommendationsClient) disableRecommendationForHostingEnvironmentHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // DisableRecommendationForSite - Description for Disables the specific rule for a web site permanently.
@@ -215,18 +216,18 @@ func (client *RecommendationsClient) DisableRecommendationForSite(ctx context.Co
 	if err != nil {
 		return RecommendationsDisableRecommendationForSiteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecommendationsDisableRecommendationForSiteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RecommendationsDisableRecommendationForSiteResponse{}, client.disableRecommendationForSiteHandleError(resp)
 	}
-	return RecommendationsDisableRecommendationForSiteResponse{RawResponse: resp.Response}, nil
+	return RecommendationsDisableRecommendationForSiteResponse{RawResponse: resp}, nil
 }
 
 // disableRecommendationForSiteCreateRequest creates the DisableRecommendationForSite request.
-func (client *RecommendationsClient) disableRecommendationForSiteCreateRequest(ctx context.Context, resourceGroupName string, siteName string, name string, options *RecommendationsDisableRecommendationForSiteOptions) (*azcore.Request, error) {
+func (client *RecommendationsClient) disableRecommendationForSiteCreateRequest(ctx context.Context, resourceGroupName string, siteName string, name string, options *RecommendationsDisableRecommendationForSiteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/{name}/disable"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -244,29 +245,28 @@ func (client *RecommendationsClient) disableRecommendationForSiteCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // disableRecommendationForSiteHandleError handles the DisableRecommendationForSite error response.
-func (client *RecommendationsClient) disableRecommendationForSiteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecommendationsClient) disableRecommendationForSiteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // DisableRecommendationForSubscription - Description for Disables the specified rule so it will not apply to a subscription in the future.
@@ -276,18 +276,18 @@ func (client *RecommendationsClient) DisableRecommendationForSubscription(ctx co
 	if err != nil {
 		return RecommendationsDisableRecommendationForSubscriptionResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecommendationsDisableRecommendationForSubscriptionResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RecommendationsDisableRecommendationForSubscriptionResponse{}, client.disableRecommendationForSubscriptionHandleError(resp)
 	}
-	return RecommendationsDisableRecommendationForSubscriptionResponse{RawResponse: resp.Response}, nil
+	return RecommendationsDisableRecommendationForSubscriptionResponse{RawResponse: resp}, nil
 }
 
 // disableRecommendationForSubscriptionCreateRequest creates the DisableRecommendationForSubscription request.
-func (client *RecommendationsClient) disableRecommendationForSubscriptionCreateRequest(ctx context.Context, name string, options *RecommendationsDisableRecommendationForSubscriptionOptions) (*azcore.Request, error) {
+func (client *RecommendationsClient) disableRecommendationForSubscriptionCreateRequest(ctx context.Context, name string, options *RecommendationsDisableRecommendationForSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/{name}/disable"
 	if name == "" {
 		return nil, errors.New("parameter name cannot be empty")
@@ -297,29 +297,28 @@ func (client *RecommendationsClient) disableRecommendationForSubscriptionCreateR
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // disableRecommendationForSubscriptionHandleError handles the DisableRecommendationForSubscription error response.
-func (client *RecommendationsClient) disableRecommendationForSubscriptionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecommendationsClient) disableRecommendationForSubscriptionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetRuleDetailsByHostingEnvironment - Description for Get a recommendation rule for an app.
@@ -329,18 +328,18 @@ func (client *RecommendationsClient) GetRuleDetailsByHostingEnvironment(ctx cont
 	if err != nil {
 		return RecommendationsGetRuleDetailsByHostingEnvironmentResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecommendationsGetRuleDetailsByHostingEnvironmentResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RecommendationsGetRuleDetailsByHostingEnvironmentResponse{}, client.getRuleDetailsByHostingEnvironmentHandleError(resp)
 	}
 	return client.getRuleDetailsByHostingEnvironmentHandleResponse(resp)
 }
 
 // getRuleDetailsByHostingEnvironmentCreateRequest creates the GetRuleDetailsByHostingEnvironment request.
-func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, hostingEnvironmentName string, name string, options *RecommendationsGetRuleDetailsByHostingEnvironmentOptions) (*azcore.Request, error) {
+func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, hostingEnvironmentName string, name string, options *RecommendationsGetRuleDetailsByHostingEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -358,44 +357,43 @@ func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.UpdateSeen != nil {
 		reqQP.Set("updateSeen", strconv.FormatBool(*options.UpdateSeen))
 	}
 	if options != nil && options.RecommendationID != nil {
 		reqQP.Set("recommendationId", *options.RecommendationID)
 	}
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getRuleDetailsByHostingEnvironmentHandleResponse handles the GetRuleDetailsByHostingEnvironment response.
-func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentHandleResponse(resp *azcore.Response) (RecommendationsGetRuleDetailsByHostingEnvironmentResponse, error) {
-	result := RecommendationsGetRuleDetailsByHostingEnvironmentResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RecommendationRule); err != nil {
+func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentHandleResponse(resp *http.Response) (RecommendationsGetRuleDetailsByHostingEnvironmentResponse, error) {
+	result := RecommendationsGetRuleDetailsByHostingEnvironmentResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationRule); err != nil {
 		return RecommendationsGetRuleDetailsByHostingEnvironmentResponse{}, err
 	}
 	return result, nil
 }
 
 // getRuleDetailsByHostingEnvironmentHandleError handles the GetRuleDetailsByHostingEnvironment error response.
-func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecommendationsClient) getRuleDetailsByHostingEnvironmentHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetRuleDetailsByWebApp - Description for Get a recommendation rule for an app.
@@ -405,18 +403,18 @@ func (client *RecommendationsClient) GetRuleDetailsByWebApp(ctx context.Context,
 	if err != nil {
 		return RecommendationsGetRuleDetailsByWebAppResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecommendationsGetRuleDetailsByWebAppResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return RecommendationsGetRuleDetailsByWebAppResponse{}, client.getRuleDetailsByWebAppHandleError(resp)
 	}
 	return client.getRuleDetailsByWebAppHandleResponse(resp)
 }
 
 // getRuleDetailsByWebAppCreateRequest creates the GetRuleDetailsByWebApp request.
-func (client *RecommendationsClient) getRuleDetailsByWebAppCreateRequest(ctx context.Context, resourceGroupName string, siteName string, name string, options *RecommendationsGetRuleDetailsByWebAppOptions) (*azcore.Request, error) {
+func (client *RecommendationsClient) getRuleDetailsByWebAppCreateRequest(ctx context.Context, resourceGroupName string, siteName string, name string, options *RecommendationsGetRuleDetailsByWebAppOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -434,125 +432,123 @@ func (client *RecommendationsClient) getRuleDetailsByWebAppCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.UpdateSeen != nil {
 		reqQP.Set("updateSeen", strconv.FormatBool(*options.UpdateSeen))
 	}
 	if options != nil && options.RecommendationID != nil {
 		reqQP.Set("recommendationId", *options.RecommendationID)
 	}
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getRuleDetailsByWebAppHandleResponse handles the GetRuleDetailsByWebApp response.
-func (client *RecommendationsClient) getRuleDetailsByWebAppHandleResponse(resp *azcore.Response) (RecommendationsGetRuleDetailsByWebAppResponse, error) {
-	result := RecommendationsGetRuleDetailsByWebAppResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RecommendationRule); err != nil {
+func (client *RecommendationsClient) getRuleDetailsByWebAppHandleResponse(resp *http.Response) (RecommendationsGetRuleDetailsByWebAppResponse, error) {
+	result := RecommendationsGetRuleDetailsByWebAppResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationRule); err != nil {
 		return RecommendationsGetRuleDetailsByWebAppResponse{}, err
 	}
 	return result, nil
 }
 
 // getRuleDetailsByWebAppHandleError handles the GetRuleDetailsByWebApp error response.
-func (client *RecommendationsClient) getRuleDetailsByWebAppHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecommendationsClient) getRuleDetailsByWebAppHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Description for List all recommendations for a subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) List(options *RecommendationsListOptions) RecommendationsListPager {
-	return &recommendationsListPager{
+func (client *RecommendationsClient) List(options *RecommendationsListOptions) *RecommendationsListPager {
+	return &RecommendationsListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp RecommendationsListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
+		advancer: func(ctx context.Context, resp RecommendationsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *RecommendationsClient) listCreateRequest(ctx context.Context, options *RecommendationsListOptions) (*azcore.Request, error) {
+func (client *RecommendationsClient) listCreateRequest(ctx context.Context, options *RecommendationsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Featured != nil {
 		reqQP.Set("featured", strconv.FormatBool(*options.Featured))
 	}
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	unencodedParams := []string{req.URL.RawQuery}
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	unencodedParams := []string{req.Raw().URL.RawQuery}
 	if options != nil && options.Filter != nil {
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
-	req.URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RecommendationsClient) listHandleResponse(resp *azcore.Response) (RecommendationsListResponse, error) {
-	result := RecommendationsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RecommendationCollection); err != nil {
+func (client *RecommendationsClient) listHandleResponse(resp *http.Response) (RecommendationsListResponse, error) {
+	result := RecommendationsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
 		return RecommendationsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *RecommendationsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecommendationsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListHistoryForHostingEnvironment - Description for Get past recommendations for an app, optionally specified by the time range.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) ListHistoryForHostingEnvironment(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsListHistoryForHostingEnvironmentOptions) RecommendationsListHistoryForHostingEnvironmentPager {
-	return &recommendationsListHistoryForHostingEnvironmentPager{
+func (client *RecommendationsClient) ListHistoryForHostingEnvironment(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsListHistoryForHostingEnvironmentOptions) *RecommendationsListHistoryForHostingEnvironmentPager {
+	return &RecommendationsListHistoryForHostingEnvironmentPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listHistoryForHostingEnvironmentCreateRequest(ctx, resourceGroupName, hostingEnvironmentName, options)
 		},
-		advancer: func(ctx context.Context, resp RecommendationsListHistoryForHostingEnvironmentResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
+		advancer: func(ctx context.Context, resp RecommendationsListHistoryForHostingEnvironmentResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
 		},
 	}
 }
 
 // listHistoryForHostingEnvironmentCreateRequest creates the ListHistoryForHostingEnvironment request.
-func (client *RecommendationsClient) listHistoryForHostingEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, hostingEnvironmentName string, options *RecommendationsListHistoryForHostingEnvironmentOptions) (*azcore.Request, error) {
+func (client *RecommendationsClient) listHistoryForHostingEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, hostingEnvironmentName string, options *RecommendationsListHistoryForHostingEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendationHistory"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -566,64 +562,63 @@ func (client *RecommendationsClient) listHistoryForHostingEnvironmentCreateReque
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.ExpiredOnly != nil {
 		reqQP.Set("expiredOnly", strconv.FormatBool(*options.ExpiredOnly))
 	}
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	unencodedParams := []string{req.URL.RawQuery}
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	unencodedParams := []string{req.Raw().URL.RawQuery}
 	if options != nil && options.Filter != nil {
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
-	req.URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHistoryForHostingEnvironmentHandleResponse handles the ListHistoryForHostingEnvironment response.
-func (client *RecommendationsClient) listHistoryForHostingEnvironmentHandleResponse(resp *azcore.Response) (RecommendationsListHistoryForHostingEnvironmentResponse, error) {
-	result := RecommendationsListHistoryForHostingEnvironmentResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RecommendationCollection); err != nil {
+func (client *RecommendationsClient) listHistoryForHostingEnvironmentHandleResponse(resp *http.Response) (RecommendationsListHistoryForHostingEnvironmentResponse, error) {
+	result := RecommendationsListHistoryForHostingEnvironmentResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
 		return RecommendationsListHistoryForHostingEnvironmentResponse{}, err
 	}
 	return result, nil
 }
 
 // listHistoryForHostingEnvironmentHandleError handles the ListHistoryForHostingEnvironment error response.
-func (client *RecommendationsClient) listHistoryForHostingEnvironmentHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecommendationsClient) listHistoryForHostingEnvironmentHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListHistoryForWebApp - Description for Get past recommendations for an app, optionally specified by the time range.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) ListHistoryForWebApp(resourceGroupName string, siteName string, options *RecommendationsListHistoryForWebAppOptions) RecommendationsListHistoryForWebAppPager {
-	return &recommendationsListHistoryForWebAppPager{
+func (client *RecommendationsClient) ListHistoryForWebApp(resourceGroupName string, siteName string, options *RecommendationsListHistoryForWebAppOptions) *RecommendationsListHistoryForWebAppPager {
+	return &RecommendationsListHistoryForWebAppPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listHistoryForWebAppCreateRequest(ctx, resourceGroupName, siteName, options)
 		},
-		advancer: func(ctx context.Context, resp RecommendationsListHistoryForWebAppResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
+		advancer: func(ctx context.Context, resp RecommendationsListHistoryForWebAppResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
 		},
 	}
 }
 
 // listHistoryForWebAppCreateRequest creates the ListHistoryForWebApp request.
-func (client *RecommendationsClient) listHistoryForWebAppCreateRequest(ctx context.Context, resourceGroupName string, siteName string, options *RecommendationsListHistoryForWebAppOptions) (*azcore.Request, error) {
+func (client *RecommendationsClient) listHistoryForWebAppCreateRequest(ctx context.Context, resourceGroupName string, siteName string, options *RecommendationsListHistoryForWebAppOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendationHistory"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -637,64 +632,63 @@ func (client *RecommendationsClient) listHistoryForWebAppCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.ExpiredOnly != nil {
 		reqQP.Set("expiredOnly", strconv.FormatBool(*options.ExpiredOnly))
 	}
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	unencodedParams := []string{req.URL.RawQuery}
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	unencodedParams := []string{req.Raw().URL.RawQuery}
 	if options != nil && options.Filter != nil {
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
-	req.URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHistoryForWebAppHandleResponse handles the ListHistoryForWebApp response.
-func (client *RecommendationsClient) listHistoryForWebAppHandleResponse(resp *azcore.Response) (RecommendationsListHistoryForWebAppResponse, error) {
-	result := RecommendationsListHistoryForWebAppResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RecommendationCollection); err != nil {
+func (client *RecommendationsClient) listHistoryForWebAppHandleResponse(resp *http.Response) (RecommendationsListHistoryForWebAppResponse, error) {
+	result := RecommendationsListHistoryForWebAppResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
 		return RecommendationsListHistoryForWebAppResponse{}, err
 	}
 	return result, nil
 }
 
 // listHistoryForWebAppHandleError handles the ListHistoryForWebApp error response.
-func (client *RecommendationsClient) listHistoryForWebAppHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecommendationsClient) listHistoryForWebAppHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListRecommendedRulesForHostingEnvironment - Description for Get all recommendations for a hosting environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) ListRecommendedRulesForHostingEnvironment(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsListRecommendedRulesForHostingEnvironmentOptions) RecommendationsListRecommendedRulesForHostingEnvironmentPager {
-	return &recommendationsListRecommendedRulesForHostingEnvironmentPager{
+func (client *RecommendationsClient) ListRecommendedRulesForHostingEnvironment(resourceGroupName string, hostingEnvironmentName string, options *RecommendationsListRecommendedRulesForHostingEnvironmentOptions) *RecommendationsListRecommendedRulesForHostingEnvironmentPager {
+	return &RecommendationsListRecommendedRulesForHostingEnvironmentPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listRecommendedRulesForHostingEnvironmentCreateRequest(ctx, resourceGroupName, hostingEnvironmentName, options)
 		},
-		advancer: func(ctx context.Context, resp RecommendationsListRecommendedRulesForHostingEnvironmentResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
+		advancer: func(ctx context.Context, resp RecommendationsListRecommendedRulesForHostingEnvironmentResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
 		},
 	}
 }
 
 // listRecommendedRulesForHostingEnvironmentCreateRequest creates the ListRecommendedRulesForHostingEnvironment request.
-func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, hostingEnvironmentName string, options *RecommendationsListRecommendedRulesForHostingEnvironmentOptions) (*azcore.Request, error) {
+func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, hostingEnvironmentName string, options *RecommendationsListRecommendedRulesForHostingEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -708,64 +702,63 @@ func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentCr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Featured != nil {
 		reqQP.Set("featured", strconv.FormatBool(*options.Featured))
 	}
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	unencodedParams := []string{req.URL.RawQuery}
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	unencodedParams := []string{req.Raw().URL.RawQuery}
 	if options != nil && options.Filter != nil {
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
-	req.URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listRecommendedRulesForHostingEnvironmentHandleResponse handles the ListRecommendedRulesForHostingEnvironment response.
-func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentHandleResponse(resp *azcore.Response) (RecommendationsListRecommendedRulesForHostingEnvironmentResponse, error) {
-	result := RecommendationsListRecommendedRulesForHostingEnvironmentResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RecommendationCollection); err != nil {
+func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentHandleResponse(resp *http.Response) (RecommendationsListRecommendedRulesForHostingEnvironmentResponse, error) {
+	result := RecommendationsListRecommendedRulesForHostingEnvironmentResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
 		return RecommendationsListRecommendedRulesForHostingEnvironmentResponse{}, err
 	}
 	return result, nil
 }
 
 // listRecommendedRulesForHostingEnvironmentHandleError handles the ListRecommendedRulesForHostingEnvironment error response.
-func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecommendationsClient) listRecommendedRulesForHostingEnvironmentHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListRecommendedRulesForWebApp - Description for Get all recommendations for an app.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *RecommendationsClient) ListRecommendedRulesForWebApp(resourceGroupName string, siteName string, options *RecommendationsListRecommendedRulesForWebAppOptions) RecommendationsListRecommendedRulesForWebAppPager {
-	return &recommendationsListRecommendedRulesForWebAppPager{
+func (client *RecommendationsClient) ListRecommendedRulesForWebApp(resourceGroupName string, siteName string, options *RecommendationsListRecommendedRulesForWebAppOptions) *RecommendationsListRecommendedRulesForWebAppPager {
+	return &RecommendationsListRecommendedRulesForWebAppPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listRecommendedRulesForWebAppCreateRequest(ctx, resourceGroupName, siteName, options)
 		},
-		advancer: func(ctx context.Context, resp RecommendationsListRecommendedRulesForWebAppResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
+		advancer: func(ctx context.Context, resp RecommendationsListRecommendedRulesForWebAppResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecommendationCollection.NextLink)
 		},
 	}
 }
 
 // listRecommendedRulesForWebAppCreateRequest creates the ListRecommendedRulesForWebApp request.
-func (client *RecommendationsClient) listRecommendedRulesForWebAppCreateRequest(ctx context.Context, resourceGroupName string, siteName string, options *RecommendationsListRecommendedRulesForWebAppOptions) (*azcore.Request, error) {
+func (client *RecommendationsClient) listRecommendedRulesForWebAppCreateRequest(ctx context.Context, resourceGroupName string, siteName string, options *RecommendationsListRecommendedRulesForWebAppOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -779,46 +772,45 @@ func (client *RecommendationsClient) listRecommendedRulesForWebAppCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Featured != nil {
 		reqQP.Set("featured", strconv.FormatBool(*options.Featured))
 	}
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	unencodedParams := []string{req.URL.RawQuery}
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	unencodedParams := []string{req.Raw().URL.RawQuery}
 	if options != nil && options.Filter != nil {
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
-	req.URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listRecommendedRulesForWebAppHandleResponse handles the ListRecommendedRulesForWebApp response.
-func (client *RecommendationsClient) listRecommendedRulesForWebAppHandleResponse(resp *azcore.Response) (RecommendationsListRecommendedRulesForWebAppResponse, error) {
-	result := RecommendationsListRecommendedRulesForWebAppResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RecommendationCollection); err != nil {
+func (client *RecommendationsClient) listRecommendedRulesForWebAppHandleResponse(resp *http.Response) (RecommendationsListRecommendedRulesForWebAppResponse, error) {
+	result := RecommendationsListRecommendedRulesForWebAppResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
 		return RecommendationsListRecommendedRulesForWebAppResponse{}, err
 	}
 	return result, nil
 }
 
 // listRecommendedRulesForWebAppHandleError handles the ListRecommendedRulesForWebApp error response.
-func (client *RecommendationsClient) listRecommendedRulesForWebAppHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecommendationsClient) listRecommendedRulesForWebAppHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ResetAllFilters - Description for Reset all recommendation opt-out settings for a subscription.
@@ -828,46 +820,45 @@ func (client *RecommendationsClient) ResetAllFilters(ctx context.Context, option
 	if err != nil {
 		return RecommendationsResetAllFiltersResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecommendationsResetAllFiltersResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return RecommendationsResetAllFiltersResponse{}, client.resetAllFiltersHandleError(resp)
 	}
-	return RecommendationsResetAllFiltersResponse{RawResponse: resp.Response}, nil
+	return RecommendationsResetAllFiltersResponse{RawResponse: resp}, nil
 }
 
 // resetAllFiltersCreateRequest creates the ResetAllFilters request.
-func (client *RecommendationsClient) resetAllFiltersCreateRequest(ctx context.Context, options *RecommendationsResetAllFiltersOptions) (*azcore.Request, error) {
+func (client *RecommendationsClient) resetAllFiltersCreateRequest(ctx context.Context, options *RecommendationsResetAllFiltersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/reset"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // resetAllFiltersHandleError handles the ResetAllFilters error response.
-func (client *RecommendationsClient) resetAllFiltersHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecommendationsClient) resetAllFiltersHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ResetAllFiltersForHostingEnvironment - Description for Reset all recommendation opt-out settings for an app.
@@ -877,18 +868,18 @@ func (client *RecommendationsClient) ResetAllFiltersForHostingEnvironment(ctx co
 	if err != nil {
 		return RecommendationsResetAllFiltersForHostingEnvironmentResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecommendationsResetAllFiltersForHostingEnvironmentResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return RecommendationsResetAllFiltersForHostingEnvironmentResponse{}, client.resetAllFiltersForHostingEnvironmentHandleError(resp)
 	}
-	return RecommendationsResetAllFiltersForHostingEnvironmentResponse{RawResponse: resp.Response}, nil
+	return RecommendationsResetAllFiltersForHostingEnvironmentResponse{RawResponse: resp}, nil
 }
 
 // resetAllFiltersForHostingEnvironmentCreateRequest creates the ResetAllFiltersForHostingEnvironment request.
-func (client *RecommendationsClient) resetAllFiltersForHostingEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, hostingEnvironmentName string, options *RecommendationsResetAllFiltersForHostingEnvironmentOptions) (*azcore.Request, error) {
+func (client *RecommendationsClient) resetAllFiltersForHostingEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, hostingEnvironmentName string, options *RecommendationsResetAllFiltersForHostingEnvironmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/reset"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -902,30 +893,29 @@ func (client *RecommendationsClient) resetAllFiltersForHostingEnvironmentCreateR
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("environmentName", environmentName)
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // resetAllFiltersForHostingEnvironmentHandleError handles the ResetAllFiltersForHostingEnvironment error response.
-func (client *RecommendationsClient) resetAllFiltersForHostingEnvironmentHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecommendationsClient) resetAllFiltersForHostingEnvironmentHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ResetAllFiltersForWebApp - Description for Reset all recommendation opt-out settings for an app.
@@ -935,18 +925,18 @@ func (client *RecommendationsClient) ResetAllFiltersForWebApp(ctx context.Contex
 	if err != nil {
 		return RecommendationsResetAllFiltersForWebAppResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return RecommendationsResetAllFiltersForWebAppResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return RecommendationsResetAllFiltersForWebAppResponse{}, client.resetAllFiltersForWebAppHandleError(resp)
 	}
-	return RecommendationsResetAllFiltersForWebAppResponse{RawResponse: resp.Response}, nil
+	return RecommendationsResetAllFiltersForWebAppResponse{RawResponse: resp}, nil
 }
 
 // resetAllFiltersForWebAppCreateRequest creates the ResetAllFiltersForWebApp request.
-func (client *RecommendationsClient) resetAllFiltersForWebAppCreateRequest(ctx context.Context, resourceGroupName string, siteName string, options *RecommendationsResetAllFiltersForWebAppOptions) (*azcore.Request, error) {
+func (client *RecommendationsClient) resetAllFiltersForWebAppCreateRequest(ctx context.Context, resourceGroupName string, siteName string, options *RecommendationsResetAllFiltersForWebAppOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/reset"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -960,27 +950,26 @@ func (client *RecommendationsClient) resetAllFiltersForWebAppCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // resetAllFiltersForWebAppHandleError handles the ResetAllFiltersForWebApp error response.
-func (client *RecommendationsClient) resetAllFiltersForWebAppHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecommendationsClient) resetAllFiltersForWebAppHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

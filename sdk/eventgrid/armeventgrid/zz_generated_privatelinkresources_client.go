@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,24 +11,27 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 type PrivateLinkResourcesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
-func NewPrivateLinkResourcesClient(con *armcore.Connection, subscriptionID string) *PrivateLinkResourcesClient {
-	return &PrivateLinkResourcesClient{con: con, subscriptionID: subscriptionID}
+func NewPrivateLinkResourcesClient(con *arm.Connection, subscriptionID string) *PrivateLinkResourcesClient {
+	return &PrivateLinkResourcesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Get properties of a private link resource.
@@ -37,18 +41,18 @@ func (client *PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return PrivateLinkResourcesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PrivateLinkResourcesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PrivateLinkResourcesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateLinkResourceName string, options *PrivateLinkResourcesGetOptions) (*azcore.Request, error) {
+func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, parentType string, parentName string, privateLinkResourceName string, options *PrivateLinkResourcesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{parentType}/{parentName}/privateLinkResources/{privateLinkResourceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -70,55 +74,54 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter privateLinkResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateLinkResourceName}", url.PathEscape(privateLinkResourceName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateLinkResourcesClient) getHandleResponse(resp *azcore.Response) (PrivateLinkResourcesGetResponse, error) {
-	result := PrivateLinkResourcesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PrivateLinkResource); err != nil {
+func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (PrivateLinkResourcesGetResponse, error) {
+	result := PrivateLinkResourcesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
 		return PrivateLinkResourcesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *PrivateLinkResourcesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PrivateLinkResourcesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByResource - List all the private link resources under a topic, domain, or partner namespace.
 // If the operation fails it returns a generic error.
-func (client *PrivateLinkResourcesClient) ListByResource(resourceGroupName string, parentType string, parentName string, options *PrivateLinkResourcesListByResourceOptions) PrivateLinkResourcesListByResourcePager {
-	return &privateLinkResourcesListByResourcePager{
+func (client *PrivateLinkResourcesClient) ListByResource(resourceGroupName string, parentType string, parentName string, options *PrivateLinkResourcesListByResourceOptions) *PrivateLinkResourcesListByResourcePager {
+	return &PrivateLinkResourcesListByResourcePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceCreateRequest(ctx, resourceGroupName, parentType, parentName, options)
 		},
-		advancer: func(ctx context.Context, resp PrivateLinkResourcesListByResourceResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkResourcesListResult.NextLink)
+		advancer: func(ctx context.Context, resp PrivateLinkResourcesListByResourceResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkResourcesListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceCreateRequest creates the ListByResource request.
-func (client *PrivateLinkResourcesClient) listByResourceCreateRequest(ctx context.Context, resourceGroupName string, parentType string, parentName string, options *PrivateLinkResourcesListByResourceOptions) (*azcore.Request, error) {
+func (client *PrivateLinkResourcesClient) listByResourceCreateRequest(ctx context.Context, resourceGroupName string, parentType string, parentName string, options *PrivateLinkResourcesListByResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{parentType}/{parentName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -136,12 +139,11 @@ func (client *PrivateLinkResourcesClient) listByResourceCreateRequest(ctx contex
 		return nil, errors.New("parameter parentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{parentName}", url.PathEscape(parentName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
@@ -149,28 +151,28 @@ func (client *PrivateLinkResourcesClient) listByResourceCreateRequest(ctx contex
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceHandleResponse handles the ListByResource response.
-func (client *PrivateLinkResourcesClient) listByResourceHandleResponse(resp *azcore.Response) (PrivateLinkResourcesListByResourceResponse, error) {
-	result := PrivateLinkResourcesListByResourceResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PrivateLinkResourcesListResult); err != nil {
+func (client *PrivateLinkResourcesClient) listByResourceHandleResponse(resp *http.Response) (PrivateLinkResourcesListByResourceResponse, error) {
+	result := PrivateLinkResourcesListByResourceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourcesListResult); err != nil {
 		return PrivateLinkResourcesListByResourceResponse{}, err
 	}
 	return result, nil
 }
 
 // listByResourceHandleError handles the ListByResource error response.
-func (client *PrivateLinkResourcesClient) listByResourceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PrivateLinkResourcesClient) listByResourceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

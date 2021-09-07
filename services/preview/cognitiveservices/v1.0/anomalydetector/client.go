@@ -94,6 +94,7 @@ func (client BaseClient) DetectChangePoint(ctx context.Context, body ChangePoint
 // DetectChangePointPreparer prepares the DetectChangePoint request.
 func (client BaseClient) DetectChangePointPreparer(ctx context.Context, body ChangePointDetectRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -171,6 +172,7 @@ func (client BaseClient) DetectEntireSeries(ctx context.Context, body DetectRequ
 // DetectEntireSeriesPreparer prepares the DetectEntireSeries request.
 func (client BaseClient) DetectEntireSeriesPreparer(ctx context.Context, body DetectRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -248,6 +250,7 @@ func (client BaseClient) DetectLastPoint(ctx context.Context, body DetectRequest
 // DetectLastPointPreparer prepares the DetectLastPoint request.
 func (client BaseClient) DetectLastPointPreparer(ctx context.Context, body DetectRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

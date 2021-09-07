@@ -91,6 +91,7 @@ func (client SubscriptionClient) CreateOrUpdate(ctx context.Context, apimBaseURL
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client SubscriptionClient) CreateOrUpdatePreparer(ctx context.Context, apimBaseURL string, sid string, parameters SubscriptionCreateParameters, notify string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -187,6 +188,7 @@ func (client SubscriptionClient) Delete(ctx context.Context, apimBaseURL string,
 // DeletePreparer prepares the Delete request.
 func (client SubscriptionClient) DeletePreparer(ctx context.Context, apimBaseURL string, sid string, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -274,6 +276,7 @@ func (client SubscriptionClient) Get(ctx context.Context, apimBaseURL string, si
 // GetPreparer prepares the Get request.
 func (client SubscriptionClient) GetPreparer(ctx context.Context, apimBaseURL string, sid string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -377,6 +380,7 @@ func (client SubscriptionClient) List(ctx context.Context, apimBaseURL string, f
 // ListPreparer prepares the List request.
 func (client SubscriptionClient) ListPreparer(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -506,6 +510,7 @@ func (client SubscriptionClient) RegeneratePrimaryKey(ctx context.Context, apimB
 // RegeneratePrimaryKeyPreparer prepares the RegeneratePrimaryKey request.
 func (client SubscriptionClient) RegeneratePrimaryKeyPreparer(ctx context.Context, apimBaseURL string, sid string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -592,6 +597,7 @@ func (client SubscriptionClient) RegenerateSecondaryKey(ctx context.Context, api
 // RegenerateSecondaryKeyPreparer prepares the RegenerateSecondaryKey request.
 func (client SubscriptionClient) RegenerateSecondaryKeyPreparer(ctx context.Context, apimBaseURL string, sid string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -682,6 +688,7 @@ func (client SubscriptionClient) Update(ctx context.Context, apimBaseURL string,
 // UpdatePreparer prepares the Update request.
 func (client SubscriptionClient) UpdatePreparer(ctx context.Context, apimBaseURL string, sid string, parameters SubscriptionUpdateParameters, ifMatch string, notify string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

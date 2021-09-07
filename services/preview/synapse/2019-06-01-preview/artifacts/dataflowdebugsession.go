@@ -75,6 +75,7 @@ func (client DataFlowDebugSessionClient) AddDataFlow(ctx context.Context, reques
 // AddDataFlowPreparer prepares the AddDataFlow request.
 func (client DataFlowDebugSessionClient) AddDataFlowPreparer(ctx context.Context, request DataFlowDebugPackage) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -133,7 +134,7 @@ func (client DataFlowDebugSessionClient) CreateDataFlowDebugSession(ctx context.
 
 	result, err = client.CreateDataFlowDebugSessionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.DataFlowDebugSessionClient", "CreateDataFlowDebugSession", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.DataFlowDebugSessionClient", "CreateDataFlowDebugSession", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -143,6 +144,7 @@ func (client DataFlowDebugSessionClient) CreateDataFlowDebugSession(ctx context.
 // CreateDataFlowDebugSessionPreparer prepares the CreateDataFlowDebugSession request.
 func (client DataFlowDebugSessionClient) CreateDataFlowDebugSessionPreparer(ctx context.Context, request CreateDataFlowDebugSessionRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -165,6 +167,7 @@ func (client DataFlowDebugSessionClient) CreateDataFlowDebugSessionPreparer(ctx 
 // http.Response Body if it receives an error.
 func (client DataFlowDebugSessionClient) CreateDataFlowDebugSessionSender(req *http.Request) (future DataFlowDebugSessionCreateDataFlowDebugSessionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -227,6 +230,7 @@ func (client DataFlowDebugSessionClient) DeleteDataFlowDebugSession(ctx context.
 // DeleteDataFlowDebugSessionPreparer prepares the DeleteDataFlowDebugSession request.
 func (client DataFlowDebugSessionClient) DeleteDataFlowDebugSessionPreparer(ctx context.Context, request DeleteDataFlowDebugSessionRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -291,7 +295,7 @@ func (client DataFlowDebugSessionClient) ExecuteCommand(ctx context.Context, req
 
 	result, err = client.ExecuteCommandSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.DataFlowDebugSessionClient", "ExecuteCommand", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.DataFlowDebugSessionClient", "ExecuteCommand", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -301,6 +305,7 @@ func (client DataFlowDebugSessionClient) ExecuteCommand(ctx context.Context, req
 // ExecuteCommandPreparer prepares the ExecuteCommand request.
 func (client DataFlowDebugSessionClient) ExecuteCommandPreparer(ctx context.Context, request DataFlowDebugCommandRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -323,6 +328,7 @@ func (client DataFlowDebugSessionClient) ExecuteCommandPreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client DataFlowDebugSessionClient) ExecuteCommandSender(req *http.Request) (future DataFlowDebugSessionExecuteCommandFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -388,6 +394,7 @@ func (client DataFlowDebugSessionClient) QueryDataFlowDebugSessionsByWorkspace(c
 // QueryDataFlowDebugSessionsByWorkspacePreparer prepares the QueryDataFlowDebugSessionsByWorkspace request.
 func (client DataFlowDebugSessionClient) QueryDataFlowDebugSessionsByWorkspacePreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 

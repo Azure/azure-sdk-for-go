@@ -66,6 +66,7 @@ func (client AccessTokensClient) Get(ctx context.Context, service string, scope 
 // GetPreparer prepares the Get request.
 func (client AccessTokensClient) GetPreparer(ctx context.Context, service string, scope string, refreshToken string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -143,6 +144,7 @@ func (client AccessTokensClient) GetFromLogin(ctx context.Context, service strin
 // GetFromLoginPreparer prepares the GetFromLogin request.
 func (client AccessTokensClient) GetFromLoginPreparer(ctx context.Context, service string, scope string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 

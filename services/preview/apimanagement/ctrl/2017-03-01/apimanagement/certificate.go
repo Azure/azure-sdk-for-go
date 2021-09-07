@@ -81,6 +81,7 @@ func (client CertificateClient) CreateOrUpdate(ctx context.Context, apimBaseURL 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client CertificateClient) CreateOrUpdatePreparer(ctx context.Context, apimBaseURL string, certificateID string, parameters CertificateCreateOrUpdateParameters, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -177,6 +178,7 @@ func (client CertificateClient) Delete(ctx context.Context, apimBaseURL string, 
 // DeletePreparer prepares the Delete request.
 func (client CertificateClient) DeletePreparer(ctx context.Context, apimBaseURL string, certificateID string, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -265,6 +267,7 @@ func (client CertificateClient) Get(ctx context.Context, apimBaseURL string, cer
 // GetPreparer prepares the Get request.
 func (client CertificateClient) GetPreparer(ctx context.Context, apimBaseURL string, certificateID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -366,6 +369,7 @@ func (client CertificateClient) List(ctx context.Context, apimBaseURL string, fi
 // ListPreparer prepares the List request.
 func (client CertificateClient) ListPreparer(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

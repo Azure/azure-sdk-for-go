@@ -72,6 +72,7 @@ func (client ListManagementTermClient) AddTerm(ctx context.Context, listID strin
 // AddTermPreparer prepares the AddTerm request.
 func (client ListManagementTermClient) AddTermPreparer(ctx context.Context, listID string, term string, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -149,6 +150,7 @@ func (client ListManagementTermClient) DeleteAllTerms(ctx context.Context, listI
 // DeleteAllTermsPreparer prepares the DeleteAllTerms request.
 func (client ListManagementTermClient) DeleteAllTermsPreparer(ctx context.Context, listID string, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -227,6 +229,7 @@ func (client ListManagementTermClient) DeleteTerm(ctx context.Context, listID st
 // DeleteTermPreparer prepares the DeleteTerm request.
 func (client ListManagementTermClient) DeleteTermPreparer(ctx context.Context, listID string, term string, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -307,6 +310,7 @@ func (client ListManagementTermClient) GetAllTerms(ctx context.Context, listID s
 // GetAllTermsPreparer prepares the GetAllTerms request.
 func (client ListManagementTermClient) GetAllTermsPreparer(ctx context.Context, listID string, language string, offset *int32, limit *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

@@ -214,6 +214,7 @@ func (client TranslatorClient) BreakSentence(ctx context.Context, textParameter 
 // BreakSentencePreparer prepares the BreakSentence request.
 func (client TranslatorClient) BreakSentencePreparer(ctx context.Context, textParameter []BreakSentenceTextInput, language string, script string, xClientTraceID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -329,6 +330,7 @@ func (client TranslatorClient) Detect(ctx context.Context, textParameter []Detec
 // DetectPreparer prepares the Detect request.
 func (client TranslatorClient) DetectPreparer(ctx context.Context, textParameter []DetectTextInput, xClientTraceID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -458,6 +460,7 @@ func (client TranslatorClient) DictionaryExamples(ctx context.Context, from stri
 // DictionaryExamplesPreparer prepares the DictionaryExamples request.
 func (client TranslatorClient) DictionaryExamplesPreparer(ctx context.Context, from string, toParameter string, textParameter []DictionaryExampleTextInput, xClientTraceID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -625,6 +628,7 @@ func (client TranslatorClient) DictionaryLookup(ctx context.Context, from string
 // DictionaryLookupPreparer prepares the DictionaryLookup request.
 func (client TranslatorClient) DictionaryLookupPreparer(ctx context.Context, from string, toParameter string, textParameter []DictionaryLookupTextInput, xClientTraceID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -866,6 +870,7 @@ func (client TranslatorClient) Languages(ctx context.Context, scope []string, ac
 // LanguagesPreparer prepares the Languages request.
 func (client TranslatorClient) LanguagesPreparer(ctx context.Context, scope []string, acceptLanguage string, xClientTraceID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1057,6 +1062,7 @@ func (client TranslatorClient) Translate(ctx context.Context, toParameter []stri
 // TranslatePreparer prepares the Translate request.
 func (client TranslatorClient) TranslatePreparer(ctx context.Context, toParameter []string, textParameter []TranslateTextInput, from string, textType string, category string, profanityAction string, profanityMarker string, includeAlignment *bool, includeSentenceLength *bool, suggestedFrom string, fromScript string, toScript []string, xClientTraceID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1195,6 +1201,7 @@ func (client TranslatorClient) Transliterate(ctx context.Context, language strin
 // TransliteratePreparer prepares the Transliterate request.
 func (client TranslatorClient) TransliteratePreparer(ctx context.Context, language string, fromScript string, toScript string, texts []TransliterateTextInput, xClientTraceID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

@@ -64,7 +64,7 @@ func (client EventSubscriptionsClient) CreateOrUpdate(ctx context.Context, scope
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -97,6 +97,7 @@ func (client EventSubscriptionsClient) CreateOrUpdatePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) CreateOrUpdateSender(req *http.Request) (future EventSubscriptionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -150,7 +151,7 @@ func (client EventSubscriptionsClient) Delete(ctx context.Context, scope string,
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -181,6 +182,7 @@ func (client EventSubscriptionsClient) DeletePreparer(ctx context.Context, scope
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) DeleteSender(req *http.Request) (future EventSubscriptionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -1722,7 +1724,7 @@ func (client EventSubscriptionsClient) Update(ctx context.Context, scope string,
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventgrid.EventSubscriptionsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1755,6 +1757,7 @@ func (client EventSubscriptionsClient) UpdatePreparer(ctx context.Context, scope
 // http.Response Body if it receives an error.
 func (client EventSubscriptionsClient) UpdateSender(req *http.Request) (future EventSubscriptionsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

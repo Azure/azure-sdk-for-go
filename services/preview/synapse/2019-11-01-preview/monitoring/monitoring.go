@@ -64,6 +64,7 @@ func (client Client) GetSparkJobList(ctx context.Context, APIVersion string, xMs
 // GetSparkJobListPreparer prepares the GetSparkJobList request.
 func (client Client) GetSparkJobListPreparer(ctx context.Context, APIVersion string, xMsClientRequestID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -141,6 +142,7 @@ func (client Client) GetSQLJobQueryString(ctx context.Context, APIVersion string
 // GetSQLJobQueryStringPreparer prepares the GetSQLJobQueryString request.
 func (client Client) GetSQLJobQueryStringPreparer(ctx context.Context, APIVersion string, xMsClientRequestID string, filter string, orderby string, skip string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 

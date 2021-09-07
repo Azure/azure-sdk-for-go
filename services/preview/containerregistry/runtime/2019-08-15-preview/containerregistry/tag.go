@@ -64,6 +64,7 @@ func (client TagClient) Delete(ctx context.Context, name string, reference strin
 // DeletePreparer prepares the Delete request.
 func (client TagClient) DeletePreparer(ctx context.Context, name string, reference string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -136,6 +137,7 @@ func (client TagClient) GetAttributes(ctx context.Context, name string, referenc
 // GetAttributesPreparer prepares the GetAttributes request.
 func (client TagClient) GetAttributesPreparer(ctx context.Context, name string, reference string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -213,6 +215,7 @@ func (client TagClient) GetList(ctx context.Context, name string, last string, n
 // GetListPreparer prepares the GetList request.
 func (client TagClient) GetListPreparer(ctx context.Context, name string, last string, n *int32, orderby string, digest string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -301,6 +304,7 @@ func (client TagClient) UpdateAttributes(ctx context.Context, name string, refer
 // UpdateAttributesPreparer prepares the UpdateAttributes request.
 func (client TagClient) UpdateAttributesPreparer(ctx context.Context, name string, reference string, value *ChangeableAttributes) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 

@@ -61,6 +61,7 @@ func (client V2SupportClient) Check(ctx context.Context) (result autorest.Respon
 // CheckPreparer prepares the Check request.
 func (client V2SupportClient) CheckPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 

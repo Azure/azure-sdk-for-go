@@ -67,6 +67,7 @@ func (client Client) Build(ctx context.Context, accountName string, parameters B
 // BuildPreparer prepares the Build request.
 func (client Client) BuildPreparer(ctx context.Context, accountName string, parameters BuildJobParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}
@@ -127,7 +128,7 @@ func (client Client) Cancel(ctx context.Context, accountName string, jobIdentity
 
 	result, err = client.CancelSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "job.Client", "Cancel", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "job.Client", "Cancel", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -137,6 +138,7 @@ func (client Client) Cancel(ctx context.Context, accountName string, jobIdentity
 // CancelPreparer prepares the Cancel request.
 func (client Client) CancelPreparer(ctx context.Context, accountName string, jobIdentity uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}
@@ -162,6 +164,7 @@ func (client Client) CancelPreparer(ctx context.Context, accountName string, job
 // http.Response Body if it receives an error.
 func (client Client) CancelSender(req *http.Request) (future CancelFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -238,6 +241,7 @@ func (client Client) Create(ctx context.Context, accountName string, jobIdentity
 // CreatePreparer prepares the Create request.
 func (client Client) CreatePreparer(ctx context.Context, accountName string, jobIdentity uuid.UUID, parameters CreateJobParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}
@@ -319,6 +323,7 @@ func (client Client) Get(ctx context.Context, accountName string, jobIdentity uu
 // GetPreparer prepares the Get request.
 func (client Client) GetPreparer(ctx context.Context, accountName string, jobIdentity uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}
@@ -398,6 +403,7 @@ func (client Client) GetDebugDataPath(ctx context.Context, accountName string, j
 // GetDebugDataPathPreparer prepares the GetDebugDataPath request.
 func (client Client) GetDebugDataPathPreparer(ctx context.Context, accountName string, jobIdentity uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}
@@ -477,6 +483,7 @@ func (client Client) GetStatistics(ctx context.Context, accountName string, jobI
 // GetStatisticsPreparer prepares the GetStatistics request.
 func (client Client) GetStatisticsPreparer(ctx context.Context, accountName string, jobIdentity uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}
@@ -581,6 +588,7 @@ func (client Client) List(ctx context.Context, accountName string, filter string
 // ListPreparer prepares the List request.
 func (client Client) ListPreparer(ctx context.Context, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}
@@ -695,7 +703,7 @@ func (client Client) Update(ctx context.Context, accountName string, jobIdentity
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "job.Client", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "job.Client", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -705,6 +713,7 @@ func (client Client) Update(ctx context.Context, accountName string, jobIdentity
 // UpdatePreparer prepares the Update request.
 func (client Client) UpdatePreparer(ctx context.Context, accountName string, jobIdentity uuid.UUID, parameters *UpdateJobParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}
@@ -735,6 +744,7 @@ func (client Client) UpdatePreparer(ctx context.Context, accountName string, job
 // http.Response Body if it receives an error.
 func (client Client) UpdateSender(req *http.Request) (future UpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -782,7 +792,7 @@ func (client Client) Yield(ctx context.Context, accountName string, jobIdentity 
 
 	result, err = client.YieldSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "job.Client", "Yield", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "job.Client", "Yield", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -792,6 +802,7 @@ func (client Client) Yield(ctx context.Context, accountName string, jobIdentity 
 // YieldPreparer prepares the Yield request.
 func (client Client) YieldPreparer(ctx context.Context, accountName string, jobIdentity uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}
@@ -817,6 +828,7 @@ func (client Client) YieldPreparer(ctx context.Context, accountName string, jobI
 // http.Response Body if it receives an error.
 func (client Client) YieldSender(req *http.Request) (future YieldFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

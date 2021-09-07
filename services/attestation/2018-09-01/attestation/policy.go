@@ -64,6 +64,7 @@ func (client PolicyClient) Get(ctx context.Context, tenantBaseURL string, tee Te
 // GetPreparer prepares the Get request.
 func (client PolicyClient) GetPreparer(ctx context.Context, tenantBaseURL string, tee TeeKind) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":              autorest.Encode("path"),
 		"tenantBaseUrl": tenantBaseURL,
 	}
 
@@ -140,6 +141,7 @@ func (client PolicyClient) PrepareToSet(ctx context.Context, tenantBaseURL strin
 // PrepareToSetPreparer prepares the PrepareToSet request.
 func (client PolicyClient) PrepareToSetPreparer(ctx context.Context, tenantBaseURL string, tee TeeKind, policyJws string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":              autorest.Encode("path"),
 		"tenantBaseUrl": tenantBaseURL,
 	}
 
@@ -218,6 +220,7 @@ func (client PolicyClient) Reset(ctx context.Context, tenantBaseURL string, tee 
 // ResetPreparer prepares the Reset request.
 func (client PolicyClient) ResetPreparer(ctx context.Context, tenantBaseURL string, tee TeeKind, policyJws string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":              autorest.Encode("path"),
 		"tenantBaseUrl": tenantBaseURL,
 	}
 
@@ -296,6 +299,7 @@ func (client PolicyClient) Set(ctx context.Context, tenantBaseURL string, tee Te
 // SetPreparer prepares the Set request.
 func (client PolicyClient) SetPreparer(ctx context.Context, tenantBaseURL string, tee TeeKind, newAttestationPolicy string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":              autorest.Encode("path"),
 		"tenantBaseUrl": tenantBaseURL,
 	}
 

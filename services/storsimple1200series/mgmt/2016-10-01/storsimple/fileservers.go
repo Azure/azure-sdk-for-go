@@ -63,7 +63,7 @@ func (client FileServersClient) BackupNow(ctx context.Context, deviceName string
 
 	result, err = client.BackupNowSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.FileServersClient", "BackupNow", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.FileServersClient", "BackupNow", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -97,6 +97,7 @@ func (client FileServersClient) BackupNowPreparer(ctx context.Context, deviceNam
 // http.Response Body if it receives an error.
 func (client FileServersClient) BackupNowSender(req *http.Request) (future FileServersBackupNowFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -158,7 +159,7 @@ func (client FileServersClient) CreateOrUpdate(ctx context.Context, deviceName s
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.FileServersClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.FileServersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -194,6 +195,7 @@ func (client FileServersClient) CreateOrUpdatePreparer(ctx context.Context, devi
 // http.Response Body if it receives an error.
 func (client FileServersClient) CreateOrUpdateSender(req *http.Request) (future FileServersCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -249,7 +251,7 @@ func (client FileServersClient) Delete(ctx context.Context, deviceName string, f
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.FileServersClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.FileServersClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -283,6 +285,7 @@ func (client FileServersClient) DeletePreparer(ctx context.Context, deviceName s
 // http.Response Body if it receives an error.
 func (client FileServersClient) DeleteSender(req *http.Request) (future FileServersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

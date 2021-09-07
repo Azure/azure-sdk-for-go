@@ -67,6 +67,7 @@ func (client ExamplesClient) Add(ctx context.Context, appID uuid.UUID, versionID
 // AddPreparer prepares the Add request.
 func (client ExamplesClient) AddPreparer(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObject ExampleLabelObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -149,6 +150,7 @@ func (client ExamplesClient) Batch(ctx context.Context, appID uuid.UUID, version
 // BatchPreparer prepares the Batch request.
 func (client ExamplesClient) BatchPreparer(ctx context.Context, appID uuid.UUID, versionID string, exampleLabelObjectArray []ExampleLabelObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -225,6 +227,7 @@ func (client ExamplesClient) Delete(ctx context.Context, appID uuid.UUID, versio
 // DeletePreparer prepares the Delete request.
 func (client ExamplesClient) DeletePreparer(ctx context.Context, appID uuid.UUID, versionID string, exampleID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -313,6 +316,7 @@ func (client ExamplesClient) List(ctx context.Context, appID uuid.UUID, versionI
 // ListPreparer prepares the List request.
 func (client ExamplesClient) ListPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

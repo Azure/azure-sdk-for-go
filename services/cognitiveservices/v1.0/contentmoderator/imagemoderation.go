@@ -72,6 +72,7 @@ func (client ImageModerationClient) EvaluateFileInput(ctx context.Context, image
 // EvaluateFileInputPreparer prepares the EvaluateFileInput request.
 func (client ImageModerationClient) EvaluateFileInputPreparer(ctx context.Context, imageStream io.ReadCloser, cacheImage *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -147,6 +148,7 @@ func (client ImageModerationClient) EvaluateMethod(ctx context.Context, cacheIma
 // EvaluateMethodPreparer prepares the EvaluateMethod request.
 func (client ImageModerationClient) EvaluateMethodPreparer(ctx context.Context, cacheImage *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -222,6 +224,7 @@ func (client ImageModerationClient) EvaluateURLInput(ctx context.Context, conten
 // EvaluateURLInputPreparer prepares the EvaluateURLInput request.
 func (client ImageModerationClient) EvaluateURLInputPreparer(ctx context.Context, contentType string, imageURL ImageURL, cacheImage *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -298,6 +301,7 @@ func (client ImageModerationClient) FindFaces(ctx context.Context, cacheImage *b
 // FindFacesPreparer prepares the FindFaces request.
 func (client ImageModerationClient) FindFacesPreparer(ctx context.Context, cacheImage *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -372,6 +376,7 @@ func (client ImageModerationClient) FindFacesFileInput(ctx context.Context, imag
 // FindFacesFileInputPreparer prepares the FindFacesFileInput request.
 func (client ImageModerationClient) FindFacesFileInputPreparer(ctx context.Context, imageStream io.ReadCloser, cacheImage *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -449,6 +454,7 @@ func (client ImageModerationClient) FindFacesURLInput(ctx context.Context, conte
 // FindFacesURLInputPreparer prepares the FindFacesURLInput request.
 func (client ImageModerationClient) FindFacesURLInputPreparer(ctx context.Context, contentType string, imageURL ImageURL, cacheImage *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -534,6 +540,7 @@ func (client ImageModerationClient) MatchFileInput(ctx context.Context, imageStr
 // MatchFileInputPreparer prepares the MatchFileInput request.
 func (client ImageModerationClient) MatchFileInputPreparer(ctx context.Context, imageStream io.ReadCloser, listID string, cacheImage *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -620,6 +627,7 @@ func (client ImageModerationClient) MatchMethod(ctx context.Context, listID stri
 // MatchMethodPreparer prepares the MatchMethod request.
 func (client ImageModerationClient) MatchMethodPreparer(ctx context.Context, listID string, cacheImage *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -706,6 +714,7 @@ func (client ImageModerationClient) MatchURLInput(ctx context.Context, contentTy
 // MatchURLInputPreparer prepares the MatchURLInput request.
 func (client ImageModerationClient) MatchURLInputPreparer(ctx context.Context, contentType string, imageURL ImageURL, listID string, cacheImage *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -794,6 +803,7 @@ func (client ImageModerationClient) OCRFileInput(ctx context.Context, language s
 // OCRFileInputPreparer prepares the OCRFileInput request.
 func (client ImageModerationClient) OCRFileInputPreparer(ctx context.Context, language string, imageStream io.ReadCloser, cacheImage *bool, enhanced *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -884,6 +894,7 @@ func (client ImageModerationClient) OCRMethod(ctx context.Context, language stri
 // OCRMethodPreparer prepares the OCRMethod request.
 func (client ImageModerationClient) OCRMethodPreparer(ctx context.Context, language string, cacheImage *bool, enhanced *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -974,6 +985,7 @@ func (client ImageModerationClient) OCRURLInput(ctx context.Context, language st
 // OCRURLInputPreparer prepares the OCRURLInput request.
 func (client ImageModerationClient) OCRURLInputPreparer(ctx context.Context, language string, contentType string, imageURL ImageURL, cacheImage *bool, enhanced *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

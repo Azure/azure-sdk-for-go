@@ -82,6 +82,7 @@ func (client BaseClient) PredictImage(ctx context.Context, projectID uuid.UUID, 
 // PredictImagePreparer prepares the PredictImage request.
 func (client BaseClient) PredictImagePreparer(ctx context.Context, projectID uuid.UUID, imageData io.ReadCloser, iterationID *uuid.UUID, application string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -172,6 +173,7 @@ func (client BaseClient) PredictImageURL(ctx context.Context, projectID uuid.UUI
 // PredictImageURLPreparer prepares the PredictImageURL request.
 func (client BaseClient) PredictImageURLPreparer(ctx context.Context, projectID uuid.UUID, imageURL ImageURL, iterationID *uuid.UUID, application string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -259,6 +261,7 @@ func (client BaseClient) PredictImageURLWithNoStore(ctx context.Context, project
 // PredictImageURLWithNoStorePreparer prepares the PredictImageURLWithNoStore request.
 func (client BaseClient) PredictImageURLWithNoStorePreparer(ctx context.Context, projectID uuid.UUID, imageURL ImageURL, iterationID *uuid.UUID, application string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -345,6 +348,7 @@ func (client BaseClient) PredictImageWithNoStore(ctx context.Context, projectID 
 // PredictImageWithNoStorePreparer prepares the PredictImageWithNoStore request.
 func (client BaseClient) PredictImageWithNoStorePreparer(ctx context.Context, projectID uuid.UUID, imageData io.ReadCloser, iterationID *uuid.UUID, application string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

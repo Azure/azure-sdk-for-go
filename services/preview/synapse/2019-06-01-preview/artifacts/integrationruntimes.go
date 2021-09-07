@@ -63,6 +63,7 @@ func (client IntegrationRuntimesClient) Get(ctx context.Context, integrationRunt
 // GetPreparer prepares the Get request.
 func (client IntegrationRuntimesClient) GetPreparer(ctx context.Context, integrationRuntimeName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -138,6 +139,7 @@ func (client IntegrationRuntimesClient) List(ctx context.Context) (result Integr
 // ListPreparer prepares the List request.
 func (client IntegrationRuntimesClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 

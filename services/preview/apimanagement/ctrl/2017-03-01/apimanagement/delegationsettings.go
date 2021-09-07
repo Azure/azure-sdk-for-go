@@ -65,6 +65,7 @@ func (client DelegationSettingsClient) CreateOrUpdate(ctx context.Context, apimB
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client DelegationSettingsClient) CreateOrUpdatePreparer(ctx context.Context, apimBaseURL string, parameters PortalDelegationSettings) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -141,6 +142,7 @@ func (client DelegationSettingsClient) Get(ctx context.Context, apimBaseURL stri
 // GetPreparer prepares the Get request.
 func (client DelegationSettingsClient) GetPreparer(ctx context.Context, apimBaseURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -218,6 +220,7 @@ func (client DelegationSettingsClient) Update(ctx context.Context, apimBaseURL s
 // UpdatePreparer prepares the Update request.
 func (client DelegationSettingsClient) UpdatePreparer(ctx context.Context, apimBaseURL string, parameters PortalDelegationSettings, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

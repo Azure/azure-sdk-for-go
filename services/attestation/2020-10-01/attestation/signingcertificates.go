@@ -63,6 +63,7 @@ func (client SigningCertificatesClient) Get(ctx context.Context, instanceURL str
 // GetPreparer prepares the Get request.
 func (client SigningCertificatesClient) GetPreparer(ctx context.Context, instanceURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"instanceUrl": instanceURL,
 	}
 

@@ -92,6 +92,7 @@ func (client UserGroupClient) List(ctx context.Context, apimBaseURL string, UID 
 // ListPreparer prepares the List request.
 func (client UserGroupClient) ListPreparer(ctx context.Context, apimBaseURL string, UID string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

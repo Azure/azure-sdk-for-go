@@ -62,6 +62,7 @@ func (client AlterationsClient) Get(ctx context.Context) (result WordAlterations
 // GetPreparer prepares the Get request.
 func (client AlterationsClient) GetPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -135,6 +136,7 @@ func (client AlterationsClient) Replace(ctx context.Context, wordAlterations Wor
 // ReplacePreparer prepares the Replace request.
 func (client AlterationsClient) ReplacePreparer(ctx context.Context, wordAlterations WordAlterationsDTO) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

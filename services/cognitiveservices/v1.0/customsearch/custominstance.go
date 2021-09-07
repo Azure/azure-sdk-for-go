@@ -182,6 +182,7 @@ func (client CustomInstanceClient) Search(ctx context.Context, customConfig stri
 // SearchPreparer prepares the Search request.
 func (client CustomInstanceClient) SearchPreparer(ctx context.Context, customConfig string, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, countryCode string, count *int32, market string, offset *int32, safeSearch SafeSearch, setLang string, textDecorations *bool, textFormat TextFormat) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

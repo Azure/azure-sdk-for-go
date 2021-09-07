@@ -81,6 +81,7 @@ func (client BaseClient) AnalyzeWithCustomModel(ctx context.Context, ID uuid.UUI
 // AnalyzeWithCustomModelPreparer prepares the AnalyzeWithCustomModel request.
 func (client BaseClient) AnalyzeWithCustomModelPreparer(ctx context.Context, ID uuid.UUID, formStream io.ReadCloser, keys []string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -170,6 +171,7 @@ func (client BaseClient) BatchReadReceipt(ctx context.Context, imageURL ImageURL
 // BatchReadReceiptPreparer prepares the BatchReadReceipt request.
 func (client BaseClient) BatchReadReceiptPreparer(ctx context.Context, imageURL ImageURL) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -240,6 +242,7 @@ func (client BaseClient) BatchReadReceiptInStream(ctx context.Context, imagePara
 // BatchReadReceiptInStreamPreparer prepares the BatchReadReceiptInStream request.
 func (client BaseClient) BatchReadReceiptInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -308,6 +311,7 @@ func (client BaseClient) DeleteCustomModel(ctx context.Context, ID uuid.UUID) (r
 // DeleteCustomModelPreparer prepares the DeleteCustomModel request.
 func (client BaseClient) DeleteCustomModelPreparer(ctx context.Context, ID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -378,6 +382,7 @@ func (client BaseClient) GetCustomModel(ctx context.Context, ID uuid.UUID) (resu
 // GetCustomModelPreparer prepares the GetCustomModel request.
 func (client BaseClient) GetCustomModelPreparer(ctx context.Context, ID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -447,6 +452,7 @@ func (client BaseClient) GetCustomModels(ctx context.Context) (result ModelsResu
 // GetCustomModelsPreparer prepares the GetCustomModels request.
 func (client BaseClient) GetCustomModelsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -515,6 +521,7 @@ func (client BaseClient) GetExtractedKeys(ctx context.Context, ID uuid.UUID) (re
 // GetExtractedKeysPreparer prepares the GetExtractedKeys request.
 func (client BaseClient) GetExtractedKeysPreparer(ctx context.Context, ID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -588,6 +595,7 @@ func (client BaseClient) GetReadReceiptResult(ctx context.Context, operationID s
 // GetReadReceiptResultPreparer prepares the GetReadReceiptResult request.
 func (client BaseClient) GetReadReceiptResultPreparer(ctx context.Context, operationID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -682,6 +690,7 @@ func (client BaseClient) TrainCustomModel(ctx context.Context, trainRequest Trai
 // TrainCustomModelPreparer prepares the TrainCustomModel request.
 func (client BaseClient) TrainCustomModelPreparer(ctx context.Context, trainRequest TrainRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

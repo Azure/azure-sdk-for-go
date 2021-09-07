@@ -80,6 +80,7 @@ func (client SQLScriptClient) CreateOrUpdateSQLScript(ctx context.Context, SQLSc
 // CreateOrUpdateSQLScriptPreparer prepares the CreateOrUpdateSQLScript request.
 func (client SQLScriptClient) CreateOrUpdateSQLScriptPreparer(ctx context.Context, SQLScriptName string, SQLScript SQLScriptResource, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -166,6 +167,7 @@ func (client SQLScriptClient) DeleteSQLScript(ctx context.Context, SQLScriptName
 // DeleteSQLScriptPreparer prepares the DeleteSQLScript request.
 func (client SQLScriptClient) DeleteSQLScriptPreparer(ctx context.Context, SQLScriptName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -244,6 +246,7 @@ func (client SQLScriptClient) GetSQLScript(ctx context.Context, SQLScriptName st
 // GetSQLScriptPreparer prepares the GetSQLScript request.
 func (client SQLScriptClient) GetSQLScriptPreparer(ctx context.Context, SQLScriptName string, ifNoneMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -328,6 +331,7 @@ func (client SQLScriptClient) GetSQLScriptsByWorkspace(ctx context.Context) (res
 // GetSQLScriptsByWorkspacePreparer prepares the GetSQLScriptsByWorkspace request.
 func (client SQLScriptClient) GetSQLScriptsByWorkspacePreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -432,7 +436,7 @@ func (client SQLScriptClient) RenameSQLScript(ctx context.Context, SQLScriptName
 
 	result, err = client.RenameSQLScriptSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.SQLScriptClient", "RenameSQLScript", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.SQLScriptClient", "RenameSQLScript", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -442,6 +446,7 @@ func (client SQLScriptClient) RenameSQLScript(ctx context.Context, SQLScriptName
 // RenameSQLScriptPreparer prepares the RenameSQLScript request.
 func (client SQLScriptClient) RenameSQLScriptPreparer(ctx context.Context, SQLScriptName string, request RenameRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -468,6 +473,7 @@ func (client SQLScriptClient) RenameSQLScriptPreparer(ctx context.Context, SQLSc
 // http.Response Body if it receives an error.
 func (client SQLScriptClient) RenameSQLScriptSender(req *http.Request) (future SQLScriptRenameSQLScriptFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

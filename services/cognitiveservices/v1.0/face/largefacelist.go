@@ -120,6 +120,7 @@ func (client LargeFaceListClient) AddFaceFromStream(ctx context.Context, largeFa
 // AddFaceFromStreamPreparer prepares the AddFaceFromStream request.
 func (client LargeFaceListClient) AddFaceFromStreamPreparer(ctx context.Context, largeFaceListID string, imageParameter io.ReadCloser, userData string, targetFace []int32, detectionModel DetectionModel) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -263,6 +264,7 @@ func (client LargeFaceListClient) AddFaceFromURL(ctx context.Context, largeFaceL
 // AddFaceFromURLPreparer prepares the AddFaceFromURL request.
 func (client LargeFaceListClient) AddFaceFromURLPreparer(ctx context.Context, largeFaceListID string, imageURL ImageURL, userData string, targetFace []int32, detectionModel DetectionModel) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -387,6 +389,7 @@ func (client LargeFaceListClient) Create(ctx context.Context, largeFaceListID st
 // CreatePreparer prepares the Create request.
 func (client LargeFaceListClient) CreatePreparer(ctx context.Context, largeFaceListID string, body MetaDataContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -466,6 +469,7 @@ func (client LargeFaceListClient) Delete(ctx context.Context, largeFaceListID st
 // DeletePreparer prepares the Delete request.
 func (client LargeFaceListClient) DeletePreparer(ctx context.Context, largeFaceListID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -546,6 +550,7 @@ func (client LargeFaceListClient) DeleteFace(ctx context.Context, largeFaceListI
 // DeleteFacePreparer prepares the DeleteFace request.
 func (client LargeFaceListClient) DeleteFacePreparer(ctx context.Context, largeFaceListID string, persistedFaceID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -626,6 +631,7 @@ func (client LargeFaceListClient) Get(ctx context.Context, largeFaceListID strin
 // GetPreparer prepares the Get request.
 func (client LargeFaceListClient) GetPreparer(ctx context.Context, largeFaceListID string, returnRecognitionModel *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -714,6 +720,7 @@ func (client LargeFaceListClient) GetFace(ctx context.Context, largeFaceListID s
 // GetFacePreparer prepares the GetFace request.
 func (client LargeFaceListClient) GetFacePreparer(ctx context.Context, largeFaceListID string, persistedFaceID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -793,6 +800,7 @@ func (client LargeFaceListClient) GetTrainingStatus(ctx context.Context, largeFa
 // GetTrainingStatusPreparer prepares the GetTrainingStatus request.
 func (client LargeFaceListClient) GetTrainingStatusPreparer(ctx context.Context, largeFaceListID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -877,6 +885,7 @@ func (client LargeFaceListClient) List(ctx context.Context, returnRecognitionMod
 // ListPreparer prepares the List request.
 func (client LargeFaceListClient) ListPreparer(ctx context.Context, returnRecognitionModel *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -967,6 +976,7 @@ func (client LargeFaceListClient) ListFaces(ctx context.Context, largeFaceListID
 // ListFacesPreparer prepares the ListFaces request.
 func (client LargeFaceListClient) ListFacesPreparer(ctx context.Context, largeFaceListID string, start string, top *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1054,6 +1064,7 @@ func (client LargeFaceListClient) Train(ctx context.Context, largeFaceListID str
 // TrainPreparer prepares the Train request.
 func (client LargeFaceListClient) TrainPreparer(ctx context.Context, largeFaceListID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1132,6 +1143,7 @@ func (client LargeFaceListClient) Update(ctx context.Context, largeFaceListID st
 // UpdatePreparer prepares the Update request.
 func (client LargeFaceListClient) UpdatePreparer(ctx context.Context, largeFaceListID string, body NameAndUserDataContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1213,6 +1225,7 @@ func (client LargeFaceListClient) UpdateFace(ctx context.Context, largeFaceListI
 // UpdateFacePreparer prepares the UpdateFace request.
 func (client LargeFaceListClient) UpdateFacePreparer(ctx context.Context, largeFaceListID string, persistedFaceID uuid.UUID, body UpdateFaceRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

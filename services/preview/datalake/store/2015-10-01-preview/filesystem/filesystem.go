@@ -73,6 +73,7 @@ func (client Client) Append(ctx context.Context, accountName string, directFileP
 // AppendPreparer prepares the Append request.
 func (client Client) AppendPreparer(ctx context.Context, accountName string, directFilePath string, streamContents io.ReadCloser, offset *int64) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -160,6 +161,7 @@ func (client Client) CheckAccess(ctx context.Context, accountName string, pathPa
 // CheckAccessPreparer prepares the CheckAccess request.
 func (client Client) CheckAccessPreparer(ctx context.Context, accountName string, pathParameter string, fsaction string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -252,6 +254,7 @@ func (client Client) Concat(ctx context.Context, accountName string, destination
 // ConcatPreparer prepares the Concat request.
 func (client Client) ConcatPreparer(ctx context.Context, accountName string, destinationPath string, sources []string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -341,6 +344,7 @@ func (client Client) ConcurrentAppend(ctx context.Context, accountName string, f
 // ConcurrentAppendPreparer prepares the ConcurrentAppend request.
 func (client Client) ConcurrentAppendPreparer(ctx context.Context, accountName string, filePath string, streamContents io.ReadCloser, appendMode AppendModeType) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -430,6 +434,7 @@ func (client Client) Create(ctx context.Context, accountName string, directFileP
 // CreatePreparer prepares the Create request.
 func (client Client) CreatePreparer(ctx context.Context, accountName string, directFilePath string, streamContents io.ReadCloser, overwrite *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -519,6 +524,7 @@ func (client Client) Delete(ctx context.Context, accountName string, filePath st
 // DeletePreparer prepares the Delete request.
 func (client Client) DeletePreparer(ctx context.Context, accountName string, filePath string, recursive *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -603,6 +609,7 @@ func (client Client) Flush(ctx context.Context, accountName string, flushFilePat
 // FlushPreparer prepares the Flush request.
 func (client Client) FlushPreparer(ctx context.Context, accountName string, flushFilePath string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -685,6 +692,7 @@ func (client Client) GetACLStatus(ctx context.Context, accountName string, ACLFi
 // GetACLStatusPreparer prepares the GetACLStatus request.
 func (client Client) GetACLStatusPreparer(ctx context.Context, accountName string, ACLFilePath string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -766,6 +774,7 @@ func (client Client) GetContentSummary(ctx context.Context, accountName string, 
 // GetContentSummaryPreparer prepares the GetContentSummary request.
 func (client Client) GetContentSummaryPreparer(ctx context.Context, accountName string, getContentSummaryFilePath string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -847,6 +856,7 @@ func (client Client) GetFileStatus(ctx context.Context, accountName string, getF
 // GetFileStatusPreparer prepares the GetFileStatus request.
 func (client Client) GetFileStatusPreparer(ctx context.Context, accountName string, getFilePath string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -934,6 +944,7 @@ func (client Client) ListFileStatus(ctx context.Context, accountName string, lis
 // ListFileStatusPreparer prepares the ListFileStatus request.
 func (client Client) ListFileStatusPreparer(ctx context.Context, accountName string, listFilePath string, listSize *int32, listAfter string, listBefore string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -1023,6 +1034,7 @@ func (client Client) Mkdirs(ctx context.Context, accountName string, pathParamet
 // MkdirsPreparer prepares the Mkdirs request.
 func (client Client) MkdirsPreparer(ctx context.Context, accountName string, pathParameter string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -1106,6 +1118,7 @@ func (client Client) ModifyACLEntries(ctx context.Context, accountName string, m
 // ModifyACLEntriesPreparer prepares the ModifyACLEntries request.
 func (client Client) ModifyACLEntriesPreparer(ctx context.Context, accountName string, modifyACLFilePath string, aclspec string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -1196,6 +1209,7 @@ func (client Client) MsConcat(ctx context.Context, accountName string, msConcatD
 // MsConcatPreparer prepares the MsConcat request.
 func (client Client) MsConcatPreparer(ctx context.Context, accountName string, msConcatDestinationPath string, streamContents io.ReadCloser, deleteSourceDirectory *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -1280,6 +1294,7 @@ func (client Client) Open(ctx context.Context, accountName string, directFilePat
 // OpenPreparer prepares the Open request.
 func (client Client) OpenPreparer(ctx context.Context, accountName string, directFilePath string, length *int64, offset *int64) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -1367,6 +1382,7 @@ func (client Client) RemoveACL(ctx context.Context, accountName string, ACLFileP
 // RemoveACLPreparer prepares the RemoveACL request.
 func (client Client) RemoveACLPreparer(ctx context.Context, accountName string, ACLFilePath string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -1448,6 +1464,7 @@ func (client Client) RemoveACLEntries(ctx context.Context, accountName string, r
 // RemoveACLEntriesPreparer prepares the RemoveACLEntries request.
 func (client Client) RemoveACLEntriesPreparer(ctx context.Context, accountName string, removeACLFilePath string, aclspec string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -1529,6 +1546,7 @@ func (client Client) RemoveDefaultACL(ctx context.Context, accountName string, d
 // RemoveDefaultACLPreparer prepares the RemoveDefaultACL request.
 func (client Client) RemoveDefaultACLPreparer(ctx context.Context, accountName string, defaultACLFilePath string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -1609,6 +1627,7 @@ func (client Client) Rename(ctx context.Context, accountName string, renameFileP
 // RenamePreparer prepares the Rename request.
 func (client Client) RenamePreparer(ctx context.Context, accountName string, renameFilePath string, destination string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -1693,6 +1712,7 @@ func (client Client) SetACL(ctx context.Context, accountName string, setACLFileP
 // SetACLPreparer prepares the SetACL request.
 func (client Client) SetACLPreparer(ctx context.Context, accountName string, setACLFilePath string, aclspec string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -1781,6 +1801,7 @@ func (client Client) SetFileExpiry(ctx context.Context, accountName string, file
 // SetFileExpiryPreparer prepares the SetFileExpiry request.
 func (client Client) SetFileExpiryPreparer(ctx context.Context, accountName string, filePath string, expiryOption ExpiryOptionType, expireTime *int64) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -1869,6 +1890,7 @@ func (client Client) SetOwner(ctx context.Context, accountName string, setOwnerF
 // SetOwnerPreparer prepares the SetOwner request.
 func (client Client) SetOwnerPreparer(ctx context.Context, accountName string, setOwnerFilePath string, owner string, group string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}
@@ -1957,6 +1979,7 @@ func (client Client) SetPermission(ctx context.Context, accountName string, setP
 // SetPermissionPreparer prepares the SetPermission request.
 func (client Client) SetPermissionPreparer(ctx context.Context, accountName string, setPermissionFilePath string, permission string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                        autorest.Encode("path"),
 		"accountName":             accountName,
 		"adlsFileSystemDnsSuffix": client.AdlsFileSystemDNSSuffix,
 	}

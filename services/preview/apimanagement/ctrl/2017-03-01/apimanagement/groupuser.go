@@ -79,6 +79,7 @@ func (client GroupUserClient) Create(ctx context.Context, apimBaseURL string, gr
 // CreatePreparer prepares the Create request.
 func (client GroupUserClient) CreatePreparer(ctx context.Context, apimBaseURL string, groupID string, UID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -172,6 +173,7 @@ func (client GroupUserClient) Delete(ctx context.Context, apimBaseURL string, gr
 // DeletePreparer prepares the Delete request.
 func (client GroupUserClient) DeletePreparer(ctx context.Context, apimBaseURL string, groupID string, UID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -281,6 +283,7 @@ func (client GroupUserClient) List(ctx context.Context, apimBaseURL string, grou
 // ListPreparer prepares the List request.
 func (client GroupUserClient) ListPreparer(ctx context.Context, apimBaseURL string, groupID string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

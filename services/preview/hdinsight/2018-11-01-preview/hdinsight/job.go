@@ -66,6 +66,7 @@ func (client JobClient) DeleteSparkBatch(ctx context.Context, batchID int32, req
 // DeleteSparkBatchPreparer prepares the DeleteSparkBatch request.
 func (client JobClient) DeleteSparkBatchPreparer(ctx context.Context, batchID int32, requestedBy string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -145,6 +146,7 @@ func (client JobClient) DeleteSparkSessionJob(ctx context.Context, sessionID int
 // DeleteSparkSessionJobPreparer prepares the DeleteSparkSessionJob request.
 func (client JobClient) DeleteSparkSessionJobPreparer(ctx context.Context, sessionID int32, requestedBy string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -225,6 +227,7 @@ func (client JobClient) DeleteSparkStatementJob(ctx context.Context, sessionID i
 // DeleteSparkStatementJobPreparer prepares the DeleteSparkStatementJob request.
 func (client JobClient) DeleteSparkStatementJobPreparer(ctx context.Context, sessionID int32, statementID int32, requestedBy string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -304,6 +307,7 @@ func (client JobClient) Get(ctx context.Context, jobID string) (result JobDetail
 // GetPreparer prepares the Get request.
 func (client JobClient) GetPreparer(ctx context.Context, jobID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -381,6 +385,7 @@ func (client JobClient) GetAppState(ctx context.Context, appID string) (result A
 // GetAppStatePreparer prepares the GetAppState request.
 func (client JobClient) GetAppStatePreparer(ctx context.Context, appID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -452,6 +457,7 @@ func (client JobClient) GetSparkBatchJob(ctx context.Context, batchID int32) (re
 // GetSparkBatchJobPreparer prepares the GetSparkBatchJob request.
 func (client JobClient) GetSparkBatchJobPreparer(ctx context.Context, batchID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -526,6 +532,7 @@ func (client JobClient) GetSparkBatchLog(ctx context.Context, batchID int32, fro
 // GetSparkBatchLogPreparer prepares the GetSparkBatchLog request.
 func (client JobClient) GetSparkBatchLogPreparer(ctx context.Context, batchID int32, from *int32, size *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -606,6 +613,7 @@ func (client JobClient) GetSparkBatchState(ctx context.Context, batchID int32) (
 // GetSparkBatchStatePreparer prepares the GetSparkBatchState request.
 func (client JobClient) GetSparkBatchStatePreparer(ctx context.Context, batchID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -677,6 +685,7 @@ func (client JobClient) GetSparkSessionJob(ctx context.Context, sessionID int32)
 // GetSparkSessionJobPreparer prepares the GetSparkSessionJob request.
 func (client JobClient) GetSparkSessionJobPreparer(ctx context.Context, sessionID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -751,6 +760,7 @@ func (client JobClient) GetSparkSessionLog(ctx context.Context, sessionID int32,
 // GetSparkSessionLogPreparer prepares the GetSparkSessionLog request.
 func (client JobClient) GetSparkSessionLogPreparer(ctx context.Context, sessionID int32, from *int32, size *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -831,6 +841,7 @@ func (client JobClient) GetSparkSessionState(ctx context.Context, sessionID int3
 // GetSparkSessionStatePreparer prepares the GetSparkSessionState request.
 func (client JobClient) GetSparkSessionStatePreparer(ctx context.Context, sessionID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -903,6 +914,7 @@ func (client JobClient) GetSparkStatementJob(ctx context.Context, sessionID int3
 // GetSparkStatementJobPreparer prepares the GetSparkStatementJob request.
 func (client JobClient) GetSparkStatementJobPreparer(ctx context.Context, sessionID int32, statementID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -981,6 +993,7 @@ func (client JobClient) Kill(ctx context.Context, jobID string) (result JobDetai
 // KillPreparer prepares the Kill request.
 func (client JobClient) KillPreparer(ctx context.Context, jobID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -1055,6 +1068,7 @@ func (client JobClient) List(ctx context.Context) (result ListJobListJSONObject,
 // ListPreparer prepares the List request.
 func (client JobClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -1137,6 +1151,7 @@ func (client JobClient) ListAfterJobID(ctx context.Context, jobid string, numrec
 // ListAfterJobIDPreparer prepares the ListAfterJobID request.
 func (client JobClient) ListAfterJobIDPreparer(ctx context.Context, jobid string, numrecords *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -1219,6 +1234,7 @@ func (client JobClient) ListSparkBatchJob(ctx context.Context, from *int32, size
 // ListSparkBatchJobPreparer prepares the ListSparkBatchJob request.
 func (client JobClient) ListSparkBatchJobPreparer(ctx context.Context, from *int32, size *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -1297,6 +1313,7 @@ func (client JobClient) ListSparkSessionJob(ctx context.Context, from *int32, si
 // ListSparkSessionJobPreparer prepares the ListSparkSessionJob request.
 func (client JobClient) ListSparkSessionJobPreparer(ctx context.Context, from *int32, size *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -1373,6 +1390,7 @@ func (client JobClient) ListSparkStatementJob(ctx context.Context, sessionID int
 // ListSparkStatementJobPreparer prepares the ListSparkStatementJob request.
 func (client JobClient) ListSparkStatementJobPreparer(ctx context.Context, sessionID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -1444,6 +1462,7 @@ func (client JobClient) SubmitHiveJob(ctx context.Context, content io.ReadCloser
 // SubmitHiveJobPreparer prepares the SubmitHiveJob request.
 func (client JobClient) SubmitHiveJobPreparer(ctx context.Context, content io.ReadCloser) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -1518,6 +1537,7 @@ func (client JobClient) SubmitMapReduceJob(ctx context.Context, content io.ReadC
 // SubmitMapReduceJobPreparer prepares the SubmitMapReduceJob request.
 func (client JobClient) SubmitMapReduceJobPreparer(ctx context.Context, content io.ReadCloser) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -1592,6 +1612,7 @@ func (client JobClient) SubmitMapReduceStreamingJob(ctx context.Context, content
 // SubmitMapReduceStreamingJobPreparer prepares the SubmitMapReduceStreamingJob request.
 func (client JobClient) SubmitMapReduceStreamingJobPreparer(ctx context.Context, content io.ReadCloser) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -1666,6 +1687,7 @@ func (client JobClient) SubmitPigJob(ctx context.Context, content io.ReadCloser)
 // SubmitPigJobPreparer prepares the SubmitPigJob request.
 func (client JobClient) SubmitPigJobPreparer(ctx context.Context, content io.ReadCloser) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -1741,6 +1763,7 @@ func (client JobClient) SubmitSparkBatchJob(ctx context.Context, sparkBatchJobRe
 // SubmitSparkBatchJobPreparer prepares the SubmitSparkBatchJob request.
 func (client JobClient) SubmitSparkBatchJobPreparer(ctx context.Context, sparkBatchJobRequest SparkBatchJobRequest, requestedBy string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -1818,6 +1841,7 @@ func (client JobClient) SubmitSparkSessionJob(ctx context.Context, sparkSessionJ
 // SubmitSparkSessionJobPreparer prepares the SubmitSparkSessionJob request.
 func (client JobClient) SubmitSparkSessionJobPreparer(ctx context.Context, sparkSessionJobRequest SparkSessionJobRequest, requestedBy string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -1896,6 +1920,7 @@ func (client JobClient) SubmitSparkStatementJob(ctx context.Context, sessionID i
 // SubmitSparkStatementJobPreparer prepares the SubmitSparkStatementJob request.
 func (client JobClient) SubmitSparkStatementJobPreparer(ctx context.Context, sessionID int32, sparkStatementRequest SparkStatementRequest, requestedBy string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -1976,6 +2001,7 @@ func (client JobClient) SubmitSqoopJob(ctx context.Context, content io.ReadClose
 // SubmitSqoopJobPreparer prepares the SubmitSqoopJob request.
 func (client JobClient) SubmitSqoopJobPreparer(ctx context.Context, content io.ReadCloser) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 

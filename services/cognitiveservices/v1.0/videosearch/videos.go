@@ -219,6 +219,7 @@ func (client VideosClient) Details(ctx context.Context, query string, acceptLang
 // DetailsPreparer prepares the Details request.
 func (client VideosClient) DetailsPreparer(ctx context.Context, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, countryCode string, ID string, modules []VideoInsightModule, market string, resolution VideoResolution, safeSearch SafeSearch, setLang string, textDecorations *bool, textFormat TextFormat) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -508,6 +509,7 @@ func (client VideosClient) Search(ctx context.Context, query string, acceptLangu
 // SearchPreparer prepares the Search request.
 func (client VideosClient) SearchPreparer(ctx context.Context, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, countryCode string, count *int32, freshness Freshness, ID string, length VideoLength, market string, offset *int32, pricing VideoPricing, resolution VideoResolution, safeSearch SafeSearch, setLang string, textDecorations *bool, textFormat TextFormat) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -771,6 +773,7 @@ func (client VideosClient) Trending(ctx context.Context, acceptLanguage string, 
 // TrendingPreparer prepares the Trending request.
 func (client VideosClient) TrendingPreparer(ctx context.Context, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, countryCode string, market string, safeSearch SafeSearch, setLang string, textDecorations *bool, textFormat TextFormat) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

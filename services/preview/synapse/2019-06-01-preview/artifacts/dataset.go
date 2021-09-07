@@ -58,7 +58,7 @@ func (client DatasetClient) CreateOrUpdateDataset(ctx context.Context, datasetNa
 
 	result, err = client.CreateOrUpdateDatasetSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.DatasetClient", "CreateOrUpdateDataset", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.DatasetClient", "CreateOrUpdateDataset", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -68,6 +68,7 @@ func (client DatasetClient) CreateOrUpdateDataset(ctx context.Context, datasetNa
 // CreateOrUpdateDatasetPreparer prepares the CreateOrUpdateDataset request.
 func (client DatasetClient) CreateOrUpdateDatasetPreparer(ctx context.Context, datasetName string, dataset DatasetResource, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -98,6 +99,7 @@ func (client DatasetClient) CreateOrUpdateDatasetPreparer(ctx context.Context, d
 // http.Response Body if it receives an error.
 func (client DatasetClient) CreateOrUpdateDatasetSender(req *http.Request) (future DatasetCreateOrUpdateDatasetFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -151,7 +153,7 @@ func (client DatasetClient) DeleteDataset(ctx context.Context, datasetName strin
 
 	result, err = client.DeleteDatasetSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.DatasetClient", "DeleteDataset", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.DatasetClient", "DeleteDataset", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -161,6 +163,7 @@ func (client DatasetClient) DeleteDataset(ctx context.Context, datasetName strin
 // DeleteDatasetPreparer prepares the DeleteDataset request.
 func (client DatasetClient) DeleteDatasetPreparer(ctx context.Context, datasetName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -185,6 +188,7 @@ func (client DatasetClient) DeleteDatasetPreparer(ctx context.Context, datasetNa
 // http.Response Body if it receives an error.
 func (client DatasetClient) DeleteDatasetSender(req *http.Request) (future DatasetDeleteDatasetFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -256,6 +260,7 @@ func (client DatasetClient) GetDataset(ctx context.Context, datasetName string, 
 // GetDatasetPreparer prepares the GetDataset request.
 func (client DatasetClient) GetDatasetPreparer(ctx context.Context, datasetName string, ifNoneMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -340,6 +345,7 @@ func (client DatasetClient) GetDatasetsByWorkspace(ctx context.Context) (result 
 // GetDatasetsByWorkspacePreparer prepares the GetDatasetsByWorkspace request.
 func (client DatasetClient) GetDatasetsByWorkspacePreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -448,7 +454,7 @@ func (client DatasetClient) RenameDataset(ctx context.Context, datasetName strin
 
 	result, err = client.RenameDatasetSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.DatasetClient", "RenameDataset", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.DatasetClient", "RenameDataset", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -458,6 +464,7 @@ func (client DatasetClient) RenameDataset(ctx context.Context, datasetName strin
 // RenameDatasetPreparer prepares the RenameDataset request.
 func (client DatasetClient) RenameDatasetPreparer(ctx context.Context, datasetName string, request RenameRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -484,6 +491,7 @@ func (client DatasetClient) RenameDatasetPreparer(ctx context.Context, datasetNa
 // http.Response Body if it receives an error.
 func (client DatasetClient) RenameDatasetSender(req *http.Request) (future DatasetRenameDatasetFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

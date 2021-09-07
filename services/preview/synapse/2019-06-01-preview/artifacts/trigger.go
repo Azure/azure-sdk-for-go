@@ -58,7 +58,7 @@ func (client TriggerClient) CreateOrUpdateTrigger(ctx context.Context, triggerNa
 
 	result, err = client.CreateOrUpdateTriggerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "CreateOrUpdateTrigger", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "CreateOrUpdateTrigger", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -68,6 +68,7 @@ func (client TriggerClient) CreateOrUpdateTrigger(ctx context.Context, triggerNa
 // CreateOrUpdateTriggerPreparer prepares the CreateOrUpdateTrigger request.
 func (client TriggerClient) CreateOrUpdateTriggerPreparer(ctx context.Context, triggerName string, trigger TriggerResource, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -98,6 +99,7 @@ func (client TriggerClient) CreateOrUpdateTriggerPreparer(ctx context.Context, t
 // http.Response Body if it receives an error.
 func (client TriggerClient) CreateOrUpdateTriggerSender(req *http.Request) (future TriggerCreateOrUpdateTriggerFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -151,7 +153,7 @@ func (client TriggerClient) DeleteTrigger(ctx context.Context, triggerName strin
 
 	result, err = client.DeleteTriggerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "DeleteTrigger", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "DeleteTrigger", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -161,6 +163,7 @@ func (client TriggerClient) DeleteTrigger(ctx context.Context, triggerName strin
 // DeleteTriggerPreparer prepares the DeleteTrigger request.
 func (client TriggerClient) DeleteTriggerPreparer(ctx context.Context, triggerName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -185,6 +188,7 @@ func (client TriggerClient) DeleteTriggerPreparer(ctx context.Context, triggerNa
 // http.Response Body if it receives an error.
 func (client TriggerClient) DeleteTriggerSender(req *http.Request) (future TriggerDeleteTriggerFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -254,6 +258,7 @@ func (client TriggerClient) GetEventSubscriptionStatus(ctx context.Context, trig
 // GetEventSubscriptionStatusPreparer prepares the GetEventSubscriptionStatus request.
 func (client TriggerClient) GetEventSubscriptionStatusPreparer(ctx context.Context, triggerName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -341,6 +346,7 @@ func (client TriggerClient) GetTrigger(ctx context.Context, triggerName string, 
 // GetTriggerPreparer prepares the GetTrigger request.
 func (client TriggerClient) GetTriggerPreparer(ctx context.Context, triggerName string, ifNoneMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -425,6 +431,7 @@ func (client TriggerClient) GetTriggersByWorkspace(ctx context.Context) (result 
 // GetTriggersByWorkspacePreparer prepares the GetTriggersByWorkspace request.
 func (client TriggerClient) GetTriggersByWorkspacePreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -526,7 +533,7 @@ func (client TriggerClient) StartTrigger(ctx context.Context, triggerName string
 
 	result, err = client.StartTriggerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "StartTrigger", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "StartTrigger", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -536,6 +543,7 @@ func (client TriggerClient) StartTrigger(ctx context.Context, triggerName string
 // StartTriggerPreparer prepares the StartTrigger request.
 func (client TriggerClient) StartTriggerPreparer(ctx context.Context, triggerName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -560,6 +568,7 @@ func (client TriggerClient) StartTriggerPreparer(ctx context.Context, triggerNam
 // http.Response Body if it receives an error.
 func (client TriggerClient) StartTriggerSender(req *http.Request) (future TriggerStartTriggerFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -612,7 +621,7 @@ func (client TriggerClient) StopTrigger(ctx context.Context, triggerName string)
 
 	result, err = client.StopTriggerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "StopTrigger", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "StopTrigger", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -622,6 +631,7 @@ func (client TriggerClient) StopTrigger(ctx context.Context, triggerName string)
 // StopTriggerPreparer prepares the StopTrigger request.
 func (client TriggerClient) StopTriggerPreparer(ctx context.Context, triggerName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -646,6 +656,7 @@ func (client TriggerClient) StopTriggerPreparer(ctx context.Context, triggerName
 // http.Response Body if it receives an error.
 func (client TriggerClient) StopTriggerSender(req *http.Request) (future TriggerStopTriggerFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -698,7 +709,7 @@ func (client TriggerClient) SubscribeTriggerToEvents(ctx context.Context, trigge
 
 	result, err = client.SubscribeTriggerToEventsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "SubscribeTriggerToEvents", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "SubscribeTriggerToEvents", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -708,6 +719,7 @@ func (client TriggerClient) SubscribeTriggerToEvents(ctx context.Context, trigge
 // SubscribeTriggerToEventsPreparer prepares the SubscribeTriggerToEvents request.
 func (client TriggerClient) SubscribeTriggerToEventsPreparer(ctx context.Context, triggerName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -732,6 +744,7 @@ func (client TriggerClient) SubscribeTriggerToEventsPreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client TriggerClient) SubscribeTriggerToEventsSender(req *http.Request) (future TriggerSubscribeTriggerToEventsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -785,7 +798,7 @@ func (client TriggerClient) UnsubscribeTriggerFromEvents(ctx context.Context, tr
 
 	result, err = client.UnsubscribeTriggerFromEventsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "UnsubscribeTriggerFromEvents", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.TriggerClient", "UnsubscribeTriggerFromEvents", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -795,6 +808,7 @@ func (client TriggerClient) UnsubscribeTriggerFromEvents(ctx context.Context, tr
 // UnsubscribeTriggerFromEventsPreparer prepares the UnsubscribeTriggerFromEvents request.
 func (client TriggerClient) UnsubscribeTriggerFromEventsPreparer(ctx context.Context, triggerName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -819,6 +833,7 @@ func (client TriggerClient) UnsubscribeTriggerFromEventsPreparer(ctx context.Con
 // http.Response Body if it receives an error.
 func (client TriggerClient) UnsubscribeTriggerFromEventsSender(req *http.Request) (future TriggerUnsubscribeTriggerFromEventsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

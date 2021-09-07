@@ -65,7 +65,7 @@ func (client CloudLinksClient) CreateOrUpdate(ctx context.Context, resourceGroup
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.CloudLinksClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.CloudLinksClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -100,6 +100,7 @@ func (client CloudLinksClient) CreateOrUpdatePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client CloudLinksClient) CreateOrUpdateSender(req *http.Request) (future CloudLinksCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -156,7 +157,7 @@ func (client CloudLinksClient) Delete(ctx context.Context, resourceGroupName str
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.CloudLinksClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.CloudLinksClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -189,6 +190,7 @@ func (client CloudLinksClient) DeletePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client CloudLinksClient) DeleteSender(req *http.Request) (future CloudLinksDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

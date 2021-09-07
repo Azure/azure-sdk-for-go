@@ -70,6 +70,7 @@ func (client PipelineClient) Get(ctx context.Context, accountName string, pipeli
 // GetPreparer prepares the Get request.
 func (client PipelineClient) GetPreparer(ctx context.Context, accountName string, pipelineIdentity uuid.UUID, startDateTime *date.Time, endDateTime *date.Time) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}
@@ -163,6 +164,7 @@ func (client PipelineClient) List(ctx context.Context, accountName string, start
 // ListPreparer prepares the List request.
 func (client PipelineClient) ListPreparer(ctx context.Context, accountName string, startDateTime *date.Time, endDateTime *date.Time) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}

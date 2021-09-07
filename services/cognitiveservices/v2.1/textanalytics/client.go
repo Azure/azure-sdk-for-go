@@ -81,6 +81,7 @@ func (client BaseClient) DetectLanguage(ctx context.Context, showStats *bool, la
 // DetectLanguagePreparer prepares the DetectLanguage request.
 func (client BaseClient) DetectLanguagePreparer(ctx context.Context, showStats *bool, languageBatchInput *LanguageBatchInput) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -163,6 +164,7 @@ func (client BaseClient) Entities(ctx context.Context, showStats *bool, multiLan
 // EntitiesPreparer prepares the Entities request.
 func (client BaseClient) EntitiesPreparer(ctx context.Context, showStats *bool, multiLanguageBatchInput *MultiLanguageBatchInput) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -245,6 +247,7 @@ func (client BaseClient) KeyPhrases(ctx context.Context, showStats *bool, multiL
 // KeyPhrasesPreparer prepares the KeyPhrases request.
 func (client BaseClient) KeyPhrasesPreparer(ctx context.Context, showStats *bool, multiLanguageBatchInput *MultiLanguageBatchInput) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -327,6 +330,7 @@ func (client BaseClient) Sentiment(ctx context.Context, showStats *bool, multiLa
 // SentimentPreparer prepares the Sentiment request.
 func (client BaseClient) SentimentPreparer(ctx context.Context, showStats *bool, multiLanguageBatchInput *MultiLanguageBatchInput) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

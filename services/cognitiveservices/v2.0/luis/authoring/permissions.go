@@ -66,6 +66,7 @@ func (client PermissionsClient) Add(ctx context.Context, appID uuid.UUID, userTo
 // AddPreparer prepares the Add request.
 func (client PermissionsClient) AddPreparer(ctx context.Context, appID uuid.UUID, userToAdd UserCollaborator) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -141,6 +142,7 @@ func (client PermissionsClient) Delete(ctx context.Context, appID uuid.UUID, use
 // DeletePreparer prepares the Delete request.
 func (client PermissionsClient) DeletePreparer(ctx context.Context, appID uuid.UUID, userToDelete UserCollaborator) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -214,6 +216,7 @@ func (client PermissionsClient) List(ctx context.Context, appID uuid.UUID) (resu
 // ListPreparer prepares the List request.
 func (client PermissionsClient) ListPreparer(ctx context.Context, appID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -287,6 +290,7 @@ func (client PermissionsClient) Update(ctx context.Context, appID uuid.UUID, col
 // UpdatePreparer prepares the Update request.
 func (client PermissionsClient) UpdatePreparer(ctx context.Context, appID uuid.UUID, collaborators CollaboratorsArray) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

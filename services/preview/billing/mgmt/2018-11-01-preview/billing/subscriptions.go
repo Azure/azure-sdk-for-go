@@ -675,7 +675,7 @@ func (client SubscriptionsClient) Transfer(ctx context.Context, billingAccountNa
 
 	result, err = client.TransferSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "Transfer", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.SubscriptionsClient", "Transfer", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -703,6 +703,7 @@ func (client SubscriptionsClient) TransferPreparer(ctx context.Context, billingA
 // http.Response Body if it receives an error.
 func (client SubscriptionsClient) TransferSender(req *http.Request) (future SubscriptionsTransferFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

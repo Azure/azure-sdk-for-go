@@ -76,6 +76,7 @@ func (client BaseClient) BackupCertificate(ctx context.Context, vaultBaseURL str
 // BackupCertificatePreparer prepares the BackupCertificate request.
 func (client BaseClient) BackupCertificatePreparer(ctx context.Context, vaultBaseURL string, certificateName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -162,6 +163,7 @@ func (client BaseClient) BackupKey(ctx context.Context, vaultBaseURL string, key
 // BackupKeyPreparer prepares the BackupKey request.
 func (client BaseClient) BackupKeyPreparer(ctx context.Context, vaultBaseURL string, keyName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -241,6 +243,7 @@ func (client BaseClient) BackupSecret(ctx context.Context, vaultBaseURL string, 
 // BackupSecretPreparer prepares the BackupSecret request.
 func (client BaseClient) BackupSecretPreparer(ctx context.Context, vaultBaseURL string, secretName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -320,6 +323,7 @@ func (client BaseClient) BackupStorageAccount(ctx context.Context, vaultBaseURL 
 // BackupStorageAccountPreparer prepares the BackupStorageAccount request.
 func (client BaseClient) BackupStorageAccountPreparer(ctx context.Context, vaultBaseURL string, storageAccountName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -413,6 +417,7 @@ func (client BaseClient) CreateCertificate(ctx context.Context, vaultBaseURL str
 // CreateCertificatePreparer prepares the CreateCertificate request.
 func (client BaseClient) CreateCertificatePreparer(ctx context.Context, vaultBaseURL string, certificateName string, parameters CertificateCreateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -501,6 +506,7 @@ func (client BaseClient) CreateKey(ctx context.Context, vaultBaseURL string, key
 // CreateKeyPreparer prepares the CreateKey request.
 func (client BaseClient) CreateKeyPreparer(ctx context.Context, vaultBaseURL string, keyName string, parameters KeyCreateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -593,6 +599,7 @@ func (client BaseClient) Decrypt(ctx context.Context, vaultBaseURL string, keyNa
 // DecryptPreparer prepares the Decrypt request.
 func (client BaseClient) DecryptPreparer(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string, parameters KeyOperationsParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -676,6 +683,7 @@ func (client BaseClient) DeleteCertificate(ctx context.Context, vaultBaseURL str
 // DeleteCertificatePreparer prepares the DeleteCertificate request.
 func (client BaseClient) DeleteCertificatePreparer(ctx context.Context, vaultBaseURL string, certificateName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -754,6 +762,7 @@ func (client BaseClient) DeleteCertificateContacts(ctx context.Context, vaultBas
 // DeleteCertificateContactsPreparer prepares the DeleteCertificateContacts request.
 func (client BaseClient) DeleteCertificateContactsPreparer(ctx context.Context, vaultBaseURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -829,6 +838,7 @@ func (client BaseClient) DeleteCertificateIssuer(ctx context.Context, vaultBaseU
 // DeleteCertificateIssuerPreparer prepares the DeleteCertificateIssuer request.
 func (client BaseClient) DeleteCertificateIssuerPreparer(ctx context.Context, vaultBaseURL string, issuerName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -908,6 +918,7 @@ func (client BaseClient) DeleteCertificateOperation(ctx context.Context, vaultBa
 // DeleteCertificateOperationPreparer prepares the DeleteCertificateOperation request.
 func (client BaseClient) DeleteCertificateOperationPreparer(ctx context.Context, vaultBaseURL string, certificateName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -988,6 +999,7 @@ func (client BaseClient) DeleteKey(ctx context.Context, vaultBaseURL string, key
 // DeleteKeyPreparer prepares the DeleteKey request.
 func (client BaseClient) DeleteKeyPreparer(ctx context.Context, vaultBaseURL string, keyName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -1076,6 +1088,7 @@ func (client BaseClient) DeleteSasDefinition(ctx context.Context, vaultBaseURL s
 // DeleteSasDefinitionPreparer prepares the DeleteSasDefinition request.
 func (client BaseClient) DeleteSasDefinitionPreparer(ctx context.Context, vaultBaseURL string, storageAccountName string, sasDefinitionName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -1156,6 +1169,7 @@ func (client BaseClient) DeleteSecret(ctx context.Context, vaultBaseURL string, 
 // DeleteSecretPreparer prepares the DeleteSecret request.
 func (client BaseClient) DeleteSecretPreparer(ctx context.Context, vaultBaseURL string, secretName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -1240,6 +1254,7 @@ func (client BaseClient) DeleteStorageAccount(ctx context.Context, vaultBaseURL 
 // DeleteStorageAccountPreparer prepares the DeleteStorageAccount request.
 func (client BaseClient) DeleteStorageAccountPreparer(ctx context.Context, vaultBaseURL string, storageAccountName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -1332,6 +1347,7 @@ func (client BaseClient) Encrypt(ctx context.Context, vaultBaseURL string, keyNa
 // EncryptPreparer prepares the Encrypt request.
 func (client BaseClient) EncryptPreparer(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string, parameters KeyOperationsParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -1423,6 +1439,7 @@ func (client BaseClient) ExportKey(ctx context.Context, vaultBaseURL string, key
 // ExportKeyPreparer prepares the ExportKey request.
 func (client BaseClient) ExportKeyPreparer(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string, parameters KeyExportParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -1498,7 +1515,7 @@ func (client BaseClient) FullBackup(ctx context.Context, vaultBaseURL string, az
 
 	result, err = client.FullBackupSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "FullBackup", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "FullBackup", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1508,6 +1525,7 @@ func (client BaseClient) FullBackup(ctx context.Context, vaultBaseURL string, az
 // FullBackupPreparer prepares the FullBackup request.
 func (client BaseClient) FullBackupPreparer(ctx context.Context, vaultBaseURL string, azureStorageBlobContainerURI *SASTokenParameter) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -1533,6 +1551,7 @@ func (client BaseClient) FullBackupPreparer(ctx context.Context, vaultBaseURL st
 // http.Response Body if it receives an error.
 func (client BaseClient) FullBackupSender(req *http.Request) (future FullBackupFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -1596,6 +1615,7 @@ func (client BaseClient) FullBackupStatus(ctx context.Context, vaultBaseURL stri
 // FullBackupStatusPreparer prepares the FullBackupStatus request.
 func (client BaseClient) FullBackupStatusPreparer(ctx context.Context, vaultBaseURL string, jobID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -1671,7 +1691,7 @@ func (client BaseClient) FullRestoreOperation(ctx context.Context, vaultBaseURL 
 
 	result, err = client.FullRestoreOperationSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "FullRestoreOperation", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "FullRestoreOperation", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1681,6 +1701,7 @@ func (client BaseClient) FullRestoreOperation(ctx context.Context, vaultBaseURL 
 // FullRestoreOperationPreparer prepares the FullRestoreOperation request.
 func (client BaseClient) FullRestoreOperationPreparer(ctx context.Context, vaultBaseURL string, restoreBlobDetails *RestoreOperationParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -1706,6 +1727,7 @@ func (client BaseClient) FullRestoreOperationPreparer(ctx context.Context, vault
 // http.Response Body if it receives an error.
 func (client BaseClient) FullRestoreOperationSender(req *http.Request) (future FullRestoreOperationFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -1772,6 +1794,7 @@ func (client BaseClient) GetCertificate(ctx context.Context, vaultBaseURL string
 // GetCertificatePreparer prepares the GetCertificate request.
 func (client BaseClient) GetCertificatePreparer(ctx context.Context, vaultBaseURL string, certificateName string, certificateVersion string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -1851,6 +1874,7 @@ func (client BaseClient) GetCertificateContacts(ctx context.Context, vaultBaseUR
 // GetCertificateContactsPreparer prepares the GetCertificateContacts request.
 func (client BaseClient) GetCertificateContactsPreparer(ctx context.Context, vaultBaseURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -1926,6 +1950,7 @@ func (client BaseClient) GetCertificateIssuer(ctx context.Context, vaultBaseURL 
 // GetCertificateIssuerPreparer prepares the GetCertificateIssuer request.
 func (client BaseClient) GetCertificateIssuerPreparer(ctx context.Context, vaultBaseURL string, issuerName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -2020,6 +2045,7 @@ func (client BaseClient) GetCertificateIssuers(ctx context.Context, vaultBaseURL
 // GetCertificateIssuersPreparer prepares the GetCertificateIssuers request.
 func (client BaseClient) GetCertificateIssuersPreparer(ctx context.Context, vaultBaseURL string, maxresults *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -2135,6 +2161,7 @@ func (client BaseClient) GetCertificateOperation(ctx context.Context, vaultBaseU
 // GetCertificateOperationPreparer prepares the GetCertificateOperation request.
 func (client BaseClient) GetCertificateOperationPreparer(ctx context.Context, vaultBaseURL string, certificateName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -2214,6 +2241,7 @@ func (client BaseClient) GetCertificatePolicy(ctx context.Context, vaultBaseURL 
 // GetCertificatePolicyPreparer prepares the GetCertificatePolicy request.
 func (client BaseClient) GetCertificatePolicyPreparer(ctx context.Context, vaultBaseURL string, certificateName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -2309,6 +2337,7 @@ func (client BaseClient) GetCertificates(ctx context.Context, vaultBaseURL strin
 // GetCertificatesPreparer prepares the GetCertificates request.
 func (client BaseClient) GetCertificatesPreparer(ctx context.Context, vaultBaseURL string, maxresults *int32, includePending *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -2443,6 +2472,7 @@ func (client BaseClient) GetCertificateVersions(ctx context.Context, vaultBaseUR
 // GetCertificateVersionsPreparer prepares the GetCertificateVersions request.
 func (client BaseClient) GetCertificateVersionsPreparer(ctx context.Context, vaultBaseURL string, certificateName string, maxresults *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -2563,6 +2593,7 @@ func (client BaseClient) GetDeletedCertificate(ctx context.Context, vaultBaseURL
 // GetDeletedCertificatePreparer prepares the GetDeletedCertificate request.
 func (client BaseClient) GetDeletedCertificatePreparer(ctx context.Context, vaultBaseURL string, certificateName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -2660,6 +2691,7 @@ func (client BaseClient) GetDeletedCertificates(ctx context.Context, vaultBaseUR
 // GetDeletedCertificatesPreparer prepares the GetDeletedCertificates request.
 func (client BaseClient) GetDeletedCertificatesPreparer(ctx context.Context, vaultBaseURL string, maxresults *int32, includePending *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -2779,6 +2811,7 @@ func (client BaseClient) GetDeletedKey(ctx context.Context, vaultBaseURL string,
 // GetDeletedKeyPreparer prepares the GetDeletedKey request.
 func (client BaseClient) GetDeletedKeyPreparer(ctx context.Context, vaultBaseURL string, keyName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -2875,6 +2908,7 @@ func (client BaseClient) GetDeletedKeys(ctx context.Context, vaultBaseURL string
 // GetDeletedKeysPreparer prepares the GetDeletedKeys request.
 func (client BaseClient) GetDeletedKeysPreparer(ctx context.Context, vaultBaseURL string, maxresults *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -2999,6 +3033,7 @@ func (client BaseClient) GetDeletedSasDefinition(ctx context.Context, vaultBaseU
 // GetDeletedSasDefinitionPreparer prepares the GetDeletedSasDefinition request.
 func (client BaseClient) GetDeletedSasDefinitionPreparer(ctx context.Context, vaultBaseURL string, storageAccountName string, sasDefinitionName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -3097,6 +3132,7 @@ func (client BaseClient) GetDeletedSasDefinitions(ctx context.Context, vaultBase
 // GetDeletedSasDefinitionsPreparer prepares the GetDeletedSasDefinitions request.
 func (client BaseClient) GetDeletedSasDefinitionsPreparer(ctx context.Context, vaultBaseURL string, storageAccountName string, maxresults *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -3216,6 +3252,7 @@ func (client BaseClient) GetDeletedSecret(ctx context.Context, vaultBaseURL stri
 // GetDeletedSecretPreparer prepares the GetDeletedSecret request.
 func (client BaseClient) GetDeletedSecretPreparer(ctx context.Context, vaultBaseURL string, secretName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -3310,6 +3347,7 @@ func (client BaseClient) GetDeletedSecrets(ctx context.Context, vaultBaseURL str
 // GetDeletedSecretsPreparer prepares the GetDeletedSecrets request.
 func (client BaseClient) GetDeletedSecretsPreparer(ctx context.Context, vaultBaseURL string, maxresults *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -3431,6 +3469,7 @@ func (client BaseClient) GetDeletedStorageAccount(ctx context.Context, vaultBase
 // GetDeletedStorageAccountPreparer prepares the GetDeletedStorageAccount request.
 func (client BaseClient) GetDeletedStorageAccountPreparer(ctx context.Context, vaultBaseURL string, storageAccountName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -3525,6 +3564,7 @@ func (client BaseClient) GetDeletedStorageAccounts(ctx context.Context, vaultBas
 // GetDeletedStorageAccountsPreparer prepares the GetDeletedStorageAccounts request.
 func (client BaseClient) GetDeletedStorageAccountsPreparer(ctx context.Context, vaultBaseURL string, maxresults *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -3642,6 +3682,7 @@ func (client BaseClient) GetKey(ctx context.Context, vaultBaseURL string, keyNam
 // GetKeyPreparer prepares the GetKey request.
 func (client BaseClient) GetKeyPreparer(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -3739,6 +3780,7 @@ func (client BaseClient) GetKeys(ctx context.Context, vaultBaseURL string, maxre
 // GetKeysPreparer prepares the GetKeys request.
 func (client BaseClient) GetKeysPreparer(ctx context.Context, vaultBaseURL string, maxresults *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -3870,6 +3912,7 @@ func (client BaseClient) GetKeyVersions(ctx context.Context, vaultBaseURL string
 // GetKeyVersionsPreparer prepares the GetKeyVersions request.
 func (client BaseClient) GetKeyVersionsPreparer(ctx context.Context, vaultBaseURL string, keyName string, maxresults *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -3998,6 +4041,7 @@ func (client BaseClient) GetSasDefinition(ctx context.Context, vaultBaseURL stri
 // GetSasDefinitionPreparer prepares the GetSasDefinition request.
 func (client BaseClient) GetSasDefinitionPreparer(ctx context.Context, vaultBaseURL string, storageAccountName string, sasDefinitionName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -4096,6 +4140,7 @@ func (client BaseClient) GetSasDefinitions(ctx context.Context, vaultBaseURL str
 // GetSasDefinitionsPreparer prepares the GetSasDefinitions request.
 func (client BaseClient) GetSasDefinitionsPreparer(ctx context.Context, vaultBaseURL string, storageAccountName string, maxresults *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -4217,6 +4262,7 @@ func (client BaseClient) GetSecret(ctx context.Context, vaultBaseURL string, sec
 // GetSecretPreparer prepares the GetSecret request.
 func (client BaseClient) GetSecretPreparer(ctx context.Context, vaultBaseURL string, secretName string, secretVersion string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -4313,6 +4359,7 @@ func (client BaseClient) GetSecrets(ctx context.Context, vaultBaseURL string, ma
 // GetSecretsPreparer prepares the GetSecrets request.
 func (client BaseClient) GetSecretsPreparer(ctx context.Context, vaultBaseURL string, maxresults *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -4444,6 +4491,7 @@ func (client BaseClient) GetSecretVersions(ctx context.Context, vaultBaseURL str
 // GetSecretVersionsPreparer prepares the GetSecretVersions request.
 func (client BaseClient) GetSecretVersionsPreparer(ctx context.Context, vaultBaseURL string, secretName string, maxresults *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -4569,6 +4617,7 @@ func (client BaseClient) GetStorageAccount(ctx context.Context, vaultBaseURL str
 // GetStorageAccountPreparer prepares the GetStorageAccount request.
 func (client BaseClient) GetStorageAccountPreparer(ctx context.Context, vaultBaseURL string, storageAccountName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -4663,6 +4712,7 @@ func (client BaseClient) GetStorageAccounts(ctx context.Context, vaultBaseURL st
 // GetStorageAccountsPreparer prepares the GetStorageAccounts request.
 func (client BaseClient) GetStorageAccountsPreparer(ctx context.Context, vaultBaseURL string, maxresults *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -4794,6 +4844,7 @@ func (client BaseClient) ImportCertificate(ctx context.Context, vaultBaseURL str
 // ImportCertificatePreparer prepares the ImportCertificate request.
 func (client BaseClient) ImportCertificatePreparer(ctx context.Context, vaultBaseURL string, certificateName string, parameters CertificateImportParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -4885,6 +4936,7 @@ func (client BaseClient) ImportKey(ctx context.Context, vaultBaseURL string, key
 // ImportKeyPreparer prepares the ImportKey request.
 func (client BaseClient) ImportKeyPreparer(ctx context.Context, vaultBaseURL string, keyName string, parameters KeyImportParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -4973,6 +5025,7 @@ func (client BaseClient) MergeCertificate(ctx context.Context, vaultBaseURL stri
 // MergeCertificatePreparer prepares the MergeCertificate request.
 func (client BaseClient) MergeCertificatePreparer(ctx context.Context, vaultBaseURL string, certificateName string, parameters CertificateMergeParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -5055,6 +5108,7 @@ func (client BaseClient) PurgeDeletedCertificate(ctx context.Context, vaultBaseU
 // PurgeDeletedCertificatePreparer prepares the PurgeDeletedCertificate request.
 func (client BaseClient) PurgeDeletedCertificatePreparer(ctx context.Context, vaultBaseURL string, certificateName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -5134,6 +5188,7 @@ func (client BaseClient) PurgeDeletedKey(ctx context.Context, vaultBaseURL strin
 // PurgeDeletedKeyPreparer prepares the PurgeDeletedKey request.
 func (client BaseClient) PurgeDeletedKeyPreparer(ctx context.Context, vaultBaseURL string, keyName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -5213,6 +5268,7 @@ func (client BaseClient) PurgeDeletedSecret(ctx context.Context, vaultBaseURL st
 // PurgeDeletedSecretPreparer prepares the PurgeDeletedSecret request.
 func (client BaseClient) PurgeDeletedSecretPreparer(ctx context.Context, vaultBaseURL string, secretName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -5298,6 +5354,7 @@ func (client BaseClient) PurgeDeletedStorageAccount(ctx context.Context, vaultBa
 // PurgeDeletedStorageAccountPreparer prepares the PurgeDeletedStorageAccount request.
 func (client BaseClient) PurgeDeletedStorageAccountPreparer(ctx context.Context, vaultBaseURL string, storageAccountName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -5377,6 +5434,7 @@ func (client BaseClient) RecoverDeletedCertificate(ctx context.Context, vaultBas
 // RecoverDeletedCertificatePreparer prepares the RecoverDeletedCertificate request.
 func (client BaseClient) RecoverDeletedCertificatePreparer(ctx context.Context, vaultBaseURL string, certificateName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -5458,6 +5516,7 @@ func (client BaseClient) RecoverDeletedKey(ctx context.Context, vaultBaseURL str
 // RecoverDeletedKeyPreparer prepares the RecoverDeletedKey request.
 func (client BaseClient) RecoverDeletedKeyPreparer(ctx context.Context, vaultBaseURL string, keyName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -5546,6 +5605,7 @@ func (client BaseClient) RecoverDeletedSasDefinition(ctx context.Context, vaultB
 // RecoverDeletedSasDefinitionPreparer prepares the RecoverDeletedSasDefinition request.
 func (client BaseClient) RecoverDeletedSasDefinitionPreparer(ctx context.Context, vaultBaseURL string, storageAccountName string, sasDefinitionName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -5626,6 +5686,7 @@ func (client BaseClient) RecoverDeletedSecret(ctx context.Context, vaultBaseURL 
 // RecoverDeletedSecretPreparer prepares the RecoverDeletedSecret request.
 func (client BaseClient) RecoverDeletedSecretPreparer(ctx context.Context, vaultBaseURL string, secretName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -5711,6 +5772,7 @@ func (client BaseClient) RecoverDeletedStorageAccount(ctx context.Context, vault
 // RecoverDeletedStorageAccountPreparer prepares the RecoverDeletedStorageAccount request.
 func (client BaseClient) RecoverDeletedStorageAccountPreparer(ctx context.Context, vaultBaseURL string, storageAccountName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -5799,6 +5861,7 @@ func (client BaseClient) RegenerateStorageAccountKey(ctx context.Context, vaultB
 // RegenerateStorageAccountKeyPreparer prepares the RegenerateStorageAccountKey request.
 func (client BaseClient) RegenerateStorageAccountKeyPreparer(ctx context.Context, vaultBaseURL string, storageAccountName string, parameters StorageAccountRegenerteKeyParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -5886,6 +5949,7 @@ func (client BaseClient) RestoreCertificate(ctx context.Context, vaultBaseURL st
 // RestoreCertificatePreparer prepares the RestoreCertificate request.
 func (client BaseClient) RestoreCertificatePreparer(ctx context.Context, vaultBaseURL string, parameters CertificateRestoreParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -5976,6 +6040,7 @@ func (client BaseClient) RestoreKey(ctx context.Context, vaultBaseURL string, pa
 // RestoreKeyPreparer prepares the RestoreKey request.
 func (client BaseClient) RestoreKeyPreparer(ctx context.Context, vaultBaseURL string, parameters KeyRestoreParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -6059,6 +6124,7 @@ func (client BaseClient) RestoreSecret(ctx context.Context, vaultBaseURL string,
 // RestoreSecretPreparer prepares the RestoreSecret request.
 func (client BaseClient) RestoreSecretPreparer(ctx context.Context, vaultBaseURL string, parameters SecretRestoreParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -6135,6 +6201,7 @@ func (client BaseClient) RestoreStatus(ctx context.Context, vaultBaseURL string,
 // RestoreStatusPreparer prepares the RestoreStatus request.
 func (client BaseClient) RestoreStatusPreparer(ctx context.Context, vaultBaseURL string, jobID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -6220,6 +6287,7 @@ func (client BaseClient) RestoreStorageAccount(ctx context.Context, vaultBaseURL
 // RestoreStorageAccountPreparer prepares the RestoreStorageAccount request.
 func (client BaseClient) RestoreStorageAccountPreparer(ctx context.Context, vaultBaseURL string, parameters StorageRestoreParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -6294,7 +6362,7 @@ func (client BaseClient) SelectiveKeyRestoreOperationMethod(ctx context.Context,
 
 	result, err = client.SelectiveKeyRestoreOperationMethodSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "SelectiveKeyRestoreOperationMethod", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.BaseClient", "SelectiveKeyRestoreOperationMethod", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -6304,6 +6372,7 @@ func (client BaseClient) SelectiveKeyRestoreOperationMethod(ctx context.Context,
 // SelectiveKeyRestoreOperationMethodPreparer prepares the SelectiveKeyRestoreOperationMethod request.
 func (client BaseClient) SelectiveKeyRestoreOperationMethodPreparer(ctx context.Context, vaultBaseURL string, keyName string, restoreBlobDetails *SelectiveKeyRestoreOperationParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -6333,6 +6402,7 @@ func (client BaseClient) SelectiveKeyRestoreOperationMethodPreparer(ctx context.
 // http.Response Body if it receives an error.
 func (client BaseClient) SelectiveKeyRestoreOperationMethodSender(req *http.Request) (future SelectiveKeyRestoreOperationMethodFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -6397,6 +6467,7 @@ func (client BaseClient) SetCertificateContacts(ctx context.Context, vaultBaseUR
 // SetCertificateContactsPreparer prepares the SetCertificateContacts request.
 func (client BaseClient) SetCertificateContactsPreparer(ctx context.Context, vaultBaseURL string, contacts Contacts) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -6482,6 +6553,7 @@ func (client BaseClient) SetCertificateIssuer(ctx context.Context, vaultBaseURL 
 // SetCertificateIssuerPreparer prepares the SetCertificateIssuer request.
 func (client BaseClient) SetCertificateIssuerPreparer(ctx context.Context, vaultBaseURL string, issuerName string, parameter CertificateIssuerSetParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -6576,6 +6648,7 @@ func (client BaseClient) SetSasDefinition(ctx context.Context, vaultBaseURL stri
 // SetSasDefinitionPreparer prepares the SetSasDefinition request.
 func (client BaseClient) SetSasDefinitionPreparer(ctx context.Context, vaultBaseURL string, storageAccountName string, sasDefinitionName string, parameters SasDefinitionCreateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -6667,6 +6740,7 @@ func (client BaseClient) SetSecret(ctx context.Context, vaultBaseURL string, sec
 // SetSecretPreparer prepares the SetSecret request.
 func (client BaseClient) SetSecretPreparer(ctx context.Context, vaultBaseURL string, secretName string, parameters SecretSetParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -6758,6 +6832,7 @@ func (client BaseClient) SetStorageAccount(ctx context.Context, vaultBaseURL str
 // SetStorageAccountPreparer prepares the SetStorageAccount request.
 func (client BaseClient) SetStorageAccountPreparer(ctx context.Context, vaultBaseURL string, storageAccountName string, parameters StorageAccountCreateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -6847,6 +6922,7 @@ func (client BaseClient) Sign(ctx context.Context, vaultBaseURL string, keyName 
 // SignPreparer prepares the Sign request.
 func (client BaseClient) SignPreparer(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string, parameters KeySignParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -6939,6 +7015,7 @@ func (client BaseClient) UnwrapKey(ctx context.Context, vaultBaseURL string, key
 // UnwrapKeyPreparer prepares the UnwrapKey request.
 func (client BaseClient) UnwrapKeyPreparer(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string, parameters KeyOperationsParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -7023,6 +7100,7 @@ func (client BaseClient) UpdateCertificate(ctx context.Context, vaultBaseURL str
 // UpdateCertificatePreparer prepares the UpdateCertificate request.
 func (client BaseClient) UpdateCertificatePreparer(ctx context.Context, vaultBaseURL string, certificateName string, certificateVersion string, parameters CertificateUpdateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -7106,6 +7184,7 @@ func (client BaseClient) UpdateCertificateIssuer(ctx context.Context, vaultBaseU
 // UpdateCertificateIssuerPreparer prepares the UpdateCertificateIssuer request.
 func (client BaseClient) UpdateCertificateIssuerPreparer(ctx context.Context, vaultBaseURL string, issuerName string, parameter CertificateIssuerUpdateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -7188,6 +7267,7 @@ func (client BaseClient) UpdateCertificateOperation(ctx context.Context, vaultBa
 // UpdateCertificateOperationPreparer prepares the UpdateCertificateOperation request.
 func (client BaseClient) UpdateCertificateOperationPreparer(ctx context.Context, vaultBaseURL string, certificateName string, certificateOperation CertificateOperationUpdateParameter) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -7270,6 +7350,7 @@ func (client BaseClient) UpdateCertificatePolicy(ctx context.Context, vaultBaseU
 // UpdateCertificatePolicyPreparer prepares the UpdateCertificatePolicy request.
 func (client BaseClient) UpdateCertificatePolicyPreparer(ctx context.Context, vaultBaseURL string, certificateName string, certificatePolicy CertificatePolicy) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -7354,6 +7435,7 @@ func (client BaseClient) UpdateKey(ctx context.Context, vaultBaseURL string, key
 // UpdateKeyPreparer prepares the UpdateKey request.
 func (client BaseClient) UpdateKeyPreparer(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string, parameters KeyUpdateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -7446,6 +7528,7 @@ func (client BaseClient) UpdateSasDefinition(ctx context.Context, vaultBaseURL s
 // UpdateSasDefinitionPreparer prepares the UpdateSasDefinition request.
 func (client BaseClient) UpdateSasDefinitionPreparer(ctx context.Context, vaultBaseURL string, storageAccountName string, sasDefinitionName string, parameters SasDefinitionUpdateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -7531,6 +7614,7 @@ func (client BaseClient) UpdateSecret(ctx context.Context, vaultBaseURL string, 
 // UpdateSecretPreparer prepares the UpdateSecret request.
 func (client BaseClient) UpdateSecretPreparer(ctx context.Context, vaultBaseURL string, secretName string, secretVersion string, parameters SecretUpdateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -7620,6 +7704,7 @@ func (client BaseClient) UpdateStorageAccount(ctx context.Context, vaultBaseURL 
 // UpdateStorageAccountPreparer prepares the UpdateStorageAccount request.
 func (client BaseClient) UpdateStorageAccountPreparer(ctx context.Context, vaultBaseURL string, storageAccountName string, parameters StorageAccountUpdateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -7712,6 +7797,7 @@ func (client BaseClient) Verify(ctx context.Context, vaultBaseURL string, keyNam
 // VerifyPreparer prepares the Verify request.
 func (client BaseClient) VerifyPreparer(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string, parameters KeyVerifyParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -7805,6 +7891,7 @@ func (client BaseClient) WrapKey(ctx context.Context, vaultBaseURL string, keyNa
 // WrapKeyPreparer prepares the WrapKey request.
 func (client BaseClient) WrapKeyPreparer(ctx context.Context, vaultBaseURL string, keyName string, keyVersion string, parameters KeyOperationsParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 

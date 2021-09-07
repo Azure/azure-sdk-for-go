@@ -69,6 +69,7 @@ func (client TableClient) Create(ctx context.Context, tableProperties TablePrope
 // CreatePreparer prepares the Create request.
 func (client TableClient) CreatePreparer(ctx context.Context, tableProperties TableProperties, requestID string, formatParameter OdataMetadataFormat, responsePreference ResponseFormat) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.URL,
 	}
 
@@ -156,6 +157,7 @@ func (client TableClient) Delete(ctx context.Context, table string, requestID st
 // DeletePreparer prepares the Delete request.
 func (client TableClient) DeletePreparer(ctx context.Context, table string, requestID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.URL,
 	}
 
@@ -246,6 +248,7 @@ func (client TableClient) DeleteEntity(ctx context.Context, table string, partit
 // DeleteEntityPreparer prepares the DeleteEntity request.
 func (client TableClient) DeleteEntityPreparer(ctx context.Context, table string, partitionKey string, rowKey string, ifMatch string, timeout *int32, requestID string, formatParameter OdataMetadataFormat) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.URL,
 	}
 
@@ -345,6 +348,7 @@ func (client TableClient) GetAccessPolicy(ctx context.Context, table string, tim
 // GetAccessPolicyPreparer prepares the GetAccessPolicy request.
 func (client TableClient) GetAccessPolicyPreparer(ctx context.Context, table string, timeout *int32, requestID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.URL,
 	}
 
@@ -443,6 +447,7 @@ func (client TableClient) InsertEntity(ctx context.Context, table string, timeou
 // InsertEntityPreparer prepares the InsertEntity request.
 func (client TableClient) InsertEntityPreparer(ctx context.Context, table string, timeout *int32, requestID string, formatParameter OdataMetadataFormat, tableEntityProperties map[string]interface{}, responsePreference ResponseFormat) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.URL,
 	}
 
@@ -556,6 +561,7 @@ func (client TableClient) MergeEntity(ctx context.Context, table string, partiti
 // MergeEntityPreparer prepares the MergeEntity request.
 func (client TableClient) MergeEntityPreparer(ctx context.Context, table string, partitionKey string, rowKey string, timeout *int32, requestID string, formatParameter OdataMetadataFormat, tableEntityProperties map[string]interface{}, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.URL,
 	}
 
@@ -666,6 +672,7 @@ func (client TableClient) Query(ctx context.Context, requestID string, formatPar
 // QueryPreparer prepares the Query request.
 func (client TableClient) QueryPreparer(ctx context.Context, requestID string, formatParameter OdataMetadataFormat, top *int32, selectParameter string, filter string, nextTableName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.URL,
 	}
 
@@ -777,6 +784,7 @@ func (client TableClient) QueryEntities(ctx context.Context, table string, timeo
 // QueryEntitiesPreparer prepares the QueryEntities request.
 func (client TableClient) QueryEntitiesPreparer(ctx context.Context, table string, timeout *int32, requestID string, formatParameter OdataMetadataFormat, top *int32, selectParameter string, filter string, nextPartitionKey string, nextRowKey string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.URL,
 	}
 
@@ -894,6 +902,7 @@ func (client TableClient) QueryEntitiesWithPartitionAndRowKey(ctx context.Contex
 // QueryEntitiesWithPartitionAndRowKeyPreparer prepares the QueryEntitiesWithPartitionAndRowKey request.
 func (client TableClient) QueryEntitiesWithPartitionAndRowKeyPreparer(ctx context.Context, table string, partitionKey string, rowKey string, timeout *int32, requestID string, formatParameter OdataMetadataFormat, selectParameter string, filter string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.URL,
 	}
 
@@ -999,6 +1008,7 @@ func (client TableClient) SetAccessPolicy(ctx context.Context, table string, tab
 // SetAccessPolicyPreparer prepares the SetAccessPolicy request.
 func (client TableClient) SetAccessPolicyPreparer(ctx context.Context, table string, tableACL []SignedIdentifier, timeout *int32, requestID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.URL,
 	}
 
@@ -1105,6 +1115,7 @@ func (client TableClient) UpdateEntity(ctx context.Context, table string, partit
 // UpdateEntityPreparer prepares the UpdateEntity request.
 func (client TableClient) UpdateEntityPreparer(ctx context.Context, table string, partitionKey string, rowKey string, timeout *int32, requestID string, formatParameter OdataMetadataFormat, tableEntityProperties map[string]interface{}, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.URL,
 	}
 

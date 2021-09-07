@@ -203,6 +203,7 @@ func (client BaseClient) SpellCheckerMethod(ctx context.Context, textParameter s
 // SpellCheckerMethodPreparer prepares the SpellCheckerMethod request.
 func (client BaseClient) SpellCheckerMethodPreparer(ctx context.Context, textParameter string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, actionType ActionType, appName string, countryCode string, clientMachineName string, docID string, market string, sessionID string, setLang string, userID string, mode Mode, preContextText string, postContextText string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

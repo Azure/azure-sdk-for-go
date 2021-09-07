@@ -72,6 +72,7 @@ func (client WorkspaceGitRepoManagementClient) GetGitHubAccessToken(ctx context.
 // GetGitHubAccessTokenPreparer prepares the GetGitHubAccessToken request.
 func (client WorkspaceGitRepoManagementClient) GetGitHubAccessTokenPreparer(ctx context.Context, APIVersion string, gitHubAccessTokenRequest GitHubAccessTokenRequest, clientRequestID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 

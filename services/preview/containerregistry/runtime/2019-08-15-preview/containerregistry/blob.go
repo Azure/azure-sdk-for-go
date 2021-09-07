@@ -66,6 +66,7 @@ func (client BlobClient) CancelUpload(ctx context.Context, location string) (res
 // CancelUploadPreparer prepares the CancelUpload request.
 func (client BlobClient) CancelUploadPreparer(ctx context.Context, location string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -137,6 +138,7 @@ func (client BlobClient) Check(ctx context.Context, name string, digest string) 
 // CheckPreparer prepares the Check request.
 func (client BlobClient) CheckPreparer(ctx context.Context, name string, digest string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -210,6 +212,7 @@ func (client BlobClient) CheckChunk(ctx context.Context, name string, digest str
 // CheckChunkPreparer prepares the CheckChunk request.
 func (client BlobClient) CheckChunkPreparer(ctx context.Context, name string, digest string, rangeParameter string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -283,6 +286,7 @@ func (client BlobClient) Delete(ctx context.Context, name string, digest string)
 // DeletePreparer prepares the Delete request.
 func (client BlobClient) DeletePreparer(ctx context.Context, name string, digest string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -358,6 +362,7 @@ func (client BlobClient) EndUpload(ctx context.Context, digest string, location 
 // EndUploadPreparer prepares the EndUpload request.
 func (client BlobClient) EndUploadPreparer(ctx context.Context, digest string, location string, value io.ReadCloser) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -439,6 +444,7 @@ func (client BlobClient) Get(ctx context.Context, name string, digest string) (r
 // GetPreparer prepares the Get request.
 func (client BlobClient) GetPreparer(ctx context.Context, name string, digest string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -514,6 +520,7 @@ func (client BlobClient) GetChunk(ctx context.Context, name string, digest strin
 // GetChunkPreparer prepares the GetChunk request.
 func (client BlobClient) GetChunkPreparer(ctx context.Context, name string, digest string, rangeParameter string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -588,6 +595,7 @@ func (client BlobClient) GetStatus(ctx context.Context, location string) (result
 // GetStatusPreparer prepares the GetStatus request.
 func (client BlobClient) GetStatusPreparer(ctx context.Context, location string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -660,6 +668,7 @@ func (client BlobClient) Mount(ctx context.Context, name string, from string, mo
 // MountPreparer prepares the Mount request.
 func (client BlobClient) MountPreparer(ctx context.Context, name string, from string, mount string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -736,6 +745,7 @@ func (client BlobClient) StartUpload(ctx context.Context, name string) (result a
 // StartUploadPreparer prepares the StartUpload request.
 func (client BlobClient) StartUploadPreparer(ctx context.Context, name string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -808,6 +818,7 @@ func (client BlobClient) Upload(ctx context.Context, value io.ReadCloser, locati
 // UploadPreparer prepares the Upload request.
 func (client BlobClient) UploadPreparer(ctx context.Context, value io.ReadCloser, location string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 

@@ -111,6 +111,7 @@ func (client BaseClient) AnalyzeImage(ctx context.Context, imageURL ImageURL, vi
 // AnalyzeImagePreparer prepares the AnalyzeImage request.
 func (client BaseClient) AnalyzeImagePreparer(ctx context.Context, imageURL ImageURL, visualFeatures []VisualFeatureTypes, details []Details, language string, descriptionExclude []DescriptionExclude) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -212,6 +213,7 @@ func (client BaseClient) AnalyzeImageByDomain(ctx context.Context, model string,
 // AnalyzeImageByDomainPreparer prepares the AnalyzeImageByDomain request.
 func (client BaseClient) AnalyzeImageByDomainPreparer(ctx context.Context, model string, imageURL ImageURL, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -302,6 +304,7 @@ func (client BaseClient) AnalyzeImageByDomainInStream(ctx context.Context, model
 // AnalyzeImageByDomainInStreamPreparer prepares the AnalyzeImageByDomainInStream request.
 func (client BaseClient) AnalyzeImageByDomainInStreamPreparer(ctx context.Context, model string, imageParameter io.ReadCloser, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -406,6 +409,7 @@ func (client BaseClient) AnalyzeImageInStream(ctx context.Context, imageParamete
 // AnalyzeImageInStreamPreparer prepares the AnalyzeImageInStream request.
 func (client BaseClient) AnalyzeImageInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, visualFeatures []VisualFeatureTypes, details []Details, language string, descriptionExclude []DescriptionExclude) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -509,6 +513,7 @@ func (client BaseClient) DescribeImage(ctx context.Context, imageURL ImageURL, m
 // DescribeImagePreparer prepares the DescribeImage request.
 func (client BaseClient) DescribeImagePreparer(ctx context.Context, imageURL ImageURL, maxCandidates *int32, language string, descriptionExclude []DescriptionExclude) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -605,6 +610,7 @@ func (client BaseClient) DescribeImageInStream(ctx context.Context, imageParamet
 // DescribeImageInStreamPreparer prepares the DescribeImageInStream request.
 func (client BaseClient) DescribeImageInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, maxCandidates *int32, language string, descriptionExclude []DescriptionExclude) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -699,6 +705,7 @@ func (client BaseClient) DetectObjects(ctx context.Context, imageURL ImageURL) (
 // DetectObjectsPreparer prepares the DetectObjects request.
 func (client BaseClient) DetectObjectsPreparer(ctx context.Context, imageURL ImageURL) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -771,6 +778,7 @@ func (client BaseClient) DetectObjectsInStream(ctx context.Context, imageParamet
 // DetectObjectsInStreamPreparer prepares the DetectObjectsInStream request.
 func (client BaseClient) DetectObjectsInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -862,6 +870,7 @@ func (client BaseClient) GenerateThumbnail(ctx context.Context, width int32, hei
 // GenerateThumbnailPreparer prepares the GenerateThumbnail request.
 func (client BaseClient) GenerateThumbnailPreparer(ctx context.Context, width int32, height int32, imageURL ImageURL, smartCropping *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -962,6 +971,7 @@ func (client BaseClient) GenerateThumbnailInStream(ctx context.Context, width in
 // GenerateThumbnailInStreamPreparer prepares the GenerateThumbnailInStream request.
 func (client BaseClient) GenerateThumbnailInStreamPreparer(ctx context.Context, width int32, height int32, imageParameter io.ReadCloser, smartCropping *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1051,6 +1061,7 @@ func (client BaseClient) GetAreaOfInterest(ctx context.Context, imageURL ImageUR
 // GetAreaOfInterestPreparer prepares the GetAreaOfInterest request.
 func (client BaseClient) GetAreaOfInterestPreparer(ctx context.Context, imageURL ImageURL) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1124,6 +1135,7 @@ func (client BaseClient) GetAreaOfInterestInStream(ctx context.Context, imagePar
 // GetAreaOfInterestInStreamPreparer prepares the GetAreaOfInterestInStream request.
 func (client BaseClient) GetAreaOfInterestInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1194,6 +1206,7 @@ func (client BaseClient) GetReadResult(ctx context.Context, operationID uuid.UUI
 // GetReadResultPreparer prepares the GetReadResult request.
 func (client BaseClient) GetReadResultPreparer(ctx context.Context, operationID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1266,6 +1279,7 @@ func (client BaseClient) ListModels(ctx context.Context) (result ListModelsResul
 // ListModelsPreparer prepares the ListModels request.
 func (client BaseClient) ListModelsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1346,6 +1360,7 @@ func (client BaseClient) Read(ctx context.Context, imageURL ImageURL, language O
 // ReadPreparer prepares the Read request.
 func (client BaseClient) ReadPreparer(ctx context.Context, imageURL ImageURL, language OcrDetectionLanguage) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1429,6 +1444,7 @@ func (client BaseClient) ReadInStream(ctx context.Context, imageParameter io.Rea
 // ReadInStreamPreparer prepares the ReadInStream request.
 func (client BaseClient) ReadInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, language OcrDetectionLanguage) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1520,6 +1536,7 @@ func (client BaseClient) RecognizePrintedText(ctx context.Context, detectOrienta
 // RecognizePrintedTextPreparer prepares the RecognizePrintedText request.
 func (client BaseClient) RecognizePrintedTextPreparer(ctx context.Context, detectOrientation bool, imageURL ImageURL, language OcrLanguages) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1608,6 +1625,7 @@ func (client BaseClient) RecognizePrintedTextInStream(ctx context.Context, detec
 // RecognizePrintedTextInStreamPreparer prepares the RecognizePrintedTextInStream request.
 func (client BaseClient) RecognizePrintedTextInStreamPreparer(ctx context.Context, detectOrientation bool, imageParameter io.ReadCloser, language OcrLanguages) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1703,6 +1721,7 @@ func (client BaseClient) TagImage(ctx context.Context, imageURL ImageURL, langua
 // TagImagePreparer prepares the TagImage request.
 func (client BaseClient) TagImagePreparer(ctx context.Context, imageURL ImageURL, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1790,6 +1809,7 @@ func (client BaseClient) TagImageInStream(ctx context.Context, imageParameter io
 // TagImageInStreamPreparer prepares the TagImageInStream request.
 func (client BaseClient) TagImageInStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

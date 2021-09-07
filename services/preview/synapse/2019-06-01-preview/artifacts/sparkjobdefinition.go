@@ -86,6 +86,7 @@ func (client SparkJobDefinitionClient) CreateOrUpdateSparkJobDefinition(ctx cont
 // CreateOrUpdateSparkJobDefinitionPreparer prepares the CreateOrUpdateSparkJobDefinition request.
 func (client SparkJobDefinitionClient) CreateOrUpdateSparkJobDefinitionPreparer(ctx context.Context, sparkJobDefinitionName string, sparkJobDefinition SparkJobDefinitionResource, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -171,7 +172,7 @@ func (client SparkJobDefinitionClient) DebugSparkJobDefinition(ctx context.Conte
 
 	result, err = client.DebugSparkJobDefinitionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "DebugSparkJobDefinition", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "DebugSparkJobDefinition", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -181,6 +182,7 @@ func (client SparkJobDefinitionClient) DebugSparkJobDefinition(ctx context.Conte
 // DebugSparkJobDefinitionPreparer prepares the DebugSparkJobDefinition request.
 func (client SparkJobDefinitionClient) DebugSparkJobDefinitionPreparer(ctx context.Context, sparkJobDefinitionAzureResource SparkJobDefinitionResource) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -203,6 +205,7 @@ func (client SparkJobDefinitionClient) DebugSparkJobDefinitionPreparer(ctx conte
 // http.Response Body if it receives an error.
 func (client SparkJobDefinitionClient) DebugSparkJobDefinitionSender(req *http.Request) (future SparkJobDefinitionDebugSparkJobDefinitionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -265,6 +268,7 @@ func (client SparkJobDefinitionClient) DeleteSparkJobDefinition(ctx context.Cont
 // DeleteSparkJobDefinitionPreparer prepares the DeleteSparkJobDefinition request.
 func (client SparkJobDefinitionClient) DeleteSparkJobDefinitionPreparer(ctx context.Context, sparkJobDefinitionName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -324,7 +328,7 @@ func (client SparkJobDefinitionClient) ExecuteSparkJobDefinition(ctx context.Con
 
 	result, err = client.ExecuteSparkJobDefinitionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "ExecuteSparkJobDefinition", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "ExecuteSparkJobDefinition", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -334,6 +338,7 @@ func (client SparkJobDefinitionClient) ExecuteSparkJobDefinition(ctx context.Con
 // ExecuteSparkJobDefinitionPreparer prepares the ExecuteSparkJobDefinition request.
 func (client SparkJobDefinitionClient) ExecuteSparkJobDefinitionPreparer(ctx context.Context, sparkJobDefinitionName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -358,6 +363,7 @@ func (client SparkJobDefinitionClient) ExecuteSparkJobDefinitionPreparer(ctx con
 // http.Response Body if it receives an error.
 func (client SparkJobDefinitionClient) ExecuteSparkJobDefinitionSender(req *http.Request) (future SparkJobDefinitionExecuteSparkJobDefinitionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -422,6 +428,7 @@ func (client SparkJobDefinitionClient) GetSparkJobDefinition(ctx context.Context
 // GetSparkJobDefinitionPreparer prepares the GetSparkJobDefinition request.
 func (client SparkJobDefinitionClient) GetSparkJobDefinitionPreparer(ctx context.Context, sparkJobDefinitionName string, ifNoneMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -506,6 +513,7 @@ func (client SparkJobDefinitionClient) GetSparkJobDefinitionsByWorkspace(ctx con
 // GetSparkJobDefinitionsByWorkspacePreparer prepares the GetSparkJobDefinitionsByWorkspace request.
 func (client SparkJobDefinitionClient) GetSparkJobDefinitionsByWorkspacePreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -610,7 +618,7 @@ func (client SparkJobDefinitionClient) RenameSparkJobDefinition(ctx context.Cont
 
 	result, err = client.RenameSparkJobDefinitionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "RenameSparkJobDefinition", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.SparkJobDefinitionClient", "RenameSparkJobDefinition", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -620,6 +628,7 @@ func (client SparkJobDefinitionClient) RenameSparkJobDefinition(ctx context.Cont
 // RenameSparkJobDefinitionPreparer prepares the RenameSparkJobDefinition request.
 func (client SparkJobDefinitionClient) RenameSparkJobDefinitionPreparer(ctx context.Context, sparkJobDefinitionName string, request RenameRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -646,6 +655,7 @@ func (client SparkJobDefinitionClient) RenameSparkJobDefinitionPreparer(ctx cont
 // http.Response Body if it receives an error.
 func (client SparkJobDefinitionClient) RenameSparkJobDefinitionSender(req *http.Request) (future SparkJobDefinitionRenameSparkJobDefinitionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

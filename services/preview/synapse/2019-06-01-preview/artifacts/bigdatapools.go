@@ -63,6 +63,7 @@ func (client BigDataPoolsClient) Get(ctx context.Context, bigDataPoolName string
 // GetPreparer prepares the Get request.
 func (client BigDataPoolsClient) GetPreparer(ctx context.Context, bigDataPoolName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -138,6 +139,7 @@ func (client BigDataPoolsClient) List(ctx context.Context) (result BigDataPoolRe
 // ListPreparer prepares the List request.
 func (client BigDataPoolsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 

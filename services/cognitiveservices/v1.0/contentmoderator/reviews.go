@@ -98,6 +98,7 @@ func (client ReviewsClient) AddVideoFrame(ctx context.Context, teamName string, 
 // AddVideoFramePreparer prepares the AddVideoFrame request.
 func (client ReviewsClient) AddVideoFramePreparer(ctx context.Context, teamName string, reviewID string, timescale *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -183,6 +184,7 @@ func (client ReviewsClient) AddVideoFrameStream(ctx context.Context, contentType
 // AddVideoFrameStreamPreparer prepares the AddVideoFrameStream request.
 func (client ReviewsClient) AddVideoFrameStreamPreparer(ctx context.Context, contentType string, teamName string, reviewID string, frameImageZip io.ReadCloser, frameMetadata string, timescale *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -280,6 +282,7 @@ func (client ReviewsClient) AddVideoFrameURL(ctx context.Context, contentType st
 // AddVideoFrameURLPreparer prepares the AddVideoFrameURL request.
 func (client ReviewsClient) AddVideoFrameURLPreparer(ctx context.Context, contentType string, teamName string, reviewID string, videoFrameBody []VideoFrameBodyItem, timescale *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -363,6 +366,7 @@ func (client ReviewsClient) AddVideoTranscript(ctx context.Context, teamName str
 // AddVideoTranscriptPreparer prepares the AddVideoTranscript request.
 func (client ReviewsClient) AddVideoTranscriptPreparer(ctx context.Context, teamName string, reviewID string, vttfile io.ReadCloser) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -448,6 +452,7 @@ func (client ReviewsClient) AddVideoTranscriptModerationResult(ctx context.Conte
 // AddVideoTranscriptModerationResultPreparer prepares the AddVideoTranscriptModerationResult request.
 func (client ReviewsClient) AddVideoTranscriptModerationResultPreparer(ctx context.Context, contentType string, teamName string, reviewID string, transcriptModerationBody []TranscriptModerationBodyItem) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -582,6 +587,7 @@ func (client ReviewsClient) CreateJob(ctx context.Context, teamName string, cont
 // CreateJobPreparer prepares the CreateJob request.
 func (client ReviewsClient) CreateJobPreparer(ctx context.Context, teamName string, contentType string, contentID string, workflowName string, jobContentType string, content Content, callBackEndpoint string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -699,6 +705,7 @@ func (client ReviewsClient) CreateReviews(ctx context.Context, URLContentType st
 // CreateReviewsPreparer prepares the CreateReviews request.
 func (client ReviewsClient) CreateReviewsPreparer(ctx context.Context, URLContentType string, teamName string, createReviewBody []CreateReviewBodyItem, subTeam string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -812,6 +819,7 @@ func (client ReviewsClient) CreateVideoReviews(ctx context.Context, contentType 
 // CreateVideoReviewsPreparer prepares the CreateVideoReviews request.
 func (client ReviewsClient) CreateVideoReviewsPreparer(ctx context.Context, contentType string, teamName string, createVideoReviewsBody []CreateVideoReviewsBodyItem, subTeam string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -893,6 +901,7 @@ func (client ReviewsClient) GetJobDetails(ctx context.Context, teamName string, 
 // GetJobDetailsPreparer prepares the GetJobDetails request.
 func (client ReviewsClient) GetJobDetailsPreparer(ctx context.Context, teamName string, jobID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -966,6 +975,7 @@ func (client ReviewsClient) GetReview(ctx context.Context, teamName string, revi
 // GetReviewPreparer prepares the GetReview request.
 func (client ReviewsClient) GetReviewPreparer(ctx context.Context, teamName string, reviewID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1066,6 +1076,7 @@ func (client ReviewsClient) GetVideoFrames(ctx context.Context, teamName string,
 // GetVideoFramesPreparer prepares the GetVideoFrames request.
 func (client ReviewsClient) GetVideoFramesPreparer(ctx context.Context, teamName string, reviewID string, startSeed *int32, noOfRecords *int32, filter string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1151,6 +1162,7 @@ func (client ReviewsClient) PublishVideoReview(ctx context.Context, teamName str
 // PublishVideoReviewPreparer prepares the PublishVideoReview request.
 func (client ReviewsClient) PublishVideoReviewPreparer(ctx context.Context, teamName string, reviewID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

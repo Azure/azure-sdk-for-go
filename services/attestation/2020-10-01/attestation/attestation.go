@@ -65,6 +65,7 @@ func (client Client) AttestOpenEnclave(ctx context.Context, instanceURL string, 
 // AttestOpenEnclavePreparer prepares the AttestOpenEnclave request.
 func (client Client) AttestOpenEnclavePreparer(ctx context.Context, instanceURL string, request AttestOpenEnclaveRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"instanceUrl": instanceURL,
 	}
 
@@ -142,6 +143,7 @@ func (client Client) AttestSgxEnclave(ctx context.Context, instanceURL string, r
 // AttestSgxEnclavePreparer prepares the AttestSgxEnclave request.
 func (client Client) AttestSgxEnclavePreparer(ctx context.Context, instanceURL string, request AttestSgxEnclaveRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"instanceUrl": instanceURL,
 	}
 
@@ -219,6 +221,7 @@ func (client Client) AttestTpm(ctx context.Context, instanceURL string, request 
 // AttestTpmPreparer prepares the AttestTpm request.
 func (client Client) AttestTpmPreparer(ctx context.Context, instanceURL string, request TpmAttestationRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"instanceUrl": instanceURL,
 	}
 

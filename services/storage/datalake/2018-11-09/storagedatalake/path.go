@@ -157,6 +157,7 @@ func (client PathClient) Create(ctx context.Context, filesystem string, pathPara
 // CreatePreparer prepares the Create request.
 func (client PathClient) CreatePreparer(ctx context.Context, filesystem string, pathParameter string, resource PathResourceType, continuation string, mode PathRenameMode, cacheControl string, contentEncoding string, contentLanguage string, contentDisposition string, xMsCacheControl string, xMsContentType string, xMsContentEncoding string, xMsContentLanguage string, xMsContentDisposition string, xMsRenameSource string, xMsLeaseID string, xMsSourceLeaseID string, xMsProperties string, xMsPermissions string, xMsUmask string, ifMatch string, ifNoneMatch string, ifModifiedSince string, ifUnmodifiedSince string, xMsSourceIfMatch string, xMsSourceIfNoneMatch string, xMsSourceIfModifiedSince string, xMsSourceIfUnmodifiedSince string, xMsClientRequestID string, timeout *int32, xMsDate string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"accountName": client.AccountName,
 		"dnsSuffix":   client.DNSSuffix,
 	}
@@ -388,6 +389,7 @@ func (client PathClient) Delete(ctx context.Context, filesystem string, pathPara
 // DeletePreparer prepares the Delete request.
 func (client PathClient) DeletePreparer(ctx context.Context, filesystem string, pathParameter string, recursive *bool, continuation string, xMsLeaseID string, ifMatch string, ifNoneMatch string, ifModifiedSince string, ifUnmodifiedSince string, xMsClientRequestID string, timeout *int32, xMsDate string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"accountName": client.AccountName,
 		"dnsSuffix":   client.DNSSuffix,
 	}
@@ -550,6 +552,7 @@ func (client PathClient) GetProperties(ctx context.Context, filesystem string, p
 // GetPropertiesPreparer prepares the GetProperties request.
 func (client PathClient) GetPropertiesPreparer(ctx context.Context, filesystem string, pathParameter string, action PathGetPropertiesAction, upn *bool, xMsLeaseID string, ifMatch string, ifNoneMatch string, ifModifiedSince string, ifUnmodifiedSince string, xMsClientRequestID string, timeout *int32, xMsDate string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"accountName": client.AccountName,
 		"dnsSuffix":   client.DNSSuffix,
 	}
@@ -719,6 +722,7 @@ func (client PathClient) Lease(ctx context.Context, xMsLeaseAction PathLeaseActi
 // LeasePreparer prepares the Lease request.
 func (client PathClient) LeasePreparer(ctx context.Context, xMsLeaseAction PathLeaseAction, filesystem string, pathParameter string, xMsLeaseDuration *int32, xMsLeaseBreakPeriod *int32, xMsLeaseID string, xMsProposedLeaseID string, ifMatch string, ifNoneMatch string, ifModifiedSince string, ifUnmodifiedSince string, xMsClientRequestID string, timeout *int32, xMsDate string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"accountName": client.AccountName,
 		"dnsSuffix":   client.DNSSuffix,
 	}
@@ -880,6 +884,7 @@ func (client PathClient) List(ctx context.Context, recursive bool, filesystem st
 // ListPreparer prepares the List request.
 func (client PathClient) ListPreparer(ctx context.Context, recursive bool, filesystem string, directory string, continuation string, maxResults *int32, upn *bool, xMsClientRequestID string, timeout *int32, xMsDate string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"accountName": client.AccountName,
 		"dnsSuffix":   client.DNSSuffix,
 	}
@@ -1028,6 +1033,7 @@ func (client PathClient) Read(ctx context.Context, filesystem string, pathParame
 // ReadPreparer prepares the Read request.
 func (client PathClient) ReadPreparer(ctx context.Context, filesystem string, pathParameter string, rangeParameter string, xMsLeaseID string, xMsRangeGetContentMd5 *bool, ifMatch string, ifNoneMatch string, ifModifiedSince string, ifUnmodifiedSince string, xMsClientRequestID string, timeout *int32, xMsDate string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"accountName": client.AccountName,
 		"dnsSuffix":   client.DNSSuffix,
 	}
@@ -1268,6 +1274,7 @@ func (client PathClient) Update(ctx context.Context, action PathUpdateAction, fi
 // UpdatePreparer prepares the Update request.
 func (client PathClient) UpdatePreparer(ctx context.Context, action PathUpdateAction, filesystem string, pathParameter string, position *int64, retainUncommittedData *bool, closeParameter *bool, contentLength *int64, contentMD5 string, xMsLeaseID string, xMsCacheControl string, xMsContentType string, xMsContentDisposition string, xMsContentEncoding string, xMsContentLanguage string, xMsContentMd5 string, xMsProperties string, xMsOwner string, xMsGroup string, xMsPermissions string, xMsACL string, ifMatch string, ifNoneMatch string, ifModifiedSince string, ifUnmodifiedSince string, requestBody io.ReadCloser, xMsClientRequestID string, timeout *int32, xMsDate string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"accountName": client.AccountName,
 		"dnsSuffix":   client.DNSSuffix,
 	}

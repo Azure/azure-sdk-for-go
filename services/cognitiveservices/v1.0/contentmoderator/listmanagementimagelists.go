@@ -72,6 +72,7 @@ func (client ListManagementImageListsClient) Create(ctx context.Context, content
 // CreatePreparer prepares the Create request.
 func (client ListManagementImageListsClient) CreatePreparer(ctx context.Context, contentType string, body Body) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -142,6 +143,7 @@ func (client ListManagementImageListsClient) Delete(ctx context.Context, listID 
 // DeletePreparer prepares the Delete request.
 func (client ListManagementImageListsClient) DeletePreparer(ctx context.Context, listID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -211,6 +213,7 @@ func (client ListManagementImageListsClient) GetAllImageLists(ctx context.Contex
 // GetAllImageListsPreparer prepares the GetAllImageLists request.
 func (client ListManagementImageListsClient) GetAllImageListsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -278,6 +281,7 @@ func (client ListManagementImageListsClient) GetDetails(ctx context.Context, lis
 // GetDetailsPreparer prepares the GetDetails request.
 func (client ListManagementImageListsClient) GetDetailsPreparer(ctx context.Context, listID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -349,6 +353,7 @@ func (client ListManagementImageListsClient) RefreshIndexMethod(ctx context.Cont
 // RefreshIndexMethodPreparer prepares the RefreshIndexMethod request.
 func (client ListManagementImageListsClient) RefreshIndexMethodPreparer(ctx context.Context, listID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -422,6 +427,7 @@ func (client ListManagementImageListsClient) Update(ctx context.Context, listID 
 // UpdatePreparer prepares the Update request.
 func (client ListManagementImageListsClient) UpdatePreparer(ctx context.Context, listID string, contentType string, body Body) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

@@ -67,6 +67,7 @@ func (client TrainClient) GetStatus(ctx context.Context, appID uuid.UUID, versio
 // GetStatusPreparer prepares the GetStatus request.
 func (client TrainClient) GetStatusPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -144,6 +145,7 @@ func (client TrainClient) TrainVersion(ctx context.Context, appID uuid.UUID, ver
 // TrainVersionPreparer prepares the TrainVersion request.
 func (client TrainClient) TrainVersionPreparer(ctx context.Context, appID uuid.UUID, versionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

@@ -63,7 +63,7 @@ func (client PipelineClient) CreateOrUpdatePipeline(ctx context.Context, pipelin
 
 	result, err = client.CreateOrUpdatePipelineSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "CreateOrUpdatePipeline", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "CreateOrUpdatePipeline", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -73,6 +73,7 @@ func (client PipelineClient) CreateOrUpdatePipeline(ctx context.Context, pipelin
 // CreateOrUpdatePipelinePreparer prepares the CreateOrUpdatePipeline request.
 func (client PipelineClient) CreateOrUpdatePipelinePreparer(ctx context.Context, pipelineName string, pipeline PipelineResource, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -103,6 +104,7 @@ func (client PipelineClient) CreateOrUpdatePipelinePreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client PipelineClient) CreateOrUpdatePipelineSender(req *http.Request) (future PipelineCreateOrUpdatePipelineFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -181,6 +183,7 @@ func (client PipelineClient) CreatePipelineRun(ctx context.Context, pipelineName
 // CreatePipelineRunPreparer prepares the CreatePipelineRun request.
 func (client PipelineClient) CreatePipelineRunPreparer(ctx context.Context, pipelineName string, referencePipelineRunID string, isRecovery *bool, startActivityName string, parameters map[string]interface{}) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -263,7 +266,7 @@ func (client PipelineClient) DeletePipeline(ctx context.Context, pipelineName st
 
 	result, err = client.DeletePipelineSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "DeletePipeline", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "DeletePipeline", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -273,6 +276,7 @@ func (client PipelineClient) DeletePipeline(ctx context.Context, pipelineName st
 // DeletePipelinePreparer prepares the DeletePipeline request.
 func (client PipelineClient) DeletePipelinePreparer(ctx context.Context, pipelineName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -297,6 +301,7 @@ func (client PipelineClient) DeletePipelinePreparer(ctx context.Context, pipelin
 // http.Response Body if it receives an error.
 func (client PipelineClient) DeletePipelineSender(req *http.Request) (future PipelineDeletePipelineFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -368,6 +373,7 @@ func (client PipelineClient) GetPipeline(ctx context.Context, pipelineName strin
 // GetPipelinePreparer prepares the GetPipeline request.
 func (client PipelineClient) GetPipelinePreparer(ctx context.Context, pipelineName string, ifNoneMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -452,6 +458,7 @@ func (client PipelineClient) GetPipelinesByWorkspace(ctx context.Context) (resul
 // GetPipelinesByWorkspacePreparer prepares the GetPipelinesByWorkspace request.
 func (client PipelineClient) GetPipelinesByWorkspacePreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -560,7 +567,7 @@ func (client PipelineClient) RenamePipeline(ctx context.Context, pipelineName st
 
 	result, err = client.RenamePipelineSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "RenamePipeline", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.PipelineClient", "RenamePipeline", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -570,6 +577,7 @@ func (client PipelineClient) RenamePipeline(ctx context.Context, pipelineName st
 // RenamePipelinePreparer prepares the RenamePipeline request.
 func (client PipelineClient) RenamePipelinePreparer(ctx context.Context, pipelineName string, request RenameRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -596,6 +604,7 @@ func (client PipelineClient) RenamePipelinePreparer(ctx context.Context, pipelin
 // http.Response Body if it receives an error.
 func (client PipelineClient) RenamePipelineSender(req *http.Request) (future PipelineRenamePipelineFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

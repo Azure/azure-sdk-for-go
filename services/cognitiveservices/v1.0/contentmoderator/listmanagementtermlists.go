@@ -71,6 +71,7 @@ func (client ListManagementTermListsClient) Create(ctx context.Context, contentT
 // CreatePreparer prepares the Create request.
 func (client ListManagementTermListsClient) CreatePreparer(ctx context.Context, contentType string, body Body) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -141,6 +142,7 @@ func (client ListManagementTermListsClient) Delete(ctx context.Context, listID s
 // DeletePreparer prepares the Delete request.
 func (client ListManagementTermListsClient) DeletePreparer(ctx context.Context, listID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -210,6 +212,7 @@ func (client ListManagementTermListsClient) GetAllTermLists(ctx context.Context)
 // GetAllTermListsPreparer prepares the GetAllTermLists request.
 func (client ListManagementTermListsClient) GetAllTermListsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -277,6 +280,7 @@ func (client ListManagementTermListsClient) GetDetails(ctx context.Context, list
 // GetDetailsPreparer prepares the GetDetails request.
 func (client ListManagementTermListsClient) GetDetailsPreparer(ctx context.Context, listID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -349,6 +353,7 @@ func (client ListManagementTermListsClient) RefreshIndexMethod(ctx context.Conte
 // RefreshIndexMethodPreparer prepares the RefreshIndexMethod request.
 func (client ListManagementTermListsClient) RefreshIndexMethodPreparer(ctx context.Context, listID string, language string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -427,6 +432,7 @@ func (client ListManagementTermListsClient) Update(ctx context.Context, listID s
 // UpdatePreparer prepares the Update request.
 func (client ListManagementTermListsClient) UpdatePreparer(ctx context.Context, listID string, contentType string, body Body) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

@@ -56,7 +56,7 @@ func (client TenantConfigurationClient) Deploy(ctx context.Context, apimBaseURL 
 
 	result, err = client.DeploySender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Deploy", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Deploy", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -66,6 +66,7 @@ func (client TenantConfigurationClient) Deploy(ctx context.Context, apimBaseURL 
 // DeployPreparer prepares the Deploy request.
 func (client TenantConfigurationClient) DeployPreparer(ctx context.Context, apimBaseURL string, parameters DeployConfigurationParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -92,6 +93,7 @@ func (client TenantConfigurationClient) DeployPreparer(ctx context.Context, apim
 // http.Response Body if it receives an error.
 func (client TenantConfigurationClient) DeploySender(req *http.Request) (future TenantConfigurationDeployFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -156,6 +158,7 @@ func (client TenantConfigurationClient) GetSyncState(ctx context.Context, apimBa
 // GetSyncStatePreparer prepares the GetSyncState request.
 func (client TenantConfigurationClient) GetSyncStatePreparer(ctx context.Context, apimBaseURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -225,7 +228,7 @@ func (client TenantConfigurationClient) Save(ctx context.Context, apimBaseURL st
 
 	result, err = client.SaveSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Save", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Save", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -235,6 +238,7 @@ func (client TenantConfigurationClient) Save(ctx context.Context, apimBaseURL st
 // SavePreparer prepares the Save request.
 func (client TenantConfigurationClient) SavePreparer(ctx context.Context, apimBaseURL string, parameters SaveConfigurationParameter) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -261,6 +265,7 @@ func (client TenantConfigurationClient) SavePreparer(ctx context.Context, apimBa
 // http.Response Body if it receives an error.
 func (client TenantConfigurationClient) SaveSender(req *http.Request) (future TenantConfigurationSaveFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -315,7 +320,7 @@ func (client TenantConfigurationClient) Validate(ctx context.Context, apimBaseUR
 
 	result, err = client.ValidateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Validate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Validate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -325,6 +330,7 @@ func (client TenantConfigurationClient) Validate(ctx context.Context, apimBaseUR
 // ValidatePreparer prepares the Validate request.
 func (client TenantConfigurationClient) ValidatePreparer(ctx context.Context, apimBaseURL string, parameters DeployConfigurationParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -351,6 +357,7 @@ func (client TenantConfigurationClient) ValidatePreparer(ctx context.Context, ap
 // http.Response Body if it receives an error.
 func (client TenantConfigurationClient) ValidateSender(req *http.Request) (future TenantConfigurationValidateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

@@ -77,6 +77,7 @@ func (client BaseClient) CreateManifest(ctx context.Context, name string, refere
 // CreateManifestPreparer prepares the CreateManifest request.
 func (client BaseClient) CreateManifestPreparer(ctx context.Context, name string, reference string, payload Manifest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -151,6 +152,7 @@ func (client BaseClient) DeleteAcrRepository(ctx context.Context, name string) (
 // DeleteAcrRepositoryPreparer prepares the DeleteAcrRepository request.
 func (client BaseClient) DeleteAcrRepositoryPreparer(ctx context.Context, name string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -223,6 +225,7 @@ func (client BaseClient) DeleteAcrTag(ctx context.Context, name string, referenc
 // DeleteAcrTagPreparer prepares the DeleteAcrTag request.
 func (client BaseClient) DeleteAcrTagPreparer(ctx context.Context, name string, reference string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -296,6 +299,7 @@ func (client BaseClient) DeleteManifest(ctx context.Context, name string, refere
 // DeleteManifestPreparer prepares the DeleteManifest request.
 func (client BaseClient) DeleteManifestPreparer(ctx context.Context, name string, reference string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -370,6 +374,7 @@ func (client BaseClient) GetAcrAccessToken(ctx context.Context, service string, 
 // GetAcrAccessTokenPreparer prepares the GetAcrAccessToken request.
 func (client BaseClient) GetAcrAccessTokenPreparer(ctx context.Context, service string, scope string, refreshToken string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -447,6 +452,7 @@ func (client BaseClient) GetAcrAccessTokenFromLogin(ctx context.Context, service
 // GetAcrAccessTokenFromLoginPreparer prepares the GetAcrAccessTokenFromLogin request.
 func (client BaseClient) GetAcrAccessTokenFromLoginPreparer(ctx context.Context, service string, scope string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -521,6 +527,7 @@ func (client BaseClient) GetAcrManifestAttributes(ctx context.Context, name stri
 // GetAcrManifestAttributesPreparer prepares the GetAcrManifestAttributes request.
 func (client BaseClient) GetAcrManifestAttributesPreparer(ctx context.Context, name string, reference string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -597,6 +604,7 @@ func (client BaseClient) GetAcrManifests(ctx context.Context, name string, last 
 // GetAcrManifestsPreparer prepares the GetAcrManifests request.
 func (client BaseClient) GetAcrManifestsPreparer(ctx context.Context, name string, last string, n *int32, orderby string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -684,6 +692,7 @@ func (client BaseClient) GetAcrRefreshTokenFromExchange(ctx context.Context, gra
 // GetAcrRefreshTokenFromExchangePreparer prepares the GetAcrRefreshTokenFromExchange request.
 func (client BaseClient) GetAcrRefreshTokenFromExchangePreparer(ctx context.Context, grantType string, service string, tenant string, refreshToken string, accessToken string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -768,6 +777,7 @@ func (client BaseClient) GetAcrRepositories(ctx context.Context, last string, n 
 // GetAcrRepositoriesPreparer prepares the GetAcrRepositories request.
 func (client BaseClient) GetAcrRepositoriesPreparer(ctx context.Context, last string, n *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -844,6 +854,7 @@ func (client BaseClient) GetAcrRepositoryAttributes(ctx context.Context, name st
 // GetAcrRepositoryAttributesPreparer prepares the GetAcrRepositoryAttributes request.
 func (client BaseClient) GetAcrRepositoryAttributesPreparer(ctx context.Context, name string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -916,6 +927,7 @@ func (client BaseClient) GetAcrTagAttributes(ctx context.Context, name string, r
 // GetAcrTagAttributesPreparer prepares the GetAcrTagAttributes request.
 func (client BaseClient) GetAcrTagAttributesPreparer(ctx context.Context, name string, reference string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -993,6 +1005,7 @@ func (client BaseClient) GetAcrTags(ctx context.Context, name string, last strin
 // GetAcrTagsPreparer prepares the GetAcrTags request.
 func (client BaseClient) GetAcrTagsPreparer(ctx context.Context, name string, last string, n *int32, orderby string, digest string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -1077,6 +1090,7 @@ func (client BaseClient) GetDockerRegistryV2Support(ctx context.Context) (result
 // GetDockerRegistryV2SupportPreparer prepares the GetDockerRegistryV2Support request.
 func (client BaseClient) GetDockerRegistryV2SupportPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -1147,6 +1161,7 @@ func (client BaseClient) GetManifest(ctx context.Context, name string, reference
 // GetManifestPreparer prepares the GetManifest request.
 func (client BaseClient) GetManifestPreparer(ctx context.Context, name string, reference string, accept string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -1225,6 +1240,7 @@ func (client BaseClient) GetRepositories(ctx context.Context, last string, n *in
 // GetRepositoriesPreparer prepares the GetRepositories request.
 func (client BaseClient) GetRepositoriesPreparer(ctx context.Context, last string, n *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -1301,6 +1317,7 @@ func (client BaseClient) GetTagList(ctx context.Context, name string) (result Re
 // GetTagListPreparer prepares the GetTagList request.
 func (client BaseClient) GetTagListPreparer(ctx context.Context, name string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -1374,6 +1391,7 @@ func (client BaseClient) UpdateAcrManifestAttributes(ctx context.Context, name s
 // UpdateAcrManifestAttributesPreparer prepares the UpdateAcrManifestAttributes request.
 func (client BaseClient) UpdateAcrManifestAttributesPreparer(ctx context.Context, name string, reference string, value *ChangeableAttributes) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -1452,6 +1470,7 @@ func (client BaseClient) UpdateAcrRepositoryAttributes(ctx context.Context, name
 // UpdateAcrRepositoryAttributesPreparer prepares the UpdateAcrRepositoryAttributes request.
 func (client BaseClient) UpdateAcrRepositoryAttributesPreparer(ctx context.Context, name string, value *ChangeableAttributes) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 
@@ -1529,6 +1548,7 @@ func (client BaseClient) UpdateAcrTagAttributes(ctx context.Context, name string
 // UpdateAcrTagAttributesPreparer prepares the UpdateAcrTagAttributes request.
 func (client BaseClient) UpdateAcrTagAttributesPreparer(ctx context.Context, name string, reference string, value *ChangeableAttributes) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":    autorest.Encode("path"),
 		"url": client.LoginURI,
 	}
 

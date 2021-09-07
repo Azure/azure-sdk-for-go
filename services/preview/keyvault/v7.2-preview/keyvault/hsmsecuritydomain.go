@@ -81,6 +81,7 @@ func (client HSMSecurityDomainClient) Download(ctx context.Context, vaultBaseURL
 // DownloadPreparer prepares the Download request.
 func (client HSMSecurityDomainClient) DownloadPreparer(ctx context.Context, vaultBaseURL string, certificateInfoObject CertificateInfoObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -156,6 +157,7 @@ func (client HSMSecurityDomainClient) TransferKeyMethod(ctx context.Context, vau
 // TransferKeyMethodPreparer prepares the TransferKeyMethod request.
 func (client HSMSecurityDomainClient) TransferKeyMethodPreparer(ctx context.Context, vaultBaseURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -229,7 +231,7 @@ func (client HSMSecurityDomainClient) Upload(ctx context.Context, vaultBaseURL s
 
 	result, err = client.UploadSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainClient", "Upload", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.HSMSecurityDomainClient", "Upload", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -239,6 +241,7 @@ func (client HSMSecurityDomainClient) Upload(ctx context.Context, vaultBaseURL s
 // UploadPreparer prepares the Upload request.
 func (client HSMSecurityDomainClient) UploadPreparer(ctx context.Context, vaultBaseURL string, securityDomain SecurityDomainUploadObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -255,6 +258,7 @@ func (client HSMSecurityDomainClient) UploadPreparer(ctx context.Context, vaultB
 // http.Response Body if it receives an error.
 func (client HSMSecurityDomainClient) UploadSender(req *http.Request) (future HSMSecurityDomainUploadFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -317,6 +321,7 @@ func (client HSMSecurityDomainClient) UploadPending(ctx context.Context, vaultBa
 // UploadPendingPreparer prepares the UploadPending request.
 func (client HSMSecurityDomainClient) UploadPendingPreparer(ctx context.Context, vaultBaseURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 

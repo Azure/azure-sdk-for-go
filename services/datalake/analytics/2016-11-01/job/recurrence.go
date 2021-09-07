@@ -70,6 +70,7 @@ func (client RecurrenceClient) Get(ctx context.Context, accountName string, recu
 // GetPreparer prepares the Get request.
 func (client RecurrenceClient) GetPreparer(ctx context.Context, accountName string, recurrenceIdentity uuid.UUID, startDateTime *date.Time, endDateTime *date.Time) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}
@@ -163,6 +164,7 @@ func (client RecurrenceClient) List(ctx context.Context, accountName string, sta
 // ListPreparer prepares the List request.
 func (client RecurrenceClient) ListPreparer(ctx context.Context, accountName string, startDateTime *date.Time, endDateTime *date.Time) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                 autorest.Encode("path"),
 		"accountName":      accountName,
 		"adlaJobDnsSuffix": client.AdlaJobDNSSuffix,
 	}

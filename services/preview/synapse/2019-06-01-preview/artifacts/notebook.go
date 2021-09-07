@@ -80,7 +80,7 @@ func (client NotebookClient) CreateOrUpdateNotebook(ctx context.Context, noteboo
 
 	result, err = client.CreateOrUpdateNotebookSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "CreateOrUpdateNotebook", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "CreateOrUpdateNotebook", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -90,6 +90,7 @@ func (client NotebookClient) CreateOrUpdateNotebook(ctx context.Context, noteboo
 // CreateOrUpdateNotebookPreparer prepares the CreateOrUpdateNotebook request.
 func (client NotebookClient) CreateOrUpdateNotebookPreparer(ctx context.Context, notebookName string, notebook NotebookResource, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -123,6 +124,7 @@ func (client NotebookClient) CreateOrUpdateNotebookPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client NotebookClient) CreateOrUpdateNotebookSender(req *http.Request) (future NotebookCreateOrUpdateNotebookFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -168,7 +170,7 @@ func (client NotebookClient) DeleteNotebook(ctx context.Context, notebookName st
 
 	result, err = client.DeleteNotebookSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "DeleteNotebook", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "DeleteNotebook", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -178,6 +180,7 @@ func (client NotebookClient) DeleteNotebook(ctx context.Context, notebookName st
 // DeleteNotebookPreparer prepares the DeleteNotebook request.
 func (client NotebookClient) DeleteNotebookPreparer(ctx context.Context, notebookName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -202,6 +205,7 @@ func (client NotebookClient) DeleteNotebookPreparer(ctx context.Context, noteboo
 // http.Response Body if it receives an error.
 func (client NotebookClient) DeleteNotebookSender(req *http.Request) (future NotebookDeleteNotebookFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -265,6 +269,7 @@ func (client NotebookClient) GetNotebook(ctx context.Context, notebookName strin
 // GetNotebookPreparer prepares the GetNotebook request.
 func (client NotebookClient) GetNotebookPreparer(ctx context.Context, notebookName string, ifNoneMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -349,6 +354,7 @@ func (client NotebookClient) GetNotebooksByWorkspace(ctx context.Context) (resul
 // GetNotebooksByWorkspacePreparer prepares the GetNotebooksByWorkspace request.
 func (client NotebookClient) GetNotebooksByWorkspacePreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -462,6 +468,7 @@ func (client NotebookClient) GetNotebookSummaryByWorkSpace(ctx context.Context) 
 // GetNotebookSummaryByWorkSpacePreparer prepares the GetNotebookSummaryByWorkSpace request.
 func (client NotebookClient) GetNotebookSummaryByWorkSpacePreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -566,7 +573,7 @@ func (client NotebookClient) RenameNotebook(ctx context.Context, notebookName st
 
 	result, err = client.RenameNotebookSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "RenameNotebook", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.NotebookClient", "RenameNotebook", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -576,6 +583,7 @@ func (client NotebookClient) RenameNotebook(ctx context.Context, notebookName st
 // RenameNotebookPreparer prepares the RenameNotebook request.
 func (client NotebookClient) RenameNotebookPreparer(ctx context.Context, notebookName string, request RenameRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -602,6 +610,7 @@ func (client NotebookClient) RenameNotebookPreparer(ctx context.Context, noteboo
 // http.Response Body if it receives an error.
 func (client NotebookClient) RenameNotebookSender(req *http.Request) (future NotebookRenameNotebookFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

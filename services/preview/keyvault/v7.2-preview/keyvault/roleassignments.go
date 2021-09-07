@@ -77,6 +77,7 @@ func (client RoleAssignmentsClient) Create(ctx context.Context, vaultBaseURL str
 // CreatePreparer prepares the Create request.
 func (client RoleAssignmentsClient) CreatePreparer(ctx context.Context, vaultBaseURL string, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -159,6 +160,7 @@ func (client RoleAssignmentsClient) Delete(ctx context.Context, vaultBaseURL str
 // DeletePreparer prepares the Delete request.
 func (client RoleAssignmentsClient) DeletePreparer(ctx context.Context, vaultBaseURL string, scope string, roleAssignmentName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -239,6 +241,7 @@ func (client RoleAssignmentsClient) Get(ctx context.Context, vaultBaseURL string
 // GetPreparer prepares the Get request.
 func (client RoleAssignmentsClient) GetPreparer(ctx context.Context, vaultBaseURL string, scope string, roleAssignmentName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 
@@ -326,6 +329,7 @@ func (client RoleAssignmentsClient) ListForScope(ctx context.Context, vaultBaseU
 // ListForScopePreparer prepares the ListForScope request.
 func (client RoleAssignmentsClient) ListForScopePreparer(ctx context.Context, vaultBaseURL string, scope string, filter string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":             autorest.Encode("path"),
 		"vaultBaseUrl": vaultBaseURL,
 	}
 

@@ -65,6 +65,7 @@ func (client PolicySnippetsClient) List(ctx context.Context, apimBaseURL string,
 // ListPreparer prepares the List request.
 func (client PolicySnippetsClient) ListPreparer(ctx context.Context, apimBaseURL string, scope PolicyScopeContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

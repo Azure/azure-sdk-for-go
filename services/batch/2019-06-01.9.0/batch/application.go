@@ -75,6 +75,7 @@ func (client ApplicationClient) Get(ctx context.Context, applicationID string, t
 // GetPreparer prepares the Get request.
 func (client ApplicationClient) GetPreparer(ctx context.Context, applicationID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -196,6 +197,7 @@ func (client ApplicationClient) List(ctx context.Context, maxResults *int32, tim
 // ListPreparer prepares the List request.
 func (client ApplicationClient) ListPreparer(ctx context.Context, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 

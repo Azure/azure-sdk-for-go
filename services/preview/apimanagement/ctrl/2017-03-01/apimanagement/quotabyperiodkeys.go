@@ -70,6 +70,7 @@ func (client QuotaByPeriodKeysClient) Get(ctx context.Context, apimBaseURL strin
 // GetPreparer prepares the Get request.
 func (client QuotaByPeriodKeysClient) GetPreparer(ctx context.Context, apimBaseURL string, quotaCounterKey string, quotaPeriodKey string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -155,6 +156,7 @@ func (client QuotaByPeriodKeysClient) Update(ctx context.Context, apimBaseURL st
 // UpdatePreparer prepares the Update request.
 func (client QuotaByPeriodKeysClient) UpdatePreparer(ctx context.Context, apimBaseURL string, quotaCounterKey string, quotaPeriodKey string, parameters QuotaCounterValueContractProperties) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

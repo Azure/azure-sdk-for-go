@@ -76,6 +76,7 @@ func (client PredictionClient) GetSlotPrediction(ctx context.Context, appID uuid
 // GetSlotPredictionPreparer prepares the GetSlotPrediction request.
 func (client PredictionClient) GetSlotPredictionPreparer(ctx context.Context, appID uuid.UUID, slotName string, predictionRequest PredictionRequest, verbose *bool, showAllIntents *bool, logParameter *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -173,6 +174,7 @@ func (client PredictionClient) GetVersionPrediction(ctx context.Context, appID u
 // GetVersionPredictionPreparer prepares the GetVersionPrediction request.
 func (client PredictionClient) GetVersionPredictionPreparer(ctx context.Context, appID uuid.UUID, versionID string, predictionRequest PredictionRequest, verbose *bool, showAllIntents *bool, logParameter *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

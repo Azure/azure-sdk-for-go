@@ -165,6 +165,7 @@ func (client EntitiesClient) Search(ctx context.Context, query string, acceptLan
 // SearchPreparer prepares the Search request.
 func (client EntitiesClient) SearchPreparer(ctx context.Context, query string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, countryCode string, market string, responseFilter []AnswerType, responseFormat []ResponseFormat, safeSearch SafeSearch, setLang string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

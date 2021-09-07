@@ -76,6 +76,7 @@ func (client Client) CreateCredential(ctx context.Context, accountName string, d
 // CreateCredentialPreparer prepares the CreateCredential request.
 func (client Client) CreateCredentialPreparer(ctx context.Context, accountName string, databaseName string, credentialName string, parameters DataLakeAnalyticsCatalogCredentialCreateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -166,6 +167,7 @@ func (client Client) CreateSecret(ctx context.Context, accountName string, datab
 // CreateSecretPreparer prepares the CreateSecret request.
 func (client Client) CreateSecretPreparer(ctx context.Context, accountName string, databaseName string, secretName string, parameters DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -248,6 +250,7 @@ func (client Client) DeleteAllSecrets(ctx context.Context, accountName string, d
 // DeleteAllSecretsPreparer prepares the DeleteAllSecrets request.
 func (client Client) DeleteAllSecretsPreparer(ctx context.Context, accountName string, databaseName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -331,6 +334,7 @@ func (client Client) DeleteCredential(ctx context.Context, accountName string, d
 // DeleteCredentialPreparer prepares the DeleteCredential request.
 func (client Client) DeleteCredentialPreparer(ctx context.Context, accountName string, databaseName string, credentialName string, parameters *DataLakeAnalyticsCatalogCredentialDeleteParameters, cascade *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -422,6 +426,7 @@ func (client Client) DeleteSecret(ctx context.Context, accountName string, datab
 // DeleteSecretPreparer prepares the DeleteSecret request.
 func (client Client) DeleteSecretPreparer(ctx context.Context, accountName string, databaseName string, secretName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -502,6 +507,7 @@ func (client Client) GetAssembly(ctx context.Context, accountName string, databa
 // GetAssemblyPreparer prepares the GetAssembly request.
 func (client Client) GetAssemblyPreparer(ctx context.Context, accountName string, databaseName string, assemblyName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -583,6 +589,7 @@ func (client Client) GetCredential(ctx context.Context, accountName string, data
 // GetCredentialPreparer prepares the GetCredential request.
 func (client Client) GetCredentialPreparer(ctx context.Context, accountName string, databaseName string, credentialName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -663,6 +670,7 @@ func (client Client) GetDatabase(ctx context.Context, accountName string, databa
 // GetDatabasePreparer prepares the GetDatabase request.
 func (client Client) GetDatabasePreparer(ctx context.Context, accountName string, databaseName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -743,6 +751,7 @@ func (client Client) GetExternalDataSource(ctx context.Context, accountName stri
 // GetExternalDataSourcePreparer prepares the GetExternalDataSource request.
 func (client Client) GetExternalDataSourcePreparer(ctx context.Context, accountName string, databaseName string, externalDataSourceName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -825,6 +834,7 @@ func (client Client) GetPackage(ctx context.Context, accountName string, databas
 // GetPackagePreparer prepares the GetPackage request.
 func (client Client) GetPackagePreparer(ctx context.Context, accountName string, databaseName string, schemaName string, packageName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -908,6 +918,7 @@ func (client Client) GetProcedure(ctx context.Context, accountName string, datab
 // GetProcedurePreparer prepares the GetProcedure request.
 func (client Client) GetProcedurePreparer(ctx context.Context, accountName string, databaseName string, schemaName string, procedureName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -990,6 +1001,7 @@ func (client Client) GetSchema(ctx context.Context, accountName string, database
 // GetSchemaPreparer prepares the GetSchema request.
 func (client Client) GetSchemaPreparer(ctx context.Context, accountName string, databaseName string, schemaName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -1072,6 +1084,7 @@ func (client Client) GetSecret(ctx context.Context, accountName string, database
 // GetSecretPreparer prepares the GetSecret request.
 func (client Client) GetSecretPreparer(ctx context.Context, accountName string, databaseName string, secretName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -1154,6 +1167,7 @@ func (client Client) GetTable(ctx context.Context, accountName string, databaseN
 // GetTablePreparer prepares the GetTable request.
 func (client Client) GetTablePreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -1238,6 +1252,7 @@ func (client Client) GetTablePartition(ctx context.Context, accountName string, 
 // GetTablePartitionPreparer prepares the GetTablePartition request.
 func (client Client) GetTablePartitionPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, partitionName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -1323,6 +1338,7 @@ func (client Client) GetTableStatistic(ctx context.Context, accountName string, 
 // GetTableStatisticPreparer prepares the GetTableStatistic request.
 func (client Client) GetTableStatisticPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, statisticsName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -1407,6 +1423,7 @@ func (client Client) GetTableType(ctx context.Context, accountName string, datab
 // GetTableTypePreparer prepares the GetTableType request.
 func (client Client) GetTableTypePreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableTypeName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -1490,6 +1507,7 @@ func (client Client) GetTableValuedFunction(ctx context.Context, accountName str
 // GetTableValuedFunctionPreparer prepares the GetTableValuedFunction request.
 func (client Client) GetTableValuedFunctionPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableValuedFunctionName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -1573,6 +1591,7 @@ func (client Client) GetView(ctx context.Context, accountName string, databaseNa
 // GetViewPreparer prepares the GetView request.
 func (client Client) GetViewPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, viewName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -1661,6 +1680,7 @@ func (client Client) GrantACL(ctx context.Context, accountName string, parameter
 // GrantACLPreparer prepares the GrantACL request.
 func (client Client) GrantACLPreparer(ctx context.Context, accountName string, parameters ACLCreateOrUpdateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -1745,6 +1765,7 @@ func (client Client) GrantACLToDatabase(ctx context.Context, accountName string,
 // GrantACLToDatabasePreparer prepares the GrantACLToDatabase request.
 func (client Client) GrantACLToDatabasePreparer(ctx context.Context, accountName string, databaseName string, parameters ACLCreateOrUpdateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -1850,6 +1871,7 @@ func (client Client) ListAcls(ctx context.Context, accountName string, filter st
 // ListAclsPreparer prepares the ListAcls request.
 func (client Client) ListAclsPreparer(ctx context.Context, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -2006,6 +2028,7 @@ func (client Client) ListAclsByDatabase(ctx context.Context, accountName string,
 // ListAclsByDatabasePreparer prepares the ListAclsByDatabase request.
 func (client Client) ListAclsByDatabasePreparer(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -2165,6 +2188,7 @@ func (client Client) ListAssemblies(ctx context.Context, accountName string, dat
 // ListAssembliesPreparer prepares the ListAssemblies request.
 func (client Client) ListAssembliesPreparer(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -2324,6 +2348,7 @@ func (client Client) ListCredentials(ctx context.Context, accountName string, da
 // ListCredentialsPreparer prepares the ListCredentials request.
 func (client Client) ListCredentialsPreparer(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -2482,6 +2507,7 @@ func (client Client) ListDatabases(ctx context.Context, accountName string, filt
 // ListDatabasesPreparer prepares the ListDatabases request.
 func (client Client) ListDatabasesPreparer(ctx context.Context, accountName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -2637,6 +2663,7 @@ func (client Client) ListExternalDataSources(ctx context.Context, accountName st
 // ListExternalDataSourcesPreparer prepares the ListExternalDataSources request.
 func (client Client) ListExternalDataSourcesPreparer(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -2797,6 +2824,7 @@ func (client Client) ListPackages(ctx context.Context, accountName string, datab
 // ListPackagesPreparer prepares the ListPackages request.
 func (client Client) ListPackagesPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -2958,6 +2986,7 @@ func (client Client) ListProcedures(ctx context.Context, accountName string, dat
 // ListProceduresPreparer prepares the ListProcedures request.
 func (client Client) ListProceduresPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -3118,6 +3147,7 @@ func (client Client) ListSchemas(ctx context.Context, accountName string, databa
 // ListSchemasPreparer prepares the ListSchemas request.
 func (client Client) ListSchemasPreparer(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -3279,6 +3309,7 @@ func (client Client) ListTableFragments(ctx context.Context, accountName string,
 // ListTableFragmentsPreparer prepares the ListTableFragments request.
 func (client Client) ListTableFragmentsPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -3442,6 +3473,7 @@ func (client Client) ListTablePartitions(ctx context.Context, accountName string
 // ListTablePartitionsPreparer prepares the ListTablePartitions request.
 func (client Client) ListTablePartitionsPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -3607,6 +3639,7 @@ func (client Client) ListTables(ctx context.Context, accountName string, databas
 // ListTablesPreparer prepares the ListTables request.
 func (client Client) ListTablesPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool, basic *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -3775,6 +3808,7 @@ func (client Client) ListTablesByDatabase(ctx context.Context, accountName strin
 // ListTablesByDatabasePreparer prepares the ListTablesByDatabase request.
 func (client Client) ListTablesByDatabasePreparer(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool, basic *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -3941,6 +3975,7 @@ func (client Client) ListTableStatistics(ctx context.Context, accountName string
 // ListTableStatisticsPreparer prepares the ListTableStatistics request.
 func (client Client) ListTableStatisticsPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -4103,6 +4138,7 @@ func (client Client) ListTableStatisticsByDatabase(ctx context.Context, accountN
 // ListTableStatisticsByDatabasePreparer prepares the ListTableStatisticsByDatabase request.
 func (client Client) ListTableStatisticsByDatabasePreparer(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -4264,6 +4300,7 @@ func (client Client) ListTableStatisticsByDatabaseAndSchema(ctx context.Context,
 // ListTableStatisticsByDatabaseAndSchemaPreparer prepares the ListTableStatisticsByDatabaseAndSchema request.
 func (client Client) ListTableStatisticsByDatabaseAndSchemaPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -4425,6 +4462,7 @@ func (client Client) ListTableTypes(ctx context.Context, accountName string, dat
 // ListTableTypesPreparer prepares the ListTableTypes request.
 func (client Client) ListTableTypesPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -4586,6 +4624,7 @@ func (client Client) ListTableValuedFunctions(ctx context.Context, accountName s
 // ListTableValuedFunctionsPreparer prepares the ListTableValuedFunctions request.
 func (client Client) ListTableValuedFunctionsPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -4747,6 +4786,7 @@ func (client Client) ListTableValuedFunctionsByDatabase(ctx context.Context, acc
 // ListTableValuedFunctionsByDatabasePreparer prepares the ListTableValuedFunctionsByDatabase request.
 func (client Client) ListTableValuedFunctionsByDatabasePreparer(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -4907,6 +4947,7 @@ func (client Client) ListTypes(ctx context.Context, accountName string, database
 // ListTypesPreparer prepares the ListTypes request.
 func (client Client) ListTypesPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -5068,6 +5109,7 @@ func (client Client) ListViews(ctx context.Context, accountName string, database
 // ListViewsPreparer prepares the ListViews request.
 func (client Client) ListViewsPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -5228,6 +5270,7 @@ func (client Client) ListViewsByDatabase(ctx context.Context, accountName string
 // ListViewsByDatabasePreparer prepares the ListViewsByDatabase request.
 func (client Client) ListViewsByDatabasePreparer(ctx context.Context, accountName string, databaseName string, filter string, top *int32, skip *int32, selectParameter string, orderby string, count *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -5367,6 +5410,7 @@ func (client Client) PreviewTable(ctx context.Context, accountName string, datab
 // PreviewTablePreparer prepares the PreviewTable request.
 func (client Client) PreviewTablePreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, maxRows *int64, maxColumns *int64) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -5460,6 +5504,7 @@ func (client Client) PreviewTablePartition(ctx context.Context, accountName stri
 // PreviewTablePartitionPreparer prepares the PreviewTablePartition request.
 func (client Client) PreviewTablePartitionPreparer(ctx context.Context, accountName string, databaseName string, schemaName string, tableName string, partitionName string, maxRows *int64, maxColumns *int64) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -5555,6 +5600,7 @@ func (client Client) RevokeACL(ctx context.Context, accountName string, paramete
 // RevokeACLPreparer prepares the RevokeACL request.
 func (client Client) RevokeACLPreparer(ctx context.Context, accountName string, parameters ACLDeleteParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -5640,6 +5686,7 @@ func (client Client) RevokeACLFromDatabase(ctx context.Context, accountName stri
 // RevokeACLFromDatabasePreparer prepares the RevokeACLFromDatabase request.
 func (client Client) RevokeACLFromDatabasePreparer(ctx context.Context, accountName string, databaseName string, parameters ACLDeleteParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -5723,6 +5770,7 @@ func (client Client) UpdateCredential(ctx context.Context, accountName string, d
 // UpdateCredentialPreparer prepares the UpdateCredential request.
 func (client Client) UpdateCredentialPreparer(ctx context.Context, accountName string, databaseName string, credentialName string, parameters DataLakeAnalyticsCatalogCredentialUpdateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}
@@ -5807,6 +5855,7 @@ func (client Client) UpdateSecret(ctx context.Context, accountName string, datab
 // UpdateSecretPreparer prepares the UpdateSecret request.
 func (client Client) UpdateSecretPreparer(ctx context.Context, accountName string, databaseName string, secretName string, parameters DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":                     autorest.Encode("path"),
 		"accountName":          accountName,
 		"adlaCatalogDnsSuffix": client.AdlaCatalogDNSSuffix,
 	}

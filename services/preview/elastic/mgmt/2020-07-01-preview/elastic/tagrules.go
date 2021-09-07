@@ -142,7 +142,7 @@ func (client TagRulesClient) Delete(ctx context.Context, resourceGroupName strin
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "elastic.TagRulesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "elastic.TagRulesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -175,6 +175,7 @@ func (client TagRulesClient) DeletePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client TagRulesClient) DeleteSender(req *http.Request) (future TagRulesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

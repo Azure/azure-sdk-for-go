@@ -67,6 +67,7 @@ func (client PatternClient) AddPattern(ctx context.Context, appID uuid.UUID, ver
 // AddPatternPreparer prepares the AddPattern request.
 func (client PatternClient) AddPatternPreparer(ctx context.Context, appID uuid.UUID, versionID string, pattern PatternRuleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -149,6 +150,7 @@ func (client PatternClient) BatchAddPatterns(ctx context.Context, appID uuid.UUI
 // BatchAddPatternsPreparer prepares the BatchAddPatterns request.
 func (client PatternClient) BatchAddPatternsPreparer(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleCreateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -225,6 +227,7 @@ func (client PatternClient) DeletePattern(ctx context.Context, appID uuid.UUID, 
 // DeletePatternPreparer prepares the DeletePattern request.
 func (client PatternClient) DeletePatternPreparer(ctx context.Context, appID uuid.UUID, versionID string, patternID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -306,6 +309,7 @@ func (client PatternClient) DeletePatterns(ctx context.Context, appID uuid.UUID,
 // DeletePatternsPreparer prepares the DeletePatterns request.
 func (client PatternClient) DeletePatternsPreparer(ctx context.Context, appID uuid.UUID, versionID string, patternIds []uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -396,6 +400,7 @@ func (client PatternClient) ListIntentPatterns(ctx context.Context, appID uuid.U
 // ListIntentPatternsPreparer prepares the ListIntentPatterns request.
 func (client PatternClient) ListIntentPatternsPreparer(ctx context.Context, appID uuid.UUID, versionID string, intentID uuid.UUID, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -497,6 +502,7 @@ func (client PatternClient) ListPatterns(ctx context.Context, appID uuid.UUID, v
 // ListPatternsPreparer prepares the ListPatterns request.
 func (client PatternClient) ListPatternsPreparer(ctx context.Context, appID uuid.UUID, versionID string, skip *int32, take *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -585,6 +591,7 @@ func (client PatternClient) UpdatePattern(ctx context.Context, appID uuid.UUID, 
 // UpdatePatternPreparer prepares the UpdatePattern request.
 func (client PatternClient) UpdatePatternPreparer(ctx context.Context, appID uuid.UUID, versionID string, patternID uuid.UUID, pattern PatternRuleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -668,6 +675,7 @@ func (client PatternClient) UpdatePatterns(ctx context.Context, appID uuid.UUID,
 // UpdatePatternsPreparer prepares the UpdatePatterns request.
 func (client PatternClient) UpdatePatternsPreparer(ctx context.Context, appID uuid.UUID, versionID string, patterns []PatternRuleUpdateObject) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

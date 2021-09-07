@@ -61,6 +61,7 @@ func (client EndpointKeysClient) GetKeys(ctx context.Context) (result EndpointKe
 // GetKeysPreparer prepares the GetKeys request.
 func (client EndpointKeysClient) GetKeysPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -128,6 +129,7 @@ func (client EndpointKeysClient) RefreshKeys(ctx context.Context, keyType string
 // RefreshKeysPreparer prepares the RefreshKeys request.
 func (client EndpointKeysClient) RefreshKeysPreparer(ctx context.Context, keyType string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

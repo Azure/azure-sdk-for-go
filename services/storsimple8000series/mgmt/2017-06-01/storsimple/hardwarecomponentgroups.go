@@ -67,7 +67,7 @@ func (client HardwareComponentGroupsClient) ChangeControllerPowerState(ctx conte
 
 	result, err = client.ChangeControllerPowerStateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.HardwareComponentGroupsClient", "ChangeControllerPowerState", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.HardwareComponentGroupsClient", "ChangeControllerPowerState", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -103,6 +103,7 @@ func (client HardwareComponentGroupsClient) ChangeControllerPowerStatePreparer(c
 // http.Response Body if it receives an error.
 func (client HardwareComponentGroupsClient) ChangeControllerPowerStateSender(req *http.Request) (future HardwareComponentGroupsChangeControllerPowerStateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

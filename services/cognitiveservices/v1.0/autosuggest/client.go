@@ -190,6 +190,7 @@ func (client BaseClient) AutoSuggest(ctx context.Context, query string, acceptLa
 // AutoSuggestPreparer prepares the AutoSuggest request.
 func (client BaseClient) AutoSuggestPreparer(ctx context.Context, query string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, countryCode string, market string, safeSearch SafeSearch, setLang string, responseFormat []ResponseFormat) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

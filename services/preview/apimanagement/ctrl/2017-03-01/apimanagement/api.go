@@ -77,6 +77,7 @@ func (client APIClient) CreateOrUpdate(ctx context.Context, apimBaseURL string, 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client APIClient) CreateOrUpdatePreparer(ctx context.Context, apimBaseURL string, apiid string, parameters APICreateOrUpdateParameter, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -172,6 +173,7 @@ func (client APIClient) Delete(ctx context.Context, apimBaseURL string, apiid st
 // DeletePreparer prepares the Delete request.
 func (client APIClient) DeletePreparer(ctx context.Context, apimBaseURL string, apiid string, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -259,6 +261,7 @@ func (client APIClient) Get(ctx context.Context, apimBaseURL string, apiid strin
 // GetPreparer prepares the Get request.
 func (client APIClient) GetPreparer(ctx context.Context, apimBaseURL string, apiid string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -361,6 +364,7 @@ func (client APIClient) List(ctx context.Context, apimBaseURL string, filter str
 // ListPreparer prepares the List request.
 func (client APIClient) ListPreparer(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -493,6 +497,7 @@ func (client APIClient) Update(ctx context.Context, apimBaseURL string, apiid st
 // UpdatePreparer prepares the Update request.
 func (client APIClient) UpdatePreparer(ctx context.Context, apimBaseURL string, apiid string, parameters APIUpdateContract, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

@@ -81,6 +81,7 @@ func (client ComputeNodeClient) AddUser(ctx context.Context, poolID string, node
 // AddUserPreparer prepares the AddUser request.
 func (client ComputeNodeClient) AddUserPreparer(ctx context.Context, poolID string, nodeID string, userParameter ComputeNodeUser, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -189,6 +190,7 @@ func (client ComputeNodeClient) DeleteUser(ctx context.Context, poolID string, n
 // DeleteUserPreparer prepares the DeleteUser request.
 func (client ComputeNodeClient) DeleteUserPreparer(ctx context.Context, poolID string, nodeID string, userName string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -296,6 +298,7 @@ func (client ComputeNodeClient) DisableScheduling(ctx context.Context, poolID st
 // DisableSchedulingPreparer prepares the DisableScheduling request.
 func (client ComputeNodeClient) DisableSchedulingPreparer(ctx context.Context, poolID string, nodeID string, nodeDisableSchedulingParameter *NodeDisableSchedulingParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -406,6 +409,7 @@ func (client ComputeNodeClient) EnableScheduling(ctx context.Context, poolID str
 // EnableSchedulingPreparer prepares the EnableScheduling request.
 func (client ComputeNodeClient) EnableSchedulingPreparer(ctx context.Context, poolID string, nodeID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -512,6 +516,7 @@ func (client ComputeNodeClient) Get(ctx context.Context, poolID string, nodeID s
 // GetPreparer prepares the Get request.
 func (client ComputeNodeClient) GetPreparer(ctx context.Context, poolID string, nodeID string, selectParameter string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -623,6 +628,7 @@ func (client ComputeNodeClient) GetRemoteDesktop(ctx context.Context, poolID str
 // GetRemoteDesktopPreparer prepares the GetRemoteDesktop request.
 func (client ComputeNodeClient) GetRemoteDesktopPreparer(ctx context.Context, poolID string, nodeID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -730,6 +736,7 @@ func (client ComputeNodeClient) GetRemoteLoginSettings(ctx context.Context, pool
 // GetRemoteLoginSettingsPreparer prepares the GetRemoteLoginSettings request.
 func (client ComputeNodeClient) GetRemoteLoginSettingsPreparer(ctx context.Context, poolID string, nodeID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -853,6 +860,7 @@ func (client ComputeNodeClient) List(ctx context.Context, poolID string, filter 
 // ListPreparer prepares the List request.
 func (client ComputeNodeClient) ListPreparer(ctx context.Context, poolID string, filter string, selectParameter string, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -1007,6 +1015,7 @@ func (client ComputeNodeClient) Reboot(ctx context.Context, poolID string, nodeI
 // RebootPreparer prepares the Reboot request.
 func (client ComputeNodeClient) RebootPreparer(ctx context.Context, poolID string, nodeID string, nodeRebootParameter *NodeRebootParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -1119,6 +1128,7 @@ func (client ComputeNodeClient) Reimage(ctx context.Context, poolID string, node
 // ReimagePreparer prepares the Reimage request.
 func (client ComputeNodeClient) ReimagePreparer(ctx context.Context, poolID string, nodeID string, nodeReimageParameter *NodeReimageParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -1233,6 +1243,7 @@ func (client ComputeNodeClient) UpdateUser(ctx context.Context, poolID string, n
 // UpdateUserPreparer prepares the UpdateUser request.
 func (client ComputeNodeClient) UpdateUserPreparer(ctx context.Context, poolID string, nodeID string, userName string, nodeUpdateUserParameter NodeUpdateUserParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -1351,6 +1362,7 @@ func (client ComputeNodeClient) UploadBatchServiceLogs(ctx context.Context, pool
 // UploadBatchServiceLogsPreparer prepares the UploadBatchServiceLogs request.
 func (client ComputeNodeClient) UploadBatchServiceLogsPreparer(ctx context.Context, poolID string, nodeID string, uploadBatchServiceLogsConfiguration UploadBatchServiceLogsConfiguration, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 

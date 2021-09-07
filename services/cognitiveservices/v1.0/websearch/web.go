@@ -210,6 +210,7 @@ func (client WebClient) Search(ctx context.Context, query string, acceptLanguage
 // SearchPreparer prepares the Search request.
 func (client WebClient) SearchPreparer(ctx context.Context, query string, acceptLanguage string, pragma string, userAgent string, clientID string, clientIP string, location string, answerCount *int32, countryCode string, count *int32, freshness Freshness, market string, offset *int32, promote []AnswerType, responseFilter []AnswerType, safeSearch SafeSearch, setLang string, textDecorations *bool, textFormat TextFormat) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

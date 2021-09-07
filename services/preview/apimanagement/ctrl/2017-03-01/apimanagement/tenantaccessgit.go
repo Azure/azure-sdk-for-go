@@ -64,6 +64,7 @@ func (client TenantAccessGitClient) Get(ctx context.Context, apimBaseURL string)
 // GetPreparer prepares the Get request.
 func (client TenantAccessGitClient) GetPreparer(ctx context.Context, apimBaseURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -142,6 +143,7 @@ func (client TenantAccessGitClient) RegeneratePrimaryKey(ctx context.Context, ap
 // RegeneratePrimaryKeyPreparer prepares the RegeneratePrimaryKey request.
 func (client TenantAccessGitClient) RegeneratePrimaryKeyPreparer(ctx context.Context, apimBaseURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -219,6 +221,7 @@ func (client TenantAccessGitClient) RegenerateSecondaryKey(ctx context.Context, 
 // RegenerateSecondaryKeyPreparer prepares the RegenerateSecondaryKey request.
 func (client TenantAccessGitClient) RegenerateSecondaryKeyPreparer(ctx context.Context, apimBaseURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

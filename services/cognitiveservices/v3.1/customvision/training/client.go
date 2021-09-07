@@ -83,6 +83,7 @@ func (client BaseClient) CreateImageRegions(ctx context.Context, projectID uuid.
 // CreateImageRegionsPreparer prepares the CreateImageRegions request.
 func (client BaseClient) CreateImageRegionsPreparer(ctx context.Context, projectID uuid.UUID, batch ImageRegionCreateBatch) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -170,6 +171,7 @@ func (client BaseClient) CreateImagesFromData(ctx context.Context, projectID uui
 // CreateImagesFromDataPreparer prepares the CreateImagesFromData request.
 func (client BaseClient) CreateImagesFromDataPreparer(ctx context.Context, projectID uuid.UUID, imageData io.ReadCloser, tagIds []uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -255,6 +257,7 @@ func (client BaseClient) CreateImagesFromFiles(ctx context.Context, projectID uu
 // CreateImagesFromFilesPreparer prepares the CreateImagesFromFiles request.
 func (client BaseClient) CreateImagesFromFilesPreparer(ctx context.Context, projectID uuid.UUID, batch ImageFileCreateBatch) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -331,6 +334,7 @@ func (client BaseClient) CreateImagesFromPredictions(ctx context.Context, projec
 // CreateImagesFromPredictionsPreparer prepares the CreateImagesFromPredictions request.
 func (client BaseClient) CreateImagesFromPredictionsPreparer(ctx context.Context, projectID uuid.UUID, batch ImageIDCreateBatch) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -407,6 +411,7 @@ func (client BaseClient) CreateImagesFromUrls(ctx context.Context, projectID uui
 // CreateImagesFromUrlsPreparer prepares the CreateImagesFromUrls request.
 func (client BaseClient) CreateImagesFromUrlsPreparer(ctx context.Context, projectID uuid.UUID, batch ImageURLCreateBatch) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -482,6 +487,7 @@ func (client BaseClient) CreateImageTags(ctx context.Context, projectID uuid.UUI
 // CreateImageTagsPreparer prepares the CreateImageTags request.
 func (client BaseClient) CreateImageTagsPreparer(ctx context.Context, projectID uuid.UUID, batch ImageTagCreateBatch) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -560,6 +566,7 @@ func (client BaseClient) CreateProject(ctx context.Context, name string, descrip
 // CreateProjectPreparer prepares the CreateProject request.
 func (client BaseClient) CreateProjectPreparer(ctx context.Context, name string, description string, domainID *uuid.UUID, classificationType string, targetExportPlatforms []string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -648,6 +655,7 @@ func (client BaseClient) CreateTag(ctx context.Context, projectID uuid.UUID, nam
 // CreateTagPreparer prepares the CreateTag request.
 func (client BaseClient) CreateTagPreparer(ctx context.Context, projectID uuid.UUID, name string, description string, typeParameter string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -741,6 +749,7 @@ func (client BaseClient) DeleteImageRegions(ctx context.Context, projectID uuid.
 // DeleteImageRegionsPreparer prepares the DeleteImageRegions request.
 func (client BaseClient) DeleteImageRegionsPreparer(ctx context.Context, projectID uuid.UUID, regionIds []uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -831,6 +840,7 @@ func (client BaseClient) DeleteImages(ctx context.Context, projectID uuid.UUID, 
 // DeleteImagesPreparer prepares the DeleteImages request.
 func (client BaseClient) DeleteImagesPreparer(ctx context.Context, projectID uuid.UUID, imageIds []uuid.UUID, allImages *bool, allIterations *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -930,6 +940,7 @@ func (client BaseClient) DeleteImageTags(ctx context.Context, projectID uuid.UUI
 // DeleteImageTagsPreparer prepares the DeleteImageTags request.
 func (client BaseClient) DeleteImageTagsPreparer(ctx context.Context, projectID uuid.UUID, imageIds []uuid.UUID, tagIds []uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1008,6 +1019,7 @@ func (client BaseClient) DeleteIteration(ctx context.Context, projectID uuid.UUI
 // DeleteIterationPreparer prepares the DeleteIteration request.
 func (client BaseClient) DeleteIterationPreparer(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1090,6 +1102,7 @@ func (client BaseClient) DeletePrediction(ctx context.Context, projectID uuid.UU
 // DeletePredictionPreparer prepares the DeletePrediction request.
 func (client BaseClient) DeletePredictionPreparer(ctx context.Context, projectID uuid.UUID, ids []uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1166,6 +1179,7 @@ func (client BaseClient) DeleteProject(ctx context.Context, projectID uuid.UUID)
 // DeleteProjectPreparer prepares the DeleteProject request.
 func (client BaseClient) DeleteProjectPreparer(ctx context.Context, projectID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1238,6 +1252,7 @@ func (client BaseClient) DeleteTag(ctx context.Context, projectID uuid.UUID, tag
 // DeleteTagPreparer prepares the DeleteTag request.
 func (client BaseClient) DeleteTagPreparer(ctx context.Context, projectID uuid.UUID, tagID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1313,6 +1328,7 @@ func (client BaseClient) ExportIteration(ctx context.Context, projectID uuid.UUI
 // ExportIterationPreparer prepares the ExportIteration request.
 func (client BaseClient) ExportIterationPreparer(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID, platform string, flavor string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1394,6 +1410,7 @@ func (client BaseClient) GetDomain(ctx context.Context, domainID uuid.UUID) (res
 // GetDomainPreparer prepares the GetDomain request.
 func (client BaseClient) GetDomainPreparer(ctx context.Context, domainID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1464,6 +1481,7 @@ func (client BaseClient) GetDomains(ctx context.Context) (result ListDomain, err
 // GetDomainsPreparer prepares the GetDomains request.
 func (client BaseClient) GetDomainsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1533,6 +1551,7 @@ func (client BaseClient) GetExports(ctx context.Context, projectID uuid.UUID, it
 // GetExportsPreparer prepares the GetExports request.
 func (client BaseClient) GetExportsPreparer(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1610,6 +1629,7 @@ func (client BaseClient) GetImagePerformanceCount(ctx context.Context, projectID
 // GetImagePerformanceCountPreparer prepares the GetImagePerformanceCount request.
 func (client BaseClient) GetImagePerformanceCountPreparer(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID, tagIds []uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1712,6 +1732,7 @@ func (client BaseClient) GetImagePerformances(ctx context.Context, projectID uui
 // GetImagePerformancesPreparer prepares the GetImagePerformances request.
 func (client BaseClient) GetImagePerformancesPreparer(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID, tagIds []uuid.UUID, orderBy string, take *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1806,6 +1827,7 @@ func (client BaseClient) GetImageRegionProposals(ctx context.Context, projectID 
 // GetImageRegionProposalsPreparer prepares the GetImageRegionProposals request.
 func (client BaseClient) GetImageRegionProposalsPreparer(ctx context.Context, projectID uuid.UUID, imageID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1892,6 +1914,7 @@ func (client BaseClient) GetImagesByIds(ctx context.Context, projectID uuid.UUID
 // GetImagesByIdsPreparer prepares the GetImagesByIds request.
 func (client BaseClient) GetImagesByIdsPreparer(ctx context.Context, projectID uuid.UUID, imageIds []uuid.UUID, iterationID *uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -1974,6 +1997,7 @@ func (client BaseClient) GetIteration(ctx context.Context, projectID uuid.UUID, 
 // GetIterationPreparer prepares the GetIteration request.
 func (client BaseClient) GetIterationPreparer(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2050,6 +2074,7 @@ func (client BaseClient) GetIterationPerformance(ctx context.Context, projectID 
 // GetIterationPerformancePreparer prepares the GetIterationPerformance request.
 func (client BaseClient) GetIterationPerformancePreparer(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID, threshold *float64, overlapThreshold *float64) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2132,6 +2157,7 @@ func (client BaseClient) GetIterations(ctx context.Context, projectID uuid.UUID)
 // GetIterationsPreparer prepares the GetIterations request.
 func (client BaseClient) GetIterationsPreparer(ctx context.Context, projectID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2204,6 +2230,7 @@ func (client BaseClient) GetProject(ctx context.Context, projectID uuid.UUID) (r
 // GetProjectPreparer prepares the GetProject request.
 func (client BaseClient) GetProjectPreparer(ctx context.Context, projectID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2274,6 +2301,7 @@ func (client BaseClient) GetProjects(ctx context.Context) (result ListProject, e
 // GetProjectsPreparer prepares the GetProjects request.
 func (client BaseClient) GetProjectsPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2344,6 +2372,7 @@ func (client BaseClient) GetTag(ctx context.Context, projectID uuid.UUID, tagID 
 // GetTagPreparer prepares the GetTag request.
 func (client BaseClient) GetTagPreparer(ctx context.Context, projectID uuid.UUID, tagID uuid.UUID, iterationID *uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2427,6 +2456,7 @@ func (client BaseClient) GetTaggedImageCount(ctx context.Context, projectID uuid
 // GetTaggedImageCountPreparer prepares the GetTaggedImageCount request.
 func (client BaseClient) GetTaggedImageCountPreparer(ctx context.Context, projectID uuid.UUID, iterationID *uuid.UUID, tagIds []uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2531,6 +2561,7 @@ func (client BaseClient) GetTaggedImages(ctx context.Context, projectID uuid.UUI
 // GetTaggedImagesPreparer prepares the GetTaggedImages request.
 func (client BaseClient) GetTaggedImagesPreparer(ctx context.Context, projectID uuid.UUID, iterationID *uuid.UUID, tagIds []uuid.UUID, orderBy string, take *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2626,6 +2657,7 @@ func (client BaseClient) GetTags(ctx context.Context, projectID uuid.UUID, itera
 // GetTagsPreparer prepares the GetTags request.
 func (client BaseClient) GetTagsPreparer(ctx context.Context, projectID uuid.UUID, iterationID *uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2707,6 +2739,7 @@ func (client BaseClient) GetUntaggedImageCount(ctx context.Context, projectID uu
 // GetUntaggedImageCountPreparer prepares the GetUntaggedImageCount request.
 func (client BaseClient) GetUntaggedImageCountPreparer(ctx context.Context, projectID uuid.UUID, iterationID *uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2800,6 +2833,7 @@ func (client BaseClient) GetUntaggedImages(ctx context.Context, projectID uuid.U
 // GetUntaggedImagesPreparer prepares the GetUntaggedImages request.
 func (client BaseClient) GetUntaggedImagesPreparer(ctx context.Context, projectID uuid.UUID, iterationID *uuid.UUID, orderBy string, take *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2894,6 +2928,7 @@ func (client BaseClient) PublishIteration(ctx context.Context, projectID uuid.UU
 // PublishIterationPreparer prepares the PublishIteration request.
 func (client BaseClient) PublishIterationPreparer(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID, publishName string, predictionID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -2974,6 +3009,7 @@ func (client BaseClient) QueryPredictions(ctx context.Context, projectID uuid.UU
 // QueryPredictionsPreparer prepares the QueryPredictions request.
 func (client BaseClient) QueryPredictionsPreparer(ctx context.Context, projectID uuid.UUID, query PredictionQueryToken) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3051,6 +3087,7 @@ func (client BaseClient) QuerySuggestedImageCount(ctx context.Context, projectID
 // QuerySuggestedImageCountPreparer prepares the QuerySuggestedImageCount request.
 func (client BaseClient) QuerySuggestedImageCountPreparer(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID, query TagFilter) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3133,6 +3170,7 @@ func (client BaseClient) QuerySuggestedImages(ctx context.Context, projectID uui
 // QuerySuggestedImagesPreparer prepares the QuerySuggestedImages request.
 func (client BaseClient) QuerySuggestedImagesPreparer(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID, query SuggestedTagAndRegionQueryToken) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3217,6 +3255,7 @@ func (client BaseClient) QuickTestImage(ctx context.Context, projectID uuid.UUID
 // QuickTestImagePreparer prepares the QuickTestImage request.
 func (client BaseClient) QuickTestImagePreparer(ctx context.Context, projectID uuid.UUID, imageData io.ReadCloser, iterationID *uuid.UUID, store *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3316,6 +3355,7 @@ func (client BaseClient) QuickTestImageURL(ctx context.Context, projectID uuid.U
 // QuickTestImageURLPreparer prepares the QuickTestImageURL request.
 func (client BaseClient) QuickTestImageURLPreparer(ctx context.Context, projectID uuid.UUID, imageURL ImageURL, iterationID *uuid.UUID, store *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3414,6 +3454,7 @@ func (client BaseClient) SuggestTagsAndRegions(ctx context.Context, projectID uu
 // SuggestTagsAndRegionsPreparer prepares the SuggestTagsAndRegions request.
 func (client BaseClient) SuggestTagsAndRegionsPreparer(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID, imageIds []uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3496,6 +3537,7 @@ func (client BaseClient) TrainProject(ctx context.Context, projectID uuid.UUID, 
 // TrainProjectPreparer prepares the TrainProject request.
 func (client BaseClient) TrainProjectPreparer(ctx context.Context, projectID uuid.UUID, trainingType string, reservedBudgetInHours *int32, forceTrain *bool, notificationEmailAddress string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3588,6 +3630,7 @@ func (client BaseClient) UnpublishIteration(ctx context.Context, projectID uuid.
 // UnpublishIterationPreparer prepares the UnpublishIteration request.
 func (client BaseClient) UnpublishIterationPreparer(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3662,6 +3705,7 @@ func (client BaseClient) UpdateIteration(ctx context.Context, projectID uuid.UUI
 // UpdateIterationPreparer prepares the UpdateIteration request.
 func (client BaseClient) UpdateIterationPreparer(ctx context.Context, projectID uuid.UUID, iterationID uuid.UUID, updatedIteration Iteration) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3753,6 +3797,7 @@ func (client BaseClient) UpdateProject(ctx context.Context, projectID uuid.UUID,
 // UpdateProjectPreparer prepares the UpdateProject request.
 func (client BaseClient) UpdateProjectPreparer(ctx context.Context, projectID uuid.UUID, updatedProject Project) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -3834,6 +3879,7 @@ func (client BaseClient) UpdateTag(ctx context.Context, projectID uuid.UUID, tag
 // UpdateTagPreparer prepares the UpdateTag request.
 func (client BaseClient) UpdateTagPreparer(ctx context.Context, projectID uuid.UUID, tagID uuid.UUID, updatedTag Tag) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

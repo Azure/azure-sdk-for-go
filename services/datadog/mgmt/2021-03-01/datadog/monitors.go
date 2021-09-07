@@ -80,7 +80,7 @@ func (client MonitorsClient) Create(ctx context.Context, resourceGroupName strin
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -121,6 +121,7 @@ func (client MonitorsClient) CreatePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client MonitorsClient) CreateSender(req *http.Request) (future MonitorsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -177,7 +178,7 @@ func (client MonitorsClient) Delete(ctx context.Context, resourceGroupName strin
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -209,6 +210,7 @@ func (client MonitorsClient) DeletePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client MonitorsClient) DeleteSender(req *http.Request) (future MonitorsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1372,7 +1374,7 @@ func (client MonitorsClient) Update(ctx context.Context, resourceGroupName strin
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "datadog.MonitorsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1409,6 +1411,7 @@ func (client MonitorsClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client MonitorsClient) UpdateSender(req *http.Request) (future MonitorsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

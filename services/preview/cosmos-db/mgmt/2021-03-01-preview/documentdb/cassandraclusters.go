@@ -70,7 +70,7 @@ func (client CassandraClustersClient) CreateUpdate(ctx context.Context, resource
 
 	result, err = client.CreateUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraClustersClient", "CreateUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraClustersClient", "CreateUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -104,6 +104,7 @@ func (client CassandraClustersClient) CreateUpdatePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client CassandraClustersClient) CreateUpdateSender(req *http.Request) (future CassandraClustersCreateUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -163,7 +164,7 @@ func (client CassandraClustersClient) Delete(ctx context.Context, resourceGroupN
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraClustersClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraClustersClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -195,6 +196,7 @@ func (client CassandraClustersClient) DeletePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client CassandraClustersClient) DeleteSender(req *http.Request) (future CassandraClustersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -253,7 +255,7 @@ func (client CassandraClustersClient) FetchNodeStatus(ctx context.Context, resou
 
 	result, err = client.FetchNodeStatusSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraClustersClient", "FetchNodeStatus", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraClustersClient", "FetchNodeStatus", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -285,6 +287,7 @@ func (client CassandraClustersClient) FetchNodeStatusPreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client CassandraClustersClient) FetchNodeStatusSender(req *http.Request) (future CassandraClustersFetchNodeStatusFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -780,7 +783,7 @@ func (client CassandraClustersClient) RequestRepair(ctx context.Context, resourc
 
 	result, err = client.RequestRepairSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraClustersClient", "RequestRepair", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraClustersClient", "RequestRepair", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -814,6 +817,7 @@ func (client CassandraClustersClient) RequestRepairPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client CassandraClustersClient) RequestRepairSender(req *http.Request) (future CassandraClustersRequestRepairFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -873,7 +877,7 @@ func (client CassandraClustersClient) Update(ctx context.Context, resourceGroupN
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraClustersClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraClustersClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -907,6 +911,7 @@ func (client CassandraClustersClient) UpdatePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client CassandraClustersClient) UpdateSender(req *http.Request) (future CassandraClustersUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

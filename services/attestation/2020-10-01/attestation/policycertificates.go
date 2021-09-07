@@ -72,6 +72,7 @@ func (client PolicyCertificatesClient) Add(ctx context.Context, instanceURL stri
 // AddPreparer prepares the Add request.
 func (client PolicyCertificatesClient) AddPreparer(ctx context.Context, instanceURL string, policyCertificateToAdd string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"instanceUrl": instanceURL,
 	}
 
@@ -147,6 +148,7 @@ func (client PolicyCertificatesClient) Get(ctx context.Context, instanceURL stri
 // GetPreparer prepares the Get request.
 func (client PolicyCertificatesClient) GetPreparer(ctx context.Context, instanceURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"instanceUrl": instanceURL,
 	}
 
@@ -228,6 +230,7 @@ func (client PolicyCertificatesClient) Remove(ctx context.Context, instanceURL s
 // RemovePreparer prepares the Remove request.
 func (client PolicyCertificatesClient) RemovePreparer(ctx context.Context, instanceURL string, policyCertificateToRemove string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"instanceUrl": instanceURL,
 	}
 

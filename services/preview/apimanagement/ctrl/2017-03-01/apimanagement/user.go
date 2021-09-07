@@ -88,6 +88,7 @@ func (client UserClient) CreateOrUpdate(ctx context.Context, apimBaseURL string,
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client UserClient) CreateOrUpdatePreparer(ctx context.Context, apimBaseURL string, UID string, parameters UserCreateParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -181,6 +182,7 @@ func (client UserClient) Delete(ctx context.Context, apimBaseURL string, UID str
 // DeletePreparer prepares the Delete request.
 func (client UserClient) DeletePreparer(ctx context.Context, apimBaseURL string, UID string, ifMatch string, deleteSubscriptions string, notify string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -279,6 +281,7 @@ func (client UserClient) GenerateSsoURL(ctx context.Context, apimBaseURL string,
 // GenerateSsoURLPreparer prepares the GenerateSsoURL request.
 func (client UserClient) GenerateSsoURLPreparer(ctx context.Context, apimBaseURL string, UID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -366,6 +369,7 @@ func (client UserClient) Get(ctx context.Context, apimBaseURL string, UID string
 // GetPreparer prepares the Get request.
 func (client UserClient) GetPreparer(ctx context.Context, apimBaseURL string, UID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -456,6 +460,7 @@ func (client UserClient) GetSharedAccessToken(ctx context.Context, apimBaseURL s
 // GetSharedAccessTokenPreparer prepares the GetSharedAccessToken request.
 func (client UserClient) GetSharedAccessTokenPreparer(ctx context.Context, apimBaseURL string, UID string, parameters UserTokenParameters) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -562,6 +567,7 @@ func (client UserClient) List(ctx context.Context, apimBaseURL string, filter st
 // ListPreparer prepares the List request.
 func (client UserClient) ListPreparer(ctx context.Context, apimBaseURL string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -694,6 +700,7 @@ func (client UserClient) Update(ctx context.Context, apimBaseURL string, UID str
 // UpdatePreparer prepares the Update request.
 func (client UserClient) UpdatePreparer(ctx context.Context, apimBaseURL string, UID string, parameters UserUpdateParameters, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

@@ -81,6 +81,7 @@ func (client KnowledgebaseClient) Create(ctx context.Context, createKbPayload Cr
 // CreatePreparer prepares the Create request.
 func (client KnowledgebaseClient) CreatePreparer(ctx context.Context, createKbPayload CreateKbDTO) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -150,6 +151,7 @@ func (client KnowledgebaseClient) Delete(ctx context.Context, kbID string) (resu
 // DeletePreparer prepares the Delete request.
 func (client KnowledgebaseClient) DeletePreparer(ctx context.Context, kbID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -226,6 +228,7 @@ func (client KnowledgebaseClient) Download(ctx context.Context, kbID string, env
 // DownloadPreparer prepares the Download request.
 func (client KnowledgebaseClient) DownloadPreparer(ctx context.Context, kbID string, environment EnvironmentType, source string, changedSince string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -307,6 +310,7 @@ func (client KnowledgebaseClient) GetDetails(ctx context.Context, kbID string) (
 // GetDetailsPreparer prepares the GetDetails request.
 func (client KnowledgebaseClient) GetDetailsPreparer(ctx context.Context, kbID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -376,6 +380,7 @@ func (client KnowledgebaseClient) ListAll(ctx context.Context) (result Knowledge
 // ListAllPreparer prepares the ListAll request.
 func (client KnowledgebaseClient) ListAllPreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -443,6 +448,7 @@ func (client KnowledgebaseClient) Publish(ctx context.Context, kbID string) (res
 // PublishPreparer prepares the Publish request.
 func (client KnowledgebaseClient) PublishPreparer(ctx context.Context, kbID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -520,6 +526,7 @@ func (client KnowledgebaseClient) Replace(ctx context.Context, kbID string, repl
 // ReplacePreparer prepares the Replace request.
 func (client KnowledgebaseClient) ReplacePreparer(ctx context.Context, kbID string, replaceKb ReplaceKbDTO) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -593,6 +600,7 @@ func (client KnowledgebaseClient) Update(ctx context.Context, kbID string, updat
 // UpdatePreparer prepares the Update request.
 func (client KnowledgebaseClient) UpdatePreparer(ctx context.Context, kbID string, updateKb UpdateKbOperationDTO) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

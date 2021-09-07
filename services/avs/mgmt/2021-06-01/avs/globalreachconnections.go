@@ -66,7 +66,7 @@ func (client GlobalReachConnectionsClient) CreateOrUpdate(ctx context.Context, r
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.GlobalReachConnectionsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.GlobalReachConnectionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -101,6 +101,7 @@ func (client GlobalReachConnectionsClient) CreateOrUpdatePreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client GlobalReachConnectionsClient) CreateOrUpdateSender(req *http.Request) (future GlobalReachConnectionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -157,7 +158,7 @@ func (client GlobalReachConnectionsClient) Delete(ctx context.Context, resourceG
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.GlobalReachConnectionsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.GlobalReachConnectionsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -190,6 +191,7 @@ func (client GlobalReachConnectionsClient) DeletePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client GlobalReachConnectionsClient) DeleteSender(req *http.Request) (future GlobalReachConnectionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

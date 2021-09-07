@@ -90,6 +90,7 @@ func (client APIProductClient) ListByApis(ctx context.Context, apimBaseURL strin
 // ListByApisPreparer prepares the ListByApis request.
 func (client APIProductClient) ListByApisPreparer(ctx context.Context, apimBaseURL string, apiid string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

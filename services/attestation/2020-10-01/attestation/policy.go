@@ -65,6 +65,7 @@ func (client PolicyClient) Get(ctx context.Context, instanceURL string, attestat
 // GetPreparer prepares the Get request.
 func (client PolicyClient) GetPreparer(ctx context.Context, instanceURL string, attestationType Type) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"instanceUrl": instanceURL,
 	}
 
@@ -150,6 +151,7 @@ func (client PolicyClient) Reset(ctx context.Context, instanceURL string, attest
 // ResetPreparer prepares the Reset request.
 func (client PolicyClient) ResetPreparer(ctx context.Context, instanceURL string, attestationType Type, policyJws string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"instanceUrl": instanceURL,
 	}
 
@@ -237,6 +239,7 @@ func (client PolicyClient) Set(ctx context.Context, instanceURL string, attestat
 // SetPreparer prepares the Set request.
 func (client PolicyClient) SetPreparer(ctx context.Context, instanceURL string, attestationType Type, newAttestationPolicy string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"instanceUrl": instanceURL,
 	}
 

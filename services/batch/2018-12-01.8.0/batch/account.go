@@ -90,6 +90,7 @@ func (client AccountClient) ListNodeAgentSkus(ctx context.Context, filter string
 // ListNodeAgentSkusPreparer prepares the ListNodeAgentSkus request.
 func (client AccountClient) ListNodeAgentSkusPreparer(ctx context.Context, filter string, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -251,6 +252,7 @@ func (client AccountClient) ListPoolNodeCounts(ctx context.Context, filter strin
 // ListPoolNodeCountsPreparer prepares the ListPoolNodeCounts request.
 func (client AccountClient) ListPoolNodeCountsPreparer(ctx context.Context, filter string, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 

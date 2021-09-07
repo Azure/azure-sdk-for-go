@@ -64,6 +64,7 @@ func (client SessionClient) CancelSparkSession(ctx context.Context, sessionID in
 // CancelSparkSessionPreparer prepares the CancelSparkSession request.
 func (client SessionClient) CancelSparkSessionPreparer(ctx context.Context, sessionID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":               autorest.Encode("path"),
 		"endpoint":       client.Endpoint,
 		"livyApiVersion": client.LivyAPIVersion,
 		"sparkPoolName":  client.SparkPoolName,
@@ -137,6 +138,7 @@ func (client SessionClient) CancelSparkStatement(ctx context.Context, sessionID 
 // CancelSparkStatementPreparer prepares the CancelSparkStatement request.
 func (client SessionClient) CancelSparkStatementPreparer(ctx context.Context, sessionID int32, statementID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":               autorest.Encode("path"),
 		"endpoint":       client.Endpoint,
 		"livyApiVersion": client.LivyAPIVersion,
 		"sparkPoolName":  client.SparkPoolName,
@@ -218,6 +220,7 @@ func (client SessionClient) CreateSparkSession(ctx context.Context, sparkSession
 // CreateSparkSessionPreparer prepares the CreateSparkSession request.
 func (client SessionClient) CreateSparkSessionPreparer(ctx context.Context, sparkSessionOptions SessionOptions, detailed *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":               autorest.Encode("path"),
 		"endpoint":       client.Endpoint,
 		"livyApiVersion": client.LivyAPIVersion,
 		"sparkPoolName":  client.SparkPoolName,
@@ -296,6 +299,7 @@ func (client SessionClient) CreateSparkStatement(ctx context.Context, sessionID 
 // CreateSparkStatementPreparer prepares the CreateSparkStatement request.
 func (client SessionClient) CreateSparkStatementPreparer(ctx context.Context, sessionID int32, sparkStatementOptions StatementOptions) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":               autorest.Encode("path"),
 		"endpoint":       client.Endpoint,
 		"livyApiVersion": client.LivyAPIVersion,
 		"sparkPoolName":  client.SparkPoolName,
@@ -372,6 +376,7 @@ func (client SessionClient) GetSparkSession(ctx context.Context, sessionID int32
 // GetSparkSessionPreparer prepares the GetSparkSession request.
 func (client SessionClient) GetSparkSessionPreparer(ctx context.Context, sessionID int32, detailed *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":               autorest.Encode("path"),
 		"endpoint":       client.Endpoint,
 		"livyApiVersion": client.LivyAPIVersion,
 		"sparkPoolName":  client.SparkPoolName,
@@ -454,6 +459,7 @@ func (client SessionClient) GetSparkSessions(ctx context.Context, from *int32, s
 // GetSparkSessionsPreparer prepares the GetSparkSessions request.
 func (client SessionClient) GetSparkSessionsPreparer(ctx context.Context, from *int32, size *int32, detailed *bool) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":               autorest.Encode("path"),
 		"endpoint":       client.Endpoint,
 		"livyApiVersion": client.LivyAPIVersion,
 		"sparkPoolName":  client.SparkPoolName,
@@ -536,6 +542,7 @@ func (client SessionClient) GetSparkStatement(ctx context.Context, sessionID int
 // GetSparkStatementPreparer prepares the GetSparkStatement request.
 func (client SessionClient) GetSparkStatementPreparer(ctx context.Context, sessionID int32, statementID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":               autorest.Encode("path"),
 		"endpoint":       client.Endpoint,
 		"livyApiVersion": client.LivyAPIVersion,
 		"sparkPoolName":  client.SparkPoolName,
@@ -610,6 +617,7 @@ func (client SessionClient) GetSparkStatements(ctx context.Context, sessionID in
 // GetSparkStatementsPreparer prepares the GetSparkStatements request.
 func (client SessionClient) GetSparkStatementsPreparer(ctx context.Context, sessionID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":               autorest.Encode("path"),
 		"endpoint":       client.Endpoint,
 		"livyApiVersion": client.LivyAPIVersion,
 		"sparkPoolName":  client.SparkPoolName,
@@ -683,6 +691,7 @@ func (client SessionClient) ResetSparkSessionTimeout(ctx context.Context, sessio
 // ResetSparkSessionTimeoutPreparer prepares the ResetSparkSessionTimeout request.
 func (client SessionClient) ResetSparkSessionTimeoutPreparer(ctx context.Context, sessionID int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":               autorest.Encode("path"),
 		"endpoint":       client.Endpoint,
 		"livyApiVersion": client.LivyAPIVersion,
 		"sparkPoolName":  client.SparkPoolName,

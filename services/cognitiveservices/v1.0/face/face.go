@@ -127,6 +127,7 @@ func (client Client) DetectWithStream(ctx context.Context, imageParameter io.Rea
 // DetectWithStreamPreparer prepares the DetectWithStream request.
 func (client Client) DetectWithStreamPreparer(ctx context.Context, imageParameter io.ReadCloser, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []AttributeType, recognitionModel RecognitionModel, returnRecognitionModel *bool, detectionModel DetectionModel) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -295,6 +296,7 @@ func (client Client) DetectWithURL(ctx context.Context, imageURL ImageURL, retur
 // DetectWithURLPreparer prepares the DetectWithURL request.
 func (client Client) DetectWithURLPreparer(ctx context.Context, imageURL ImageURL, returnFaceID *bool, returnFaceLandmarks *bool, returnFaceAttributes []AttributeType, recognitionModel RecognitionModel, returnRecognitionModel *bool, detectionModel DetectionModel) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -430,6 +432,7 @@ func (client Client) FindSimilar(ctx context.Context, body FindSimilarRequest) (
 // FindSimilarPreparer prepares the FindSimilar request.
 func (client Client) FindSimilarPreparer(ctx context.Context, body FindSimilarRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -515,6 +518,7 @@ func (client Client) Group(ctx context.Context, body GroupRequest) (result Group
 // GroupPreparer prepares the Group request.
 func (client Client) GroupPreparer(ctx context.Context, body GroupRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -624,6 +628,7 @@ func (client Client) Identify(ctx context.Context, body IdentifyRequest) (result
 // IdentifyPreparer prepares the Identify request.
 func (client Client) IdentifyPreparer(ctx context.Context, body IdentifyRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -707,6 +712,7 @@ func (client Client) VerifyFaceToFace(ctx context.Context, body VerifyFaceToFace
 // VerifyFaceToFacePreparer prepares the VerifyFaceToFace request.
 func (client Client) VerifyFaceToFacePreparer(ctx context.Context, body VerifyFaceToFaceRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -791,6 +797,7 @@ func (client Client) VerifyFaceToPerson(ctx context.Context, body VerifyFaceToPe
 // VerifyFaceToPersonPreparer prepares the VerifyFaceToPerson request.
 func (client Client) VerifyFaceToPersonPreparer(ctx context.Context, body VerifyFaceToPersonRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

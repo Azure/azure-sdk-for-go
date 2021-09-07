@@ -81,6 +81,7 @@ func (client BaseClient) PublishCloudEventEvents(ctx context.Context, topicHostn
 // PublishCloudEventEventsPreparer prepares the PublishCloudEventEvents request.
 func (client BaseClient) PublishCloudEventEventsPreparer(ctx context.Context, topicHostname string, events []CloudEventEvent) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":              autorest.Encode("path"),
 		"topicHostname": topicHostname,
 	}
 
@@ -162,6 +163,7 @@ func (client BaseClient) PublishCustomEventEvents(ctx context.Context, topicHost
 // PublishCustomEventEventsPreparer prepares the PublishCustomEventEvents request.
 func (client BaseClient) PublishCustomEventEventsPreparer(ctx context.Context, topicHostname string, events []interface{}) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":              autorest.Encode("path"),
 		"topicHostname": topicHostname,
 	}
 
@@ -243,6 +245,7 @@ func (client BaseClient) PublishEvents(ctx context.Context, topicHostname string
 // PublishEventsPreparer prepares the PublishEvents request.
 func (client BaseClient) PublishEventsPreparer(ctx context.Context, topicHostname string, events []Event) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":              autorest.Encode("path"),
 		"topicHostname": topicHostname,
 	}
 

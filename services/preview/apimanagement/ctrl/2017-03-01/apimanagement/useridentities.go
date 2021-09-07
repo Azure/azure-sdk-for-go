@@ -74,6 +74,7 @@ func (client UserIdentitiesClient) List(ctx context.Context, apimBaseURL string,
 // ListPreparer prepares the List request.
 func (client UserIdentitiesClient) ListPreparer(ctx context.Context, apimBaseURL string, UID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

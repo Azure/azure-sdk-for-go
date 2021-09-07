@@ -65,6 +65,7 @@ func (client SignInSettingsClient) CreateOrUpdate(ctx context.Context, apimBaseU
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client SignInSettingsClient) CreateOrUpdatePreparer(ctx context.Context, apimBaseURL string, parameters PortalSigninSettings) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -141,6 +142,7 @@ func (client SignInSettingsClient) Get(ctx context.Context, apimBaseURL string) 
 // GetPreparer prepares the Get request.
 func (client SignInSettingsClient) GetPreparer(ctx context.Context, apimBaseURL string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -218,6 +220,7 @@ func (client SignInSettingsClient) Update(ctx context.Context, apimBaseURL strin
 // UpdatePreparer prepares the Update request.
 func (client SignInSettingsClient) UpdatePreparer(ctx context.Context, apimBaseURL string, parameters PortalSigninSettings, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

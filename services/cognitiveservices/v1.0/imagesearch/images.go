@@ -257,6 +257,7 @@ func (client ImagesClient) Details(ctx context.Context, query string, acceptLang
 // DetailsPreparer prepares the Details request.
 func (client ImagesClient) DetailsPreparer(ctx context.Context, query string, acceptLanguage string, contentType string, userAgent string, clientID string, clientIP string, location string, cropBottom *float64, cropLeft *float64, cropRight *float64, cropTop *float64, cropType ImageCropType, countryCode string, ID string, imageURL string, insightsToken string, modules []ImageInsightModule, market string, safeSearch SafeSearch, setLang string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -600,6 +601,7 @@ func (client ImagesClient) Search(ctx context.Context, query string, acceptLangu
 // SearchPreparer prepares the Search request.
 func (client ImagesClient) SearchPreparer(ctx context.Context, query string, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, aspect ImageAspect, colorParameter ImageColor, countryCode string, count *int32, freshness Freshness, height *int32, ID string, imageContent ImageContent, imageType ImageType, license ImageLicense, market string, maxFileSize *int64, maxHeight *int64, maxWidth *int64, minFileSize *int64, minHeight *int64, minWidth *int64, offset *int64, safeSearch SafeSearch, size ImageSize, setLang string, width *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 
@@ -877,6 +879,7 @@ func (client ImagesClient) Trending(ctx context.Context, acceptLanguage string, 
 // TrendingPreparer prepares the Trending request.
 func (client ImagesClient) TrendingPreparer(ctx context.Context, acceptLanguage string, userAgent string, clientID string, clientIP string, location string, countryCode string, market string, safeSearch SafeSearch, setLang string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

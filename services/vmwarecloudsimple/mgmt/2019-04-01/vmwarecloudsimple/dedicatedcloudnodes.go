@@ -78,7 +78,7 @@ func (client DedicatedCloudNodesClient) CreateOrUpdate(ctx context.Context, reso
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodesClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudNodesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -116,6 +116,7 @@ func (client DedicatedCloudNodesClient) CreateOrUpdatePreparer(ctx context.Conte
 // http.Response Body if it receives an error.
 func (client DedicatedCloudNodesClient) CreateOrUpdateSender(req *http.Request) (future DedicatedCloudNodesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

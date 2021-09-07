@@ -58,7 +58,7 @@ func (client DataFlowClient) CreateOrUpdateDataFlow(ctx context.Context, dataFlo
 
 	result, err = client.CreateOrUpdateDataFlowSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "CreateOrUpdateDataFlow", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "CreateOrUpdateDataFlow", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -68,6 +68,7 @@ func (client DataFlowClient) CreateOrUpdateDataFlow(ctx context.Context, dataFlo
 // CreateOrUpdateDataFlowPreparer prepares the CreateOrUpdateDataFlow request.
 func (client DataFlowClient) CreateOrUpdateDataFlowPreparer(ctx context.Context, dataFlowName string, dataFlow DataFlowResource, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -98,6 +99,7 @@ func (client DataFlowClient) CreateOrUpdateDataFlowPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client DataFlowClient) CreateOrUpdateDataFlowSender(req *http.Request) (future DataFlowCreateOrUpdateDataFlowFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -151,7 +153,7 @@ func (client DataFlowClient) DeleteDataFlow(ctx context.Context, dataFlowName st
 
 	result, err = client.DeleteDataFlowSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "DeleteDataFlow", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "DeleteDataFlow", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -161,6 +163,7 @@ func (client DataFlowClient) DeleteDataFlow(ctx context.Context, dataFlowName st
 // DeleteDataFlowPreparer prepares the DeleteDataFlow request.
 func (client DataFlowClient) DeleteDataFlowPreparer(ctx context.Context, dataFlowName string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -185,6 +188,7 @@ func (client DataFlowClient) DeleteDataFlowPreparer(ctx context.Context, dataFlo
 // http.Response Body if it receives an error.
 func (client DataFlowClient) DeleteDataFlowSender(req *http.Request) (future DataFlowDeleteDataFlowFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -256,6 +260,7 @@ func (client DataFlowClient) GetDataFlow(ctx context.Context, dataFlowName strin
 // GetDataFlowPreparer prepares the GetDataFlow request.
 func (client DataFlowClient) GetDataFlowPreparer(ctx context.Context, dataFlowName string, ifNoneMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -340,6 +345,7 @@ func (client DataFlowClient) GetDataFlowsByWorkspace(ctx context.Context) (resul
 // GetDataFlowsByWorkspacePreparer prepares the GetDataFlowsByWorkspace request.
 func (client DataFlowClient) GetDataFlowsByWorkspacePreparer(ctx context.Context) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -448,7 +454,7 @@ func (client DataFlowClient) RenameDataFlow(ctx context.Context, dataFlowName st
 
 	result, err = client.RenameDataFlowSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "RenameDataFlow", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "artifacts.DataFlowClient", "RenameDataFlow", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -458,6 +464,7 @@ func (client DataFlowClient) RenameDataFlow(ctx context.Context, dataFlowName st
 // RenameDataFlowPreparer prepares the RenameDataFlow request.
 func (client DataFlowClient) RenameDataFlowPreparer(ctx context.Context, dataFlowName string, request RenameRequest) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"endpoint": client.Endpoint,
 	}
 
@@ -484,6 +491,7 @@ func (client DataFlowClient) RenameDataFlowPreparer(ctx context.Context, dataFlo
 // http.Response Body if it receives an error.
 func (client DataFlowClient) RenameDataFlowSender(req *http.Request) (future DataFlowRenameDataFlowFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

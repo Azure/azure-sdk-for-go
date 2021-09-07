@@ -187,6 +187,7 @@ func (client ImagesClient) VisualSearch(ctx context.Context, acceptLanguage stri
 // VisualSearchPreparer prepares the VisualSearch request.
 func (client ImagesClient) VisualSearchPreparer(ctx context.Context, acceptLanguage string, contentType string, userAgent string, clientID string, clientIP string, location string, market string, safeSearch SafeSearch, setLang string, knowledgeRequest string, imageParameter io.ReadCloser) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"Endpoint": client.Endpoint,
 	}
 

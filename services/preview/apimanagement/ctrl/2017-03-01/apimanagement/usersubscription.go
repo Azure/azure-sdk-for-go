@@ -95,6 +95,7 @@ func (client UserSubscriptionClient) List(ctx context.Context, apimBaseURL strin
 // ListPreparer prepares the List request.
 func (client UserSubscriptionClient) ListPreparer(ctx context.Context, apimBaseURL string, UID string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

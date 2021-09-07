@@ -81,6 +81,7 @@ func (client APIOperationClient) CreateOrUpdate(ctx context.Context, apimBaseURL
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
 func (client APIOperationClient) CreateOrUpdatePreparer(ctx context.Context, apimBaseURL string, apiid string, operationID string, parameters OperationContract) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -179,6 +180,7 @@ func (client APIOperationClient) Delete(ctx context.Context, apimBaseURL string,
 // DeletePreparer prepares the Delete request.
 func (client APIOperationClient) DeletePreparer(ctx context.Context, apimBaseURL string, apiid string, operationID string, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -273,6 +275,7 @@ func (client APIOperationClient) Get(ctx context.Context, apimBaseURL string, ap
 // GetPreparer prepares the Get request.
 func (client APIOperationClient) GetPreparer(ctx context.Context, apimBaseURL string, apiid string, operationID string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -380,6 +383,7 @@ func (client APIOperationClient) ListByAPI(ctx context.Context, apimBaseURL stri
 // ListByAPIPreparer prepares the ListByAPI request.
 func (client APIOperationClient) ListByAPIPreparer(ctx context.Context, apimBaseURL string, apiid string, filter string, top *int32, skip *int32) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 
@@ -522,6 +526,7 @@ func (client APIOperationClient) Update(ctx context.Context, apimBaseURL string,
 // UpdatePreparer prepares the Update request.
 func (client APIOperationClient) UpdatePreparer(ctx context.Context, apimBaseURL string, apiid string, operationID string, parameters OperationUpdateContract, ifMatch string) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":            autorest.Encode("path"),
 		"apimBaseUrl": apimBaseURL,
 	}
 

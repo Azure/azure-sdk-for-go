@@ -144,6 +144,7 @@ func (client JobScheduleClient) Add(ctx context.Context, cloudJobSchedule JobSch
 // AddPreparer prepares the Add request.
 func (client JobScheduleClient) AddPreparer(ctx context.Context, cloudJobSchedule JobScheduleAddParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -259,6 +260,7 @@ func (client JobScheduleClient) Delete(ctx context.Context, jobScheduleID string
 // DeletePreparer prepares the Delete request.
 func (client JobScheduleClient) DeletePreparer(ctx context.Context, jobScheduleID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -389,6 +391,7 @@ func (client JobScheduleClient) Disable(ctx context.Context, jobScheduleID strin
 // DisablePreparer prepares the Disable request.
 func (client JobScheduleClient) DisablePreparer(ctx context.Context, jobScheduleID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -519,6 +522,7 @@ func (client JobScheduleClient) Enable(ctx context.Context, jobScheduleID string
 // EnablePreparer prepares the Enable request.
 func (client JobScheduleClient) EnablePreparer(ctx context.Context, jobScheduleID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -649,6 +653,7 @@ func (client JobScheduleClient) Exists(ctx context.Context, jobScheduleID string
 // ExistsPreparer prepares the Exists request.
 func (client JobScheduleClient) ExistsPreparer(ctx context.Context, jobScheduleID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -781,6 +786,7 @@ func (client JobScheduleClient) Get(ctx context.Context, jobScheduleID string, s
 // GetPreparer prepares the Get request.
 func (client JobScheduleClient) GetPreparer(ctx context.Context, jobScheduleID string, selectParameter string, expand string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -926,6 +932,7 @@ func (client JobScheduleClient) List(ctx context.Context, filter string, selectP
 // ListPreparer prepares the List request.
 func (client JobScheduleClient) ListPreparer(ctx context.Context, filter string, selectParameter string, expand string, maxResults *int32, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -1092,6 +1099,7 @@ func (client JobScheduleClient) Patch(ctx context.Context, jobScheduleID string,
 // PatchPreparer prepares the Patch request.
 func (client JobScheduleClient) PatchPreparer(ctx context.Context, jobScheduleID string, jobSchedulePatchParameter JobSchedulePatchParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -1224,6 +1232,7 @@ func (client JobScheduleClient) Terminate(ctx context.Context, jobScheduleID str
 // TerminatePreparer prepares the Terminate request.
 func (client JobScheduleClient) TerminatePreparer(ctx context.Context, jobScheduleID string, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 
@@ -1428,6 +1437,7 @@ func (client JobScheduleClient) Update(ctx context.Context, jobScheduleID string
 // UpdatePreparer prepares the Update request.
 func (client JobScheduleClient) UpdatePreparer(ctx context.Context, jobScheduleID string, jobScheduleUpdateParameter JobScheduleUpdateParameter, timeout *int32, clientRequestID *uuid.UUID, returnClientRequestID *bool, ocpDate *date.TimeRFC1123, ifMatch string, ifNoneMatch string, ifModifiedSince *date.TimeRFC1123, ifUnmodifiedSince *date.TimeRFC1123) (*http.Request, error) {
 	urlParameters := map[string]interface{}{
+		"":         autorest.Encode("path"),
 		"batchUrl": client.BatchURL,
 	}
 

@@ -80,7 +80,7 @@ serviceClient, err := aztables.NewServiceClientFromConnectionString(connStr, nil
 ```
 
 ##### Creating the client from a SAS token
-To use a [shared access signature (SAS) token][azure_sas_token], provide the token as a string. If your account URL includes the SAS token, omit the credential parameter. You can generate a SAS token from the Azure Portal under [Shared access signature](https://docs.microsoft.com/rest/api/storageservices/create-service-sas) or use the `ServiceClient.GetAccountSASToken` or `Client.GetTableSASToken()` functions.
+To use a [shared access signature (SAS) token][azure_sas_token], provide the token as a string. If your account URL includes the SAS token, omit the credential parameter. You can generate a SAS token from the Azure Portal under [Shared access signature](https://docs.microsoft.com/rest/api/storageservices/create-service-sas) or use the `ServiceClient.GetAccountSASToken` or `Client.GetTableSASToken()` methods.
 
 ```golang
 cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")

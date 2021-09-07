@@ -94,7 +94,7 @@ type SubmitTransactionOptions struct {
 	RequestID *string
 }
 
-// SubmitTransaction submits the table transactional batch according to the slice of TableTransactionActions provided. All transactionActions must be for entities
+// SubmitTransaction submits the table transactional batch according to the slice of TransactionActions provided. All transactionActions must be for entities
 // with the same PartitionKey. There can only be one transaction action for a row key, a duplicated row key will return an error. The TransactionResponse object
 // contains the response for each sub-request in the same order that they are made in the transactionActions parameter.
 func (t *Client) SubmitTransaction(ctx context.Context, transactionActions []TransactionAction, tableSubmitTransactionOptions *SubmitTransactionOptions) (TransactionResponse, error) {

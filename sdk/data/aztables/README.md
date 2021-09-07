@@ -68,7 +68,7 @@ handle(err)
 
 ##### Creating the client from a connection string
 Depending on your use case and authorization method, you may prefer to initialize a client instance with a connection string instead of providing the account URL and credential separately. To do this, pass the
-connection string to the client's `from_connection_string` class method. The connection string can be found in your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or with the following Azure CLI command:
+connection string to the client's `NewServiceClientFromConnectionString` method. The connection string can be found in your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or with the following Azure CLI command:
 
 ```bash
 az storage account show-connection-string -g MyResourceGroup -n MyStorageAccount

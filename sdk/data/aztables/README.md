@@ -49,7 +49,7 @@ For more information about table service URL's and how to configure custom domai
 #### Types of credentials
 The clients support different forms of authentication. Cosmos accounts can use a Shared Key Credential, Connection String, or an Shared Access Signature Token for authentication. Storage account can use the same credentials as a Cosmos account and can use the credentials in [`azidentity`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity) like `azidentity.NewDefaultAzureCredential()`.
 
-The aztables library supports any of the `azcore.TokenCredential` interfaces, authorization via a Connection String, or authorization with a Shared Access Signature Token.
+The aztables package supports any of the types that implement the `azcore.TokenCredential` interface, authorization via a Connection String, or authorization with a Shared Access Signature Token.
 
 ##### Creating the client from a shared key
 To use an account [shared key][azure_shared_key] (aka account key or access key), provide the key as a string. This can be found in your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or by running the following Azure CLI command:

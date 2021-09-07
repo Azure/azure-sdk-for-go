@@ -10,10 +10,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:48:38 GMT
+      - Tue, 07 Sep 2021 17:22:15 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobgetpropsonmissingblob?restype=container
@@ -24,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 12 Aug 2021 17:48:36 GMT
+      - Tue, 07 Sep 2021 17:22:15 GMT
       Etag:
-      - '"0x8D95DB96986D48D"'
+      - '"0x8D9722409F1C00A"'
       Last-Modified:
-      - Thu, 12 Aug 2021 17:48:37 GMT
+      - Tue, 07 Sep 2021 17:22:16 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 9fc3042e-601e-0016-5ca2-8ff73f000000
+      - 490843f0-d01e-0040-560c-a41f4f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -47,10 +46,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:48:38 GMT
+      - Tue, 07 Sep 2021 17:22:16 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobgetpropsonmissingblob/MISSING
@@ -59,13 +57,13 @@ interactions:
     body: ""
     headers:
       Date:
-      - Thu, 12 Aug 2021 17:48:36 GMT
+      - Tue, 07 Sep 2021 17:22:16 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - BlobNotFound
       X-Ms-Request-Id:
-      - 9fc304f2-601e-0016-06a2-8ff73f000000
+      - 49084458-d01e-0040-2f0c-a41f4f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 404 The specified blob does not exist.
@@ -80,10 +78,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-generated/<version> azsdk-go-generated/<version> azcore/v0.16.2 (go1.15;
-        Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Thu, 12 Aug 2021 17:48:38 GMT
+      - Tue, 07 Sep 2021 17:22:16 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobgetpropsonmissingblob?restype=container
@@ -94,11 +91,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Thu, 12 Aug 2021 17:48:36 GMT
+      - Tue, 07 Sep 2021 17:22:16 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 9fc3061c-601e-0016-67a2-8ff73f000000
+      - 490844c9-d01e-0040-0f0c-a41f4f000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

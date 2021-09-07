@@ -1,7 +1,7 @@
 # Azure Tables client library for Go
 
 Azure Tables is a NoSQL data storage service that can be accessed from anywhere in the world via authenticated calls using HTTP or HTTPS.
-Data Tables scales as needed to support the amount of data inserted, and allow for the storing of data with non-complex accessing.
+Tables scales as needed to support the amount of data inserted, and allows for the storing of data with non-complex accessing.
 The Azure Tables client can be used to access Azure Storage or Cosmos accounts.
 
 [Source code][source_code] | [Package][Tables_gopackage] | [API reference documentation][Tables_ref_docs]
@@ -138,8 +138,7 @@ aztables.EDMEntity{
         "Price": 5.00,
         "Count": aztables.EDMInt64(12345678901234),
         "ProductGUID": aztables.EDMGUID("some-guid-value"),
-        "DateReceived": aztables.EDMDateTime(time.Date{....}),
-        "ProductCode": aztables.EDMBinary([]byte{"somebinaryvalue"})
+        "DateReceived": aztables.EDMDateTime(time.Date{....})
     }
 }
 ```
@@ -254,12 +253,12 @@ To obtain more detailed logging, including request/response bodies and header va
 ```go
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 // Set log to output to the console
-azlog.SetListener(func(cls LogClassification, s string) {
-		fmt.Println(s) // printing log out to the console
-  })
+log.SetListener(func(cls log.Classification, msg string) {
+		fmt.Println(msg) // printing log out to the console
+})
 
-// Include only azidentity credential logs
-azlog.SetClassifications(azidentity.LogCredential)
+// Includes only requests and responses in credential logs
+log.SetClassifications(log.Request, log.Response)
 ```
 
 > CAUTION: logs from credentials contain sensitive information.
@@ -292,7 +291,7 @@ or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
 ### Additional documentation
-For more extensive documentation on Azure Data Tables, see the [Azure Data Tables documentation][Tables_product_doc] on docs.microsoft.com.
+For more extensive documentation on Azure Tables, see the [Azure Tables documentation][Tables_product_doc] on docs.microsoft.com.
 
 ## Known Issues
 A list of currently known issues relating to Cosmos DB table endpoints can be found [here](https://aka.ms/tablesknownissues).

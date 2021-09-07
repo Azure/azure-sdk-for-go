@@ -19,6 +19,11 @@ type ContainerClient struct {
 	cred   StorageAccountCredential
 }
 
+// URL returns the URL endpoint used by the ContainerClient object.
+func (c ContainerClient) URL() string {
+	return c.client.con.u
+}
+
 // NewContainerClient creates a ContainerClient object using the specified URL and request policy pipeline.
 func NewContainerClient(containerURL string, cred azcore.Credential, options *ClientOptions) (ContainerClient, error) {
 	c, _ := cred.(*SharedKeyCredential)
@@ -28,9 +33,13 @@ func NewContainerClient(containerURL string, cred azcore.Credential, options *Cl
 	}, cred: c}, nil
 }
 
-// URL returns the URL endpoint used by the ContainerClient object.
-func (c ContainerClient) URL() string {
-	return c.client.con.u
+// NewContainerClientFromConnectionString creates a ContainerClient object using connection string of an account
+func NewContainerClientFromConnectionString(connectionString string, containerName string, options *ClientOptions) (ContainerClient, error) {
+	svcClient, err := NewServiceClientFromConnectionString(connectionString, options)
+	if err != nil {
+		return ContainerClient{}, err
+	}
+	return svcClient.NewContainerClient(containerName), nil
 }
 
 // NewBlobClient creates a new BlobClient object by concatenating blobName to the end of
@@ -89,6 +98,17 @@ func (c ContainerClient) NewPageBlobClient(blobName string) PageBlobClient {
 		client:     &pageBlobClient{newCon},
 		BlobClient: BlobClient{client: &blobClient{con: newCon}},
 	}
+}
+
+// DeleteBlob marks the specified blob or snapshot within a container for deletion.
+// The blob is later deleted during garbage collection.
+// Note that deleting a blob also deletes all its snapshots.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob.
+//nolint
+func (c ContainerClient) DeleteBlob(ctx context.Context, blobName string, options *DeleteBlobOptions) (BlobDeleteResponse, error) {
+	blobClient := c.NewBlobClient(blobName)
+	deleteResp, err := blobClient.Delete(ctx, options)
+	return deleteResp, err
 }
 
 func (c ContainerClient) NewContainerLeaseClient() ContainerLeaseClient {

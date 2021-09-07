@@ -464,7 +464,7 @@ func TestUriSanitizer(t *testing.T) {
 	require.NoError(t, err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open("./recordings/TestUriSanitizer.json")
+	jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
 	require.NoError(t, err)
 	defer jsonFile.Close()
 
@@ -475,6 +475,63 @@ func TestUriSanitizer(t *testing.T) {
 	require.NoError(t, err)
 
 	require.Equal(t, data.Entries[0].RequestUri, "https://www.replacement.com/")
+}
+
+func TestHeaderRegexSanitizer(t *testing.T) {
+	os.Setenv("AZURE_RECORD_MODE", "record")
+	defer os.Unsetenv("AZURE_RECORD_MODE")
+
+	err := StartRecording(t, packagePath, nil)
+	require.NoError(t, err)
+
+	err = AddUriSanitizer("replacement", "bing", nil)
+	require.NoError(t, err)
+
+	client, err := GetHTTPClient(t)
+	require.NoError(t, err)
+
+	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
+	require.NoError(t, err)
+
+	req.Header.Set(UpstreamUriHeader, "https://www.bing.com/")
+	req.Header.Set(ModeHeader, GetRecordMode())
+	req.Header.Set(IdHeader, GetRecordingId(t))
+	req.Header.Set("testproxy-header", "fakevalue")
+	req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
+	req.Header.Set("ComplexRegex", "https://fakeaccount.table.core.windows.net")
+
+	err = AddHeaderRegexSanitizer("testproxy-header", "Sanitized", "", "", nil)
+	require.NoError(t, err)
+
+	err = AddHeaderRegexSanitizer("FakeStorageLocation", "Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.blob\\.core\\.windows\\.net", "", nil)
+	require.NoError(t, err)
+
+	err = AddHeaderRegexSanitizer("FakeStorageLocation", "Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.(?:table|blob|queue)\\.core\\.windows\\.net", "account", nil)
+	require.NoError(t, err)
+
+	resp, err := client.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	require.NotNil(t, GetRecordingId(t))
+
+	err = StopRecording(t, nil)
+	require.NoError(t, err)
+
+	// Make sure the file is there
+	jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
+	require.NoError(t, err)
+	defer jsonFile.Close()
+
+	var data RecordingFileStruct
+	byteValue, err := ioutil.ReadAll(jsonFile)
+	require.NoError(t, err)
+	err = json.Unmarshal(byteValue, &data)
+	require.NoError(t, err)
+
+	require.Equal(t, data.Entries[0].RequestHeaders["testproxy-header"], "Sanitized")
+	require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "Sanitized")
+	require.Equal(t, data.Entries[0].RequestHeaders["complexregex"], "https://fakeaccount.table.core.windows.net")
 }
 
 func TestProxyCert(t *testing.T) {
@@ -514,7 +571,8 @@ type RecordingFileStruct struct {
 }
 
 type Entry struct {
-	RequestUri string `json:"RequestUri"`
+	RequestUri     string            `json:"RequestUri"`
+	RequestHeaders map[string]string `json:"RequestHeaders"`
 }
 
 func TestLiveModeOnly(t *testing.T) {
@@ -556,5 +614,7 @@ func TestBackwardSlashPath(t *testing.T) {
 	packagePathBackslash := "sdk\\internal\\recordings"
 
 	err := StartRecording(t, packagePathBackslash, nil)
-	require.Error(t, err)
+	require.NoError(t, err)
+	err = StopRecording(t, nil)
+	require.NoError(t, err)
 }

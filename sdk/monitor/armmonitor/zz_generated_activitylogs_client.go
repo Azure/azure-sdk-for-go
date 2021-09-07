@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,8 +12,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -21,73 +23,70 @@ import (
 // ActivityLogsClient contains the methods for the ActivityLogs group.
 // Don't use this type directly, use NewActivityLogsClient() instead.
 type ActivityLogsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewActivityLogsClient creates a new instance of ActivityLogsClient with the specified values.
-func NewActivityLogsClient(con *armcore.Connection, subscriptionID string) *ActivityLogsClient {
-	return &ActivityLogsClient{con: con, subscriptionID: subscriptionID}
+func NewActivityLogsClient(con *arm.Connection, subscriptionID string) *ActivityLogsClient {
+	return &ActivityLogsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // List - Provides the list of records from the activity logs.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *ActivityLogsClient) List(filter string, options *ActivityLogsListOptions) EventDataCollectionPager {
-	return &eventDataCollectionPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *ActivityLogsClient) List(filter string, options *ActivityLogsListOptions) *ActivityLogsListPager {
+	return &ActivityLogsListPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, filter, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp EventDataCollectionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.EventDataCollection.NextLink)
+		advancer: func(ctx context.Context, resp ActivityLogsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventDataCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ActivityLogsClient) listCreateRequest(ctx context.Context, filter string, options *ActivityLogsListOptions) (*azcore.Request, error) {
+func (client *ActivityLogsClient) listCreateRequest(ctx context.Context, filter string, options *ActivityLogsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/eventtypes/management/values"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-04-01")
 	reqQP.Set("$filter", filter)
 	if options != nil && options.Select != nil {
 		reqQP.Set("$select", *options.Select)
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ActivityLogsClient) listHandleResponse(resp *azcore.Response) (EventDataCollectionResponse, error) {
-	var val *EventDataCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return EventDataCollectionResponse{}, err
+func (client *ActivityLogsClient) listHandleResponse(resp *http.Response) (ActivityLogsListResponse, error) {
+	result := ActivityLogsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.EventDataCollection); err != nil {
+		return ActivityLogsListResponse{}, err
 	}
-	return EventDataCollectionResponse{RawResponse: resp.Response, EventDataCollection: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *ActivityLogsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ActivityLogsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

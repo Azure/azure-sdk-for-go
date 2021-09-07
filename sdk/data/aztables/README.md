@@ -143,15 +143,6 @@ aztables.EDMEntity{
     }
 }
 ```
-* **[create entity][create_entity]** - Add an entity to the table.
-* **[delete entity][delete_entity]** - Delete an entity from the table.
-* **[update entity][update_entity]** - Update an entity's information by either merging or replacing the existing entity.
-    * `UpdateMode.MERGE` will add new properties to an existing entity it will not delete an existing properties
-    * `UpdateMode.REPLACE` will replace the existing entity with the given one, deleting any existing properties not included in the submitted entity
-* **[list entities][list_entities]** - Query existing entities in a table using OData filters
-* **[update entity][upsert_entity]** - Merge or replace an entity in a table, or if the entity does not exist, inserts the entity.
-    * `UpdateMode.MERGE` will add new properties to an existing entity it will not delete an existing properties
-    * `UpdateMode.REPLACE` will replace the existing entity with the given one, deleting any existing properties not included in the submitted entity
 
 ## Examples
 
@@ -304,17 +295,6 @@ For more information, see the
 or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
-
-### Common Scenarios
-These code samples show common scenario operations with the Azure Data tables client library.
-
-* Create and delete tables: [sample_create_delete_table.py](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/sample_create_delete_table.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/async_samples/sample_create_delete_table_async.py))
-* List and query tables: [sample_query_tables.py](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/sample_query_tables.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/async_samples/sample_query_tables_async.py))
-* Insert and delete entities: [sample_insert_delete_entities.py](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/sample_insert_delete_entities.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/async_samples/sample_insert_delete_entities_async.py))
-* Query and list entities: [sample_query_table.py](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_query_table.py) ([async version](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/async_samples/sample_query_table_async.py))
-* Update, upsert, and merge entities: [sample_update_upsert_merge_entities.py](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/async_samples/sample_update_upsert_merge_entities_async.py))
-* Committing many requests in a single transaction: [sample_batching.py](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/sample_batching.py) ([async version](https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples/async_samples/sample_batching_async.py))
-
 ### Additional documentation
 For more extensive documentation on Azure Data Tables, see the [Azure Data Tables documentation][Tables_product_doc] on docs.microsoft.com.
 
@@ -334,7 +314,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][msft_oss_co
 [Tables_ref_docs]:https://aka.ms/azsdk/go/tables
 [Tables_product_doc]:https://docs.microsoft.com/azure/cosmos-db/table-introduction
 [Tables_samples]:https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/tables/azure-data-tables/samples
-[migration_guide]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/migration_guide.md
 
 [azure_subscription]:https://azure.microsoft.com/free/
 [azure_storage_account]:https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal
@@ -365,11 +344,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][msft_oss_co
 [contact_msft_oss]:mailto:opencode@microsoft.com
 
 [tables_rest]: https://docs.microsoft.com/rest/api/storageservices/table-service-rest-api
-
-[create_entity]:https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/samples/aztables/sample_insert_delete_entities.go#L25-L79
-[delete_entity]:https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/samples/aztables/sample_insert_delete_entities.go#L81-L100
-[update_entity]:https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/samples/aztables/sample_update_entities.go#L16-L58
-[list_entities]:https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/samples/aztables/sample_query_table.go#L14-L50
-[upsert_entity]:https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/tables/azure-data-tables/samples/sample_update_upsert_merge_entities.py#L103-L120
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go/sdk/data/aztables/README.png)

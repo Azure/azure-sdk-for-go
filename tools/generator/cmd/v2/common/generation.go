@@ -97,6 +97,11 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(rpName, namespaceName, s
 			return nil, err
 		}
 
+		log.Printf("Run `goimports` to refine the code import...")
+		if err = ExecuteGoimports(packagePath); err != nil {
+			return nil, err
+		}
+
 		log.Printf("Generate changelog for package...")
 		newExports, err := exports.Get(packagePath)
 		if err != nil {
@@ -158,6 +163,11 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(rpName, namespaceName, s
 
 		log.Printf("Run `go generate` to regenerate the code...")
 		if err = ExecuteGoGenerate(packagePath); err != nil {
+			return nil, err
+		}
+
+		log.Printf("Run `goimports` to refine the code import...")
+		if err = ExecuteGoimports(packagePath); err != nil {
 			return nil, err
 		}
 

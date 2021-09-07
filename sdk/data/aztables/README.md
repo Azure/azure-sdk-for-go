@@ -26,7 +26,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/data/aztables
 ```
 
 #### Create the client
-The Azure Data Tables library allows you to interact with two types of resources:
+The Azure Tables library allows you to interact with two types of resources:
 * the tables in your account
 * the entities within those tables.
 Interaction with these resources starts with an instance of a [client](#clients). To create a client object, you will need the account's table service endpoint URL and a credential that allows you to access the account. The `endpoint` can be found on the page for your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or by running the following Azure CLI command:

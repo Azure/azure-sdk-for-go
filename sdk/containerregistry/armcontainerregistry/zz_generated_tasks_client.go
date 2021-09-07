@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,93 +12,68 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TasksClient contains the methods for the Tasks group.
 // Don't use this type directly, use NewTasksClient() instead.
 type TasksClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewTasksClient creates a new instance of TasksClient with the specified values.
-func NewTasksClient(con *armcore.Connection, subscriptionID string) *TasksClient {
-	return &TasksClient{con: con, subscriptionID: subscriptionID}
+func NewTasksClient(con *arm.Connection, subscriptionID string) *TasksClient {
+	return &TasksClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreate - Creates a task for a container registry with the specified parameters.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *TasksClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, taskName string, taskCreateParameters Task, options *TasksBeginCreateOptions) (TaskPollerResponse, error) {
+func (client *TasksClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, taskName string, taskCreateParameters Task, options *TasksBeginCreateOptions) (TasksCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, registryName, taskName, taskCreateParameters, options)
 	if err != nil {
-		return TaskPollerResponse{}, err
+		return TasksCreatePollerResponse{}, err
 	}
-	result := TaskPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("TasksClient.Create", "", resp, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return TaskPollerResponse{}, err
-	}
-	poller := &taskPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TaskResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreate creates a new TaskPoller from the specified resume token.
-// token - The value must come from a previous call to TaskPoller.ResumeToken().
-func (client *TasksClient) ResumeCreate(ctx context.Context, token string) (TaskPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("TasksClient.Create", token, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return TaskPollerResponse{}, err
-	}
-	poller := &taskPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return TaskPollerResponse{}, err
-	}
-	result := TaskPollerResponse{
+	result := TasksCreatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TaskResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("TasksClient.Create", "", resp, client.pl, client.createHandleError)
+	if err != nil {
+		return TasksCreatePollerResponse{}, err
+	}
+	result.Poller = &TasksCreatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a task for a container registry with the specified parameters.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *TasksClient) create(ctx context.Context, resourceGroupName string, registryName string, taskName string, taskCreateParameters Task, options *TasksBeginCreateOptions) (*azcore.Response, error) {
+func (client *TasksClient) create(ctx context.Context, resourceGroupName string, registryName string, taskName string, taskCreateParameters Task, options *TasksBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, taskName, taskCreateParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, client.createHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *TasksClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskName string, taskCreateParameters Task, options *TasksBeginCreateOptions) (*azcore.Request, error) {
+func (client *TasksClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskName string, taskCreateParameters Task, options *TasksBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -115,98 +91,69 @@ func (client *TasksClient) createCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter taskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskName}", url.PathEscape(taskName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(taskCreateParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, taskCreateParameters)
 }
 
 // createHandleError handles the Create error response.
-func (client *TasksClient) createHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TasksClient) createHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDelete - Deletes a specified task.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *TasksClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *TasksBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *TasksClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *TasksBeginDeleteOptions) (TasksDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, taskName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return TasksDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("TasksClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *TasksClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("TasksClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := TasksDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("TasksClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return TasksDeletePollerResponse{}, err
+	}
+	result.Poller = &TasksDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a specified task.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *TasksClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *TasksBeginDeleteOptions) (*azcore.Response, error) {
+func (client *TasksClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *TasksBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, taskName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *TasksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *TasksBeginDeleteOptions) (*azcore.Request, error) {
+func (client *TasksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *TasksBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -224,50 +171,49 @@ func (client *TasksClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter taskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskName}", url.PathEscape(taskName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *TasksClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TasksClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Get the properties of a specified task.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *TasksClient) Get(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *TasksGetOptions) (TaskResponse, error) {
+func (client *TasksClient) Get(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *TasksGetOptions) (TasksGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, taskName, options)
 	if err != nil {
-		return TaskResponse{}, err
+		return TasksGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TaskResponse{}, err
+		return TasksGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return TaskResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return TasksGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TasksClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *TasksGetOptions) (*azcore.Request, error) {
+func (client *TasksClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *TasksGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -285,59 +231,58 @@ func (client *TasksClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter taskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskName}", url.PathEscape(taskName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *TasksClient) getHandleResponse(resp *azcore.Response) (TaskResponse, error) {
-	var val *Task
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return TaskResponse{}, err
+func (client *TasksClient) getHandleResponse(resp *http.Response) (TasksGetResponse, error) {
+	result := TasksGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Task); err != nil {
+		return TasksGetResponse{}, err
 	}
-	return TaskResponse{RawResponse: resp.Response, Task: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *TasksClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TasksClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetDetails - Returns a task with extended information that includes all secrets.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *TasksClient) GetDetails(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *TasksGetDetailsOptions) (TaskResponse, error) {
+func (client *TasksClient) GetDetails(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *TasksGetDetailsOptions) (TasksGetDetailsResponse, error) {
 	req, err := client.getDetailsCreateRequest(ctx, resourceGroupName, registryName, taskName, options)
 	if err != nil {
-		return TaskResponse{}, err
+		return TasksGetDetailsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return TaskResponse{}, err
+		return TasksGetDetailsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return TaskResponse{}, client.getDetailsHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return TasksGetDetailsResponse{}, client.getDetailsHandleError(resp)
 	}
 	return client.getDetailsHandleResponse(resp)
 }
 
 // getDetailsCreateRequest creates the GetDetails request.
-func (client *TasksClient) getDetailsCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *TasksGetDetailsOptions) (*azcore.Request, error) {
+func (client *TasksClient) getDetailsCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskName string, options *TasksGetDetailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}/listDetails"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -355,59 +300,55 @@ func (client *TasksClient) getDetailsCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter taskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskName}", url.PathEscape(taskName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getDetailsHandleResponse handles the GetDetails response.
-func (client *TasksClient) getDetailsHandleResponse(resp *azcore.Response) (TaskResponse, error) {
-	var val *Task
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return TaskResponse{}, err
+func (client *TasksClient) getDetailsHandleResponse(resp *http.Response) (TasksGetDetailsResponse, error) {
+	result := TasksGetDetailsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Task); err != nil {
+		return TasksGetDetailsResponse{}, err
 	}
-	return TaskResponse{RawResponse: resp.Response, Task: val}, nil
+	return result, nil
 }
 
 // getDetailsHandleError handles the GetDetails error response.
-func (client *TasksClient) getDetailsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TasksClient) getDetailsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Lists all the tasks for a specified container registry.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *TasksClient) List(resourceGroupName string, registryName string, options *TasksListOptions) TaskListResultPager {
-	return &taskListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *TasksClient) List(resourceGroupName string, registryName string, options *TasksListOptions) *TasksListPager {
+	return &TasksListPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, registryName, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp TaskListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.TaskListResult.NextLink)
+		advancer: func(ctx context.Context, resp TasksListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.TaskListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *TasksClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *TasksListOptions) (*azcore.Request, error) {
+func (client *TasksClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *TasksListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -421,107 +362,78 @@ func (client *TasksClient) listCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *TasksClient) listHandleResponse(resp *azcore.Response) (TaskListResultResponse, error) {
-	var val *TaskListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return TaskListResultResponse{}, err
-	}
-	return TaskListResultResponse{RawResponse: resp.Response, TaskListResult: val}, nil
-}
-
-// listHandleError handles the List error response.
-func (client *TasksClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
-	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
-	}
-	return azcore.NewResponseError(&errType, resp.Response)
-}
-
-// BeginUpdate - Updates a task with the specified parameters.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *TasksClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, taskName string, taskUpdateParameters TaskUpdateParameters, options *TasksBeginUpdateOptions) (TaskPollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, registryName, taskName, taskUpdateParameters, options)
-	if err != nil {
-		return TaskPollerResponse{}, err
-	}
-	result := TaskPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("TasksClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return TaskPollerResponse{}, err
-	}
-	poller := &taskPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TaskResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+func (client *TasksClient) listHandleResponse(resp *http.Response) (TasksListResponse, error) {
+	result := TasksListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TaskListResult); err != nil {
+		return TasksListResponse{}, err
 	}
 	return result, nil
 }
 
-// ResumeUpdate creates a new TaskPoller from the specified resume token.
-// token - The value must come from a previous call to TaskPoller.ResumeToken().
-func (client *TasksClient) ResumeUpdate(ctx context.Context, token string) (TaskPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("TasksClient.Update", token, client.con.Pipeline(), client.updateHandleError)
+// listHandleError handles the List error response.
+func (client *TasksClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return TaskPollerResponse{}, err
+		return runtime.NewResponseError(err, resp)
 	}
-	poller := &taskPoller{
-		pt: pt,
+	errType := ErrorResponse{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	resp, err := poller.Poll(ctx)
+	return runtime.NewResponseError(&errType, resp)
+}
+
+// BeginUpdate - Updates a task with the specified parameters.
+// If the operation fails it returns the *ErrorResponse error type.
+func (client *TasksClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, taskName string, taskUpdateParameters TaskUpdateParameters, options *TasksBeginUpdateOptions) (TasksUpdatePollerResponse, error) {
+	resp, err := client.update(ctx, resourceGroupName, registryName, taskName, taskUpdateParameters, options)
 	if err != nil {
-		return TaskPollerResponse{}, err
+		return TasksUpdatePollerResponse{}, err
 	}
-	result := TaskPollerResponse{
+	result := TasksUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (TaskResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("TasksClient.Update", "", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return TasksUpdatePollerResponse{}, err
+	}
+	result.Poller = &TasksUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates a task with the specified parameters.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *TasksClient) update(ctx context.Context, resourceGroupName string, registryName string, taskName string, taskUpdateParameters TaskUpdateParameters, options *TasksBeginUpdateOptions) (*azcore.Response, error) {
+func (client *TasksClient) update(ctx context.Context, resourceGroupName string, registryName string, taskName string, taskUpdateParameters TaskUpdateParameters, options *TasksBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, taskName, taskUpdateParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *TasksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskName string, taskUpdateParameters TaskUpdateParameters, options *TasksBeginUpdateOptions) (*azcore.Request, error) {
+func (client *TasksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, taskName string, taskUpdateParameters TaskUpdateParameters, options *TasksBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks/{taskName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -539,27 +451,26 @@ func (client *TasksClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter taskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{taskName}", url.PathEscape(taskName))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(taskUpdateParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, taskUpdateParameters)
 }
 
 // updateHandleError handles the Update error response.
-func (client *TasksClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TasksClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

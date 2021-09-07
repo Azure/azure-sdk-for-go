@@ -85,7 +85,7 @@ To use a [shared access signature (SAS) token][azure_sas_token], provide the tok
 ```golang
 cred, err := aztables.NewSharedKeyCredential("myAccountName", "myAccountKey")
 handle(err)
-service, err := aztables.NewServiceClient("https://<my_account_name>.table.core.windows.net", cred, nil)
+service, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net", cred, nil)
 
 resources := aztables.AccountSASResourceTypes{Service: true}
 permission := aztables.AccountSASPermissions{Read: true}

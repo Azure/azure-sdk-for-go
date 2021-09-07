@@ -1,0 +1,57 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://jsonplaceholder.typicode.com/",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/",
+        ":scheme": "https",
+        "Accept-Encoding": "gzip",
+        "complexregex": "https://fakeaccount.table.core.windows.net",
+        "Content-Length": "0",
+        "fakestoragelocation": "Sanitized",
+        "User-Agent": "Go-http-client/2.0"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Credentials": "true",
+        "Alt-Svc": [
+          "h3=\u0022:443\u0022",
+          "h3-29=\u0022:443\u0022",
+          "h3-28=\u0022:443\u0022",
+          "h3-27=\u0022:443\u0022"
+        ],
+        "Cache-Control": "no-cache",
+        "CF-Cache-Status": "DYNAMIC",
+        "CF-RAY": "68b230ca0c3b1827-ATL",
+        "Connection": "keep-alive",
+        "Content-Length": "2",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 07 Sep 2021 19:02:17 GMT",
+        "ETag": "W/\u00222-vyGp6PvFo4RvsFtPoIWeCReyIC8\u0022",
+        "Expect-CT": "max-age=604800, report-uri=\u0022https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\u0022",
+        "Expires": "-1",
+        "NEL": "{\u0022success_fraction\u0022:0,\u0022report_to\u0022:\u0022cf-nel\u0022,\u0022max_age\u0022:604800}",
+        "Pragma": "no-cache",
+        "Report-To": "{\u0022endpoints\u0022:[{\u0022url\u0022:\u0022https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=DfEgRw7v8Au2gmLj60IXNC1jPP5ZyUMFFU2LxT6uAvd3egIDqNfqouCPSMuo%2FnKb7ByJ5psMHPqOSKiTmPPCLEr1inXxK4GblFOPTNtGuOK9oE%2FGe5eM0nxZor%2FbOsy7hbS6%2FKjSKrbr%2BBb4S31z\u0022}],\u0022group\u0022:\u0022cf-nel\u0022,\u0022max_age\u0022:604800}",
+        "Server": "cloudflare",
+        "Vary": [
+          "Origin",
+          "X-HTTP-Method-Override",
+          "Accept-Encoding"
+        ],
+        "Via": "1.1 vegur",
+        "X-Content-Type-Options": "nosniff",
+        "X-Powered-By": "Express",
+        "x-ratelimit-limit": "1000",
+        "x-ratelimit-remaining": "999",
+        "x-ratelimit-reset": "1631041341"
+      },
+      "ResponseBody": {}
+    }
+  ],
+  "Variables": {}
+}

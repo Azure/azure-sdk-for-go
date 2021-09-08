@@ -183,7 +183,7 @@ func TestGetStatistics(t *testing.T) {
 		cred, err = NewSharedKeyCredential(accountName, accountKey)
 	}
 
-	serviceURL := storageURI(accountName+"-secondary")
+	serviceURL := storageURI(accountName + "-secondary")
 	service, err := createServiceClientForRecording(t, serviceURL, cred)
 	require.NoError(t, err)
 

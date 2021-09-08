@@ -83,16 +83,15 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 type commandContext struct {
 	rpName        string
 	namespaceName string
-	sdkRepo       repo.SDKRepository
-	specRepo      repo.SpecRepository
 	flags         Flags
 }
 
 func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 	var err error
+	var sdkRepo repo.SDKRepository
 	// create sdk and spec git repo ref
 	if commitIDRegex.Match([]byte(sdkRepoParam)) {
-		c.sdkRepo, err = repo.CloneSDKRepository(c.flags.SDKRepo, sdkRepoParam)
+		sdkRepo, err = repo.CloneSDKRepository(c.flags.SDKRepo, sdkRepoParam)
 		if err != nil {
 			return fmt.Errorf("failed to get sdk repo: %+v", err)
 		}
@@ -102,47 +101,37 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 			return fmt.Errorf("failed to get the directory of azure-sdk-for-go: %v", err)
 		}
 
-		c.sdkRepo, err = repo.OpenSDKRepository(path)
+		sdkRepo, err = repo.OpenSDKRepository(path)
 		if err != nil {
 			return fmt.Errorf("failed to get sdk repo: %+v", err)
 		}
 	}
 
+	specCommitHash := ""
 	if commitIDRegex.Match([]byte(specRepoParam)) {
-		c.specRepo, err = repo.CloneSpecRepository(c.flags.SwaggerRepo, specRepoParam)
-		if err != nil {
-			return fmt.Errorf("failed to get spec repo: %+v", err)
-		}
+		specCommitHash = specRepoParam
 	} else {
 		path, err := filepath.Abs(specRepoParam)
 		if err != nil {
 			return fmt.Errorf("failed to get the directory of azure-rest-api-specs: %v", err)
 		}
-		c.specRepo, err = repo.OpenSpecRepository(path)
+		specRepo, err := repo.OpenSpecRepository(path)
 		if err != nil {
 			return fmt.Errorf("failed to get spec repo: %+v", err)
 		}
+		specHeader, err := specRepo.Head()
+		if err != nil {
+			return fmt.Errorf("failed to get HEAD ref of azure-rest-api-specs: %+v", err)
+		}
+		specCommitHash = specHeader.Hash().String()
 	}
-
-	// get sdk and spec repo head
-	sdkRef, err := c.sdkRepo.Head()
-	if err != nil {
-		return fmt.Errorf("failed to get HEAD ref of azure-sdk-for-go: %+v", err)
-	}
-	log.Printf("The release branch is based on HEAD ref '%s' (commit %s) of azure-sdk-for-go", sdkRef.Name(), sdkRef.Hash())
-
-	specRef, err := c.specRepo.Head()
-	if err != nil {
-		return fmt.Errorf("failed to get HEAD ref of azure-rest-api-specs: %+v", err)
-	}
-	log.Printf("The new version is generated from HEAD ref '%s' (commit %s) of azure-rest-api-specs", specRef.Name(), specRef.Hash())
 
 	log.Printf("Release generation for rp: %s, namespace: %s", c.rpName, c.namespaceName)
 	generateCtx := common.GenerateContext{
-		SDKPath:        c.sdkRepo.Root(),
-		SDKRepo:        c.sdkRepo,
-		SpecPath:       c.specRepo.Root(),
-		SpecCommitHash: specRef.Hash().String(),
+		SDKPath:        sdkRepo.Root(),
+		SDKRepo:        &sdkRepo,
+		SpecPath:       "",
+		SpecCommitHash: specCommitHash,
 	}
 
 	result, err := generateCtx.GenerateForSingleRPNamespace(c.rpName, c.namespaceName, c.flags.PackageTitle, c.flags.VersionNumber, c.flags.SwaggerRepo)
@@ -154,13 +143,13 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 
 	log.Printf("Create new branch for release")
 	releaseBranchName := fmt.Sprintf(releaseBranchNamePattern, c.rpName, c.namespaceName, result.Version, time.Now().Unix())
-	if err := c.sdkRepo.CreateReleaseBranch(releaseBranchName); err != nil {
+	if err := sdkRepo.CreateReleaseBranch(releaseBranchName); err != nil {
 		return fmt.Errorf("failed to create release branch: %+v", err)
 	}
 
 	log.Printf("Include the packages that is about to release in this release and do release commit...")
 	// append a time in long to avoid collision of branch names
-	if err := c.sdkRepo.AddReleaseCommit(c.rpName, c.namespaceName, generateCtx.SpecCommitHash, result.Version); err != nil {
+	if err := sdkRepo.AddReleaseCommit(c.rpName, c.namespaceName, generateCtx.SpecCommitHash, result.Version); err != nil {
 		return fmt.Errorf("failed to add release package or do release commit: %+v", err)
 	}
 

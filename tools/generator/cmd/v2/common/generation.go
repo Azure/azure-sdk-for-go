@@ -21,7 +21,7 @@ import (
 
 type GenerateContext struct {
 	SDKPath        string
-	SDKRepo        repo.SDKRepository
+	SDKRepo        *repo.SDKRepository
 	SpecPath       string
 	SpecCommitHash string
 }
@@ -67,7 +67,11 @@ func (ctx GenerateContext) GenerateForAutomation(readme string, repo string) ([]
 func (ctx GenerateContext) GenerateForSingleRPNamespace(rpName, namespaceName, specficPackageTitle, specficVersion, specficRepoURL string) (*GenerateResult, error) {
 	packagePath := filepath.Join(ctx.SDKPath, "sdk", rpName, namespaceName)
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
+
+	onBoard := false
+	var oriExports exports.Content
 	if _, err := os.Stat(changelogPath); os.IsNotExist(err) {
+		onBoard = true
 		log.Printf("Package '%s' changelog not exist, do onboard process", packagePath)
 
 		if specficPackageTitle == "" {
@@ -83,35 +87,66 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(rpName, namespaceName, s
 		}); err != nil {
 			return nil, err
 		}
+	} else {
+		log.Printf("Package '%s' existed, do update process", packagePath)
 
-		if specficRepoURL != "" {
-			log.Printf("Change the repo url in `autorest.md`...")
-			autorestMdPath := filepath.Join(packagePath, "autorest.md")
-			if err = ReplaceRepoURL(autorestMdPath, specficRepoURL); err != nil {
-				return nil, err
-			}
-		}
-
-		log.Printf("Run `go generate` to regenerate the code...")
-		if err = ExecuteGoGenerate(packagePath); err != nil {
+		log.Printf("Get ori exports for changelog generation...")
+		if err := (*ctx.SDKRepo).Add(fmt.Sprintf("sdk\\%s\\%s", rpName, namespaceName)); err != nil {
 			return nil, err
 		}
-
-		log.Printf("Run `goimports` to refine the code import...")
-		if err = ExecuteGoimports(packagePath); err != nil {
-			return nil, err
+		if err := (*ctx.SDKRepo).Stash(); err != nil {
+			log.Printf("failed to stash changes: %+v", err)
 		}
-
-		log.Printf("Generate changelog for package...")
-		newExports, err := exports.Get(packagePath)
+		oriExports, err = exports.Get(packagePath)
 		if err != nil {
 			return nil, err
 		}
-		changelog, err := autorest.GetChangelogForPackage(nil, &newExports)
-		if err != nil {
-			return nil, err
+		if err := (*ctx.SDKRepo).StashPop(); err != nil {
+			log.Printf("failed to stash pop changes: %+v", err)
 		}
 
+		log.Printf("Remove all the files that start with `zz_generated_`...")
+		if err = CleanSDKGeneratedFiles(packagePath); err != nil {
+			return nil, err
+		}
+	}
+
+	// same step for onboard and update
+	if ctx.SpecCommitHash == "" {
+		log.Printf("Change swagger config in `autorest.md` according to local path...")
+		autorestMdPath := filepath.Join(packagePath, "autorest.md")
+		if err := ChangeConfigWithLocalPath(autorestMdPath, ctx.SpecPath, rpName); err != nil {
+			return nil, err
+		}
+	} else {
+		log.Printf("Change swagger config in `autorest.md` according to repo URL and commit ID...")
+		autorestMdPath := filepath.Join(packagePath, "autorest.md")
+		if err := ChangeConfigWithCommitID(autorestMdPath, specficRepoURL, ctx.SpecCommitHash, rpName); err != nil {
+			return nil, err
+		}
+	}
+
+	log.Printf("Run `go generate` to regenerate the code...")
+	if err := ExecuteGoGenerate(packagePath); err != nil {
+		return nil, err
+	}
+
+	log.Printf("Run `goimports` to refine the code import...")
+	if err := ExecuteGoimports(packagePath); err != nil {
+		return nil, err
+	}
+
+	log.Printf("Generate changelog for package...")
+	newExports, err := exports.Get(packagePath)
+	if err != nil {
+		return nil, err
+	}
+	changelog, err := autorest.GetChangelogForPackage(&oriExports, &newExports)
+	if err != nil {
+		return nil, err
+	}
+
+	if onBoard {
 		log.Printf("Replace {{NewClientMethod}} placeholder in the README.md ")
 		if err = ReplaceNewClientMethodPlaceholder(packagePath, newExports); err != nil {
 			return nil, err
@@ -126,61 +161,6 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(rpName, namespaceName, s
 			ChangelogMD:    changelog.ToCompactMarkdown(),
 		}, nil
 	} else {
-		log.Printf("Package '%s' existed, do update process", packagePath)
-
-		log.Printf("Get ori exports for changelog generation...")
-		if err := ctx.SDKRepo.Add(fmt.Sprintf("sdk\\%s\\%s", rpName, namespaceName)); err != nil {
-			return nil, err
-		}
-		if err := ctx.SDKRepo.Stash(); err != nil {
-			log.Printf("failed to stash changes: %+v", err)
-		}
-		oriExports, err := exports.Get(packagePath)
-		if err != nil {
-			return nil, err
-		}
-		if err := ctx.SDKRepo.StashPop(); err != nil {
-			log.Printf("failed to stash pop changes: %+v", err)
-		}
-
-		log.Printf("Remove all the files that start with `zz_generated_`...")
-		if err = CleanSDKGeneratedFiles(packagePath); err != nil {
-			return nil, err
-		}
-
-		log.Printf("Change the commit hash in `autorest.md` to a new commit that corresponds to the new release...")
-		autorestMdPath := filepath.Join(packagePath, "autorest.md")
-		if err = ReplaceCommitID(autorestMdPath, ctx.SpecCommitHash); err != nil {
-			return nil, err
-		}
-
-		if specficRepoURL != "" {
-			log.Printf("Change the repo url in `autorest.md`...")
-			if err = ReplaceRepoURL(autorestMdPath, specficRepoURL); err != nil {
-				return nil, err
-			}
-		}
-
-		log.Printf("Run `go generate` to regenerate the code...")
-		if err = ExecuteGoGenerate(packagePath); err != nil {
-			return nil, err
-		}
-
-		log.Printf("Run `goimports` to refine the code import...")
-		if err = ExecuteGoimports(packagePath); err != nil {
-			return nil, err
-		}
-
-		log.Printf("Generate changelog for package...")
-		newExports, err := exports.Get(packagePath)
-		if err != nil {
-			return nil, err
-		}
-		changelog, err := autorest.GetChangelogForPackage(&oriExports, &newExports)
-		if err != nil {
-			return nil, err
-		}
-
 		log.Printf("Calculate new version...")
 		var version *semver.Version
 		if specficVersion == "" {

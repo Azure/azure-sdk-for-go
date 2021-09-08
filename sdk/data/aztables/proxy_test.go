@@ -169,7 +169,8 @@ func getAADCredential(t *testing.T) (azcore.Credential, error) { //nolint
 
 func getSharedKeyCredential(t *testing.T) (azcore.Credential, error) {
 	if recording.GetRecordMode() == "playback" {
-		return NewFakeCredential("fakestorageaccount", "fakeAccountKey"), nil
+		return NewSharedKeyCredential("accountName", "daaaaaaaaaabbbbbbbbbbcccccccccccccccccccdddddddddddddddddddeeeeeeeeeeefffffffffffggggg==")
+		// return NewFakeCredential("fakestorageaccount", "fakeAccountKey"), nil
 	}
 
 	accountName := recording.GetEnvVariable(t, "TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")

@@ -92,15 +92,19 @@ func (p *SASQueryParameters) Version() string {
 func (p *SASQueryParameters) Services() string {
 	return p.services
 }
+
 func (p *SASQueryParameters) ResourceTypes() string {
 	return p.resourceTypes
 }
+
 func (p *SASQueryParameters) Protocol() SASProtocol {
 	return p.protocol
 }
+
 func (p *SASQueryParameters) StartTime() time.Time {
 	return p.startTime
 }
+
 func (p *SASQueryParameters) ExpiryTime() time.Time {
 	return p.expiryTime
 }
@@ -116,6 +120,7 @@ func (p *SASQueryParameters) Identifier() string {
 func (p *SASQueryParameters) Resource() string {
 	return p.resource
 }
+
 func (p *SASQueryParameters) Permissions() string {
 	return p.permissions
 }

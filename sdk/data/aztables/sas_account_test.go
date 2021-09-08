@@ -22,7 +22,8 @@ func TestAccountSASPermissions(t *testing.T) {
 	}
 	require.Equal(t, a.String(), "rwdlacup")
 
-	a.Parse("rwdl")
+	err := a.Parse("rwdl")
+	require.NoError(t, err)
 	require.True(t, a.Read)
 	require.True(t, a.Write)
 	require.True(t, a.Delete)
@@ -31,18 +32,40 @@ func TestAccountSASPermissions(t *testing.T) {
 	require.False(t, a.Create)
 	require.False(t, a.Update)
 	require.False(t, a.Process)
+	err = a.Parse("z")
+	require.Error(t, err)
 }
 
 func TestAccountSASResourceTypes(t *testing.T) {
 	a := AccountSASResourceTypes{
-		Service: true,
+		Service:   true,
 		Container: true,
-		Object: true,
+		Object:    true,
 	}
 	require.Equal(t, a.String(), "sco")
 
-	a.Parse("o")
+	err := a.Parse("o")
+	require.NoError(t, err)
 	require.False(t, a.Service)
 	require.False(t, a.Container)
 	require.True(t, a.Object)
+	err = a.Parse("z")
+	require.Error(t, err)
+}
+
+func TestSASPermissions(t *testing.T) {
+	s := SASPermissions{
+		Read:   true,
+		Add:    true,
+		Update: true,
+		Delete: true,
+	}
+	require.Equal(t, s.String(), "raud")
+
+	err := s.Parse("a")
+	require.NoError(t, err)
+	require.True(t, s.Add)
+	require.False(t, s.Read)
+	require.False(t, s.Update)
+	require.False(t, s.Delete)
 }

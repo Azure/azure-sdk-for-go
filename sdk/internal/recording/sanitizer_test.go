@@ -171,7 +171,10 @@ func TestUriSanitizer(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
-	err := StartRecording(t, packagePath, nil)
+	err := ResetSanitizers(nil)
+	require.NoError(t, err)
+
+	err = StartRecording(t, packagePath, nil)
 	require.NoError(t, err)
 
 	err = AddUriSanitizer("replacement", "bing", nil)
@@ -214,7 +217,10 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
-	err := StartRecording(t, packagePath, nil)
+	err := ResetSanitizers(nil)
+	require.NoError(t, err)
+
+	err = StartRecording(t, packagePath, nil)
 	require.NoError(t, err)
 
 	err = AddUriSanitizer("replacement", "bing", nil)
@@ -272,7 +278,10 @@ func TestBodyKeySanitizer(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
-	err := StartRecording(t, packagePath, nil)
+	err := ResetSanitizers(nil)
+	require.NoError(t, err)
+
+	err = StartRecording(t, packagePath, nil)
 	require.NoError(t, err)
 
 	err = AddUriSanitizer("replacement", "bing", nil)
@@ -325,7 +334,10 @@ func TestBodyRegexSanitizer(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
-	err := StartRecording(t, packagePath, nil)
+	err := ResetSanitizers(nil)
+	require.NoError(t, err)
+
+	err = StartRecording(t, packagePath, nil)
 	require.NoError(t, err)
 
 	err = AddUriSanitizer("replacement", "bing", nil)
@@ -377,7 +389,10 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
-	err := StartRecording(t, packagePath, nil)
+	err := ResetSanitizers(nil)
+	require.NoError(t, err)
+
+	err = StartRecording(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)

@@ -331,3 +331,16 @@ func AddUriSanitizer(replacement, regex string, options *RecordingOptions) error
 	_, err = client.Do(req)
 	return err
 }
+
+func ResetSanitizers(options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%v/Admin/Reset", options.HostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	_, err = client.Do(req)
+	return err
+}

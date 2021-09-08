@@ -170,6 +170,7 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 func TestUriSanitizer(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
+	defer reset(t)
 
 	err := ResetSanitizers(nil)
 	require.NoError(t, err)
@@ -216,6 +217,7 @@ func TestUriSanitizer(t *testing.T) {
 func TestHeaderRegexSanitizer(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
+	defer reset(t)
 
 	err := ResetSanitizers(nil)
 	require.NoError(t, err)
@@ -245,7 +247,7 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 	err = AddHeaderRegexSanitizer("FakeStorageLocation", "Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.blob\\.core\\.windows\\.net", "", nil)
 	require.NoError(t, err)
 
-	err = AddHeaderRegexSanitizer("FakeStorageLocation", "Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.(?:table|blob|queue)\\.core\\.windows\\.net", "account", nil)
+	err = AddHeaderRegexSanitizer("ComplexRegex", "Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.(?:table|blob|queue)\\.core\\.windows\\.net", "account", nil)
 	require.NoError(t, err)
 
 	resp, err := client.Do(req)
@@ -277,6 +279,7 @@ func TestBodyKeySanitizer(t *testing.T) {
 	t.Skip()
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
+	defer reset(t)
 
 	err := ResetSanitizers(nil)
 	require.NoError(t, err)
@@ -333,6 +336,7 @@ func TestBodyRegexSanitizer(t *testing.T) {
 	t.Skip()
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
+	defer reset(t)
 
 	err := ResetSanitizers(nil)
 	require.NoError(t, err)
@@ -385,9 +389,15 @@ func TestBodyRegexSanitizer(t *testing.T) {
 	require.NoError(t, err)
 }
 
+func reset(t *testing.T) {
+	err := ResetSanitizers(nil)
+	require.NoError(t, err)
+}
+
 func TestRemoveHeaderSanitizer(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
+	defer reset(t)
 
 	err := ResetSanitizers(nil)
 	require.NoError(t, err)
@@ -405,9 +415,9 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId(t))
 	req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
-	req.Header.Set("ComplexRegex", "https://fakeaccount.table.core.windows.net")
+	req.Header.Set("ComplexRegexRemove", "https://fakeaccount.table.core.windows.net")
 
-	err = AddRemoveHeaderSanitizer([]string{"ComplexRegex", "FakeStorageLocation"}, nil)
+	err = AddRemoveHeaderSanitizer([]string{"ComplexRegexRemove", "FakeStorageLocation"}, nil)
 	require.NoError(t, err)
 
 	resp, err := client.Do(req)
@@ -430,6 +440,6 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
 
-	require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "Sanitized")
-	require.Equal(t, data.Entries[0].RequestHeaders["complexregex"], "Sanitized")
+	require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "")
+	require.Equal(t, data.Entries[0].RequestHeaders["complexregexremove"], "")
 }

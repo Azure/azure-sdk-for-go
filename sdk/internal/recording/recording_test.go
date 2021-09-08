@@ -513,5 +513,5 @@ func TestBackwardSlashPath(t *testing.T) {
 	packagePathBackslash := "sdk\\internal\\recordings"
 
 	err := StartRecording(t, packagePathBackslash, nil)
-	require.Error(t, err)
+	require.NoError(t, err)
 }

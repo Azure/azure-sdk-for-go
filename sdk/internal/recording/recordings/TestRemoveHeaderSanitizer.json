@@ -9,9 +9,7 @@
         ":path": "/",
         ":scheme": "https",
         "Accept-Encoding": "gzip",
-        "complexregex": "https://fakeaccount.table.core.windows.net",
         "Content-Length": "0",
-        "fakestoragelocation": "Sanitized",
         "User-Agent": "Go-http-client/2.0"
       },
       "RequestBody": null,
@@ -26,17 +24,17 @@
         ],
         "Cache-Control": "no-cache",
         "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "68b8ddecb84a102d-ATL",
+        "CF-RAY": "68bbc78abde063b4-ATL",
         "Connection": "keep-alive",
         "Content-Length": "2",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 08 Sep 2021 14:29:04 GMT",
+        "Date": "Wed, 08 Sep 2021 22:58:04 GMT",
         "ETag": "W/\u00222-vyGp6PvFo4RvsFtPoIWeCReyIC8\u0022",
         "Expect-CT": "max-age=604800, report-uri=\u0022https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\u0022",
         "Expires": "-1",
         "NEL": "{\u0022success_fraction\u0022:0,\u0022report_to\u0022:\u0022cf-nel\u0022,\u0022max_age\u0022:604800}",
         "Pragma": "no-cache",
-        "Report-To": "{\u0022endpoints\u0022:[{\u0022url\u0022:\u0022https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=FpNLT2ykK8FAfHAxLuMsuHzWZ4feYM5mhwk6aI%2BwA4%2FKc7VTebqjABcg86SGiDH9IlQrpe5eL98IFeh50o1Bu%2FsQtlhhAivG3c%2BXloscffh2if4I6DTu0FLeUi2f1UVWTiwMMSsgAk%2BL4N%2BagIcz\u0022}],\u0022group\u0022:\u0022cf-nel\u0022,\u0022max_age\u0022:604800}",
+        "Report-To": "{\u0022endpoints\u0022:[{\u0022url\u0022:\u0022https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=1ohmS4RW0SQG%2BBAzjMeP19OGFcOR6LlA1hocchSdUFrI%2BROhdvHrxxp%2FFy0pkkC7TdphfsW8JMhl13XcZy5c0u7NKPi37m0XZozMGE6VJNTID%2BbfYCsURA51ATIrPUTNFH%2Bg%2F6oXf%2BNFd88vt9z6\u0022}],\u0022group\u0022:\u0022cf-nel\u0022,\u0022max_age\u0022:604800}",
         "Server": "cloudflare",
         "Vary": [
           "Origin",
@@ -48,7 +46,7 @@
         "X-Powered-By": "Express",
         "x-ratelimit-limit": "1000",
         "x-ratelimit-remaining": "999",
-        "x-ratelimit-reset": "1631111398"
+        "x-ratelimit-reset": "1631141936"
       },
       "ResponseBody": {}
     }

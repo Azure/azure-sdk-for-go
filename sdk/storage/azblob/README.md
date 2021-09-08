@@ -20,7 +20,7 @@ separate repository.
 
 ## Code Samples
 
-- Please refer to [detailed examples](zt_examples_test.go) written here to know more.
+- Please refer to detailed examples written in zt_examples_test.go to know more.
 
 ## License
 

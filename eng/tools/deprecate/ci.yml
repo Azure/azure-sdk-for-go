@@ -8,20 +8,20 @@ trigger:
       - release/*
   paths:
     include:
-      - tools/deprecate
+      - eng/tools/deprecate
+
+pr:
   branches:
     include:
       - main
       - feature/*
       - hotfix/*
       - release/*
-
-pr:
   paths:
     include:
-      - tools/deprecate
+      - eng/tools/deprecate
 
 stages:
   - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
     parameters:
-      ServiceDirectory: '../tools/deprecate'
+      ServiceDirectory: '../eng/tools/deprecate'

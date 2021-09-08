@@ -8,7 +8,7 @@ trigger:
       - release/*
   paths:
     include:
-      - tools/indexer
+      - eng/tools/indexer
 
 pr:
   branches:
@@ -19,9 +19,9 @@ pr:
       - release/*
   paths:
     include:
-      - tools/indexer
+      - eng/tools/indexer
 
 stages:
   - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
     parameters:
-      ServiceDirectory: '../tools/indexer'
+      ServiceDirectory: '../eng/tools/indexer'

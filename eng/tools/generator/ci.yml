@@ -8,7 +8,7 @@ trigger:
       - release/*
   paths:
     include:
-      - tools/generator
+      - eng/tools/generator
 
 pr:
   branches:
@@ -19,10 +19,10 @@ pr:
       - release/*
   paths:
     include:
-      - tools/generator
+      - eng/tools/generator
 
 stages:
   - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
     parameters:
-      ServiceDirectory: '../tools/generator'
+      ServiceDirectory: '../eng/tools/generator'
       NonShipping: true

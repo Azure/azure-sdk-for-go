@@ -8,7 +8,7 @@ trigger:
       - release/*
   paths:
     include:
-      - tools/profileBuilder
+      - eng/tools/profileBuilder
 
 pr:
   branches:
@@ -19,9 +19,9 @@ pr:
       - release/*
   paths:
     include:
-      - tools/profileBuilder
+      - eng/tools/profileBuilder
 
 stages:
   - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
     parameters:
-      ServiceDirectory: '../tools/profileBuilder'
+      ServiceDirectory: '../eng/tools/profileBuilder'

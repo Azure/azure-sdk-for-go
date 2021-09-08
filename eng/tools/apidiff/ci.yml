@@ -8,7 +8,7 @@ trigger:
       - release/*
   paths:
     include:
-      - tools/apidiff
+      - eng/tools/apidiff
 
 pr:
   branches:
@@ -19,9 +19,9 @@ pr:
       - release/*
   paths:
     include:
-      - tools/apidiff
+      - eng/tools/apidiff
 
 stages:
   - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
     parameters:
-      ServiceDirectory: '../tools/apidiff'
+      ServiceDirectory: '../eng/tools/apidiff'

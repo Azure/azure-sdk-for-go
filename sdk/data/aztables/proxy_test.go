@@ -195,7 +195,7 @@ func createStorageClient(t *testing.T) (*Client, error) {
 		require.NoError(t, err)
 	}
 
-	serviceURL := storageURI(accountName, "core.windows.net")
+	serviceURL := storageURI(accountName)
 
 	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
@@ -213,7 +213,7 @@ func createCosmosClient(t *testing.T) (*Client, error) {
 	cred, err := getSharedKeyCredential(t)
 	require.NoError(t, err)
 
-	serviceURL := cosmosURI(accountName, "cosmos.azure.com")
+	serviceURL := cosmosURI(accountName)
 
 	tableName, err := createRandomName(t, tableNamePrefix)
 	require.NoError(t, err)
@@ -235,7 +235,7 @@ func createStorageServiceClient(t *testing.T) (*ServiceClient, error) {
 		require.NoError(t, err)
 	}
 
-	serviceURL := storageURI(accountName, "core.windows.net")
+	serviceURL := storageURI(accountName)
 
 	return createServiceClientForRecording(t, serviceURL, cred)
 }
@@ -250,7 +250,7 @@ func createCosmosServiceClient(t *testing.T) (*ServiceClient, error) {
 	cred, err := getSharedKeyCredential(t)
 	require.NoError(t, err)
 
-	serviceURL := cosmosURI(accountName, "cosmos.azure.com")
+	serviceURL := cosmosURI(accountName)
 
 	return createServiceClientForRecording(t, serviceURL, cred)
 }

@@ -22,12 +22,12 @@ const (
 
 var ctx = context.Background()
 
-func storageURI(accountName string, endpointSuffix string) string {
-	return fmt.Sprintf("https://%v.table.%v/", accountName, endpointSuffix)
+func storageURI(accountName string) string {
+	return fmt.Sprintf("https://%v.table.core.windows.net/", accountName)
 }
 
-func cosmosURI(accountName string, endpointSuffix string) string {
-	return fmt.Sprintf("https://%v.table.%v/", accountName, endpointSuffix)
+func cosmosURI(accountName string) string {
+	return fmt.Sprintf("https://%v.table.cosmos.azure.com/", accountName)
 }
 
 func insertNEntities(pk string, n int, client *Client) error {

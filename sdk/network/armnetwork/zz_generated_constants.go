@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,7 +8,10 @@
 
 package armnetwork
 
-const telemetryInfo = "azsdk-go-armnetwork/v0.2.0"
+const (
+	module  = "armnetwork"
+	version = "v0.3.0"
+)
 
 // Access - Access to be allowed or denied.
 type Access string
@@ -117,6 +121,29 @@ func PossibleApplicationGatewayFirewallModeValues() []ApplicationGatewayFirewall
 
 // ToPtr returns a *ApplicationGatewayFirewallMode pointing to the current value.
 func (c ApplicationGatewayFirewallMode) ToPtr() *ApplicationGatewayFirewallMode {
+	return &c
+}
+
+// ApplicationGatewayLoadDistributionAlgorithm - Load Distribution Algorithm enums.
+type ApplicationGatewayLoadDistributionAlgorithm string
+
+const (
+	ApplicationGatewayLoadDistributionAlgorithmIPHash           ApplicationGatewayLoadDistributionAlgorithm = "IpHash"
+	ApplicationGatewayLoadDistributionAlgorithmLeastConnections ApplicationGatewayLoadDistributionAlgorithm = "LeastConnections"
+	ApplicationGatewayLoadDistributionAlgorithmRoundRobin       ApplicationGatewayLoadDistributionAlgorithm = "RoundRobin"
+)
+
+// PossibleApplicationGatewayLoadDistributionAlgorithmValues returns the possible values for the ApplicationGatewayLoadDistributionAlgorithm const type.
+func PossibleApplicationGatewayLoadDistributionAlgorithmValues() []ApplicationGatewayLoadDistributionAlgorithm {
+	return []ApplicationGatewayLoadDistributionAlgorithm{
+		ApplicationGatewayLoadDistributionAlgorithmIPHash,
+		ApplicationGatewayLoadDistributionAlgorithmLeastConnections,
+		ApplicationGatewayLoadDistributionAlgorithmRoundRobin,
+	}
+}
+
+// ToPtr returns a *ApplicationGatewayLoadDistributionAlgorithm pointing to the current value.
+func (c ApplicationGatewayLoadDistributionAlgorithm) ToPtr() *ApplicationGatewayLoadDistributionAlgorithm {
 	return &c
 }
 

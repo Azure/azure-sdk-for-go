@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,7 +8,10 @@
 
 package armoperationalinsights
 
-const telemetryInfo = "azsdk-go-armoperationalinsights/v0.1.0"
+const (
+	module  = "armoperationalinsights"
+	version = "v0.2.0"
+)
 
 // BillingType - Configures whether billing will be only on the cluster or each workspace will be billed by its proportional use. This does not change the
 // overall billing, only how it will be distributed. Default
@@ -29,6 +33,64 @@ func PossibleBillingTypeValues() []BillingType {
 
 // ToPtr returns a *BillingType pointing to the current value.
 func (c BillingType) ToPtr() *BillingType {
+	return &c
+}
+
+// Capacity - The capacity value
+type Capacity int64
+
+const (
+	CapacityFiveHundred  Capacity = 500
+	CapacityTenHundred   Capacity = 1000
+	CapacityTwoThousand  Capacity = 2000
+	CapacityFiveThousand Capacity = 5000
+)
+
+// PossibleCapacityValues returns the possible values for the Capacity const type.
+func PossibleCapacityValues() []Capacity {
+	return []Capacity{
+		CapacityFiveHundred,
+		CapacityTenHundred,
+		CapacityTwoThousand,
+		CapacityFiveThousand,
+	}
+}
+
+// ToPtr returns a *Capacity pointing to the current value.
+func (c Capacity) ToPtr() *Capacity {
+	return &c
+}
+
+// CapacityReservationLevel - The capacity reservation level in GB for this workspace, when CapacityReservation sku is selected.
+type CapacityReservationLevel int32
+
+const (
+	CapacityReservationLevelOneHundred   CapacityReservationLevel = 100
+	CapacityReservationLevelTwoHundred   CapacityReservationLevel = 200
+	CapacityReservationLevelThreeHundred CapacityReservationLevel = 300
+	CapacityReservationLevelFourHundred  CapacityReservationLevel = 400
+	CapacityReservationLevelFiveHundred  CapacityReservationLevel = 500
+	CapacityReservationLevelTenHundred   CapacityReservationLevel = 1000
+	CapacityReservationLevelTwoThousand  CapacityReservationLevel = 2000
+	CapacityReservationLevelFiveThousand CapacityReservationLevel = 5000
+)
+
+// PossibleCapacityReservationLevelValues returns the possible values for the CapacityReservationLevel const type.
+func PossibleCapacityReservationLevelValues() []CapacityReservationLevel {
+	return []CapacityReservationLevel{
+		CapacityReservationLevelOneHundred,
+		CapacityReservationLevelTwoHundred,
+		CapacityReservationLevelThreeHundred,
+		CapacityReservationLevelFourHundred,
+		CapacityReservationLevelFiveHundred,
+		CapacityReservationLevelTenHundred,
+		CapacityReservationLevelTwoThousand,
+		CapacityReservationLevelFiveThousand,
+	}
+}
+
+// ToPtr returns a *CapacityReservationLevel pointing to the current value.
+func (c CapacityReservationLevel) ToPtr() *CapacityReservationLevel {
 	return &c
 }
 

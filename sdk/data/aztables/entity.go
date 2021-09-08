@@ -13,43 +13,14 @@ import (
 
 // https://docs.microsoft.com/en-us/rest/api/storageservices/payload-format-for-table-service-operations
 
-// The Entity type is the bare minimum properties for a valid Entity. These should be embedded in a custom struct
-// type MyEntity struct {
-// 		Entity
-// 		Value 		int
-// 		StringValue string
-// 		BoolValue 	bool
-// }
-// myEntity := MyEntity{
-// 		Entity: Entity{
-// 			PartitionKey: "pk001",
-// 			RowKey: 	  "rk001",
-// 		},
-// 		Value: 		 10,
-// 		StringValue: "somestring",
-// 		BoolValue: 	 false,
-// }
+// The Entity type is the bare minimum properties for a valid Entity. These should be embedded in a custom struct.
 type Entity struct {
 	PartitionKey string
 	RowKey       string
 	Timestamp    EDMDateTime
 }
 
-// EdmEntity is an entity that embeds the azcore.Entity type and has a Properties map for an unlimited
-// number of custom properties. The EdmEntity will serialize EDMGUID/EdmInt64/EDMDateTime/EdmBinary according to Odata annotations
-// myEntity := EdmEntity{
-// 		Entity: Entity{
-// 			PartitionKey: "pk001",
-// 			RowKey:       "rk001",
-// 		}
-// 		Properties: map[string]interface{}{
-// 			"Value":    10,
-// 			"Binary":   EdmBinary([]byte{"bytevalue"}),
-// 			"DateTime": EDMDateTime(time.Now()),
-// 			"Int64":    EdmInt64(123456789012345),
-
-// 		}
-// }
+// EDMEntity is an entity that embeds the azcore.Entity type and has a Properties map for an unlimited
 type EDMEntity struct {
 	Metadata string `json:"odata.metadata"`
 	Id       string `json:"odata.id"`
@@ -57,7 +28,7 @@ type EDMEntity struct {
 	Type     string `json:"odata.type"`
 	Etag     string `json:"odata.etag"`
 	Entity
-	Properties map[string]interface{} // Type assert the value to 1 of these: bool, int32, float64, string, EDMDateTime, EDMBinary, EDMGUID, EDMInt64
+	Properties map[string]interface{} // Type assert the value to one of these: bool, int32, float64, string, EDMDateTime, EDMBinary, EDMGUID, EDMInt64
 }
 
 func (e EDMEntity) MarshalJSON() ([]byte, error) {
@@ -158,8 +129,8 @@ func (e *EDMEntity) UnmarshalJSON(data []byte) (err error) {
 	return
 }
 
-// EdmBinary represents an Entity Property that is a byte slice. A byte slice wrapped in
-// EdmBinary will also receive the correct odata annotation for round-trip accuracy.
+// EDMBinary represents an Entity Property that is a byte slice. A byte slice wrapped in
+// EDMBinary will also receive the correct odata annotation for round-trip accuracy.
 type EDMBinary []byte
 
 func (e EDMBinary) MarshalText() ([]byte, error) {
@@ -175,7 +146,7 @@ func (e *EDMBinary) UnmarshalText(data []byte) error {
 	return nil
 }
 
-// EdmInt64 represents an entity property that is a 64-bit integer. Using EdmInt64 guarantees
+// EDMInt64 represents an entity property that is a 64-bit integer. Using EDMInt64 guarantees
 // proper odata type annotations.
 type EDMInt64 int64
 

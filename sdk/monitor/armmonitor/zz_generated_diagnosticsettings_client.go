@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,8 +12,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -21,33 +23,34 @@ import (
 // DiagnosticSettingsClient contains the methods for the DiagnosticSettings group.
 // Don't use this type directly, use NewDiagnosticSettingsClient() instead.
 type DiagnosticSettingsClient struct {
-	con *armcore.Connection
+	ep string
+	pl runtime.Pipeline
 }
 
 // NewDiagnosticSettingsClient creates a new instance of DiagnosticSettingsClient with the specified values.
-func NewDiagnosticSettingsClient(con *armcore.Connection) *DiagnosticSettingsClient {
-	return &DiagnosticSettingsClient{con: con}
+func NewDiagnosticSettingsClient(con *arm.Connection) *DiagnosticSettingsClient {
+	return &DiagnosticSettingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
 }
 
 // CreateOrUpdate - Creates or updates diagnostic settings for the specified resource.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *DiagnosticSettingsClient) CreateOrUpdate(ctx context.Context, resourceURI string, name string, parameters DiagnosticSettingsResource, options *DiagnosticSettingsCreateOrUpdateOptions) (DiagnosticSettingsResourceResponse, error) {
+func (client *DiagnosticSettingsClient) CreateOrUpdate(ctx context.Context, resourceURI string, name string, parameters DiagnosticSettingsResource, options *DiagnosticSettingsCreateOrUpdateOptions) (DiagnosticSettingsCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceURI, name, parameters, options)
 	if err != nil {
-		return DiagnosticSettingsResourceResponse{}, err
+		return DiagnosticSettingsCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticSettingsResourceResponse{}, err
+		return DiagnosticSettingsCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return DiagnosticSettingsResourceResponse{}, client.createOrUpdateHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return DiagnosticSettingsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DiagnosticSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, name string, parameters DiagnosticSettingsResource, options *DiagnosticSettingsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *DiagnosticSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, name string, parameters DiagnosticSettingsResource, options *DiagnosticSettingsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings/{name}"
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
@@ -57,59 +60,58 @@ func (client *DiagnosticSettingsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-05-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DiagnosticSettingsClient) createOrUpdateHandleResponse(resp *azcore.Response) (DiagnosticSettingsResourceResponse, error) {
-	var val *DiagnosticSettingsResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiagnosticSettingsResourceResponse{}, err
+func (client *DiagnosticSettingsClient) createOrUpdateHandleResponse(resp *http.Response) (DiagnosticSettingsCreateOrUpdateResponse, error) {
+	result := DiagnosticSettingsCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticSettingsResource); err != nil {
+		return DiagnosticSettingsCreateOrUpdateResponse{}, err
 	}
-	return DiagnosticSettingsResourceResponse{RawResponse: resp.Response, DiagnosticSettingsResource: val}, nil
+	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DiagnosticSettingsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DiagnosticSettingsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Deletes existing diagnostic settings for the specified resource.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *DiagnosticSettingsClient) Delete(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsDeleteOptions) (*http.Response, error) {
+func (client *DiagnosticSettingsClient) Delete(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsDeleteOptions) (DiagnosticSettingsDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceURI, name, options)
 	if err != nil {
-		return nil, err
+		return DiagnosticSettingsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return DiagnosticSettingsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
+		return DiagnosticSettingsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return resp.Response, nil
+	return DiagnosticSettingsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DiagnosticSettingsClient) deleteCreateRequest(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsDeleteOptions) (*azcore.Request, error) {
+func (client *DiagnosticSettingsClient) deleteCreateRequest(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings/{name}"
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
@@ -119,50 +121,49 @@ func (client *DiagnosticSettingsClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-05-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *DiagnosticSettingsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DiagnosticSettingsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets the active diagnostic settings for the specified resource.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *DiagnosticSettingsClient) Get(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsGetOptions) (DiagnosticSettingsResourceResponse, error) {
+func (client *DiagnosticSettingsClient) Get(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsGetOptions) (DiagnosticSettingsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceURI, name, options)
 	if err != nil {
-		return DiagnosticSettingsResourceResponse{}, err
+		return DiagnosticSettingsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticSettingsResourceResponse{}, err
+		return DiagnosticSettingsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return DiagnosticSettingsResourceResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return DiagnosticSettingsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DiagnosticSettingsClient) getCreateRequest(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsGetOptions) (*azcore.Request, error) {
+func (client *DiagnosticSettingsClient) getCreateRequest(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings/{name}"
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
@@ -172,94 +173,92 @@ func (client *DiagnosticSettingsClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-05-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DiagnosticSettingsClient) getHandleResponse(resp *azcore.Response) (DiagnosticSettingsResourceResponse, error) {
-	var val *DiagnosticSettingsResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiagnosticSettingsResourceResponse{}, err
+func (client *DiagnosticSettingsClient) getHandleResponse(resp *http.Response) (DiagnosticSettingsGetResponse, error) {
+	result := DiagnosticSettingsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticSettingsResource); err != nil {
+		return DiagnosticSettingsGetResponse{}, err
 	}
-	return DiagnosticSettingsResourceResponse{RawResponse: resp.Response, DiagnosticSettingsResource: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *DiagnosticSettingsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DiagnosticSettingsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Gets the active diagnostic settings list for the specified resource.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *DiagnosticSettingsClient) List(ctx context.Context, resourceURI string, options *DiagnosticSettingsListOptions) (DiagnosticSettingsResourceCollectionResponse, error) {
+func (client *DiagnosticSettingsClient) List(ctx context.Context, resourceURI string, options *DiagnosticSettingsListOptions) (DiagnosticSettingsListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceURI, options)
 	if err != nil {
-		return DiagnosticSettingsResourceCollectionResponse{}, err
+		return DiagnosticSettingsListResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiagnosticSettingsResourceCollectionResponse{}, err
+		return DiagnosticSettingsListResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return DiagnosticSettingsResourceCollectionResponse{}, client.listHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return DiagnosticSettingsListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *DiagnosticSettingsClient) listCreateRequest(ctx context.Context, resourceURI string, options *DiagnosticSettingsListOptions) (*azcore.Request, error) {
+func (client *DiagnosticSettingsClient) listCreateRequest(ctx context.Context, resourceURI string, options *DiagnosticSettingsListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings"
 	if resourceURI == "" {
 		return nil, errors.New("parameter resourceURI cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2017-05-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DiagnosticSettingsClient) listHandleResponse(resp *azcore.Response) (DiagnosticSettingsResourceCollectionResponse, error) {
-	var val *DiagnosticSettingsResourceCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiagnosticSettingsResourceCollectionResponse{}, err
+func (client *DiagnosticSettingsClient) listHandleResponse(resp *http.Response) (DiagnosticSettingsListResponse, error) {
+	result := DiagnosticSettingsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticSettingsResourceCollection); err != nil {
+		return DiagnosticSettingsListResponse{}, err
 	}
-	return DiagnosticSettingsResourceCollectionResponse{RawResponse: resp.Response, DiagnosticSettingsResourceCollection: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *DiagnosticSettingsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DiagnosticSettingsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,15 +1,15 @@
 # Release History
 
-## v0.11.0 (Unreleased)
-### Features Added
-
+## v0.11.0 (2021-09-08)
 ### Breaking Changes
 * Unexported `AzureCLICredentialOptions.TokenProvider` and its type,
   `AzureCLITokenProvider`
 
 ### Bug Fixes
+* `ManagedIdentityCredential.GetToken` returns `CredentialUnavailableError`
+  when IMDS has no assigned identity, signaling `DefaultAzureCredential` to
+  try other credentials
 
-### Other Changes
 
 ## v0.10.0 (2021-08-30)
 ### Breaking Changes

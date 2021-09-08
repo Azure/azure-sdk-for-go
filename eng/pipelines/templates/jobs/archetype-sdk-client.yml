@@ -87,16 +87,9 @@ stages:
           Scope: $(SCOPE)
           LintVersion: $(GoLintCLIVersion)
 
-# Below stage won't work until the release stage is added/necessary.
-# "Releasing" is just the package in the repository on github, but there may be some other metadata related
-# tasks that become necessary later on.
-
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  # - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-  #   - template: archetype-go-release.yml
-  #     parameters:
-  #       DependsOn: Build
-  #       ServiceDirectory: ${{parameters.ServiceDirectory}}
-  #       Artifacts: ${{parameters.Artifacts}}
-  #       ArtifactName: packages
-  #       DocArtifact: documentation
+  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+    - template: archetype-go-release.yml
+      parameters:
+        DependsOn: Build
+        ServiceDirectory: ${{parameters.ServiceDirectory}}

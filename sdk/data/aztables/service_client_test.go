@@ -7,9 +7,10 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -162,18 +163,36 @@ func TestListTables(t *testing.T) {
 
 // This functionality is only available on storage accounts
 func TestGetStatistics(t *testing.T) {
-	t.Skip()
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	var cred azcore.Credential
+	var err error
+
+	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
+	stop := func() {
+		err = recording.StopRecording(t, nil)
+		require.NoError(t, err)
+	}
+	defer stop()
+
 	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
+	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakeAccountKey")
+
+	if recording.GetRecordMode() == "playback" {
+		cred, err = NewFakeCredential("fakestorageaccount", "fakeAccountKey"), nil
+	} else {
+		cred, err = NewSharedKeyCredential(accountName, accountKey)
+	}
+
 	serviceURL := storageURI(accountName+"-secondary", "core.windows.net")
 	service, err := createServiceClientForRecording(t, serviceURL, cred)
 	require.NoError(t, err)
 
-	// s.T().Skip() // TODO: need to change URL to -secondary https://docs.microsoft.com/en-us/rest/api/storageservices/get-table-service-stats
 	resp, err := service.GetStatistics(ctx, nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp)
+	require.NotNil(t, resp.RawResponse)
+	require.NotNil(t, resp.GeoReplication.LastSyncTime)
+	require.NotNil(t, resp.GeoReplication.Status)
 }
 
 // Functionality is only available on storage accounts
@@ -207,7 +226,7 @@ func TestSetLogging(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	recording.Sleep(45)
+	recording.Sleep(time.Second * 45)
 
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -238,7 +257,7 @@ func TestSetHoursMetrics(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	recording.Sleep(45)
+	recording.Sleep(time.Second * 45)
 
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -268,7 +287,7 @@ func TestSetMinuteMetrics(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	recording.Sleep(45)
+	recording.Sleep(time.Second * 45)
 
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)
@@ -296,7 +315,7 @@ func TestSetCors(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, resp)
 
-	recording.Sleep(45)
+	recording.Sleep(time.Second * 45)
 
 	received, err := service.GetProperties(ctx, nil)
 	require.NoError(t, err)

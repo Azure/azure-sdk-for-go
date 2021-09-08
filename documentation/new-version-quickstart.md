@@ -82,12 +82,12 @@ As an example, to install the Azure Compute module, you would run :
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute
 ```
+
 We also recommend installing other packages for authentication and core functionalities :
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/azcore
 go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
-go get github.com/Azure/azure-sdk-for-go/sdk/to
 ```
 
 Authentication
@@ -158,9 +158,9 @@ Example: Creating a Resource Group
 import (
     "contexts"
     "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
     "github.com/Azure/azure-sdk-for-go/sdk/resources/armresources"
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-    "github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 ```
 

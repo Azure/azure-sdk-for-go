@@ -14,7 +14,7 @@ separate repository.
   go get github.com/Azure/azure-sdk-for-go/sdk/storage/azblob
   ```
 * Use the SDK
-  ```go
+  ```
   import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
   ```
 

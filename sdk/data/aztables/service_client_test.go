@@ -365,3 +365,19 @@ func TestRetentionTooLong(t *testing.T) {
 	_, err := service.SetProperties(ctx, props, nil)
 	require.Error(t, err)
 }
+
+func TestGetAccountSASToken(t *testing.T) {
+	cred, err := NewSharedKeyCredential("myAccountName", "daaaaaaaaaabbbbbbbbbbcccccccccccccccccccdddddddddddddddddddeeeeeeeeeeefffffffffffggggg==")
+	require.NoError(t, err)
+	service, err := NewServiceClient("https://myAccountName.table.core.windows.net", cred, nil)
+	require.NoError(t, err)
+
+	resources := AccountSASResourceTypes{Service: true}
+	perms := AccountSASPermissions{Read: true}
+	start := time.Date(2021, time.September, 8, 14, 30, 0, 0, time.UTC)
+	end := start.AddDate(0, 0, 1)
+
+	sas, err := service.GetAccountSASToken(resources, perms, start, end)
+	require.NoError(t, err)
+	require.Equal(t, "https://myAccountName.table.core.windows.net/?se=2021-09-09T14%3A30%3A00Z&sig=m%2F%2FxhMvxidHaswzZRpyuiHykqnTppPi%2BQ9S5xHMksIQ%3D&sp=r&spr=https&srt=s&ss=t&st=2021-09-08T14%3A30%3A00Z&sv=2019-02-02", sas)
+}

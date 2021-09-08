@@ -8,11 +8,19 @@ separate repository.
 
 ## Getting Started
 
-- TODO
+* If you don't already have it, install [the Go distribution](https://golang.org/dl/)
+* Get the SDK:
+  ```cmd
+  go get github.com/Azure/azure-sdk-for-go/sdk/storage/azblob
+  ```
+* Use the SDK
+  ```
+  import "github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+  ```
 
 ## Code Samples
 
-- TODO
+- Please refer to [detailed examples](zt_examples_test.go) written here to know more.
 
 ## License
 

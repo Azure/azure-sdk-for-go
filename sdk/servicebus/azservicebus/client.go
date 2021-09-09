@@ -22,7 +22,7 @@ type Client struct {
 	}
 }
 
-// ClientOption is the type for an option that can configure ServiceBusClient.
+// ClientOption is the type for an option that can configure Client.
 // For an example option, see `WithConnectionString`
 type ClientOption func(client *Client) error
 

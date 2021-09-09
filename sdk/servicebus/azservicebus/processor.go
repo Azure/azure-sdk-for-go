@@ -28,8 +28,9 @@ type processorConfig struct {
 	}
 }
 
+// Processor is a push-based receiver for Service Bus.
 type Processor struct {
-	// configuration data that is read-only after the ServiceBusProcessor has been created
+	// configuration data that is read-only after the Processor has been created
 	config processorConfig
 
 	mu *sync.Mutex

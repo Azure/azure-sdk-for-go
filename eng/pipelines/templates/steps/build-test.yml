@@ -22,17 +22,27 @@ parameters:
     default: {}
 
 steps:
-  - pwsh: ./eng/scripts/build.ps1
-    displayName: 'Build'
-    workingDirectory: '${{parameters.GoWorkspace}}'
+  - task: Powershell@2
+    displayName: Build
     env:
       GO111MODULE: 'on'
+    inputs:
+      targetType: filePath
+      pwsh: true
+      filePath: eng/scripts/build.ps1
+      arguments: -filter '${{ parameters.ServiceDirectory }}'
+      workingDirectory: '${{ parameters.GoWorkspace }}'
 
-  - pwsh: ./eng/scripts/build.ps1 -vet -skipBuild
-    displayName: 'Vet'
-    workingDirectory: '${{parameters.GoWorkspace}}'
+  - task: Powershell@2
+    displayName: Vet
     env:
       GO111MODULE: 'on'
+    inputs:
+      targetType: filePath
+      pwsh: true
+      filePath: eng/scripts/build.ps1
+      arguments: -vet -skipBuild -filter '${{ parameters.ServiceDirectory }}'
+      workingDirectory: '${{ parameters.GoWorkspace }}'
 
   - ${{ if eq(parameters.RunTests, 'true') }}:
     - pwsh: |

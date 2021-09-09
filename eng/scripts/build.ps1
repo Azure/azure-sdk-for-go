@@ -62,7 +62,6 @@ function Process-Sdk () {
     if ($vet) {
         Write-Host "##[command]Executing go vet ./... in " $currentDirectory
         go vet ./...
-        if ($LASTEXITCODE) {exit $LASTEXITCODE}
     }
 
 }

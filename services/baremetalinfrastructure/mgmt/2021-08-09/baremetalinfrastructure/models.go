@@ -10,14 +10,14 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
-	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/baremetalinfrastructure/mgmt/2020-08-06-preview/baremetalinfrastructure"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/baremetalinfrastructure/mgmt/2021-08-09/baremetalinfrastructure"
 
 // AzureBareMetalInstance azureBareMetal instance info on Azure (ARM properties and AzureBareMetal
 // properties)
@@ -25,6 +25,8 @@ type AzureBareMetalInstance struct {
 	autorest.Response `json:"-"`
 	// AzureBareMetalInstanceProperties - AzureBareMetal instance properties
 	*AzureBareMetalInstanceProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
 	// Location - The geo-location where the resource lives
@@ -69,6 +71,15 @@ func (abmi *AzureBareMetalInstance) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				abmi.AzureBareMetalInstanceProperties = &azureBareMetalInstanceProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				abmi.SystemData = &systemData
 			}
 		case "tags":
 			if v != nil {
@@ -164,43 +175,6 @@ func (abmip AzureBareMetalInstanceProperties) MarshalJSON() ([]byte, error) {
 		objectMap["partnerNodeId"] = abmip.PartnerNodeID
 	}
 	return json.Marshal(objectMap)
-}
-
-// AzureBareMetalInstancesDeleteFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type AzureBareMetalInstancesDeleteFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(AzureBareMetalInstancesClient) (autorest.Response, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *AzureBareMetalInstancesDeleteFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for AzureBareMetalInstancesDeleteFuture.Result.
-func (future *AzureBareMetalInstancesDeleteFuture) result(client AzureBareMetalInstancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesDeleteFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		ar.Response = future.Response()
-		err = azure.NewAsyncOpIncompleteError("baremetalinfrastructure.AzureBareMetalInstancesDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
 }
 
 // AzureBareMetalInstancesListResult the response from the List AzureBareMetal Instances operation.
@@ -363,117 +337,6 @@ func NewAzureBareMetalInstancesListResultPage(cur AzureBareMetalInstancesListRes
 	}
 }
 
-// AzureBareMetalInstancesRestartFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type AzureBareMetalInstancesRestartFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(AzureBareMetalInstancesClient) (autorest.Response, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *AzureBareMetalInstancesRestartFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for AzureBareMetalInstancesRestartFuture.Result.
-func (future *AzureBareMetalInstancesRestartFuture) result(client AzureBareMetalInstancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesRestartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		ar.Response = future.Response()
-		err = azure.NewAsyncOpIncompleteError("baremetalinfrastructure.AzureBareMetalInstancesRestartFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
-// AzureBareMetalInstancesShutdownFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type AzureBareMetalInstancesShutdownFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(AzureBareMetalInstancesClient) (autorest.Response, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *AzureBareMetalInstancesShutdownFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for AzureBareMetalInstancesShutdownFuture.Result.
-func (future *AzureBareMetalInstancesShutdownFuture) result(client AzureBareMetalInstancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesShutdownFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		ar.Response = future.Response()
-		err = azure.NewAsyncOpIncompleteError("baremetalinfrastructure.AzureBareMetalInstancesShutdownFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
-// AzureBareMetalInstancesStartFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type AzureBareMetalInstancesStartFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(AzureBareMetalInstancesClient) (autorest.Response, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *AzureBareMetalInstancesStartFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for AzureBareMetalInstancesStartFuture.Result.
-func (future *AzureBareMetalInstancesStartFuture) result(client AzureBareMetalInstancesClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesStartFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		ar.Response = future.Response()
-		err = azure.NewAsyncOpIncompleteError("baremetalinfrastructure.AzureBareMetalInstancesStartFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
 // AzureEntityResource the resource model definition for an Azure Resource Manager resource with an etag.
 type AzureEntityResource struct {
 	// Etag - READ-ONLY; Resource Etag.
@@ -516,16 +379,14 @@ func (d Disk) MarshalJSON() ([]byte, error) {
 
 // Display detailed BareMetal operation information
 type Display struct {
-	// Provider - READ-ONLY; The localized friendly form of the resource provider name. This form is also expected to include the publisher/company responsible. Use Title Casing. Begin with "Microsoft" for 1st party services.
+	// Provider - READ-ONLY; The localized friendly form of the resource provider name.
 	Provider *string `json:"provider,omitempty"`
-	// Resource - READ-ONLY; The localized friendly form of the resource type related to this action/operation. This form should match the public documentation for the resource provider. Use Title Casing. For examples, refer to the “name” section.
+	// Resource - READ-ONLY; The localized friendly form of the resource type related to this action/operation.
 	Resource *string `json:"resource,omitempty"`
-	// Operation - READ-ONLY; The localized friendly name for the operation as shown to the user. This name should be concise (to fit in drop downs), but clear (self-documenting). Use Title Casing and include the entity/resource to which it applies.
+	// Operation - READ-ONLY; The localized friendly name for the operation as shown to the user.
 	Operation *string `json:"operation,omitempty"`
-	// Description - READ-ONLY; The localized friendly description for the operation as shown to the user. This description should be thorough, yet concise. It will be used in tool-tips and detailed views.
+	// Description - READ-ONLY; The localized friendly description for the operation as shown to the user.
 	Description *string `json:"description,omitempty"`
-	// Origin - READ-ONLY; The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX. Default value is 'user,system'
-	Origin *string `json:"origin,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Display.
@@ -697,6 +558,22 @@ func (sp StorageProfile) MarshalJSON() ([]byte, error) {
 		objectMap["osDisks"] = sp.OsDisks
 	}
 	return json.Marshal(objectMap)
+}
+
+// SystemData metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// CreatedBy - The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 
 // Tags tags field of the AzureBareMetal instance.

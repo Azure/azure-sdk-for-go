@@ -52,8 +52,7 @@ func (client AzureBareMetalInstancesClient) Delete(ctx context.Context, resource
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("baremetalinfrastructure.AzureBareMetalInstancesClient", "Delete", err.Error())
 	}
 
@@ -65,7 +64,7 @@ func (client AzureBareMetalInstancesClient) Delete(ctx context.Context, resource
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -97,6 +96,7 @@ func (client AzureBareMetalInstancesClient) DeletePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client AzureBareMetalInstancesClient) DeleteSender(req *http.Request) (future AzureBareMetalInstancesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -139,8 +139,7 @@ func (client AzureBareMetalInstancesClient) Get(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("baremetalinfrastructure.AzureBareMetalInstancesClient", "Get", err.Error())
 	}
 
@@ -224,8 +223,7 @@ func (client AzureBareMetalInstancesClient) List(ctx context.Context, resourceGr
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("baremetalinfrastructure.AzureBareMetalInstancesClient", "List", err.Error())
 	}
 
@@ -471,8 +469,7 @@ func (client AzureBareMetalInstancesClient) Restart(ctx context.Context, resourc
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("baremetalinfrastructure.AzureBareMetalInstancesClient", "Restart", err.Error())
 	}
 
@@ -484,7 +481,7 @@ func (client AzureBareMetalInstancesClient) Restart(ctx context.Context, resourc
 
 	result, err = client.RestartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Restart", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Restart", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -516,6 +513,7 @@ func (client AzureBareMetalInstancesClient) RestartPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client AzureBareMetalInstancesClient) RestartSender(req *http.Request) (future AzureBareMetalInstancesRestartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -558,8 +556,7 @@ func (client AzureBareMetalInstancesClient) Shutdown(ctx context.Context, resour
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("baremetalinfrastructure.AzureBareMetalInstancesClient", "Shutdown", err.Error())
 	}
 
@@ -571,7 +568,7 @@ func (client AzureBareMetalInstancesClient) Shutdown(ctx context.Context, resour
 
 	result, err = client.ShutdownSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Shutdown", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Shutdown", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -603,6 +600,7 @@ func (client AzureBareMetalInstancesClient) ShutdownPreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client AzureBareMetalInstancesClient) ShutdownSender(req *http.Request) (future AzureBareMetalInstancesShutdownFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -645,8 +643,7 @@ func (client AzureBareMetalInstancesClient) Start(ctx context.Context, resourceG
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("baremetalinfrastructure.AzureBareMetalInstancesClient", "Start", err.Error())
 	}
 
@@ -658,7 +655,7 @@ func (client AzureBareMetalInstancesClient) Start(ctx context.Context, resourceG
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Start", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "baremetalinfrastructure.AzureBareMetalInstancesClient", "Start", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -690,6 +687,7 @@ func (client AzureBareMetalInstancesClient) StartPreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client AzureBareMetalInstancesClient) StartSender(req *http.Request) (future AzureBareMetalInstancesStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -734,8 +732,7 @@ func (client AzureBareMetalInstancesClient) Update(ctx context.Context, resource
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("baremetalinfrastructure.AzureBareMetalInstancesClient", "Update", err.Error())
 	}
 

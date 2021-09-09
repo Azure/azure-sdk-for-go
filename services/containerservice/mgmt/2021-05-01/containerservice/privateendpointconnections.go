@@ -32,7 +32,7 @@ func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscription
 	return PrivateEndpointConnectionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// Delete deletes the private endpoint connection in the specified managed cluster.
+// Delete sends the delete request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -66,7 +66,7 @@ func (client PrivateEndpointConnectionsClient) Delete(ctx context.Context, resou
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerservice.PrivateEndpointConnectionsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerservice.PrivateEndpointConnectionsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -99,6 +99,7 @@ func (client PrivateEndpointConnectionsClient) DeletePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client PrivateEndpointConnectionsClient) DeleteSender(req *http.Request) (future PrivateEndpointConnectionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -121,7 +122,7 @@ func (client PrivateEndpointConnectionsClient) DeleteResponder(resp *http.Respon
 	return
 }
 
-// Get gets the details of the private endpoint connection by managed cluster and resource group.
+// Get to learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -209,8 +210,7 @@ func (client PrivateEndpointConnectionsClient) GetResponder(resp *http.Response)
 	return
 }
 
-// List gets a list of private endpoint connections in the specified managed cluster. The operation returns properties
-// of each private endpoint connection.
+// List to learn more about private clusters, see: https://docs.microsoft.com/azure/aks/private-clusters
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -296,12 +296,12 @@ func (client PrivateEndpointConnectionsClient) ListResponder(resp *http.Response
 	return
 }
 
-// Update updates a private endpoint connection in the specified managed cluster.
+// Update sends the update request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
 // privateEndpointConnectionName - the name of the private endpoint connection.
-// parameters - parameters supplied to the Update a private endpoint connection operation.
+// parameters - the updated private endpoint connection.
 func (client PrivateEndpointConnectionsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection) (result PrivateEndpointConnection, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionsClient.Update")

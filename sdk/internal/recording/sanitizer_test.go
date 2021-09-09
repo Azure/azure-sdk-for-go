@@ -172,6 +172,18 @@ func reset(t *testing.T) {
 	require.NoError(t, err)
 }
 
+type RecordingFileStruct struct {
+	Entries []Entry `json:"Entries"`
+}
+
+type Entry struct {
+	RequestUri     string            `json:"RequestUri"`
+	RequestMethod  string            `json:"RequestMethod"`
+	RequestHeaders map[string]string `json:"RequestHeaders"`
+	RequestBody    string            `json:"RequestBody"`
+	StatusCode     int               `json:"StatusCode"`
+}
+
 func TestUriSanitizer(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")

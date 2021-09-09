@@ -465,15 +465,6 @@ func TestStopRecordingNoStart(t *testing.T) {
 	defer jsonFile.Close()
 }
 
-type RecordingFileStruct struct {
-	Entries []Entry `json:"Entries"`
-}
-
-type Entry struct {
-	RequestUri     string            `json:"RequestUri"`
-	RequestHeaders map[string]string `json:"RequestHeaders"`
-}
-
 func TestLiveModeOnly(t *testing.T) {
 	LiveOnly(t)
 	if GetRecordMode() == modePlayback {

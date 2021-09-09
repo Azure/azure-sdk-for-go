@@ -103,7 +103,7 @@ func newReceiver(ns legacyNamespace, options ...ReceiverOption) (*Receiver, erro
 			ReceiveMode: PeekLock,
 		},
 		ns:        ns,
-		linkState: newLinkState(context.Background(), ErrReceiverClosed),
+		linkState: newLinkState(context.Background(), ErrClosed{link: "receiver"}),
 	}
 
 	for _, opt := range options {

@@ -181,7 +181,7 @@ func newProcessor(ns legacyNamespace, options ...ProcessorOption) (*Processor, e
 func (p *Processor) Start(handleMessage func(message *ReceivedMessage) error, handleError func(err error)) error {
 	select {
 	case <-p.Done():
-		return ErrProcessorClosed
+		return ErrClosed{link: "processor"}
 	default:
 	}
 

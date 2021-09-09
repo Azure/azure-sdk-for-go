@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v3/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/stretchr/testify/require"
@@ -187,7 +188,10 @@ func TestReceiverUnitTests(t *testing.T) {
 
 		messages, err := receiver.ReceiveMessages(context.Background(), 1)
 		require.Nil(t, messages)
-		require.EqualError(t, err, ErrReceiverClosed.Error())
+
+		_, ok := err.(errorinfo.NonRetriable)
+		require.True(t, ok, "ErrClosed is a errorinfo.NonRetriable")
+		require.ErrorIs(t, err, ErrClosed{"receiver"})
 	})
 
 	t.Run("CloseForwardsErrors", func(t *testing.T) {

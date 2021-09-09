@@ -77,7 +77,7 @@ func newSender(ns legacySenderNamespace, queueOrTopic string, options ...SenderO
 			queueOrTopic: queueOrTopic,
 		},
 		mu:        &sync.Mutex{},
-		linkState: newLinkState(context.Background(), ErrSenderClosed),
+		linkState: newLinkState(context.Background(), ErrClosed{link: "sender"}),
 	}
 
 	for _, opt := range options {

@@ -10,6 +10,7 @@ function Process-Sdk () {
     if ($clean) {
         Write-Host "##[command]Executing go clean -v ./... in " $currentDirectory
         go clean -v ./...
+        if ($LASTEXITCODE) {exit $LASTEXITCODE}
     }
 
     if ($cleanGenerated) {
@@ -43,6 +44,7 @@ function Process-Sdk () {
     if ($format) {
         Write-Host "##[command]Executing gofmt -s -w . in " $currentDirectory
         gofmt -s -w .
+        if ($LASTEXITCODE) {exit $LASTEXITCODE}
     }
 
     if ($tidy) {
@@ -54,12 +56,13 @@ function Process-Sdk () {
         Write-Host "##[command]Executing go build -x -v ./... in " $currentDirectory
         go build -x -v ./...
         Write-Host "##[command]Build Complete!"
-
+        if ($LASTEXITCODE) {exit $LASTEXITCODE}
     }
 
     if ($vet) {
         Write-Host "##[command]Executing go vet ./... in " $currentDirectory
         go vet ./...
+        if ($LASTEXITCODE) {exit $LASTEXITCODE}
     }
 
 }

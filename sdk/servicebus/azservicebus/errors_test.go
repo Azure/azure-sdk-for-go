@@ -8,7 +8,7 @@ import (
 )
 
 func TestErrClosed(t *testing.T) {
-	var err error = ErrClosed{link: "hello"}
+	var err error = errClosed{link: "hello"}
 
 	_, ok := err.(errorinfo.NonRetriable)
 	require.True(t, ok, "ErrClosed is a errorinfo.NonRetriable")

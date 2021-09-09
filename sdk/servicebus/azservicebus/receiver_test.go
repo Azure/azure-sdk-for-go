@@ -191,7 +191,7 @@ func TestReceiverUnitTests(t *testing.T) {
 
 		_, ok := err.(errorinfo.NonRetriable)
 		require.True(t, ok, "ErrClosed is a errorinfo.NonRetriable")
-		require.ErrorIs(t, err, ErrClosed{"receiver"})
+		require.ErrorIs(t, err, errClosed{"receiver"})
 	})
 
 	t.Run("CloseForwardsErrors", func(t *testing.T) {

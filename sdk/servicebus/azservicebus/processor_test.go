@@ -176,7 +176,7 @@ func TestProcessorUnitTests(t *testing.T) {
 
 			_, ok := err.(errorinfo.NonRetriable)
 			require.True(t, ok, "ErrClosed is a errorinfo.NonRetriable")
-			require.ErrorIs(t, err, ErrClosed{"processor"})
+			require.ErrorIs(t, err, errClosed{"processor"})
 		})
 
 		t.Run("DoubleClose", func(t *testing.T) {

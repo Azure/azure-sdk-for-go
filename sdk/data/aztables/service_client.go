@@ -128,13 +128,6 @@ func (l *ListTablesOptions) toQueryOptions() *generated.QueryOptions {
 // If the result is false, the value of Err() will indicate if an error occurred.
 //
 // PageResponse returns the results from the page most recently fetched from the service.
-// Example usage of this in combination with NextPage would look like the following:
-//
-// for pager.NextPage(ctx) {
-//     resp = pager.PageResponse()
-//     fmt.Printf("The page contains %i results.\n", len(resp.Tables))
-// }
-// err := pager.Err()
 type ListTablesPager interface {
 	// PageResponse returns the current TableQueryResponseResponse.
 	PageResponse() ListTablesPage
@@ -230,12 +223,6 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 }
 
 // PageResponse returns the results from the page most recently fetched from the service.
-// Example usage of this in combination with NextPage would look like the following:
-//
-// for pager.NextPage(ctx) {
-//     resp = pager.PageResponse()
-//     fmt.Printf("The page contains %i results.\n", len(resp.Tables))
-// }
 func (p *tableQueryResponsePager) PageResponse() ListTablesPage {
 	return *fromGeneratedTableQueryResponseEnvelope(p.current)
 }
@@ -254,15 +241,7 @@ func (p *tableQueryResponsePager) Err() error {
 // Top: The maximum number of tables that will be returned per page of results.
 // Note: This value does not limit the total number of results if NextPage is called on the returned Pager until it returns false.
 //
-// List returns a Pager, which allows iteration through each page of results. Example:
-//
-// options := &ListTablesOptions{Filter: to.StringPtr("PartitionKey eq 'pk001'"), Top: to.Int32Ptr(25)}
-// pager := client.List(options) // Pass in 'nil' if you want to return all Tables for an account.
-// for pager.NextPage(ctx) {
-//     resp = pager.PageResponse()
-//     fmt.Printf("The page contains %i results.\n", len(resp.Tables))
-// }
-// err := pager.Err()
+// List returns a Pager, which allows iteration through each page of results.
 func (t *ServiceClient) ListTables(listOptions *ListTablesOptions) ListTablesPager {
 	return &tableQueryResponsePager{
 		client:            t.client,
@@ -292,11 +271,6 @@ func (g *GetStatisticsOptions) toGenerated() *generated.ServiceGetStatisticsOpti
 }
 
 // GetStatistics retrieves all the statistics for an account with Geo-redundancy established.
-//
-// response, err := client.GetStatistics(context.Background, nil)
-// handle(err)
-// fmt.Println("Status: ", response.GeoReplication.Status)
-// fmt.Println(Last Sync Time: ", response.GeoReplication.LastSyncTime)
 func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatisticsOptions) (GetStatisticsResponse, error) {
 	if options == nil {
 		options = &GetStatisticsOptions{}
@@ -342,13 +316,6 @@ func getPropertiesResponseFromGenerated(g *generated.ServiceGetPropertiesRespons
 }
 
 // GetProperties retrieves the properties for an account including the metrics, logging, and cors rules established.
-//
-// response, err := client.GetProperties(context.Background, nil)
-// handle(err)
-// fmt.Println(response.Cors)
-// fmt.Println(response.HourMetrics)
-// fmt.Println(response.Logging)
-// fmt.Println(response.MinuteMetrics)
 func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
 	if options == nil {
 		options = &GetPropertiesOptions{}
@@ -382,21 +349,6 @@ func setPropertiesResponseFromGenerated(g *generated.ServiceSetPropertiesRespons
 // HoursMetrics: A summary of request statistics grouped in minute aggregates for tables
 //
 // Logging: Azure Analytics logging settings
-//
-//
-// logging := aztables.Logging{
-// 		Read:    to.BoolPtr(true),
-// 		Write:   to.BoolPtr(true),
-// 		Delete:  to.BoolPtr(true),
-// 		Version: to.StringPtr("1.0"),
-// 		RetentionPolicy: &aztables.RetentionPolicy{
-// 			Enabled: to.BoolPtr(true),
-// 		Days:    to.Int32Ptr(5),
-// 		},
-// }
-// props := aztables.ServiceProperties{Logging: &logging}
-// resp, err := client.SetProperties(ctx, props, nil)
-// handle(err)
 func (t *ServiceClient) SetProperties(ctx context.Context, properties ServiceProperties, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
 	if options == nil {
 		options = &SetPropertiesOptions{}

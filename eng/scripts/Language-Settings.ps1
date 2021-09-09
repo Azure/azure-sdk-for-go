@@ -1,7 +1,5 @@
 $Language = "go"
 $packagePattern = "go.mod"
-# rewrite from ChangeLog-Operations.ps1 used in Get-ChangeLogEntriesFromContent for go uses vx.x.x as version number
-$RELEASE_TITLE_REGEX = "(?<releaseNoteTitle>^\#+\s+(?<version>v$([AzureEngSemanticVersion]::SEMVER_REGEX))(\s+(?<releaseStatus>\(.+\))))"
 
 # rewrite from artifact-metadata-parsing.ps1 used in RetrievePackages for fetch go single module info
 function Get-go-PackageInfoFromPackageFile ($pkg, $workingDirectory)
@@ -56,7 +54,7 @@ function Get-Version ($pkgPath)
             $versionFiles += $_
         }
     }
-    
+
     # for each version file, use regex to search go version num
     $go_version_regex = ".+\s*=\s*`".*v?(?<version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
     foreach ($versionFile in $versionFiles)

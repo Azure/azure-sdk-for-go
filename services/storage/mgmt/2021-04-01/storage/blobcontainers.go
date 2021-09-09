@@ -1275,7 +1275,7 @@ func (client BlobContainersClient) ObjectLevelWorm(ctx context.Context, resource
 
 	result, err = client.ObjectLevelWormSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storage.BlobContainersClient", "ObjectLevelWorm", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storage.BlobContainersClient", "ObjectLevelWorm", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1308,6 +1308,7 @@ func (client BlobContainersClient) ObjectLevelWormPreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client BlobContainersClient) ObjectLevelWormSender(req *http.Request) (future BlobContainersObjectLevelWormFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

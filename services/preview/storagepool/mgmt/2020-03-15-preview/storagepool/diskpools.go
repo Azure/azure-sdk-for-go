@@ -76,7 +76,7 @@ func (client DiskPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -111,6 +111,7 @@ func (client DiskPoolsClient) CreateOrUpdatePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client DiskPoolsClient) CreateOrUpdateSender(req *http.Request) (future DiskPoolsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -171,7 +172,7 @@ func (client DiskPoolsClient) Delete(ctx context.Context, resourceGroupName stri
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -203,6 +204,7 @@ func (client DiskPoolsClient) DeletePreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client DiskPoolsClient) DeleteSender(req *http.Request) (future DiskPoolsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -70,7 +70,7 @@ func (client IscsiDisksClient) CreateOrUpdate(ctx context.Context, deviceName st
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.IscsiDisksClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.IscsiDisksClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -107,6 +107,7 @@ func (client IscsiDisksClient) CreateOrUpdatePreparer(ctx context.Context, devic
 // http.Response Body if it receives an error.
 func (client IscsiDisksClient) CreateOrUpdateSender(req *http.Request) (future IscsiDisksCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -163,7 +164,7 @@ func (client IscsiDisksClient) Delete(ctx context.Context, deviceName string, is
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.IscsiDisksClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.IscsiDisksClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -198,6 +199,7 @@ func (client IscsiDisksClient) DeletePreparer(ctx context.Context, deviceName st
 // http.Response Body if it receives an error.
 func (client IscsiDisksClient) DeleteSender(req *http.Request) (future IscsiDisksDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

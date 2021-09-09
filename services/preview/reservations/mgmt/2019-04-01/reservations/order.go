@@ -310,7 +310,7 @@ func (client OrderClient) Purchase(ctx context.Context, reservationOrderID strin
 
 	result, err = client.PurchaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "Purchase", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.OrderClient", "Purchase", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -342,6 +342,7 @@ func (client OrderClient) PurchasePreparer(ctx context.Context, reservationOrder
 // http.Response Body if it receives an error.
 func (client OrderClient) PurchaseSender(req *http.Request) (future OrderPurchaseFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

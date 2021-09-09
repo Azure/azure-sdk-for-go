@@ -79,7 +79,7 @@ func (client PredictionsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.PredictionsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.PredictionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -114,6 +114,7 @@ func (client PredictionsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client PredictionsClient) CreateOrUpdateSender(req *http.Request) (future PredictionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -161,7 +162,7 @@ func (client PredictionsClient) Delete(ctx context.Context, resourceGroupName st
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.PredictionsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.PredictionsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -194,6 +195,7 @@ func (client PredictionsClient) DeletePreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client PredictionsClient) DeleteSender(req *http.Request) (future PredictionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

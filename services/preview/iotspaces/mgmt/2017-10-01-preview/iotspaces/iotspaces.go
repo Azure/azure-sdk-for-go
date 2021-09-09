@@ -152,7 +152,7 @@ func (client Client) CreateOrUpdate(ctx context.Context, resourceGroupName strin
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iotspaces.Client", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iotspaces.Client", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -186,6 +186,7 @@ func (client Client) CreateOrUpdatePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client Client) CreateOrUpdateSender(req *http.Request) (future CreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -242,7 +243,7 @@ func (client Client) Delete(ctx context.Context, resourceGroupName string, resou
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iotspaces.Client", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iotspaces.Client", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -274,6 +275,7 @@ func (client Client) DeletePreparer(ctx context.Context, resourceGroupName strin
 // http.Response Body if it receives an error.
 func (client Client) DeleteSender(req *http.Request) (future DeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -653,7 +655,7 @@ func (client Client) Update(ctx context.Context, resourceGroupName string, resou
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iotspaces.Client", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iotspaces.Client", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -687,6 +689,7 @@ func (client Client) UpdatePreparer(ctx context.Context, resourceGroupName strin
 // http.Response Body if it receives an error.
 func (client Client) UpdateSender(req *http.Request) (future UpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -55,7 +55,7 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarm(ctx context.Context, re
 
 	result, err = client.CreateOrUpdateServerFarmSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "CreateOrUpdateServerFarm", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ServerFarmsClient", "CreateOrUpdateServerFarm", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -92,6 +92,7 @@ func (client ServerFarmsClient) CreateOrUpdateServerFarmPreparer(ctx context.Con
 // http.Response Body if it receives an error.
 func (client ServerFarmsClient) CreateOrUpdateServerFarmSender(req *http.Request) (future ServerFarmsCreateOrUpdateServerFarmFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

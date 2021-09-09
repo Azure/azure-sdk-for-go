@@ -65,7 +65,7 @@ func (client WorkspaceSQLAadAdminsClient) CreateOrUpdate(ctx context.Context, re
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspaceSQLAadAdminsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceSQLAadAdminsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -99,6 +99,7 @@ func (client WorkspaceSQLAadAdminsClient) CreateOrUpdatePreparer(ctx context.Con
 // http.Response Body if it receives an error.
 func (client WorkspaceSQLAadAdminsClient) CreateOrUpdateSender(req *http.Request) (future WorkspaceSQLAadAdminsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -154,7 +155,7 @@ func (client WorkspaceSQLAadAdminsClient) Delete(ctx context.Context, resourceGr
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.WorkspaceSQLAadAdminsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.WorkspaceSQLAadAdminsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -186,6 +187,7 @@ func (client WorkspaceSQLAadAdminsClient) DeletePreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client WorkspaceSQLAadAdminsClient) DeleteSender(req *http.Request) (future WorkspaceSQLAadAdminsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -76,7 +76,7 @@ func (client StorageTargetsClient) Create(ctx context.Context, resourceGroupName
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -117,6 +117,7 @@ func (client StorageTargetsClient) CreatePreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client StorageTargetsClient) CreateSender(req *http.Request) (future StorageTargetsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -173,7 +174,7 @@ func (client StorageTargetsClient) Delete(ctx context.Context, resourceGroupName
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -206,6 +207,7 @@ func (client StorageTargetsClient) DeletePreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client StorageTargetsClient) DeleteSender(req *http.Request) (future StorageTargetsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -223,7 +225,7 @@ func (client StorageTargetsClient) DeleteResponder(resp *http.Response) (result 
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

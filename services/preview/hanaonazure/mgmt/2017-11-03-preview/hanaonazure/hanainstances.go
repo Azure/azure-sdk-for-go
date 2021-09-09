@@ -54,7 +54,7 @@ func (client HanaInstancesClient) Create(ctx context.Context, resourceGroupName 
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -88,6 +88,7 @@ func (client HanaInstancesClient) CreatePreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client HanaInstancesClient) CreateSender(req *http.Request) (future HanaInstancesCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -134,7 +135,7 @@ func (client HanaInstancesClient) Delete(ctx context.Context, resourceGroupName 
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -166,6 +167,7 @@ func (client HanaInstancesClient) DeletePreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client HanaInstancesClient) DeleteSender(req *http.Request) (future HanaInstancesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -518,7 +520,7 @@ func (client HanaInstancesClient) Restart(ctx context.Context, resourceGroupName
 
 	result, err = client.RestartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Restart", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Restart", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -550,6 +552,7 @@ func (client HanaInstancesClient) RestartPreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client HanaInstancesClient) RestartSender(req *http.Request) (future HanaInstancesRestartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -595,7 +598,7 @@ func (client HanaInstancesClient) Shutdown(ctx context.Context, resourceGroupNam
 
 	result, err = client.ShutdownSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Shutdown", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Shutdown", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -627,6 +630,7 @@ func (client HanaInstancesClient) ShutdownPreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client HanaInstancesClient) ShutdownSender(req *http.Request) (future HanaInstancesShutdownFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -672,7 +676,7 @@ func (client HanaInstancesClient) Start(ctx context.Context, resourceGroupName s
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Start", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.HanaInstancesClient", "Start", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -704,6 +708,7 @@ func (client HanaInstancesClient) StartPreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client HanaInstancesClient) StartSender(req *http.Request) (future HanaInstancesStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

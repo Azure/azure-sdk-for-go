@@ -129,7 +129,7 @@ func (client NotebooksClient) Prepare(ctx context.Context, resourceGroupName str
 
 	result, err = client.PrepareSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "machinelearningservices.NotebooksClient", "Prepare", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "machinelearningservices.NotebooksClient", "Prepare", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -161,6 +161,7 @@ func (client NotebooksClient) PreparePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client NotebooksClient) PrepareSender(req *http.Request) (future NotebooksPrepareFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

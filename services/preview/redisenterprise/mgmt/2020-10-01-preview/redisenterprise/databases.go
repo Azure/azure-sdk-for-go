@@ -56,7 +56,7 @@ func (client DatabasesClient) Create(ctx context.Context, resourceGroupName stri
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -91,6 +91,7 @@ func (client DatabasesClient) CreatePreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client DatabasesClient) CreateSender(req *http.Request) (future DatabasesCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -138,7 +139,7 @@ func (client DatabasesClient) Delete(ctx context.Context, resourceGroupName stri
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -171,6 +172,7 @@ func (client DatabasesClient) DeletePreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client DatabasesClient) DeleteSender(req *http.Request) (future DatabasesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -224,7 +226,7 @@ func (client DatabasesClient) Export(ctx context.Context, resourceGroupName stri
 
 	result, err = client.ExportSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Export", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Export", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -259,6 +261,7 @@ func (client DatabasesClient) ExportPreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client DatabasesClient) ExportSender(req *http.Request) (future DatabasesExportFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -390,7 +393,7 @@ func (client DatabasesClient) Import(ctx context.Context, resourceGroupName stri
 
 	result, err = client.ImportSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Import", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Import", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -425,6 +428,7 @@ func (client DatabasesClient) ImportPreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client DatabasesClient) ImportSender(req *http.Request) (future DatabasesImportFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -668,7 +672,7 @@ func (client DatabasesClient) RegenerateKey(ctx context.Context, resourceGroupNa
 
 	result, err = client.RegenerateKeySender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "RegenerateKey", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "RegenerateKey", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -703,6 +707,7 @@ func (client DatabasesClient) RegenerateKeyPreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client DatabasesClient) RegenerateKeySender(req *http.Request) (future DatabasesRegenerateKeyFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -751,7 +756,7 @@ func (client DatabasesClient) Update(ctx context.Context, resourceGroupName stri
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "redisenterprise.DatabasesClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -786,6 +791,7 @@ func (client DatabasesClient) UpdatePreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client DatabasesClient) UpdateSender(req *http.Request) (future DatabasesUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

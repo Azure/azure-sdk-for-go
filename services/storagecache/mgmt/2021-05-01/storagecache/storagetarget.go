@@ -67,7 +67,7 @@ func (client StorageTargetClient) Flush(ctx context.Context, resourceGroupName s
 
 	result, err = client.FlushSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetClient", "Flush", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetClient", "Flush", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -100,6 +100,7 @@ func (client StorageTargetClient) FlushPreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client StorageTargetClient) FlushSender(req *http.Request) (future StorageTargetFlushFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -155,7 +156,7 @@ func (client StorageTargetClient) Resume(ctx context.Context, resourceGroupName 
 
 	result, err = client.ResumeSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetClient", "Resume", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetClient", "Resume", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -188,6 +189,7 @@ func (client StorageTargetClient) ResumePreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client StorageTargetClient) ResumeSender(req *http.Request) (future StorageTargetResumeFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -243,7 +245,7 @@ func (client StorageTargetClient) Suspend(ctx context.Context, resourceGroupName
 
 	result, err = client.SuspendSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetClient", "Suspend", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetClient", "Suspend", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -276,6 +278,7 @@ func (client StorageTargetClient) SuspendPreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client StorageTargetClient) SuspendSender(req *http.Request) (future StorageTargetSuspendFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

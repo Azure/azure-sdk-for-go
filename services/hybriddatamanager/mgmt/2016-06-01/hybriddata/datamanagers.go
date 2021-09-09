@@ -66,7 +66,7 @@ func (client DataManagersClient) Create(ctx context.Context, resourceGroupName s
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -100,6 +100,7 @@ func (client DataManagersClient) CreatePreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client DataManagersClient) CreateSender(req *http.Request) (future DataManagersCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -155,7 +156,7 @@ func (client DataManagersClient) Delete(ctx context.Context, resourceGroupName s
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -187,6 +188,7 @@ func (client DataManagersClient) DeletePreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client DataManagersClient) DeleteSender(req *http.Request) (future DataManagersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -474,7 +476,7 @@ func (client DataManagersClient) Update(ctx context.Context, resourceGroupName s
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybriddata.DataManagersClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -512,6 +514,7 @@ func (client DataManagersClient) UpdatePreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client DataManagersClient) UpdateSender(req *http.Request) (future DataManagersUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

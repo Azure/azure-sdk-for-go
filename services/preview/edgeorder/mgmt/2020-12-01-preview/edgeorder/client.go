@@ -185,7 +185,7 @@ func (client BaseClient) CreateAddress(ctx context.Context, addressName string, 
 
 	result, err = client.CreateAddressSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgeorder.BaseClient", "CreateAddress", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "edgeorder.BaseClient", "CreateAddress", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -220,6 +220,7 @@ func (client BaseClient) CreateAddressPreparer(ctx context.Context, addressName 
 // http.Response Body if it receives an error.
 func (client BaseClient) CreateAddressSender(req *http.Request) (future CreateAddressFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -309,7 +310,7 @@ func (client BaseClient) CreateOrderItem(ctx context.Context, orderItemName stri
 
 	result, err = client.CreateOrderItemSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgeorder.BaseClient", "CreateOrderItem", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "edgeorder.BaseClient", "CreateOrderItem", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -344,6 +345,7 @@ func (client BaseClient) CreateOrderItemPreparer(ctx context.Context, orderItemN
 // http.Response Body if it receives an error.
 func (client BaseClient) CreateOrderItemSender(req *http.Request) (future CreateOrderItemFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -404,7 +406,7 @@ func (client BaseClient) DeleteAddressByName(ctx context.Context, addressName st
 
 	result, err = client.DeleteAddressByNameSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgeorder.BaseClient", "DeleteAddressByName", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "edgeorder.BaseClient", "DeleteAddressByName", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -436,6 +438,7 @@ func (client BaseClient) DeleteAddressByNamePreparer(ctx context.Context, addres
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteAddressByNameSender(req *http.Request) (future DeleteAddressByNameFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -490,7 +493,7 @@ func (client BaseClient) DeleteOrderItemByName(ctx context.Context, orderItemNam
 
 	result, err = client.DeleteOrderItemByNameSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgeorder.BaseClient", "DeleteOrderItemByName", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "edgeorder.BaseClient", "DeleteOrderItemByName", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -522,6 +525,7 @@ func (client BaseClient) DeleteOrderItemByNamePreparer(ctx context.Context, orde
 // http.Response Body if it receives an error.
 func (client BaseClient) DeleteOrderItemByNameSender(req *http.Request) (future DeleteOrderItemByNameFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -2150,7 +2154,7 @@ func (client BaseClient) ReturnOrderItem(ctx context.Context, orderItemName stri
 
 	result, err = client.ReturnOrderItemSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgeorder.BaseClient", "ReturnOrderItem", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "edgeorder.BaseClient", "ReturnOrderItem", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -2184,6 +2188,7 @@ func (client BaseClient) ReturnOrderItemPreparer(ctx context.Context, orderItemN
 // http.Response Body if it receives an error.
 func (client BaseClient) ReturnOrderItemSender(req *http.Request) (future ReturnOrderItemFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -2246,7 +2251,7 @@ func (client BaseClient) UpdateAddress(ctx context.Context, addressName string, 
 
 	result, err = client.UpdateAddressSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgeorder.BaseClient", "UpdateAddress", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "edgeorder.BaseClient", "UpdateAddress", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -2284,6 +2289,7 @@ func (client BaseClient) UpdateAddressPreparer(ctx context.Context, addressName 
 // http.Response Body if it receives an error.
 func (client BaseClient) UpdateAddressSender(req *http.Request) (future UpdateAddressFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -2342,7 +2348,7 @@ func (client BaseClient) UpdateOrderItem(ctx context.Context, orderItemName stri
 
 	result, err = client.UpdateOrderItemSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "edgeorder.BaseClient", "UpdateOrderItem", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "edgeorder.BaseClient", "UpdateOrderItem", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -2380,6 +2386,7 @@ func (client BaseClient) UpdateOrderItemPreparer(ctx context.Context, orderItemN
 // http.Response Body if it receives an error.
 func (client BaseClient) UpdateOrderItemSender(req *http.Request) (future UpdateOrderItemFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

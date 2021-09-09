@@ -157,7 +157,7 @@ func (client ServersClient) Create(ctx context.Context, resourceGroupName string
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -191,6 +191,7 @@ func (client ServersClient) CreatePreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client ServersClient) CreateSender(req *http.Request) (future ServersCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -251,7 +252,7 @@ func (client ServersClient) Delete(ctx context.Context, resourceGroupName string
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -283,6 +284,7 @@ func (client ServersClient) DeletePreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client ServersClient) DeleteSender(req *http.Request) (future ServersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -898,7 +900,7 @@ func (client ServersClient) Resume(ctx context.Context, resourceGroupName string
 
 	result, err = client.ResumeSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Resume", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Resume", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -930,6 +932,7 @@ func (client ServersClient) ResumePreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client ServersClient) ResumeSender(req *http.Request) (future ServersResumeFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -989,7 +992,7 @@ func (client ServersClient) Suspend(ctx context.Context, resourceGroupName strin
 
 	result, err = client.SuspendSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Suspend", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Suspend", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1021,6 +1024,7 @@ func (client ServersClient) SuspendPreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client ServersClient) SuspendSender(req *http.Request) (future ServersSuspendFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1081,7 +1085,7 @@ func (client ServersClient) Update(ctx context.Context, resourceGroupName string
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "analysisservices.ServersClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1115,6 +1119,7 @@ func (client ServersClient) UpdatePreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client ServersClient) UpdateSender(req *http.Request) (future ServersUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

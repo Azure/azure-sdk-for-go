@@ -56,7 +56,7 @@ func (client ApplicationGatewaysClient) BackendHealth(ctx context.Context, resou
 
 	result, err = client.BackendHealthSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "BackendHealth", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "BackendHealth", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -91,6 +91,7 @@ func (client ApplicationGatewaysClient) BackendHealthPreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client ApplicationGatewaysClient) BackendHealthSender(req *http.Request) (future ApplicationGatewaysBackendHealthFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -154,7 +155,7 @@ func (client ApplicationGatewaysClient) CreateOrUpdate(ctx context.Context, reso
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -188,6 +189,7 @@ func (client ApplicationGatewaysClient) CreateOrUpdatePreparer(ctx context.Conte
 // http.Response Body if it receives an error.
 func (client ApplicationGatewaysClient) CreateOrUpdateSender(req *http.Request) (future ApplicationGatewaysCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -234,7 +236,7 @@ func (client ApplicationGatewaysClient) Delete(ctx context.Context, resourceGrou
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -266,6 +268,7 @@ func (client ApplicationGatewaysClient) DeletePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client ApplicationGatewaysClient) DeleteSender(req *http.Request) (future ApplicationGatewaysDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -945,7 +948,7 @@ func (client ApplicationGatewaysClient) Start(ctx context.Context, resourceGroup
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Start", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Start", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -977,6 +980,7 @@ func (client ApplicationGatewaysClient) StartPreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client ApplicationGatewaysClient) StartSender(req *http.Request) (future ApplicationGatewaysStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1022,7 +1026,7 @@ func (client ApplicationGatewaysClient) Stop(ctx context.Context, resourceGroupN
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Stop", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "Stop", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1054,6 +1058,7 @@ func (client ApplicationGatewaysClient) StopPreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client ApplicationGatewaysClient) StopSender(req *http.Request) (future ApplicationGatewaysStopFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1100,7 +1105,7 @@ func (client ApplicationGatewaysClient) UpdateTags(ctx context.Context, resource
 
 	result, err = client.UpdateTagsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "UpdateTags", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.ApplicationGatewaysClient", "UpdateTags", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1134,6 +1139,7 @@ func (client ApplicationGatewaysClient) UpdateTagsPreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client ApplicationGatewaysClient) UpdateTagsSender(req *http.Request) (future ApplicationGatewaysUpdateTagsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

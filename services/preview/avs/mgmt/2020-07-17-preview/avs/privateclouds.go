@@ -70,7 +70,7 @@ func (client PrivateCloudsClient) CreateOrUpdate(ctx context.Context, resourceGr
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -104,6 +104,7 @@ func (client PrivateCloudsClient) CreateOrUpdatePreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client PrivateCloudsClient) CreateOrUpdateSender(req *http.Request) (future PrivateCloudsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -160,7 +161,7 @@ func (client PrivateCloudsClient) Delete(ctx context.Context, resourceGroupName 
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -192,6 +193,7 @@ func (client PrivateCloudsClient) DeletePreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client PrivateCloudsClient) DeleteSender(req *http.Request) (future PrivateCloudsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -665,7 +667,7 @@ func (client PrivateCloudsClient) Update(ctx context.Context, resourceGroupName 
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.PrivateCloudsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -699,6 +701,7 @@ func (client PrivateCloudsClient) UpdatePreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client PrivateCloudsClient) UpdateSender(req *http.Request) (future PrivateCloudsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

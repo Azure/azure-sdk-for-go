@@ -67,7 +67,7 @@ func (client ProfilesClient) CreateOrUpdate(ctx context.Context, billingAccountN
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.ProfilesClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.ProfilesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -100,6 +100,7 @@ func (client ProfilesClient) CreateOrUpdatePreparer(ctx context.Context, billing
 // http.Response Body if it receives an error.
 func (client ProfilesClient) CreateOrUpdateSender(req *http.Request) (future ProfilesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

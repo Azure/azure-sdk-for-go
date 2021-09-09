@@ -11,6 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/automation/pipeline"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/v2/common"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
 	"github.com/spf13/cobra"
 )
@@ -83,29 +84,38 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 	// iterate over all the readme
 	results := make([]pipeline.PackageResult, 0)
 	errorBuilder := generateErrorBuilder{}
+
+	// create sdk repo ref
+	sdkRepo, err := repo.OpenSDKRepository(ctx.sdkRoot)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get sdk repo: %+v", err)
+	}
+
 	for _, readme := range input.RelatedReadmeMdFiles {
 		log.Printf("Start to process readme file: %s", readme)
 		generateCtx := common.GenerateContext{
-			SdkPath:    ctx.sdkRoot,
-			SpecPath:   ctx.specRoot,
-			CommitHash: ctx.commitHash,
+			SDKPath:        sdkRepo.Root(),
+			SDKRepo:        &sdkRepo,
+			SpecPath:       ctx.specRoot,
+			SpecCommitHash: "",
 		}
 
-		namespaceResults, errors := generateCtx.GenerateForAutomation(readme, input.RepoHTTPSURL)
+		specFolderName := strings.Split(input.RelatedReadmeMdFiles[0], "/")[1]
+		namespaceResults, errors := generateCtx.GenerateForAutomation(readme, input.RepoHTTPSURL, specFolderName)
 		if len(errors) != 0 {
 			errorBuilder.add(errors...)
 			continue
 		}
 
 		for _, namespaceResult := range namespaceResults {
-			content := namespaceResult.ChangelogMd
+			content := namespaceResult.ChangelogMD
 			breaking := namespaceResult.Changelog.HasBreakingChanges()
 			breakingChangeItems := namespaceResult.Changelog.GetBreakingChangeItems()
 
 			results = append(results, pipeline.PackageResult{
 				Version:     namespaceResult.Version,
 				PackageName: namespaceResult.PackageName,
-				Path:        []string{fmt.Sprintf("sdk/%s/%s", namespaceResult.RpName, namespaceResult.PackageName)},
+				Path:        []string{fmt.Sprintf("sdk/%s/%s", namespaceResult.RPName, namespaceResult.PackageName)},
 				ReadmeMd:    []string{readme},
 				Changelog: &pipeline.Changelog{
 					Content:             &content,

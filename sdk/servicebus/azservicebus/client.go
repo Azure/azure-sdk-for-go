@@ -12,9 +12,9 @@ import (
 	"github.com/devigned/tab"
 )
 
-// ServiceBusClient provides methods to create Sender, Receiver and Processor
+// Client provides methods to create Sender, Receiver and Processor
 // instances to send and receive messages from Service Bus.
-type ServiceBusClient struct {
+type Client struct {
 	namespace *internal.Namespace
 	linksMu   *sync.Mutex
 	links     []interface {
@@ -24,23 +24,23 @@ type ServiceBusClient struct {
 
 // ServiceBusClientOption is the type for an option that can configure ServiceBusClient.
 // For an example option, see `ServiceBusWithConnectionString`
-type ServiceBusClientOption func(client *ServiceBusClient) error
+type ServiceBusClientOption func(client *Client) error
 
 // ServiceBusWithConnectionString configures a namespace with the information provided in a Service Bus connection string
 func ServiceBusWithConnectionString(connStr string) ServiceBusClientOption {
-	return func(client *ServiceBusClient) error {
+	return func(client *Client) error {
 		fn := internal.NamespaceWithConnectionString(connStr)
 		return fn(client.namespace)
 	}
 }
 
-// NewServiceBusClient creates a new ServiceBusClient.
+// NewClient creates a new ServiceBusClient.
 // ServiceBusClient allows you create receivers (for queues or subscriptions) and
 // senders (for queues and topics).
 // For creating/deleting/updating queues, topics and subscriptions look at
 // ServiceBusAdministrationClient.
-func NewServiceBusClient(options ...ServiceBusClientOption) (*ServiceBusClient, error) {
-	client := &ServiceBusClient{
+func NewClient(options ...ServiceBusClientOption) (*Client, error) {
+	client := &Client{
 		namespace: &internal.Namespace{
 			Environment: azure.PublicCloud,
 		},
@@ -57,7 +57,7 @@ func NewServiceBusClient(options ...ServiceBusClientOption) (*ServiceBusClient, 
 }
 
 // NewProcessor creates a Processor, which allows you to receive messages from ServiceBus.
-func (client *ServiceBusClient) NewProcessor(options ...ProcessorOption) (*Processor, error) {
+func (client *Client) NewProcessor(options ...ProcessorOption) (*Processor, error) {
 	processor, err := newProcessor(client.namespace, options...)
 
 	if err != nil {
@@ -73,7 +73,7 @@ func (client *ServiceBusClient) NewProcessor(options ...ProcessorOption) (*Proce
 }
 
 // NewSender creates a Sender, which allows you to send messages or schedule messages.
-func (client *ServiceBusClient) NewSender(queueOrTopic string, options ...SenderOption) (*Sender, error) {
+func (client *Client) NewSender(queueOrTopic string, options ...SenderOption) (*Sender, error) {
 	sender, err := newSender(client.namespace, queueOrTopic, options...)
 
 	if err != nil {
@@ -89,7 +89,7 @@ func (client *ServiceBusClient) NewSender(queueOrTopic string, options ...Sender
 }
 
 // NewReceiver creates a Receiver, which allows you to receive messages.
-func (client *ServiceBusClient) NewReceiver(options ...ReceiverOption) (*Receiver, error) {
+func (client *Client) NewReceiver(options ...ReceiverOption) (*Receiver, error) {
 	receiver, err := newReceiver(client.namespace, options...)
 
 	if err != nil {
@@ -106,7 +106,7 @@ func (client *ServiceBusClient) NewReceiver(options ...ReceiverOption) (*Receive
 
 // Close closes the current connection Service Bus as well as any Sender, Receiver or Processors created
 // using this client.
-func (client *ServiceBusClient) Close(ctx context.Context) error {
+func (client *Client) Close(ctx context.Context) error {
 	var lastError error
 
 	client.linksMu.Lock()

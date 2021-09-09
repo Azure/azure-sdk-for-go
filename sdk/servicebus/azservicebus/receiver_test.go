@@ -21,7 +21,7 @@ func TestReceiver(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*5)
 	defer cancel()
 
-	serviceBusClient, err := NewServiceBusClient(ServiceBusWithConnectionString(cs))
+	serviceBusClient, err := NewClient(ServiceBusWithConnectionString(cs))
 	require.NoError(t, err)
 
 	nanoSeconds := time.Now().UnixNano()

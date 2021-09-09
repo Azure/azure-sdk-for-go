@@ -20,7 +20,7 @@ func main() {
 		log.Fatalf("SERVICEBUS_CONNECTION_STRING and QUEUE_NAME must be defined in the environment for this sample")
 	}
 
-	serviceBusClient, err := azservicebus.NewServiceBusClient(azservicebus.ServiceBusWithConnectionString(cs))
+	serviceBusClient, err := azservicebus.NewClient(azservicebus.ServiceBusWithConnectionString(cs))
 
 	if err != nil {
 		log.Fatalf("Failed to create service bus client: %s", err.Error())

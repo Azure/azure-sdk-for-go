@@ -5,7 +5,7 @@ go 1.12
 require (
 	github.com/Azure/azure-amqp-common-go/v3 v3.1.0
 	github.com/Azure/azure-sdk-for-go v51.1.0+incompatible
-	github.com/Azure/go-amqp v0.13.11
+	github.com/Azure/go-amqp v0.14.0
 	github.com/Azure/go-autorest/autorest v0.11.18
 	github.com/Azure/go-autorest/autorest/adal v0.9.13
 	github.com/Azure/go-autorest/autorest/date v0.3.0
@@ -19,5 +19,3 @@ require (
 	golang.org/x/sys v0.0.0-20200323222414-85ca7c5b95cd // indirect
 	nhooyr.io/websocket v1.8.6
 )
-
-replace github.com/Azure/go-amqp v0.13.11 => /home/codespace/src/_/amqp-credit/amqp

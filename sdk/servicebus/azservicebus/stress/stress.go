@@ -2,11 +2,10 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"log"
 	"os"
-	"strings"
+	"sync/atomic"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus"
@@ -22,28 +21,12 @@ import (
 // | summarize Sum=sum(valueCount) by bin(timestamp, 30s), name
 // | render timechart
 
+var messagesSent int32
+var messagesReceived int32
+var exceptions int32
+
 func main() {
-	tests := map[string]func(){
-		"basic send and receive": runBasicSendAndReceiveTest,
-	}
-
-	var testNames []string
-	for k := range tests {
-		testNames = append(testNames, k)
-	}
-
-	testName := flag.String("test", "", fmt.Sprintf("Name of test to run (%s)", strings.Join(testNames, ",")))
-	flag.Parse()
-
-	fn, ok := tests[*testName]
-
-	if !ok {
-		log.Printf("No test named %s", *testName)
-		os.Exit(1)
-	}
-
-	log.Printf("Running test %s", *testName)
-	fn()
+	runBasicSendAndReceiveTest()
 }
 
 func runBasicSendAndReceiveTest() {
@@ -59,6 +42,14 @@ func runBasicSendAndReceiveTest() {
 	config := appinsights.NewTelemetryConfiguration(aiKey)
 	config.MaxBatchInterval = time.Second * 5
 	telemetryClient := appinsights.NewTelemetryClientFromConfig(config)
+
+	go func() {
+		ticker := time.NewTicker(time.Second * 5)
+
+		for range ticker.C {
+			log.Printf("Received: %d, Sent: %d, Exceptions: %d", atomic.LoadInt32(&messagesReceived), atomic.LoadInt32(&messagesSent), atomic.LoadInt32(&exceptions))
+		}
+	}()
 
 	nanoSeconds := time.Now().UnixNano()
 	queueName := fmt.Sprintf("queue-%X", nanoSeconds)
@@ -86,7 +77,7 @@ func runBasicSendAndReceiveTest() {
 	cleanupQueue := createQueue(telemetryClient, cs, queueName)
 	defer cleanupQueue()
 
-	serviceBusClient, err := azservicebus.NewServiceBusClient(azservicebus.ServiceBusWithConnectionString(cs))
+	serviceBusClient, err := azservicebus.NewClient(azservicebus.ServiceBusWithConnectionString(cs))
 	if err != nil {
 		trackException(telemetryClient, "Failed to create service bus client", err)
 		return
@@ -114,7 +105,8 @@ func runBasicSendAndReceiveTest() {
 	<-ch
 }
 
-func runProcessor(client *azservicebus.ServiceBusClient, queueName string, telemetryClient appinsights.TelemetryClient) {
+func runProcessor(client *azservicebus.Client, queueName string, telemetryClient appinsights.TelemetryClient) {
+	log.Printf("Starting processor...")
 	processor, err := client.NewProcessor(azservicebus.ProcessorWithQueue(queueName), azservicebus.ProcessorWithMaxConcurrentCalls(10))
 
 	if err != nil {
@@ -123,13 +115,18 @@ func runProcessor(client *azservicebus.ServiceBusClient, queueName string, telem
 	}
 
 	err = processor.Start(func(msg *azservicebus.ReceivedMessage) error {
+		atomic.AddInt32(&messagesReceived, 1)
 		telemetryClient.TrackMetric("MessageReceived", 1)
 		return nil
 	}, func(err error) {
+		atomic.AddInt32(&exceptions, 1)
+		log.Printf("Exception in processor: %s", err.Error())
 		trackException(telemetryClient, "Processor.HandleError", err)
 	})
 
 	if err != nil {
+		atomic.AddInt32(&exceptions, 1)
+		log.Printf("Exception when starting processor: %s", err.Error())
 		trackException(telemetryClient, "Processor.Start", err)
 		return
 	}
@@ -137,9 +134,10 @@ func runProcessor(client *azservicebus.ServiceBusClient, queueName string, telem
 	<-processor.Done()
 
 	telemetryClient.TrackEvent("ProcessorStopped")
+	log.Print("Processor was stopped!")
 }
 
-func continuallySend(client *azservicebus.ServiceBusClient, queueName string, telemetryClient appinsights.TelemetryClient) {
+func continuallySend(client *azservicebus.Client, queueName string, telemetryClient appinsights.TelemetryClient) {
 	sender, err := client.NewSender(queueName)
 
 	if err != nil {
@@ -157,6 +155,7 @@ func continuallySend(client *azservicebus.ServiceBusClient, queueName string, te
 			Body: []byte(fmt.Sprintf("hello world: %s", t.String())),
 		})
 
+		atomic.AddInt32(&messagesSent, 1)
 		telemetryClient.TrackMetric("MessageSent", 1)
 
 		if err != nil {

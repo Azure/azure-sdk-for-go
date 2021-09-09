@@ -446,6 +446,67 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 }
 
 func TestContinuationSanitizer(t *testing.T) {
+	os.Setenv("AZURE_RECORD_MODE", "record")
+	defer os.Unsetenv("AZURE_RECORD_MODE")
+	defer reset(t)
+
+	err := ResetSanitizers(nil)
+	require.NoError(t, err)
+
+	err = StartRecording(t, packagePath, nil)
+	require.NoError(t, err)
+
+	client, err := GetHTTPClient(t)
+	require.NoError(t, err)
+
+	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
+	require.NoError(t, err)
+
+	req.Header.Set(UpstreamUriHeader, "https://jsonplaceholder.typicode.com/posts/1")
+	req.Header.Set(ModeHeader, GetRecordMode())
+	req.Header.Set(IdHeader, GetRecordingId(t))
+	req.Header.Set("Location", "/posts/2")
+
+	bodyValue := map[string]string{
+		"key1": "value1",
+	}
+	marshalled, err := json.Marshal(bodyValue)
+	require.NoError(t, err)
+
+	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+
+	err = AddContinuationSanitizer("Location", "Sanitized", true, nil)
+	require.NoError(t, err)
+
+	resp, err := client.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	req, err = http.NewRequest("POST", "https://localhost:5001", nil)
+	require.NoError(t, err)
+
+	req.Header.Set(UpstreamUriHeader, "https://jsonplaceholder.typicode.com/posts/2")
+	req.Header.Set(ModeHeader, GetRecordMode())
+	req.Header.Set(IdHeader, GetRecordingId(t))
+	req.Header.Set("Location", "/posts/3")
+
+	require.NotNil(t, GetRecordingId(t))
+
+	err = StopRecording(t, nil)
+	require.NoError(t, err)
+
+	// Make sure the file is there
+	jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
+	require.NoError(t, err)
+	defer jsonFile.Close()
+
+	var data RecordingFileStruct
+	byteValue, err := ioutil.ReadAll(jsonFile)
+	require.NoError(t, err)
+	err = json.Unmarshal(byteValue, &data)
+	require.NoError(t, err)
+
+	require.Equal(t, data.Entries[0].RequestHeaders["Location"], data.Entries[1].RequestHeaders["Location"])
 
 }
 
@@ -498,6 +559,9 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 }
 
 func TestOAuthResponseSanitizer(t *testing.T) {
+}
+
+func TestReplaceRequestSubscriptionId(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 	defer reset(t)
@@ -542,10 +606,6 @@ func TestOAuthResponseSanitizer(t *testing.T) {
 	require.NoError(t, err)
 
 	require.Equal(t, data.Entries[0].RequestUri, "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerRegistry/checkNameAvailability?api-version=2019-05-01")
-}
-
-func TestReplaceRequestSubscriptionId(t *testing.T) {
-
 }
 
 func TestResetSanitizers(t *testing.T) {

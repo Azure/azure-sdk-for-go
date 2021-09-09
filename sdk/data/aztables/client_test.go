@@ -92,6 +92,39 @@ func TestDeleteEntity(t *testing.T) {
 	}
 }
 
+func TestDeleteEntityWithETag(t *testing.T) {
+	for _, service := range services {
+		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
+			client, delete := initClientTest(t, service, true)
+			defer delete()
+
+			simpleEntity := createSimpleEntity(1, "partition")
+			simpleEntity2 := createSimpleEntity(2, "partition")
+
+			marshalledEntity, err := json.Marshal(simpleEntity)
+			require.NoError(t, err)
+			resp, err := client.AddEntity(ctx, marshalledEntity, nil)
+			require.NoError(t, err)
+			oldETag := resp.ETag
+
+			marshalledEntity, err = json.Marshal(simpleEntity2)
+			require.NoError(t, err)
+			resp, err = client.AddEntity(context.Background(), marshalledEntity, nil)
+			require.NoError(t, err)
+			newETag := resp.ETag
+
+			_, err = client.DeleteEntity(ctx, simpleEntity2.PartitionKey, simpleEntity2.RowKey, &DeleteEntityOptions{IfMatch: &oldETag})
+			require.Error(t, err)
+
+			_, err = client.DeleteEntity(ctx, simpleEntity.PartitionKey, simpleEntity.RowKey, &DeleteEntityOptions{IfMatch: &oldETag})
+			require.NoError(t, err)
+
+			_, err = client.DeleteEntity(ctx, simpleEntity2.PartitionKey, simpleEntity2.RowKey, &DeleteEntityOptions{IfMatch: &newETag})
+			require.NoError(t, err)
+		})
+	}
+}
+
 func TestMergeEntity(t *testing.T) {
 	for _, service := range services {
 		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {

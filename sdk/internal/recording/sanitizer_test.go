@@ -167,6 +167,11 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 	return m.server.Do(req)
 }
 
+func reset(t *testing.T) {
+	err := ResetSanitizers(nil)
+	require.NoError(t, err)
+}
+
 func TestUriSanitizer(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
@@ -223,9 +228,6 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 	require.NoError(t, err)
 
 	err = StartRecording(t, packagePath, nil)
-	require.NoError(t, err)
-
-	err = AddUriSanitizer("replacement", "bing", nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -286,9 +288,6 @@ func TestBodyKeySanitizer(t *testing.T) {
 	err = StartRecording(t, packagePath, nil)
 	require.NoError(t, err)
 
-	err = AddUriSanitizer("replacement", "bing", nil)
-	require.NoError(t, err)
-
 	client, err := GetHTTPClient(t)
 	require.NoError(t, err)
 
@@ -342,9 +341,6 @@ func TestBodyRegexSanitizer(t *testing.T) {
 	err = StartRecording(t, packagePath, nil)
 	require.NoError(t, err)
 
-	err = AddUriSanitizer("replacement", "bing", nil)
-	require.NoError(t, err)
-
 	client, err := GetHTTPClient(t)
 	require.NoError(t, err)
 
@@ -384,11 +380,6 @@ func TestBodyRegexSanitizer(t *testing.T) {
 	byteValue, err := ioutil.ReadAll(jsonFile)
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
-	require.NoError(t, err)
-}
-
-func reset(t *testing.T) {
-	err := ResetSanitizers(nil)
 	require.NoError(t, err)
 }
 
@@ -463,7 +454,7 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, "https://jsonplaceholder.typicode.com/posts")
+	req.Header.Set(UpstreamUriHeader, "https://azsdkengsys.azurecr.io/acr/v1/_catalog")
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId(t))
 
@@ -495,7 +486,50 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 }
 
 func TestOAuthResponseSanitizer(t *testing.T) {
+	os.Setenv("AZURE_RECORD_MODE", "record")
+	defer os.Unsetenv("AZURE_RECORD_MODE")
+	defer reset(t)
 
+	err := ResetSanitizers(nil)
+	require.NoError(t, err)
+
+	err = StartRecording(t, packagePath, nil)
+	require.NoError(t, err)
+
+	client, err := GetHTTPClient(t)
+	require.NoError(t, err)
+
+	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
+	require.NoError(t, err)
+
+	req.Header.Set(UpstreamUriHeader, "https://management.azure.com/subscriptions/12345678-1234-1234-5678-123456789010/providers/Microsoft.ContainerRegistry/checkNameAvailability?api-version=2019-05-01")
+	req.Header.Set(ModeHeader, GetRecordMode())
+	req.Header.Set(IdHeader, GetRecordingId(t))
+
+	err = AddReplaceRequestSubscriptionIdSanitizer("", nil)
+	require.NoError(t, err)
+
+	resp, err := client.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	require.NotNil(t, GetRecordingId(t))
+
+	err = StopRecording(t, nil)
+	require.NoError(t, err)
+
+	// Make sure the file is there
+	jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
+	require.NoError(t, err)
+	defer jsonFile.Close()
+
+	var data RecordingFileStruct
+	byteValue, err := ioutil.ReadAll(jsonFile)
+	require.NoError(t, err)
+	err = json.Unmarshal(byteValue, &data)
+	require.NoError(t, err)
+
+	require.Equal(t, data.Entries[0].RequestUri, "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerRegistry/checkNameAvailability?api-version=2019-05-01")
 }
 
 func TestReplaceRequestSubscriptionId(t *testing.T) {

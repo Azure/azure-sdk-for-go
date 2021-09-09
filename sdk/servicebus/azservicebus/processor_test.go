@@ -37,7 +37,7 @@ func TestProcessor(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*5)
 	defer cancel()
 
-	serviceBusClient, err := NewClient(ServiceBusWithConnectionString(cs))
+	serviceBusClient, err := NewClient(WithConnectionString(cs))
 	require.NoError(t, err)
 
 	nanoSeconds := time.Now().UnixNano()

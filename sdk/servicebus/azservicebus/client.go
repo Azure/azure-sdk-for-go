@@ -22,24 +22,24 @@ type Client struct {
 	}
 }
 
-// ServiceBusClientOption is the type for an option that can configure ServiceBusClient.
-// For an example option, see `ServiceBusWithConnectionString`
-type ServiceBusClientOption func(client *Client) error
+// ClientOption is the type for an option that can configure ServiceBusClient.
+// For an example option, see `WithConnectionString`
+type ClientOption func(client *Client) error
 
-// ServiceBusWithConnectionString configures a namespace with the information provided in a Service Bus connection string
-func ServiceBusWithConnectionString(connStr string) ServiceBusClientOption {
+// WithConnectionString configures a namespace with the information provided in a Service Bus connection string
+func WithConnectionString(connStr string) ClientOption {
 	return func(client *Client) error {
 		fn := internal.NamespaceWithConnectionString(connStr)
 		return fn(client.namespace)
 	}
 }
 
-// NewClient creates a new ServiceBusClient.
-// ServiceBusClient allows you create receivers (for queues or subscriptions) and
+// NewClient creates a new Client.
+// Client allows you create receivers (for queues or subscriptions) and
 // senders (for queues and topics).
 // For creating/deleting/updating queues, topics and subscriptions look at
-// ServiceBusAdministrationClient.
-func NewClient(options ...ServiceBusClientOption) (*Client, error) {
+// `AdministrationClient`.
+func NewClient(options ...ClientOption) (*Client, error) {
 	client := &Client{
 		namespace: &internal.Namespace{
 			Environment: azure.PublicCloud,

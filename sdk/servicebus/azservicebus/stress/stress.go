@@ -77,7 +77,7 @@ func runBasicSendAndReceiveTest() {
 	cleanupQueue := createQueue(telemetryClient, cs, queueName)
 	defer cleanupQueue()
 
-	serviceBusClient, err := azservicebus.NewClient(azservicebus.ServiceBusWithConnectionString(cs))
+	serviceBusClient, err := azservicebus.NewClient(azservicebus.WithConnectionString(cs))
 	if err != nil {
 		trackException(telemetryClient, "Failed to create service bus client", err)
 		return

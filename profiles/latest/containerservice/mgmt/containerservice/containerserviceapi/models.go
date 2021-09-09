@@ -9,7 +9,7 @@
 
 package containerserviceapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-07-01/containerservice/containerserviceapi"
+import original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-08-01/containerservice/containerserviceapi"
 
 type AgentPoolsClientAPI = original.AgentPoolsClientAPI
 type MaintenanceConfigurationsClientAPI = original.MaintenanceConfigurationsClientAPI
@@ -18,3 +18,4 @@ type OperationsClientAPI = original.OperationsClientAPI
 type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
 type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI
 type ResolvePrivateLinkServiceIDClientAPI = original.ResolvePrivateLinkServiceIDClientAPI
+type SnapshotsClientAPI = original.SnapshotsClientAPI

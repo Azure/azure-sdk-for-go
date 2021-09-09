@@ -5,6 +5,7 @@ package azblob
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"io"
 	"net/url"
@@ -76,7 +77,7 @@ func (pb PageBlobClient) Create(ctx context.Context, size int64, options *Create
 // This method panics if the stream is not at position 0.
 // Note that the http client closes the body stream after the request is sent to the service.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page.
-func (pb PageBlobClient) UploadPages(ctx context.Context, body io.ReadSeeker, options *UploadPagesOptions) (PageBlobUploadPagesResponse, error) {
+func (pb PageBlobClient) UploadPages(ctx context.Context, body io.ReadSeekCloser, options *UploadPagesOptions) (PageBlobUploadPagesResponse, error) {
 	count, err := validateSeekableStreamAt0AndGetCount(body)
 
 	if err != nil {
@@ -85,7 +86,7 @@ func (pb PageBlobClient) UploadPages(ctx context.Context, body io.ReadSeeker, op
 
 	uploadOptions, cpkInfo, cpkScope, snac, lac, mac := options.pointers()
 
-	resp, err := pb.client.UploadPages(ctx, count, azcore.NopCloser(body), uploadOptions, lac, cpkInfo, cpkScope, snac, mac)
+	resp, err := pb.client.UploadPages(ctx, count, body, uploadOptions, lac, cpkInfo, cpkScope, snac, mac)
 
 	return resp, handleError(err)
 }
@@ -210,6 +211,11 @@ func (pb PageBlobClient) GetBlobSASToken(permissions BlobSASPermissions, validit
 		t = time.Time{}
 	}
 
+	cred, ok := pb.cred.(*SharedKeyCredential)
+	if !ok {
+		return SASQueryParameters{}, errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+	}
+
 	return BlobSASSignatureValues{
 		ContainerName: urlParts.ContainerName,
 		BlobName:      urlParts.BlobName,
@@ -220,5 +226,5 @@ func (pb PageBlobClient) GetBlobSASToken(permissions BlobSASPermissions, validit
 
 		StartTime:  time.Now().UTC(),
 		ExpiryTime: time.Now().UTC().Add(validityTime),
-	}.NewSASQueryParameters(pb.cred)
+	}.NewSASQueryParameters(cred)
 }

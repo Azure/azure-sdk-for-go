@@ -16,7 +16,7 @@ import (
 // A ContainerClient represents a URL to the Azure Storage container allowing you to manipulate its blobs.
 type ContainerClient struct {
 	client *containerClient
-	cred   StorageAccountCredential
+	cred   azcore.Credential
 }
 
 // URL returns the URL endpoint used by the ContainerClient object.
@@ -26,11 +26,9 @@ func (c ContainerClient) URL() string {
 
 // NewContainerClient creates a ContainerClient object using the specified URL and request policy pipeline.
 func NewContainerClient(containerURL string, cred azcore.Credential, options *ClientOptions) (ContainerClient, error) {
-	c, _ := cred.(*SharedKeyCredential)
-
 	return ContainerClient{client: &containerClient{
 		con: newConnection(containerURL, cred, options.getConnectionOptions()),
-	}, cred: c}, nil
+	}, cred: cred}, nil
 }
 
 // NewContainerClientFromConnectionString creates a ContainerClient object using connection string of an account
@@ -111,11 +109,18 @@ func (c ContainerClient) DeleteBlob(ctx context.Context, blobName string, option
 	return deleteResp, err
 }
 
-func (c ContainerClient) NewContainerLeaseClient() ContainerLeaseClient {
+func (c ContainerClient) NewContainerLeaseClient(leaseID *string) (ContainerLeaseClient, error) {
+	if leaseID == nil {
+		generatedUuid, err := uuid.New()
+		if err != nil {
+			return ContainerLeaseClient{}, err
+		}
+		leaseID = to.StringPtr(generatedUuid.String())
+	}
 	return ContainerLeaseClient{
 		ContainerClient: c,
-		LeaseID:         to.StringPtr(uuid.New().String()),
-	}
+		LeaseID:         leaseID,
+	}, nil
 }
 
 func (c ContainerClient) GetAccountInfo(ctx context.Context) (ContainerGetAccountInfoResponse, error) {
@@ -200,15 +205,6 @@ func (c ContainerClient) GetProperties(ctx context.Context, gpo *GetPropertiesOp
 // SetMetadata sets the container's metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-metadata.
 func (c ContainerClient) SetMetadata(ctx context.Context, options *SetMetadataContainerOptions) (ContainerSetMetadataResponse, error) {
-	// TODO: Ask Ze/Adele: Why we introduced this check. We should let service do this kind of validations.
-	//if ac != nil && ac.ModifiedAccessConditions != nil {
-	//	if (ac.ModifiedAccessConditions.IfUnmodifiedSince != nil && !(*ac.ModifiedAccessConditions.IfUnmodifiedSince).IsZero()) ||
-	//	ac.ModifiedAccessConditions.IfMatch != nil || ac.ModifiedAccessConditions.IfNoneMatch != nil {
-	//		return ContainerSetMetadataResponse{}, errors.New("the IfUnmodifiedSince, IfMatch, and IfNoneMatch must " +
-	//			"have their default values because they are ignored by the blob service")
-	//	}
-	//}
-
 	metadataOptions, lac, mac := options.pointers()
 
 	resp, err := c.client.SetMetadata(ctx, metadataOptions, lac, mac)
@@ -229,17 +225,6 @@ func (c ContainerClient) GetAccessPolicy(ctx context.Context, options *GetAccess
 // SetAccessPolicy sets the container's permissions. The access policy indicates whether blobs in a container may be accessed publicly.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-container-acl.
 func (c ContainerClient) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (ContainerSetAccessPolicyResponse, error) {
-	//accessPolicy := options.ContainerAcquireLeaseOptions
-	// TODO: Ask Ze/Adele: Why we introduced this check. Service returned "200 OK" without this. And we should let service do this kind of validations.
-	//if accessPolicy.Access == nil || accessPolicy.ContainerACL == nil {
-	//	return ContainerSetAccessPolicyResponse{}, errors.New("ContainerSetAccess must be specified with AT LEAST Access and ContainerACL")
-	//}
-
-	//ac := options.ContainerAccessConditions
-	//if ac != nil && (*ac.ModifiedAccessConditions.IfMatch != ETagNone || *ac.ModifiedAccessConditions.IfNoneMatch != ETagNone) {
-	//	return ContainerSetAccessPolicyResponse{}, errors.New("the IfMatch and IfNoneMatch access conditions must have their default values because they are ignored by the service")
-	//}
-
 	accessPolicy, mac, lac := options.pointers()
 
 	resp, err := c.client.SetAccessPolicy(ctx, &accessPolicy, mac, lac)
@@ -308,5 +293,5 @@ func (c ContainerClient) GetContainerSASToken(permissions BlobSASPermissions, va
 
 		StartTime:  time.Now().UTC(),
 		ExpiryTime: time.Now().UTC().Add(validityTime),
-	}.NewSASQueryParameters(c.cred)
+	}.NewSASQueryParameters(c.cred.(*SharedKeyCredential))
 }

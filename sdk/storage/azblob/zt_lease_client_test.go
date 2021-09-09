@@ -27,7 +27,7 @@ func (s *azblobTestSuite) TestContainerAcquireLease() {
 	containerClient := createNewContainer(_assert, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	containerLeaseClient := svcClient.NewContainerLeaseClient(containerName, proposedLeaseIDs[0])
+	containerLeaseClient, _ := svcClient.NewContainerLeaseClient(containerName, proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
@@ -53,7 +53,7 @@ func (s *azblobTestSuite) TestContainerDeleteContainerWithoutLeaseId() {
 	containerClient := createNewContainer(_assert, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	containerLeaseClient := svcClient.NewContainerLeaseClient(containerName, proposedLeaseIDs[0])
+	containerLeaseClient, _ := svcClient.NewContainerLeaseClient(containerName, proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
@@ -89,7 +89,7 @@ func (s *azblobTestSuite) TestContainerReleaseLease() {
 	containerClient := createNewContainer(_assert, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	containerLeaseClient := svcClient.NewContainerLeaseClient(containerName, proposedLeaseIDs[0])
+	containerLeaseClient, _ := svcClient.NewContainerLeaseClient(containerName, proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(60)})
@@ -123,7 +123,7 @@ func (s *azblobTestSuite) TestContainerRenewLease() {
 	containerClient := createNewContainer(_assert, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	containerLeaseClient := svcClient.NewContainerLeaseClient(containerName, proposedLeaseIDs[0])
+	containerLeaseClient, _ := svcClient.NewContainerLeaseClient(containerName, proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(15)})
@@ -154,7 +154,7 @@ func (s *azblobTestSuite) TestContainerChangeLease() {
 	containerClient := createNewContainer(_assert, containerName, svcClient)
 	defer deleteContainer(_assert, containerClient)
 
-	containerLeaseClient := svcClient.NewContainerLeaseClient(containerName, proposedLeaseIDs[0])
+	containerLeaseClient, _ := svcClient.NewContainerLeaseClient(containerName, proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := containerLeaseClient.AcquireLease(ctx, &AcquireLeaseContainerOptions{Duration: to.Int32Ptr(15)})
@@ -194,7 +194,7 @@ func (s *azblobTestSuite) TestBlobAcquireLease() {
 
 	blobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
-	blobLeaseClient := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
+	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
@@ -224,7 +224,7 @@ func (s *azblobTestSuite) TestDeleteBlobWithoutLeaseId() {
 
 	blobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
-	blobLeaseClient := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
+	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
@@ -262,7 +262,7 @@ func (s *azblobTestSuite) TestBlobReleaseLease() {
 
 	blobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
-	blobLeaseClient := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
+	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(60)})
@@ -295,7 +295,7 @@ func (s *azblobTestSuite) TestBlobRenewLease() {
 
 	blobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
-	blobLeaseClient := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
+	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(15)})
@@ -328,7 +328,7 @@ func (s *azblobTestSuite) TestBlobChangeLease() {
 
 	blobName := generateBlobName(testName)
 	bbClient := createNewBlockBlob(_assert, blobName, containerClient)
-	blobLeaseClient := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
+	blobLeaseClient, _ := bbClient.NewBlobLeaseClient(proposedLeaseIDs[0])
 
 	ctx := context.Background()
 	acquireLeaseResponse, err := blobLeaseClient.AcquireLease(ctx, &AcquireLeaseBlobOptions{Duration: to.Int32Ptr(15)})

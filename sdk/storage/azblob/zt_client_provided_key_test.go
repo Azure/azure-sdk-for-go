@@ -9,7 +9,7 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"strconv"
@@ -87,7 +87,7 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPK() {
 		stageBlockOptions := StageBlockOptions{
 			CpkInfo: &testCPKByValue,
 		}
-		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], strings.NewReader(word), &stageBlockOptions)
+		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], internal.NopCloser(strings.NewReader(word)), &stageBlockOptions)
 		_assert.Nil(err)
 	}
 
@@ -141,7 +141,7 @@ func (s *azblobTestSuite) TestPutBlockAndPutBlockListWithCPKByScope() {
 		stageBlockOptions := StageBlockOptions{
 			CpkScopeInfo: &testCPKByScope,
 		}
-		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], strings.NewReader(word), &stageBlockOptions)
+		_, err := bbClient.StageBlock(ctx, base64BlockIDs[index], internal.NopCloser(strings.NewReader(word)), &stageBlockOptions)
 		_assert.Nil(err)
 	}
 
@@ -192,7 +192,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPK() {
 	contentSize := 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
 	body := bytes.NewReader(content)
-	rsc := azcore.NopCloser(body)
+	rsc := internal.NopCloser(body)
 	ctx := context.Background()
 	srcBlob := containerClient.NewBlockBlobClient("srcblob")
 	destBlob := containerClient.NewBlockBlobClient("destblob")
@@ -310,7 +310,7 @@ func (s *azblobUnrecordedTestSuite) TestPutBlockFromURLAndCommitWithCPKWithScope
 	contentSize := 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
 	body := bytes.NewReader(content)
-	rsc := azcore.NopCloser(body)
+	rsc := internal.NopCloser(body)
 	ctx := context.Background()
 	srcBlob := containerClient.NewBlockBlobClient("srcblob")
 	destBlob := containerClient.NewBlockBlobClient("destblob")
@@ -519,7 +519,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPK() {
 		appendBlockOptions := AppendBlockOptions{
 			CpkInfo: &testCPKByValue,
 		}
-		resp, err := abClient.AppendBlock(context.Background(), strings.NewReader(word), &appendBlockOptions)
+		resp, err := abClient.AppendBlock(context.Background(), internal.NopCloser(strings.NewReader(word)), &appendBlockOptions)
 		_assert.Nil(err)
 		_assert.Equal(resp.RawResponse.StatusCode, 201)
 		_assert.Equal(*resp.BlobAppendOffset, strconv.Itoa(index*4))
@@ -578,7 +578,7 @@ func (s *azblobTestSuite) TestAppendBlockWithCPKScope() {
 		appendBlockOptions := AppendBlockOptions{
 			CpkScopeInfo: &testCPKByScope,
 		}
-		resp, err := abClient.AppendBlock(context.Background(), strings.NewReader(word), &appendBlockOptions)
+		resp, err := abClient.AppendBlock(context.Background(), internal.NopCloser(strings.NewReader(word)), &appendBlockOptions)
 		_assert.Nil(err)
 		_assert.Equal(resp.RawResponse.StatusCode, 201)
 		_assert.Equal(*resp.BlobAppendOffset, strconv.Itoa(index*4))
@@ -631,7 +631,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPK() {
 	_assert.Nil(err)
 	_assert.Equal(cResp1.RawResponse.StatusCode, 201)
 
-	resp, err := srcABClient.AppendBlock(context.Background(), r, nil)
+	resp, err := srcABClient.AppendBlock(context.Background(), internal.NopCloser(r), nil)
 	_assert.Nil(err)
 	_assert.Equal(resp.RawResponse.StatusCode, 201)
 	_assert.Equal(*resp.BlobAppendOffset, "0")
@@ -741,7 +741,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithCPKScope() {
 	_assert.Nil(err)
 	_assert.Equal(cResp1.RawResponse.StatusCode, 201)
 
-	resp, err := srcClient.AppendBlock(context.Background(), r, nil)
+	resp, err := srcClient.AppendBlock(context.Background(), internal.NopCloser(r), nil)
 	_assert.Nil(err)
 	_assert.Equal(resp.RawResponse.StatusCode, 201)
 	_assert.Equal(*resp.BlobAppendOffset, "0")
@@ -945,7 +945,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPK() {
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
-	uploadResp, err := bbClient.UploadPages(ctx, r, &uploadPagesOptions)
+	uploadResp, err := bbClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
 	_assert.Nil(err)
 	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
 	srcBlobParts := NewBlobURLParts(bbClient.URL())
@@ -1030,7 +1030,7 @@ func (s *azblobUnrecordedTestSuite) TestPageBlockFromURLWithCPKScope() {
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
-	uploadResp, err := srcPBClient.UploadPages(ctx, r, &uploadPagesOptions)
+	uploadResp, err := srcPBClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
 	_assert.Nil(err)
 	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
 	srcBlobParts := NewBlobURLParts(srcPBClient.URL())
@@ -1103,7 +1103,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5WithCPK() {
 	uploadPagesOptions := UploadPagesOptions{
 		PageRange: &HttpRange{offset, count},
 	}
-	uploadResp, err := srcBlob.UploadPages(ctx, r, &uploadPagesOptions)
+	uploadResp, err := srcBlob.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
 	_assert.Nil(err)
 	_assert.Equal(uploadResp.RawResponse.StatusCode, 201)
 

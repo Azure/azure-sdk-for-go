@@ -3,8 +3,8 @@ module github.com/Azure/azure-sdk-for-go/sdk/storage/azblob
 go 1.17
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.16.2
-	github.com/Azure/azure-sdk-for-go/sdk/internal v0.5.2
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.19.0
+	github.com/Azure/azure-sdk-for-go/sdk/internal v0.7.0
 	github.com/Azure/azure-sdk-for-go/sdk/to v0.1.4
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dnaeon/go-vcr v1.2.0 // indirect

@@ -2,7 +2,7 @@
 
 ```bash
 cd swagger
-autorest README.md --use="https://github.com/Azure/autorest.go/releases/download/v4.0.0-preview.22/autorest-go-4.0.0-preview.22.tgz"
+autorest README.md --use="https://github.com/Azure/autorest.go/releases/download/v4.0.0-preview.27/autorest-go-4.0.0-preview.27.tgz"
 gofmt -w generated/*
 ```
 
@@ -21,4 +21,5 @@ modelerfour.lenient-model-deduplication: true
 openapi-type: "data-plane"
 verbose: true
 security: AzureKey
+module-version: "0.1"
 ```

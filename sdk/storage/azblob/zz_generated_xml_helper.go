@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -16,7 +16,6 @@ import (
 type additionalProperties map[string]*string
 
 // UnmarshalXML implements the xml.Unmarshaler interface for additionalProperties.
-//nolint
 func (ap *additionalProperties) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	tokName := ""
 	for t, err := d.Token(); err == nil; t, err = d.Token() {

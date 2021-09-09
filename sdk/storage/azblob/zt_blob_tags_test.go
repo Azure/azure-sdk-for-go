@@ -8,6 +8,7 @@ import (
 	"crypto/md5"
 	"encoding/base64"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"strings"
@@ -77,12 +78,12 @@ func (s *azblobUnrecordedTestSuite) TestSetBlobTagsWithVID() {
 		"Javascript": "Android",
 	}
 
-	blockBlobUploadResp, err := bbClient.Upload(ctx, bytes.NewReader([]byte("data")), nil)
+	blockBlobUploadResp, err := bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), nil)
 	_assert.Nil(err)
 	_assert.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 	versionId1 := blockBlobUploadResp.VersionID
 
-	blockBlobUploadResp, err = bbClient.Upload(ctx, bytes.NewReader([]byte("updated_data")), nil)
+	blockBlobUploadResp, err = bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))), nil)
 	_assert.Nil(err)
 	_assert.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 	versionId2 := blockBlobUploadResp.VersionID
@@ -142,7 +143,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadBlockBlobWithSpecialCharactersInTa
 		BlobHTTPHeaders: &basicHeaders,
 		BlobTagsMap:     &blobTagsMap,
 	}
-	blockBlobUploadResp, err := bbClient.Upload(ctx, bytes.NewReader([]byte("data")), &uploadBlockBlobOptions)
+	blockBlobUploadResp, err := bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
 	_assert.Nil(err)
 	// TODO: Check for metadata and header
 	_assert.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
@@ -177,7 +178,7 @@ func (s *azblobUnrecordedTestSuite) TestStageBlockWithTags() {
 
 	for index, d := range data {
 		base64BlockIDs[index] = blockIDIntToBase64(index)
-		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], strings.NewReader(d), nil)
+		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], internal.NopCloser(strings.NewReader(d)), nil)
 		_assert.Nil(err)
 		_assert.Equal(resp.RawResponse.StatusCode, 201)
 		_assert.NotEqual(*resp.Version, "")
@@ -442,7 +443,7 @@ func (s *azblobUnrecordedTestSuite) TestGetPropertiesReturnsTagsCount() {
 		BlobHTTPHeaders: &basicHeaders,
 		Metadata:        basicMetadata,
 	}
-	blockBlobUploadResp, err := bbClient.Upload(ctx, bytes.NewReader([]byte("data")), &uploadBlockBlobOptions)
+	blockBlobUploadResp, err := bbClient.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), &uploadBlockBlobOptions)
 	_assert.Nil(err)
 	_assert.Equal(blockBlobUploadResp.RawResponse.StatusCode, 201)
 

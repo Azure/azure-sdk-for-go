@@ -4,9 +4,9 @@
 package azblob
 
 import (
-	"bytes"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
 	"strconv"
 	"strings"
@@ -300,11 +300,11 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 	uploadBlockBlobOptions := UploadBlockBlobOptions{
 		Metadata: basicMetadata,
 	}
-	_, err = bbClient.Upload(ctx, bytes.NewReader([]byte("Content")), &uploadBlockBlobOptions)
+	_, err = bbClient.Upload(ctx, internal.NopCloser(strings.NewReader("Content")), &uploadBlockBlobOptions)
 	_assert.Nil(err)
 
 	// Reference the same container URL but with anonymous credentials
-	containerClient2, err := NewContainerClient(containerClient.URL(), azcore.AnonymousCredential(), nil)
+	containerClient2, err := NewContainerClient(containerClient.URL(), azcore.NewAnonymousCredential(), nil)
 	_assert.Nil(err)
 
 	pager := containerClient2.ListBlobsFlatSegment(nil)

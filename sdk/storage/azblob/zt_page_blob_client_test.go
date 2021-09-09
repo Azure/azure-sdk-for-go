@@ -8,6 +8,7 @@ import (
 	"context"
 	"crypto/md5"
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"time"
@@ -86,7 +87,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURL() {
 
 	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
-	uploadSrcResp1, err := srcBlob.UploadPages(ctx, r, &uploadPagesOptions)
+	uploadSrcResp1, err := srcBlob.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
 	_assert.Nil(err)
 	_assert.Equal(uploadSrcResp1.RawResponse.StatusCode, 201)
 	_assert.NotNil(uploadSrcResp1.LastModified)
@@ -161,7 +162,7 @@ func (s *azblobUnrecordedTestSuite) TestUploadPagesFromURLWithMD5() {
 	// Prepare source pbClient for copy.
 	offset, _, count := int64(0), int64(contentSize-1), int64(contentSize)
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
-	uploadSrcResp1, err := srcBlob.UploadPages(ctx, r, &uploadPagesOptions)
+	uploadSrcResp1, err := srcBlob.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
 	_assert.Nil(err)
 	_assert.Equal(uploadSrcResp1.RawResponse.StatusCode, 201)
 
@@ -444,7 +445,7 @@ func (s *azblobUnrecordedTestSuite) TestPutPagesWithMD5() {
 		TransactionalContentMD5: contentMD5,
 	}
 
-	putResp, err := pbClient.UploadPages(context.Background(), readerToBody, &uploadPagesOptions)
+	putResp, err := pbClient.UploadPages(context.Background(), internal.NopCloser(readerToBody), &uploadPagesOptions)
 	_assert.Nil(err)
 	_assert.Equal(putResp.RawResponse.StatusCode, 201)
 	_assert.NotNil(putResp.LastModified)
@@ -467,7 +468,7 @@ func (s *azblobUnrecordedTestSuite) TestPutPagesWithMD5() {
 		PageRange:               &HttpRange{offset, count},
 		TransactionalContentMD5: basContentMD5,
 	}
-	putResp, err = pbClient.UploadPages(context.Background(), readerToBody, &uploadPagesOptions)
+	putResp, err = pbClient.UploadPages(context.Background(), internal.NopCloser(readerToBody), &uploadPagesOptions)
 	_assert.NotNil(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeMD5Mismatch)
@@ -992,7 +993,7 @@ func (s *azblobTestSuite) TestBlobPutPagesEmptyBody() {
 	r := bytes.NewReader([]byte{})
 	offset, count := int64(0), int64(0)
 	uploadPagesOptions := UploadPagesOptions{PageRange: &HttpRange{offset, count}}
-	_, err = pbClient.UploadPages(ctx, r, &uploadPagesOptions)
+	_, err = pbClient.UploadPages(ctx, internal.NopCloser(r), &uploadPagesOptions)
 	_assert.NotNil(err)
 }
 

@@ -55,17 +55,21 @@ type ChangeLeaseBlobOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ChangeLeaseBlobOptions) pointers() (proposedLeaseI *string, modifiedAccessConditions *ModifiedAccessConditions) {
-	leaseID := to.StringPtr(uuid.New().String())
+func (o *ChangeLeaseBlobOptions) pointers() (proposedLeaseI *string, modifiedAccessConditions *ModifiedAccessConditions, err error) {
+	generatedUuid, err := uuid.New()
+	if err != nil {
+		return nil, nil, err
+	}
+	leaseID := to.StringPtr(generatedUuid.String())
 	if o == nil {
-		return leaseID, nil
+		return leaseID, nil, nil
 	}
 
 	if o.ProposedLeaseID == nil {
 		o.ProposedLeaseID = leaseID
 	}
 
-	return o.ProposedLeaseID, o.ModifiedAccessConditions
+	return o.ProposedLeaseID, o.ModifiedAccessConditions, nil
 }
 
 type ReleaseLeaseBlobOptions struct {
@@ -130,17 +134,21 @@ type ChangeLeaseContainerOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ChangeLeaseContainerOptions) pointers() (proposedLeaseID *string, modifiedAccessConditions *ModifiedAccessConditions) {
-	leaseID := to.StringPtr(uuid.New().String())
+func (o *ChangeLeaseContainerOptions) pointers() (proposedLeaseID *string, modifiedAccessConditions *ModifiedAccessConditions, err error) {
+	generatedUuid, err := uuid.New()
+	if err != nil {
+		return nil, nil, err
+	}
+	leaseID := to.StringPtr(generatedUuid.String())
 	if o == nil {
-		return leaseID, nil
+		return leaseID, nil, err
 	}
 
 	if o.ProposedLeaseID == nil {
 		o.ProposedLeaseID = leaseID
 	}
 
-	return o.ProposedLeaseID, o.ModifiedAccessConditions
+	return o.ProposedLeaseID, o.ModifiedAccessConditions, err
 
 }
 

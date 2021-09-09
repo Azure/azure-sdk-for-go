@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
@@ -81,7 +82,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	appendBlockOptions := AppendBlockOptions{
 		TransactionalContentMD5: contentMD5,
 	}
-	appendResp, err := abClient.AppendBlock(context.Background(), readerToBody, &appendBlockOptions)
+	appendResp, err := abClient.AppendBlock(context.Background(), internal.NopCloser(readerToBody), &appendBlockOptions)
 	_assert.Nil(err)
 	_assert.Equal(appendResp.RawResponse.StatusCode, 201)
 	_assert.Equal(*appendResp.BlobAppendOffset, "0")
@@ -102,7 +103,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockWithMD5() {
 	appendBlockOptions = AppendBlockOptions{
 		TransactionalContentMD5: badMD5,
 	}
-	appendResp, err = abClient.AppendBlock(context.Background(), readerToBody, &appendBlockOptions)
+	appendResp, err = abClient.AppendBlock(context.Background(), internal.NopCloser(readerToBody), &appendBlockOptions)
 	_assert.NotNil(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeMD5Mismatch)
@@ -133,7 +134,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURL() {
 	_assert.Nil(err)
 	_assert.Equal(cResp1.RawResponse.StatusCode, 201)
 
-	appendResp, err := srcBlob.AppendBlock(context.Background(), r, nil)
+	appendResp, err := srcBlob.AppendBlock(context.Background(), internal.NopCloser(r), nil)
 	_assert.Nil(err)
 	_assert.Nil(err)
 	_assert.Equal(appendResp.RawResponse.StatusCode, 201)
@@ -229,7 +230,7 @@ func (s *azblobUnrecordedTestSuite) TestAppendBlockFromURLWithMD5() {
 	_assert.Nil(err)
 	_assert.Equal(cResp1.RawResponse.StatusCode, 201)
 
-	appendResp, err := srcBlob.AppendBlock(context.Background(), r, nil)
+	appendResp, err := srcBlob.AppendBlock(context.Background(), internal.NopCloser(r), nil)
 	_assert.Nil(err)
 	_assert.Equal(appendResp.RawResponse.StatusCode, 201)
 	_assert.Equal(*appendResp.BlobAppendOffset, "0")
@@ -724,7 +725,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockNilBody() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, bytes.NewReader(nil), nil)
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(bytes.NewReader(nil)), nil)
 	_assert.NotNil(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeInvalidHeaderValue)
@@ -746,7 +747,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockEmptyBody() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(""), nil)
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader("")), nil)
 	_assert.NotNil(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeInvalidHeaderValue)
@@ -768,7 +769,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockNonExistentBlob() {
 	abName := generateBlobName(testName)
 	abClient := getAppendBlobClient(abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_assert.NotNil(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeBlobNotFound)
@@ -811,7 +812,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfModifiedSinceTrue() {
 			},
 		},
 	}
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	_assert.Nil(err)
 
 	validateBlockAppended(_assert, abClient, len(blockBlobDefaultData))
@@ -848,7 +849,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfModifiedSinceFalse() {
 			},
 		},
 	}
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	_assert.NotNil(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
@@ -885,7 +886,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfUnmodifiedSinceTrue() {
 			},
 		},
 	}
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	_assert.Nil(err)
 
 	validateBlockAppended(_assert, abClient, len(blockBlobDefaultData))
@@ -922,7 +923,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfUnmodifiedSinceFalse() {
 			},
 		},
 	}
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 	_assert.NotNil(err)
 
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
@@ -946,7 +947,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMatchTrue() {
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
@@ -974,7 +975,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMatchFalse() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: to.StringPtr("garbage"),
@@ -1001,7 +1002,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchTrue() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: to.StringPtr("garbage"),
@@ -1030,7 +1031,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 
 	resp, _ := abClient.GetProperties(ctx, nil)
 
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,
@@ -1054,7 +1055,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 ////			AppendPosition: &appendPosition,
 ////		},
 ////	}
-////	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions) // This will cause the library to set the value of the header to 0
+////	_, err := abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions) // This will cause the library to set the value of the header to 0
 ////	_assert.NotNil(err)
 ////
 ////	validateBlockAppended(c, abClient, len(blockBlobDefaultData))
@@ -1066,7 +1067,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 ////	defer deleteContainer(_assert, containerClient)
 ////	abClient, _ := createNewAppendBlob(c, containerClient)
 ////
-////	_, err := abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil) // The position will not match, but the condition should be ignored
+////	_, err := abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil) // The position will not match, but the condition should be ignored
 ////	_assert.Nil(err)
 ////
 ////	appendPosition := int64(0)
@@ -1075,7 +1076,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfNoneMatchFalse() {
 ////			AppendPosition: &appendPosition,
 ////		},
 ////	}
-////	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &appendBlockOptions)
+////	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &appendBlockOptions)
 ////	_assert.Nil(err)
 ////
 ////	validateBlockAppended(c, abClient, 2*len(blockBlobDefaultData))
@@ -1097,10 +1098,10 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchTrueNonZero() 
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_assert.Nil(err)
 
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 			AppendPosition: to.Int64Ptr(int64(len(blockBlobDefaultData))),
 		},
@@ -1126,10 +1127,10 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNegOne() 
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), nil)
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 	_assert.Nil(err)
 
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 			AppendPosition: to.Int64Ptr(-1),
 		},
@@ -1154,7 +1155,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfAppendPositionMatchFalseNonZero()
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 			AppendPosition: to.Int64Ptr(12),
 		},
@@ -1179,7 +1180,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeTrue() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 			MaxSize: to.Int64Ptr(int64(len(blockBlobDefaultData) + 1)),
 		},
@@ -1204,7 +1205,7 @@ func (s *azblobTestSuite) TestBlobAppendBlockIfMaxSizeFalse() {
 	abName := generateBlobName(testName)
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
-	_, err = abClient.AppendBlock(ctx, strings.NewReader(blockBlobDefaultData), &AppendBlockOptions{
+	_, err = abClient.AppendBlock(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &AppendBlockOptions{
 		AppendPositionAccessConditions: &AppendPositionAccessConditions{
 			MaxSize: to.Int64Ptr(int64(len(blockBlobDefaultData) - 1)),
 		},
@@ -1241,7 +1242,7 @@ func (s *azblobTestSuite) TestSealAppendBlob() {
 
 	appendResp, err = abClient.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	_assert.NotNil(err)
-	validateStorageError(_assert, err, StorageErrorCodeBlobIsSealed)
+	validateStorageError(_assert, err, "BlobIsSealed")
 
 	getPropResp, err := abClient.GetProperties(ctx, nil)
 	_assert.Nil(err)
@@ -1310,7 +1311,7 @@ func (s *azblobTestSuite) TestCopySealedBlob() {
 
 	_, err = copiedBlob1.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	_assert.NotNil(err)
-	validateStorageError(_assert, err, StorageErrorCodeBlobIsSealed)
+	validateStorageError(_assert, err, "BlobIsSealed")
 
 	copiedBlob2 := getAppendBlobClient("copy2"+abName, containerClient)
 	_, err = copiedBlob2.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{
@@ -1324,7 +1325,7 @@ func (s *azblobTestSuite) TestCopySealedBlob() {
 
 	_, err = copiedBlob2.AppendBlock(context.Background(), getReaderToGeneratedBytes(1024), nil)
 	_assert.NotNil(err)
-	validateStorageError(_assert, err, StorageErrorCodeBlobIsSealed)
+	validateStorageError(_assert, err, "BlobIsSealed")
 
 	copiedBlob3 := getAppendBlobClient("copy3"+abName, containerClient)
 	_, err = copiedBlob3.StartCopyFromURL(ctx, abClient.URL(), &StartCopyBlobOptions{

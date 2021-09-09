@@ -20,15 +20,18 @@ type BlobLeaseClient struct {
 //nolint
 func NewBlobLeaseClient(blobURL string, leaseID *string, cred azcore.Credential, options *connectionOptions) (BlobLeaseClient, error) {
 	con := newConnection(blobURL, cred, options)
-	c, _ := cred.(*SharedKeyCredential)
 
 	blobClient := BlobClient{
 		client: &blobClient{con, nil},
-		cred:   c,
+		cred:   cred,
 	}
 
 	if leaseID == nil {
-		leaseID = to.StringPtr(uuid.New().String())
+		generatedUuid, err := uuid.New()
+		if err != nil {
+			return BlobLeaseClient{}, err
+		}
+		leaseID = to.StringPtr(generatedUuid.String())
 	}
 
 	return BlobLeaseClient{
@@ -68,7 +71,10 @@ func (blc *BlobLeaseClient) ChangeLease(ctx context.Context, options *ChangeLeas
 	if blc.LeaseID == nil {
 		return BlobChangeLeaseResponse{}, errors.New("LeaseID cannot be nil")
 	}
-	proposedLeaseID, modifiedAccessConditions := options.pointers()
+	proposedLeaseID, modifiedAccessConditions, err := options.pointers()
+	if err != nil {
+		return BlobChangeLeaseResponse{}, err
+	}
 	resp, err := blc.client.ChangeLease(ctx, *blc.LeaseID, *proposedLeaseID, nil, modifiedAccessConditions)
 
 	// If lease has been changed successfully, set the LeaseID in client
@@ -99,28 +105,4 @@ func (blc *BlobLeaseClient) ReleaseLease(ctx context.Context, options *ReleaseLe
 	renewLeaseBlobOptions, modifiedAccessConditions := options.pointers()
 	resp, err := blc.client.ReleaseLease(ctx, *blc.LeaseID, renewLeaseBlobOptions, modifiedAccessConditions)
 	return resp, handleError(err)
-}
-
-type ContainerLeaseClient struct {
-	ContainerClient
-	LeaseID *string
-}
-
-func NewContainerLeaseClient(containerURL string, leaseID *string, cred azcore.Credential, options *connectionOptions) (ContainerLeaseClient, error) {
-	c, _ := cred.(*SharedKeyCredential)
-
-	containerClient := ContainerClient{
-		client: &containerClient{
-			con: newConnection(containerURL, cred, options),
-		}, cred: c,
-	}
-
-	if leaseID == nil {
-		leaseID = to.StringPtr(uuid.New().String())
-	}
-
-	return ContainerLeaseClient{
-		ContainerClient: containerClient,
-		LeaseID:         leaseID,
-	}, nil
 }

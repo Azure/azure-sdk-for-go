@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## `v57.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-08-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/preview/quota/mgmt/2021-03-15-preview/quota`
+- `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/v1.0/synapse`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
 ## `v57.1.0`
 
 ### New Packages

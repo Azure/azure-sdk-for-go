@@ -1,6 +1,7 @@
 package azservicebus
 
 import (
+	"log"
 	"os"
 	"testing"
 
@@ -8,7 +9,11 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	godotenv.Load()
+	err := godotenv.Load()
+
+	if err != nil {
+		log.Fatalf(".env file does not exist")
+	}
 
 	// call flag.Parse() here if TestMain uses flags
 	os.Exit(m.Run())

@@ -50,6 +50,7 @@ function Process-Sdk () {
     if ($tidy) {
         Write-Host "##[command]Executing go mod tidy in " $currentDirectory
         go mod tidy
+        if ($LASTEXITCODE) {exit $LASTEXITCODE}
     }
 
     if (!$skipBuild) {

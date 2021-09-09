@@ -276,7 +276,6 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 }
 
 func TestBodyKeySanitizer(t *testing.T) {
-	t.Skip()
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 	defer reset(t)
@@ -333,7 +332,6 @@ func TestBodyKeySanitizer(t *testing.T) {
 }
 
 func TestBodyRegexSanitizer(t *testing.T) {
-	t.Skip()
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 	defer reset(t)
@@ -442,4 +440,118 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 
 	require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "")
 	require.Equal(t, data.Entries[0].RequestHeaders["complexregexremove"], "")
+}
+
+func TestContinuationSanitizer(t *testing.T) {
+
+}
+
+func TestGeneralRegexSanitizer(t *testing.T) {
+	os.Setenv("AZURE_RECORD_MODE", "record")
+	defer os.Unsetenv("AZURE_RECORD_MODE")
+	defer reset(t)
+
+	err := ResetSanitizers(nil)
+	require.NoError(t, err)
+
+	err = StartRecording(t, packagePath, nil)
+	require.NoError(t, err)
+
+	client, err := GetHTTPClient(t)
+	require.NoError(t, err)
+
+	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
+	require.NoError(t, err)
+
+	req.Header.Set(UpstreamUriHeader, "https://jsonplaceholder.typicode.com/posts")
+	req.Header.Set(ModeHeader, GetRecordMode())
+	req.Header.Set(IdHeader, GetRecordingId(t))
+
+	err = AddGeneralRegexSanitizer("Sanitized", "sunt (<replace> aut) facere", "replace", nil)
+	require.NoError(t, err)
+
+	_, err = client.Do(req)
+	require.NoError(t, err)
+
+	require.NotNil(t, GetRecordingId(t))
+
+	err = StopRecording(t, nil)
+	require.NoError(t, err)
+
+	// Make sure the file is there
+	jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
+	require.NoError(t, err)
+	defer jsonFile.Close()
+
+	var data RecordingFileStruct
+	byteValue, err := ioutil.ReadAll(jsonFile)
+	require.NoError(t, err)
+	err = json.Unmarshal(byteValue, &data)
+	require.NoError(t, err)
+
+	// Header should be there because all sanitizers were removed
+	require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "https://fakeaccount.blob.core.windows.net")
+
+}
+
+func TestOAuthResponseSanitizer(t *testing.T) {
+
+}
+
+func TestReplaceRequestSubscriptionId(t *testing.T) {
+
+}
+
+func TestResetSanitizers(t *testing.T) {
+	os.Setenv("AZURE_RECORD_MODE", "record")
+	defer os.Unsetenv("AZURE_RECORD_MODE")
+	defer reset(t)
+
+	err := ResetSanitizers(nil)
+	require.NoError(t, err)
+
+	err = StartRecording(t, packagePath, nil)
+	require.NoError(t, err)
+
+	client, err := GetHTTPClient(t)
+	require.NoError(t, err)
+
+	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
+	require.NoError(t, err)
+
+	req.Header.Set(UpstreamUriHeader, "https://jsonplaceholder.typicode.com/posts/1")
+	req.Header.Set(ModeHeader, GetRecordMode())
+	req.Header.Set(IdHeader, GetRecordingId(t))
+	req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
+
+	// Add a sanitizer
+	err = AddRemoveHeaderSanitizer([]string{"FakeStorageLocation"}, nil)
+	require.NoError(t, err)
+
+	// Remove all sanitizers
+	err = ResetSanitizers(nil)
+	require.NoError(t, err)
+
+	resp, err := client.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	require.NotNil(t, GetRecordingId(t))
+
+	err = StopRecording(t, nil)
+	require.NoError(t, err)
+
+	// Make sure the file is there
+	jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
+	require.NoError(t, err)
+	defer jsonFile.Close()
+
+	var data RecordingFileStruct
+	byteValue, err := ioutil.ReadAll(jsonFile)
+	require.NoError(t, err)
+	err = json.Unmarshal(byteValue, &data)
+	require.NoError(t, err)
+
+	// Header should be there because all sanitizers were removed
+	require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "https://fakeaccount.blob.core.windows.net")
 }

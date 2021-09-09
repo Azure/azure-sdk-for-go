@@ -36,6 +36,7 @@ import (
 )
 
 const sessionFilterName = "com.microsoft:session-filter"
+const defaultLinkRxBuffer = 2048
 
 type (
 	// Receiver provides connection, session and link handling for a receiving to an entity path
@@ -455,6 +456,7 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 		amqp.LinkSourceAddress(r.entityPath),
 		amqp.LinkReceiverSettle(receiveMode),
 		amqp.LinkWithManualCredits(),
+		amqp.LinkCredit(defaultLinkRxBuffer),
 	}
 
 	if r.mode == ReceiveAndDeleteMode {

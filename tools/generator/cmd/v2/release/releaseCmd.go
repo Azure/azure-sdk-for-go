@@ -79,7 +79,7 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		PackageTitle:  flags.GetString(flagSet, "package-title"),
 		SDKRepo:       flags.GetString(flagSet, "sdk-repo"),
 		SwaggerRepo:   flags.GetString(flagSet, "spec-repo"),
-		SpecRPName:    flags.GetString(flagSet, "spec-folder-name"),
+		SpecRPName:    flags.GetString(flagSet, "spec-rp-name"),
 	}
 }
 
@@ -133,14 +133,20 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 	generateCtx := common.GenerateContext{
 		SDKPath:        sdkRepo.Root(),
 		SDKRepo:        &sdkRepo,
-		SpecPath:       "",
 		SpecCommitHash: specCommitHash,
+		SpecRepoURL:    c.flags.SwaggerRepo,
 	}
 
 	if c.flags.SpecRPName == "" {
 		c.flags.SpecRPName = c.rpName
 	}
-	result, err := generateCtx.GenerateForSingleRPNamespace(c.rpName, c.namespaceName, c.flags.PackageTitle, c.flags.VersionNumber, c.flags.SwaggerRepo, c.flags.SpecRPName)
+	result, err := generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{
+		RPName:              c.rpName,
+		NamespaceName:       c.namespaceName,
+		SpecficPackageTitle: c.flags.PackageTitle,
+		SpecficVersion:      c.flags.VersionNumber,
+		SpecRPName:          c.flags.SpecRPName,
+	})
 	if err != nil {
 		return fmt.Errorf("failed to finish release generation process: %+v", err)
 	}

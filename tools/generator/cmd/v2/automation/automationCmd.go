@@ -94,10 +94,9 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 	for _, readme := range input.RelatedReadmeMdFiles {
 		log.Printf("Start to process readme file: %s", readme)
 		generateCtx := common.GenerateContext{
-			SDKPath:        sdkRepo.Root(),
-			SDKRepo:        &sdkRepo,
-			SpecPath:       ctx.specRoot,
-			SpecCommitHash: "",
+			SDKPath:  sdkRepo.Root(),
+			SDKRepo:  &sdkRepo,
+			SpecPath: ctx.specRoot,
 		}
 
 		namespaceResults, errors := generateCtx.GenerateForAutomation(readme, input.RepoHTTPSURL)

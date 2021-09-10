@@ -69,7 +69,7 @@ type (
 		ctx context.Context
 	}
 
-	// Implemented by *Receiver
+	// LegacyReceiver is actually implemented by *Receiver
 	LegacyReceiver interface {
 		ReceiveOner
 
@@ -226,13 +226,13 @@ func (r *Receiver) ReceiveOne(ctx context.Context, handler Handler) error {
 	return nil
 }
 
-// AddCredit adds credits to the link that will be sent
+// IssueCredit adds credits to the link that will be sent
 // in the next flow frame.
 func (r *Receiver) IssueCredit(credits uint32) error {
 	return r.receiver.IssueCredit(credits)
 }
 
-// Drain will cause the next flow frame to have drain set to
+// DrainCredit will cause the next flow frame to have drain set to
 // true, with the current credits in the link.
 func (r *Receiver) DrainCredit(ctx context.Context) error {
 	return r.receiver.DrainCredit(ctx)
@@ -254,24 +254,31 @@ func (r *Receiver) Listen(ctx context.Context, handler Handler) ListenerHandle {
 	}
 }
 
+// CompleteMessage will complete a message, causing it to be removed
+// from the remote queue or subscription.
 // NOTE: added to make mocking a bit simpler for the processor.
 func (r *Receiver) CompleteMessage(ctx context.Context, message *Message) error {
 	return message.Complete(ctx)
 }
 
+// AbandonMessage will abandon a message, causing it to be available to
+// the remote queue or subscription.
 // NOTE: added to make mocking a bit simpler for the processor.
 func (r *Receiver) AbandonMessage(ctx context.Context, message *Message) error {
 	return message.Abandon(ctx)
 }
 
+// Session returns the underlying *amqp.Session struct in `r.session.Session`.
 func (r *Receiver) Session() *amqp.Session {
 	return r.session.Session
 }
 
+// Client returns the underlying *amqp.Client struct in `r.client`.
 func (r *Receiver) Client() *amqp.Client {
 	return r.client
 }
 
+// SessionID returns the sessionID in `r.sessionID`.
 func (r *Receiver) SessionID() *string {
 	return r.sessionID
 }
@@ -510,6 +517,8 @@ func messageID(msg *amqp.Message) interface{} {
 	return id
 }
 
+// ListenerHandle is the handle that you can use to wait on a `Listen`
+// call to complete. It is extremely similar to a `context.Context`.
 type ListenerHandle interface {
 	Done() <-chan struct{}
 	Err() error

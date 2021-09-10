@@ -6,7 +6,7 @@ import (
 )
 
 // WaitForGroupOrContext will wait for wg or the context to complete.
-func WaitForGroupOrContext(wg *sync.WaitGroup, ctx context.Context) error {
+func WaitForGroupOrContext(ctx context.Context, wg *sync.WaitGroup) error {
 	done := make(chan struct{})
 
 	go func() {

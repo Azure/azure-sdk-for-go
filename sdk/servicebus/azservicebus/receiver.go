@@ -10,20 +10,32 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 )
 
+// ReceiveMode represents the lock style to use for a reciever - either
+// `PeekLock` or `ReceiveAndDelete`
 type ReceiveMode int
 
 const (
-	PeekLock         ReceiveMode = 0
+	// PeekLock will lock messages as they are received and can be settled
+	// using the Receiver or Processor's (Complete|Abandon|DeadLetter|Defer)Message
+	// functions.
+	PeekLock ReceiveMode = 0
+	// ReceiveAndDelete will delete messages as they are received.
 	ReceiveAndDelete ReceiveMode = 1
 )
 
+// SubQueue allows you to target a subqueue of a queue or subscription.
+// Ex: the dead letter queue (SubQueueDeadLetter).
 type SubQueue string
 
 const (
+	// SubQueueDeadLetter targets the dead letter queue for a queue or subscription.
 	SubQueueDeadLetter = "deadLetter"
-	SubQueueTransfer   = "transferDeadLetter"
+	// SubQueueTransfer targets the transfer dead letter queue for a queue or subscription.
+	SubQueueTransfer = "transferDeadLetter"
 )
 
+// Receiver receives messages using pull based functions (ReceiveMessages).
+// For push-based receiving via callbacks look at the `Processor` type.
 type Receiver struct {
 	config struct {
 		ReceiveMode    ReceiveMode
@@ -43,6 +55,10 @@ type Receiver struct {
 	linkState *linkState
 }
 
+// ReceiverOption represents an option for a receiver.
+// Some examples:
+// - `ReceiverWithReceiveMode` to configure the receive mode,
+// - `ReceiverWithQueue` to target a queue.
 type ReceiverOption func(receiver *Receiver) error
 
 // ReceiverWithSubQueue allows you to open the sub queue (ie: dead letter queues, transfer dead letter queues)
@@ -74,6 +90,7 @@ func ReceiverWithReceiveMode(receiveMode ReceiveMode) ReceiverOption {
 	}
 }
 
+// ReceiverWithQueue configures a receiver to connect to a queue.
 func ReceiverWithQueue(queue string) ReceiverOption {
 	return func(receiver *Receiver) error {
 		receiver.config.Entity.Queue = queue
@@ -81,6 +98,8 @@ func ReceiverWithQueue(queue string) ReceiverOption {
 	}
 }
 
+// ReceiverWithSubscription configures a receiver to connect to a subscription
+// associated with a topic.
 func ReceiverWithSubscription(topic string, subscription string) ReceiverOption {
 	return func(receiver *Receiver) error {
 		receiver.config.Entity.Topic = topic
@@ -122,11 +141,15 @@ func newReceiver(ns legacyNamespace, options ...ReceiverOption) (*Receiver, erro
 	return receiver, nil
 }
 
+// ReceiveOptions are options for the ReceiveMessages function.
 type ReceiveOptions struct {
 	maxWaitTime                  time.Duration
 	maxWaitTimeAfterFirstMessage time.Duration
 }
 
+// ReceiveOption represents an option for a `ReceiveMessages`.
+// For example, `ReceiveWithMaxWaitTime` will let you configure the
+// maxmimum amount of time to wait for messages to arrive.
 type ReceiveOption func(options *ReceiveOptions) error
 
 // ReceiveWithMaxWaitTime configures how long to wait for the first
@@ -225,23 +248,32 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, numMessages int, options
 	return messages, err
 }
 
+// CompleteMessage completes a message, deleting it from the queue or subscription.
 func (r *Receiver) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
 	return message.legacyMessage.Complete(ctx)
 }
 
+// DeadLetterMessage settles a message by moving it to the dead letter queue for a
+// queue or subscription.
 func (r *Receiver) DeadLetterMessage(ctx context.Context, message *ReceivedMessage) error {
 	// TODO: expand to let them set the reason and description.
 	return message.legacyMessage.DeadLetter(ctx, nil)
 }
 
+// AbandonMessage will cause a message to be returned to the queue or subscription.
+// This will increment its delivery count, and potentially cause it to be dead lettered
+// depending on your queue or subscription's configuration.
 func (r *Receiver) AbandonMessage(ctx context.Context, message *ReceivedMessage) error {
 	return message.legacyMessage.Abandon(ctx)
 }
 
+// DeferMessage will cause a message to be deferred.
+// Messages that are deferred by can be retrieved using `Receiver.ReceiveDeferredMessages()`.
 func (r *Receiver) DeferMessage(ctx context.Context, message *ReceivedMessage) error {
 	return message.legacyMessage.Defer(ctx)
 }
 
+// Close permanently closes the receiver.
 func (r *Receiver) Close(ctx context.Context) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()

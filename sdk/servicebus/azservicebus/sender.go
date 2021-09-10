@@ -43,6 +43,7 @@ func (s *Sender) SendMessage(ctx context.Context, message *Message) error {
 	})
 }
 
+// Close permanently closes the Sender.
 func (s *Sender) Close(ctx context.Context) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()

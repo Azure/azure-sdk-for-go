@@ -53,6 +53,10 @@ type Processor struct {
 		notifyError func(err error)) bool
 }
 
+// ProcessorOption represents an option on the Processor.
+// Some examples:
+// - `ProcessorWithReceiveMode` to configure the receive mode,
+// - `ProcessorWithQueue` to target a queue.
 type ProcessorOption func(processor *Processor) error
 
 // ProcessorWithSubQueue allows you to open the sub queue (ie: dead letter queues, transfer dead letter queues)
@@ -84,6 +88,7 @@ func ProcessorWithReceiveMode(receiveMode ReceiveMode) ProcessorOption {
 	}
 }
 
+// ProcessorWithQueue configures a processor to connect to a queue.
 func ProcessorWithQueue(queue string) ProcessorOption {
 	return func(processor *Processor) error {
 		processor.config.Entity.Queue = queue
@@ -91,6 +96,8 @@ func ProcessorWithQueue(queue string) ProcessorOption {
 	}
 }
 
+// ProcessorWithSubscription configures a processor to connect to a subscription
+// associated with a topic.
 func ProcessorWithSubscription(topic string, subscription string) ProcessorOption {
 	return func(processor *Processor) error {
 		processor.config.Entity.Topic = topic
@@ -217,9 +224,9 @@ func (p *Processor) Start(handleMessage func(message *ReceivedMessage) error, ha
 
 				if retry {
 					return true, amqpCommon.Retryable("")
-				} else {
-					return false, nil
 				}
+
+				return false, nil
 			})
 
 			if !retry.(bool) {
@@ -250,7 +257,7 @@ func (p *Processor) Close(ctx context.Context) error {
 
 	p.cancelReceivers()
 
-	err := utils.WaitForGroupOrContext(p.activeReceiversWg, ctx)
+	err := utils.WaitForGroupOrContext(ctx, p.activeReceiversWg)
 
 	// now unlock anyone _external_ to the processor that's waiting for us to exit or close.
 	p.cancelProcessor()
@@ -331,19 +338,27 @@ func handleSingleMessage(handleMessage func(message *ReceivedMessage) error, not
 // callback. You need some sort of association or else you have to track message <-> receiver mappings.
 //
 
+// CompleteMessage completes a message, deleting it from the queue or subscription.
 func (p *Processor) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
 	return message.legacyMessage.Complete(ctx)
 }
 
+// DeadLetterMessage settles a message by moving it to the dead letter queue for a
+// queue or subscription.
 func (p *Processor) DeadLetterMessage(ctx context.Context, message *ReceivedMessage) error {
 	// TODO: expand to let them set the reason and description.
 	return message.legacyMessage.DeadLetter(ctx, nil)
 }
 
+// AbandonMessage will cause a message to be returned to the queue or subscription.
+// This will increment its delivery count, and potentially cause it to be dead lettered
+// depending on your queue or subscription's configuration.
 func (p *Processor) AbandonMessage(ctx context.Context, message *ReceivedMessage) error {
 	return message.legacyMessage.Abandon(ctx)
 }
 
+// DeferMessage will cause a message to be deferred.
+// Messages that are deferred by can be retrieved using `Receiver.ReceiveDeferredMessages()`.
 func (p *Processor) DeferMessage(ctx context.Context, message *ReceivedMessage) error {
 	return message.legacyMessage.Defer(ctx)
 }

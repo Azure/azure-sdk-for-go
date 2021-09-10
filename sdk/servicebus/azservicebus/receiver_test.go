@@ -199,7 +199,7 @@ func TestReceiverUnitTests(t *testing.T) {
 		ns.NextReceiver = internal.NewFakeLegacyReceiver()
 
 		ns.NextReceiver.CloseImpl = func(ctx context.Context) error {
-			return errors.New("Close failed!")
+			return errors.New("close failed")
 		}
 
 		receiver, err := newReceiver(ns, ReceiverWithSubscription("topic", "subscription"))
@@ -217,7 +217,7 @@ func TestReceiverUnitTests(t *testing.T) {
 		require.Empty(t, messages)
 
 		err = receiver.Close(context.Background())
-		require.EqualError(t, err, "Close failed!")
+		require.EqualError(t, err, "close failed")
 	})
 
 	// If an error occurs and we have some messages accumulated in our internal

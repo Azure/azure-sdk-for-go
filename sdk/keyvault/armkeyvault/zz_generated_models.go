@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,9 +10,10 @@ package armkeyvault
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AccessPolicyEntry - An identity that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant
@@ -31,22 +33,87 @@ type AccessPolicyEntry struct {
 	ApplicationID *string `json:"applicationId,omitempty"`
 }
 
+type Action struct {
+	// The type of action.
+	Type *KeyRotationPolicyActionType `json:"type,omitempty"`
+}
+
 // Attributes - The object attributes managed by the KeyVault service.
 type Attributes struct {
 	// Determines whether the object is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
 
 	// Expiry date in seconds since 1970-01-01T00:00:00Z.
-	Expires *int64 `json:"exp,omitempty"`
+	Expires *time.Time `json:"exp,omitempty"`
 
 	// Not before date in seconds since 1970-01-01T00:00:00Z.
-	NotBefore *int64 `json:"nbf,omitempty"`
+	NotBefore *time.Time `json:"nbf,omitempty"`
 
 	// READ-ONLY; Creation time in seconds since 1970-01-01T00:00:00Z.
-	Created *int64 `json:"created,omitempty" azure:"ro"`
+	Created *time.Time `json:"created,omitempty" azure:"ro"`
 
 	// READ-ONLY; Last updated time in seconds since 1970-01-01T00:00:00Z.
-	Updated *int64 `json:"updated,omitempty" azure:"ro"`
+	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Attributes.
+func (a Attributes) MarshalJSON() ([]byte, error) {
+	objectMap := a.marshalInternal()
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type Attributes.
+func (a *Attributes) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	return a.unmarshalInternal(rawMsg)
+}
+
+func (a Attributes) marshalInternal() map[string]interface{} {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "created", (*timeUnix)(a.Created))
+	populate(objectMap, "enabled", a.Enabled)
+	populate(objectMap, "exp", (*timeUnix)(a.Expires))
+	populate(objectMap, "nbf", (*timeUnix)(a.NotBefore))
+	populate(objectMap, "updated", (*timeUnix)(a.Updated))
+	return objectMap
+}
+
+func (a *Attributes) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "created":
+			var aux timeUnix
+			err = unpopulate(val, &aux)
+			a.Created = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "enabled":
+			err = unpopulate(val, &a.Enabled)
+			delete(rawMsg, key)
+		case "exp":
+			var aux timeUnix
+			err = unpopulate(val, &aux)
+			a.Expires = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "nbf":
+			var aux timeUnix
+			err = unpopulate(val, &aux)
+			a.NotBefore = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "updated":
+			var aux timeUnix
+			err = unpopulate(val, &aux)
+			a.Updated = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // CheckNameAvailabilityResult - The CheckNameAvailability operation response.
@@ -320,6 +387,160 @@ type Error struct {
 type IPRule struct {
 	// REQUIRED; An IPv4 address range in CIDR notation, such as '124.56.78.91' (simple IP address) or '124.56.78.0/24' (all addresses that start with 124.56.78).
 	Value *string `json:"value,omitempty"`
+}
+
+// Key - The key resource.
+type Key struct {
+	Resource
+	// REQUIRED; The properties of the key.
+	Properties *KeyProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type Key.
+func (k Key) MarshalJSON() ([]byte, error) {
+	objectMap := k.Resource.marshalInternal()
+	populate(objectMap, "properties", k.Properties)
+	return json.Marshal(objectMap)
+}
+
+// KeyAttributes - The object attributes managed by the Azure Key Vault service.
+type KeyAttributes struct {
+	// Determines whether or not the object is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Expiry date in seconds since 1970-01-01T00:00:00Z.
+	Expires *int64 `json:"exp,omitempty"`
+
+	// Not before date in seconds since 1970-01-01T00:00:00Z.
+	NotBefore *int64 `json:"nbf,omitempty"`
+
+	// READ-ONLY; Creation time in seconds since 1970-01-01T00:00:00Z.
+	Created *int64 `json:"created,omitempty" azure:"ro"`
+
+	// READ-ONLY; The deletion recovery level currently in effect for the object. If it contains 'Purgeable', then the object can be permanently deleted by
+	// a privileged user; otherwise, only the system can purge the
+	// object at the end of the retention interval.
+	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last updated time in seconds since 1970-01-01T00:00:00Z.
+	Updated *int64 `json:"updated,omitempty" azure:"ro"`
+}
+
+// KeyCreateParameters - The parameters used to create a key.
+type KeyCreateParameters struct {
+	// REQUIRED; The properties of the key to be created.
+	Properties *KeyProperties `json:"properties,omitempty"`
+
+	// The tags that will be assigned to the key.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type KeyCreateParameters.
+func (k KeyCreateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "properties", k.Properties)
+	populate(objectMap, "tags", k.Tags)
+	return json.Marshal(objectMap)
+}
+
+// KeyListResult - The page of keys.
+type KeyListResult struct {
+	// The URL to get the next page of keys.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// The key resources.
+	Value []*Key `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type KeyListResult.
+func (k KeyListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", k.NextLink)
+	populate(objectMap, "value", k.Value)
+	return json.Marshal(objectMap)
+}
+
+// KeyProperties - The properties of the key.
+type KeyProperties struct {
+	// The attributes of the key.
+	Attributes *KeyAttributes `json:"attributes,omitempty"`
+
+	// The elliptic curve name. For valid values, see JsonWebKeyCurveName.
+	CurveName *JSONWebKeyCurveName   `json:"curveName,omitempty"`
+	KeyOps    []*JSONWebKeyOperation `json:"keyOps,omitempty"`
+
+	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
+	KeySize *int32 `json:"keySize,omitempty"`
+
+	// The type of the key. For valid values, see JsonWebKeyType.
+	Kty *JSONWebKeyType `json:"kty,omitempty"`
+
+	// Key rotation policy in response. It will be used for both output and input. Omitted if empty
+	RotationPolicy *RotationPolicy `json:"rotationPolicy,omitempty"`
+
+	// READ-ONLY; The URI to retrieve the current version of the key.
+	KeyURI *string `json:"keyUri,omitempty" azure:"ro"`
+
+	// READ-ONLY; The URI to retrieve the specific version of the key.
+	KeyURIWithVersion *string `json:"keyUriWithVersion,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type KeyProperties.
+func (k KeyProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "attributes", k.Attributes)
+	populate(objectMap, "curveName", k.CurveName)
+	populate(objectMap, "keyOps", k.KeyOps)
+	populate(objectMap, "keySize", k.KeySize)
+	populate(objectMap, "keyUri", k.KeyURI)
+	populate(objectMap, "keyUriWithVersion", k.KeyURIWithVersion)
+	populate(objectMap, "kty", k.Kty)
+	populate(objectMap, "rotationPolicy", k.RotationPolicy)
+	return json.Marshal(objectMap)
+}
+
+type KeyRotationPolicyAttributes struct {
+	// The expiration time for the new key version. It should be in ISO8601 format. Eg: 'P90D', 'P1Y'.
+	ExpiryTime *string `json:"expiryTime,omitempty"`
+
+	// READ-ONLY; Creation time in seconds since 1970-01-01T00:00:00Z.
+	Created *int64 `json:"created,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last updated time in seconds since 1970-01-01T00:00:00Z.
+	Updated *int64 `json:"updated,omitempty" azure:"ro"`
+}
+
+// KeysCreateIfNotExistOptions contains the optional parameters for the Keys.CreateIfNotExist method.
+type KeysCreateIfNotExistOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KeysGetOptions contains the optional parameters for the Keys.Get method.
+type KeysGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KeysGetVersionOptions contains the optional parameters for the Keys.GetVersion method.
+type KeysGetVersionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KeysListOptions contains the optional parameters for the Keys.List method.
+type KeysListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KeysListVersionsOptions contains the optional parameters for the Keys.ListVersions method.
+type KeysListVersionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+type LifetimeAction struct {
+	// The action of key rotation policy lifetimeAction.
+	Action *Action `json:"action,omitempty"`
+
+	// The trigger of key rotation policy lifetimeAction.
+	Trigger *Trigger `json:"trigger,omitempty"`
 }
 
 // LogSpecification - Log specification of operation.
@@ -1147,6 +1368,22 @@ func (r ResourceListResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+type RotationPolicy struct {
+	// The attributes of key rotation policy.
+	Attributes *KeyRotationPolicyAttributes `json:"attributes,omitempty"`
+
+	// The lifetimeActions for key rotation action.
+	LifetimeActions []*LifetimeAction `json:"lifetimeActions,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RotationPolicy.
+func (r RotationPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "attributes", r.Attributes)
+	populate(objectMap, "lifetimeActions", r.LifetimeActions)
+	return json.Marshal(objectMap)
+}
+
 // SKU details
 type SKU struct {
 	// REQUIRED; SKU family name
@@ -1368,6 +1605,14 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+type Trigger struct {
+	// The time duration after key creation to rotate the key. It should be in ISO8601 format. Eg: 'P90D', 'P1Y'.
+	TimeAfterCreate *string `json:"timeAfterCreate,omitempty"`
+
+	// The time duration before key expiring to rotate the key. It should be in ISO8601 format. Eg: 'P90D', 'P1Y'.
+	TimeBeforeExpiry *string `json:"timeBeforeExpiry,omitempty"`
+}
+
 // Vault - Resource information with extended details.
 type Vault struct {
 	// REQUIRED; Properties of the vault
@@ -1538,6 +1783,11 @@ type VaultPatchProperties struct {
 	// A collection of rules governing the accessibility of the vault from specific network locations.
 	NetworkACLs *NetworkRuleSet `json:"networkAcls,omitempty"`
 
+	// Property to specify whether the vault will accept traffic from public internet. If set to 'disabled' all traffic except private endpoint traffic and
+	// that that originates from trusted services will be
+	// blocked. This will override the set firewall rules, meaning that even if the firewall rules are present we will not honor the rules.
+	PublicNetworkAccess *string `json:"publicNetworkAccess,omitempty"`
+
 	// SKU details
 	SKU *SKU `json:"sku,omitempty"`
 
@@ -1560,6 +1810,7 @@ func (v VaultPatchProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "enabledForDiskEncryption", v.EnabledForDiskEncryption)
 	populate(objectMap, "enabledForTemplateDeployment", v.EnabledForTemplateDeployment)
 	populate(objectMap, "networkAcls", v.NetworkACLs)
+	populate(objectMap, "publicNetworkAccess", v.PublicNetworkAccess)
 	populate(objectMap, "sku", v.SKU)
 	populate(objectMap, "softDeleteRetentionInDays", v.SoftDeleteRetentionInDays)
 	populate(objectMap, "tenantId", v.TenantID)
@@ -1617,6 +1868,11 @@ type VaultProperties struct {
 	// Provisioning state of the vault.
 	ProvisioningState *VaultProvisioningState `json:"provisioningState,omitempty"`
 
+	// Property to specify whether the vault will accept traffic from public internet. If set to 'disabled' all traffic except private endpoint traffic and
+	// that that originates from trusted services will be
+	// blocked. This will override the set firewall rules, meaning that even if the firewall rules are present we will not honor the rules.
+	PublicNetworkAccess *string `json:"publicNetworkAccess,omitempty"`
+
 	// softDelete data retention days. It accepts >=7 and <=90.
 	SoftDeleteRetentionInDays *int32 `json:"softDeleteRetentionInDays,omitempty"`
 
@@ -1645,6 +1901,7 @@ func (v VaultProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "networkAcls", v.NetworkACLs)
 	populate(objectMap, "privateEndpointConnections", v.PrivateEndpointConnections)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
+	populate(objectMap, "publicNetworkAccess", v.PublicNetworkAccess)
 	populate(objectMap, "sku", v.SKU)
 	populate(objectMap, "softDeleteRetentionInDays", v.SoftDeleteRetentionInDays)
 	populate(objectMap, "tenantId", v.TenantID)

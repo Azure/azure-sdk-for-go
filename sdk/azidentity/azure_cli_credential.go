@@ -16,27 +16,29 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// AzureCLITokenProvider can be used to supply the AzureCLICredential with an alternate token provider
-type AzureCLITokenProvider func(ctx context.Context, resource string) ([]byte, error)
+// used by tests to fake invoking the CLI
+type azureCLITokenProvider func(ctx context.Context, resource string) ([]byte, error)
 
 // AzureCLICredentialOptions contains options used to configure the AzureCLICredential
 // All zero-value fields will be initialized with their default values.
 type AzureCLICredentialOptions struct {
-	TokenProvider AzureCLITokenProvider
+	tokenProvider azureCLITokenProvider
 }
 
 // init returns an instance of AzureCLICredentialOptions initialized with default values.
 func (o *AzureCLICredentialOptions) init() {
-	if o.TokenProvider == nil {
-		o.TokenProvider = defaultTokenProvider()
+	if o.tokenProvider == nil {
+		o.tokenProvider = defaultTokenProvider()
 	}
 }
 
 // AzureCLICredential enables authentication to Azure Active Directory using the Azure CLI command "az account get-access-token".
 type AzureCLICredential struct {
-	tokenProvider AzureCLITokenProvider
+	tokenProvider azureCLITokenProvider
 }
 
 // NewAzureCLICredential constructs a new AzureCLICredential with the details needed to authenticate against Azure Active Directory
@@ -48,7 +50,7 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 	}
 	cp.init()
 	return &AzureCLICredential{
-		tokenProvider: cp.TokenProvider,
+		tokenProvider: cp.tokenProvider,
 	}, nil
 }
 
@@ -56,7 +58,7 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 // ctx: Context used to control the request lifetime.
 // opts: TokenRequestOptions contains the list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
-func (c *AzureCLICredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	// The following code will remove the /.default suffix from the scope passed into the method since AzureCLI expect a resource string instead of a scope string
 	opts.Scopes[0] = strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
 	at, err := c.authenticate(ctx, opts.Scopes[0])
@@ -68,8 +70,8 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts azcore.TokenRequ
 	return at, nil
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential.
-func (c *AzureCLICredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
+// NewAuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential.
+func (c *AzureCLICredential) NewAuthenticationPolicy(options azruntime.AuthenticationOptions) policy.Policy {
 	return newBearerTokenPolicy(c, options)
 }
 
@@ -100,7 +102,7 @@ func defaultTokenProvider() func(ctx context.Context, resource string) ([]byte, 
 		const azureCLIDefaultPath = "/bin:/sbin:/usr/bin:/usr/local/bin"
 
 		// Validate resource, since it gets sent as a command line argument to Azure CLI
-		const invalidResourceErrorTemplate = "Resource %s is not in expected format. Only alphanumeric characters, [dot], [colon], [hyphen], and [forward slash] are allowed."
+		const invalidResourceErrorTemplate = "resource %s is not in expected format. Only alphanumeric characters, [dot], [colon], [hyphen], and [forward slash] are allowed"
 		match, err := regexp.MatchString("^[0-9a-zA-Z-.:/]+$", resource)
 		if err != nil {
 			return nil, err
@@ -188,3 +190,5 @@ func parseExpirationDate(input string) (*time.Time, error) {
 	}
 	return &expirationDate, nil
 }
+
+var _ azcore.TokenCredential = (*AzureCLICredential)(nil)

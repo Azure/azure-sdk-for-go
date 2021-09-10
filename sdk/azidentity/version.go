@@ -1,3 +1,4 @@
+//go:build go1.13
 // +build go1.13
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -7,8 +8,8 @@ package azidentity
 
 const (
 	// UserAgent is the string to be used in the user agent string when making requests.
-	UserAgent = "azidentity/" + Version
+	component = "azidentity"
 
 	// Version is the semantic version (see http://semver.org) of this module.
-	Version = "v0.9.2"
+	version = "v0.11.0"
 )

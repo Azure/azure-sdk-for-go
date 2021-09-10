@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -8,9 +9,11 @@
 
 package computeapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute/computeapi"
+import original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-07-01/compute/computeapi"
 
 type AvailabilitySetsClientAPI = original.AvailabilitySetsClientAPI
+type CapacityReservationGroupsClientAPI = original.CapacityReservationGroupsClientAPI
+type CapacityReservationsClientAPI = original.CapacityReservationsClientAPI
 type CloudServiceOperatingSystemsClientAPI = original.CloudServiceOperatingSystemsClientAPI
 type CloudServiceRoleInstancesClientAPI = original.CloudServiceRoleInstancesClientAPI
 type CloudServiceRolesClientAPI = original.CloudServiceRolesClientAPI

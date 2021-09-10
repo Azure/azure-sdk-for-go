@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -42,9 +43,7 @@ func defaultSanitizer(recorder *recorder.Recorder) *Sanitizer {
 
 // AddSanitizedHeaders adds the supplied header names to the list of headers to be sanitized on request and response recordings.
 func (s *Sanitizer) AddSanitizedHeaders(headers ...string) {
-	for _, headerName := range headers {
-		s.headersToSanitize = append(s.headersToSanitize, headerName)
-	}
+	s.headersToSanitize = append(s.headersToSanitize, headers...)
 }
 
 // AddBodysanitizer configures the supplied StringSanitizer to sanitize recording request and response bodies

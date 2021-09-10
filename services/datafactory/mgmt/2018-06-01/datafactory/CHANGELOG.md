@@ -1,249 +1,627 @@
 # Change History
 
-## Breaking Changes
-
-### Removed Constants
-
-1. AuthenticationType.AuthenticationTypeAuthenticationTypeAnonymous
-1. AuthenticationType.AuthenticationTypeAuthenticationTypeBasic
-1. AuthenticationType.AuthenticationTypeAuthenticationTypeClientCertificate
-1. AuthenticationType.AuthenticationTypeAuthenticationTypeWebLinkedServiceTypeProperties
-1. AuthorizationType.AuthorizationTypeAuthorizationTypeKey
-1. AuthorizationType.AuthorizationTypeAuthorizationTypeLinkedIntegrationRuntimeType
-1. AuthorizationType.AuthorizationTypeAuthorizationTypeRBAC
-1. Type.TypeTypeAzureKeyVaultSecret
-1. Type.TypeTypeSecretBase
-1. Type.TypeTypeSecureString
-
-### Signature Changes
-
-#### Struct Fields
-
-1. CommonDataServiceForAppsLinkedServiceTypeProperties.AuthenticationType changed type from DynamicsAuthenticationType to interface{}
-1. CommonDataServiceForAppsLinkedServiceTypeProperties.DeploymentType changed type from DynamicsDeploymentType to interface{}
-1. DynamicsCrmLinkedServiceTypeProperties.AuthenticationType changed type from DynamicsAuthenticationType to interface{}
-1. DynamicsCrmLinkedServiceTypeProperties.DeploymentType changed type from DynamicsDeploymentType to interface{}
-1. JSONWriteSettings.FilePattern changed type from JSONWriteFilePattern to interface{}
-
 ## Additive Changes
 
 ### New Constants
 
-1. AuthenticationType.AuthenticationTypeAnonymous
-1. AuthenticationType.AuthenticationTypeBasic
-1. AuthenticationType.AuthenticationTypeClientCertificate
-1. AuthenticationType.AuthenticationTypeWebLinkedServiceTypeProperties
-1. AuthorizationType.AuthorizationTypeKey
-1. AuthorizationType.AuthorizationTypeLinkedIntegrationRuntimeType
-1. AuthorizationType.AuthorizationTypeRBAC
-1. CompressionCodec.CompressionCodecBzip2
-1. CompressionCodec.CompressionCodecDeflate
-1. CompressionCodec.CompressionCodecGzip
-1. CompressionCodec.CompressionCodecLz4
-1. CompressionCodec.CompressionCodecLzo
-1. CompressionCodec.CompressionCodecNone
-1. CompressionCodec.CompressionCodecSnappy
-1. CompressionCodec.CompressionCodecTar
-1. CompressionCodec.CompressionCodecTarGZip
-1. CompressionCodec.CompressionCodecZipDeflate
-1. DatasetCompressionLevel.DatasetCompressionLevelFastest
-1. DatasetCompressionLevel.DatasetCompressionLevelOptimal
-1. HdiNodeTypes.HdiNodeTypesHeadnode
-1. HdiNodeTypes.HdiNodeTypesWorkernode
-1. HdiNodeTypes.HdiNodeTypesZookeeper
-1. IntegrationRuntimeEntityReferenceType.IntegrationRuntimeEntityReferenceTypeCredentialReference
-1. JSONFormatFilePattern.JSONFormatFilePatternArrayOfObjects
-1. JSONFormatFilePattern.JSONFormatFilePatternSetOfObjects
-1. ServicePrincipalCredentialType.ServicePrincipalCredentialTypeServicePrincipalCert
-1. ServicePrincipalCredentialType.ServicePrincipalCredentialTypeServicePrincipalKey
-1. Type.TypeAzureKeyVaultSecret
-1. Type.TypeSecretBase
-1. Type.TypeSecureString
+1. SQLAlwaysEncryptedAkvAuthType.SQLAlwaysEncryptedAkvAuthTypeUserAssignedManagedIdentity
+1. TypeBasicCopySource.TypeBasicCopySourceTypeAmazonRdsForSQLServerSource
+1. TypeBasicDataset.TypeBasicDatasetTypeAmazonRdsForSQLServerTable
+1. TypeBasicLinkedService.TypeBasicLinkedServiceTypeAmazonRdsForSQLServer
 
 ### New Funcs
 
-1. ArmIDWrapper.MarshalJSON() ([]byte, error)
-1. ConnectionStateProperties.MarshalJSON() ([]byte, error)
-1. ExposureControlResponse.MarshalJSON() ([]byte, error)
-1. IntegrationRuntimeNodeIPAddress.MarshalJSON() ([]byte, error)
-1. LinkedIntegrationRuntime.MarshalJSON() ([]byte, error)
-1. ManagedIntegrationRuntimeError.MarshalJSON() ([]byte, error)
-1. ManagedIntegrationRuntimeOperationResult.MarshalJSON() ([]byte, error)
-1. ManagedIntegrationRuntimeStatusTypeProperties.MarshalJSON() ([]byte, error)
-1. PipelineRunInvokedBy.MarshalJSON() ([]byte, error)
-1. PossibleCompressionCodecValues() []CompressionCodec
-1. PossibleDatasetCompressionLevelValues() []DatasetCompressionLevel
-1. PossibleHdiNodeTypesValues() []HdiNodeTypes
-1. PossibleJSONFormatFilePatternValues() []JSONFormatFilePattern
-1. PossibleServicePrincipalCredentialTypeValues() []ServicePrincipalCredentialType
-1. PrivateLinkResourceProperties.MarshalJSON() ([]byte, error)
-1. SubResource.MarshalJSON() ([]byte, error)
-1. TriggerSubscriptionOperationStatus.MarshalJSON() ([]byte, error)
+1. *AmazonRdsForSQLServerLinkedService.UnmarshalJSON([]byte) error
+1. *AmazonRdsForSQLServerLinkedServiceTypeProperties.UnmarshalJSON([]byte) error
+1. *AmazonRdsForSQLServerSource.UnmarshalJSON([]byte) error
+1. *AmazonRdsForSQLServerTableDataset.UnmarshalJSON([]byte) error
+1. AmazonMWSLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AmazonMWSObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AmazonMWSSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. AmazonRdsForOracleLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AmazonRdsForOracleSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. AmazonRdsForOracleTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAmazonMWSLinkedService() (*AmazonMWSLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAmazonRdsForOracleLinkedService() (*AmazonRdsForOracleLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAmazonRedshiftLinkedService() (*AmazonRedshiftLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAmazonS3CompatibleLinkedService() (*AmazonS3CompatibleLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAmazonS3LinkedService() (*AmazonS3LinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureBatchLinkedService() (*AzureBatchLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureBlobFSLinkedService() (*AzureBlobFSLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureBlobStorageLinkedService() (*AzureBlobStorageLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureDataExplorerLinkedService() (*AzureDataExplorerLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureDataLakeAnalyticsLinkedService() (*AzureDataLakeAnalyticsLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureDataLakeStoreLinkedService() (*AzureDataLakeStoreLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureDatabricksDeltaLakeLinkedService() (*AzureDatabricksDeltaLakeLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureDatabricksLinkedService() (*AzureDatabricksLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureFileStorageLinkedService() (*AzureFileStorageLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureFunctionLinkedService() (*AzureFunctionLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureKeyVaultLinkedService() (*AzureKeyVaultLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureMLLinkedService() (*AzureMLLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureMLServiceLinkedService() (*AzureMLServiceLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureMariaDBLinkedService() (*AzureMariaDBLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureMySQLLinkedService() (*AzureMySQLLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzurePostgreSQLLinkedService() (*AzurePostgreSQLLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureSQLDWLinkedService() (*AzureSQLDWLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureSQLDatabaseLinkedService() (*AzureSQLDatabaseLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureSQLMILinkedService() (*AzureSQLMILinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureSearchLinkedService() (*AzureSearchLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureStorageLinkedService() (*AzureStorageLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsAzureTableStorageLinkedService() (*AzureTableStorageLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsBasicLinkedService() (BasicLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsCassandraLinkedService() (*CassandraLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsCommonDataServiceForAppsLinkedService() (*CommonDataServiceForAppsLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsConcurLinkedService() (*ConcurLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsCosmosDbLinkedService() (*CosmosDbLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsCosmosDbMongoDbAPILinkedService() (*CosmosDbMongoDbAPILinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsCouchbaseLinkedService() (*CouchbaseLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsCustomDataSourceLinkedService() (*CustomDataSourceLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsDb2LinkedService() (*Db2LinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsDrillLinkedService() (*DrillLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsDynamicsAXLinkedService() (*DynamicsAXLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsDynamicsCrmLinkedService() (*DynamicsCrmLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsDynamicsLinkedService() (*DynamicsLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsEloquaLinkedService() (*EloquaLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsFileServerLinkedService() (*FileServerLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsFtpServerLinkedService() (*FtpServerLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsGoogleAdWordsLinkedService() (*GoogleAdWordsLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsGoogleBigQueryLinkedService() (*GoogleBigQueryLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsGoogleCloudStorageLinkedService() (*GoogleCloudStorageLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsGreenplumLinkedService() (*GreenplumLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsHBaseLinkedService() (*HBaseLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsHDInsightLinkedService() (*HDInsightLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsHDInsightOnDemandLinkedService() (*HDInsightOnDemandLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsHTTPLinkedService() (*HTTPLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsHdfsLinkedService() (*HdfsLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsHiveLinkedService() (*HiveLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsHubspotLinkedService() (*HubspotLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsImpalaLinkedService() (*ImpalaLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsInformixLinkedService() (*InformixLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsJiraLinkedService() (*JiraLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsLinkedService() (*LinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsMagentoLinkedService() (*MagentoLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsMariaDBLinkedService() (*MariaDBLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsMarketoLinkedService() (*MarketoLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsMicrosoftAccessLinkedService() (*MicrosoftAccessLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsMongoDbAtlasLinkedService() (*MongoDbAtlasLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsMongoDbLinkedService() (*MongoDbLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsMongoDbV2LinkedService() (*MongoDbV2LinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsMySQLLinkedService() (*MySQLLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsNetezzaLinkedService() (*NetezzaLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsODataLinkedService() (*ODataLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsOdbcLinkedService() (*OdbcLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsOffice365LinkedService() (*Office365LinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsOracleCloudStorageLinkedService() (*OracleCloudStorageLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsOracleLinkedService() (*OracleLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsOracleServiceCloudLinkedService() (*OracleServiceCloudLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsPaypalLinkedService() (*PaypalLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsPhoenixLinkedService() (*PhoenixLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsPostgreSQLLinkedService() (*PostgreSQLLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsPrestoLinkedService() (*PrestoLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsQuickBooksLinkedService() (*QuickBooksLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsResponsysLinkedService() (*ResponsysLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsRestServiceLinkedService() (*RestServiceLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsSQLServerLinkedService() (*SQLServerLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsSalesforceLinkedService() (*SalesforceLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsSalesforceMarketingCloudLinkedService() (*SalesforceMarketingCloudLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsSalesforceServiceCloudLinkedService() (*SalesforceServiceCloudLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsSapBWLinkedService() (*SapBWLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsSapCloudForCustomerLinkedService() (*SapCloudForCustomerLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsSapEccLinkedService() (*SapEccLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsSapHanaLinkedService() (*SapHanaLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsSapOpenHubLinkedService() (*SapOpenHubLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsSapTableLinkedService() (*SapTableLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsServiceNowLinkedService() (*ServiceNowLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsSftpServerLinkedService() (*SftpServerLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsSharePointOnlineListLinkedService() (*SharePointOnlineListLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsShopifyLinkedService() (*ShopifyLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsSnowflakeLinkedService() (*SnowflakeLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsSparkLinkedService() (*SparkLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsSquareLinkedService() (*SquareLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsSybaseLinkedService() (*SybaseLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsTeradataLinkedService() (*TeradataLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsVerticaLinkedService() (*VerticaLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsWebLinkedService() (*WebLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsXeroLinkedService() (*XeroLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.AsZohoLinkedService() (*ZohoLinkedService, bool)
+1. AmazonRdsForSQLServerLinkedService.MarshalJSON() ([]byte, error)
+1. AmazonRdsForSQLServerSource.AsAmazonMWSSource() (*AmazonMWSSource, bool)
+1. AmazonRdsForSQLServerSource.AsAmazonRdsForOracleSource() (*AmazonRdsForOracleSource, bool)
+1. AmazonRdsForSQLServerSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. AmazonRdsForSQLServerSource.AsAmazonRedshiftSource() (*AmazonRedshiftSource, bool)
+1. AmazonRdsForSQLServerSource.AsAvroSource() (*AvroSource, bool)
+1. AmazonRdsForSQLServerSource.AsAzureBlobFSSource() (*AzureBlobFSSource, bool)
+1. AmazonRdsForSQLServerSource.AsAzureDataExplorerSource() (*AzureDataExplorerSource, bool)
+1. AmazonRdsForSQLServerSource.AsAzureDataLakeStoreSource() (*AzureDataLakeStoreSource, bool)
+1. AmazonRdsForSQLServerSource.AsAzureDatabricksDeltaLakeSource() (*AzureDatabricksDeltaLakeSource, bool)
+1. AmazonRdsForSQLServerSource.AsAzureMariaDBSource() (*AzureMariaDBSource, bool)
+1. AmazonRdsForSQLServerSource.AsAzureMySQLSource() (*AzureMySQLSource, bool)
+1. AmazonRdsForSQLServerSource.AsAzurePostgreSQLSource() (*AzurePostgreSQLSource, bool)
+1. AmazonRdsForSQLServerSource.AsAzureSQLSource() (*AzureSQLSource, bool)
+1. AmazonRdsForSQLServerSource.AsAzureTableSource() (*AzureTableSource, bool)
+1. AmazonRdsForSQLServerSource.AsBasicCopySource() (BasicCopySource, bool)
+1. AmazonRdsForSQLServerSource.AsBasicTabularSource() (BasicTabularSource, bool)
+1. AmazonRdsForSQLServerSource.AsBinarySource() (*BinarySource, bool)
+1. AmazonRdsForSQLServerSource.AsBlobSource() (*BlobSource, bool)
+1. AmazonRdsForSQLServerSource.AsCassandraSource() (*CassandraSource, bool)
+1. AmazonRdsForSQLServerSource.AsCommonDataServiceForAppsSource() (*CommonDataServiceForAppsSource, bool)
+1. AmazonRdsForSQLServerSource.AsConcurSource() (*ConcurSource, bool)
+1. AmazonRdsForSQLServerSource.AsCopySource() (*CopySource, bool)
+1. AmazonRdsForSQLServerSource.AsCosmosDbMongoDbAPISource() (*CosmosDbMongoDbAPISource, bool)
+1. AmazonRdsForSQLServerSource.AsCosmosDbSQLAPISource() (*CosmosDbSQLAPISource, bool)
+1. AmazonRdsForSQLServerSource.AsCouchbaseSource() (*CouchbaseSource, bool)
+1. AmazonRdsForSQLServerSource.AsDb2Source() (*Db2Source, bool)
+1. AmazonRdsForSQLServerSource.AsDelimitedTextSource() (*DelimitedTextSource, bool)
+1. AmazonRdsForSQLServerSource.AsDocumentDbCollectionSource() (*DocumentDbCollectionSource, bool)
+1. AmazonRdsForSQLServerSource.AsDrillSource() (*DrillSource, bool)
+1. AmazonRdsForSQLServerSource.AsDynamicsAXSource() (*DynamicsAXSource, bool)
+1. AmazonRdsForSQLServerSource.AsDynamicsCrmSource() (*DynamicsCrmSource, bool)
+1. AmazonRdsForSQLServerSource.AsDynamicsSource() (*DynamicsSource, bool)
+1. AmazonRdsForSQLServerSource.AsEloquaSource() (*EloquaSource, bool)
+1. AmazonRdsForSQLServerSource.AsExcelSource() (*ExcelSource, bool)
+1. AmazonRdsForSQLServerSource.AsFileSystemSource() (*FileSystemSource, bool)
+1. AmazonRdsForSQLServerSource.AsGoogleAdWordsSource() (*GoogleAdWordsSource, bool)
+1. AmazonRdsForSQLServerSource.AsGoogleBigQuerySource() (*GoogleBigQuerySource, bool)
+1. AmazonRdsForSQLServerSource.AsGreenplumSource() (*GreenplumSource, bool)
+1. AmazonRdsForSQLServerSource.AsHBaseSource() (*HBaseSource, bool)
+1. AmazonRdsForSQLServerSource.AsHTTPSource() (*HTTPSource, bool)
+1. AmazonRdsForSQLServerSource.AsHdfsSource() (*HdfsSource, bool)
+1. AmazonRdsForSQLServerSource.AsHiveSource() (*HiveSource, bool)
+1. AmazonRdsForSQLServerSource.AsHubspotSource() (*HubspotSource, bool)
+1. AmazonRdsForSQLServerSource.AsImpalaSource() (*ImpalaSource, bool)
+1. AmazonRdsForSQLServerSource.AsInformixSource() (*InformixSource, bool)
+1. AmazonRdsForSQLServerSource.AsJSONSource() (*JSONSource, bool)
+1. AmazonRdsForSQLServerSource.AsJiraSource() (*JiraSource, bool)
+1. AmazonRdsForSQLServerSource.AsMagentoSource() (*MagentoSource, bool)
+1. AmazonRdsForSQLServerSource.AsMariaDBSource() (*MariaDBSource, bool)
+1. AmazonRdsForSQLServerSource.AsMarketoSource() (*MarketoSource, bool)
+1. AmazonRdsForSQLServerSource.AsMicrosoftAccessSource() (*MicrosoftAccessSource, bool)
+1. AmazonRdsForSQLServerSource.AsMongoDbAtlasSource() (*MongoDbAtlasSource, bool)
+1. AmazonRdsForSQLServerSource.AsMongoDbSource() (*MongoDbSource, bool)
+1. AmazonRdsForSQLServerSource.AsMongoDbV2Source() (*MongoDbV2Source, bool)
+1. AmazonRdsForSQLServerSource.AsMySQLSource() (*MySQLSource, bool)
+1. AmazonRdsForSQLServerSource.AsNetezzaSource() (*NetezzaSource, bool)
+1. AmazonRdsForSQLServerSource.AsODataSource() (*ODataSource, bool)
+1. AmazonRdsForSQLServerSource.AsOdbcSource() (*OdbcSource, bool)
+1. AmazonRdsForSQLServerSource.AsOffice365Source() (*Office365Source, bool)
+1. AmazonRdsForSQLServerSource.AsOracleServiceCloudSource() (*OracleServiceCloudSource, bool)
+1. AmazonRdsForSQLServerSource.AsOracleSource() (*OracleSource, bool)
+1. AmazonRdsForSQLServerSource.AsOrcSource() (*OrcSource, bool)
+1. AmazonRdsForSQLServerSource.AsParquetSource() (*ParquetSource, bool)
+1. AmazonRdsForSQLServerSource.AsPaypalSource() (*PaypalSource, bool)
+1. AmazonRdsForSQLServerSource.AsPhoenixSource() (*PhoenixSource, bool)
+1. AmazonRdsForSQLServerSource.AsPostgreSQLSource() (*PostgreSQLSource, bool)
+1. AmazonRdsForSQLServerSource.AsPrestoSource() (*PrestoSource, bool)
+1. AmazonRdsForSQLServerSource.AsQuickBooksSource() (*QuickBooksSource, bool)
+1. AmazonRdsForSQLServerSource.AsRelationalSource() (*RelationalSource, bool)
+1. AmazonRdsForSQLServerSource.AsResponsysSource() (*ResponsysSource, bool)
+1. AmazonRdsForSQLServerSource.AsRestSource() (*RestSource, bool)
+1. AmazonRdsForSQLServerSource.AsSQLDWSource() (*SQLDWSource, bool)
+1. AmazonRdsForSQLServerSource.AsSQLMISource() (*SQLMISource, bool)
+1. AmazonRdsForSQLServerSource.AsSQLServerSource() (*SQLServerSource, bool)
+1. AmazonRdsForSQLServerSource.AsSQLSource() (*SQLSource, bool)
+1. AmazonRdsForSQLServerSource.AsSalesforceMarketingCloudSource() (*SalesforceMarketingCloudSource, bool)
+1. AmazonRdsForSQLServerSource.AsSalesforceServiceCloudSource() (*SalesforceServiceCloudSource, bool)
+1. AmazonRdsForSQLServerSource.AsSalesforceSource() (*SalesforceSource, bool)
+1. AmazonRdsForSQLServerSource.AsSapBwSource() (*SapBwSource, bool)
+1. AmazonRdsForSQLServerSource.AsSapCloudForCustomerSource() (*SapCloudForCustomerSource, bool)
+1. AmazonRdsForSQLServerSource.AsSapEccSource() (*SapEccSource, bool)
+1. AmazonRdsForSQLServerSource.AsSapHanaSource() (*SapHanaSource, bool)
+1. AmazonRdsForSQLServerSource.AsSapOpenHubSource() (*SapOpenHubSource, bool)
+1. AmazonRdsForSQLServerSource.AsSapTableSource() (*SapTableSource, bool)
+1. AmazonRdsForSQLServerSource.AsServiceNowSource() (*ServiceNowSource, bool)
+1. AmazonRdsForSQLServerSource.AsSharePointOnlineListSource() (*SharePointOnlineListSource, bool)
+1. AmazonRdsForSQLServerSource.AsShopifySource() (*ShopifySource, bool)
+1. AmazonRdsForSQLServerSource.AsSnowflakeSource() (*SnowflakeSource, bool)
+1. AmazonRdsForSQLServerSource.AsSparkSource() (*SparkSource, bool)
+1. AmazonRdsForSQLServerSource.AsSquareSource() (*SquareSource, bool)
+1. AmazonRdsForSQLServerSource.AsSybaseSource() (*SybaseSource, bool)
+1. AmazonRdsForSQLServerSource.AsTabularSource() (*TabularSource, bool)
+1. AmazonRdsForSQLServerSource.AsTeradataSource() (*TeradataSource, bool)
+1. AmazonRdsForSQLServerSource.AsVerticaSource() (*VerticaSource, bool)
+1. AmazonRdsForSQLServerSource.AsWebSource() (*WebSource, bool)
+1. AmazonRdsForSQLServerSource.AsXMLSource() (*XMLSource, bool)
+1. AmazonRdsForSQLServerSource.AsXeroSource() (*XeroSource, bool)
+1. AmazonRdsForSQLServerSource.AsZohoSource() (*ZohoSource, bool)
+1. AmazonRdsForSQLServerSource.MarshalJSON() ([]byte, error)
+1. AmazonRdsForSQLServerTableDataset.AsAmazonMWSObjectDataset() (*AmazonMWSObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAmazonRdsForOracleTableDataset() (*AmazonRdsForOracleTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAmazonRedshiftTableDataset() (*AmazonRedshiftTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAmazonS3Dataset() (*AmazonS3Dataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAvroDataset() (*AvroDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAzureBlobDataset() (*AzureBlobDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAzureBlobFSDataset() (*AzureBlobFSDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAzureDataExplorerTableDataset() (*AzureDataExplorerTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAzureDataLakeStoreDataset() (*AzureDataLakeStoreDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAzureDatabricksDeltaLakeDataset() (*AzureDatabricksDeltaLakeDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAzureMariaDBTableDataset() (*AzureMariaDBTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAzureMySQLTableDataset() (*AzureMySQLTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAzurePostgreSQLTableDataset() (*AzurePostgreSQLTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAzureSQLDWTableDataset() (*AzureSQLDWTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAzureSQLMITableDataset() (*AzureSQLMITableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAzureSQLTableDataset() (*AzureSQLTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAzureSearchIndexDataset() (*AzureSearchIndexDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsAzureTableDataset() (*AzureTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsBasicDataset() (BasicDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsBinaryDataset() (*BinaryDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsCassandraTableDataset() (*CassandraTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsCommonDataServiceForAppsEntityDataset() (*CommonDataServiceForAppsEntityDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsConcurObjectDataset() (*ConcurObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsCosmosDbMongoDbAPICollectionDataset() (*CosmosDbMongoDbAPICollectionDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsCosmosDbSQLAPICollectionDataset() (*CosmosDbSQLAPICollectionDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsCouchbaseTableDataset() (*CouchbaseTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsCustomDataset() (*CustomDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsDataset() (*Dataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsDb2TableDataset() (*Db2TableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsDelimitedTextDataset() (*DelimitedTextDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsDocumentDbCollectionDataset() (*DocumentDbCollectionDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsDrillTableDataset() (*DrillTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsDynamicsAXResourceDataset() (*DynamicsAXResourceDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsDynamicsCrmEntityDataset() (*DynamicsCrmEntityDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsDynamicsEntityDataset() (*DynamicsEntityDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsEloquaObjectDataset() (*EloquaObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsExcelDataset() (*ExcelDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsFileShareDataset() (*FileShareDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsGoogleAdWordsObjectDataset() (*GoogleAdWordsObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsGoogleBigQueryObjectDataset() (*GoogleBigQueryObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsGreenplumTableDataset() (*GreenplumTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsHBaseObjectDataset() (*HBaseObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsHTTPDataset() (*HTTPDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsHiveObjectDataset() (*HiveObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsHubspotObjectDataset() (*HubspotObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsImpalaObjectDataset() (*ImpalaObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsInformixTableDataset() (*InformixTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsJSONDataset() (*JSONDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsJiraObjectDataset() (*JiraObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsMagentoObjectDataset() (*MagentoObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsMariaDBTableDataset() (*MariaDBTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsMarketoObjectDataset() (*MarketoObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsMicrosoftAccessTableDataset() (*MicrosoftAccessTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsMongoDbAtlasCollectionDataset() (*MongoDbAtlasCollectionDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsMongoDbCollectionDataset() (*MongoDbCollectionDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsMongoDbV2CollectionDataset() (*MongoDbV2CollectionDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsMySQLTableDataset() (*MySQLTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsNetezzaTableDataset() (*NetezzaTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsODataResourceDataset() (*ODataResourceDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsOdbcTableDataset() (*OdbcTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsOffice365Dataset() (*Office365Dataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsOracleServiceCloudObjectDataset() (*OracleServiceCloudObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsOracleTableDataset() (*OracleTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsOrcDataset() (*OrcDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsParquetDataset() (*ParquetDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsPaypalObjectDataset() (*PaypalObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsPhoenixObjectDataset() (*PhoenixObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsPostgreSQLTableDataset() (*PostgreSQLTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsPrestoObjectDataset() (*PrestoObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsQuickBooksObjectDataset() (*QuickBooksObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsRelationalTableDataset() (*RelationalTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsResponsysObjectDataset() (*ResponsysObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsRestResourceDataset() (*RestResourceDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsSQLServerTableDataset() (*SQLServerTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsSalesforceMarketingCloudObjectDataset() (*SalesforceMarketingCloudObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsSalesforceObjectDataset() (*SalesforceObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsSalesforceServiceCloudObjectDataset() (*SalesforceServiceCloudObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsSapBwCubeDataset() (*SapBwCubeDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsSapCloudForCustomerResourceDataset() (*SapCloudForCustomerResourceDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsSapEccResourceDataset() (*SapEccResourceDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsSapHanaTableDataset() (*SapHanaTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsSapOpenHubTableDataset() (*SapOpenHubTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsSapTableResourceDataset() (*SapTableResourceDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsServiceNowObjectDataset() (*ServiceNowObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsSharePointOnlineListResourceDataset() (*SharePointOnlineListResourceDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsShopifyObjectDataset() (*ShopifyObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsSnowflakeDataset() (*SnowflakeDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsSparkObjectDataset() (*SparkObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsSquareObjectDataset() (*SquareObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsSybaseTableDataset() (*SybaseTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsTeradataTableDataset() (*TeradataTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsVerticaTableDataset() (*VerticaTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsWebTableDataset() (*WebTableDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsXMLDataset() (*XMLDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsXeroObjectDataset() (*XeroObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.AsZohoObjectDataset() (*ZohoObjectDataset, bool)
+1. AmazonRdsForSQLServerTableDataset.MarshalJSON() ([]byte, error)
+1. AmazonRedshiftLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AmazonRedshiftSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. AmazonRedshiftTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AmazonS3CompatibleLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AmazonS3Dataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AmazonS3LinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AvroDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AvroSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. AzureBatchLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureBlobDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AzureBlobFSDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AzureBlobFSLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureBlobFSSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. AzureBlobStorageLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureDataExplorerLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureDataExplorerSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. AzureDataExplorerTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AzureDataLakeAnalyticsLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureDataLakeStoreDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AzureDataLakeStoreLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureDataLakeStoreSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. AzureDatabricksDeltaLakeDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AzureDatabricksDeltaLakeLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureDatabricksDeltaLakeSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. AzureDatabricksLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureFileStorageLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureFunctionLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureKeyVaultLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureMLLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureMLServiceLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureMariaDBLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureMariaDBSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. AzureMariaDBTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AzureMySQLLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureMySQLSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. AzureMySQLTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AzurePostgreSQLLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzurePostgreSQLSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. AzurePostgreSQLTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AzureSQLDWLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureSQLDWTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AzureSQLDatabaseLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureSQLMILinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureSQLMITableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AzureSQLSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. AzureSQLTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AzureSearchIndexDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AzureSearchLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureStorageLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. AzureTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. AzureTableSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. AzureTableStorageLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. BinaryDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. BinarySource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. BlobSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. CassandraLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. CassandraSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. CassandraTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. CommonDataServiceForAppsEntityDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. CommonDataServiceForAppsLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. CommonDataServiceForAppsSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. ConcurLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. ConcurObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. ConcurSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. CopySource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. CosmosDbLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. CosmosDbMongoDbAPICollectionDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. CosmosDbMongoDbAPILinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. CosmosDbMongoDbAPISource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. CosmosDbSQLAPICollectionDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. CosmosDbSQLAPISource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. CouchbaseLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. CouchbaseSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. CouchbaseTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. CustomDataSourceLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. CustomDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. Dataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. Db2LinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. Db2Source.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. Db2TableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. DelimitedTextDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. DelimitedTextSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. DocumentDbCollectionDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. DocumentDbCollectionSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. DrillLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. DrillSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. DrillTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. DynamicsAXLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. DynamicsAXResourceDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. DynamicsAXSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. DynamicsCrmEntityDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. DynamicsCrmLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. DynamicsCrmSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. DynamicsEntityDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. DynamicsLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. DynamicsSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. EloquaLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. EloquaObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. EloquaSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. ExcelDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. ExcelSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. FileServerLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. FileShareDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. FileSystemSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. FtpServerLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. GoogleAdWordsLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. GoogleAdWordsObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. GoogleAdWordsSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. GoogleBigQueryLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. GoogleBigQueryObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. GoogleBigQuerySource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. GoogleCloudStorageLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. GreenplumLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. GreenplumSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. GreenplumTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. HBaseLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. HBaseObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. HBaseSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. HDInsightLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. HDInsightOnDemandLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. HTTPDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. HTTPLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. HTTPSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. HdfsLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. HdfsSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. HiveLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. HiveObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. HiveSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. HubspotLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. HubspotObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. HubspotSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. ImpalaLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. ImpalaObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. ImpalaSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. InformixLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. InformixSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. InformixTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. JSONDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. JSONSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. JiraLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. JiraObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. JiraSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. LinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. MagentoLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. MagentoObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. MagentoSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. MariaDBLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. MariaDBSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. MariaDBTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. MarketoLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. MarketoObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. MarketoSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. MicrosoftAccessLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. MicrosoftAccessSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. MicrosoftAccessTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. MongoDbAtlasCollectionDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. MongoDbAtlasLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. MongoDbAtlasSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. MongoDbCollectionDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. MongoDbLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. MongoDbSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. MongoDbV2CollectionDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. MongoDbV2LinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. MongoDbV2Source.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. MySQLLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. MySQLSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. MySQLTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. NetezzaLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. NetezzaSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. NetezzaTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. ODataLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. ODataResourceDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. ODataSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. OdbcLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. OdbcSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. OdbcTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. Office365Dataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. Office365LinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. Office365Source.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. OracleCloudStorageLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. OracleLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. OracleServiceCloudLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. OracleServiceCloudObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. OracleServiceCloudSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. OracleSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. OracleTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. OrcDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. OrcSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. ParquetDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. ParquetSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. PaypalLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. PaypalObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. PaypalSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. PhoenixLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. PhoenixObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. PhoenixSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. PostgreSQLLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. PostgreSQLSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. PostgreSQLTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. PrestoLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. PrestoObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. PrestoSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. QuickBooksLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. QuickBooksObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. QuickBooksSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. RelationalSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. RelationalTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. ResponsysLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. ResponsysObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. ResponsysSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. RestResourceDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. RestServiceLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. RestSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SQLDWSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SQLMISource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SQLServerLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. SQLServerSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SQLServerTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. SQLSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SalesforceLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. SalesforceMarketingCloudLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. SalesforceMarketingCloudObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. SalesforceMarketingCloudSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SalesforceObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. SalesforceServiceCloudLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. SalesforceServiceCloudObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. SalesforceServiceCloudSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SalesforceSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SapBWLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. SapBwCubeDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. SapBwSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SapCloudForCustomerLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. SapCloudForCustomerResourceDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. SapCloudForCustomerSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SapEccLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. SapEccResourceDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. SapEccSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SapHanaLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. SapHanaSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SapHanaTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. SapOpenHubLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. SapOpenHubSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SapOpenHubTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. SapTableLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. SapTableResourceDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. SapTableSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. ServiceNowLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. ServiceNowObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. ServiceNowSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SftpServerLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. SharePointOnlineListLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. SharePointOnlineListResourceDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. SharePointOnlineListSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. ShopifyLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. ShopifyObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. ShopifySource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SnowflakeDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. SnowflakeLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. SnowflakeSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SparkLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. SparkObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. SparkSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SquareLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. SquareObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. SquareSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SybaseLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. SybaseSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. SybaseTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. TabularSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. TeradataLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. TeradataSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. TeradataTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. VerticaLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. VerticaSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. VerticaTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. WebLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. WebSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. WebTableDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. XMLDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. XMLSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. XeroLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. XeroObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. XeroSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
+1. ZohoLinkedService.AsAmazonRdsForSQLServerLinkedService() (*AmazonRdsForSQLServerLinkedService, bool)
+1. ZohoObjectDataset.AsAmazonRdsForSQLServerTableDataset() (*AmazonRdsForSQLServerTableDataset, bool)
+1. ZohoSource.AsAmazonRdsForSQLServerSource() (*AmazonRdsForSQLServerSource, bool)
 
 ### Struct Changes
 
 #### New Structs
 
-1. MetadataItem
+1. AmazonRdsForSQLServerLinkedService
+1. AmazonRdsForSQLServerLinkedServiceTypeProperties
+1. AmazonRdsForSQLServerSource
+1. AmazonRdsForSQLServerTableDataset
+1. AmazonRdsForSQLServerTableDatasetTypeProperties
+1. IntegrationRuntimeCustomerVirtualNetwork
 
 #### New Struct Fields
 
-1. AmazonMWSSource.DisableMetricsCollection
-1. AmazonRedshiftSource.DisableMetricsCollection
-1. AmazonS3CompatibleReadSettings.DisableMetricsCollection
-1. AmazonS3ReadSettings.DisableMetricsCollection
-1. AvroSink.DisableMetricsCollection
-1. AvroSource.DisableMetricsCollection
-1. AzureBlobFSReadSettings.DisableMetricsCollection
-1. AzureBlobFSSink.DisableMetricsCollection
-1. AzureBlobFSSink.Metadata
-1. AzureBlobFSSource.DisableMetricsCollection
-1. AzureBlobFSWriteSettings.DisableMetricsCollection
-1. AzureBlobStorageReadSettings.DisableMetricsCollection
-1. AzureBlobStorageWriteSettings.DisableMetricsCollection
-1. AzureDataExplorerSink.DisableMetricsCollection
-1. AzureDataExplorerSource.DisableMetricsCollection
-1. AzureDataLakeStoreReadSettings.DisableMetricsCollection
-1. AzureDataLakeStoreSink.DisableMetricsCollection
-1. AzureDataLakeStoreSource.DisableMetricsCollection
-1. AzureDataLakeStoreWriteSettings.DisableMetricsCollection
-1. AzureDatabricksDeltaLakeSink.DisableMetricsCollection
-1. AzureDatabricksDeltaLakeSource.DisableMetricsCollection
-1. AzureFileStorageReadSettings.DisableMetricsCollection
-1. AzureFileStorageWriteSettings.DisableMetricsCollection
-1. AzureMariaDBSource.DisableMetricsCollection
-1. AzureMySQLSink.DisableMetricsCollection
-1. AzureMySQLSource.DisableMetricsCollection
-1. AzurePostgreSQLSink.DisableMetricsCollection
-1. AzurePostgreSQLSource.DisableMetricsCollection
-1. AzureQueueSink.DisableMetricsCollection
-1. AzureSQLSink.DisableMetricsCollection
-1. AzureSQLSource.DisableMetricsCollection
-1. AzureSearchIndexSink.DisableMetricsCollection
-1. AzureTableSink.DisableMetricsCollection
-1. AzureTableSource.DisableMetricsCollection
-1. BinarySink.DisableMetricsCollection
-1. BinarySource.DisableMetricsCollection
-1. BlobSink.DisableMetricsCollection
-1. BlobSink.Metadata
-1. BlobSource.DisableMetricsCollection
-1. CassandraSource.DisableMetricsCollection
-1. CommonDataServiceForAppsSink.DisableMetricsCollection
-1. CommonDataServiceForAppsSource.DisableMetricsCollection
-1. ConcurSource.DisableMetricsCollection
-1. CopySink.DisableMetricsCollection
-1. CopySource.DisableMetricsCollection
-1. CosmosDbMongoDbAPISink.DisableMetricsCollection
-1. CosmosDbMongoDbAPISource.DisableMetricsCollection
-1. CosmosDbSQLAPISink.DisableMetricsCollection
-1. CosmosDbSQLAPISource.DisableMetricsCollection
-1. CouchbaseSource.DisableMetricsCollection
-1. Db2Source.DisableMetricsCollection
-1. DelimitedTextSink.DisableMetricsCollection
-1. DelimitedTextSource.DisableMetricsCollection
-1. DocumentDbCollectionSink.DisableMetricsCollection
-1. DocumentDbCollectionSource.DisableMetricsCollection
-1. DrillSource.DisableMetricsCollection
-1. DynamicsAXSource.DisableMetricsCollection
-1. DynamicsCrmSink.DisableMetricsCollection
-1. DynamicsCrmSource.DisableMetricsCollection
-1. DynamicsSink.DisableMetricsCollection
-1. DynamicsSource.DisableMetricsCollection
-1. EloquaSource.DisableMetricsCollection
-1. ExcelDatasetTypeProperties.SheetIndex
-1. ExcelSource.DisableMetricsCollection
-1. FileServerReadSettings.DisableMetricsCollection
-1. FileServerWriteSettings.DisableMetricsCollection
-1. FileSystemSink.DisableMetricsCollection
-1. FileSystemSource.DisableMetricsCollection
-1. FtpReadSettings.DisableMetricsCollection
-1. GoogleAdWordsSource.DisableMetricsCollection
-1. GoogleBigQuerySource.DisableMetricsCollection
-1. GoogleCloudStorageReadSettings.DisableMetricsCollection
-1. GreenplumSource.DisableMetricsCollection
-1. HBaseSource.DisableMetricsCollection
-1. HTTPReadSettings.DisableMetricsCollection
-1. HTTPSource.DisableMetricsCollection
-1. HdfsReadSettings.DisableMetricsCollection
-1. HdfsSource.DisableMetricsCollection
-1. HiveSource.DisableMetricsCollection
-1. HubspotSource.DisableMetricsCollection
-1. ImpalaSource.DisableMetricsCollection
-1. InformixSink.DisableMetricsCollection
-1. InformixSource.DisableMetricsCollection
-1. IntegrationRuntimeSsisProperties.ManagedCredential
-1. JSONSink.DisableMetricsCollection
-1. JSONSource.DisableMetricsCollection
-1. JiraSource.DisableMetricsCollection
-1. MagentoSource.DisableMetricsCollection
-1. MariaDBSource.DisableMetricsCollection
-1. MarketoSource.DisableMetricsCollection
-1. MicrosoftAccessSink.DisableMetricsCollection
-1. MicrosoftAccessSource.DisableMetricsCollection
-1. MongoDbAtlasSink.DisableMetricsCollection
-1. MongoDbAtlasSource.DisableMetricsCollection
-1. MongoDbSource.DisableMetricsCollection
-1. MongoDbV2Sink.DisableMetricsCollection
-1. MongoDbV2Source.DisableMetricsCollection
-1. MySQLSource.DisableMetricsCollection
-1. NetezzaSource.DisableMetricsCollection
-1. ODataSource.DisableMetricsCollection
-1. OdbcSink.DisableMetricsCollection
-1. OdbcSource.DisableMetricsCollection
-1. Office365Source.DisableMetricsCollection
-1. OracleCloudStorageReadSettings.DisableMetricsCollection
-1. OracleServiceCloudSource.DisableMetricsCollection
-1. OracleSink.DisableMetricsCollection
-1. OracleSource.DisableMetricsCollection
-1. OrcSink.DisableMetricsCollection
-1. OrcSource.DisableMetricsCollection
-1. ParquetSink.DisableMetricsCollection
-1. ParquetSource.DisableMetricsCollection
-1. PaypalSource.DisableMetricsCollection
-1. PhoenixSource.DisableMetricsCollection
-1. PostgreSQLSource.DisableMetricsCollection
-1. PrestoSource.DisableMetricsCollection
-1. QuickBooksSource.DisableMetricsCollection
-1. RelationalSource.DisableMetricsCollection
-1. ResponsysSource.DisableMetricsCollection
-1. RestSink.DisableMetricsCollection
-1. RestSource.DisableMetricsCollection
-1. SQLDWSink.DisableMetricsCollection
-1. SQLDWSource.DisableMetricsCollection
-1. SQLMISink.DisableMetricsCollection
-1. SQLMISource.DisableMetricsCollection
-1. SQLServerSink.DisableMetricsCollection
-1. SQLServerSource.DisableMetricsCollection
-1. SQLSink.DisableMetricsCollection
-1. SQLSource.DisableMetricsCollection
-1. SalesforceMarketingCloudSource.DisableMetricsCollection
-1. SalesforceServiceCloudSink.DisableMetricsCollection
-1. SalesforceServiceCloudSource.DisableMetricsCollection
-1. SalesforceSink.DisableMetricsCollection
-1. SalesforceSource.DisableMetricsCollection
-1. SapBwSource.DisableMetricsCollection
-1. SapCloudForCustomerSink.DisableMetricsCollection
-1. SapCloudForCustomerSource.DisableMetricsCollection
-1. SapEccSource.DisableMetricsCollection
-1. SapHanaSource.DisableMetricsCollection
-1. SapOpenHubSource.DisableMetricsCollection
-1. SapTableSource.DisableMetricsCollection
-1. ServiceNowSource.DisableMetricsCollection
-1. SftpReadSettings.DisableMetricsCollection
-1. SftpWriteSettings.DisableMetricsCollection
-1. SharePointOnlineListSource.DisableMetricsCollection
-1. ShopifySource.DisableMetricsCollection
-1. SnowflakeSink.DisableMetricsCollection
-1. SnowflakeSource.DisableMetricsCollection
-1. SparkSource.DisableMetricsCollection
-1. SquareSource.DisableMetricsCollection
-1. StoreReadSettings.DisableMetricsCollection
-1. StoreWriteSettings.DisableMetricsCollection
-1. SybaseSource.DisableMetricsCollection
-1. TabularSource.DisableMetricsCollection
-1. TeradataSource.DisableMetricsCollection
-1. VerticaSource.DisableMetricsCollection
-1. WebSource.DisableMetricsCollection
-1. XMLSource.DisableMetricsCollection
-1. XeroSource.DisableMetricsCollection
-1. ZohoSource.DisableMetricsCollection
+1. ManagedIntegrationRuntimeTypeProperties.CustomerVirtualNetwork
+1. SQLAlwaysEncryptedProperties.Credential

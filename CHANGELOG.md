@@ -1,5 +1,123 @@
 # CHANGELOG
 
+## `v57.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-08-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/preview/quota/mgmt/2021-03-15-preview/quota`
+- `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/v1.0/synapse`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
+## `v57.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2021-05-01/mysqlflexibleservers`
+- `github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2021-06-01/servicefabric`
+
+## `v57.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-07-01/compute`
+- `github.com/Azure/azure-sdk-for-go/services/dataprotection/mgmt/2021-07-01/dataprotection`
+- `github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2021-01-25/guestconfiguration`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-06-01/netapp`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2021-03-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/2021-06-01-preview/synapse`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v57.0.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2020-06-25/guestconfiguration` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v57.0.0/services/guestconfiguration/mgmt/2020-06-25/guestconfiguration/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2021-06-01/postgresqlflexibleservers` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v57.0.0/services/postgresql/mgmt/2021-06-01/postgresqlflexibleservers/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2021-03-01-preview/documentdb` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v57.0.0/services/preview/cosmos-db/mgmt/2021-03-01-preview/documentdb/CHANGELOG.md) |
+
+## `v56.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/purview/mgmt/2021-07-01/purview`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v56.3.0/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement/CHANGELOG.md) |
+
+## `v56.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-07-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2021-07-01/machinelearningservices`
+- `github.com/Azure/azure-sdk-for-go/services/web/mgmt/2021-02-01/web`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v56.2.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
+## `v56.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/monitor/mgmt/2021-07-01-preview/insights`
+
+## `v56.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/appinsights/mgmt/2020-02-02/insights`
+- `github.com/Azure/azure-sdk-for-go/services/automation/mgmt/2019-06-01/automation`
+- `github.com/Azure/azure-sdk-for-go/services/batch/mgmt/2021-06-01/batch`
+- `github.com/Azure/azure-sdk-for-go/services/costmanagement/mgmt/2019-11-01/costmanagement`
+- `github.com/Azure/azure-sdk-for-go/services/machinelearningservices/mgmt/2021-04-01/machinelearningservices`
+- `github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2021-05-01/storagecache`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/consumption/mgmt/2019-10-01/consumption` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v56.0.0/services/consumption/mgmt/2019-10-01/consumption/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v56.0.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2021-06-01/postgresqlflexibleservers` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v56.0.0/services/postgresql/mgmt/2021-06-01/postgresqlflexibleservers/CHANGELOG.md) |
+
+## `v55.8.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-04-01/compute`
+- `github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2021-03-01/containerinstance`
+- `github.com/Azure/azure-sdk-for-go/services/preview/mysql/mgmt/2021-05-01-preview/mysqlflexibleservers`
+
+## `v55.7.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/mediaservices/mgmt/2021-06-01/media`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2020-01-01/mysql` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v55.7.0/services/mysql/mgmt/2020-01-01/mysql/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2020-01-01/postgresql` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v55.7.0/services/postgresql/mgmt/2020-01-01/postgresql/CHANGELOG.md) |
+
 ## `v55.6.0`
 
 ### New Packages
@@ -15,13 +133,13 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/quantum/mgmt/2019-11-04-preview/quantum` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/quantum/mgmt/2019-11-04-preview/quantum/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/quantum/mgmt/2019-11-04-preview/quantum` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v55.6.0/services/preview/quantum/mgmt/2019-11-04-preview/quantum/CHANGELOG.md) |
 
 ### Breaking Changes
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/preview/security/mgmt/v3.0/security/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/security/mgmt/v3.0/security` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v55.6.0/services/preview/security/mgmt/v3.0/security/CHANGELOG.md) |
 
 ## `v55.5.0`
 

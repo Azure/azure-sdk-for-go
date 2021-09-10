@@ -1,8 +1,8 @@
 # Azure Identity Client Module for Go
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/azidentity)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity)
-[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/go%20-%20azidentity?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=1846&branchName=master)
-[![Code Coverage](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1846/master)](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1846/main)
+[![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/go%20-%20azidentity?branchName=main)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=1846&branchName=main)
+[![Code Coverage](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1846/main)](https://img.shields.io/azure-devops/coverage/azure-sdk/public/1846/main)
 
 The `azidentity` module provides a set of credential types for use with
 Azure SDK clients that support Azure Active Directory (AAD) token authentication.
@@ -238,13 +238,14 @@ Credentials log basic information only, including `GetToken` success or failure 
 To obtain more detailed logging, including request/response bodies and header values, make sure to leave the logger as default or enable the `LogRequest` and/or `LogResponse` classificatons. A logger that only includes credential logs can be like the following:
 
 ```go
+import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 // Set log to output to the console
-azcore.Log().SetListener(func(cls LogClassification, s string) {
+azlog.SetListener(func(cls LogClassification, s string) {
 		fmt.Println(s) // printing log out to the console
   })
 
 // Include only azidentity credential logs
-azcore.Log().SetClassifications(azidentity.LogCredential)
+azlog.SetClassifications(azidentity.LogCredential)
 ```
 
 > CAUTION: logs from credentials contain sensitive information.

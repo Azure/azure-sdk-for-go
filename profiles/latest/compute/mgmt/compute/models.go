@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -11,7 +12,7 @@ package compute
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-03-01/compute"
+	original "github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-07-01/compute"
 )
 
 const (
@@ -48,6 +49,18 @@ const (
 	CachingTypesNone      CachingTypes = original.CachingTypesNone
 	CachingTypesReadOnly  CachingTypes = original.CachingTypesReadOnly
 	CachingTypesReadWrite CachingTypes = original.CachingTypesReadWrite
+)
+
+type CapacityReservationGroupInstanceViewTypes = original.CapacityReservationGroupInstanceViewTypes
+
+const (
+	CapacityReservationGroupInstanceViewTypesInstanceView CapacityReservationGroupInstanceViewTypes = original.CapacityReservationGroupInstanceViewTypesInstanceView
+)
+
+type CapacityReservationInstanceViewTypes = original.CapacityReservationInstanceViewTypes
+
+const (
+	CapacityReservationInstanceViewTypesInstanceView CapacityReservationInstanceViewTypes = original.CapacityReservationInstanceViewTypesInstanceView
 )
 
 type CloudServiceUpgradeMode = original.CloudServiceUpgradeMode
@@ -195,10 +208,23 @@ const (
 	ExecutionStateUnknown   ExecutionState = original.ExecutionStateUnknown
 )
 
+type ExpandTypesForGetCapacityReservationGroups = original.ExpandTypesForGetCapacityReservationGroups
+
+const (
+	ExpandTypesForGetCapacityReservationGroupsVirtualMachineScaleSetVMsref ExpandTypesForGetCapacityReservationGroups = original.ExpandTypesForGetCapacityReservationGroupsVirtualMachineScaleSetVMsref
+	ExpandTypesForGetCapacityReservationGroupsVirtualMachinesref           ExpandTypesForGetCapacityReservationGroups = original.ExpandTypesForGetCapacityReservationGroupsVirtualMachinesref
+)
+
 type ExpandTypesForGetVMScaleSets = original.ExpandTypesForGetVMScaleSets
 
 const (
 	ExpandTypesForGetVMScaleSetsUserData ExpandTypesForGetVMScaleSets = original.ExpandTypesForGetVMScaleSetsUserData
+)
+
+type ExtendedLocationType = original.ExtendedLocationType
+
+const (
+	ExtendedLocationTypeEdgeZone ExtendedLocationType = original.ExtendedLocationTypeEdgeZone
 )
 
 type ExtendedLocationTypes = original.ExtendedLocationTypes
@@ -487,6 +513,13 @@ type PublicIPAllocationMethod = original.PublicIPAllocationMethod
 const (
 	PublicIPAllocationMethodDynamic PublicIPAllocationMethod = original.PublicIPAllocationMethodDynamic
 	PublicIPAllocationMethodStatic  PublicIPAllocationMethod = original.PublicIPAllocationMethodStatic
+)
+
+type ReplicationMode = original.ReplicationMode
+
+const (
+	ReplicationModeFull    ReplicationMode = original.ReplicationModeFull
+	ReplicationModeShallow ReplicationMode = original.ReplicationModeShallow
 )
 
 type ReplicationState = original.ReplicationState
@@ -935,6 +968,7 @@ type APIErrorBase = original.APIErrorBase
 type AccessURI = original.AccessURI
 type AdditionalCapabilities = original.AdditionalCapabilities
 type AdditionalUnattendContent = original.AdditionalUnattendContent
+type ApplicationProfile = original.ApplicationProfile
 type AutomaticOSUpgradePolicy = original.AutomaticOSUpgradePolicy
 type AutomaticOSUpgradeProperties = original.AutomaticOSUpgradeProperties
 type AutomaticRepairsPolicy = original.AutomaticRepairsPolicy
@@ -950,6 +984,28 @@ type BaseClient = original.BaseClient
 type BillingProfile = original.BillingProfile
 type BootDiagnostics = original.BootDiagnostics
 type BootDiagnosticsInstanceView = original.BootDiagnosticsInstanceView
+type CapacityReservation = original.CapacityReservation
+type CapacityReservationGroup = original.CapacityReservationGroup
+type CapacityReservationGroupInstanceView = original.CapacityReservationGroupInstanceView
+type CapacityReservationGroupListResult = original.CapacityReservationGroupListResult
+type CapacityReservationGroupListResultIterator = original.CapacityReservationGroupListResultIterator
+type CapacityReservationGroupListResultPage = original.CapacityReservationGroupListResultPage
+type CapacityReservationGroupProperties = original.CapacityReservationGroupProperties
+type CapacityReservationGroupUpdate = original.CapacityReservationGroupUpdate
+type CapacityReservationGroupsClient = original.CapacityReservationGroupsClient
+type CapacityReservationInstanceView = original.CapacityReservationInstanceView
+type CapacityReservationInstanceViewWithName = original.CapacityReservationInstanceViewWithName
+type CapacityReservationListResult = original.CapacityReservationListResult
+type CapacityReservationListResultIterator = original.CapacityReservationListResultIterator
+type CapacityReservationListResultPage = original.CapacityReservationListResultPage
+type CapacityReservationProfile = original.CapacityReservationProfile
+type CapacityReservationProperties = original.CapacityReservationProperties
+type CapacityReservationUpdate = original.CapacityReservationUpdate
+type CapacityReservationUtilization = original.CapacityReservationUtilization
+type CapacityReservationsClient = original.CapacityReservationsClient
+type CapacityReservationsCreateOrUpdateFuture = original.CapacityReservationsCreateOrUpdateFuture
+type CapacityReservationsDeleteFuture = original.CapacityReservationsDeleteFuture
+type CapacityReservationsUpdateFuture = original.CapacityReservationsUpdateFuture
 type CloudError = original.CloudError
 type CloudService = original.CloudService
 type CloudServiceExtensionProfile = original.CloudServiceExtensionProfile
@@ -1055,10 +1111,12 @@ type DiskListPage = original.DiskListPage
 type DiskProperties = original.DiskProperties
 type DiskRestorePoint = original.DiskRestorePoint
 type DiskRestorePointClient = original.DiskRestorePointClient
+type DiskRestorePointGrantAccessFuture = original.DiskRestorePointGrantAccessFuture
 type DiskRestorePointList = original.DiskRestorePointList
 type DiskRestorePointListIterator = original.DiskRestorePointListIterator
 type DiskRestorePointListPage = original.DiskRestorePointListPage
 type DiskRestorePointProperties = original.DiskRestorePointProperties
+type DiskRestorePointRevokeAccessFuture = original.DiskRestorePointRevokeAccessFuture
 type DiskSecurityProfile = original.DiskSecurityProfile
 type DiskSku = original.DiskSku
 type DiskUpdate = original.DiskUpdate
@@ -1276,6 +1334,7 @@ type RestorePointCollectionSourceProperties = original.RestorePointCollectionSou
 type RestorePointCollectionUpdate = original.RestorePointCollectionUpdate
 type RestorePointCollectionsClient = original.RestorePointCollectionsClient
 type RestorePointCollectionsDeleteFuture = original.RestorePointCollectionsDeleteFuture
+type RestorePointProperties = original.RestorePointProperties
 type RestorePointProvisioningDetails = original.RestorePointProvisioningDetails
 type RestorePointSourceMetadata = original.RestorePointSourceMetadata
 type RestorePointSourceVMDataDisk = original.RestorePointSourceVMDataDisk
@@ -1358,7 +1417,9 @@ type SnapshotsDeleteFuture = original.SnapshotsDeleteFuture
 type SnapshotsGrantAccessFuture = original.SnapshotsGrantAccessFuture
 type SnapshotsRevokeAccessFuture = original.SnapshotsRevokeAccessFuture
 type SnapshotsUpdateFuture = original.SnapshotsUpdateFuture
+type SoftDeletePolicy = original.SoftDeletePolicy
 type SourceVault = original.SourceVault
+type SpotRestorePolicy = original.SpotRestorePolicy
 type StatusCodeCount = original.StatusCodeCount
 type StorageProfile = original.StorageProfile
 type SubResource = original.SubResource
@@ -1383,7 +1444,9 @@ type UsageClient = original.UsageClient
 type UsageName = original.UsageName
 type UserArtifactManage = original.UserArtifactManage
 type UserArtifactSource = original.UserArtifactSource
+type VMGalleryApplication = original.VMGalleryApplication
 type VMScaleSetConvertToSinglePlacementGroupInput = original.VMScaleSetConvertToSinglePlacementGroupInput
+type VMSizeProperties = original.VMSizeProperties
 type VaultCertificate = original.VaultCertificate
 type VaultSecretGroup = original.VaultSecretGroup
 type VirtualHardDisk = original.VirtualHardDisk
@@ -1602,6 +1665,30 @@ func NewAvailabilitySetsClient(subscriptionID string) AvailabilitySetsClient {
 }
 func NewAvailabilitySetsClientWithBaseURI(baseURI string, subscriptionID string) AvailabilitySetsClient {
 	return original.NewAvailabilitySetsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCapacityReservationGroupListResultIterator(page CapacityReservationGroupListResultPage) CapacityReservationGroupListResultIterator {
+	return original.NewCapacityReservationGroupListResultIterator(page)
+}
+func NewCapacityReservationGroupListResultPage(cur CapacityReservationGroupListResult, getNextPage func(context.Context, CapacityReservationGroupListResult) (CapacityReservationGroupListResult, error)) CapacityReservationGroupListResultPage {
+	return original.NewCapacityReservationGroupListResultPage(cur, getNextPage)
+}
+func NewCapacityReservationGroupsClient(subscriptionID string) CapacityReservationGroupsClient {
+	return original.NewCapacityReservationGroupsClient(subscriptionID)
+}
+func NewCapacityReservationGroupsClientWithBaseURI(baseURI string, subscriptionID string) CapacityReservationGroupsClient {
+	return original.NewCapacityReservationGroupsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCapacityReservationListResultIterator(page CapacityReservationListResultPage) CapacityReservationListResultIterator {
+	return original.NewCapacityReservationListResultIterator(page)
+}
+func NewCapacityReservationListResultPage(cur CapacityReservationListResult, getNextPage func(context.Context, CapacityReservationListResult) (CapacityReservationListResult, error)) CapacityReservationListResultPage {
+	return original.NewCapacityReservationListResultPage(cur, getNextPage)
+}
+func NewCapacityReservationsClient(subscriptionID string) CapacityReservationsClient {
+	return original.NewCapacityReservationsClient(subscriptionID)
+}
+func NewCapacityReservationsClientWithBaseURI(baseURI string, subscriptionID string) CapacityReservationsClient {
+	return original.NewCapacityReservationsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewCloudServiceListResultIterator(page CloudServiceListResultPage) CloudServiceListResultIterator {
 	return original.NewCloudServiceListResultIterator(page)
@@ -2104,6 +2191,12 @@ func PossibleAvailabilitySetSkuTypesValues() []AvailabilitySetSkuTypes {
 func PossibleCachingTypesValues() []CachingTypes {
 	return original.PossibleCachingTypesValues()
 }
+func PossibleCapacityReservationGroupInstanceViewTypesValues() []CapacityReservationGroupInstanceViewTypes {
+	return original.PossibleCapacityReservationGroupInstanceViewTypesValues()
+}
+func PossibleCapacityReservationInstanceViewTypesValues() []CapacityReservationInstanceViewTypes {
+	return original.PossibleCapacityReservationInstanceViewTypesValues()
+}
 func PossibleCloudServiceUpgradeModeValues() []CloudServiceUpgradeMode {
 	return original.PossibleCloudServiceUpgradeModeValues()
 }
@@ -2158,8 +2251,14 @@ func PossibleEncryptionTypeValues() []EncryptionType {
 func PossibleExecutionStateValues() []ExecutionState {
 	return original.PossibleExecutionStateValues()
 }
+func PossibleExpandTypesForGetCapacityReservationGroupsValues() []ExpandTypesForGetCapacityReservationGroups {
+	return original.PossibleExpandTypesForGetCapacityReservationGroupsValues()
+}
 func PossibleExpandTypesForGetVMScaleSetsValues() []ExpandTypesForGetVMScaleSets {
 	return original.PossibleExpandTypesForGetVMScaleSetsValues()
+}
+func PossibleExtendedLocationTypeValues() []ExtendedLocationType {
+	return original.PossibleExtendedLocationTypeValues()
 }
 func PossibleExtendedLocationTypesValues() []ExtendedLocationTypes {
 	return original.PossibleExtendedLocationTypesValues()
@@ -2271,6 +2370,9 @@ func PossiblePublicIPAddressSkuTierValues() []PublicIPAddressSkuTier {
 }
 func PossiblePublicIPAllocationMethodValues() []PublicIPAllocationMethod {
 	return original.PossiblePublicIPAllocationMethodValues()
+}
+func PossibleReplicationModeValues() []ReplicationMode {
+	return original.PossibleReplicationModeValues()
 }
 func PossibleReplicationStateValues() []ReplicationState {
 	return original.PossibleReplicationStateValues()

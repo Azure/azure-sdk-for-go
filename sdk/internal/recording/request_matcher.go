@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
@@ -26,7 +27,6 @@ type RequestMatcher struct {
 }
 
 type StringMatcher func(reqVal string, recVal string) bool
-type matcherWrapper func(matcher StringMatcher, testContext TestContext) bool
 
 var ignoredHeaders = map[string]struct{}{
 	"Date":                   {},

@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"sort"
 	"strings"
 	"sync/atomic"
 	"time"
@@ -63,6 +64,10 @@ func (c *SharedKeyCredential) ComputeHMACSHA256(message string) (string, error) 
 func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/authentication-for-the-azure-storage-services
 	headers := req.Header
+	contentLength := headers.Get(headerContentLength)
+	if contentLength == "0" {
+		contentLength = ""
+	}
 
 	canonicalizedResource, err := c.buildCanonicalizedResource(req.URL)
 	if err != nil {
@@ -70,10 +75,51 @@ func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, erro
 	}
 
 	stringToSign := strings.Join([]string{
-		headers.Get(headerXmsDate),
+		req.Method,
+		headers.Get(headerContentEncoding),
+		headers.Get(headerContentLanguage),
+		contentLength,
+		headers.Get(headerContentMD5),
+		headers.Get(headerContentType),
+		"", // Empty date because x-ms-date is expected (as per web page above)
+		headers.Get(headerIfModifiedSince),
+		headers.Get(headerIfMatch),
+		headers.Get(headerIfNoneMatch),
+		headers.Get(headerIfUnmodifiedSince),
+		headers.Get(headerRange),
+		c.buildCanonicalizedHeader(headers),
 		canonicalizedResource,
 	}, "\n")
 	return stringToSign, nil
+}
+
+func (c *SharedKeyCredential) buildCanonicalizedHeader(headers http.Header) string {
+	cm := map[string][]string{}
+	for k, v := range headers {
+		headerName := strings.TrimSpace(strings.ToLower(k))
+		if strings.HasPrefix(headerName, "x-ms-") {
+			cm[headerName] = v // NOTE: the value must not have any whitespace around it.
+		}
+	}
+	if len(cm) == 0 {
+		return ""
+	}
+
+	keys := make([]string, 0, len(cm))
+	for key := range cm {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+	ch := bytes.NewBufferString("")
+	for i, key := range keys {
+		if i > 0 {
+			ch.WriteRune('\n')
+		}
+		ch.WriteString(key)
+		ch.WriteRune(':')
+		ch.WriteString(strings.Join(cm[key], ","))
+	}
+	return ch.String()
 }
 
 func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, error) {
@@ -97,9 +143,21 @@ func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, er
 		return "", fmt.Errorf("failed to parse query params: %w", err)
 	}
 
-	if compVal, ok := params["comp"]; ok {
-		//do something here
-		cr.WriteString("?" + "comp=" + compVal[0])
+	if len(params) > 0 { // There is at least 1 query parameter
+		var paramNames []string // We use this to sort the parameter key names
+		for paramName := range params {
+			paramNames = append(paramNames, paramName) // paramNames must be lowercase
+		}
+		sort.Strings(paramNames)
+
+		for _, paramName := range paramNames {
+			paramValues := params[paramName]
+			sort.Strings(paramValues)
+
+			// Join the sorted key values separated by ','
+			// Then prepend "keyName:"; then add this string to the buffer
+			cr.WriteString("\n" + paramName + ":" + strings.Join(paramValues, ","))
+		}
 	}
 	return cr.String(), nil
 }
@@ -128,7 +186,7 @@ func (s *sharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	authHeader := strings.Join([]string{"SharedKeyLite ", s.cred.AccountName(), ":", signature}, "")
+	authHeader := strings.Join([]string{"SharedKey ", s.cred.AccountName(), ":", signature}, "")
 	req.Raw().Header.Set(headerAuthorization, authHeader)
 
 	response, err := req.Next()

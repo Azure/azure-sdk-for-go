@@ -157,6 +157,9 @@ func (s *azblobTestSuite) TestBlobStartCopyDestEmpty() {
 		s.Fail("Unable to fetch service client because " + err.Error())
 	}
 
+	gResp, err := svcClient.GetProperties(ctx)
+	_ = gResp
+
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 

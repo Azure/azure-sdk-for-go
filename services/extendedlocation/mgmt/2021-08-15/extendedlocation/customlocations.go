@@ -83,7 +83,7 @@ func (client CustomLocationsClient) CreateOrUpdatePreparer(ctx context.Context, 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-15-preview"
+	const APIVersion = "2021-08-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -178,7 +178,7 @@ func (client CustomLocationsClient) DeletePreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-15-preview"
+	const APIVersion = "2021-08-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -276,7 +276,7 @@ func (client CustomLocationsClient) GetPreparer(ctx context.Context, resourceGro
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-15-preview"
+	const APIVersion = "2021-08-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -365,7 +365,7 @@ func (client CustomLocationsClient) ListByResourceGroupPreparer(ctx context.Cont
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-15-preview"
+	const APIVersion = "2021-08-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -485,7 +485,7 @@ func (client CustomLocationsClient) ListBySubscriptionPreparer(ctx context.Conte
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-15-preview"
+	const APIVersion = "2021-08-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -616,7 +616,7 @@ func (client CustomLocationsClient) ListEnabledResourceTypesPreparer(ctx context
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-15-preview"
+	const APIVersion = "2021-08-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -725,7 +725,7 @@ func (client CustomLocationsClient) ListOperations(ctx context.Context) (result 
 
 // ListOperationsPreparer prepares the ListOperations request.
 func (client CustomLocationsClient) ListOperationsPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2021-03-15-preview"
+	const APIVersion = "2021-08-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -852,7 +852,7 @@ func (client CustomLocationsClient) UpdatePreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-15-preview"
+	const APIVersion = "2021-08-15"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

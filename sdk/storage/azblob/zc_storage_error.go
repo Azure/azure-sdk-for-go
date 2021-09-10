@@ -123,7 +123,7 @@ func (e StorageError) Error() string {
 	}
 
 	return b.String()
-	// azcore.writeRequestWithResponse(b, prepareRequestForLogging(req), e.response, nil)
+	///azcore.writeRequestWithResponse(b, prepareRequestForLogging(req), e.response, nil)
 	// return e.ErrorNode.Error(b.String())
 }
 
@@ -138,6 +138,7 @@ func (e StorageError) Response() *http.Response {
 	return e.response
 }
 
+//nolint
 func writeRequestWithResponse(b *bytes.Buffer, request *policy.Request, response *http.Response) {
 	// Write the request into the buffer.
 	_, _ = fmt.Fprint(b, "   "+request.Raw().Method+" "+request.Raw().URL.String()+"\n")
@@ -150,6 +151,7 @@ func writeRequestWithResponse(b *bytes.Buffer, request *policy.Request, response
 }
 
 // formatHeaders appends an HTTP request's or response's header into a Buffer.
+//nolint
 func writeHeader(b *bytes.Buffer, header map[string][]string) {
 	if len(header) == 0 {
 		b.WriteString("   (no headers)\n")

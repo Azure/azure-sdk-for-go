@@ -3,6 +3,7 @@
 
 package azblob
 
+//nolint
 const (
 	SASVersion = "2019-12-12"
 

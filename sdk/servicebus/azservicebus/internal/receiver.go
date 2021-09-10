@@ -36,6 +36,7 @@ import (
 )
 
 const sessionFilterName = "com.microsoft:session-filter"
+const defaultLinkRxBuffer = 2048
 
 type (
 	// Receiver provides connection, session and link handling for a receiving to an entity path
@@ -68,9 +69,16 @@ type (
 		ctx context.Context
 	}
 
-	// Implemented by *Receiver
+	// LegacyReceiver is actually implemented by *Receiver
 	LegacyReceiver interface {
-		Close(ctx context.Context) error
+		ReceiveOner
+
+		Session() *amqp.Session
+		SessionID() *string
+		Client() *amqp.Client
+
+		IssueCredit(credit uint32) error
+		DrainCredit(ctx context.Context) error
 		Listen(ctx context.Context, handler Handler) ListenerHandle
 		CompleteMessage(ctx context.Context, message *Message) error
 		AbandonMessage(ctx context.Context, message *Message) error
@@ -110,7 +118,7 @@ func ReceiverWithPrefetchCount(prefetch uint32) ReceiverOption {
 }
 
 // NewReceiver creates a new Service Bus message listener given an AMQP client and an entity path
-func (ns *Namespace) NewReceiver(ctx context.Context, entityPath string, opts ...ReceiverOption) (*Receiver, error) {
+func (ns *Namespace) NewReceiver(ctx context.Context, entityPath string, opts ...ReceiverOption) (LegacyReceiver, error) {
 	ctx, span := ns.startSpanFromContext(ctx, "sb.Namespace.NewReceiver")
 	defer span.End()
 
@@ -218,6 +226,18 @@ func (r *Receiver) ReceiveOne(ctx context.Context, handler Handler) error {
 	return nil
 }
 
+// IssueCredit adds credits to the link that will be sent
+// in the next flow frame.
+func (r *Receiver) IssueCredit(credits uint32) error {
+	return r.receiver.IssueCredit(credits)
+}
+
+// DrainCredit will cause the next flow frame to have drain set to
+// true, with the current credits in the link.
+func (r *Receiver) DrainCredit(ctx context.Context) error {
+	return r.receiver.DrainCredit(ctx)
+}
+
 // Listen start a listener for messages sent to the entity path
 func (r *Receiver) Listen(ctx context.Context, handler Handler) ListenerHandle {
 	ctx, done := context.WithCancel(ctx)
@@ -234,14 +254,33 @@ func (r *Receiver) Listen(ctx context.Context, handler Handler) ListenerHandle {
 	}
 }
 
+// CompleteMessage will complete a message, causing it to be removed
+// from the remote queue or subscription.
 // NOTE: added to make mocking a bit simpler for the processor.
 func (r *Receiver) CompleteMessage(ctx context.Context, message *Message) error {
 	return message.Complete(ctx)
 }
 
+// AbandonMessage will abandon a message, causing it to be available to
+// the remote queue or subscription.
 // NOTE: added to make mocking a bit simpler for the processor.
 func (r *Receiver) AbandonMessage(ctx context.Context, message *Message) error {
 	return message.Abandon(ctx)
+}
+
+// Session returns the underlying *amqp.Session struct in `r.session.Session`.
+func (r *Receiver) Session() *amqp.Session {
+	return r.session.Session
+}
+
+// Client returns the underlying *amqp.Client struct in `r.client`.
+func (r *Receiver) Client() *amqp.Client {
+	return r.client
+}
+
+// SessionID returns the sessionID in `r.sessionID`.
+func (r *Receiver) SessionID() *string {
+	return r.sessionID
 }
 
 func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler Handler) {
@@ -423,7 +462,8 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 	opts := []amqp.LinkOption{
 		amqp.LinkSourceAddress(r.entityPath),
 		amqp.LinkReceiverSettle(receiveMode),
-		amqp.LinkCredit(r.prefetch),
+		amqp.LinkWithManualCredits(),
+		amqp.LinkCredit(defaultLinkRxBuffer),
 	}
 
 	if r.mode == ReceiveAndDeleteMode {
@@ -477,6 +517,8 @@ func messageID(msg *amqp.Message) interface{} {
 	return id
 }
 
+// ListenerHandle is the handle that you can use to wait on a `Listen`
+// call to complete. It is extremely similar to a `context.Context`.
 type ListenerHandle interface {
 	Done() <-chan struct{}
 	Err() error

@@ -14,7 +14,7 @@ import (
 
 // MessageSession represents and allows for interaction with a Service Bus Session.
 type MessageSession struct {
-	*Receiver
+	Receiver       LegacyReceiver
 	entity         EntityManagementAddresser
 	mu             sync.RWMutex
 	sessionID      *string
@@ -24,7 +24,7 @@ type MessageSession struct {
 	cancel sync.Once
 }
 
-func newMessageSession(r *Receiver, entity EntityManagementAddresser, sessionID *string) (retval *MessageSession, _ error) {
+func newMessageSession(r LegacyReceiver, entity EntityManagementAddresser, sessionID *string) (retval *MessageSession, _ error) {
 	retval = &MessageSession{
 		Receiver:       r,
 		entity:         entity,
@@ -59,7 +59,7 @@ func (ms *MessageSession) RenewLock(ctx context.Context) error {
 	ms.mu.Lock()
 	defer ms.mu.Unlock()
 
-	link, err := rpc.NewLinkWithSession(ms.Receiver.session.Session, ms.entity.ManagementPath())
+	link, err := rpc.NewLinkWithSession(ms.Receiver.Session(), ms.entity.ManagementPath())
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
@@ -99,7 +99,7 @@ func (ms *MessageSession) RenewLock(ctx context.Context) error {
 
 // ListSessions will list all of the sessions available
 func (ms *MessageSession) ListSessions(ctx context.Context) ([]byte, error) {
-	link, err := rpc.NewLink(ms.Receiver.client, ms.entity.ManagementPath())
+	link, err := rpc.NewLink(ms.Receiver.Client(), ms.entity.ManagementPath())
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return nil, err
@@ -133,7 +133,7 @@ func (ms *MessageSession) ListSessions(ctx context.Context) ([]byte, error) {
 
 // SetState updates the current State associated with this Session.
 func (ms *MessageSession) SetState(ctx context.Context, state []byte) error {
-	link, err := rpc.NewLinkWithSession(ms.Receiver.session.Session, ms.entity.ManagementPath())
+	link, err := rpc.NewLinkWithSession(ms.Receiver.Session(), ms.entity.ManagementPath())
 	if err != nil {
 		return err
 	}
@@ -167,7 +167,7 @@ func (ms *MessageSession) SetState(ctx context.Context, state []byte) error {
 func (ms *MessageSession) State(ctx context.Context) ([]byte, error) {
 	const sessionStateField = "session-state"
 
-	link, err := rpc.NewLinkWithSession(ms.Receiver.session.Session, ms.entity.ManagementPath())
+	link, err := rpc.NewLinkWithSession(ms.Receiver.Session(), ms.entity.ManagementPath())
 	if err != nil {
 		return []byte{}, err
 	}

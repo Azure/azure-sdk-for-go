@@ -35,7 +35,6 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/adal"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -68,10 +67,6 @@ func init() {
 
 // SetupSuite prepares the test suite and provisions a standard Service Bus Namespace
 func (suite *BaseSuite) SetupSuite() {
-	if err := godotenv.Load(); err != nil {
-		suite.T().Log(err)
-	}
-
 	setFromEnv := func(key string, target *string) {
 		v := os.Getenv(key)
 		if v == "" {

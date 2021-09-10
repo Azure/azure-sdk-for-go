@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v3/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 	"github.com/Azure/go-autorest/autorest/to"
-	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/require"
 )
 
@@ -33,13 +33,12 @@ func createQueue(t *testing.T, connectionString string, queueName string) func()
 }
 
 func TestProcessor(t *testing.T) {
-	godotenv.Load()
 	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*5)
 	defer cancel()
 
-	serviceBusClient, err := NewServiceBusClient(ServiceBusWithConnectionString(cs))
+	serviceBusClient, err := NewClient(WithConnectionString(cs))
 	require.NoError(t, err)
 
 	nanoSeconds := time.Now().UnixNano()
@@ -96,20 +95,12 @@ func TestProcessor(t *testing.T) {
 	})
 }
 
-type fakeNamespace struct {
-	newReceiver func(ctx context.Context, entityPath string, opts ...internal.ReceiverOption) (*internal.Receiver, error)
-}
-
-func (ns *fakeNamespace) NewReceiver(ctx context.Context, entityPath string, opts ...internal.ReceiverOption) (*internal.Receiver, error) {
-	return ns.newReceiver(ctx, entityPath, opts...)
-}
-
 func TestProcessorUnitTests(t *testing.T) {
 	t.Parallel()
 
 	t.Run("Processor", func(t *testing.T) {
 		t.Run("StartAndClose", func(t *testing.T) {
-			fakeNs := createFakeNamespace()
+			fakeNs := internal.NewFakeNamespace()
 			processor, err := newProcessor(fakeNs, ProcessorWithQueue("hello"))
 			require.NoError(t, err)
 
@@ -133,7 +124,7 @@ func TestProcessorUnitTests(t *testing.T) {
 		})
 
 		t.Run("CloseWaitsForActiveSubscribersToExit", func(t *testing.T) {
-			fakeNs := createFakeNamespace()
+			fakeNs := internal.NewFakeNamespace()
 			processor, err := newProcessor(fakeNs, ProcessorWithQueue("hello"))
 			require.NoError(t, err)
 
@@ -171,14 +162,25 @@ func TestProcessorUnitTests(t *testing.T) {
 		})
 
 		t.Run("CloseWithoutStart", func(t *testing.T) {
-			fakeNs := createFakeNamespace()
+			fakeNs := internal.NewFakeNamespace()
 			processor, err := newProcessor(fakeNs, ProcessorWithQueue("hello"))
 			require.NoError(t, err)
 			require.NoError(t, processor.Close(context.Background()))
+
+			err = processor.Start(func(message *ReceivedMessage) error {
+				t.Fail()
+				return nil
+			}, func(err error) {
+				t.Fail()
+			})
+
+			_, ok := err.(errorinfo.NonRetriable)
+			require.True(t, ok, "ErrClosed is a errorinfo.NonRetriable")
+			require.ErrorIs(t, err, errClosed{"processor"})
 		})
 
 		t.Run("DoubleClose", func(t *testing.T) {
-			fakeNs := createFakeNamespace()
+			fakeNs := internal.NewFakeNamespace()
 			processor, err := newProcessor(fakeNs, ProcessorWithQueue("hello"))
 			require.NoError(t, err)
 			require.NoError(t, processor.Close(context.Background()))
@@ -191,7 +193,7 @@ func TestProcessorUnitTests(t *testing.T) {
 			ctx, cancel := context.WithCancel(context.Background())
 			cancel() // pre-cancel this context
 
-			receiver := newFakeLegacyReceiver()
+			receiver := internal.NewFakeLegacyReceiver()
 			var cancelledError error
 
 			retry := subscribe(ctx, receiver, true, func(message *ReceivedMessage) error {
@@ -202,18 +204,18 @@ func TestProcessorUnitTests(t *testing.T) {
 
 			require.EqualError(t, cancelledError, context.Canceled.Error())
 			require.False(t, retry, "User cancelling the context will not be retried")
-			require.False(t, receiver.closeCalled) // subscribe() is not responsible for the lifetime of the receiver
+			require.False(t, receiver.CloseCalled) // subscribe() is not responsible for the lifetime of the receiver
 		})
 
 		t.Run("error in the listener is retryable", func(t *testing.T) {
-			receiver := newFakeLegacyReceiver()
+			receiver := internal.NewFakeLegacyReceiver()
 
-			receiver.listen = func(ctx context.Context, handler internal.Handler) internal.ListenerHandle {
+			receiver.ListenImpl = func(ctx context.Context, handler internal.Handler) internal.ListenerHandle {
 				ch := make(chan struct{})
 				close(ch)
-				return &fakeListenerHandle{
-					done: ch,
-					err:  errors.New("Some AMQP related error"),
+				return &internal.FakeListenerHandle{
+					DoneChan: ch,
+					ErrValue: errors.New("Some AMQP related error"),
 				}
 			}
 
@@ -227,7 +229,7 @@ func TestProcessorUnitTests(t *testing.T) {
 
 			require.EqualError(t, errorFromListener, "Some AMQP related error")
 			require.True(t, retry, "AMQP errors will cause us to retry")
-			require.False(t, receiver.closeCalled) // subscribe() is not responsible for the lifetime of the receiver
+			require.False(t, receiver.CloseCalled) // subscribe() is not responsible for the lifetime of the receiver
 		})
 
 	})
@@ -241,8 +243,8 @@ func TestProcessorUnitTests(t *testing.T) {
 			},
 		}
 
-		setup := func() *fakeLegacyReceiver {
-			receiver := newFakeLegacyReceiver()
+		setup := func() *internal.FakeInternalReceiver {
+			receiver := internal.NewFakeLegacyReceiver()
 			return receiver
 		}
 
@@ -256,8 +258,8 @@ func TestProcessorUnitTests(t *testing.T) {
 				require.NoError(t, err)
 			}, true, receiver, fakeMessage)
 
-			require.True(t, receiver.completeCalled)
-			require.False(t, receiver.abandonCalled)
+			require.True(t, receiver.CompleteCalled)
+			require.False(t, receiver.AbandonCalled)
 		})
 
 		t.Run("AutoCompleteAbandonMessage", func(t *testing.T) {
@@ -270,8 +272,8 @@ func TestProcessorUnitTests(t *testing.T) {
 				require.EqualErrorf(t, err, "Purposefully reported error", "Error from the handler gets forwarded")
 			}, true, receiver, fakeMessage)
 
-			require.True(t, receiver.abandonCalled)
-			require.False(t, receiver.completeCalled)
+			require.True(t, receiver.AbandonCalled)
+			require.False(t, receiver.CompleteCalled)
 		})
 
 		t.Run("AutoCompleteAlreadySettledDoNotSettleTwice)", func(t *testing.T) {
@@ -285,8 +287,8 @@ func TestProcessorUnitTests(t *testing.T) {
 			}, true, receiver, fakeMessage)
 
 			// TODO: neither should be called - the message was already settled.
-			require.True(t, receiver.abandonCalled)
-			require.False(t, receiver.completeCalled)
+			require.True(t, receiver.AbandonCalled)
+			require.False(t, receiver.CompleteCalled)
 		})
 
 		t.Run("autoComplete (off)", func(t *testing.T) {
@@ -299,14 +301,14 @@ func TestProcessorUnitTests(t *testing.T) {
 				require.NoError(t, err)
 			}, false, receiver, fakeMessage)
 
-			require.False(t, receiver.completeCalled)
-			require.False(t, receiver.abandonCalled)
+			require.False(t, receiver.CompleteCalled)
+			require.False(t, receiver.AbandonCalled)
 		})
 
 		t.Run("SettlementErrorsAreForwarded(complete)", func(t *testing.T) {
 			receiver := setup()
 
-			receiver.completeMessage = func(ctx context.Context, msg *internal.Message) error {
+			receiver.CompleteMessageImpl = func(ctx context.Context, msg *internal.Message) error {
 				return errors.New("Complete failed")
 			}
 
@@ -324,7 +326,7 @@ func TestProcessorUnitTests(t *testing.T) {
 		t.Run("SettlementErrorsAreForwarded(abandon)", func(t *testing.T) {
 			receiver := setup()
 
-			receiver.abandonMessage = func(ctx context.Context, msg *internal.Message) error {
+			receiver.AbandonMessageImpl = func(ctx context.Context, msg *internal.Message) error {
 				return errors.New("Abandon failed")
 			}
 
@@ -342,100 +344,4 @@ func TestProcessorUnitTests(t *testing.T) {
 			})
 		})
 	})
-}
-
-func newFakeLegacyReceiver() *fakeLegacyReceiver {
-	return &fakeLegacyReceiver{
-		listenerRegisteredChan: make(chan struct {
-			handle internal.ListenerHandle
-			cancel context.CancelFunc
-		}, 1),
-	}
-}
-
-type fakeLegacyReceiver struct {
-	listenerRegisteredChan chan struct {
-		handle internal.ListenerHandle
-		cancel context.CancelFunc
-	}
-	closeCalled    bool
-	abandonCalled  bool
-	completeCalled bool
-
-	close           func(ctx context.Context) error
-	listen          func(ctx context.Context, handler internal.Handler) internal.ListenerHandle
-	abandonMessage  func(ctx context.Context, msg *internal.Message) error
-	completeMessage func(ctx context.Context, msg *internal.Message) error
-}
-
-func (r *fakeLegacyReceiver) Close(ctx context.Context) error {
-	r.closeCalled = true
-
-	if r.close == nil {
-		return nil
-	}
-
-	return r.close(ctx)
-}
-
-func (r *fakeLegacyReceiver) Listen(ctx context.Context, handler internal.Handler) internal.ListenerHandle {
-	if r.listen != nil {
-		return r.listen(ctx, handler)
-	}
-
-	// default listener just creates a cancellable context
-	// and notifies you, via the listenerRegisteredChan, that
-	// Listen() has been called.
-	listenerCtx, cancel := context.WithCancel(context.Background())
-
-	r.listenerRegisteredChan <- struct {
-		handle internal.ListenerHandle
-		cancel context.CancelFunc
-	}{
-		handle: listenerCtx,
-		cancel: cancel,
-	}
-
-	return listenerCtx
-}
-
-func (r *fakeLegacyReceiver) AbandonMessage(ctx context.Context, msg *internal.Message) error {
-	r.abandonCalled = true
-
-	if r.abandonMessage == nil {
-		return nil
-	}
-
-	return r.abandonMessage(ctx, msg)
-}
-
-func (r *fakeLegacyReceiver) CompleteMessage(ctx context.Context, msg *internal.Message) error {
-	r.completeCalled = true
-
-	if r.completeMessage == nil {
-		return nil
-	}
-
-	return r.completeMessage(ctx, msg)
-}
-
-type fakeListenerHandle struct {
-	done chan struct{}
-	err  error
-}
-
-func (lh *fakeListenerHandle) Err() error {
-	return lh.err
-}
-
-func (lh *fakeListenerHandle) Done() <-chan struct{} {
-	return lh.done
-}
-
-func createFakeNamespace() *fakeNamespace {
-	return &fakeNamespace{
-		newReceiver: func(ctx context.Context, entityPath string, opts ...internal.ReceiverOption) (*internal.Receiver, error) {
-			return &internal.Receiver{}, nil
-		},
-	}
 }

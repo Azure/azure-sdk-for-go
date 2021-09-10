@@ -55,7 +55,7 @@ type (
 		lockedRPC
 		builder   SendAndReceiveBuilder
 		builderMu sync.Mutex
-		receiver  *Receiver
+		receiver  LegacyReceiver
 		sender    *Sender
 	}
 
@@ -65,7 +65,7 @@ type (
 		lockedRPC
 		builder   ReceiveBuilder
 		builderMu sync.Mutex
-		receiver  *Receiver
+		receiver  LegacyReceiver
 	}
 
 	// TopicSession wraps Service Bus session functionality over a Topic
@@ -78,7 +78,7 @@ type (
 
 	// ReceiverBuilder describes the ability of an entity to build receiver links
 	ReceiverBuilder interface {
-		NewReceiver(ctx context.Context, opts ...ReceiverOption) (*Receiver, error)
+		NewReceiver(ctx context.Context, opts ...ReceiverOption) (LegacyReceiver, error)
 	}
 
 	// SenderBuilder describes the ability of an entity to build sender links
@@ -338,7 +338,7 @@ func (qs *QueueSession) ensureReceiver(ctx context.Context) error {
 	qs.receiver = r
 	if qs.sessionID == nil {
 		// propagate the acquired session ID from the receiver
-		qs.sessionID = qs.receiver.sessionID
+		qs.sessionID = qs.receiver.SessionID()
 	}
 	return nil
 }
@@ -480,7 +480,7 @@ func (ss *SubscriptionSession) ensureReceiver(ctx context.Context) error {
 	ss.receiver = r
 	if ss.sessionID == nil {
 		// propagate the acquired session ID from the receiver
-		ss.sessionID = ss.receiver.sessionID
+		ss.sessionID = ss.receiver.SessionID()
 	}
 	return nil
 }

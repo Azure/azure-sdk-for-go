@@ -1,6 +1,13 @@
 package azservicebus
 
-import "errors"
+import "fmt"
 
-var ErrSenderClosed = errors.New("sender is closed and cannot be used")
-var ErrReceiverClosed = errors.New("receiver has been closed and can no longer be used")
+// implements `internal/errorinfo/NonRetriable`
+type errClosed struct {
+	link string
+}
+
+func (ec errClosed) NonRetriable() {}
+func (ec errClosed) Error() string {
+	return fmt.Sprintf("%s is closed and can no longer be used", ec.link)
+}

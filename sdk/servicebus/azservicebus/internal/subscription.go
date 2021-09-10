@@ -37,7 +37,7 @@ type (
 	Subscription struct {
 		*receivingEntity
 		Topic             *Topic
-		receiver          *Receiver
+		receiver          LegacyReceiver
 		receiverMu        sync.Mutex
 		receiveMode       ReceiveMode
 		requiredSessionID *string
@@ -133,7 +133,7 @@ func (s *Subscription) NewSession(sessionID *string) *SubscriptionSession {
 }
 
 // NewReceiver will create a new Receiver for receiving messages off of the queue
-func (s *Subscription) NewReceiver(ctx context.Context, opts ...ReceiverOption) (*Receiver, error) {
+func (s *Subscription) NewReceiver(ctx context.Context, opts ...ReceiverOption) (LegacyReceiver, error) {
 	ctx, span := s.startSpanFromContext(ctx, "sb.Subscription.NewReceiver")
 	defer span.End()
 

@@ -20,11 +20,16 @@ type Sender struct {
 
 	mu           *sync.Mutex
 	legacySender legacySender
-	closed       bool
+
+	linkState *linkState
 }
 
 // SendMessage sends a message to a queue or topic.
 func (s *Sender) SendMessage(ctx context.Context, message *Message) error {
+	if s.linkState.Closed() {
+		return s.linkState.Err()
+	}
+
 	legacySender, err := s.createSender(ctx)
 
 	if err != nil {
@@ -38,19 +43,20 @@ func (s *Sender) SendMessage(ctx context.Context, message *Message) error {
 	})
 }
 
+// Close permanently closes the Sender.
 func (s *Sender) Close(ctx context.Context) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+	defer s.linkState.Close()
 
-	s.closed = true
+	var err error
 
-	if s.legacySender == nil {
-		return nil
+	if s.legacySender != nil {
+		err = s.legacySender.Close(ctx)
+		s.legacySender = nil
 	}
 
-	legacySender := s.legacySender
-	s.legacySender = nil
-	return legacySender.Close(ctx)
+	return err
 }
 
 // ie: `*internal.Namespace`
@@ -71,7 +77,8 @@ func newSender(ns legacySenderNamespace, queueOrTopic string, options ...SenderO
 		}{
 			queueOrTopic: queueOrTopic,
 		},
-		mu: &sync.Mutex{},
+		mu:        &sync.Mutex{},
+		linkState: newLinkState(context.Background(), errClosed{link: "sender"}),
 	}
 
 	for _, opt := range options {
@@ -83,10 +90,6 @@ func newSender(ns legacySenderNamespace, queueOrTopic string, options ...SenderO
 	sender.createSender = func(ctx context.Context) (legacySender, error) {
 		sender.mu.Lock()
 		defer sender.mu.Unlock()
-
-		if sender.closed {
-			return nil, ErrSenderClosed
-		}
 
 		if sender.legacySender != nil {
 			return sender.legacySender, nil

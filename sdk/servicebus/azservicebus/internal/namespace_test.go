@@ -31,7 +31,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal/test"
 	"github.com/Azure/go-autorest/autorest/azure"
-	"github.com/joho/godotenv"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -46,8 +45,6 @@ func TestSB(t *testing.T) {
 }
 
 func (suite *serviceBusSuite) TestCreateNamespaceFromConnectionString() {
-	_ = godotenv.Load()
-
 	connStr := os.Getenv("SERVICEBUS_CONNECTION_STRING") // `Endpoint=sb://XXXX.servicebus.windows.net/;SharedAccessKeyName=XXXX;SharedAccessKey=XXXX`
 	if connStr == "" {
 		suite.FailNow("environment variable SERVICEBUS_CONNECTION_STRING was not set")

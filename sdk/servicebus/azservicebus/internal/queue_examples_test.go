@@ -9,14 +9,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v3/uuid"
-	"github.com/joho/godotenv"
 )
-
-func init() {
-	if err := godotenv.Load(); err != nil {
-		fmt.Println("FATAL: ", err)
-	}
-}
 
 func ExampleQueue_getOrBuildQueue() {
 	const queueName = "myqueue"

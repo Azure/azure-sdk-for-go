@@ -5,7 +5,8 @@ package azblob
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	//"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"github.com/stretchr/testify/assert"
 	"strings"
@@ -41,7 +42,8 @@ func (s *azblobTestSuite) TestGetAccountInfo() {
 
 	// test on a block blob URL. They all call the same thing on the base URL, so only one test is needed for that.
 	blobClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
-	_, err = blobClient.Upload(ctx, azcore.NopCloser(strings.NewReader("blah")), nil)
+	rsc := streaming.NopCloser(strings.NewReader("blah"))
+	_, err = blobClient.Upload(ctx, rsc, nil)
 	_assert.Nil(err)
 	bAccInfo, err := blobClient.GetAccountInfo(ctx)
 	_assert.Nil(err)
@@ -56,7 +58,7 @@ func (s *azblobUnrecordedTestSuite) TestServiceClientFromConnectionString() {
 	accountName, _ := getAccountInfo(nil, testAccountDefault)
 	connectionString := getConnectionString(nil, testAccountDefault)
 
-	serviceURL, _, cred, err := ParseConnectionString(connectionString, "")
+	serviceURL, cred, err := parseConnectionString(connectionString)
 	_assert.Nil(err)
 	_assert.Equal(serviceURL, "https://"+accountName+".blob.core.windows.net/")
 

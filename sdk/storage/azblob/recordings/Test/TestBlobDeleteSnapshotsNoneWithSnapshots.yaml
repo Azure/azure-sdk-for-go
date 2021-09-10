@@ -10,9 +10,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Tue, 07 Sep 2021 17:21:29 GMT
+      - Fri, 10 Sep 2021 05:18:43 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeletesnapshotsnonewithsnapshots?restype=container
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 07 Sep 2021 17:21:29 GMT
+      - Fri, 10 Sep 2021 05:18:42 GMT
       Etag:
-      - '"0x8D97223EE415899"'
+      - '"0x8D9741A74F97192"'
       Last-Modified:
-      - Tue, 07 Sep 2021 17:21:29 GMT
+      - Fri, 10 Sep 2021 05:18:43 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 4907d44f-d01e-0040-360c-a41f4f000000
+      - b12b7e40-401e-0028-1203-a6411e000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -50,11 +50,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       User-Agent:
-      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)
       X-Ms-Blob-Type:
       - BlockBlob
       X-Ms-Date:
-      - Tue, 07 Sep 2021 17:21:29 GMT
+      - Fri, 10 Sep 2021 05:18:43 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeletesnapshotsnonewithsnapshots/gotestblobblobdeletesnapshotsnonewithsnapshots
@@ -67,23 +67,23 @@ interactions:
       Content-Md5:
       - ebncwguMQu9sgPmr0GazhA==
       Date:
-      - Tue, 07 Sep 2021 17:21:29 GMT
+      - Fri, 10 Sep 2021 05:18:42 GMT
       Etag:
-      - '"0x8D97223EE66A124"'
+      - '"0x8D9741A751FB476"'
       Last-Modified:
-      - Tue, 07 Sep 2021 17:21:29 GMT
+      - Fri, 10 Sep 2021 05:18:43 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Content-Crc64:
       - +JGsS7CR5kg=
       X-Ms-Request-Id:
-      - 4907d4b6-d01e-0040-150c-a41f4f000000
+      - b12b7f09-401e-0028-4803-a6411e000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-09-07T17:21:29.8760996Z"
+      - "2021-09-10T05:18:43.2619638Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -96,9 +96,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Tue, 07 Sep 2021 17:21:29 GMT
+      - Fri, 10 Sep 2021 05:18:43 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeletesnapshotsnonewithsnapshots/gotestblobblobdeletesnapshotsnonewithsnapshots?comp=snapshot
@@ -109,23 +109,23 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 07 Sep 2021 17:21:29 GMT
+      - Fri, 10 Sep 2021 05:18:43 GMT
       Etag:
-      - '"0x8D97223EE66A124"'
+      - '"0x8D9741A751FB476"'
       Last-Modified:
-      - Tue, 07 Sep 2021 17:21:29 GMT
+      - Fri, 10 Sep 2021 05:18:43 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 4907d53f-d01e-0040-170c-a41f4f000000
+      - b12b7fbe-401e-0028-7203-a6411e000000
       X-Ms-Request-Server-Encrypted:
       - "false"
       X-Ms-Snapshot:
-      - "2021-09-07T17:21:30.1193005Z"
+      - "2021-09-10T05:18:43.5131731Z"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-09-07T17:21:30.1203005Z"
+      - "2021-09-10T05:18:43.5141731Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -138,28 +138,28 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Tue, 07 Sep 2021 17:21:30 GMT
+      - Fri, 10 Sep 2021 05:18:43 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeletesnapshotsnonewithsnapshots/gotestblobblobdeletesnapshotsnonewithsnapshots
     method: DELETE
   response:
-    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x53\x6E\x61\x70\x73\x68\x6F\x74\x73\x50\x72\x65\x73\x65\x6E\x74\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x69\x73\x20\x6F\x70\x65\x72\x61\x74\x69\x6F\x6E\x20\x69\x73\x20\x6E\x6F\x74\x20\x70\x65\x72\x6D\x69\x74\x74\x65\x64\x20\x62\x65\x63\x61\x75\x73\x65\x20\x74\x68\x65\x20\x62\x6C\x6F\x62\x20\x68\x61\x73\x20\x73\x6E\x61\x70\x73\x68\x6F\x74\x73\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x34\x39\x30\x37\x64\x35\x62\x36\x2D\x64\x30\x31\x65\x2D\x30\x30\x34\x30\x2D\x30\x33\x30\x63\x2D\x61\x34\x31\x66\x34\x66\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x31\x2D\x30\x39\x2D\x30\x37\x54\x31\x37\x3A\x32\x31\x3A\x33\x30\x2E\x33\x36\x31\x33\x36\x35\x37\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
+    body: "\uFEFF\x3C\x3F\x78\x6D\x6C\x20\x76\x65\x72\x73\x69\x6F\x6E\x3D\"\x31\x2E\x30\"\x20\x65\x6E\x63\x6F\x64\x69\x6E\x67\x3D\"\x75\x74\x66\x2D\x38\"\x3F\x3E\x3C\x45\x72\x72\x6F\x72\x3E\x3C\x43\x6F\x64\x65\x3E\x53\x6E\x61\x70\x73\x68\x6F\x74\x73\x50\x72\x65\x73\x65\x6E\x74\x3C\x2F\x43\x6F\x64\x65\x3E\x3C\x4D\x65\x73\x73\x61\x67\x65\x3E\x54\x68\x69\x73\x20\x6F\x70\x65\x72\x61\x74\x69\x6F\x6E\x20\x69\x73\x20\x6E\x6F\x74\x20\x70\x65\x72\x6D\x69\x74\x74\x65\x64\x20\x62\x65\x63\x61\x75\x73\x65\x20\x74\x68\x65\x20\x62\x6C\x6F\x62\x20\x68\x61\x73\x20\x73\x6E\x61\x70\x73\x68\x6F\x74\x73\x2E\n\x52\x65\x71\x75\x65\x73\x74\x49\x64\x3A\x62\x31\x32\x62\x38\x30\x38\x33\x2D\x34\x30\x31\x65\x2D\x30\x30\x32\x38\x2D\x32\x32\x30\x33\x2D\x61\x36\x34\x31\x31\x65\x30\x30\x30\x30\x30\x30\n\x54\x69\x6D\x65\x3A\x32\x30\x32\x31\x2D\x30\x39\x2D\x31\x30\x54\x30\x35\x3A\x31\x38\x3A\x34\x33\x2E\x37\x36\x33\x38\x33\x39\x33\x5A\x3C\x2F\x4D\x65\x73\x73\x61\x67\x65\x3E\x3C\x2F\x45\x72\x72\x6F\x72\x3E"
     headers:
       Content-Length:
       - "248"
       Content-Type:
       - application/xml
       Date:
-      - Tue, 07 Sep 2021 17:21:30 GMT
+      - Fri, 10 Sep 2021 05:18:43 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Error-Code:
       - SnapshotsPresent
       X-Ms-Request-Id:
-      - 4907d5b6-d01e-0040-030c-a41f4f000000
+      - b12b8083-401e-0028-2203-a6411e000000
       X-Ms-Version:
       - "2019-12-12"
     status: 409 This operation is not permitted because the blob has snapshots.
@@ -174,9 +174,9 @@ interactions:
       Authorization:
       - sanitized
       User-Agent:
-      - azsdk-go-azblob/v0.1 azsdk-go-azblob/v0.1 azcore/v0.16.2 (go1.17; Windows_NT)
+      - azsdk-go-azblob/v0.1 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)
       X-Ms-Date:
-      - Tue, 07 Sep 2021 17:21:30 GMT
+      - Fri, 10 Sep 2021 05:18:44 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/gocblobdeletesnapshotsnonewithsnapshots?restype=container
@@ -187,11 +187,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 07 Sep 2021 17:21:30 GMT
+      - Fri, 10 Sep 2021 05:18:43 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - 4907d606-d01e-0040-470c-a41f4f000000
+      - b12b8103-401e-0028-1803-a6411e000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

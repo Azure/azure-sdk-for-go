@@ -10,9 +10,12 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
+	"io"
 	"io/ioutil"
 	"log"
 	"math/rand"
@@ -24,8 +27,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 type azblobTestSuite struct {
@@ -232,9 +233,9 @@ func getPageBlobClient(pageBlobName string, containerClient ContainerClient) Pag
 	return containerClient.NewPageBlobClient(pageBlobName)
 }
 
-func getReaderToGeneratedBytes(n int) *bytes.Reader {
+func getReaderToGeneratedBytes(n int) io.ReadSeekCloser {
 	r, _ := generateData(n)
-	return r
+	return internal.NopCloser(r)
 }
 
 //nolint
@@ -246,7 +247,7 @@ func getRandomDataAndReader(n int) (*bytes.Reader, []byte) {
 
 const random64BString string = "2SDgZj6RkKYzJpu04sweQek4uWHO8ndPnYlZ0tnFS61hjnFZ5IkvIGGY44eKABov"
 
-func generateData(sizeInBytes int) (*bytes.Reader, []byte) {
+func generateData(sizeInBytes int) (io.ReadSeekCloser, []byte) {
 	data := make([]byte, sizeInBytes)
 	_len := len(random64BString)
 	if sizeInBytes > _len {
@@ -258,7 +259,7 @@ func generateData(sizeInBytes int) (*bytes.Reader, []byte) {
 	} else {
 		copy(data[:], random64BString)
 	}
-	return bytes.NewReader(data), data
+	return internal.NopCloser(bytes.NewReader(data)), data
 }
 
 func createNewContainer(_assert *assert.Assertions, containerName string, serviceClient ServiceClient) ContainerClient {
@@ -279,7 +280,7 @@ func deleteContainer(_assert *assert.Assertions, containerClient ContainerClient
 func createNewBlockBlob(_assert *assert.Assertions, blockBlobName string, containerClient ContainerClient) BlockBlobClient {
 	bbClient := getBlockBlobClient(blockBlobName, containerClient)
 
-	cResp, err := bbClient.Upload(ctx, azcore.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
+	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), nil)
 
 	_assert.Nil(err)
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
@@ -324,7 +325,7 @@ func createNewBlockBlobWithCPK(_assert *assert.Assertions, blockBlobName string,
 		CpkInfo:      cpkInfo,
 		CpkScopeInfo: cpkScopeInfo,
 	}
-	cResp, err := bbClient.Upload(ctx, strings.NewReader(blockBlobDefaultData), &uploadBlockBlobOptions)
+	cResp, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &uploadBlockBlobOptions)
 	_assert.Nil(err)
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 	_assert.Equal(*cResp.IsServerEncrypted, true)
@@ -410,13 +411,13 @@ func getServiceClientFromConnectionString(recording *testframework.Recording, ac
 	if recording != nil {
 		if options == nil {
 			options = &ClientOptions{
-				HTTPClient: recording,
-				Retry:      azcore.RetryOptions{MaxRetries: -1}}
+				Transporter: recording,
+				Retry:       policy.RetryOptions{MaxRetries: -1}}
 		}
 	}
 
 	connectionString := getConnectionString(recording, accountType)
-	primaryURL, _, cred, err := ParseConnectionString(connectionString, "")
+	primaryURL, cred, err := parseConnectionString(connectionString)
 	if err != nil {
 		return ServiceClient{}, nil
 	}
@@ -438,8 +439,8 @@ func getServiceClient(recording *testframework.Recording, accountType testAccoun
 	if recording != nil {
 		if options == nil {
 			options = &ClientOptions{
-				HTTPClient: recording,
-				Retry:      azcore.RetryOptions{MaxRetries: -1}}
+				Transporter: recording,
+				Retry:       policy.RetryOptions{MaxRetries: -1}}
 		}
 	}
 

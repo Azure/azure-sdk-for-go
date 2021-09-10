@@ -6,61 +6,81 @@ package azblob
 import (
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"strings"
 )
 
-const (
-	AccountName              = "ACCOUNTNAME"
-	AccountKey               = "ACCOUNTKEY"
-	BlobEndpoint             = "BLOBENDPOINT"
-	BlobSecondaryEndpoint    = "BLOBSECONDARYENDPOINT"
-	DefaultEndpointsProtocol = "DEFAULTENDPOINTSPROTOCOL"
-	EndpointSuffix           = "ENDPOINTSUFFIX"
-	Service                  = "SERVICE"
-)
+var errConnectionString = errors.New("connection string is either blank or malformed. The expected connection string " +
+	"should contain key value pairs separated by semicolons. For example 'DefaultEndpointsProtocol=https;AccountName=<accountName>;" +
+	"AccountKey=<accountKey>;EndpointSuffix=core.windows.net'")
 
-// ParseConnectionString accepts connection string to an Azure Storage account and returns primary account url, secondary account url, and Shared key credential
-// primaryURL, secondaryURL, cred, err := parseConnectionString(connectionString, "blob")
-func ParseConnectionString(connectionString string, relativePath string) (string, string, *SharedKeyCredential, error) {
-	if connectionString == "" {
-		return "", "", nil, errors.New("connection string cannot be empty")
+// convertConnStrToMap converts a connection string (in format key1=value1;key2=value2;key3=value3;) into a map of key-value pairs
+func convertConnStrToMap(connStr string) (map[string]string, error) {
+	ret := make(map[string]string)
+	connStr = strings.TrimRight(connStr, ";")
+
+	splitString := strings.Split(connStr, ";")
+	if len(splitString) == 0 {
+		return ret, errConnectionString
 	}
-	connStrParts := strings.Split(connectionString, ";")
-	connSettings := make(map[string]string)
-	connSettings[Service] = "blob"
-	for _, connStrPart := range connStrParts {
-		param := strings.SplitN(connStrPart, "=", 2)
-		if len(param) != 2 {
-			return "", "", nil, errors.New("connection string is either blank or malformed")
+	for _, stringPart := range splitString {
+		parts := strings.SplitN(stringPart, "=", 2)
+		if len(parts) != 2 {
+			return ret, errConnectionString
 		}
-		connSettings[strings.ToUpper(param[0])] = param[1]
+		ret[parts[0]] = parts[1]
 	}
+	return ret, nil
+}
 
-	credentials, err := NewSharedKeyCredential(connSettings[AccountName], connSettings[AccountKey])
+// parseConnectionString parses a connection string into a service URL and a SharedKeyCredential or a service url with the
+// SharedAccessSignature combined.
+func parseConnectionString(connectionString string) (string, azcore.Credential, error) {
+	var serviceURL string
+	var cred azcore.Credential
+
+	defaultScheme := "https"
+	defaultSuffix := "core.windows.net"
+
+	connStrMap, err := convertConnStrToMap(connectionString)
 	if err != nil {
-		return "", "", credentials, err
+		return "", nil, err
 	}
 
-	primary, secondary := "", ""
-	if _, ok := connSettings[BlobEndpoint]; ok {
-		primary = connSettings[BlobEndpoint]
-		if _, ok := connSettings[BlobSecondaryEndpoint]; ok {
-			secondary = connSettings[BlobSecondaryEndpoint]
+	accountName, ok := connStrMap["AccountName"]
+	if !ok {
+		return "", nil, errConnectionString
+	}
+	accountKey, ok := connStrMap["AccountKey"]
+	if !ok {
+		sharedAccessSignature, ok := connStrMap["SharedAccessSignature"]
+		if !ok {
+			return "", nil, errConnectionString
 		}
-	} else {
-		if _, ok := connSettings[BlobSecondaryEndpoint]; ok {
-			return "", "", nil, errors.New("connection string specifies only secondary endpoint")
-		}
-		primary = fmt.Sprintf("%s://%s.%s.%s", connSettings[DefaultEndpointsProtocol],
-			connSettings[AccountName], connSettings[Service], connSettings[EndpointSuffix])
-		secondary = fmt.Sprintf("%s-secondary.%s.%s", connSettings[AccountName],
-			connSettings[Service], connSettings[EndpointSuffix])
+		return fmt.Sprintf("%v://%v.blob.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature), azcore.NewAnonymousCredential(), nil
 	}
 
-	if primary == "" {
-		primary = fmt.Sprintf("https://%s.%s.%s", connSettings[AccountName],
-			connSettings[Service], connSettings[EndpointSuffix])
+	protocol, ok := connStrMap["DefaultEndpointsProtocol"]
+	if !ok {
+		protocol = defaultScheme
 	}
 
-	return primary + relativePath, secondary + relativePath, credentials, nil
+	suffix, ok := connStrMap["EndpointSuffix"]
+	if !ok {
+		suffix = defaultSuffix
+	}
+
+	blobEndpoint, ok := connStrMap["BlobEndpoint"]
+	if ok {
+		cred, err = NewSharedKeyCredential(accountName, accountKey)
+		return blobEndpoint, cred, err
+	}
+	serviceURL = fmt.Sprintf("%v://%v.blob.%v", protocol, accountName, suffix)
+
+	cred, err = NewSharedKeyCredential(accountName, accountKey)
+	if err != nil {
+		return "", nil, err
+	}
+
+	return serviceURL, cred, nil
 }

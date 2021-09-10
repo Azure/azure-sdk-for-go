@@ -7,8 +7,9 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"io"
 	"net/http"
 	"sync"
@@ -32,7 +33,7 @@ type HighLevelUploadToBlockBlobOption struct {
 
 	// Progress is a function that is invoked periodically as bytes are sent to the BlockBlobClient.
 	// Note that the progress reporting is not always increasing; it can go down when retrying a request.
-	Progress azcore.ProgressReceiver
+	Progress func(bytesTransferred int64)
 
 	// BlobHTTPHeaders indicates the HTTP headers to be associated with the blob.
 	BlobHTTPHeaders *BlobHTTPHeaders
@@ -47,7 +48,7 @@ type HighLevelUploadToBlockBlobOption struct {
 	BlobAccessTier *AccessTier
 
 	// BlobTagsMap
-	BlobTagsMap *map[string]string
+	BlobTagsMap map[string]string
 
 	// ClientProvidedKeyOptions indicates the client provided key by name and/or by value to encrypt/decrypt data.
 	CpkInfo      *CpkInfo
@@ -117,11 +118,11 @@ func uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSi
 		// If the size can fit in 1 Upload call, do it this way
 		var body io.ReadSeeker = io.NewSectionReader(reader, 0, readerSize)
 		if o.Progress != nil {
-			body = azcore.NewRequestBodyProgress(azcore.NopCloser(body), o.Progress)
+			body = streaming.NewRequestProgress(internal.NopCloser(body), o.Progress)
 		}
 
 		uploadBlockBlobOptions := o.getUploadBlockBlobOptions()
-		resp, err := blockBlobClient.Upload(ctx, body, uploadBlockBlobOptions)
+		resp, err := blockBlobClient.Upload(ctx, internal.NopCloser(body), uploadBlockBlobOptions)
 
 		return resp.RawResponse, err
 	}
@@ -145,11 +146,11 @@ func uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSi
 			blockNum := offset / o.BlockSize
 			if o.Progress != nil {
 				blockProgress := int64(0)
-				body = azcore.NewRequestBodyProgress(azcore.NopCloser(body),
+				body = streaming.NewRequestProgress(internal.NopCloser(body),
 					func(bytesTransferred int64) {
 						diff := bytesTransferred - blockProgress
 						blockProgress = bytesTransferred
-						progressLock.Lock() // 1 goroutine at a time gets a progress report
+						progressLock.Lock() // 1 goroutine at a time gets progress report
 						progress += diff
 						o.Progress(progress)
 						progressLock.Unlock()
@@ -158,9 +159,13 @@ func uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSi
 
 			// Block IDs are unique values to avoid issue if 2+ clients are uploading blocks
 			// at the same time causing PutBlockList to get a mix of blocks from all the clients.
-			blockIDList[blockNum] = base64.StdEncoding.EncodeToString([]byte(uuid.New().String()))
+			generatedUuid, err := uuid.New()
+			if err != nil {
+				return err
+			}
+			blockIDList[blockNum] = base64.StdEncoding.EncodeToString([]byte(generatedUuid.String()))
 			stageBlockOptions := o.getStageBlockOptions()
-			_, err := blockBlobClient.StageBlock(ctx, blockIDList[blockNum], body, stageBlockOptions)
+			_, err = blockBlobClient.StageBlock(ctx, blockIDList[blockNum], internal.NopCloser(body), stageBlockOptions)
 			return err
 		},
 	})
@@ -201,7 +206,7 @@ type HighLevelDownloadFromBlobOptions struct {
 	BlockSize int64
 
 	// Progress is a function that is invoked periodically as bytes are received.
-	Progress azcore.ProgressReceiver
+	Progress func(bytesTransferred int64)
 
 	// BlobAccessConditions indicates the access conditions used when making HTTP GET requests against the blob.
 	BlobAccessConditions *BlobAccessConditions
@@ -280,14 +285,14 @@ func downloadBlobToWriterAt(ctx context.Context, blobClient BlobClient, offset i
 			body := dr.Body(o.RetryReaderOptionsPerBlock)
 			if o.Progress != nil {
 				rangeProgress := int64(0)
-				body = azcore.NewResponseBodyProgress(
+				body = streaming.NewResponseProgress(
 					body,
 					func(bytesTransferred int64) {
 						diff := bytesTransferred - rangeProgress
 						rangeProgress = bytesTransferred
 						progressLock.Lock()
 						progress += diff
-						o.Progress(progress)
+						//o.Progress(progress)
 						progressLock.Unlock()
 					})
 			}
@@ -567,10 +572,10 @@ type UploadStreamToBlockBlobOptions struct {
 	// MaxBuffers defines the number of simultaneous uploads will be performed to upload the file.
 	MaxBuffers           int
 	BlobHTTPHeaders      *BlobHTTPHeaders
-	Metadata             *map[string]string
+	Metadata             map[string]string
 	BlobAccessConditions *BlobAccessConditions
 	BlobAccessTier       *AccessTier
-	BlobTagsMap          *map[string]string
+	BlobTagsMap          map[string]string
 	CpkInfo              *CpkInfo
 	CpkScopeInfo         *CpkScopeInfo
 }
@@ -606,7 +611,7 @@ func (u *UploadStreamToBlockBlobOptions) getCommitBlockListOptions() *CommitBloc
 
 // UploadStreamToBlockBlob copies the file held in io.Reader to the Blob at blockBlobClient.
 // A Context deadline or cancellation will cause this to error.
-func UploadStreamToBlockBlob(ctx context.Context, reader io.Reader, blockBlobClient BlockBlobClient,
+func UploadStreamToBlockBlob(ctx context.Context, body io.ReadSeekCloser, blockBlobClient BlockBlobClient,
 	o UploadStreamToBlockBlobOptions) (BlockBlobCommitBlockListResponse, error) {
 	if err := o.defaults(); err != nil {
 		return BlockBlobCommitBlockListResponse{}, err
@@ -617,16 +622,10 @@ func UploadStreamToBlockBlob(ctx context.Context, reader io.Reader, blockBlobCli
 		defer o.TransferManager.Close()
 	}
 
-	result, err := copyFromReader(ctx, reader, blockBlobClient, o)
+	result, err := copyFromReader(ctx, body, blockBlobClient, o)
 	if err != nil {
 		return BlockBlobCommitBlockListResponse{}, err
 	}
 
 	return result, nil
-}
-
-// UploadStreamOptions (defunct) was used internally. This will be removed or made private in a future version.
-type UploadStreamOptions struct {
-	BufferSize int
-	MaxBuffers int
 }

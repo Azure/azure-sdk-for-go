@@ -5,6 +5,7 @@ package azblob
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"strings"
@@ -137,7 +138,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 	for i := 0; i < len(data); i++ {
 		blobName := "abc" + string(data[i])
 		blobURL := containerClient.NewBlockBlobClient(blobName)
-		resp, err := blobURL.Upload(ctx, strings.NewReader(string(data[i])), nil)
+		resp, err := blobURL.Upload(ctx, internal.NopCloser(strings.NewReader(string(data[i]))), nil)
 		_assert.Nil(err)
 		_assert.NotNil(resp.VersionID)
 
@@ -168,14 +169,14 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	defer deleteContainer(_assert, containerClient)
 //	blobURL := getBlockBlobClient(generateBlobName(testName), containerClient)
 //
-//	uploadResp, err := blobURL.Upload(ctx, bytes.NewReader([]byte("data")), &UploadBlockBlobOptions{
+//	uploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), &UploadBlockBlobOptions{
 //		Metadata: basicMetadata,
 //	})
 //	_assert.Nil(err)
 //	_assert.NotNil(uploadResp.VersionID)
 //	versionID1 := uploadResp.VersionID
 //
-//	uploadResp, err = blobURL.Upload(ctx, bytes.NewReader([]byte("updated_data")), &UploadBlockBlobOptions{
+//	uploadResp, err = blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, &UploadBlockBlobOptions{
 //		Metadata: basicMetadata,
 //	})
 //	_assert.Nil(err)
@@ -230,12 +231,12 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	defer deleteContainer(_assert, containerClient)
 //	blobURL, blobName := getBlockBlobClient(c, containerClient)
 //
-//	resp, err := blobURL.Upload(ctx, bytes.NewReader([]byte("data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	resp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	_assert.Nil(err)
 //	versionId := resp.VersionID
 //	_assert(versionId, chk.NotNil)
 //
-//	resp, err = blobURL.Upload(ctx, bytes.NewReader([]byte("updated_data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	resp, err = blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	_assert.Nil(err)
 //	_assert(resp.VersionID, chk.NotNil)
 //
@@ -278,12 +279,12 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	defer deleteContainer(_assert, containerClient)
 //	blobURL, _ := getBlockBlobClient(c, containerClient)
 //
-//	blockBlobUploadResp, err := blobURL.Upload(ctx, bytes.NewReader([]byte("data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	blockBlobUploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("data"))), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	_assert.Nil(err)
 //	_assert(blockBlobUploadResp, chk.NotNil)
 //	versionId1 := blockBlobUploadResp.VersionID
 //
-//	blockBlobUploadResp, err = blobURL.Upload(ctx, bytes.NewReader([]byte("updated_data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	blockBlobUploadResp, err = blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	_assert.Nil(err)
 //	_assert(blockBlobUploadResp, chk.NotNil)
 //	versionId2 := blockBlobUploadResp.VersionID
@@ -318,7 +319,7 @@ func (s *azblobTestSuite) TestCreateAndDownloadBlobSpecialCharactersWithVID() {
 //	containerClient := createNewContainer(_assert, containerName, svcClient)
 //	defer deleteContainer(_assert, containerClient)
 //	blobURL := containerClient.NewBlockBlobClient(generateBlobName())
-//	uploadResp, err := blobURL.Upload(ctx, bytes.NewReader([]byte("updated_data")), BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
+//	uploadResp, err := blobURL.Upload(ctx, internal.NopCloser(bytes.NewReader([]byte("updated_data"))),, BlobHTTPHeaders{}, basicMetadata, BlobAccessConditions{}, DefaultAccessTier, nil, ClientProvidedKeyOptions{})
 //	_assert.Nil(err)
 //	_assert(uploadResp.VersionID, chk.NotNil)
 //
@@ -488,7 +489,7 @@ func (s *azblobTestSuite) TestPutBlockListReturnsVID() {
 
 	for index, d := range data {
 		base64BlockIDs[index] = blockIDIntToBase64(index)
-		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], strings.NewReader(d), nil)
+		resp, err := bbClient.StageBlock(ctx, base64BlockIDs[index], internal.NopCloser(strings.NewReader(d)), nil)
 		_assert.Nil(err)
 		_assert.Equal(resp.RawResponse.StatusCode, 201)
 		_assert.NotNil(resp.Version)

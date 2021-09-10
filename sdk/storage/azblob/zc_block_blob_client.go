@@ -5,6 +5,7 @@ package azblob
 
 import (
 	"context"
+	"errors"
 	"io"
 	"time"
 
@@ -77,7 +78,7 @@ func (bb BlockBlobClient) WithVersionID(versionID string) BlockBlobClient {
 // This method panics if the stream is not at position 0.
 // Note that the http client closes the body stream after the request is sent to the service.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
-func (bb BlockBlobClient) Upload(ctx context.Context, body io.ReadSeeker, options *UploadBlockBlobOptions) (BlockBlobUploadResponse, error) {
+func (bb BlockBlobClient) Upload(ctx context.Context, body io.ReadSeekCloser, options *UploadBlockBlobOptions) (BlockBlobUploadResponse, error) {
 	count, err := validateSeekableStreamAt0AndGetCount(body)
 	if err != nil {
 		return BlockBlobUploadResponse{}, err
@@ -85,7 +86,7 @@ func (bb BlockBlobClient) Upload(ctx context.Context, body io.ReadSeeker, option
 
 	basics, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions := options.pointers()
 
-	resp, err := bb.client.Upload(ctx, count, azcore.NopCloser(body), basics, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions)
+	resp, err := bb.client.Upload(ctx, count, body, basics, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions)
 
 	return resp, handleError(err)
 }
@@ -93,14 +94,14 @@ func (bb BlockBlobClient) Upload(ctx context.Context, body io.ReadSeeker, option
 // StageBlock uploads the specified block to the block blob's "staging area" to be later committed by a call to CommitBlockList.
 // Note that the http client closes the body stream after the request is sent to the service.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/put-block.
-func (bb BlockBlobClient) StageBlock(ctx context.Context, base64BlockID string, body io.ReadSeeker, options *StageBlockOptions) (BlockBlobStageBlockResponse, error) {
+func (bb BlockBlobClient) StageBlock(ctx context.Context, base64BlockID string, body io.ReadSeekCloser, options *StageBlockOptions) (BlockBlobStageBlockResponse, error) {
 	count, err := validateSeekableStreamAt0AndGetCount(body)
 	if err != nil {
 		return BlockBlobStageBlockResponse{}, err
 	}
 
 	ac, stageBlockOptions, cpkInfo, cpkScopeInfo := options.pointers()
-	resp, err := bb.client.StageBlock(ctx, base64BlockID, count, azcore.NopCloser(body), stageBlockOptions, ac, cpkInfo, cpkScopeInfo)
+	resp, err := bb.client.StageBlock(ctx, base64BlockID, count, body, stageBlockOptions, ac, cpkInfo, cpkScopeInfo)
 
 	return resp, handleError(err)
 }
@@ -174,6 +175,11 @@ func (bb BlockBlobClient) GetBlobSASToken(permissions BlobSASPermissions, validi
 		t = time.Time{}
 	}
 
+	cred, ok := bb.cred.(*SharedKeyCredential)
+	if !ok {
+		return SASQueryParameters{}, errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+	}
+
 	return BlobSASSignatureValues{
 		ContainerName: urlParts.ContainerName,
 		BlobName:      urlParts.BlobName,
@@ -184,5 +190,5 @@ func (bb BlockBlobClient) GetBlobSASToken(permissions BlobSASPermissions, validi
 
 		StartTime:  time.Now().UTC(),
 		ExpiryTime: time.Now().UTC().Add(validityTime),
-	}.NewSASQueryParameters(bb.cred)
+	}.NewSASQueryParameters(cred)
 }

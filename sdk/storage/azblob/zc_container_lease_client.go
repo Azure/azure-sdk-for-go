@@ -6,7 +6,37 @@ package azblob
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
+
+type ContainerLeaseClient struct {
+	ContainerClient
+	LeaseID *string
+}
+
+func NewContainerLeaseClient(containerURL string, leaseID *string, cred azcore.Credential, options *connectionOptions) (ContainerLeaseClient, error) {
+
+	containerClient := ContainerClient{
+		client: &containerClient{
+			con: newConnection(containerURL, cred, options),
+		}, cred: cred,
+	}
+
+	if leaseID == nil {
+		generatedUuid, err := uuid.New()
+		if err != nil {
+			return ContainerLeaseClient{}, err
+		}
+		leaseID = to.StringPtr(generatedUuid.String())
+	}
+
+	return ContainerLeaseClient{
+		ContainerClient: containerClient,
+		LeaseID:         leaseID,
+	}, nil
+}
 
 // URL returns the URL endpoint used by the ContainerClient object.
 func (clc ContainerLeaseClient) URL() string {
@@ -40,9 +70,12 @@ func (clc *ContainerLeaseClient) ChangeLease(ctx context.Context, options *Chang
 	if clc.LeaseID == nil {
 		return ContainerChangeLeaseResponse{}, errors.New("LeaseID cannot be nil")
 	}
-	proposedLeaseID, modifiedAccessConditions := options.pointers()
-	resp, err := clc.client.ChangeLease(ctx, *clc.LeaseID, *proposedLeaseID, nil, modifiedAccessConditions)
+	proposedLeaseID, modifiedAccessConditions, err := options.pointers()
+	if err != nil {
+		return ContainerChangeLeaseResponse{}, err
+	}
 
+	resp, err := clc.client.ChangeLease(ctx, *clc.LeaseID, *proposedLeaseID, nil, modifiedAccessConditions)
 	if err == nil && resp.LeaseID != nil {
 		clc.LeaseID = resp.LeaseID
 	}

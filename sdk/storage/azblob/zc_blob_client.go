@@ -5,6 +5,7 @@ package azblob
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"time"
@@ -15,16 +16,14 @@ import (
 // A BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
 type BlobClient struct {
 	client *blobClient
-	cred   StorageAccountCredential
+	cred   azcore.Credential
 }
 
 // NewBlobClient creates a BlobClient object using the specified URL and request policy pipeline.
 func NewBlobClient(blobURL string, cred azcore.Credential, options *ClientOptions) (BlobClient, error) {
 	con := newConnection(blobURL, cred, options.getConnectionOptions())
 
-	c, _ := cred.(*SharedKeyCredential)
-
-	return BlobClient{client: &blobClient{con, nil}, cred: c}, nil
+	return BlobClient{client: &blobClient{con, nil}, cred: cred}, nil
 }
 
 // NewBlobClientFromConnectionString creates BlobClient from a Connection String
@@ -55,14 +54,18 @@ func (b BlobClient) WithSnapshot(snapshot string) BlobClient {
 	}
 }
 
-func (b BlobClient) NewBlobLeaseClient(leaseID *string) BlobLeaseClient {
+func (b BlobClient) NewBlobLeaseClient(leaseID *string) (BlobLeaseClient, error) {
 	if leaseID == nil {
-		leaseID = to.StringPtr(uuid.New().String())
+		generatedUuid, err := uuid.New()
+		if err != nil {
+			return BlobLeaseClient{}, err
+		}
+		leaseID = to.StringPtr(generatedUuid.String())
 	}
 	return BlobLeaseClient{
 		BlobClient: b,
 		LeaseID:    leaseID,
-	}
+	}, nil
 }
 
 func (b BlobClient) GetAccountInfo(ctx context.Context) (BlobGetAccountInfoResponse, error) {
@@ -225,6 +228,10 @@ func (b BlobClient) GetBlobSASToken(permissions BlobSASPermissions, validityTime
 		t = time.Time{}
 	}
 
+	cred, ok := b.cred.(*SharedKeyCredential)
+	if !ok {
+		return SASQueryParameters{}, errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+	}
 	return BlobSASSignatureValues{
 		ContainerName: urlParts.ContainerName,
 		BlobName:      urlParts.BlobName,
@@ -235,5 +242,5 @@ func (b BlobClient) GetBlobSASToken(permissions BlobSASPermissions, validityTime
 
 		StartTime:  time.Now().UTC(),
 		ExpiryTime: time.Now().UTC().Add(validityTime),
-	}.NewSASQueryParameters(b.cred)
+	}.NewSASQueryParameters(cred)
 }

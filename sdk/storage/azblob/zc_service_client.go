@@ -6,6 +6,7 @@ package azblob
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"net/url"
 	"strings"
@@ -28,7 +29,7 @@ const (
 type ServiceClient struct {
 	client *serviceClient
 	u      url.URL
-	cred   StorageAccountCredential
+	cred   azcore.Credential
 }
 
 // URL returns the URL endpoint used by the ServiceClient object.
@@ -44,23 +45,19 @@ func NewServiceClient(serviceURL string, cred azcore.Credential, options *Client
 		return ServiceClient{}, err
 	}
 
-	c, _ := cred.(*SharedKeyCredential)
-
 	return ServiceClient{client: &serviceClient{
 		con: newConnection(serviceURL, cred, options.getConnectionOptions()),
-	}, u: *u, cred: c}, nil
+	}, u: *u, cred: cred}, nil
 }
 
 // NewServiceClientFromConnectionString creates a service client from the given connection string.
 //nolint
 func NewServiceClientFromConnectionString(connectionString string, options *ClientOptions) (ServiceClient, error) {
-	primaryURL, _, cred, err := ParseConnectionString(connectionString, "")
+	endpoint, credential, err := parseConnectionString(connectionString)
 	if err != nil {
-		return ServiceClient{}, nil
+		return ServiceClient{}, err
 	}
-
-	svcClient, err := NewServiceClient(primaryURL, cred, options)
-	return svcClient, err
+	return NewServiceClient(endpoint, credential, options)
 }
 
 // NewContainerClient creates a new ContainerClient object by concatenating containerName to the end of
@@ -98,12 +95,16 @@ func (s ServiceClient) DeleteContainer(ctx context.Context, containerName string
 	return containerDeleteResp, err
 }
 
-func (s ServiceClient) NewContainerLeaseClient(containerName string, leaseID *string) ContainerLeaseClient {
+func (s ServiceClient) NewContainerLeaseClient(containerName string, leaseID *string) (ContainerLeaseClient, error) {
 	containerURL := appendToURLPath(s.client.con.u, containerName)
 	containerConnection := &connection{containerURL, s.client.con.p}
 
 	if leaseID == nil {
-		leaseID = to.StringPtr(uuid.New().String())
+		generatedUuid, err := uuid.New()
+		if err != nil {
+			return ContainerLeaseClient{}, err
+		}
+		leaseID = to.StringPtr(generatedUuid.String())
 	}
 
 	return ContainerLeaseClient{
@@ -113,7 +114,7 @@ func (s ServiceClient) NewContainerLeaseClient(containerName string, leaseID *st
 			},
 		},
 		LeaseID: leaseID,
-	}
+	}, nil
 }
 
 // appendToURLPath appends a string to the end of a URL's path (prefixing the string with a '/' if required)
@@ -144,25 +145,6 @@ func (s ServiceClient) GetAccountInfo(ctx context.Context) (ServiceGetAccountInf
 	return resp, handleError(err)
 }
 
-// GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceClient object.
-// OAuth is required for this call, as well as any role that can delegate access to the storage account.
-// Strings in KeyInfo should be formatted with SASTimeFormat.
-func (s ServiceClient) GetUserDelegationCredential(ctx context.Context, startTime, expiryTime *time.Time) (UserDelegationCredential, error) {
-	if startTime == nil {
-		startTime = to.TimePtr(time.Now().UTC())
-	}
-
-	udk, err := s.client.GetUserDelegationKey(ctx, KeyInfo{
-		Start:  to.StringPtr(startTime.UTC().Format(SASTimeFormat)),
-		Expiry: to.StringPtr(expiryTime.UTC().Format(SASTimeFormat)),
-	}, nil)
-	if err != nil {
-		return UserDelegationCredential{}, handleError(err)
-	}
-	urlParts := NewBlobURLParts(s.URL())
-	return NewUserDelegationCredential(strings.Split(urlParts.Host, ".")[0], udk.UserDelegationKey), nil
-}
-
 // The ListContainersSegment operation returns a pager of the containers under the specified account.
 // Use an empty Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-containers2.
@@ -174,7 +156,7 @@ func (s ServiceClient) ListContainersSegment(o *ListContainersSegmentOptions) *S
 		return pager
 	}
 
-	pager.advancer = func(cxt context.Context, response ServiceListContainersSegmentResponse) (*azcore.Request, error) {
+	pager.advancer = func(cxt context.Context, response ServiceListContainersSegmentResponse) (*policy.Request, error) {
 		if response.ListContainersSegmentResponse.NextMarker == nil {
 			return nil, handleError(errors.New("unexpected missing NextMarker"))
 		}
@@ -182,10 +164,10 @@ func (s ServiceClient) ListContainersSegment(o *ListContainersSegmentOptions) *S
 		if err != nil {
 			return nil, handleError(err)
 		}
-		queryValues, _ := url.ParseQuery(req.URL.RawQuery)
+		queryValues, _ := url.ParseQuery(req.Raw().URL.RawQuery)
 		queryValues.Set("marker", *response.ServiceListContainersSegmentResult.NextMarker)
 
-		req.URL.RawQuery = queryValues.Encode()
+		req.Raw().URL.RawQuery = queryValues.Encode()
 		return req, nil
 	}
 
@@ -235,17 +217,30 @@ func (s ServiceClient) CanGetAccountSASToken() bool {
 // GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
 // This validity can be checked with CanGetAccountSASToken().
-func (s ServiceClient) GetAccountSASToken(services AccountSASServices, resources AccountSASResourceTypes, permissions AccountSASPermissions, validityTime time.Duration) (SASQueryParameters, error) {
-	return AccountSASSignatureValues{
-		Version: SASVersion,
+func (s ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, services AccountSASServices, start time.Time, expiry time.Time) (string, error) {
+	cred, ok := s.cred.(*SharedKeyCredential)
+	if !ok {
+		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+	}
 
+	qps, err := AccountSASSignatureValues{
+		Version:       SASVersion,
+		Protocol:      SASProtocolHTTPS,
 		Permissions:   permissions.String(),
 		Services:      services.String(),
 		ResourceTypes: resources.String(),
-
-		StartTime:  time.Now().UTC(),
-		ExpiryTime: time.Now().UTC().Add(validityTime),
-	}.NewSASQueryParameters(s.cred.(*SharedKeyCredential))
+		StartTime:     start.UTC(),
+		ExpiryTime:    expiry.UTC(),
+	}.Sign(cred)
+	if err != nil {
+		return "", err
+	}
+	endpoint := s.client.con.Endpoint()
+	if !strings.HasSuffix(endpoint, "/") {
+		endpoint += "/"
+	}
+	endpoint += "?" + qps.Encode()
+	return endpoint, nil
 }
 
 // FindBlobsByTags operation finds all blobs in the storage account whose tags match a given search expression.

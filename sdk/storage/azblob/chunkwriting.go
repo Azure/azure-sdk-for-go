@@ -10,6 +10,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
 	"io"
 	"sync"
 	"sync/atomic"
@@ -20,7 +21,7 @@ import (
 // blockWriter provides methods to upload blocks that represent a file to a server and commit them.
 // This allows us to provide a local implementation that fakes the server for hermetic testing.
 type blockWriter interface {
-	StageBlock(context.Context, string, io.ReadSeeker, *StageBlockOptions) (BlockBlobStageBlockResponse, error)
+	StageBlock(context.Context, string, io.ReadSeekCloser, *StageBlockOptions) (BlockBlobStageBlockResponse, error)
 	CommitBlockList(context.Context, []string, *CommitBlockListOptions) (BlockBlobCommitBlockListResponse, error)
 }
 
@@ -32,7 +33,7 @@ type blockWriter interface {
 // well, 4 MiB or 8 MiB, and auto-scale to as many goroutines within the memory limit. This gives a single dial to tweak and we can
 // choose a max value for the memory setting based on internal transfers within Azure (which will give us the maximum throughput model).
 // We can even provide a utility to dial this number in for customer networks to optimize their copies.
-func copyFromReader(ctx context.Context, from io.Reader, to blockWriter, o UploadStreamToBlockBlobOptions) (BlockBlobCommitBlockListResponse, error) {
+func copyFromReader(ctx context.Context, from io.ReadSeekCloser, to blockWriter, o UploadStreamToBlockBlobOptions) (BlockBlobCommitBlockListResponse, error) {
 	if err := o.defaults(); err != nil {
 		return BlockBlobCommitBlockListResponse{}, err
 	}
@@ -40,18 +41,23 @@ func copyFromReader(ctx context.Context, from io.Reader, to blockWriter, o Uploa
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
+	var err error
+	generatedUuid, err := uuid.New()
+	if err != nil {
+		return BlockBlobCommitBlockListResponse{}, err
+	}
+
 	cp := &copier{
 		ctx:    ctx,
 		cancel: cancel,
 		reader: from,
 		to:     to,
-		id:     newID(),
+		id:     newID(generatedUuid),
 		o:      o,
 		errCh:  make(chan error, 1),
 	}
 
 	// Send all our chunks until we get an error.
-	var err error
 	for {
 		if err = cp.sendChunk(); err != nil {
 			break
@@ -174,7 +180,7 @@ func (c *copier) write(chunk copierChunk) {
 		return
 	}
 	stageBlockOptions := c.o.getStageBlockOptions()
-	_, err := c.to.StageBlock(c.ctx, chunk.id, bytes.NewReader(chunk.buffer), stageBlockOptions)
+	_, err := c.to.StageBlock(c.ctx, chunk.id, internal.NopCloser(bytes.NewReader(chunk.buffer)), stageBlockOptions)
 	if err != nil {
 		c.errCh <- fmt.Errorf("write error: %w", err)
 		return
@@ -203,8 +209,7 @@ type id struct {
 }
 
 // newID constructs a new id.
-func newID() *id {
-	uu := uuid.New()
+func newID(uu uuid.UUID) *id {
 	u := [64]byte{}
 	copy(u[:], uu[:])
 	return &id{u: u}

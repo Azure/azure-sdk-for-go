@@ -1,5 +1,5 @@
-//go:build go1.13
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,7 +10,8 @@ package azblob
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"reflect"
 )
@@ -20,8 +21,8 @@ type ContainerListBlobFlatSegmentPager struct {
 	client    *containerClient
 	current   ContainerListBlobFlatSegmentResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, ContainerListBlobFlatSegmentResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ContainerListBlobFlatSegmentResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
@@ -32,7 +33,7 @@ func (p *ContainerListBlobFlatSegmentPager) Err() error {
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
 func (p *ContainerListBlobFlatSegmentPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.ListBlobsFlatSegmentResponse.NextMarker == nil || len(*p.current.ListBlobsFlatSegmentResponse.NextMarker) == 0 {
@@ -51,7 +52,7 @@ func (p *ContainerListBlobFlatSegmentPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listBlobFlatSegmentHandleError(resp)
 		return false
 	}
@@ -74,8 +75,8 @@ type ContainerListBlobHierarchySegmentPager struct {
 	client    *containerClient
 	current   ContainerListBlobHierarchySegmentResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, ContainerListBlobHierarchySegmentResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ContainerListBlobHierarchySegmentResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
@@ -86,7 +87,7 @@ func (p *ContainerListBlobHierarchySegmentPager) Err() error {
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
 func (p *ContainerListBlobHierarchySegmentPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.ListBlobsHierarchySegmentResponse.NextMarker == nil || len(*p.current.ListBlobsHierarchySegmentResponse.NextMarker) == 0 {
@@ -105,7 +106,7 @@ func (p *ContainerListBlobHierarchySegmentPager) NextPage(ctx context.Context) b
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listBlobHierarchySegmentHandleError(resp)
 		return false
 	}
@@ -128,8 +129,8 @@ type ServiceListContainersSegmentPager struct {
 	client    *serviceClient
 	current   ServiceListContainersSegmentResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, ServiceListContainersSegmentResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ServiceListContainersSegmentResponse) (*policy.Request, error)
 }
 
 // Err returns the last error encountered while paging.
@@ -140,7 +141,7 @@ func (p *ServiceListContainersSegmentPager) Err() error {
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
 func (p *ServiceListContainersSegmentPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.ListContainersSegmentResponse.NextMarker == nil || len(*p.current.ListContainersSegmentResponse.NextMarker) == 0 {
@@ -159,7 +160,7 @@ func (p *ServiceListContainersSegmentPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listContainersSegmentHandleError(resp)
 		return false
 	}

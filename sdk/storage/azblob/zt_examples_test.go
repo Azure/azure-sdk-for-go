@@ -6,11 +6,11 @@ package azblob
 import (
 	"bytes"
 	"context"
-	"crypto/rand"
 	"encoding/base64"
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"io"
 	"log"
@@ -27,11 +27,32 @@ func accountInfo() (string, string) {
 	return os.Getenv("ACCOUNT_NAME"), os.Getenv("ACCOUNT_KEY")
 }
 
+type nopCloser struct {
+	io.ReadSeeker
+}
+
+func (n nopCloser) Close() error {
+	return nil
+}
+
+// NopCloser returns a ReadSeekCloser with a no-op close method wrapping the provided io.ReadSeeker.
+func NopCloser(rs io.ReadSeeker) io.ReadSeekCloser {
+	return nopCloser{rs}
+}
+
 // This example shows you how to get started using the Azure Storage Blob SDK for Go.
 func Example() {
 	// Use your storage account's name and key to create a credential object, used to access your account.
 	// You can obtain these details from the Azure Portal.
-	accountName, accountKey := accountInfo()
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+
+	accountKey, ok := os.LookupEnv("AZURE_STORAGE_PRIMARY_ACCOUNT_KEY")
+	if !ok {
+		panic("AZURE_STORAGE_PRIMARY_ACCOUNT_KEY could not be found")
+	}
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	if err != nil {
 		log.Fatal(err)
@@ -69,7 +90,7 @@ func Example() {
 	blockBlob := container.NewBlockBlobClient("HelloWorld.txt")
 
 	// Upload data to the block blob
-	_, err = blockBlob.Upload(ctx, strings.NewReader(data), nil)
+	_, err = blockBlob.Upload(ctx, NopCloser(strings.NewReader(data)), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -153,7 +174,7 @@ func ExampleStorageError() {
 	   service-returned http.Response. And, from the http.Response, you can get the initiating http.Request.
 	*/
 
-	container, err := NewContainerClient("https://myaccount.blob.core.windows.net/mycontainer", azcore.AnonymousCredential(), nil)
+	container, err := NewContainerClient("https://myaccount.blob.core.windows.net/mycontainer", azcore.NewAnonymousCredential(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -222,18 +243,18 @@ func ExampleServiceClient_GetAccountSASToken() {
 	}
 	// Provide the convenience function with relevant info (services, resource types, permissions, and duration)
 	// The SAS token will be valid from this moment onwards.
-	accountSAS, err := serviceClient.GetAccountSASToken(AccountSASServices{Blob: true}, AccountSASResourceTypes{Object: true, Service: true, Container: true}, AccountSASPermissions{Read: true, List: true}, time.Hour*48)
+	accountSAS, err := serviceClient.GetAccountSASToken(AccountSASResourceTypes{Object: true, Service: true, Container: true},
+		AccountSASPermissions{Read: true, List: true}, AccountSASServices{Blob: true}, time.Now(), time.Now().Add(48*time.Hour))
 	if err != nil {
 		log.Fatal(err)
 	}
-	qp := accountSAS.Encode()
-	urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, qp)
+	urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, accountSAS)
 	// You can hand off this URL to someone else via any mechanism you choose.
 
 	// ******************************************
 
 	// When someone receives the URL, they can access the resource using it in code like this, or a tool of some variety.
-	serviceClient, err = NewServiceClient(urlToSend, azcore.AnonymousCredential(), nil)
+	serviceClient, err = NewServiceClient(urlToSend, azcore.NewAnonymousCredential(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -244,7 +265,7 @@ func ExampleServiceClient_GetAccountSASToken() {
 }
 
 // This example shows how to create and use an Azure Storage account Shared Access Signature (SAS).
-func ExampleAccountSASSignatureValues_NewSASQueryParameters() {
+func ExampleAccountSASSignatureValues_Sign() {
 	accountName, accountKey := accountInfo()
 
 	credential, err := NewSharedKeyCredential(accountName, accountKey)
@@ -258,7 +279,7 @@ func ExampleAccountSASSignatureValues_NewSASQueryParameters() {
 		Permissions:   AccountSASPermissions{Read: true, List: true}.String(),
 		Services:      AccountSASServices{Blob: true}.String(),
 		ResourceTypes: AccountSASResourceTypes{Container: true, Object: true}.String(),
-	}.NewSASQueryParameters(credential)
+	}.Sign(credential)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -270,7 +291,7 @@ func ExampleAccountSASSignatureValues_NewSASQueryParameters() {
 	// ******************************************
 
 	// When someone receives the URL, they can access the resource using it in code like this, or a tool of some variety.
-	serviceClient, err := NewServiceClient(urlToSend, azcore.AnonymousCredential(), nil)
+	serviceClient, err := NewServiceClient(urlToSend, azcore.NewAnonymousCredential(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -321,7 +342,7 @@ func ExampleBlobSASSignatureValues() {
 	// **************
 
 	// When someone receives the URL, they can access the SAS-protected resource like this:
-	blob, _ := NewBlobClient(urlToSendToSomeone, azcore.AnonymousCredential(), nil)
+	blob, _ := NewBlobClient(urlToSendToSomeone, azcore.NewAnonymousCredential(), nil)
 
 	// if you have a SAS query parameter string, you can parse it into it's parts.
 	blobURLParts := NewBlobURLParts(blob.URL())
@@ -356,7 +377,7 @@ func ExampleContainerClient_SetAccessPolicy() {
 	// Upload a simple blob.
 	blob := container.NewBlockBlobClient("HelloWorld.txt")
 
-	_, err = blob.Upload(ctx, strings.NewReader("Hello World!"), nil)
+	_, err = blob.Upload(ctx, NopCloser(strings.NewReader("Hello World!")), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -440,7 +461,7 @@ func ExampleBlobAccessConditions() {
 	}
 
 	// Create the blob (unconditionally; succeeds)
-	upload, err := blockBlob.Upload(ctx, strings.NewReader("Text-1"), nil)
+	upload, err := blockBlob.Upload(ctx, NopCloser(strings.NewReader("Text-1")), nil)
 	showResultUpload(upload, err)
 
 	// showResult(upload, err)
@@ -452,7 +473,7 @@ func ExampleBlobAccessConditions() {
 	showResult(blockBlob.Download(ctx, &DownloadBlobOptions{BlobAccessConditions: &BlobAccessConditions{ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: to.TimePtr(time.Now().UTC().Add(time.Hour * -24))}}}))
 
 	// Upload new content if the blob hasn't changed since the version identified by ETag (succeeds):
-	upload, err = blockBlob.Upload(ctx, strings.NewReader("Text-2"),
+	upload, err = blockBlob.Upload(ctx, NopCloser(strings.NewReader("Text-2")),
 		&UploadBlockBlobOptions{
 			BlobAccessConditions: &BlobAccessConditions{
 				ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: upload.ETag},
@@ -468,7 +489,7 @@ func ExampleBlobAccessConditions() {
 		}))
 
 	// Upload content if the blob doesn't already exist (fails):
-	showResultUpload(blockBlob.Upload(ctx, strings.NewReader("Text-3"),
+	showResultUpload(blockBlob.Upload(ctx, NopCloser(strings.NewReader("Text-3")),
 		&UploadBlockBlobOptions{
 			BlobAccessConditions: &BlobAccessConditions{
 				ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: to.StringPtr(ETagAny)},
@@ -551,7 +572,7 @@ func ExampleBlobClient_SetMetadata() {
 	// NOTE: Metadata key names are always converted to lowercase before being sent to the Storage Service.
 	// Therefore, you should always use lowercase letters; especially when querying a map for a metadata key.
 	creatingApp, _ := os.Executable()
-	_, err = BlobClient.Upload(ctx, strings.NewReader("Some text"), &UploadBlockBlobOptions{Metadata: map[string]string{"author": "Jeffrey", "app": creatingApp}})
+	_, err = BlobClient.Upload(ctx, NopCloser(NopCloser(strings.NewReader("Some text"))), &UploadBlockBlobOptions{Metadata: map[string]string{"author": "Jeffrey", "app": creatingApp}})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -605,7 +626,7 @@ func ExampleBlobHTTPHeaders() {
 	ctx := context.Background() // This example uses a never-expiring context
 
 	// Create a blob with HTTP headers
-	_, err = blobClient.Upload(ctx, strings.NewReader("Some text"),
+	_, err = blobClient.Upload(ctx, NopCloser(NopCloser(strings.NewReader("Some text"))),
 		&UploadBlockBlobOptions{BlobHTTPHeaders: &BlobHTTPHeaders{
 			BlobContentType:        to.StringPtr("text/html; charset=utf-8"),
 			BlobContentDisposition: to.StringPtr("attachment"),
@@ -684,7 +705,7 @@ func ExampleBlockBlobClient() {
 		base64BlockIDs[index] = blockIDIntToBase64(index) // Some people use UUIDs for block IDs
 
 		// Upload a block to this blob specifying the Block ID and its content (up to 100MB); this block is uncommitted.
-		_, err := BlobClient.StageBlock(ctx, base64BlockIDs[index], strings.NewReader(word), nil)
+		_, err := BlobClient.StageBlock(ctx, base64BlockIDs[index], NopCloser(strings.NewReader(word)), nil)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -749,7 +770,7 @@ func ExampleAppendBlobClient() {
 	}
 
 	for i := 0; i < 5; i++ { // Append 5 blocks to the append blob
-		_, err := appendBlobClient.AppendBlock(ctx, strings.NewReader(fmt.Sprintf("Appending block #%d\n", i)), nil)
+		_, err := appendBlobClient.AppendBlock(ctx, NopCloser(strings.NewReader(fmt.Sprintf("Appending block #%d\n", i))), nil)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -799,13 +820,13 @@ func ExamplePageBlobClient() {
 
 	page := [PageBlobPageBytes]byte{}
 	copy(page[:], "Page 0")
-	_, err = blobClient.UploadPages(ctx, bytes.NewReader(page[:]), nil)
+	_, err = blobClient.UploadPages(ctx, NopCloser(bytes.NewReader(page[:])), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	copy(page[:], "Page 1")
-	_, err = blobClient.UploadPages(ctx, bytes.NewReader(page[:]), &UploadPagesOptions{PageRange: &HttpRange{0, 2 * PageBlobPageBytes}})
+	_, err = blobClient.UploadPages(ctx, NopCloser(bytes.NewReader(page[:])), &UploadPagesOptions{PageRange: &HttpRange{0, 2 * PageBlobPageBytes}})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -871,7 +892,7 @@ func Example_blobSnapshots() {
 	ctx := context.Background() // This example uses a never-expiring context
 
 	// Create the original blob:
-	_, err = baseBlobClient.Upload(ctx, strings.NewReader("Some text"), nil)
+	_, err = baseBlobClient.Upload(ctx, NopCloser(NopCloser(strings.NewReader("Some text"))), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -884,7 +905,7 @@ func Example_blobSnapshots() {
 	snapshot := *createSnapshot.Snapshot
 
 	// Modify the original blob & show it:
-	_, err = baseBlobClient.Upload(ctx, strings.NewReader("New text"), nil)
+	_, err = baseBlobClient.Upload(ctx, NopCloser(strings.NewReader("New text")), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -984,11 +1005,11 @@ func Example_progressUploadDownload() {
 	blobClient := containerClient.NewBlockBlobClient("Data.bin")
 
 	// requestBody is the stream of data to write
-	requestBody := strings.NewReader("Some text to write")
+	requestBody := NopCloser(strings.NewReader("Some text to write"))
 
 	// Wrap the request body in a RequestBodyProgress and pass a callback function for progress reporting.
-	_, err = blobClient.Upload(ctx, azcore.NewRequestBodyProgress(azcore.NopCloser(requestBody), func(bytesTransferred int64) {
-		fmt.Printf("Wrote %d of %d bytes.", bytesTransferred, requestBody.Size())
+	_, err = blobClient.Upload(ctx, streaming.NewRequestProgress(NopCloser(requestBody), func(bytesTransferred int64) {
+		fmt.Printf("Wrote %d of %d bytes.", bytesTransferred, requestBody)
 	}), &UploadBlockBlobOptions{BlobHTTPHeaders: &BlobHTTPHeaders{
 		BlobContentType:        to.StringPtr("text/html; charset=utf-8"),
 		BlobContentDisposition: to.StringPtr("attachment"),
@@ -1004,7 +1025,7 @@ func Example_progressUploadDownload() {
 	}
 
 	// Wrap the response body in a ResponseBodyProgress and pass a callback function for progress reporting.
-	responseBody := azcore.NewResponseBodyProgress(get.Body(RetryReaderOptions{}),
+	responseBody := streaming.NewResponseProgress(get.Body(RetryReaderOptions{}),
 		func(bytesTransferred int64) {
 			fmt.Printf("Read %d of %d bytes.", bytesTransferred, *get.ContentLength)
 		})
@@ -1060,73 +1081,73 @@ func ExampleBlobClient_startCopy() {
 }
 
 // // This example shows how to copy a large stream in blocks (chunks) to a block blob.
-func ExampleUploadFileToBlockBlob() {
-	file, err := os.Open("BigFile.bin") // Open the file we want to upload
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer func(file *os.File) {
-		err := file.Close()
-		if err != nil {
-		}
-	}(file)
-	fileSize, err := file.Stat() // Get the size of the file (stream)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// From the Azure portal, get your Storage account blob service URL endpoint.
-	accountName, accountKey := accountInfo()
-
-	// Create a BlockBlobURL object to a blob in the container (we assume the container already exists).
-	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/BigBlockBlob.bin", accountName)
-	credential, err := NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
-	blockBlobURL, err := NewBlockBlobClient(u, credential, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	ctx := context.Background() // This example uses a never-expiring context
-
-	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
-	response, err := UploadFileToBlockBlob(ctx, file, blockBlobURL,
-		HighLevelUploadToBlockBlobOption{
-			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
-			Progress: func(bytesTransferred int64) {
-				fmt.Printf("Uploaded %d of %d bytes.\n", bytesTransferred, fileSize.Size())
-			},
-		})
-	if err != nil {
-		log.Fatal(err)
-	}
-	_ = response // Avoid compiler's "declared and not used" error
-
-	// Set up file to download the blob to
-	destFileName := "BigFile-downloaded.bin"
-	destFile, err := os.Create(destFileName)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer func(destFile *os.File) {
-		_ = destFile.Close()
-
-	}(destFile)
-
-	// Perform download
-	err = DownloadBlobToFile(context.Background(), blockBlobURL.BlobClient, 0, CountToEnd, destFile,
-		HighLevelDownloadFromBlobOptions{
-			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
-			Progress: func(bytesTransferred int64) {
-				fmt.Printf("Downloaded %d of %d bytes.\n", bytesTransferred, fileSize.Size())
-			}})
-
-	if err != nil {
-		log.Fatal(err)
-	}
-}
+//func ExampleUploadFileToBlockBlob() {
+//	file, err := os.Open("BigFile.bin") // Open the file we want to upload
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	defer func(file *os.File) {
+//		err := file.Close()
+//		if err != nil {
+//		}
+//	}(file)
+//	fileSize, err := file.Stat() // Get the size of the file (stream)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	// From the Azure portal, get your Storage account blob service URL endpoint.
+//	accountName, accountKey := accountInfo()
+//
+//	// Create a BlockBlobURL object to a blob in the container (we assume the container already exists).
+//	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/BigBlockBlob.bin", accountName)
+//	credential, err := NewSharedKeyCredential(accountName, accountKey)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	blockBlobURL, err := NewBlockBlobClient(u, credential, nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	ctx := context.Background() // This example uses a never-expiring context
+//
+//	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
+//	response, err := UploadFileToBlockBlob(ctx, file, blockBlobURL,
+//		HighLevelUploadToBlockBlobOption{
+//			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
+//			Progress: func(bytesTransferred int64) {
+//				fmt.Printf("Uploaded %d of %d bytes.\n", bytesTransferred, fileSize.Size())
+//			},
+//		})
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	_ = response // Avoid compiler's "declared and not used" error
+//
+//	// Set up file to download the blob to
+//	destFileName := "BigFile-downloaded.bin"
+//	destFile, err := os.Create(destFileName)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	defer func(destFile *os.File) {
+//		_ = destFile.Close()
+//
+//	}(destFile)
+//
+//	// Perform download
+//	err = DownloadBlobToFile(context.Background(), blockBlobURL.BlobClient, 0, CountToEnd, destFile,
+//		HighLevelDownloadFromBlobOptions{
+//			// If Progress is non-nil, this function is called periodically as bytes are uploaded.
+//			Progress: func(bytesTransferred int64) {
+//				fmt.Printf("Downloaded %d of %d bytes.\n", bytesTransferred, fileSize.Size())
+//			}})
+//
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//}
 
 // This example shows how to download a large stream with intelligent retries. Specifically, if
 // the connection fails while reading, continuing to read from this stream initiates a new
@@ -1156,7 +1177,7 @@ func ExampleBlobClient_Download() {
 	rs := dr.Body(RetryReaderOptions{})
 
 	// NewResponseBodyProgress wraps the GetRetryStream with progress reporting; it returns an io.ReadCloser.
-	stream := azcore.NewResponseBodyProgress(rs,
+	stream := streaming.NewResponseProgress(rs,
 		func(bytesTransferred int64) {
 			fmt.Printf("Downloaded %d of %d bytes.\n", bytesTransferred, contentLength)
 		})
@@ -1185,41 +1206,41 @@ func ExampleBlobClient_Download() {
 	_ = written // Avoid compiler's "declared and not used" error
 }
 
-func ExampleUploadStreamToBlockBlob() {
-	// From the Azure portal, get your Storage account blob service URL endpoint.
-	accountName, accountKey := accountInfo()
-
-	// Create a BlockBlobURL object to a blob in the container (we assume the container already exists).
-	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/BigBlockBlob.bin", accountName)
-	credential, err := NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		log.Fatal(err)
-	}
-	blockBlobURL, err := NewBlockBlobClient(u, credential, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	ctx := context.Background() // This example uses a never-expiring context
-
-	// Create some data to test the upload stream
-	blobSize := 8 * 1024 * 1024
-	data := make([]byte, blobSize)
-	_, err = rand.Read(data)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Perform UploadStreamToBlockBlob
-	bufferSize := 2 * 1024 * 1024 // Configure the size of the rotating buffers that are used when uploading
-	maxBuffers := 3               // Configure the number of rotating buffers that are used when uploading
-	_, err = UploadStreamToBlockBlob(ctx, bytes.NewReader(data), blockBlobURL,
-		UploadStreamToBlockBlobOptions{BufferSize: bufferSize, MaxBuffers: maxBuffers})
-
-	// Verify that upload was successful
-	if err != nil {
-		log.Fatal(err)
-	}
-}
+//func ExampleUploadStreamToBlockBlob() {
+//	// From the Azure portal, get your Storage account blob service URL endpoint.
+//	accountName, accountKey := accountInfo()
+//
+//	// Create a BlockBlobURL object to a blob in the container (we assume the container already exists).
+//	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer/BigBlockBlob.bin", accountName)
+//	credential, err := NewSharedKeyCredential(accountName, accountKey)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	blockBlobURL, err := NewBlockBlobClient(u, credential, nil)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//	ctx := context.Background() // This example uses a never-expiring context
+//
+//	// Create some data to test the upload stream
+//	blobSize := 8 * 1024 * 1024
+//	data := make([]byte, blobSize)
+//	_, err = rand.Read(data)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	// Perform UploadStreamToBlockBlob
+//	bufferSize := 2 * 1024 * 1024 // Configure the size of the rotating buffers that are used when uploading
+//	maxBuffers := 3               // Configure the number of rotating buffers that are used when uploading
+//	_, err = UploadStreamToBlockBlob(ctx, bytes.NewReader(data), blockBlobURL,
+//		UploadStreamToBlockBlobOptions{BufferSize: bufferSize, MaxBuffers: maxBuffers})
+//
+//	// Verify that upload was successful
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//}
 
 // This example shows how to perform various lease operations on a container.
 // The same lease operations can be performed on individual blobs as well.
@@ -1237,7 +1258,11 @@ func ExampleContainerLeaseClient() {
 
 	// Create an containerClient object that wraps the container's URL and a default pipeline.
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
-	leaseID := to.StringPtr(uuid.New().String())
+	generatedUuid, err := uuid.New()
+	if err != nil {
+		log.Fatal(err)
+	}
+	leaseID := to.StringPtr(generatedUuid.String())
 	containerLeaseClient, err := NewContainerLeaseClient(u, leaseID, credential, nil)
 	if err != nil {
 		log.Fatal(err)
@@ -1279,7 +1304,11 @@ func ExampleContainerLeaseClient() {
 
 	// We can change the ID of an existing lease.
 	// A lease ID can be any valid GUID string format.
-	newLeaseID := uuid.New()
+	newLeaseID, err := uuid.New()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	newLeaseID[0] = 1
 	changeLeaseResponse, err := containerLeaseClient.ChangeLease(ctx,
 		&ChangeLeaseContainerOptions{ProposedLeaseID: to.StringPtr(newLeaseID.String())})

@@ -29,8 +29,9 @@ type fakeBlockWriter struct {
 
 //nolint
 func newFakeBlockWriter() *fakeBlockWriter {
+	generatedUuid, _ := uuid.New()
 	f := &fakeBlockWriter{
-		path:       filepath.Join(os.TempDir(), uuid.New().String()),
+		path:       filepath.Join(os.TempDir(), generatedUuid.String()),
 		block:      -1,
 		errOnBlock: -1,
 	}
@@ -43,7 +44,7 @@ func newFakeBlockWriter() *fakeBlockWriter {
 }
 
 //nolint
-func (f *fakeBlockWriter) StageBlock(ctx context.Context, blockID string, body io.ReadSeeker, options *StageBlockOptions) (BlockBlobStageBlockResponse, error) {
+func (f *fakeBlockWriter) StageBlock(ctx context.Context, blockID string, body io.ReadSeekCloser, options *StageBlockOptions) (BlockBlobStageBlockResponse, error) {
 	n := atomic.AddInt32(&f.block, 1)
 	if n == f.errOnBlock {
 		return BlockBlobStageBlockResponse{}, io.ErrNoProgress
@@ -109,7 +110,11 @@ func (f *fakeBlockWriter) final() string {
 
 //nolint
 func createSrcFile(size int) (string, error) {
-	p := filepath.Join(os.TempDir(), uuid.New().String())
+	generatedUuid, err := uuid.New()
+	if err != nil {
+		return "", err
+	}
+	p := filepath.Join(os.TempDir(), generatedUuid.String())
 	fp, err := os.OpenFile(p, os.O_CREATE+os.O_WRONLY, 0600)
 	if err != nil {
 		return "", fmt.Errorf("could not create source file: %s", err)

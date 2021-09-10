@@ -8,7 +8,6 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
-	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -17,15 +16,14 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
 // storage account's name and either its primary or secondary key.
-func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredential, error) {
-	if accountName == "" || accountKey == "" {
-		return nil, errors.New("empty account name or account key")
-	}
+func NewSharedKeyCredential(accountName string, accountKey string) (*SharedKeyCredential, error) {
 	c := SharedKeyCredential{accountName: accountName}
 	if err := c.SetAccountKey(accountKey); err != nil {
 		return nil, err
@@ -57,19 +55,16 @@ func (c *SharedKeyCredential) SetAccountKey(accountKey string) error {
 }
 
 // ComputeHMACSHA256 generates a hash signature for an HTTP request or for a SAS.
-func (c *SharedKeyCredential) ComputeHMACSHA256(message string) (base64String string) {
+func (c *SharedKeyCredential) ComputeHMACSHA256(message string) (string, error) {
 	h := hmac.New(sha256.New, c.accountKey.Load().([]byte))
 	_, err := h.Write([]byte(message))
-	if err != nil {
-		return ""
-	}
-	return base64.StdEncoding.EncodeToString(h.Sum(nil))
+	return base64.StdEncoding.EncodeToString(h.Sum(nil)), err
 }
 
 func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, error) {
 	// https://docs.microsoft.com/en-us/rest/api/storageservices/authentication-for-the-azure-storage-services
 	headers := req.Header
-	contentLength := headers.Get(azcore.HeaderContentLength)
+	contentLength := headers.Get(headerContentLength)
 	if contentLength == "0" {
 		contentLength = ""
 	}
@@ -81,17 +76,17 @@ func (c *SharedKeyCredential) buildStringToSign(req *http.Request) (string, erro
 
 	stringToSign := strings.Join([]string{
 		req.Method,
-		headers.Get(azcore.HeaderContentEncoding),
-		headers.Get(azcore.HeaderContentLanguage),
+		headers.Get(headerContentEncoding),
+		headers.Get(headerContentLanguage),
 		contentLength,
-		headers.Get(azcore.HeaderContentMD5),
-		headers.Get(azcore.HeaderContentType),
+		headers.Get(headerContentMD5),
+		headers.Get(headerContentType),
 		"", // Empty date because x-ms-date is expected (as per web page above)
-		headers.Get(azcore.HeaderIfModifiedSince),
-		headers.Get(azcore.HeaderIfMatch),
-		headers.Get(azcore.HeaderIfNoneMatch),
-		headers.Get(azcore.HeaderIfUnmodifiedSince),
-		headers.Get(azcore.HeaderRange),
+		headers.Get(headerIfModifiedSince),
+		headers.Get(headerIfMatch),
+		headers.Get(headerIfNoneMatch),
+		headers.Get(headerIfUnmodifiedSince),
+		headers.Get(headerRange),
 		c.buildCanonicalizedHeader(headers),
 		canonicalizedResource,
 	}, "\n")
@@ -167,26 +162,42 @@ func (c *SharedKeyCredential) buildCanonicalizedResource(u *url.URL) (string, er
 	return cr.String(), nil
 }
 
-// AuthenticationPolicy implements the Credential interface on SharedKeyCredential.
-func (c *SharedKeyCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
-	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
-		// Add a x-ms-date header if it doesn't already exist
-		if d := req.Request.Header.Get(azcore.HeaderXmsDate); d == "" {
-			req.Request.Header.Set(azcore.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
-		}
-		stringToSign, err := c.buildStringToSign(req.Request)
-		if err != nil {
-			return nil, err
-		}
-		signature := c.ComputeHMACSHA256(stringToSign)
-		authHeader := strings.Join([]string{"SharedKey ", c.AccountName(), ":", signature}, "")
-		req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
+type sharedKeyCredPolicy struct {
+	cred *SharedKeyCredential
+}
 
-		response, err := req.Next()
-		if err != nil && response != nil && response.StatusCode == http.StatusForbidden {
-			// Service failed to authenticate request, log it
-			azcore.Log().Write(azcore.LogResponse, "===== HTTP Forbidden status, String-to-Sign:\n"+stringToSign+"\n===============================\n")
-		}
-		return response, err
-	})
+func newSharedKeyCredPolicy(cred *SharedKeyCredential, opts runtime.AuthenticationOptions) *sharedKeyCredPolicy {
+	s := &sharedKeyCredPolicy{
+		cred: cred,
+	}
+
+	return s
+}
+
+func (s *sharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
+	if d := req.Raw().Header.Get(headerXmsDate); d == "" {
+		req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
+	}
+	stringToSign, err := s.cred.buildStringToSign(req.Raw())
+	if err != nil {
+		return nil, err
+	}
+	signature, err := s.cred.ComputeHMACSHA256(stringToSign)
+	if err != nil {
+		return nil, err
+	}
+	authHeader := strings.Join([]string{"SharedKey ", s.cred.AccountName(), ":", signature}, "")
+	req.Raw().Header.Set(headerAuthorization, authHeader)
+
+	response, err := req.Next()
+	if err != nil && response != nil && response.StatusCode == http.StatusForbidden {
+		// Service failed to authenticate request, log it
+		log.Write(log.Response, "===== HTTP Forbidden status, String-to-NewSASQueryParameters:\n"+stringToSign+"\n===============================\n")
+	}
+	return response, err
+}
+
+// NewAuthenticationPolicy implements the Credential interface on SharedKeyCredential.
+func (c *SharedKeyCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
+	return newSharedKeyCredPolicy(c, options)
 }

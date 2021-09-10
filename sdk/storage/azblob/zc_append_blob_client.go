@@ -5,15 +5,11 @@ package azblob
 
 import (
 	"context"
+	"errors"
 	"io"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-)
-
-const (
-//AppendBlobMaxAppendBlockBytes = 4 * 1024 * 1024
-//AppendBlobMaxBlocks           = 50_000
 )
 
 type AppendBlobClient struct {
@@ -72,7 +68,7 @@ func (ab AppendBlobClient) Create(ctx context.Context, options *CreateAppendBlob
 // This method panics if the stream is not at position 0.
 // Note that the http client closes the body stream after the request is sent to the service.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/append-block.
-func (ab AppendBlobClient) AppendBlock(ctx context.Context, body io.ReadSeeker, options *AppendBlockOptions) (AppendBlobAppendBlockResponse, error) {
+func (ab AppendBlobClient) AppendBlock(ctx context.Context, body io.ReadSeekCloser, options *AppendBlockOptions) (AppendBlobAppendBlockResponse, error) {
 	count, err := validateSeekableStreamAt0AndGetCount(body)
 	if err != nil {
 		return AppendBlobAppendBlockResponse{}, nil
@@ -80,7 +76,7 @@ func (ab AppendBlobClient) AppendBlock(ctx context.Context, body io.ReadSeeker, 
 
 	appendOptions, aac, cpkinfo, cpkscope, mac, lac := options.pointers()
 
-	resp, err := ab.client.AppendBlock(ctx, count, azcore.NopCloser(body), appendOptions, lac, aac, cpkinfo, cpkscope, mac)
+	resp, err := ab.client.AppendBlock(ctx, count, body, appendOptions, lac, aac, cpkinfo, cpkscope, mac)
 
 	return resp, handleError(err)
 }
@@ -111,9 +107,13 @@ func (ab AppendBlobClient) GetBlobSASToken(permissions BlobSASPermissions, valid
 	urlParts := NewBlobURLParts(ab.URL())
 
 	t, err := time.Parse(SnapshotTimeFormat, urlParts.Snapshot)
-
 	if err != nil {
 		t = time.Time{}
+	}
+
+	cred, ok := ab.cred.(*SharedKeyCredential)
+	if !ok {
+		return SASQueryParameters{}, errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
 	}
 
 	return BlobSASSignatureValues{
@@ -126,5 +126,5 @@ func (ab AppendBlobClient) GetBlobSASToken(permissions BlobSASPermissions, valid
 
 		StartTime:  time.Now().UTC(),
 		ExpiryTime: time.Now().UTC().Add(validityTime),
-	}.NewSASQueryParameters(ab.cred)
+	}.NewSASQueryParameters(cred)
 }

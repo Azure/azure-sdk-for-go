@@ -8,11 +8,10 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"net/http"
 	"sort"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // InternalError is an internal error type that all errors get wrapped in.
@@ -119,11 +118,12 @@ func (e StorageError) Error() string {
 			}
 		}
 		// req := azcore.Request{Request: e.response.Request}.Copy() // Make a copy of the response's request
-		writeRequestWithResponse(b, &azcore.Request{Request: e.response.Request}, e.response)
+		// TODO: Come Here Mohit Adele
+		//writeRequestWithResponse(b, &azcore.Request{Request: e.response.Request}, e.response)
 	}
 
 	return b.String()
-	// azcore.writeRequestWithResponse(b, prepareRequestForLogging(req), e.response, nil)
+	///azcore.writeRequestWithResponse(b, prepareRequestForLogging(req), e.response, nil)
 	// return e.ErrorNode.Error(b.String())
 }
 
@@ -138,10 +138,11 @@ func (e StorageError) Response() *http.Response {
 	return e.response
 }
 
-func writeRequestWithResponse(b *bytes.Buffer, request *azcore.Request, response *http.Response) {
+//nolint
+func writeRequestWithResponse(b *bytes.Buffer, request *policy.Request, response *http.Response) {
 	// Write the request into the buffer.
-	_, _ = fmt.Fprint(b, "   "+request.Method+" "+request.URL.String()+"\n")
-	writeHeader(b, request.Header)
+	_, _ = fmt.Fprint(b, "   "+request.Raw().Method+" "+request.Raw().URL.String()+"\n")
+	writeHeader(b, request.Raw().Header)
 	if response != nil {
 		_, _ = fmt.Fprintln(b, "   --------------------------------------------------------------------------------")
 		_, _ = fmt.Fprint(b, "   RESPONSE Status: "+response.Status+"\n")
@@ -150,6 +151,7 @@ func writeRequestWithResponse(b *bytes.Buffer, request *azcore.Request, response
 }
 
 // formatHeaders appends an HTTP request's or response's header into a Buffer.
+//nolint
 func writeHeader(b *bytes.Buffer, header map[string][]string) {
 	if len(header) == 0 {
 		b.WriteString("   (no headers)\n")

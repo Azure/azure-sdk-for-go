@@ -56,12 +56,6 @@ type basicTestEntity struct {
 	Bool    bool
 }
 
-func marshalBasicEntity(b basicTestEntity, require *require.Assertions) *[]byte {
-	r, e := json.Marshal(b)
-	require.NoError(e)
-	return &r
-}
-
 type complexTestEntity struct {
 	Entity
 	Integer  int

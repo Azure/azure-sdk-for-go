@@ -3,7 +3,7 @@
 ## Introduction
 
 The Microsoft Azure Storage SDK for Go allows you to build applications that takes advantage of Azure's scalable cloud
-storage. This SDK replaces the previously previewed [azblob package](azblob_track1dot5) in the separate repository.
+storage. This SDK replaces the previously previewed [azblob package](https://github.com/azure/azure-storage-blob-go) in the separate repository.
 
 ## Prerequisites
 
@@ -163,11 +163,6 @@ log.SetClassifications(log.Request, log.Response)
 > These logs must be protected to avoid compromising account security.
 >
 
-### Additional documentation
-
-For more extensive documentation on Azure `azblob` SDK, see the [Azure blobs documentation][Blobs_product_doc] on
-docs.microsoft.com.
-
 ## License
 
 This project is licensed under MIT.
@@ -193,12 +188,6 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 
 <!-- LINKS -->
-
-[azblob_track1dot5]:https://github.com/azure/azure-storage-blob-go
-
-[source_code]:https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/storage/azblob
-
-[Blobs_product_doc]:https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction
 
 [azure_subscription]:https://azure.microsoft.com/free/
 

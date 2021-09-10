@@ -12,11 +12,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-const (
-//AppendBlobMaxAppendBlockBytes = 4 * 1024 * 1024
-//AppendBlobMaxBlocks           = 50_000
-)
-
 type AppendBlobClient struct {
 	BlobClient
 	client *appendBlobClient

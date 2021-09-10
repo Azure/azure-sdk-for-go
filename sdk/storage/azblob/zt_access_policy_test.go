@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (s *azblobTestSuite) TestSetEmptyAccessPolicy() {
+func (s *azblobUnrecordedTestSuite) TestSetEmptyAccessPolicy() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
@@ -25,7 +25,7 @@ func (s *azblobTestSuite) TestSetEmptyAccessPolicy() {
 	_assert.Nil(err)
 }
 
-func (s *azblobTestSuite) TestSetAccessPolicy() {
+func (s *azblobUnrecordedTestSuite) TestSetAccessPolicy() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
@@ -63,7 +63,7 @@ func (s *azblobTestSuite) TestSetAccessPolicy() {
 	_assert.Nil(err)
 }
 
-func (s *azblobTestSuite) TestSetMultipleAccessPolicies() {
+func (s *azblobUnrecordedTestSuite) TestSetMultipleAccessPolicies() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
@@ -121,7 +121,7 @@ func (s *azblobTestSuite) TestSetMultipleAccessPolicies() {
 	_assert.Len(resp.SignedIdentifiers, 3)
 }
 
-func (s *azblobTestSuite) TestSetNullAccessPolicy() {
+func (s *azblobUnrecordedTestSuite) TestSetNullAccessPolicy() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)

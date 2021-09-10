@@ -145,25 +145,6 @@ func (s ServiceClient) GetAccountInfo(ctx context.Context) (ServiceGetAccountInf
 	return resp, handleError(err)
 }
 
-//// GetUserDelegationCredential obtains a UserDelegationKey object using the base ServiceClient object.
-//// OAuth is required for this call, as well as any role that can delegate access to the storage account.
-//// Strings in KeyInfo should be formatted with SASTimeFormat.
-//func (s ServiceClient) GetUserDelegationCredential(ctx context.Context, startTime, expiryTime *time.Time) (UserDelegationCredential, error) {
-//	if startTime == nil {
-//		startTime = to.TimePtr(time.Now().UTC())
-//	}
-//
-//	udk, err := s.client.GetUserDelegationKey(ctx, KeyInfo{
-//		Start:  to.StringPtr(startTime.UTC().Format(SASTimeFormat)),
-//		Expiry: to.StringPtr(expiryTime.UTC().Format(SASTimeFormat)),
-//	}, nil)
-//	if err != nil {
-//		return UserDelegationCredential{}, handleError(err)
-//	}
-//	urlParts := NewBlobURLParts(s.URL())
-//	return NewUserDelegationCredential(strings.Split(urlParts.Host, ".")[0], udk.UserDelegationKey), nil
-//}
-
 // The ListContainersSegment operation returns a pager of the containers under the specified account.
 // Use an empty Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-containers2.

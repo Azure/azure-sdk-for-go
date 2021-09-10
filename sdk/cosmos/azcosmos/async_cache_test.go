@@ -162,7 +162,7 @@ func Test_getAsync_obsolete_with_error(t *testing.T) {
 		return &cacheTaskResult{value: expectedValue2, err: nil}
 	}
 
-	cache.getAsync(key, expectedValue1, f2)
+	_ = cache.getAsync(key, expectedValue1, f2)
 
 	_, err := cache.awaitCacheValue(key, ctx)
 

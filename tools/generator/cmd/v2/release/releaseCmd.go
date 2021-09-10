@@ -58,28 +58,28 @@ namespaceName: name of namespace to be released, default value is arm+rp-name
 }
 
 type Flags struct {
-	VersionNumber  string
-	SwaggerRepo    string
-	PackageTitle   string
-	SDKRepo        string
-	SpecFolderName string
+	VersionNumber string
+	SwaggerRepo   string
+	PackageTitle  string
+	SDKRepo       string
+	SpecRPName    string
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("version-number", "", "Specify the version number of this release")
 	flagSet.String("package-title", "", "Specifies the title of this package")
-	flagSet.String("sdk-repo", "https://github.com/Azure/azure-sdk-for-go", "Specifies the sdk repo url for generation")
-	flagSet.String("spec-repo", "https://github.com/Azure/azure-rest-api-specs", "Specifies the swagger repo url for generation")
-	flagSet.String("spec-folder-name", "", "Specifies the swagger spec folder name, default is rp name")
+	flagSet.String("sdk-repo", "https://github.com/Azure/azure-sdk-for-go", "Specifies the sdk repo URL for generation")
+	flagSet.String("spec-repo", "https://github.com/Azure/azure-rest-api-specs", "Specifies the swagger repo URL for generation")
+	flagSet.String("spec-rp-name", "", "Specifies the swagger spec RP name, default is RP name")
 }
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
 	return Flags{
-		VersionNumber:  flags.GetString(flagSet, "version-number"),
-		PackageTitle:   flags.GetString(flagSet, "package-title"),
-		SDKRepo:        flags.GetString(flagSet, "sdk-repo"),
-		SwaggerRepo:    flags.GetString(flagSet, "spec-repo"),
-		SpecFolderName: flags.GetString(flagSet, "spec-folder-name"),
+		VersionNumber: flags.GetString(flagSet, "version-number"),
+		PackageTitle:  flags.GetString(flagSet, "package-title"),
+		SDKRepo:       flags.GetString(flagSet, "sdk-repo"),
+		SwaggerRepo:   flags.GetString(flagSet, "spec-repo"),
+		SpecRPName:    flags.GetString(flagSet, "spec-rp-name"),
 	}
 }
 
@@ -133,14 +133,20 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 	generateCtx := common.GenerateContext{
 		SDKPath:        sdkRepo.Root(),
 		SDKRepo:        &sdkRepo,
-		SpecPath:       "",
 		SpecCommitHash: specCommitHash,
+		SpecRepoURL:    c.flags.SwaggerRepo,
 	}
 
-	if c.flags.SpecFolderName == "" {
-		c.flags.SpecFolderName = c.rpName
+	if c.flags.SpecRPName == "" {
+		c.flags.SpecRPName = c.rpName
 	}
-	result, err := generateCtx.GenerateForSingleRPNamespace(c.rpName, c.namespaceName, c.flags.PackageTitle, c.flags.VersionNumber, c.flags.SwaggerRepo, c.flags.SpecFolderName)
+	result, err := generateCtx.GenerateForSingleRPNamespace(&common.GenerateParam{
+		RPName:              c.rpName,
+		NamespaceName:       c.namespaceName,
+		SpecficPackageTitle: c.flags.PackageTitle,
+		SpecficVersion:      c.flags.VersionNumber,
+		SpecRPName:          c.flags.SpecRPName,
+	})
 	if err != nil {
 		return fmt.Errorf("failed to finish release generation process: %+v", err)
 	}

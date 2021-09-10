@@ -157,7 +157,7 @@ func (o *CreateBlobSnapshotOptions) pointers() (blobSetMetadataOptions *BlobCrea
 
 type StartCopyBlobOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
-	BlobTagsMap *map[string]string
+	BlobTagsMap map[string]string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
@@ -205,12 +205,12 @@ func (o *AbortCopyBlobOptions) pointers() (blobAbortCopyFromUrlOptions *BlobAbor
 	return nil, o.LeaseAccessConditions
 }
 
-func serializeBlobTagsToStrPtr(blobTagsMap *map[string]string) *string {
+func serializeBlobTagsToStrPtr(blobTagsMap map[string]string) *string {
 	if blobTagsMap == nil {
 		return nil
 	}
 	tags := make([]string, 0)
-	for key, val := range *blobTagsMap {
+	for key, val := range blobTagsMap {
 		tags = append(tags, url.QueryEscape(key)+"="+url.QueryEscape(val))
 	}
 	//tags = tags[:len(tags)-1]
@@ -218,12 +218,12 @@ func serializeBlobTagsToStrPtr(blobTagsMap *map[string]string) *string {
 	return &blobTagsString
 }
 
-func serializeBlobTags(blobTagsMap *map[string]string) *BlobTags {
+func serializeBlobTags(blobTagsMap map[string]string) *BlobTags {
 	if blobTagsMap == nil {
 		return nil
 	}
 	blobTagSet := make([]*BlobTag, 0)
-	for key, val := range *blobTagsMap {
+	for key, val := range blobTagsMap {
 		newKey, newVal := key, val
 		blobTagSet = append(blobTagSet, &BlobTag{Key: &newKey, Value: &newVal})
 	}
@@ -243,7 +243,7 @@ type SetTagsBlobOptions struct {
 	// Optional header, Specifies the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 []byte
 
-	BlobTagsMap *map[string]string
+	BlobTagsMap map[string]string
 
 	ModifiedAccessConditions *ModifiedAccessConditions
 }

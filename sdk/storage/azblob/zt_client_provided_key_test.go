@@ -17,23 +17,6 @@ import (
 	"time"
 )
 
-//import (
-//	"bytes"
-//	"context"
-//	"crypto/md5"
-//	"encoding/base64"
-//	"encoding/binary"
-//	"fmt"
-//	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-//	"io/ioutil"
-//	"strconv"
-//	"time"
-//
-//	//"encoding/binary"
-//	chk "gopkg.in/check.v1"
-//	"strings"
-//)
-//
 /*
 Azure Storage supports following operations support of sending customer-provided encryption keys on a request:
 Put Blob, Put Block List, Put Block, Put Block from URL, Put Page, Put Page from URL, Append Block,

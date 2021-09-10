@@ -5,7 +5,7 @@ package azblob
 
 type UploadBlockBlobOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
-	BlobTagsMap *map[string]string
+	BlobTagsMap map[string]string
 
 	// Optional. Specifies a user-defined name-value pair associated with the blob.
 	Metadata map[string]string
@@ -91,7 +91,7 @@ func (o *StageBlockFromURLOptions) pointers() (*LeaseAccessConditions, *SourceMo
 }
 
 type CommitBlockListOptions struct {
-	BlobTagsMap               *map[string]string
+	BlobTagsMap               map[string]string
 	Metadata                  map[string]string
 	RequestID                 *string
 	Tier                      *AccessTier
@@ -137,7 +137,7 @@ func (o *GetBlockListOptions) pointers() (*BlockBlobGetBlockListOptions, *Modifi
 }
 
 type CopyBlockBlobFromURLOptions struct {
-	BlobTagsMap                    *map[string]string
+	BlobTagsMap                    map[string]string
 	Metadata                       map[string]string
 	RequestID                      *string
 	SourceContentMD5               []byte

@@ -35,9 +35,10 @@ type GenerateResult struct {
 	ChangelogMD    string
 }
 
-func (ctx GenerateContext) GenerateForAutomation(readme, repo, specFolderName string) ([]GenerateResult, []error) {
+func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]GenerateResult, []error) {
 	absReadme := filepath.Join(ctx.SpecPath, readme)
 	absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")
+	specRPName := strings.Split(readme, "/")[1]
 
 	var result []GenerateResult
 	var errors []error
@@ -53,7 +54,7 @@ func (ctx GenerateContext) GenerateForAutomation(readme, repo, specFolderName st
 	for rpName, namespaceNames := range rpMap {
 		for _, namespaceName := range namespaceNames {
 			log.Printf("Process rp: %s, namespace: %s", rpName, namespaceName)
-			singleResult, err := ctx.GenerateForSingleRPNamespace(rpName, namespaceName, "", "", repo, specFolderName)
+			singleResult, err := ctx.GenerateForSingleRPNamespace(rpName, namespaceName, "", "", "", specRPName)
 			if err != nil {
 				errors = append(errors, err)
 				continue
@@ -64,7 +65,7 @@ func (ctx GenerateContext) GenerateForAutomation(readme, repo, specFolderName st
 	return result, errors
 }
 
-func (ctx GenerateContext) GenerateForSingleRPNamespace(rpName, namespaceName, specficPackageTitle, specficVersion, specficRepoURL, specFolderName string) (*GenerateResult, error) {
+func (ctx GenerateContext) GenerateForSingleRPNamespace(rpName, namespaceName, specficPackageTitle, specficVersion, specficRepoURL, specRPName string) (*GenerateResult, error) {
 	packagePath := filepath.Join(ctx.SDKPath, "sdk", rpName, namespaceName)
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
 
@@ -115,13 +116,13 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(rpName, namespaceName, s
 	if ctx.SpecCommitHash == "" {
 		log.Printf("Change swagger config in `autorest.md` according to local path...")
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
-		if err := ChangeConfigWithLocalPath(autorestMdPath, ctx.SpecPath, specFolderName); err != nil {
+		if err := ChangeConfigWithLocalPath(autorestMdPath, ctx.SpecPath, specRPName); err != nil {
 			return nil, err
 		}
 	} else {
 		log.Printf("Change swagger config in `autorest.md` according to repo URL and commit ID...")
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
-		if err := ChangeConfigWithCommitID(autorestMdPath, specficRepoURL, ctx.SpecCommitHash, specFolderName); err != nil {
+		if err := ChangeConfigWithCommitID(autorestMdPath, specficRepoURL, ctx.SpecCommitHash, specRPName); err != nil {
 			return nil, err
 		}
 	}

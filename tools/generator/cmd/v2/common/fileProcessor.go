@@ -106,9 +106,14 @@ func CleanSDKGeneratedFiles(path string) error {
 }
 
 // replace repo commit with local path in autorest.md files
-func ChangeConfigWithLocalPath(path, specPath, specFolder string) error {
+func ChangeConfigWithLocalPath(path, specPath, specRPName string) error {
 	log.Printf("Replacing repo commit with local path in autorest.md ...")
 	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	specPath, err = filepath.Abs(specPath)
 	if err != nil {
 		return err
 	}
@@ -116,8 +121,8 @@ func ChangeConfigWithLocalPath(path, specPath, specFolder string) error {
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.Contains(line, autorest_md_file_suffix) {
-			lines[i] = fmt.Sprintf("- %s", filepath.Join(specPath, "specification", specFolder, "resource-manager", "readme.md"))
-			lines[i+1] = fmt.Sprintf("- %s", filepath.Join(specPath, "specification", specFolder, "resource-manager", "readme.go.md"))
+			lines[i] = fmt.Sprintf("- %s", filepath.Join(specPath, "specification", specRPName, "resource-manager", "readme.md"))
+			lines[i+1] = fmt.Sprintf("- %s", filepath.Join(specPath, "specification", specRPName, "resource-manager", "readme.go.md"))
 			break
 		}
 	}
@@ -126,7 +131,7 @@ func ChangeConfigWithLocalPath(path, specPath, specFolder string) error {
 }
 
 // replace repo URL and commit id in autorest.md files
-func ChangeConfigWithCommitID(path, repoURL, commitID, specFolder string) error {
+func ChangeConfigWithCommitID(path, repoURL, commitID, specRPName string) error {
 	log.Printf("Replacing repo URL and commit id in autorest.md ...")
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -136,8 +141,8 @@ func ChangeConfigWithCommitID(path, repoURL, commitID, specFolder string) error 
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.Contains(line, autorest_md_file_suffix) {
-			lines[i] = fmt.Sprintf("- %s/blob/%s/specification/%s/resource-manager/readme.md", repoURL, commitID, specFolder)
-			lines[i+1] = fmt.Sprintf("- %s/blob/%s/specification/%s/resource-manager/readme.go.md", repoURL, commitID, specFolder)
+			lines[i] = fmt.Sprintf("- %s/blob/%s/specification/%s/resource-manager/readme.md", repoURL, commitID, specRPName)
+			lines[i+1] = fmt.Sprintf("- %s/blob/%s/specification/%s/resource-manager/readme.go.md", repoURL, commitID, specRPName)
 			break
 		}
 	}

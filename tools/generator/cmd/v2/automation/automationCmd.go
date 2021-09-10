@@ -100,8 +100,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 			SpecCommitHash: "",
 		}
 
-		specFolderName := strings.Split(input.RelatedReadmeMdFiles[0], "/")[1]
-		namespaceResults, errors := generateCtx.GenerateForAutomation(readme, input.RepoHTTPSURL, specFolderName)
+		namespaceResults, errors := generateCtx.GenerateForAutomation(readme, input.RepoHTTPSURL)
 		if len(errors) != 0 {
 			errorBuilder.add(errors...)
 			continue

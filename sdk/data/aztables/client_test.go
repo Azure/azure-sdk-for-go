@@ -203,6 +203,7 @@ func TestInsertEntity(t *testing.T) {
 			// 1. Create Basic Entity
 			entityToCreate := createSimpleEntity(1, "partition")
 			marshalled, err := json.Marshal(entityToCreate)
+			require.NoError(t, err)
 
 			_, err = client.InsertEntity(ctx, marshalled, &InsertEntityOptions{UpdateMode: ReplaceEntity})
 			require.NoError(t, err)

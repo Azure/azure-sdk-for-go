@@ -30,7 +30,11 @@ func main() {
 }
 
 func runBasicSendAndReceiveTest() {
-	godotenv.Load()
+	err := godotenv.Load()
+
+	if err != nil {
+		log.Printf("Failed to load .env file: %s", err.Error())
+	}
 
 	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
 	aiKey := os.Getenv("APPINSIGHTS_INSTRUMENTATIONKEY")
@@ -40,6 +44,7 @@ func runBasicSendAndReceiveTest() {
 	}
 
 	config := appinsights.NewTelemetryConfiguration(aiKey)
+
 	config.MaxBatchInterval = time.Second * 5
 	telemetryClient := appinsights.NewTelemetryClientFromConfig(config)
 

@@ -5,6 +5,9 @@ parameters:
   - name:  RunTests
     type: string
     default: false
+  - name:  RunLiveTests
+    type: string
+    default: false
   - name: Clouds
     type: string
     default: 'Public'
@@ -142,7 +145,7 @@ stages:
           LintVersion: $(GoLintCLIVersion)
 
   # Run live tests for internal only, not public CI builds. This can be triggered manually for via an `/azp run` comment.
-  - ${{if eq(variables['System.TeamProject'], 'internal')}}:
+  - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
     - ${{ each cloud in parameters.CloudConfig }}:
       # Run all clouds by default for weekly test pipeline, except for clouds specifically unsupported by the calling pipeline
       - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
@@ -190,7 +193,7 @@ stages:
         DependsOn:
           - Build
           # Copy cloud conditional logic from live test stage
-          - ${{if eq(variables['System.TeamProject'], 'internal')}}:
+          - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
             - ${{ each cloud in parameters.CloudConfig }}:
               - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
                 - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:

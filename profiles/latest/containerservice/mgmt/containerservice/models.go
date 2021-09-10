@@ -12,7 +12,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-07-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-08-01/containerservice"
 )
 
 const (
@@ -186,6 +186,13 @@ const (
 	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateSucceeded
 )
 
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
+)
+
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
@@ -213,6 +220,12 @@ type ScaleSetPriority = original.ScaleSetPriority
 const (
 	ScaleSetPriorityRegular ScaleSetPriority = original.ScaleSetPriorityRegular
 	ScaleSetPrioritySpot    ScaleSetPriority = original.ScaleSetPrioritySpot
+)
+
+type SnapshotType = original.SnapshotType
+
+const (
+	SnapshotTypeNodePool SnapshotType = original.SnapshotTypeNodePool
 )
 
 type StorageProfileTypes = original.StorageProfileTypes
@@ -423,6 +436,13 @@ const (
 	WeekDayWednesday WeekDay = original.WeekDayWednesday
 )
 
+type WorkloadRuntime = original.WorkloadRuntime
+
+const (
+	WorkloadRuntimeOCIContainer WorkloadRuntime = original.WorkloadRuntimeOCIContainer
+	WorkloadRuntimeWasmWasi     WorkloadRuntime = original.WorkloadRuntimeWasmWasi
+)
+
 type AccessProfile = original.AccessProfile
 type AgentPool = original.AgentPool
 type AgentPoolAvailableVersions = original.AgentPoolAvailableVersions
@@ -443,6 +463,7 @@ type BaseClient = original.BaseClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type CommandResultProperties = original.CommandResultProperties
+type CreationData = original.CreationData
 type CredentialResult = original.CredentialResult
 type CredentialResults = original.CredentialResults
 type DiagnosticsProfile = original.DiagnosticsProfile
@@ -537,6 +558,12 @@ type RunCommandRequest = original.RunCommandRequest
 type RunCommandResult = original.RunCommandResult
 type SSHConfiguration = original.SSHConfiguration
 type SSHPublicKey = original.SSHPublicKey
+type Snapshot = original.Snapshot
+type SnapshotListResult = original.SnapshotListResult
+type SnapshotListResultIterator = original.SnapshotListResultIterator
+type SnapshotListResultPage = original.SnapshotListResultPage
+type SnapshotProperties = original.SnapshotProperties
+type SnapshotsClient = original.SnapshotsClient
 type SubResource = original.SubResource
 type SysctlConfig = original.SysctlConfig
 type SystemData = original.SystemData
@@ -615,6 +642,18 @@ func NewResolvePrivateLinkServiceIDClient(subscriptionID string) ResolvePrivateL
 func NewResolvePrivateLinkServiceIDClientWithBaseURI(baseURI string, subscriptionID string) ResolvePrivateLinkServiceIDClient {
 	return original.NewResolvePrivateLinkServiceIDClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewSnapshotListResultIterator(page SnapshotListResultPage) SnapshotListResultIterator {
+	return original.NewSnapshotListResultIterator(page)
+}
+func NewSnapshotListResultPage(cur SnapshotListResult, getNextPage func(context.Context, SnapshotListResult) (SnapshotListResult, error)) SnapshotListResultPage {
+	return original.NewSnapshotListResultPage(cur, getNextPage)
+}
+func NewSnapshotsClient(subscriptionID string) SnapshotsClient {
+	return original.NewSnapshotsClient(subscriptionID)
+}
+func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string) SnapshotsClient {
+	return original.NewSnapshotsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
@@ -684,6 +723,9 @@ func PossibleOutboundTypeValues() []OutboundType {
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
 	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
 }
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
+}
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
 }
@@ -696,6 +738,9 @@ func PossibleScaleSetEvictionPolicyValues() []ScaleSetEvictionPolicy {
 func PossibleScaleSetPriorityValues() []ScaleSetPriority {
 	return original.PossibleScaleSetPriorityValues()
 }
+func PossibleSnapshotTypeValues() []SnapshotType {
+	return original.PossibleSnapshotTypeValues()
+}
 func PossibleStorageProfileTypesValues() []StorageProfileTypes {
 	return original.PossibleStorageProfileTypesValues()
 }
@@ -707,6 +752,9 @@ func PossibleVMSizeTypesValues() []VMSizeTypes {
 }
 func PossibleWeekDayValues() []WeekDay {
 	return original.PossibleWeekDayValues()
+}
+func PossibleWorkloadRuntimeValues() []WorkloadRuntime {
+	return original.PossibleWorkloadRuntimeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

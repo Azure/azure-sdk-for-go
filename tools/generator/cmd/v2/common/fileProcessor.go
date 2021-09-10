@@ -20,16 +20,15 @@ import (
 
 const (
 	sdk_generated_file_prefix         = "zz_generated_"
-	autorest_md_swagger_url_prefix    = "- https://github.com/Azure/azure-rest-api-specs/blob/"
+	autorest_md_file_suffix           = "readme.md"
 	autorest_md_module_version_prefix = "module-version: "
 	swagger_md_module_name_prefix     = "module-name: "
 )
 
 var (
-	v2BeginRegex                   = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\((track2|v2)\\)")
-	v2EndRegex                     = regexp.MustCompile("^\\s*```\\s*$")
-	autorestMdSwaggerURLBeginRegex = regexp.MustCompile(`https://github.com/.+/azure-rest-api-specs/`)
-	newClientMethodNameRegex       = regexp.MustCompile("^New.+Client$")
+	v2BeginRegex             = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\((track2|v2)\\)")
+	v2EndRegex               = regexp.MustCompile("^\\s*```\\s*$")
+	newClientMethodNameRegex = regexp.MustCompile("^New.+Client$")
 )
 
 // reads from readme.go.md, parses the `track2` section to get module and package name
@@ -106,9 +105,9 @@ func CleanSDKGeneratedFiles(path string) error {
 	return nil
 }
 
-// replace all commit id in autorest.md files
-func ReplaceCommitID(path string, commitID string) error {
-	log.Printf("Replacing commit id in autorest.md ...")
+// replace repo commit with local path in autorest.md files
+func ChangeConfigWithLocalPath(path, specPath, specFolder string) error {
+	log.Printf("Replacing repo commit with local path in autorest.md ...")
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
@@ -116,17 +115,19 @@ func ReplaceCommitID(path string, commitID string) error {
 
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
-		if strings.HasPrefix(line, autorest_md_swagger_url_prefix) {
-			lines[i] = line[:len(autorest_md_swagger_url_prefix)] + commitID + line[len(autorest_md_swagger_url_prefix)+len(commitID):]
+		if strings.Contains(line, autorest_md_file_suffix) {
+			lines[i] = fmt.Sprintf("- %s", filepath.Join(specPath, "specification", specFolder, "resource-manager", "readme.md"))
+			lines[i+1] = fmt.Sprintf("- %s", filepath.Join(specPath, "specification", specFolder, "resource-manager", "readme.go.md"))
+			break
 		}
 	}
 
 	return ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
 
-// replace repo url according to `https://github.com/.+/azure-rest-api-specs/` pattern in autorest.md files
-func ReplaceRepoURL(path string, repoUrl string) error {
-	log.Printf("Replacing repo url in autorest.md ...")
+// replace repo URL and commit id in autorest.md files
+func ChangeConfigWithCommitID(path, repoURL, commitID, specFolder string) error {
+	log.Printf("Replacing repo URL and commit id in autorest.md ...")
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
@@ -134,8 +135,10 @@ func ReplaceRepoURL(path string, repoUrl string) error {
 
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
-		if pos := autorestMdSwaggerURLBeginRegex.FindStringIndex(line); pos != nil {
-			lines[i] = line[:pos[0]] + repoUrl + "/" + line[pos[1]:]
+		if strings.Contains(line, autorest_md_file_suffix) {
+			lines[i] = fmt.Sprintf("- %s/blob/%s/specification/%s/resource-manager/readme.md", repoURL, commitID, specFolder)
+			lines[i+1] = fmt.Sprintf("- %s/blob/%s/specification/%s/resource-manager/readme.go.md", repoURL, commitID, specFolder)
+			break
 		}
 	}
 
@@ -171,7 +174,7 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.HasPrefix(line, autorest_md_module_version_prefix) {
-			lines[i] = line[:len(autorest_md_module_version_prefix)] + newVersion + "\n"
+			lines[i] = line[:len(autorest_md_module_version_prefix)] + newVersion
 			break
 		}
 	}
@@ -233,7 +236,7 @@ func ReplaceNewClientMethodPlaceholder(packageRootPath string, exports exports.C
 	path := filepath.Join(packageRootPath, "README.md")
 	var clientName string
 	for k, v := range exports.Funcs {
-		if newClientMethodNameRegex.MatchString(k) && *v.Params == "*armcore.Connection, string" {
+		if newClientMethodNameRegex.MatchString(k) && *v.Params == "*arm.Connection, string" {
 			clientName = k
 			break
 		}

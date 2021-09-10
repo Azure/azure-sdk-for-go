@@ -24,6 +24,7 @@ type GenerateContext struct {
 	SDKRepo        *repo.SDKRepository
 	SpecPath       string
 	SpecCommitHash string
+	SpecRepoURL    string
 }
 
 type GenerateResult struct {
@@ -35,9 +36,18 @@ type GenerateResult struct {
 	ChangelogMD    string
 }
 
-func (ctx GenerateContext) GenerateForAutomation(readme, repo, specFolderName string) ([]GenerateResult, []error) {
+type GenerateParam struct {
+	RPName              string
+	NamespaceName       string
+	SpecficVersion      string
+	SpecficPackageTitle string
+	SpecRPName          string
+}
+
+func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]GenerateResult, []error) {
 	absReadme := filepath.Join(ctx.SpecPath, readme)
 	absReadmeGo := filepath.Join(filepath.Dir(absReadme), "readme.go.md")
+	specRPName := strings.Split(readme, "/")[1]
 
 	var result []GenerateResult
 	var errors []error
@@ -53,7 +63,11 @@ func (ctx GenerateContext) GenerateForAutomation(readme, repo, specFolderName st
 	for rpName, namespaceNames := range rpMap {
 		for _, namespaceName := range namespaceNames {
 			log.Printf("Process rp: %s, namespace: %s", rpName, namespaceName)
-			singleResult, err := ctx.GenerateForSingleRPNamespace(rpName, namespaceName, "", "", repo, specFolderName)
+			singleResult, err := ctx.GenerateForSingleRPNamespace(&GenerateParam{
+				RPName:        rpName,
+				NamespaceName: namespaceName,
+				SpecRPName:    specRPName,
+			})
 			if err != nil {
 				errors = append(errors, err)
 				continue
@@ -64,8 +78,8 @@ func (ctx GenerateContext) GenerateForAutomation(readme, repo, specFolderName st
 	return result, errors
 }
 
-func (ctx GenerateContext) GenerateForSingleRPNamespace(rpName, namespaceName, specficPackageTitle, specficVersion, specficRepoURL, specFolderName string) (*GenerateResult, error) {
-	packagePath := filepath.Join(ctx.SDKPath, "sdk", rpName, namespaceName)
+func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateParam) (*GenerateResult, error) {
+	packagePath := filepath.Join(ctx.SDKPath, "sdk", generateParam.RPName, generateParam.NamespaceName)
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
 
 	onBoard := false
@@ -74,15 +88,15 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(rpName, namespaceName, s
 		onBoard = true
 		log.Printf("Package '%s' changelog not exist, do onboard process", packagePath)
 
-		if specficPackageTitle == "" {
-			specficPackageTitle = strings.Title(rpName)
+		if generateParam.SpecficPackageTitle == "" {
+			generateParam.SpecficPackageTitle = strings.Title(generateParam.RPName)
 		}
 
 		log.Printf("Use template to generate new rp folder and basic package files...")
-		if err = template.GeneratePackageByTemplate(rpName, namespaceName, template.Flags{
+		if err = template.GeneratePackageByTemplate(generateParam.RPName, generateParam.NamespaceName, template.Flags{
 			SDKRoot:      ctx.SDKPath,
 			TemplatePath: "tools/generator/template/rpName/packageName",
-			PackageTitle: specficPackageTitle,
+			PackageTitle: generateParam.SpecficPackageTitle,
 			Commit:       ctx.SpecCommitHash,
 		}); err != nil {
 			return nil, err
@@ -91,7 +105,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(rpName, namespaceName, s
 		log.Printf("Package '%s' existed, do update process", packagePath)
 
 		log.Printf("Get ori exports for changelog generation...")
-		if err := (*ctx.SDKRepo).Add(fmt.Sprintf("sdk\\%s\\%s", rpName, namespaceName)); err != nil {
+		if err := (*ctx.SDKRepo).Add(fmt.Sprintf("sdk\\%s\\%s", generateParam.RPName, generateParam.NamespaceName)); err != nil {
 			return nil, err
 		}
 		if err := (*ctx.SDKRepo).Stash(); err != nil {
@@ -115,13 +129,13 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(rpName, namespaceName, s
 	if ctx.SpecCommitHash == "" {
 		log.Printf("Change swagger config in `autorest.md` according to local path...")
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
-		if err := ChangeConfigWithLocalPath(autorestMdPath, ctx.SpecPath, specFolderName); err != nil {
+		if err := ChangeConfigWithLocalPath(autorestMdPath, ctx.SpecPath, generateParam.SpecRPName); err != nil {
 			return nil, err
 		}
 	} else {
 		log.Printf("Change swagger config in `autorest.md` according to repo URL and commit ID...")
 		autorestMdPath := filepath.Join(packagePath, "autorest.md")
-		if err := ChangeConfigWithCommitID(autorestMdPath, specficRepoURL, ctx.SpecCommitHash, specFolderName); err != nil {
+		if err := ChangeConfigWithCommitID(autorestMdPath, ctx.SpecRepoURL, ctx.SpecCommitHash, generateParam.SpecRPName); err != nil {
 			return nil, err
 		}
 	}
@@ -154,8 +168,8 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(rpName, namespaceName, s
 
 		return &GenerateResult{
 			Version:        "0.1.0",
-			RPName:         rpName,
-			PackageName:    namespaceName,
+			RPName:         generateParam.RPName,
+			PackageName:    generateParam.NamespaceName,
 			PackageAbsPath: packagePath,
 			Changelog:      *changelog,
 			ChangelogMD:    changelog.ToCompactMarkdown(),
@@ -163,14 +177,14 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(rpName, namespaceName, s
 	} else {
 		log.Printf("Calculate new version...")
 		var version *semver.Version
-		if specficVersion == "" {
+		if generateParam.SpecficVersion == "" {
 			version, err = CalculateNewVersion(changelog, packagePath)
 			if err != nil {
 				return nil, err
 			}
 		} else {
-			log.Printf("Use specfic version: %s", specficVersion)
-			version, err = semver.NewVersion(specficVersion)
+			log.Printf("Use specfic version: %s", generateParam.SpecficVersion)
+			version, err = semver.NewVersion(generateParam.SpecficVersion)
 			if err != nil {
 				return nil, err
 			}
@@ -199,8 +213,8 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(rpName, namespaceName, s
 
 		return &GenerateResult{
 			Version:        version.String(),
-			RPName:         rpName,
-			PackageName:    namespaceName,
+			RPName:         generateParam.RPName,
+			PackageName:    generateParam.NamespaceName,
 			PackageAbsPath: packagePath,
 			Changelog:      *changelog,
 			ChangelogMD:    changelogMd,

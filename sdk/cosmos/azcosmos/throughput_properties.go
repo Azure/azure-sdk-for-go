@@ -13,7 +13,6 @@ import (
 )
 
 const (
-	offerVersion1 string = "V1"
 	offerVersion2 string = "V2"
 )
 

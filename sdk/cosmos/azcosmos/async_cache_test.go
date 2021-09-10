@@ -12,10 +12,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type testCacheKey struct {
-	name string
-}
-
 func Test_set(t *testing.T) {
 	key := "someKey"
 	expectedValue := CosmosContainerProperties{Id: "someId"}
@@ -39,7 +35,7 @@ func Test_setAsync(t *testing.T) {
 		return &cacheTaskResult{value: expectedValue, err: nil}
 	}
 
-	cache.set(key, f, context.Background())
+	_ = cache.set(key, f, context.Background())
 	value, _ := cache.getValue(key)
 	containerProps, _ := value.(CosmosContainerProperties)
 	assert.Equal(t, expectedValue.Id, containerProps.Id)
@@ -60,7 +56,7 @@ func Test_getAsync_not_obsolete(t *testing.T) {
 		return &cacheTaskResult{value: expectedValue0, err: nil}
 	}
 
-	cache.set(key, f0, ctx)
+	_ = cache.set(key, f0, ctx)
 
 	f1 := func() *cacheTaskResult {
 		f1Called = true
@@ -68,14 +64,14 @@ func Test_getAsync_not_obsolete(t *testing.T) {
 		return &cacheTaskResult{value: expectedValue1, err: nil}
 	}
 
-	cache.getAsync(key, expectedValue0, f1)
+	_ = cache.getAsync(key, expectedValue0, f1)
 
 	f2 := func() *cacheTaskResult {
 		f2Called = true
 		return &cacheTaskResult{value: expectedValue1, err: nil}
 	}
 
-	cache.getAsync(key, expectedValue0, f2)
+	_ = cache.getAsync(key, expectedValue0, f2)
 
 	value2, _ := cache.awaitCacheValue(key, ctx)
 	value, _ := cache.awaitCacheValue(key, ctx)
@@ -106,7 +102,7 @@ func Test_getAsync_obsolete(t *testing.T) {
 		return &cacheTaskResult{value: expectedValue0, err: nil}
 	}
 
-	cache.set(key, f0, ctx)
+	_ = cache.set(key, f0, ctx)
 
 	f1 := func() *cacheTaskResult {
 		f1Called = true
@@ -114,14 +110,14 @@ func Test_getAsync_obsolete(t *testing.T) {
 		return &cacheTaskResult{value: expectedValue1, err: nil}
 	}
 
-	cache.getAsync(key, expectedValue0, f1)
+	_ = cache.getAsync(key, expectedValue0, f1)
 
 	f2 := func() *cacheTaskResult {
 		f2Called = true
 		return &cacheTaskResult{value: expectedValue2, err: nil}
 	}
 
-	cache.getAsync(key, expectedValue1, f2)
+	_ = cache.getAsync(key, expectedValue1, f2)
 
 	value, _ := cache.awaitCacheValue(key, ctx)
 	containerProps, _ := value.(CosmosContainerProperties)
@@ -151,7 +147,7 @@ func Test_getAsync_obsolete_with_error(t *testing.T) {
 		return &cacheTaskResult{value: expectedValue0, err: nil}
 	}
 
-	cache.set(key, f0, ctx)
+	_ = cache.set(key, f0, ctx)
 
 	f1 := func() *cacheTaskResult {
 		f1Called = true
@@ -159,14 +155,14 @@ func Test_getAsync_obsolete_with_error(t *testing.T) {
 		return &cacheTaskResult{value: nil, err: errors.New("some error")}
 	}
 
-	cache.getAsync(key, expectedValue0, f1)
+	_ = cache.getAsync(key, expectedValue0, f1)
 
 	f2 := func() *cacheTaskResult {
 		f2Called = true
 		return &cacheTaskResult{value: expectedValue2, err: nil}
 	}
 
-	cache.getAsync(key, expectedValue1, f2)
+	_ = cache.getAsync(key, expectedValue1, f2)
 
 	_, err := cache.awaitCacheValue(key, ctx)
 
@@ -194,7 +190,7 @@ func Test_getAsync_obsolete_with_context_error(t *testing.T) {
 		return &cacheTaskResult{value: expectedValue0, err: nil}
 	}
 
-	cache.set(key, f0, ctx)
+	_ = cache.set(key, f0, ctx)
 
 	f1 := func() *cacheTaskResult {
 		f1Called = true
@@ -202,7 +198,7 @@ func Test_getAsync_obsolete_with_context_error(t *testing.T) {
 		return &cacheTaskResult{value: nil, err: errors.New("some error")}
 	}
 
-	cache.getAsync(key, expectedValue0, f1)
+	_ = cache.getAsync(key, expectedValue0, f1)
 
 	f2 := func() *cacheTaskResult {
 		f2Called = true
@@ -211,7 +207,7 @@ func Test_getAsync_obsolete_with_context_error(t *testing.T) {
 
 	ctx.Done()
 
-	cache.getAsync(key, expectedValue1, f2)
+	_ = cache.getAsync(key, expectedValue1, f2)
 
 	_, err := cache.awaitCacheValue(key, ctx)
 

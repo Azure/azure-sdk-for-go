@@ -19,7 +19,7 @@ type ThroughputResponse struct {
 
 // IsReplacePending returns the state of a throughput update.
 func (r *ThroughputResponse) IsReplacePending() *bool {
-	isPending := r.RawResponse.Header.Get(cosmosHeaderActivityId)
+	isPending := r.RawResponse.Header.Get(cosmosHeaderOfferReplacePending)
 	if isPending == "" {
 		return nil
 	}

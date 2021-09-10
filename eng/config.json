@@ -14,7 +14,7 @@
         },
         {
             "Name": "data",
-            "CoverageGoal": 0.40
+            "CoverageGoal": 0.62
         }
     ]
 }

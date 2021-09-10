@@ -32,7 +32,7 @@ steps:
         if ($LASTEXITCODE) { exit $LASTEXITCODE }
       }
     displayName: 'Verify doc.go'
-    workingDirectory: '${{parameters.ServiceDirectory}}'
+    workingDirectory: '${{parameters.GoWorkspace}}'
 
   - script: |
       echo scanning copyright headers in $(pwd)

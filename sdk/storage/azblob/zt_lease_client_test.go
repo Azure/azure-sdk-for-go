@@ -5,7 +5,7 @@ package azblob
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/assert"
 )
 

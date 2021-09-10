@@ -17,7 +17,6 @@ import (
 	"bytes"
 	"errors"
 	"os"
-	//"github.com/Azure/azure-pipeline-go/pipeline"
 )
 
 // CommonResponse returns the headers common to all blob REST API responses.

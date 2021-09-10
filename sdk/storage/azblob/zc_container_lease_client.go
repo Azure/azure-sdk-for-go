@@ -7,8 +7,8 @@ import (
 	"context"
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
 type ContainerLeaseClient struct {

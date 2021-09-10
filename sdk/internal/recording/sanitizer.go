@@ -92,6 +92,24 @@ func (s *Sanitizer) applySaveFilter(i *cassette.Interaction) error {
 
 func DefaultStringSanitizer(s *string) {}
 
+func handleProxyResponse(resp *http.Response, err error) error {
+	if err != nil {
+		return err
+	}
+
+	if resp.StatusCode == http.StatusAccepted || resp.StatusCode == http.StatusOK || resp.StatusCode == 200 {
+		return nil
+	}
+
+	fmt.Println(resp.StatusCode)
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	return fmt.Errorf("there was an error communicating with the test proxy: %s", body)
+}
+
 func AddBodyKeySanitizer(jsonPath, replacementValue, regex, groupForReplace string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
@@ -121,8 +139,7 @@ func AddBodyKeySanitizer(jsonPath, replacementValue, regex, groupForReplace stri
 	}
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
-	_, err = client.Do(req)
-	return err
+	return handleProxyResponse(client.Do(req))
 }
 
 // value: the substitution value
@@ -154,8 +171,7 @@ func AddBodyRegexSanitizer(value, regex, groupForReplace string, options *Record
 	}
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
-	_, err = client.Do(req)
-	return err
+	return handleProxyResponse(client.Do(req))
 }
 
 // value: the substitution value
@@ -183,8 +199,7 @@ func AddContinuationSanitizer(key, method string, resetAfterFirst bool, options 
 	}
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
-	_, err = client.Do(req)
-	return err
+	return handleProxyResponse(client.Do(req))
 }
 
 func AddGeneralRegexSanitizer(value, regex, groupForReplace string, options *RecordingOptions) error {
@@ -209,8 +224,7 @@ func AddGeneralRegexSanitizer(value, regex, groupForReplace string, options *Rec
 	}
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
-	_, err = client.Do(req)
-	return err
+	return handleProxyResponse(client.Do(req))
 }
 
 func AddHeaderRegexSanitizer(key, replacementValue, regex, groupForReplace string, options *RecordingOptions) error {
@@ -242,8 +256,7 @@ func AddHeaderRegexSanitizer(key, replacementValue, regex, groupForReplace strin
 	}
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
-	_, err = client.Do(req)
-	return err
+	return handleProxyResponse(client.Do(req))
 }
 
 func AddOAuthResponseSanitizer(options *RecordingOptions) error {
@@ -256,8 +269,7 @@ func AddOAuthResponseSanitizer(options *RecordingOptions) error {
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "OAuthResponseSanitizer")
-	_, err = client.Do(req)
-	return err
+	return handleProxyResponse(client.Do(req))
 }
 
 func AddRemoveHeaderSanitizer(headersForRemoval []string, options *RecordingOptions) error {
@@ -280,32 +292,7 @@ func AddRemoveHeaderSanitizer(headersForRemoval []string, options *RecordingOpti
 	}
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
-	_, err = client.Do(req)
-	return err
-}
-
-func AddReplaceRequestSubscriptionIdSanitizer(value string, options *RecordingOptions) error {
-	if options == nil {
-		options = defaultOptions()
-	}
-	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.HostScheme())
-	req, err := http.NewRequest("POST", url, nil)
-	if err != nil {
-		return err
-	}
-	req.Header.Set("x-abstraction-identifier", "ReplaceRequestSubscriptionId")
-	bodyContent := map[string]string{
-		"value": value,
-	}
-
-	marshalled, err := json.Marshal(bodyContent)
-	if err != nil {
-		return err
-	}
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
-	req.ContentLength = int64(len(marshalled))
-	_, err = client.Do(req)
-	return err
+	return handleProxyResponse(client.Do(req))
 }
 
 func AddUriSanitizer(replacement, regex string, options *RecordingOptions) error {
@@ -328,8 +315,32 @@ func AddUriSanitizer(replacement, regex string, options *RecordingOptions) error
 	}
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
-	_, err = client.Do(req)
-	return err
+	return handleProxyResponse(client.Do(req))
+}
+
+func AddUriSubscriptionIdSanitizer(value string, options *RecordingOptions) error {
+	if options == nil {
+		options = defaultOptions()
+	}
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.HostScheme())
+	req, err := http.NewRequest("POST", url, nil)
+	if err != nil {
+		return err
+	}
+	req.Header.Set("x-abstraction-identifier", "ReplaceRequestSubscriptionId")
+	if value != "" {
+		bodyContent := map[string]string{
+			"value": value,
+		}
+
+		marshalled, err := json.Marshal(bodyContent)
+		if err != nil {
+			return err
+		}
+		req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
+		req.ContentLength = int64(len(marshalled))
+	}
+	return handleProxyResponse(client.Do(req))
 }
 
 func ResetSanitizers(options *RecordingOptions) error {
@@ -341,6 +352,5 @@ func ResetSanitizers(options *RecordingOptions) error {
 	if err != nil {
 		return err
 	}
-	_, err = client.Do(req)
-	return err
+	return handleProxyResponse(client.Do(req))
 }

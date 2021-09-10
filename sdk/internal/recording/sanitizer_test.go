@@ -506,8 +506,8 @@ func TestContinuationSanitizer(t *testing.T) {
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
 
+	require.GreaterOrEqual(t, len(data.Entries), 2)
 	require.Equal(t, data.Entries[0].RequestHeaders["Location"], data.Entries[1].RequestHeaders["Location"])
-
 }
 
 func TestGeneralRegexSanitizer(t *testing.T) {
@@ -555,13 +555,12 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 
 	// Header should be there because all sanitizers were removed
 	require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "https://fakeaccount.blob.core.windows.net")
-
 }
 
 func TestOAuthResponseSanitizer(t *testing.T) {
 }
 
-func TestReplaceRequestSubscriptionId(t *testing.T) {
+func TestUriSubscriptionIdSanitizer(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 	defer reset(t)
@@ -582,7 +581,7 @@ func TestReplaceRequestSubscriptionId(t *testing.T) {
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId(t))
 
-	err = AddReplaceRequestSubscriptionIdSanitizer("", nil)
+	err = AddUriSubscriptionIdSanitizer("", nil)
 	require.NoError(t, err)
 
 	resp, err := client.Do(req)

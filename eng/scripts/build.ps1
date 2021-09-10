@@ -10,7 +10,7 @@ function Process-Sdk () {
     if ($clean) {
         Write-Host "##[command]Executing go clean -v ./... in " $currentDirectory
         go clean -v ./...
-        if ($LASTEXITCODE) {exit $LASTEXITCODE}
+        if ($LASTEXITCODE) { exit $LASTEXITCODE }
     }
 
     if ($cleanGenerated) {

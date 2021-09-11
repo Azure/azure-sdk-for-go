@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestSetEmptyAccessPolicy() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -25,6 +26,7 @@ func (s *azblobUnrecordedTestSuite) TestSetEmptyAccessPolicy() {
 	_assert.Nil(err)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestSetAccessPolicy() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -63,6 +65,7 @@ func (s *azblobUnrecordedTestSuite) TestSetAccessPolicy() {
 	_assert.Nil(err)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestSetMultipleAccessPolicies() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -121,6 +124,7 @@ func (s *azblobUnrecordedTestSuite) TestSetMultipleAccessPolicies() {
 	_assert.Len(resp.SignedIdentifiers, 3)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestSetNullAccessPolicy() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()

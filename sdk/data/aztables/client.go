@@ -260,14 +260,19 @@ type GetEntityResponse struct {
 }
 
 // newGetEntityResponse transforms a generated response to the GetEntityResponse type
-func newGetEntityResponse(m generated.TableQueryEntityWithPartitionAndRowKeyResponse) (GetEntityResponse, error) {
-	marshalledValue, err := json.Marshal(m.Value)
+func newGetEntityResponse(g generated.TableQueryEntityWithPartitionAndRowKeyResponse) (GetEntityResponse, error) {
+	marshalledValue, err := json.Marshal(g.Value)
 	if err != nil {
 		return GetEntityResponse{}, err
 	}
+
+	var ETag azcore.ETag
+	if g.ETag != nil {
+		ETag = azcore.ETag(*g.ETag)
+	}
 	return GetEntityResponse{
-		ETag:        azcore.ETag(*m.ETag),
-		RawResponse: m.RawResponse,
+		ETag:        ETag,
+		RawResponse: g.RawResponse,
 		Value:       marshalledValue,
 	}, nil
 }
@@ -302,9 +307,13 @@ func addEntityResponseFromGenerated(g *generated.TableInsertEntityResponse) AddE
 		return AddEntityResponse{}
 	}
 
+	var ETag azcore.ETag
+	if g.ETag != nil {
+		ETag = azcore.ETag(*g.ETag)
+	}
 	return AddEntityResponse{
 		RawResponse: g.RawResponse,
-		ETag:        azcore.ETag(*g.ETag),
+		ETag:        ETag,
 	}
 }
 
@@ -394,9 +403,13 @@ func updateEntityResponseFromMergeGenerated(g *generated.TableMergeEntityRespons
 		return UpdateEntityResponse{}
 	}
 
+	var ETag azcore.ETag
+	if g.ETag != nil {
+		ETag = azcore.ETag(*g.ETag)
+	}
 	return UpdateEntityResponse{
 		RawResponse: g.RawResponse,
-		ETag:        azcore.ETag(*g.ETag),
+		ETag:        ETag,
 	}
 }
 
@@ -405,9 +418,13 @@ func updateEntityResponseFromUpdateGenerated(g *generated.TableUpdateEntityRespo
 		return UpdateEntityResponse{}
 	}
 
+	var ETag azcore.ETag
+	if g.ETag != nil {
+		ETag = azcore.ETag(*g.ETag)
+	}
 	return UpdateEntityResponse{
 		RawResponse: g.RawResponse,
-		ETag:        azcore.ETag(*g.ETag),
+		ETag:        ETag,
 	}
 }
 
@@ -469,9 +486,13 @@ func insertEntityFromGeneratedMerge(g *generated.TableMergeEntityResponse) Inser
 		return InsertEntityResponse{}
 	}
 
+	var ETag azcore.ETag
+	if g.ETag != nil {
+		ETag = azcore.ETag(*g.ETag)
+	}
 	return InsertEntityResponse{
 		RawResponse: g.RawResponse,
-		ETag:        azcore.ETag(*g.ETag),
+		ETag:        ETag,
 	}
 }
 
@@ -480,9 +501,13 @@ func insertEntityFromGeneratedUpdate(g *generated.TableUpdateEntityResponse) Ins
 		return InsertEntityResponse{}
 	}
 
+	var ETag azcore.ETag
+	if g.ETag != nil {
+		ETag = azcore.ETag(*g.ETag)
+	}
 	return InsertEntityResponse{
 		RawResponse: g.RawResponse,
-		ETag:        azcore.ETag(*g.ETag),
+		ETag:        ETag,
 	}
 }
 

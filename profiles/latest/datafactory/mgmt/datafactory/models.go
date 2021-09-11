@@ -597,8 +597,9 @@ const (
 type SQLAlwaysEncryptedAkvAuthType = original.SQLAlwaysEncryptedAkvAuthType
 
 const (
-	SQLAlwaysEncryptedAkvAuthTypeManagedIdentity  SQLAlwaysEncryptedAkvAuthType = original.SQLAlwaysEncryptedAkvAuthTypeManagedIdentity
-	SQLAlwaysEncryptedAkvAuthTypeServicePrincipal SQLAlwaysEncryptedAkvAuthType = original.SQLAlwaysEncryptedAkvAuthTypeServicePrincipal
+	SQLAlwaysEncryptedAkvAuthTypeManagedIdentity             SQLAlwaysEncryptedAkvAuthType = original.SQLAlwaysEncryptedAkvAuthTypeManagedIdentity
+	SQLAlwaysEncryptedAkvAuthTypeServicePrincipal            SQLAlwaysEncryptedAkvAuthType = original.SQLAlwaysEncryptedAkvAuthTypeServicePrincipal
+	SQLAlwaysEncryptedAkvAuthTypeUserAssignedManagedIdentity SQLAlwaysEncryptedAkvAuthType = original.SQLAlwaysEncryptedAkvAuthTypeUserAssignedManagedIdentity
 )
 
 type SQLDWWriteBehaviorEnum = original.SQLDWWriteBehaviorEnum
@@ -916,6 +917,7 @@ type TypeBasicCopySource = original.TypeBasicCopySource
 const (
 	TypeBasicCopySourceTypeAmazonMWSSource                TypeBasicCopySource = original.TypeBasicCopySourceTypeAmazonMWSSource
 	TypeBasicCopySourceTypeAmazonRdsForOracleSource       TypeBasicCopySource = original.TypeBasicCopySourceTypeAmazonRdsForOracleSource
+	TypeBasicCopySourceTypeAmazonRdsForSQLServerSource    TypeBasicCopySource = original.TypeBasicCopySourceTypeAmazonRdsForSQLServerSource
 	TypeBasicCopySourceTypeAmazonRedshiftSource           TypeBasicCopySource = original.TypeBasicCopySourceTypeAmazonRedshiftSource
 	TypeBasicCopySourceTypeAvroSource                     TypeBasicCopySource = original.TypeBasicCopySourceTypeAvroSource
 	TypeBasicCopySourceTypeAzureBlobFSSource              TypeBasicCopySource = original.TypeBasicCopySourceTypeAzureBlobFSSource
@@ -1049,6 +1051,7 @@ type TypeBasicDataset = original.TypeBasicDataset
 const (
 	TypeBasicDatasetTypeAmazonMWSObject                 TypeBasicDataset = original.TypeBasicDatasetTypeAmazonMWSObject
 	TypeBasicDatasetTypeAmazonRdsForOracleTable         TypeBasicDataset = original.TypeBasicDatasetTypeAmazonRdsForOracleTable
+	TypeBasicDatasetTypeAmazonRdsForSQLServerTable      TypeBasicDataset = original.TypeBasicDatasetTypeAmazonRdsForSQLServerTable
 	TypeBasicDatasetTypeAmazonRedshiftTable             TypeBasicDataset = original.TypeBasicDatasetTypeAmazonRedshiftTable
 	TypeBasicDatasetTypeAmazonS3Object                  TypeBasicDataset = original.TypeBasicDatasetTypeAmazonS3Object
 	TypeBasicDatasetTypeAvro                            TypeBasicDataset = original.TypeBasicDatasetTypeAvro
@@ -1261,6 +1264,7 @@ type TypeBasicLinkedService = original.TypeBasicLinkedService
 const (
 	TypeBasicLinkedServiceTypeAmazonMWS                TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAmazonMWS
 	TypeBasicLinkedServiceTypeAmazonRdsForOracle       TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAmazonRdsForOracle
+	TypeBasicLinkedServiceTypeAmazonRdsForSQLServer    TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAmazonRdsForSQLServer
 	TypeBasicLinkedServiceTypeAmazonRedshift           TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAmazonRedshift
 	TypeBasicLinkedServiceTypeAmazonS3                 TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAmazonS3
 	TypeBasicLinkedServiceTypeAmazonS3Compatible       TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAmazonS3Compatible
@@ -1460,6 +1464,11 @@ type AmazonRdsForOraclePartitionSettings = original.AmazonRdsForOraclePartitionS
 type AmazonRdsForOracleSource = original.AmazonRdsForOracleSource
 type AmazonRdsForOracleTableDataset = original.AmazonRdsForOracleTableDataset
 type AmazonRdsForOracleTableDatasetTypeProperties = original.AmazonRdsForOracleTableDatasetTypeProperties
+type AmazonRdsForSQLServerLinkedService = original.AmazonRdsForSQLServerLinkedService
+type AmazonRdsForSQLServerLinkedServiceTypeProperties = original.AmazonRdsForSQLServerLinkedServiceTypeProperties
+type AmazonRdsForSQLServerSource = original.AmazonRdsForSQLServerSource
+type AmazonRdsForSQLServerTableDataset = original.AmazonRdsForSQLServerTableDataset
+type AmazonRdsForSQLServerTableDatasetTypeProperties = original.AmazonRdsForSQLServerTableDatasetTypeProperties
 type AmazonRedshiftLinkedService = original.AmazonRedshiftLinkedService
 type AmazonRedshiftLinkedServiceTypeProperties = original.AmazonRedshiftLinkedServiceTypeProperties
 type AmazonRedshiftSource = original.AmazonRedshiftSource
@@ -1945,6 +1954,7 @@ type IntegrationRuntimeAuthKeys = original.IntegrationRuntimeAuthKeys
 type IntegrationRuntimeComputeProperties = original.IntegrationRuntimeComputeProperties
 type IntegrationRuntimeConnectionInfo = original.IntegrationRuntimeConnectionInfo
 type IntegrationRuntimeCustomSetupScriptProperties = original.IntegrationRuntimeCustomSetupScriptProperties
+type IntegrationRuntimeCustomerVirtualNetwork = original.IntegrationRuntimeCustomerVirtualNetwork
 type IntegrationRuntimeDataFlowProperties = original.IntegrationRuntimeDataFlowProperties
 type IntegrationRuntimeDataProxyProperties = original.IntegrationRuntimeDataProxyProperties
 type IntegrationRuntimeDebugResource = original.IntegrationRuntimeDebugResource

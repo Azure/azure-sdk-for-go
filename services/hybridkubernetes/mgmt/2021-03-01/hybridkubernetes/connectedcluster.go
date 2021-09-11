@@ -53,8 +53,7 @@ func (client ConnectedClusterClient) Create(ctx context.Context, resourceGroupNa
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: connectedCluster,
 			Constraints: []validation.Constraint{{Target: "connectedCluster.Identity", Name: validation.Null, Rule: true, Chain: nil},
 				{Target: "connectedCluster.ConnectedClusterProperties", Name: validation.Null, Rule: true,
@@ -70,7 +69,7 @@ func (client ConnectedClusterClient) Create(ctx context.Context, resourceGroupNa
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -105,6 +104,7 @@ func (client ConnectedClusterClient) CreatePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client ConnectedClusterClient) CreateSender(req *http.Request) (future ConnectedClusterCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -148,8 +148,7 @@ func (client ConnectedClusterClient) Delete(ctx context.Context, resourceGroupNa
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("hybridkubernetes.ConnectedClusterClient", "Delete", err.Error())
 	}
 
@@ -161,7 +160,7 @@ func (client ConnectedClusterClient) Delete(ctx context.Context, resourceGroupNa
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridkubernetes.ConnectedClusterClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -193,6 +192,7 @@ func (client ConnectedClusterClient) DeletePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client ConnectedClusterClient) DeleteSender(req *http.Request) (future ConnectedClusterDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -236,8 +236,7 @@ func (client ConnectedClusterClient) Get(ctx context.Context, resourceGroupName 
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("hybridkubernetes.ConnectedClusterClient", "Get", err.Error())
 	}
 
@@ -321,8 +320,7 @@ func (client ConnectedClusterClient) ListByResourceGroup(ctx context.Context, re
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("hybridkubernetes.ConnectedClusterClient", "ListByResourceGroup", err.Error())
 	}
 
@@ -568,8 +566,7 @@ func (client ConnectedClusterClient) Update(ctx context.Context, resourceGroupNa
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("hybridkubernetes.ConnectedClusterClient", "Update", err.Error())
 	}
 

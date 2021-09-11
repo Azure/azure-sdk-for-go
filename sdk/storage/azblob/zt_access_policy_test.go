@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestSetEmptyAccessPolicy() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -25,6 +26,7 @@ func (s *azblobUnrecordedTestSuite) TestSetEmptyAccessPolicy() {
 	_assert.Nil(err)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestSetAccessPolicy() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -63,6 +65,7 @@ func (s *azblobUnrecordedTestSuite) TestSetAccessPolicy() {
 	_assert.Nil(err)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestSetMultipleAccessPolicies() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -121,6 +124,7 @@ func (s *azblobUnrecordedTestSuite) TestSetMultipleAccessPolicies() {
 	_assert.Len(resp.SignedIdentifiers, 3)
 }
 
+//nolint
 func (s *azblobUnrecordedTestSuite) TestSetNullAccessPolicy() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
@@ -256,7 +260,7 @@ func (s *azblobTestSuite) TestContainerGetPermissionsPublicAccessNotNone() {
 //	_assert.Nil(err)
 //
 //	// If we cannot access a blob's data, we will also not be able to enumerate blobs
-//	p := containerClient2.ListBlobsFlatSegment(nil)
+//	p := containerClient2.ListBlobsFlat(nil)
 //	p.NextPage(ctx)
 //	err = p.Err() // grab the next page
 //	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
@@ -363,14 +367,14 @@ func (s *azblobTestSuite) TestContainerSetPermissionsPublicAccessContainer() {
 ////
 ////	// Verifies that the SAS can access the resource
 ////	sasContainer := sasBlobServiceURL.NewContainerClient(containerName)
-////	resp, err := sasContainer.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{})
+////	resp, err := sasContainer.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{})
 ////	_assert.Nil(err)
 ////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobName)
 ////
 ////	// Verifies that successful sas access is not just because it's public
 ////	anonymousBlobService := NewServiceURL(svcClient.URL(), sasPipeline)
 ////	anonymousContainer := anonymousBlobService.NewContainerClient(containerName)
-////	_, err = anonymousContainer.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{})
+////	_, err = anonymousContainer.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{})
 ////	validateStorageError(c, err, StorageErrorCodeNoAuthenticationInformation)
 ////}
 
@@ -667,7 +671,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
 	setAccessPolicyOptions := SetAccessPolicyOptions{
-		ContainerAccessConditions: &ContainerAccessConditions{
+		AccessConditions: &ContainerAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
 		},
 	}
@@ -699,7 +703,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfModifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
 	setAccessPolicyOptions := SetAccessPolicyOptions{
-		ContainerAccessConditions: &ContainerAccessConditions{
+		AccessConditions: &ContainerAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
 		},
 	}
@@ -729,7 +733,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
 	setAccessPolicyOptions := SetAccessPolicyOptions{
-		ContainerAccessConditions: &ContainerAccessConditions{
+		AccessConditions: &ContainerAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 		},
 	}
@@ -761,7 +765,7 @@ func (s *azblobTestSuite) TestContainerSetPermissionsIfUnModifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
 	setAccessPolicyOptions := SetAccessPolicyOptions{
-		ContainerAccessConditions: &ContainerAccessConditions{
+		AccessConditions: &ContainerAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
 		},
 	}

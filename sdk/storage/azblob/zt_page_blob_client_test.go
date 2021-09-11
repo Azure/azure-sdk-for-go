@@ -629,7 +629,7 @@ func (s *azblobTestSuite) TestBlobCreatePageHTTPHeaders() {
 	sequenceNumber := int64(0)
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
-		BlobHTTPHeaders:    &basicHeaders,
+		HTTPHeaders:        &basicHeaders,
 	}
 	_, err = pbClient.Create(ctx, PageBlobPageBytes, &createPageBlobOptions)
 	_assert.Nil(err)
@@ -673,7 +673,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceTrue() {
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
-		BlobHTTPHeaders:    &basicHeaders,
+		HTTPHeaders:        &basicHeaders,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -711,7 +711,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfModifiedSinceFalse() {
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
-		BlobHTTPHeaders:    &basicHeaders,
+		HTTPHeaders:        &basicHeaders,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -749,7 +749,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceTrue() {
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
-		BlobHTTPHeaders:    &basicHeaders,
+		HTTPHeaders:        &basicHeaders,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -787,7 +787,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfUnmodifiedSinceFalse() {
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
-		BlobHTTPHeaders:    &basicHeaders,
+		HTTPHeaders:        &basicHeaders,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -823,7 +823,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfMatchTrue() {
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
-		BlobHTTPHeaders:    &basicHeaders,
+		HTTPHeaders:        &basicHeaders,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
@@ -857,7 +857,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfMatchFalse() {
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
-		BlobHTTPHeaders:    &basicHeaders,
+		HTTPHeaders:        &basicHeaders,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: &eTag,
@@ -891,7 +891,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchTrue() {
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
-		BlobHTTPHeaders:    &basicHeaders,
+		HTTPHeaders:        &basicHeaders,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
@@ -926,7 +926,7 @@ func (s *azblobTestSuite) TestBlobCreatePageIfNoneMatchFalse() {
 	createPageBlobOptions := CreatePageBlobOptions{
 		BlobSequenceNumber: &sequenceNumber,
 		Metadata:           basicMetadata,
-		BlobHTTPHeaders:    &basicHeaders,
+		HTTPHeaders:        &basicHeaders,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,

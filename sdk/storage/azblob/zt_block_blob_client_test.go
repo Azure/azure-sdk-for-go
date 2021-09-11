@@ -10,8 +10,8 @@ import (
 	"encoding/base64"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"io/ioutil"
@@ -432,7 +432,7 @@ func (s *azblobTestSuite) TestBlobPutBlobHTTPHeaders() {
 	content := make([]byte, 0)
 	body := bytes.NewReader(content)
 	_, err = bbClient.Upload(ctx, internal.NopCloser(body), &UploadBlockBlobOptions{
-		BlobHTTPHeaders: &basicHeaders,
+		HTTPHeaders: &basicHeaders,
 	})
 	_assert.Nil(err)
 
@@ -1099,8 +1099,8 @@ func (s *azblobTestSuite) TestSetTierOnBlobUpload() {
 		bbClient := getBlockBlobClient(blobName, containerClient)
 
 		uploadBlockBlobOptions := UploadBlockBlobOptions{
-			BlobHTTPHeaders: &basicHeaders,
-			Tier:            &tier,
+			HTTPHeaders: &basicHeaders,
+			Tier:        &tier,
 		}
 		_, err := bbClient.Upload(ctx, internal.NopCloser(strings.NewReader(blockBlobDefaultData)), &uploadBlockBlobOptions)
 		_assert.Nil(err)
@@ -1381,7 +1381,7 @@ func (s *azblobTestSuite) TestRehydrateStatus() {
 	_assert.Equal(*getResp1.AccessTier, string(AccessTierArchive))
 	_assert.Equal(*getResp1.ArchiveStatus, string(ArchiveStatusRehydratePendingToCool))
 
-	pager := containerClient.ListBlobsFlatSegment(nil)
+	pager := containerClient.ListBlobsFlat(nil)
 	var blobs []*BlobItemInternal
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()

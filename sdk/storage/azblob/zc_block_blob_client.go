@@ -5,12 +5,9 @@ package azblob
 
 import (
 	"context"
-	"errors"
-	"io"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"io"
 )
 
 const (
@@ -38,11 +35,6 @@ func NewBlockBlobClient(blobURL string, cred azcore.Credential, options *ClientO
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
 	//return bbc, nil
-}
-
-// URL returns the URL endpoint used by the BlobClient object.
-func (bb BlockBlobClient) URL() string {
-	return bb.client.con.u
 }
 
 // WithSnapshot creates a new BlockBlobClient object identical to the source but with the specified snapshot timestamp.
@@ -161,34 +153,4 @@ func (bb BlockBlobClient) CopyFromURL(ctx context.Context, source string, option
 	resp, err := bClient.CopyFromURL(ctx, source, copyOptions, smac, mac, lac)
 
 	return resp, handleError(err)
-}
-
-// GetBlobSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
-// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
-// This validity can be checked with CanGetBlobSASToken().
-func (bb BlockBlobClient) GetBlobSASToken(permissions BlobSASPermissions, validityTime time.Duration) (SASQueryParameters, error) {
-	urlParts := NewBlobURLParts(bb.URL())
-
-	t, err := time.Parse(SnapshotTimeFormat, urlParts.Snapshot)
-
-	if err != nil {
-		t = time.Time{}
-	}
-
-	cred, ok := bb.cred.(*SharedKeyCredential)
-	if !ok {
-		return SASQueryParameters{}, errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
-	}
-
-	return BlobSASSignatureValues{
-		ContainerName: urlParts.ContainerName,
-		BlobName:      urlParts.BlobName,
-		SnapshotTime:  t,
-		Version:       SASVersion,
-
-		Permissions: permissions.String(),
-
-		StartTime:  time.Now().UTC(),
-		ExpiryTime: time.Now().UTC().Add(validityTime),
-	}.NewSASQueryParameters(cred)
 }

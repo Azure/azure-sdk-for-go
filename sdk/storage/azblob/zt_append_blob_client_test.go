@@ -7,8 +7,8 @@ import (
 	"bytes"
 	"context"
 	"crypto/md5"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"strings"
@@ -405,7 +405,7 @@ func (s *azblobTestSuite) TestBlobCreateAppendHTTPHeaders() {
 	abClient := getAppendBlobClient(abName, containerClient)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHTTPHeaders: &basicHeaders,
+		HTTPHeaders: &basicHeaders,
 	}
 	_, err = abClient.Create(ctx, &createAppendBlobOptions)
 	_assert.Nil(err)
@@ -449,8 +449,8 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        basicMetadata,
+		HTTPHeaders: &basicHeaders,
+		Metadata:    basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -488,8 +488,8 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfModifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        basicMetadata,
+		HTTPHeaders: &basicHeaders,
+		Metadata:    basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfModifiedSince: &currentTime,
@@ -527,8 +527,8 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, 10)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        basicMetadata,
+		HTTPHeaders: &basicHeaders,
+		Metadata:    basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -566,8 +566,8 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfUnmodifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(appendBlobCreateResp.Date, -10)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        basicMetadata,
+		HTTPHeaders: &basicHeaders,
+		Metadata:    basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfUnmodifiedSince: &currentTime,
@@ -599,8 +599,8 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfMatchTrue() {
 	resp, _ := abClient.GetProperties(ctx, nil)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        basicMetadata,
+		HTTPHeaders: &basicHeaders,
+		Metadata:    basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: resp.ETag,
@@ -630,8 +630,8 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfMatchFalse() {
 	abClient := createNewAppendBlob(_assert, abName, containerClient)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        basicMetadata,
+		HTTPHeaders: &basicHeaders,
+		Metadata:    basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfMatch: to.StringPtr("garbage"),
@@ -662,8 +662,8 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfNoneMatchTrue() {
 
 	eTag := "garbage"
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        basicMetadata,
+		HTTPHeaders: &basicHeaders,
+		Metadata:    basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: &eTag,
@@ -695,8 +695,8 @@ func (s *azblobTestSuite) TestBlobCreateAppendIfNoneMatchFalse() {
 	resp, _ := abClient.GetProperties(ctx, nil)
 
 	createAppendBlobOptions := CreateAppendBlobOptions{
-		BlobHTTPHeaders: &basicHeaders,
-		Metadata:        basicMetadata,
+		HTTPHeaders: &basicHeaders,
+		Metadata:    basicMetadata,
 		BlobAccessConditions: &BlobAccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{
 				IfNoneMatch: resp.ETag,

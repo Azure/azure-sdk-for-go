@@ -39,7 +39,7 @@ package azblob
 //	start := time.Date(2021, time.August, 4, 1, 1, 0, 0, time.UTC)
 //	expiry := time.Date(2022, time.August, 4, 1, 1, 0, 0, time.UTC)
 //
-//	sasUrl, err := serviceClient.GetAccountSASToken(resources, permissions, services, start, expiry)
+//	sasUrl, err := serviceClient.GetSASToken(resources, permissions, services, start, expiry)
 //	_assert.Nil(err)
 //
 //	svcClient, err := getServiceClient(nil, testAccountDefault, nil)

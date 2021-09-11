@@ -16,7 +16,7 @@ type CreatePageBlobOptions struct {
 	// the sequence number must be between 0 and 2^63 - 1.
 	BlobSequenceNumber *int64
 	// Optional. Used to set blob tags in various blob operations.
-	BlobTagsMap map[string]string
+	TagsMap map[string]string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
@@ -26,7 +26,7 @@ type CreatePageBlobOptions struct {
 	// Optional. Indicates the tier to be set on the page blob.
 	Tier *PremiumPageBlobAccessTier
 
-	BlobHTTPHeaders      *BlobHTTPHeaders
+	HTTPHeaders          *BlobHTTPHeaders
 	CpkInfo              *CpkInfo
 	CpkScopeInfo         *CpkScopeInfo
 	BlobAccessConditions *BlobAccessConditions
@@ -39,12 +39,12 @@ func (o *CreatePageBlobOptions) pointers() (*PageBlobCreateOptions, *BlobHTTPHea
 
 	options := &PageBlobCreateOptions{
 		BlobSequenceNumber: o.BlobSequenceNumber,
-		BlobTagsString:     serializeBlobTagsToStrPtr(o.BlobTagsMap),
+		BlobTagsString:     serializeBlobTagsToStrPtr(o.TagsMap),
 		Metadata:           o.Metadata,
 		Tier:               o.Tier,
 	}
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
-	return options, o.BlobHTTPHeaders, o.CpkInfo, o.CpkScopeInfo, leaseAccessConditions, modifiedAccessConditions
+	return options, o.HTTPHeaders, o.CpkInfo, o.CpkScopeInfo, leaseAccessConditions, modifiedAccessConditions
 }
 
 type UploadPagesOptions struct {

@@ -4,8 +4,8 @@
 package azblob
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 
 type AcquireLeaseBlobOptions struct {

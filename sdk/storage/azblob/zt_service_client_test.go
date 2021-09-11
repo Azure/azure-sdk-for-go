@@ -5,11 +5,9 @@ package azblob
 
 import (
 	"context"
-	//"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/stretchr/testify/assert"
-	"strings"
 	"time"
 )
 
@@ -26,28 +24,6 @@ func (s *azblobTestSuite) TestGetAccountInfo() {
 	sAccInfo, err := svcClient.GetAccountInfo(context.Background())
 	_assert.Nil(err)
 	_assert.NotEqualValues(sAccInfo, ServiceGetAccountInfoResponse{})
-
-	//Test on a container
-	containerClient := svcClient.NewContainerClient(generateContainerName(testName))
-	_, err = containerClient.Create(ctx, nil)
-	defer func(containerClient ContainerClient, ctx context.Context, options *DeleteContainerOptions) {
-		_, err := containerClient.Delete(ctx, options)
-		_assert.Nil(err)
-	}(containerClient, ctx, nil)
-	_assert.Nil(err)
-
-	cAccInfo, err := containerClient.GetAccountInfo(ctx)
-	_assert.Nil(err)
-	_assert.NotEqualValues(cAccInfo, ContainerGetAccountInfoResponse{})
-
-	// test on a block blob URL. They all call the same thing on the base URL, so only one test is needed for that.
-	blobClient := containerClient.NewBlockBlobClient(generateBlobName(testName))
-	rsc := streaming.NopCloser(strings.NewReader("blah"))
-	_, err = blobClient.Upload(ctx, rsc, nil)
-	_assert.Nil(err)
-	bAccInfo, err := blobClient.GetAccountInfo(ctx)
-	_assert.Nil(err)
-	_assert.NotEqualValues(bAccInfo, BlobGetAccountInfoResponse{})
 }
 
 //nolint
@@ -90,8 +66,8 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasic() {
 	}(containerClient, ctx, nil)
 	_assert.Nil(err)
 	prefix := containerPrefix
-	listOptions := ListContainersSegmentOptions{Prefix: &prefix, Include: ListContainersDetail{Metadata: true}}
-	pager := svcClient.ListContainersSegment(&listOptions)
+	listOptions := ListContainersOptions{Prefix: &prefix, Include: ListContainersDetail{Metadata: true}}
+	pager := svcClient.ListContainers(&listOptions)
 
 	count := 0
 	for pager.NextPage(ctx) {
@@ -149,8 +125,8 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 	}(containerClient, ctx, nil)
 	_assert.Nil(err)
 	prefix := containerPrefix
-	listOptions := ListContainersSegmentOptions{Prefix: &prefix, Include: ListContainersDetail{Metadata: true}}
-	pager := svcClient.ListContainersSegment(&listOptions)
+	listOptions := ListContainersOptions{Prefix: &prefix, Include: ListContainersDetail{Metadata: true}}
+	pager := svcClient.ListContainers(&listOptions)
 
 	count := 0
 	for pager.NextPage(ctx) {
@@ -216,11 +192,11 @@ func (s *azblobUnrecordedTestSuite) TestListContainersBasicUsingConnectionString
 //
 //	// list for a first time
 //	prefix := containerPrefix + pagedContainersPrefix
-//	listOptions := ListContainersSegmentOptions{MaxResults: &maxResults, Prefix: &prefix}
+//	listOptions := ListContainersOptions{MaxResults: &maxResults, Prefix: &prefix}
 //	count := 0
 //	results := make([]ContainerItem, 0)
 //
-//	pager := sa.ListContainersSegment(&listOptions)
+//	pager := sa.ListContainers(&listOptions)
 //
 //	for pager.NextPage(ctx) {
 //		for _, container := range *pager.PageResponse().EnumerationResults.ContainerItems {
@@ -267,7 +243,7 @@ func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix() {
 	defer deleteContainer(_assert, containerClient2)
 
 	count := 0
-	pager := svcClient.ListContainersSegment(nil)
+	pager := svcClient.ListContainers(nil)
 
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
@@ -289,10 +265,10 @@ func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix() {
 ////
 ////	illegalMaxResults := []int32{-2, 0}
 ////	for _, num := range illegalMaxResults {
-////		options := ListContainersSegmentOptions{MaxResults: &num}
+////		options := ListContainersOptions{MaxResults: &num}
 ////
 ////		// getting the pager should still work
-////		pager, err := svcClient.ListContainersSegment(context.Background(), 100, time.Hour, &options)
+////		pager, err := svcClient.ListContainers(context.Background(), 100, time.Hour, &options)
 ////		_assert.Nil(err)
 ////
 ////		// getting the next page should fail
@@ -310,8 +286,8 @@ func (s *azblobTestSuite) TestAccountListContainersEmptyPrefix() {
 ////
 ////	prefix := containerPrefix + "abc"
 ////	maxResults := int32(2)
-////	options := ListContainersSegmentOptions{Prefix: &prefix, MaxResults: &maxResults}
-////	pager, err := svcClient.ListContainersSegment(&options)
+////	options := ListContainersOptions{Prefix: &prefix, MaxResults: &maxResults}
+////	pager, err := svcClient.ListContainers(&options)
 ////	_assert.Nil(err)
 ////
 ////	// getting the next page should work

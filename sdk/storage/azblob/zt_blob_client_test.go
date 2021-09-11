@@ -7,8 +7,8 @@ import (
 	"bytes"
 	"crypto/md5"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"io/ioutil"
@@ -2042,7 +2042,7 @@ func (s *azblobTestSuite) TestBlobDeleteSnapshot() {
 ////	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
 ////		Include: include,
 ////	}
-////	blobs, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
+////	blobs, errChan := containerClient.ListBlobsFlat(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
 ////	_assert(<- errChan, chk.IsNil)
 ////	_assert(<- blobs, chk.HasLen, 0)
 ////}
@@ -2066,7 +2066,7 @@ func (s *azblobTestSuite) TestBlobDeleteSnapshot() {
 ////	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
 ////		Include: include,
 ////	}
-////	blobs, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
+////	blobs, errChan := containerClient.ListBlobsFlat(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
 ////	_assert(<- errChan, chk.IsNil)
 ////	_assert(blobs, chk.HasLen, 1)
 ////	_assert(*(<-blobs).Snapshot == "", chk.Equals, true)
@@ -2126,7 +2126,9 @@ func (s *azblobTestSuite) TestBlobDeleteIfModifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
 	deleteBlobOptions := DeleteBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
+		},
 	}
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
 	_assert.Nil(err)
@@ -2157,7 +2159,9 @@ func (s *azblobTestSuite) TestBlobDeleteIfModifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
 	deleteBlobOptions := DeleteBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfModifiedSince: &currentTime},
+		},
 	}
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
@@ -2186,7 +2190,9 @@ func (s *azblobTestSuite) TestBlobDeleteIfUnmodifiedSinceTrue() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, 10)
 
 	deleteBlobOptions := DeleteBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
+		},
 	}
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
 	_assert.Nil(err)
@@ -2217,7 +2223,9 @@ func (s *azblobTestSuite) TestBlobDeleteIfUnmodifiedSinceFalse() {
 	currentTime := getRelativeTimeFromAnchor(cResp.Date, -10)
 
 	deleteBlobOptions := DeleteBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfUnmodifiedSince: &currentTime},
+		},
 	}
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
@@ -2242,7 +2250,9 @@ func (s *azblobTestSuite) TestBlobDeleteIfMatchTrue() {
 	resp, _ := bbClient.GetProperties(ctx, nil)
 
 	deleteBlobOptions := DeleteBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag},
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: resp.ETag},
+		},
 	}
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
 	_assert.Nil(err)
@@ -2274,7 +2284,9 @@ func (s *azblobTestSuite) TestBlobDeleteIfMatchFalse() {
 	_assert.Nil(err)
 
 	deleteBlobOptions := DeleteBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: etag},
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: etag},
+		},
 	}
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
@@ -2302,7 +2314,9 @@ func (s *azblobTestSuite) TestBlobDeleteIfNoneMatchTrue() {
 	_assert.Nil(err)
 
 	deleteBlobOptions := DeleteBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: etag},
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: etag},
+		},
 	}
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
 	_assert.Nil(err)
@@ -2330,7 +2344,9 @@ func (s *azblobTestSuite) TestBlobDeleteIfNoneMatchFalse() {
 	etag := resp.ETag
 
 	deleteBlobOptions := DeleteBlobOptions{
-		ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: etag},
+		BlobAccessConditions: &BlobAccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfNoneMatch: etag},
+		},
 	}
 	_, err = bbClient.Delete(ctx, &deleteBlobOptions)
 	validateStorageError(_assert, err, StorageErrorCodeConditionNotMet)
@@ -3196,7 +3212,7 @@ func (s *azblobTestSuite) TestBlobSetMetadataIfNoneMatchFalse() {
 }
 
 //nolint
-func testBlobServiceClientDeleteImpl(_assert *assert.Assertions, svcClient ServiceClient) error {
+func testBlobServiceClientDeleteImpl(_ *assert.Assertions, _ ServiceClient) error {
 	//containerClient := createNewContainer(_assert, "gocblobserviceclientdeleteimpl", svcClient)
 	//defer deleteContainer(_assert, containerClient)
 	//bbClient := createNewBlockBlob(_assert, "goblobserviceclientdeleteimpl", containerClient)
@@ -3294,7 +3310,7 @@ func (s *azblobTestSuite) TestBlobSetTierAllTiers() {
 ////	_assert.Nil(err)
 ////	_assert(resp.AccessTierInferred(), chk.Equals, "true")
 ////
-////	resp2, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{})
+////	resp2, err := containerClient.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{})
 ////	_assert.Nil(err)
 ////	_assert(resp2.Segment.BlobItems[0].Properties.AccessTierInferred, chk.NotNil)
 ////	_assert(resp2.Segment.BlobItems[0].Properties.AccessTier, chk.Not(chk.Equals), "")
@@ -3306,7 +3322,7 @@ func (s *azblobTestSuite) TestBlobSetTierAllTiers() {
 ////	_assert.Nil(err)
 ////	_assert(resp.AccessTierInferred(), chk.Equals, "")
 ////
-////	resp2, err = containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{})
+////	resp2, err = containerClient.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{})
 ////	_assert.Nil(err)
 ////	_assert(resp2.Segment.BlobItems[0].Properties.AccessTierInferred, chk.IsNil) // AccessTierInferred never returned if false
 ////}
@@ -3330,7 +3346,7 @@ func (s *azblobTestSuite) TestBlobSetTierAllTiers() {
 ////	_assert.Nil(err)
 ////	_assert(resp.ArchiveStatus(), chk.Equals, string(ArchiveStatusRehydratePendingToCool))
 ////
-////	resp2, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{})
+////	resp2, err := containerClient.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{})
 ////	_assert.Nil(err)
 ////	_assert(resp2.Segment.BlobItems[0].Properties.ArchiveStatus, chk.Equals, ArchiveStatusRehydratePendingToCool)
 ////
@@ -3349,7 +3365,7 @@ func (s *azblobTestSuite) TestBlobSetTierAllTiers() {
 ////	_assert.Nil(err)
 ////	_assert(resp.ArchiveStatus(), chk.Equals, string(ArchiveStatusRehydratePendingToHot))
 ////
-////	resp2, err = containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{})
+////	resp2, err = containerClient.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{})
 ////	_assert.Nil(err)
 ////	_assert(resp2.Segment.BlobItems[0].Properties.ArchiveStatus, chk.Equals, ArchiveStatusRehydratePendingToHot)
 ////}

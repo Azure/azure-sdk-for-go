@@ -49,7 +49,7 @@ func performUploadStreamToBlockBlobTest(_assert *assert.Assertions, testName str
 	blobContentReader, blobData := generateData(blobSize)
 
 	// Perform UploadStreamToBlockBlob
-	uploadResp, err := UploadStreamToBlockBlob(ctx, blobContentReader, blobClient,
+	uploadResp, err := blobClient.UploadStreamToBlockBlob(ctx, blobContentReader,
 		UploadStreamToBlockBlobOptions{BufferSize: bufferSize, MaxBuffers: maxBuffers})
 
 	// Assert that upload was successful
@@ -150,7 +150,7 @@ func performUploadAndDownloadFileTest(_assert *assert.Assertions, testName strin
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 
 	// Upload the file to a block blob
-	response, err := UploadFileToBlockBlob(context.Background(), file, bbClient,
+	response, err := bbClient.UploadFileToBlockBlob(context.Background(), file,
 		HighLevelUploadToBlockBlobOption{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
@@ -176,7 +176,7 @@ func performUploadAndDownloadFileTest(_assert *assert.Assertions, testName strin
 	}(destFileName)
 
 	// Perform download
-	err = DownloadBlobToFile(context.Background(), bbClient.BlobClient, int64(downloadOffset), int64(downloadCount),
+	err = bbClient.DownloadBlobToFile(context.Background(), int64(downloadOffset), int64(downloadCount),
 		destFile,
 		HighLevelDownloadFromBlobOptions{
 			BlockSize:   int64(blockSize),
@@ -312,7 +312,7 @@ func performUploadAndDownloadBufferTest(_assert *assert.Assertions, testName str
 	bbClient := getBlockBlobClient(generateBlobName(testName), containerClient)
 
 	// Pass the Context, stream, stream size, block blob URL, and options to StreamToBlockBlob
-	response, err := UploadBufferToBlockBlob(context.Background(), bytesToUpload, bbClient,
+	response, err := bbClient.UploadBufferToBlockBlob(context.Background(), bytesToUpload,
 		HighLevelUploadToBlockBlobOption{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),
@@ -333,7 +333,7 @@ func performUploadAndDownloadBufferTest(_assert *assert.Assertions, testName str
 	}
 
 	// Download the blob to a buffer
-	err = DownloadBlobToBuffer(context.Background(), bbClient.BlobClient, int64(downloadOffset), int64(downloadCount),
+	err = bbClient.DownloadBlobToBuffer(context.Background(), int64(downloadOffset), int64(downloadCount),
 		destBuffer, HighLevelDownloadFromBlobOptions{
 			BlockSize:   int64(blockSize),
 			Parallelism: uint16(parallelism),

@@ -5,9 +5,6 @@ package azblob
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
-	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -98,37 +95,6 @@ func (c ContainerClient) NewPageBlobClient(blobName string) PageBlobClient {
 	}
 }
 
-// DeleteBlob marks the specified blob or snapshot within a container for deletion.
-// The blob is later deleted during garbage collection.
-// Note that deleting a blob also deletes all its snapshots.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-blob.
-//nolint
-func (c ContainerClient) DeleteBlob(ctx context.Context, blobName string, options *DeleteBlobOptions) (BlobDeleteResponse, error) {
-	blobClient := c.NewBlobClient(blobName)
-	deleteResp, err := blobClient.Delete(ctx, options)
-	return deleteResp, err
-}
-
-func (c ContainerClient) NewContainerLeaseClient(leaseID *string) (ContainerLeaseClient, error) {
-	if leaseID == nil {
-		generatedUuid, err := uuid.New()
-		if err != nil {
-			return ContainerLeaseClient{}, err
-		}
-		leaseID = to.StringPtr(generatedUuid.String())
-	}
-	return ContainerLeaseClient{
-		ContainerClient: c,
-		LeaseID:         leaseID,
-	}, nil
-}
-
-func (c ContainerClient) GetAccountInfo(ctx context.Context) (ContainerGetAccountInfoResponse, error) {
-	resp, err := c.client.GetAccountInfo(ctx, nil)
-
-	return resp, handleError(err)
-}
-
 // Create creates a new container within a storage account. If a container with the same name already exists, the operation fails.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/create-container.
 func (c ContainerClient) Create(ctx context.Context, options *CreateContainerOptions) (ContainerCreateResponse, error) {
@@ -138,23 +104,6 @@ func (c ContainerClient) Create(ctx context.Context, options *CreateContainerOpt
 	return resp, handleError(err)
 }
 
-// CreateIfNotExists operation creates a new container under the specified account.
-// If the container with the same name already exists, it is not changed.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/create-container.
-func (c ContainerClient) CreateIfNotExists(ctx context.Context, options *CreateContainerOptions) (ContainerCreateResponse, error) {
-	basics, cpkInfo := options.pointers()
-
-	resp, err := c.client.Create(ctx, basics, cpkInfo)
-
-	// If container already exists, return nil error
-	err = handleError(err)
-	if err != nil && strings.Contains(err.Error(), string(StorageErrorCodeContainerAlreadyExists)) {
-		return ContainerCreateResponse{}, nil
-	}
-
-	return resp, err
-}
-
 // Delete marks the specified container for deletion. The container and any blobs contained within it are later deleted during garbage collection.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-container.
 func (c ContainerClient) Delete(ctx context.Context, options *DeleteContainerOptions) (ContainerDeleteResponse, error) {
@@ -162,31 +111,6 @@ func (c ContainerClient) Delete(ctx context.Context, options *DeleteContainerOpt
 	resp, err := c.client.Delete(ctx, basics, leaseInfo, accessConditions)
 
 	return resp, handleError(err)
-}
-
-// DeleteIfExists operation marks the specified container for deletion if it exists.
-// The container and any blobs contained within it are later deleted during garbage collection.
-// For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-container
-func (c ContainerClient) DeleteIfExists(ctx context.Context, options *DeleteContainerOptions) (ContainerDeleteResponse, error) {
-	basics, leaseInfo, accessConditions := options.pointers()
-	resp, err := c.client.Delete(ctx, basics, leaseInfo, accessConditions)
-
-	err = handleError(err)
-	// If container is already deleted, return nil error
-	if err != nil && (strings.Contains(err.Error(), string(StorageErrorCodeContainerNotFound)) || strings.Contains(err.Error(), string(StorageErrorCodeBlobNotFound))) {
-		return ContainerDeleteResponse{}, nil
-	}
-	return resp, err
-}
-
-func (c ContainerClient) GetMetadata(ctx context.Context, gpo *GetPropertiesOptionsContainer) (map[string]string, error) {
-	resp, err := c.GetProperties(ctx, gpo)
-
-	if err != nil {
-		return nil, handleError(err)
-	}
-
-	return resp.Metadata, nil
 }
 
 // GetProperties returns the container's properties.
@@ -232,10 +156,10 @@ func (c ContainerClient) SetAccessPolicy(ctx context.Context, options *SetAccess
 	return resp, handleError(err)
 }
 
-// ListBlobsFlatSegment returns a pager for blobs starting from the specified Marker. Use an empty
+// ListBlobsFlat returns a pager for blobs starting from the specified Marker. Use an empty
 // Marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-blobs.
-func (c ContainerClient) ListBlobsFlatSegment(listOptions *ContainerListBlobFlatSegmentOptions) *ContainerListBlobFlatSegmentPager {
+func (c ContainerClient) ListBlobsFlat(listOptions *ContainerListBlobFlatSegmentOptions) *ContainerListBlobFlatSegmentPager {
 	pager := c.client.ListBlobFlatSegment(listOptions)
 	// override the generated pager to insert our handleError(error)
 	if pager.Err() != nil {
@@ -250,7 +174,7 @@ func (c ContainerClient) ListBlobsFlatSegment(listOptions *ContainerListBlobFlat
 	return pager
 }
 
-// ListBlobsHierarchySegment returns a channel of blobs starting from the specified Marker. Use an empty
+// ListBlobsHierarchy returns a channel of blobs starting from the specified Marker. Use an empty
 // Marker to start enumeration from the beginning. Blob names are returned in lexicographic order.
 // After getting a segment, process it, and then call ListBlobsHierarchicalSegment again (passing the the
 // previously-returned Marker) to get the next segment.
@@ -258,7 +182,7 @@ func (c ContainerClient) ListBlobsFlatSegment(listOptions *ContainerListBlobFlat
 // AutoPagerTimeout specifies the amount of time with no read operations before the channel times out and closes. Specify no time and it will be ignored.
 // AutoPagerBufferSize specifies the channel's buffer size.
 // Both the blob item channel and error channel should be watched. Only one error will be released via this channel (or a nil error, to register a clean exit.)
-func (c ContainerClient) ListBlobsHierarchySegment(delimiter string, listOptions *ContainerListBlobHierarchySegmentOptions) *ContainerListBlobHierarchySegmentPager {
+func (c ContainerClient) ListBlobsHierarchy(delimiter string, listOptions *ContainerListBlobHierarchySegmentOptions) *ContainerListBlobHierarchySegmentPager {
 	pager := c.client.ListBlobHierarchySegment(delimiter, listOptions)
 	// override the generated pager to insert our handleError(error)
 	if pager.Err() != nil {
@@ -274,14 +198,9 @@ func (c ContainerClient) ListBlobsHierarchySegment(delimiter string, listOptions
 	return pager
 }
 
-func (c ContainerClient) CanGetContainerSASToken() bool {
-	return c.cred != nil
-}
-
-// GetContainerSASToken is a convenience method for generating a SAS token for the currently pointed at container.
+// GetSASToken is a convenience method for generating a SAS token for the currently pointed at container.
 // It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
-// This validity can be checked with CanGetContainerSASToken().
-func (c ContainerClient) GetContainerSASToken(permissions BlobSASPermissions, validityTime time.Duration) (SASQueryParameters, error) {
+func (c ContainerClient) GetSASToken(permissions BlobSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
 	urlParts := NewBlobURLParts(c.URL())
 
 	// Containers do not have snapshots, nor versions.
@@ -291,7 +210,7 @@ func (c ContainerClient) GetContainerSASToken(permissions BlobSASPermissions, va
 
 		Permissions: permissions.String(),
 
-		StartTime:  time.Now().UTC(),
-		ExpiryTime: time.Now().UTC().Add(validityTime),
+		StartTime:  start.UTC(),
+		ExpiryTime: expiry.UTC(),
 	}.NewSASQueryParameters(c.cred.(*SharedKeyCredential))
 }

@@ -6,8 +6,6 @@ package azblob
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
-	"github.com/Azure/azure-sdk-for-go/sdk/to"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -54,22 +52,16 @@ func (b BlobClient) WithSnapshot(snapshot string) BlobClient {
 	}
 }
 
-func (b BlobClient) NewBlobLeaseClient(leaseID *string) (BlobLeaseClient, error) {
-	if leaseID == nil {
-		generatedUuid, err := uuid.New()
-		if err != nil {
-			return BlobLeaseClient{}, err
-		}
-		leaseID = to.StringPtr(generatedUuid.String())
+// WithVersionID creates a new AppendBlobURL object identical to the source but with the specified version id.
+// Pass "" to remove the versionID returning a URL to the base blob.
+func (b BlobClient) WithVersionID(versionID string) BlockBlobClient {
+	p := NewBlobURLParts(b.URL())
+	p.VersionID = versionID
+	con := &connection{u: p.URL(), p: b.client.con.p}
+	return BlockBlobClient{
+		client:     &blockBlobClient{con: con},
+		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}
-	return BlobLeaseClient{
-		BlobClient: b,
-		LeaseID:    leaseID,
-	}, nil
-}
-
-func (b BlobClient) GetAccountInfo(ctx context.Context) (BlobGetAccountInfoResponse, error) {
-	return b.client.GetAccountInfo(ctx, nil)
 }
 
 // Download reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
@@ -212,14 +204,9 @@ func (b BlobClient) GetTags(ctx context.Context, options *GetTagsBlobOptions) (B
 
 }
 
-func (b BlobClient) CanGetBlobSASToken() bool {
-	return b.cred != nil
-}
-
-// GetBlobSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
+// GetSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
 // It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
-// This validity can be checked with CanGetBlobSASToken().
-func (b BlobClient) GetBlobSASToken(permissions BlobSASPermissions, validityTime time.Duration) (SASQueryParameters, error) {
+func (b BlobClient) GetSASToken(permissions BlobSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
 	urlParts := NewBlobURLParts(b.URL())
 
 	t, err := time.Parse(SnapshotTimeFormat, urlParts.Snapshot)
@@ -240,7 +227,7 @@ func (b BlobClient) GetBlobSASToken(permissions BlobSASPermissions, validityTime
 
 		Permissions: permissions.String(),
 
-		StartTime:  time.Now().UTC(),
-		ExpiryTime: time.Now().UTC().Add(validityTime),
+		StartTime:  start.UTC(),
+		ExpiryTime: expiry.UTC(),
 	}.NewSASQueryParameters(cred)
 }

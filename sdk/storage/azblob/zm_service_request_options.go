@@ -3,7 +3,7 @@
 
 package azblob
 
-type ListContainersSegmentOptions struct {
+type ListContainersOptions struct {
 	Include ListContainersDetail
 
 	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
@@ -22,7 +22,7 @@ type ListContainersSegmentOptions struct {
 	Prefix *string
 }
 
-func (o *ListContainersSegmentOptions) pointers() *ServiceListContainersSegmentOptions {
+func (o *ListContainersOptions) pointers() *ServiceListContainersSegmentOptions {
 	if o == nil {
 		return nil
 	}

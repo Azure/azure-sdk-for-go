@@ -12,7 +12,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.16.7; Windows_NT)
       X-Ms-Date:
-      - Fri, 10 Sep 2021 17:57:24 GMT
+      - Sat, 11 Sep 2021 08:52:13 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccopyunsealedblob?restype=container
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 10 Sep 2021 17:57:24 GMT
+      - Sat, 11 Sep 2021 08:52:12 GMT
       Etag:
-      - '"0x8D97484723E8B57"'
+      - '"0x8D97501732621EC"'
       Last-Modified:
-      - Fri, 10 Sep 2021 17:57:25 GMT
+      - Sat, 11 Sep 2021 08:52:13 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d461b68d-501e-001e-6b6d-a6ec4c000000
+      - ea54a7bc-701e-002b-4dea-a64219000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -52,7 +52,7 @@ interactions:
       X-Ms-Blob-Type:
       - AppendBlob
       X-Ms-Date:
-      - Fri, 10 Sep 2021 17:57:25 GMT
+      - Sat, 11 Sep 2021 08:52:13 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccopyunsealedblob/gotestblobcopyunsealedblob
@@ -63,21 +63,21 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 10 Sep 2021 17:57:25 GMT
+      - Sat, 11 Sep 2021 08:52:13 GMT
       Etag:
-      - '"0x8D97484726412DF"'
+      - '"0x8D97501734C8979"'
       Last-Modified:
-      - Fri, 10 Sep 2021 17:57:25 GMT
+      - Sat, 11 Sep 2021 08:52:13 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d461b71d-501e-001e-746d-a6ec4c000000
+      - ea54a873-701e-002b-7eea-a64219000000
       X-Ms-Request-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-09-10T17:57:25.3301983Z"
+      - "2021-09-11T08:52:13.9448697Z"
     status: 201 Created
     code: 201
     duration: ""
@@ -94,7 +94,7 @@ interactions:
       X-Ms-Copy-Source:
       - https://azureblobstoragecanada.blob.core.windows.net/goccopyunsealedblob/gotestblobcopyunsealedblob
       X-Ms-Date:
-      - Fri, 10 Sep 2021 17:57:25 GMT
+      - Sat, 11 Sep 2021 08:52:14 GMT
       X-Ms-Seal-Blob:
       - "true"
       X-Ms-Version:
@@ -107,23 +107,23 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 10 Sep 2021 17:57:25 GMT
+      - Sat, 11 Sep 2021 08:52:13 GMT
       Etag:
-      - '"0x8D974847289CB56"'
+      - '"0x8D975017373539F"'
       Last-Modified:
-      - Fri, 10 Sep 2021 17:57:25 GMT
+      - Sat, 11 Sep 2021 08:52:14 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Copy-Id:
-      - d06b7d6c-ccd2-4068-b2a3-1740513516e4
+      - eab5cec7-0be0-49d7-9c0f-a0891cd77d28
       X-Ms-Copy-Status:
       - success
       X-Ms-Request-Id:
-      - d461b7b0-501e-001e-7e6d-a6ec4c000000
+      - ea54a904-701e-002b-09ea-a64219000000
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-09-10T17:57:25.5784042Z"
+      - "2021-09-11T08:52:14.1990815Z"
     status: 202 Accepted
     code: 202
     duration: ""
@@ -138,7 +138,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.16.7; Windows_NT)
       X-Ms-Date:
-      - Fri, 10 Sep 2021 17:57:25 GMT
+      - Sat, 11 Sep 2021 08:52:14 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccopyunsealedblob/copygotestblobcopyunsealedblob
@@ -153,11 +153,11 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Fri, 10 Sep 2021 17:57:25 GMT
+      - Sat, 11 Sep 2021 08:52:13 GMT
       Etag:
-      - '"0x8D974847289CB56"'
+      - '"0x8D975017373539F"'
       Last-Modified:
-      - Fri, 10 Sep 2021 17:57:25 GMT
+      - Sat, 11 Sep 2021 08:52:14 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Blob-Committed-Block-Count:
@@ -167,9 +167,9 @@ interactions:
       X-Ms-Blob-Type:
       - AppendBlob
       X-Ms-Copy-Completion-Time:
-      - Fri, 10 Sep 2021 17:57:25 GMT
+      - Sat, 11 Sep 2021 08:52:14 GMT
       X-Ms-Copy-Id:
-      - d06b7d6c-ccd2-4068-b2a3-1740513516e4
+      - eab5cec7-0be0-49d7-9c0f-a0891cd77d28
       X-Ms-Copy-Progress:
       - 0/0
       X-Ms-Copy-Source:
@@ -177,7 +177,7 @@ interactions:
       X-Ms-Copy-Status:
       - success
       X-Ms-Creation-Time:
-      - Fri, 10 Sep 2021 17:57:25 GMT
+      - Sat, 11 Sep 2021 08:52:14 GMT
       X-Ms-Is-Current-Version:
       - "true"
       X-Ms-Lease-State:
@@ -185,13 +185,13 @@ interactions:
       X-Ms-Lease-Status:
       - unlocked
       X-Ms-Request-Id:
-      - d461b845-501e-001e-046d-a6ec4c000000
+      - ea54a985-701e-002b-7eea-a64219000000
       X-Ms-Server-Encrypted:
       - "true"
       X-Ms-Version:
       - "2019-12-12"
       X-Ms-Version-Id:
-      - "2021-09-10T17:57:25.5784042Z"
+      - "2021-09-11T08:52:14.1990815Z"
     status: 200 OK
     code: 200
     duration: ""
@@ -206,7 +206,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.16.7; Windows_NT)
       X-Ms-Date:
-      - Fri, 10 Sep 2021 17:57:26 GMT
+      - Sat, 11 Sep 2021 08:52:14 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccopyunsealedblob?restype=container
@@ -217,11 +217,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 10 Sep 2021 17:57:25 GMT
+      - Sat, 11 Sep 2021 08:52:13 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d461b926-501e-001e-516d-a6ec4c000000
+      - ea54aa01-701e-002b-6dea-a64219000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

@@ -215,7 +215,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //
 //	// Anonymous enumeration should be valid with container access
 //	containerClient2, _ := NewContainerClient(containerClient.URL(), credential, nil)
-//	pager := containerClient2.ListBlobsFlatSegment(nil)
+//	pager := containerClient2.ListBlobsFlat(nil)
 //
 //	for pager.NextPage(ctx) {
 //		resp := pager.PageResponse()
@@ -265,7 +265,7 @@ func (s *azblobTestSuite) TestContainerCreateEmptyMetadata() {
 //	containerClient2, err := NewContainerClient(containerClient.URL(), azcore.AnonymousCredential(), nil)
 //	_assert.Nil(err)
 //
-//	pager := containerClient2.ListBlobsFlatSegment(nil)
+//	pager := containerClient2.ListBlobsFlat(nil)
 //
 //	_assert.Equal(pager.NextPage(ctx), false)
 //	_assert.NotNil(pager.Err())
@@ -305,7 +305,7 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 	containerClient2, err := NewContainerClient(containerClient.URL(), azcore.NewAnonymousCredential(), nil)
 	_assert.Nil(err)
 
-	pager := containerClient2.ListBlobsFlatSegment(nil)
+	pager := containerClient2.ListBlobsFlat(nil)
 
 	_assert.Equal(pager.NextPage(ctx), false)
 	_assert.NotNil(pager.Err())
@@ -319,65 +319,65 @@ func (s *azblobTestSuite) TestContainerCreateAccessNone() {
 	//_assert(serr.Response().StatusCode, chk.Equals, 401) // HEAD request does not return a status code
 }
 
-func (s *azblobTestSuite) TestContainerCreateIfExists() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-
-	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, serviceClient)
-
-	// Public Access Type None
-	_, err = containerClient.Create(ctx, nil)
-	defer deleteContainer(_assert, containerClient)
-	_assert.Nil(err)
-
-	access := PublicAccessTypeBlob
-	createContainerOptions := CreateContainerOptions{
-		Access:   &access,
-		Metadata: nil,
-	}
-	_, err = containerClient.CreateIfNotExists(ctx, &createContainerOptions)
-	_assert.Nil(err)
-
-	// Ensure that next create call doesn't update the properties of already created container
-	getResp, err := containerClient.GetProperties(ctx, nil)
-	_assert.Nil(err)
-	_assert.Nil(getResp.BlobPublicAccess)
-	_assert.Nil(getResp.Metadata)
-}
-
-func (s *azblobTestSuite) TestContainerCreateIfNotExists() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-
-	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, serviceClient)
-
-	access := PublicAccessTypeBlob
-	createContainerOptions := CreateContainerOptions{
-		Access:   &access,
-		Metadata: basicMetadata,
-	}
-	_, err = containerClient.CreateIfNotExists(ctx, &createContainerOptions)
-	_assert.Nil(err)
-	defer deleteContainer(_assert, containerClient)
-
-	// Ensure that next create call doesn't update the properties of already created container
-	getResp, err := containerClient.GetProperties(ctx, nil)
-	_assert.Nil(err)
-	_assert.EqualValues(*getResp.BlobPublicAccess, PublicAccessTypeBlob)
-	_assert.EqualValues(getResp.Metadata, basicMetadata)
-}
+//func (s *azblobTestSuite) TestContainerCreateIfExists() {
+//	_assert := assert.New(s.T())
+//	testName := s.T().Name()
+//	_context := getTestContext(testName)
+//	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//
+//	containerName := generateContainerName(testName)
+//	containerClient := getContainerClient(containerName, serviceClient)
+//
+//	// Public Access Type None
+//	_, err = containerClient.Create(ctx, nil)
+//	defer deleteContainer(_assert, containerClient)
+//	_assert.Nil(err)
+//
+//	access := PublicAccessTypeBlob
+//	createContainerOptions := CreateContainerOptions{
+//		Access:   &access,
+//		Metadata: nil,
+//	}
+//	_, err = containerClient.CreateIfNotExists(ctx, &createContainerOptions)
+//	_assert.Nil(err)
+//
+//	// Ensure that next create call doesn't update the properties of already created container
+//	getResp, err := containerClient.GetProperties(ctx, nil)
+//	_assert.Nil(err)
+//	_assert.Nil(getResp.BlobPublicAccess)
+//	_assert.Nil(getResp.Metadata)
+//}
+//
+//func (s *azblobTestSuite) TestContainerCreateIfNotExists() {
+//	_assert := assert.New(s.T())
+//	testName := s.T().Name()
+//	_context := getTestContext(testName)
+//	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//
+//	containerName := generateContainerName(testName)
+//	containerClient := getContainerClient(containerName, serviceClient)
+//
+//	access := PublicAccessTypeBlob
+//	createContainerOptions := CreateContainerOptions{
+//		Access:   &access,
+//		Metadata: basicMetadata,
+//	}
+//	_, err = containerClient.CreateIfNotExists(ctx, &createContainerOptions)
+//	_assert.Nil(err)
+//	defer deleteContainer(_assert, containerClient)
+//
+//	// Ensure that next create call doesn't update the properties of already created container
+//	getResp, err := containerClient.GetProperties(ctx, nil)
+//	_assert.Nil(err)
+//	_assert.EqualValues(*getResp.BlobPublicAccess, PublicAccessTypeBlob)
+//	_assert.EqualValues(getResp.Metadata, basicMetadata)
+//}
 
 func validateContainerDeleted(_assert *assert.Assertions, containerClient ContainerClient) {
 	_, err := containerClient.GetAccessPolicy(ctx, nil)
@@ -404,44 +404,44 @@ func (s *azblobTestSuite) TestContainerDelete() {
 	validateContainerDeleted(_assert, containerClient)
 }
 
-func (s *azblobTestSuite) TestContainerDeleteIfExists() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-
-	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, serviceClient)
-
-	// Public Access Type None
-	_, err = containerClient.Create(ctx, nil)
-	defer deleteContainer(_assert, containerClient)
-	_assert.Nil(err)
-
-	_, err = containerClient.DeleteIfExists(ctx, nil)
-	_assert.Nil(err)
-
-	validateContainerDeleted(_assert, containerClient)
-}
-
-func (s *azblobTestSuite) TestContainerDeleteIfNotExists() {
-	_assert := assert.New(s.T())
-	testName := s.T().Name()
-	_context := getTestContext(testName)
-	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
-	if err != nil {
-		s.Fail("Unable to fetch service client because " + err.Error())
-	}
-
-	containerName := generateContainerName(testName)
-	containerClient := getContainerClient(containerName, serviceClient)
-
-	_, err = containerClient.DeleteIfExists(ctx, nil)
-	_assert.Nil(err)
-}
+//func (s *azblobTestSuite) TestContainerDeleteIfExists() {
+//	_assert := assert.New(s.T())
+//	testName := s.T().Name()
+//	_context := getTestContext(testName)
+//	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//
+//	containerName := generateContainerName(testName)
+//	containerClient := getContainerClient(containerName, serviceClient)
+//
+//	// Public Access Type None
+//	_, err = containerClient.Create(ctx, nil)
+//	defer deleteContainer(_assert, containerClient)
+//	_assert.Nil(err)
+//
+//	_, err = containerClient.DeleteIfExists(ctx, nil)
+//	_assert.Nil(err)
+//
+//	validateContainerDeleted(_assert, containerClient)
+//}
+//
+//func (s *azblobTestSuite) TestContainerDeleteIfNotExists() {
+//	_assert := assert.New(s.T())
+//	testName := s.T().Name()
+//	_context := getTestContext(testName)
+//	serviceClient, err := getServiceClient(_context.recording, testAccountDefault, nil)
+//	if err != nil {
+//		s.Fail("Unable to fetch service client because " + err.Error())
+//	}
+//
+//	containerName := generateContainerName(testName)
+//	containerClient := getContainerClient(containerName, serviceClient)
+//
+//	_, err = containerClient.DeleteIfExists(ctx, nil)
+//	_assert.Nil(err)
+//}
 
 func (s *azblobTestSuite) TestContainerDeleteNonExistent() {
 	_assert := assert.New(s.T())
@@ -605,7 +605,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 ////	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
 ////		Prefix: &prefix,
 ////	}
-////	listResponse, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
+////	listResponse, errChan := containerClient.ListBlobsFlat(ctx, 3, 0, &containerListBlobFlatSegmentOptions)
 ////	_assert(<- errChan, chk.IsNil)
 ////	_assert(listResponse, chk.IsNil)
 ////}
@@ -620,7 +620,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 //	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
 //		Prefix: &prefix,
 //	}
-//	pager := containerClient.ListBlobsFlatSegment(&containerListBlobFlatSegmentOptions)
+//	pager := containerClient.ListBlobsFlat(&containerListBlobFlatSegmentOptions)
 //
 //	count := 0
 //
@@ -648,7 +648,7 @@ func (s *azblobTestSuite) TestContainerDeleteIfUnModifiedSinceFalse() {
 //		_, blobNames[idx] = createNewBlockBlobWithPrefix(c, containerClient, prefix)
 //	}
 //
-//	pager := containerClient.ListBlobsHierarchySegment("/", nil)
+//	pager := containerClient.ListBlobsHierarchy("/", nil)
 //
 //	count := 0
 //
@@ -696,7 +696,7 @@ func (s *azblobTestSuite) TestContainerListBlobsWithSnapshots() {
 	listBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
 		Include: []ListBlobsIncludeItem{ListBlobsIncludeItemSnapshots},
 	}
-	pager := containerClient.ListBlobsFlatSegment(&listBlobFlatSegmentOptions)
+	pager := containerClient.ListBlobsFlat(&listBlobFlatSegmentOptions)
 
 	wasFound := false // hold the for loop accountable for finding the blob and it's snapshot
 	for pager.NextPage(ctx) {
@@ -732,7 +732,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 		createNewBlockBlob(_assert, blobName, containerClient)
 	}
 
-	pager := containerClient.ListBlobsHierarchySegment("^", nil)
+	pager := containerClient.ListBlobsHierarchy("^", nil)
 
 	pager.NextPage(ctx)
 	_assert.Nil(pager.Err())
@@ -748,7 +748,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	_, err := blobMetadata.SetMetadata(ctx, Metadata{"field": "value"}, BlobAccessConditions{}, ClientProvidedKeyOptions{})
 ////	_assert.Nil(err)
 ////
-////	resp, err := container.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Metadata: true}})
+////	resp, err := container.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{Details: BlobListingDetails{Metadata: true}})
 ////
 ////	_assert.Nil(err)
 ////	_assert(resp.Segment.BlobItems[0].Name, chk.Equals, blobNameNoMetadata)
@@ -765,7 +765,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	_, err := blob.CreateSnapshot(ctx, Metadata{}, BlobAccessConditions{}, ClientProvidedKeyOptions{})
 ////	_assert.Nil(err)
 ////
-////	resp, err := containerClient.ListBlobsFlatSegment(ctx, Marker{},
+////	resp, err := containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Snapshots: true}})
 ////
 ////	_assert.Nil(err)
@@ -785,7 +785,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	_, err := blobCopyURL.StartCopyFromURL(ctx, bbClient.URL(), Metadata{}, ModifiedAccessConditions{}, BlobAccessConditions{}, DefaultAccessTier, nil)
 ////	_assert.Nil(err)
 ////
-////	resp, err := containerClient.ListBlobsFlatSegment(ctx, Marker{},
+////	resp, err := containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Copy: true}})
 ////
 ////	// These are sufficient to show that the blob copy was in fact included
@@ -807,7 +807,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	_, err := bbClient.StageBlock(ctx, blockID, strings.NewReader(blockBlobDefaultData), LeaseAccessConditions{}, nil, ClientProvidedKeyOptions{})
 ////	_assert.Nil(err)
 ////
-////	resp, err := containerClient.ListBlobsFlatSegment(ctx, Marker{},
+////	resp, err := containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{UncommittedBlobs: true}})
 ////
 ////	_assert.Nil(err)
@@ -820,7 +820,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	defer deleteContainer(_assert, containerClient)
 ////	bbClient, _ := createNewBlockBlob(c, containerClient)
 ////
-////	resp, err := containerClient.ListBlobsFlatSegment(ctx, Marker{},
+////	resp, err := containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Versions: true, Deleted: true}})
 ////	_assert.Nil(err)
 ////	_assert(resp.Segment.BlobItems, chk.HasLen, 1)
@@ -828,7 +828,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	_, err = bbClient.Delete(ctx, DeleteSnapshotsOptionInclude, BlobAccessConditions{})
 ////	_assert.Nil(err)
 ////
-////	resp, err = containerClient.ListBlobsFlatSegment(ctx, Marker{},
+////	resp, err = containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Versions: true, Deleted: true}})
 ////	_assert.Nil(err)
 ////	if len(resp.Segment.BlobItems) != 1 {
@@ -862,7 +862,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////
 ////	_, err = blobURL3.Delete(ctx, DeleteSnapshotsOptionNone, BlobAccessConditions{})
 ////
-////	resp, err := containerClient.ListBlobsFlatSegment(ctx, Marker{},
+////	resp, err := containerClient.ListBlobsFlat(ctx, Marker{},
 ////		ListBlobsSegmentOptions{Details: BlobListingDetails{Snapshots: true, Copy: true, Deleted: true, Versions: true}})
 ////
 ////	_assert.Nil(err)
@@ -889,7 +889,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	containerClient, _ := createNewContainer(c, svcClient)
 ////
 ////	defer deleteContainer(_assert, containerClient)
-////	_, err := containerClient.ListBlobsFlatSegment(ctx, Marker{}, ListBlobsSegmentOptions{MaxResults: -2})
+////	_, err := containerClient.ListBlobsFlat(ctx, Marker{}, ListBlobsSegmentOptions{MaxResults: -2})
 ////	_assert(err, chk.Not(chk.IsNil))
 ////}
 //
@@ -900,7 +900,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	createNewBlockBlob(c, containerClient)
 ////
 ////	maxResults := int32(0)
-////	resp, errChan := containerClient.ListBlobsFlatSegment(ctx, 1, 0, &ContainerListBlobFlatSegmentOptions{Maxresults: &maxResults})
+////	resp, errChan := containerClient.ListBlobsFlat(ctx, 1, 0, &ContainerListBlobFlatSegmentOptions{Maxresults: &maxResults})
 ////
 ////	_assert(<-errChan, chk.IsNil)
 ////	_assert(resp, chk.HasLen, 1)
@@ -915,7 +915,7 @@ func (s *azblobTestSuite) TestContainerListBlobsInvalidDelimiter() {
 ////	createNewBlockBlobWithPrefix(c, containerClient, "b")
 ////
 ////	maxResults := int32(1)
-////	resp, errChan := containerClient.ListBlobsFlatSegment(ctx, 3, 0, &ContainerListBlobFlatSegmentOptions{Maxresults: &maxResults})
+////	resp, errChan := containerClient.ListBlobsFlat(ctx, 3, 0, &ContainerListBlobFlatSegmentOptions{Maxresults: &maxResults})
 ////	_assert(<- errChan, chk.IsNil)
 ////	_assert(resp, chk.HasLen, 1)
 ////	_assert((<- resp).Name, chk.Equals, blobName)
@@ -940,7 +940,7 @@ func (s *azblobTestSuite) TestContainerListBlobsMaxResultsExact() {
 	createNewBlockBlob(_assert, blobNames[1], containerClient)
 
 	maxResult := int32(2)
-	pager := containerClient.ListBlobsFlatSegment(&ContainerListBlobFlatSegmentOptions{
+	pager := containerClient.ListBlobsFlat(&ContainerListBlobFlatSegmentOptions{
 		Maxresults: &maxResult,
 	})
 
@@ -980,7 +980,7 @@ func (s *azblobTestSuite) TestContainerListBlobsMaxResultsSufficient() {
 	containerListBlobFlatSegmentOptions := ContainerListBlobFlatSegmentOptions{
 		Maxresults: &maxResult,
 	}
-	pager := containerClient.ListBlobsFlatSegment(&containerListBlobFlatSegmentOptions)
+	pager := containerClient.ListBlobsFlat(&containerListBlobFlatSegmentOptions)
 
 	nameMap := blobListToMap(blobNames)
 
@@ -1007,7 +1007,7 @@ func (s *azblobTestSuite) TestContainerListBlobsNonExistentContainer() {
 	containerName := generateContainerName(testName)
 	containerClient := getContainerClient(containerName, svcClient)
 
-	pager := containerClient.ListBlobsFlatSegment(nil)
+	pager := containerClient.ListBlobsFlat(nil)
 
 	pager.NextPage(ctx)
 	_assert.NotNil(pager.Err())

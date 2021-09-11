@@ -7,13 +7,11 @@ import (
 	"context"
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"net/url"
 	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
 //nolint
@@ -95,28 +93,6 @@ func (s ServiceClient) DeleteContainer(ctx context.Context, containerName string
 	return containerDeleteResp, err
 }
 
-func (s ServiceClient) NewContainerLeaseClient(containerName string, leaseID *string) (ContainerLeaseClient, error) {
-	containerURL := appendToURLPath(s.client.con.u, containerName)
-	containerConnection := &connection{containerURL, s.client.con.p}
-
-	if leaseID == nil {
-		generatedUuid, err := uuid.New()
-		if err != nil {
-			return ContainerLeaseClient{}, err
-		}
-		leaseID = to.StringPtr(generatedUuid.String())
-	}
-
-	return ContainerLeaseClient{
-		ContainerClient: ContainerClient{
-			client: &containerClient{
-				con: containerConnection,
-			},
-		},
-		LeaseID: leaseID,
-	}, nil
-}
-
 // appendToURLPath appends a string to the end of a URL's path (prefixing the string with a '/' if required)
 func appendToURLPath(u string, name string) string {
 	// e.g. "https://ms.com/a/b/?k1=v1&k2=v2#f"
@@ -145,10 +121,10 @@ func (s ServiceClient) GetAccountInfo(ctx context.Context) (ServiceGetAccountInf
 	return resp, handleError(err)
 }
 
-// The ListContainersSegment operation returns a pager of the containers under the specified account.
+// The ListContainers operation returns a pager of the containers under the specified account.
 // Use an empty Marker to start enumeration from the beginning. Container names are returned in lexicographic order.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-containers2.
-func (s ServiceClient) ListContainersSegment(o *ListContainersSegmentOptions) *ServiceListContainersSegmentPager {
+func (s ServiceClient) ListContainers(o *ListContainersOptions) *ServiceListContainersSegmentPager {
 	listOptions := o.pointers()
 	pager := s.client.ListContainersSegment(listOptions)
 	// override the generated advancer, which is incorrect
@@ -214,10 +190,10 @@ func (s ServiceClient) CanGetAccountSASToken() bool {
 	return s.cred != nil
 }
 
-// GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account.
+// GetSASToken is a convenience method for generating a SAS token for the currently pointed at account.
 // It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
 // This validity can be checked with CanGetAccountSASToken().
-func (s ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, services AccountSASServices, start time.Time, expiry time.Time) (string, error) {
+func (s ServiceClient) GetSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, services AccountSASServices, start time.Time, expiry time.Time) (string, error) {
 	cred, ok := s.cred.(*SharedKeyCredential)
 	if !ok {
 		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")

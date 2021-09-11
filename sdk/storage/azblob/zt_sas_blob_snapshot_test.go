@@ -31,7 +31,7 @@ package azblob
 //
 //	contentType := "text/plain"
 //	uploadBlockBlobOptions := UploadBlockBlobOptions{
-//		BlobHTTPHeaders: &BlobHTTPHeaders{
+//		HTTPHeaders: &HTTPHeaders{
 //			BlobContentType: &contentType,
 //		},
 //	}
@@ -103,7 +103,7 @@ package azblob
 //	//If this succeeds, it means a normal SAS token was created.
 //
 //	uploadBlockBlobOptions1 := UploadBlockBlobOptions{
-//		BlobHTTPHeaders: &BlobHTTPHeaders{
+//		HTTPHeaders: &HTTPHeaders{
 //			BlobContentType: &contentType,
 //		},
 //	}

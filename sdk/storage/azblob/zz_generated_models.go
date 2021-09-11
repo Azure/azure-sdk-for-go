@@ -1825,7 +1825,7 @@ type ServiceGetUserDelegationKeyOptions struct {
 	Timeout *int32
 }
 
-// ServiceListContainersSegmentOptions contains the optional parameters for the Service.ListContainersSegment method.
+// ServiceListContainersSegmentOptions contains the optional parameters for the Service.ListContainers method.
 type ServiceListContainersSegmentOptions struct {
 	// Include this parameter to specify that the container's metadata be returned as part of the response body.
 	Include []ListContainersIncludeType

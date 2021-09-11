@@ -120,7 +120,7 @@ func Example() {
 	// The ListBlobs and ListContainers APIs return two channels, a values channel, and an errors channel.
 	// You should enumerate on a range over the values channel, and then check the errors channel, as only ONE value will ever be passed to the errors channel.
 	// The AutoPagerTimeout defines how long it will wait to place into the items channel before it exits & cleans itself up. A zero time will result in no timeout.
-	pager := container.ListBlobsFlatSegment(nil)
+	pager := container.ListBlobsFlat(nil)
 
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
@@ -230,7 +230,7 @@ func ExampleBlobURLParts() {
 
 // This example demonstrates how to use the SAS token convenience generators.
 // Though this example focuses on account SAS, these generators exist across all clients (Service, Container, Blob, and specialized Blob clients)
-func ExampleServiceClient_GetAccountSASToken() {
+func ExampleServiceClient_GetSASToken() {
 	// Initialize a service client
 	accountName, accountKey := accountInfo()
 	credential, err := NewSharedKeyCredential(accountName, accountKey)
@@ -243,7 +243,7 @@ func ExampleServiceClient_GetAccountSASToken() {
 	}
 	// Provide the convenience function with relevant info (services, resource types, permissions, and duration)
 	// The SAS token will be valid from this moment onwards.
-	accountSAS, err := serviceClient.GetAccountSASToken(AccountSASResourceTypes{Object: true, Service: true, Container: true},
+	accountSAS, err := serviceClient.GetSASToken(AccountSASResourceTypes{Object: true, Service: true, Container: true},
 		AccountSASPermissions{Read: true, List: true}, AccountSASServices{Blob: true}, time.Now(), time.Now().Add(48*time.Hour))
 	if err != nil {
 		log.Fatal(err)
@@ -627,7 +627,7 @@ func ExampleBlobHTTPHeaders() {
 
 	// Create a blob with HTTP headers
 	_, err = blobClient.Upload(ctx, NopCloser(NopCloser(strings.NewReader("Some text"))),
-		&UploadBlockBlobOptions{BlobHTTPHeaders: &BlobHTTPHeaders{
+		&UploadBlockBlobOptions{HTTPHeaders: &BlobHTTPHeaders{
 			BlobContentType:        to.StringPtr("text/html; charset=utf-8"),
 			BlobContentDisposition: to.StringPtr("attachment"),
 		}})
@@ -949,7 +949,7 @@ func Example_blobSnapshots() {
 
 	// Show all blobs in the container with their snapshots:
 	// List the blob(s) in our container; since a container may hold millions of blobs, this is done 1 segment at a time.
-	pager := containerClient.ListBlobsFlatSegment(nil)
+	pager := containerClient.ListBlobsFlat(nil)
 
 	for pager.NextPage(ctx) {
 		resp := pager.PageResponse()
@@ -1010,7 +1010,7 @@ func Example_progressUploadDownload() {
 	// Wrap the request body in a RequestBodyProgress and pass a callback function for progress reporting.
 	_, err = blobClient.Upload(ctx, streaming.NewRequestProgress(NopCloser(requestBody), func(bytesTransferred int64) {
 		fmt.Printf("Wrote %d of %d bytes.", bytesTransferred, requestBody)
-	}), &UploadBlockBlobOptions{BlobHTTPHeaders: &BlobHTTPHeaders{
+	}), &UploadBlockBlobOptions{HTTPHeaders: &BlobHTTPHeaders{
 		BlobContentType:        to.StringPtr("text/html; charset=utf-8"),
 		BlobContentDisposition: to.StringPtr("attachment"),
 	}})
@@ -1258,12 +1258,14 @@ func ExampleContainerLeaseClient() {
 
 	// Create an containerClient object that wraps the container's URL and a default pipeline.
 	u := fmt.Sprintf("https://%s.blob.core.windows.net/mycontainer", accountName)
+	containerClient, err := NewContainerClient(u, credential, nil)
+
 	generatedUuid, err := uuid.New()
 	if err != nil {
 		log.Fatal(err)
 	}
 	leaseID := to.StringPtr(generatedUuid.String())
-	containerLeaseClient, err := NewContainerLeaseClient(u, leaseID, credential, nil)
+	containerLeaseClient, err := containerClient.NewContainerLeaseClient(leaseID)
 	if err != nil {
 		log.Fatal(err)
 	}

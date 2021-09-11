@@ -19,12 +19,6 @@ import (
 	"os"
 )
 
-// CommonResponse returns the headers common to all blob REST API responses.
-type CommonResponse interface {
-	// Response returns the raw HTTP response object.
-	Response() *http.Response
-}
-
 // HighLevelUploadToBlockBlobOption identifies options used by the UploadBufferToBlockBlob and UploadFileToBlockBlob functions.
 type HighLevelUploadToBlockBlobOption struct {
 	// BlockSize specifies the block size to use; the default (and maximum size) is BlockBlobMaxStageBlockBytes.
@@ -34,8 +28,8 @@ type HighLevelUploadToBlockBlobOption struct {
 	// Note that the progress reporting is not always increasing; it can go down when retrying a request.
 	Progress func(bytesTransferred int64)
 
-	// BlobHTTPHeaders indicates the HTTP headers to be associated with the blob.
-	BlobHTTPHeaders *BlobHTTPHeaders
+	// HTTPHeaders indicates the HTTP headers to be associated with the blob.
+	HTTPHeaders *BlobHTTPHeaders
 
 	// Metadata indicates the metadata to be associated with the blob when PutBlockList is called.
 	Metadata map[string]string
@@ -43,11 +37,11 @@ type HighLevelUploadToBlockBlobOption struct {
 	// BlobAccessConditions indicates the access conditions for the block blob.
 	BlobAccessConditions *BlobAccessConditions
 
-	// BlobAccessTier indicates the tier of blob
-	BlobAccessTier *AccessTier
+	// AccessTier indicates the tier of blob
+	AccessTier *AccessTier
 
-	// BlobTagsMap
-	BlobTagsMap map[string]string
+	// TagsMap
+	TagsMap map[string]string
 
 	// ClientProvidedKeyOptions indicates the client provided key by name and/or by value to encrypt/decrypt data.
 	CpkInfo      *CpkInfo
@@ -72,10 +66,10 @@ func (o HighLevelUploadToBlockBlobOption) getStageBlockOptions() *StageBlockOpti
 
 func (o HighLevelUploadToBlockBlobOption) getUploadBlockBlobOptions() *UploadBlockBlobOptions {
 	return &UploadBlockBlobOptions{
-		BlobTagsMap:          o.BlobTagsMap,
+		TagsMap:              o.TagsMap,
 		Metadata:             o.Metadata,
-		Tier:                 o.BlobAccessTier,
-		BlobHTTPHeaders:      o.BlobHTTPHeaders,
+		Tier:                 o.AccessTier,
+		HTTPHeaders:          o.HTTPHeaders,
 		BlobAccessConditions: o.BlobAccessConditions,
 		CpkInfo:              o.CpkInfo,
 		CpkScopeInfo:         o.CpkScopeInfo,
@@ -84,18 +78,17 @@ func (o HighLevelUploadToBlockBlobOption) getUploadBlockBlobOptions() *UploadBlo
 
 func (o *HighLevelUploadToBlockBlobOption) getCommitBlockListOptions() *CommitBlockListOptions {
 	return &CommitBlockListOptions{
-		BlobTagsMap:     o.BlobTagsMap,
+		BlobTagsMap:     o.TagsMap,
 		Metadata:        o.Metadata,
-		Tier:            o.BlobAccessTier,
-		BlobHTTPHeaders: o.BlobHTTPHeaders,
+		Tier:            o.AccessTier,
+		BlobHTTPHeaders: o.HTTPHeaders,
 		CpkInfo:         o.CpkInfo,
 		CpkScopeInfo:    o.CpkScopeInfo,
 	}
 }
 
 // uploadReaderAtToBlockBlob uploads a buffer in blocks to a block blob.
-func uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSize int64,
-	blockBlobClient BlockBlobClient, o HighLevelUploadToBlockBlobOption) (*http.Response, error) {
+func (bb BlockBlobClient) uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSize int64, o HighLevelUploadToBlockBlobOption) (*http.Response, error) {
 	if o.BlockSize == 0 {
 		// If bufferSize > (BlockBlobMaxStageBlockBytes * BlockBlobMaxBlocks), then error
 		if readerSize > BlockBlobMaxStageBlockBytes*BlockBlobMaxBlocks {
@@ -121,7 +114,7 @@ func uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSi
 		}
 
 		uploadBlockBlobOptions := o.getUploadBlockBlobOptions()
-		resp, err := blockBlobClient.Upload(ctx, internal.NopCloser(body), uploadBlockBlobOptions)
+		resp, err := bb.Upload(ctx, internal.NopCloser(body), uploadBlockBlobOptions)
 
 		return resp.RawResponse, err
 	}
@@ -164,7 +157,7 @@ func uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSi
 			}
 			blockIDList[blockNum] = base64.StdEncoding.EncodeToString([]byte(generatedUuid.String()))
 			stageBlockOptions := o.getStageBlockOptions()
-			_, err = blockBlobClient.StageBlock(ctx, blockIDList[blockNum], internal.NopCloser(body), stageBlockOptions)
+			_, err = bb.StageBlock(ctx, blockIDList[blockNum], internal.NopCloser(body), stageBlockOptions)
 			return err
 		},
 	})
@@ -173,26 +166,24 @@ func uploadReaderAtToBlockBlob(ctx context.Context, reader io.ReaderAt, readerSi
 	}
 	// All put blocks were successful, call Put Block List to finalize the blob
 	commitBlockListOptions := o.getCommitBlockListOptions()
-	resp, err := blockBlobClient.CommitBlockList(ctx, blockIDList, commitBlockListOptions)
+	resp, err := bb.CommitBlockList(ctx, blockIDList, commitBlockListOptions)
 
 	return resp.RawResponse, err
 }
 
 // UploadBufferToBlockBlob uploads a buffer in blocks to a block blob.
-func UploadBufferToBlockBlob(ctx context.Context, b []byte,
-	blockBlobClient BlockBlobClient, o HighLevelUploadToBlockBlobOption) (*http.Response, error) {
-	return uploadReaderAtToBlockBlob(ctx, bytes.NewReader(b), int64(len(b)), blockBlobClient, o)
+func (bb BlockBlobClient) UploadBufferToBlockBlob(ctx context.Context, b []byte, o HighLevelUploadToBlockBlobOption) (*http.Response, error) {
+	return bb.uploadReaderAtToBlockBlob(ctx, bytes.NewReader(b), int64(len(b)), o)
 }
 
 // UploadFileToBlockBlob uploads a file in blocks to a block blob.
-func UploadFileToBlockBlob(ctx context.Context, file *os.File,
-	blockBlobClient BlockBlobClient, o HighLevelUploadToBlockBlobOption) (*http.Response, error) {
+func (bb BlockBlobClient) UploadFileToBlockBlob(ctx context.Context, file *os.File, o HighLevelUploadToBlockBlobOption) (*http.Response, error) {
 
 	stat, err := file.Stat()
 	if err != nil {
 		return nil, err
 	}
-	return uploadReaderAtToBlockBlob(ctx, file, stat.Size(), blockBlobClient, o)
+	return bb.uploadReaderAtToBlockBlob(ctx, file, stat.Size(), o)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -240,8 +231,7 @@ func (o *HighLevelDownloadFromBlobOptions) getDownloadBlobOptions(offSet, count 
 }
 
 // downloadBlobToWriterAt downloads an Azure blob to a buffer with parallel.
-func downloadBlobToWriterAt(ctx context.Context, blobClient BlobClient, offset int64, count int64,
-	writer io.WriterAt, o HighLevelDownloadFromBlobOptions, initialDownloadResponse *DownloadResponse) error {
+func (b BlobClient) downloadBlobToWriterAt(ctx context.Context, offset int64, count int64, writer io.WriterAt, o HighLevelDownloadFromBlobOptions, initialDownloadResponse *DownloadResponse) error {
 	if o.BlockSize == 0 {
 		o.BlockSize = BlobDefaultDownloadBlockSize
 	}
@@ -252,7 +242,7 @@ func downloadBlobToWriterAt(ctx context.Context, blobClient BlobClient, offset i
 		} else {
 			// If we don't have the length at all, get it
 			downloadBlobOptions := o.getDownloadBlobOptions(0, CountToEnd, nil)
-			dr, err := blobClient.Download(ctx, downloadBlobOptions)
+			dr, err := b.Download(ctx, downloadBlobOptions)
 			if err != nil {
 				return err
 			}
@@ -277,7 +267,7 @@ func downloadBlobToWriterAt(ctx context.Context, blobClient BlobClient, offset i
 		Operation: func(chunkStart int64, count int64, ctx context.Context) error {
 
 			downloadBlobOptions := o.getDownloadBlobOptions(chunkStart+offset, count, nil)
-			dr, err := blobClient.Download(ctx, downloadBlobOptions)
+			dr, err := b.Download(ctx, downloadBlobOptions)
 			if err != nil {
 				return err
 			}
@@ -311,23 +301,21 @@ func downloadBlobToWriterAt(ctx context.Context, blobClient BlobClient, offset i
 
 // DownloadBlobToBuffer downloads an Azure blob to a buffer with parallel.
 // Offset and count are optional, pass 0 for both to download the entire blob.
-func DownloadBlobToBuffer(ctx context.Context, blobClient BlobClient, offset int64, count int64,
-	b []byte, o HighLevelDownloadFromBlobOptions) error {
-	return downloadBlobToWriterAt(ctx, blobClient, offset, count, newBytesWriter(b), o, nil)
+func (b BlobClient) DownloadBlobToBuffer(ctx context.Context, offset int64, count int64, _bytes []byte, o HighLevelDownloadFromBlobOptions) error {
+	return b.downloadBlobToWriterAt(ctx, offset, count, newBytesWriter(_bytes), o, nil)
 }
 
 // DownloadBlobToFile downloads an Azure blob to a local file.
 // The file would be truncated if the size doesn't match.
 // Offset and count are optional, pass 0 for both to download the entire blob.
-func DownloadBlobToFile(ctx context.Context, blobClient BlobClient, offset int64, count int64,
-	file *os.File, o HighLevelDownloadFromBlobOptions) error {
+func (b BlobClient) DownloadBlobToFile(ctx context.Context, offset int64, count int64, file *os.File, o HighLevelDownloadFromBlobOptions) error {
 	// 1. Calculate the size of the destination file
 	var size int64
 
 	if count == CountToEnd {
 		// Try to get Azure blob's size
 		getBlobPropertiesOptions := o.getBlobPropertiesOptions()
-		props, err := blobClient.GetProperties(ctx, getBlobPropertiesOptions)
+		props, err := b.GetProperties(ctx, getBlobPropertiesOptions)
 		if err != nil {
 			return err
 		}
@@ -348,7 +336,7 @@ func DownloadBlobToFile(ctx context.Context, blobClient BlobClient, offset int64
 	}
 
 	if size > 0 {
-		return downloadBlobToWriterAt(ctx, blobClient, offset, size, file, o, nil)
+		return b.downloadBlobToWriterAt(ctx, offset, size, file, o, nil)
 	} else { // if the blob's size is 0, there is no need in downloading it
 		return nil
 	}
@@ -570,10 +558,10 @@ type UploadStreamToBlockBlobOptions struct {
 	BufferSize int
 	// MaxBuffers defines the number of simultaneous uploads will be performed to upload the file.
 	MaxBuffers           int
-	BlobHTTPHeaders      *BlobHTTPHeaders
+	HTTPHeaders          *BlobHTTPHeaders
 	Metadata             map[string]string
 	BlobAccessConditions *BlobAccessConditions
-	BlobAccessTier       *AccessTier
+	AccessTier           *AccessTier
 	BlobTagsMap          map[string]string
 	CpkInfo              *CpkInfo
 	CpkScopeInfo         *CpkScopeInfo
@@ -610,8 +598,7 @@ func (u *UploadStreamToBlockBlobOptions) getCommitBlockListOptions() *CommitBloc
 
 // UploadStreamToBlockBlob copies the file held in io.Reader to the Blob at blockBlobClient.
 // A Context deadline or cancellation will cause this to error.
-func UploadStreamToBlockBlob(ctx context.Context, body io.ReadSeekCloser, blockBlobClient BlockBlobClient,
-	o UploadStreamToBlockBlobOptions) (BlockBlobCommitBlockListResponse, error) {
+func (bb BlockBlobClient) UploadStreamToBlockBlob(ctx context.Context, body io.ReadSeekCloser, o UploadStreamToBlockBlobOptions) (BlockBlobCommitBlockListResponse, error) {
 	if err := o.defaults(); err != nil {
 		return BlockBlobCommitBlockListResponse{}, err
 	}
@@ -621,7 +608,7 @@ func UploadStreamToBlockBlob(ctx context.Context, body io.ReadSeekCloser, blockB
 		defer o.TransferManager.Close()
 	}
 
-	result, err := copyFromReader(ctx, body, blockBlobClient, o)
+	result, err := copyFromReader(ctx, body, bb, o)
 	if err != nil {
 		return BlockBlobCommitBlockListResponse{}, err
 	}

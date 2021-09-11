@@ -12,7 +12,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.16.7; Windows_NT)
       X-Ms-Date:
-      - Fri, 10 Sep 2021 17:56:29 GMT
+      - Sat, 11 Sep 2021 08:51:29 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontaineracquirelease?restype=container
@@ -23,15 +23,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 10 Sep 2021 17:56:29 GMT
+      - Sat, 11 Sep 2021 08:51:28 GMT
       Etag:
-      - '"0x8D97484515AE3E3"'
+      - '"0x8D97501589A4A0F"'
       Last-Modified:
-      - Fri, 10 Sep 2021 17:56:29 GMT
+      - Sat, 11 Sep 2021 08:51:29 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d4611f78-501e-001e-086d-a6ec4c000000
+      - ea545cc7-701e-002b-78ea-a64219000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -48,7 +48,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.16.7; Windows_NT)
       X-Ms-Date:
-      - Fri, 10 Sep 2021 17:56:30 GMT
+      - Sat, 11 Sep 2021 08:51:29 GMT
       X-Ms-Lease-Action:
       - acquire
       X-Ms-Lease-Duration:
@@ -65,17 +65,17 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 10 Sep 2021 17:56:29 GMT
+      - Sat, 11 Sep 2021 08:51:28 GMT
       Etag:
-      - '"0x8D97484515AE3E3"'
+      - '"0x8D97501589A4A0F"'
       Last-Modified:
-      - Fri, 10 Sep 2021 17:56:29 GMT
+      - Sat, 11 Sep 2021 08:51:29 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Lease-Id:
       - c820a799-76d7-4ee2-6e15-546f19325c2c
       X-Ms-Request-Id:
-      - d461204a-501e-001e-476d-a6ec4c000000
+      - ea545d07-701e-002b-2fea-a64219000000
       X-Ms-Version:
       - "2019-12-12"
     status: 201 Created
@@ -92,7 +92,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.16.7; Windows_NT)
       X-Ms-Date:
-      - Fri, 10 Sep 2021 17:56:30 GMT
+      - Sat, 11 Sep 2021 08:51:29 GMT
       X-Ms-Lease-Action:
       - release
       X-Ms-Lease-Id:
@@ -107,15 +107,15 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 10 Sep 2021 17:56:30 GMT
+      - Sat, 11 Sep 2021 08:51:28 GMT
       Etag:
-      - '"0x8D97484515AE3E3"'
+      - '"0x8D97501589A4A0F"'
       Last-Modified:
-      - Fri, 10 Sep 2021 17:56:29 GMT
+      - Sat, 11 Sep 2021 08:51:29 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d46120ea-501e-001e-516d-a6ec4c000000
+      - ea545d5f-701e-002b-7aea-a64219000000
       X-Ms-Version:
       - "2019-12-12"
     status: 200 OK
@@ -132,7 +132,7 @@ interactions:
       User-Agent:
       - azsdk-go-azblob/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.16.7; Windows_NT)
       X-Ms-Date:
-      - Fri, 10 Sep 2021 17:56:30 GMT
+      - Sat, 11 Sep 2021 08:51:29 GMT
       X-Ms-Version:
       - "2019-12-12"
     url: https://azureblobstoragecanada.blob.core.windows.net/goccontaineracquirelease?restype=container
@@ -143,11 +143,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Fri, 10 Sep 2021 17:56:30 GMT
+      - Sat, 11 Sep 2021 08:51:29 GMT
       Server:
       - Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - d4612189-501e-001e-606d-a6ec4c000000
+      - ea545db7-701e-002b-46ea-a64219000000
       X-Ms-Version:
       - "2019-12-12"
     status: 202 Accepted

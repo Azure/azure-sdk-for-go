@@ -11,10 +11,8 @@ import (
 type DeleteBlobOptions struct {
 	// Required if the blob has associated snapshots. Specify one of the following two options: include: Delete the base blob
 	// and all of its snapshots. only: Delete only the blob's snapshots and not the blob itself
-	DeleteSnapshots *DeleteSnapshotsOptionType
-
-	LeaseAccessConditions    *LeaseAccessConditions
-	ModifiedAccessConditions *ModifiedAccessConditions
+	DeleteSnapshots      *DeleteSnapshotsOptionType
+	BlobAccessConditions *BlobAccessConditions
 }
 
 func (o *DeleteBlobOptions) pointers() (*BlobDeleteOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
@@ -26,7 +24,11 @@ func (o *DeleteBlobOptions) pointers() (*BlobDeleteOptions, *LeaseAccessConditio
 		DeleteSnapshots: o.DeleteSnapshots,
 	}
 
-	return &basics, o.LeaseAccessConditions, o.ModifiedAccessConditions
+	if o.BlobAccessConditions == nil {
+		return &basics, nil, nil
+	}
+
+	return &basics, o.BlobAccessConditions.LeaseAccessConditions, o.BlobAccessConditions.ModifiedAccessConditions
 }
 
 type DownloadBlobOptions struct {
@@ -157,7 +159,7 @@ func (o *CreateBlobSnapshotOptions) pointers() (blobSetMetadataOptions *BlobCrea
 
 type StartCopyBlobOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
-	BlobTagsMap map[string]string
+	TagsMap map[string]string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
@@ -183,7 +185,7 @@ func (o *StartCopyBlobOptions) pointers() (blobStartCopyFromUrlOptions *BlobStar
 	}
 
 	basics := BlobStartCopyFromURLOptions{
-		BlobTagsString:    serializeBlobTagsToStrPtr(o.BlobTagsMap),
+		BlobTagsString:    serializeBlobTagsToStrPtr(o.TagsMap),
 		Metadata:          o.Metadata,
 		RehydratePriority: o.RehydratePriority,
 		SealBlob:          o.SealBlob,
@@ -205,12 +207,12 @@ func (o *AbortCopyBlobOptions) pointers() (blobAbortCopyFromUrlOptions *BlobAbor
 	return nil, o.LeaseAccessConditions
 }
 
-func serializeBlobTagsToStrPtr(blobTagsMap map[string]string) *string {
-	if blobTagsMap == nil {
+func serializeBlobTagsToStrPtr(tagsMap map[string]string) *string {
+	if tagsMap == nil {
 		return nil
 	}
 	tags := make([]string, 0)
-	for key, val := range blobTagsMap {
+	for key, val := range tagsMap {
 		tags = append(tags, url.QueryEscape(key)+"="+url.QueryEscape(val))
 	}
 	//tags = tags[:len(tags)-1]
@@ -218,12 +220,12 @@ func serializeBlobTagsToStrPtr(blobTagsMap map[string]string) *string {
 	return &blobTagsString
 }
 
-func serializeBlobTags(blobTagsMap map[string]string) *BlobTags {
-	if blobTagsMap == nil {
+func serializeBlobTags(tagsMap map[string]string) *BlobTags {
+	if tagsMap == nil {
 		return nil
 	}
 	blobTagSet := make([]*BlobTag, 0)
-	for key, val := range blobTagsMap {
+	for key, val := range tagsMap {
 		newKey, newVal := key, val
 		blobTagSet = append(blobTagSet, &BlobTag{Key: &newKey, Value: &newVal})
 	}
@@ -243,7 +245,7 @@ type SetTagsBlobOptions struct {
 	// Optional header, Specifies the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 []byte
 
-	BlobTagsMap map[string]string
+	TagsMap map[string]string
 
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
@@ -255,7 +257,7 @@ func (o *SetTagsBlobOptions) pointers() (*BlobSetTagsOptions, *ModifiedAccessCon
 
 	options := &BlobSetTagsOptions{
 		RequestID:                 o.RequestID,
-		Tags:                      serializeBlobTags(o.BlobTagsMap),
+		Tags:                      serializeBlobTags(o.TagsMap),
 		Timeout:                   o.Timeout,
 		TransactionalContentMD5:   o.TransactionalContentMD5,
 		TransactionalContentCRC64: o.TransactionalContentCRC64,

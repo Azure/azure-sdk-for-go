@@ -5,11 +5,9 @@ package azblob
 
 import (
 	"context"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"io"
 	"net/url"
-	"time"
 )
 
 const (
@@ -28,10 +26,6 @@ func NewPageBlobClient(blobURL string, cred azcore.Credential, options *ClientOp
 		client:     &pageBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
-}
-
-func (pb PageBlobClient) URL() string {
-	return pb.client.con.u
 }
 
 // WithSnapshot creates a new PageBlobURL object identical to the source but with the specified snapshot timestamp.
@@ -194,34 +188,4 @@ func (pb PageBlobClient) StartCopyIncremental(ctx context.Context, source string
 	resp, err := pb.client.CopyIncremental(ctx, srcURL.String(), pageBlobCopyIncrementalOptions, modifiedAccessConditions)
 
 	return resp, handleError(err)
-}
-
-// GetBlobSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
-// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
-// This validity can be checked with CanGetBlobSASToken().
-func (pb PageBlobClient) GetBlobSASToken(permissions BlobSASPermissions, validityTime time.Duration) (SASQueryParameters, error) {
-	urlParts := NewBlobURLParts(pb.URL())
-
-	t, err := time.Parse(SnapshotTimeFormat, urlParts.Snapshot)
-
-	if err != nil {
-		t = time.Time{}
-	}
-
-	cred, ok := pb.cred.(*SharedKeyCredential)
-	if !ok {
-		return SASQueryParameters{}, errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
-	}
-
-	return BlobSASSignatureValues{
-		ContainerName: urlParts.ContainerName,
-		BlobName:      urlParts.BlobName,
-		SnapshotTime:  t,
-		Version:       SASVersion,
-
-		Permissions: permissions.String(),
-
-		StartTime:  time.Now().UTC(),
-		ExpiryTime: time.Now().UTC().Add(validityTime),
-	}.NewSASQueryParameters(cred)
 }

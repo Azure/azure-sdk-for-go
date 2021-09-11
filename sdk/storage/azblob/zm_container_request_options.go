@@ -69,14 +69,14 @@ func (o *GetAccessPolicyOptions) pointers() (*ContainerGetAccessPolicyOptions, *
 type SetAccessPolicyOptions struct {
 	// At least Access and ContainerACL must be specified
 	ContainerSetAccessPolicyOptions ContainerSetAccessPolicyOptions
-	ContainerAccessConditions       *ContainerAccessConditions
+	AccessConditions                *ContainerAccessConditions
 }
 
 func (o *SetAccessPolicyOptions) pointers() (ContainerSetAccessPolicyOptions, *LeaseAccessConditions, *ModifiedAccessConditions) {
 	if o == nil {
 		return ContainerSetAccessPolicyOptions{}, nil, nil
 	}
-	mac, lac := o.ContainerAccessConditions.pointers()
+	mac, lac := o.AccessConditions.pointers()
 	return o.ContainerSetAccessPolicyOptions, lac, mac
 }
 

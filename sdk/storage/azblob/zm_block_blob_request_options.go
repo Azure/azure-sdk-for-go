@@ -5,7 +5,7 @@ package azblob
 
 type UploadBlockBlobOptions struct {
 	// Optional. Used to set blob tags in various blob operations.
-	BlobTagsMap map[string]string
+	TagsMap map[string]string
 
 	// Optional. Specifies a user-defined name-value pair associated with the blob.
 	Metadata map[string]string
@@ -16,7 +16,7 @@ type UploadBlockBlobOptions struct {
 	// Specify the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 []byte
 
-	BlobHTTPHeaders      *BlobHTTPHeaders
+	HTTPHeaders          *BlobHTTPHeaders
 	CpkInfo              *CpkInfo
 	CpkScopeInfo         *CpkScopeInfo
 	BlobAccessConditions *BlobAccessConditions
@@ -29,14 +29,14 @@ func (o *UploadBlockBlobOptions) pointers() (*BlockBlobUploadOptions, *BlobHTTPH
 	}
 
 	basics := BlockBlobUploadOptions{
-		BlobTagsString:          serializeBlobTagsToStrPtr(o.BlobTagsMap),
+		BlobTagsString:          serializeBlobTagsToStrPtr(o.TagsMap),
 		Metadata:                o.Metadata,
 		Tier:                    o.Tier,
 		TransactionalContentMD5: o.TransactionalContentMD5,
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
-	return &basics, o.BlobHTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
+	return &basics, o.HTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
 }
 
 type StageBlockOptions struct {

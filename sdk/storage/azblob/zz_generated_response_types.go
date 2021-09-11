@@ -2430,14 +2430,14 @@ type ServiceGetUserDelegationKeyResult struct {
 	Version *string `xml:"Version"`
 }
 
-// ServiceListContainersSegmentResponse contains the response from method Service.ListContainersSegment.
+// ServiceListContainersSegmentResponse contains the response from method Service.ListContainers.
 type ServiceListContainersSegmentResponse struct {
 	ServiceListContainersSegmentResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// ServiceListContainersSegmentResult contains the result from method Service.ListContainersSegment.
+// ServiceListContainersSegmentResult contains the result from method Service.ListContainers.
 type ServiceListContainersSegmentResult struct {
 	ListContainersSegmentResponse
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.

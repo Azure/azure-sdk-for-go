@@ -6,13 +6,13 @@ package azblob
 type CreateAppendBlobOptions struct {
 	BlobAccessConditions *BlobAccessConditions
 
-	BlobHTTPHeaders *BlobHTTPHeaders
+	HTTPHeaders *BlobHTTPHeaders
 
 	CpkInfo *CpkInfo
 
 	CpkScopeInfo *CpkScopeInfo
 	// Optional. Used to set blob tags in various blob operations.
-	BlobTagsMap map[string]string
+	TagsMap map[string]string
 	// Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value pairs are specified, the
 	// operation will copy the metadata from the source blob or file to the destination blob. If one or more name-value pairs
 	// are specified, the destination blob is created with the specified metadata, and metadata is not copied from the source
@@ -31,14 +31,14 @@ func (o *CreateAppendBlobOptions) pointers() (*AppendBlobCreateOptions, *BlobHTT
 	}
 
 	options := AppendBlobCreateOptions{
-		BlobTagsString: serializeBlobTagsToStrPtr(o.BlobTagsMap),
+		BlobTagsString: serializeBlobTagsToStrPtr(o.TagsMap),
 		Metadata:       o.Metadata,
 		RequestID:      o.RequestID,
 		Timeout:        o.Timeout,
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := o.BlobAccessConditions.pointers()
-	return &options, o.BlobHTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
+	return &options, o.HTTPHeaders, leaseAccessConditions, o.CpkInfo, o.CpkScopeInfo, modifiedAccessConditions
 }
 
 type AppendBlockOptions struct {

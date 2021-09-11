@@ -53,8 +53,8 @@ For more information about blob service URL's and how to configure custom domain
 
 #### Types of credentials
 
-The clients support different forms of authentication. Storage accounts can use a [Shared Key Credential][shared_key_credential], [Connection
-String][connection_string], or a [Shared Access Signature Token](shared_access_signature) for authentication
+The clients support different forms of authentication. Storage accounts can use a [Shared Key Credential](https://docs.microsoft.com/en-us/rest/api/storageservices/authorize-with-shared-key), [Connection
+String](https://docs.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string), or a [Shared Access Signature Token](https://docs.microsoft.com/en-us/rest/api/storageservices/delegate-access-with-shared-access-signature) for authentication
 in [`azidentity`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity)
 like `azidentity.NewDefaultAzureCredential()`.
 
@@ -359,9 +359,3 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 [contact_msft_oss]:mailto:opencode@microsoft.com
 
 [blobs_rest]: https://docs.microsoft.com/en-us/rest/api/storageservices/blob-service-rest-api
-
-[shared_key_credential]:https://docs.microsoft.com/en-us/rest/api/storageservices/authorize-with-shared-key
-
-[connection_string]:https://docs.microsoft.com/en-us/azure/storage/common/storage-configure-connection-string
-
-[shared_access_signature]: https://docs.microsoft.com/en-us/rest/api/storageservices/delegate-access-with-shared-access-signature

@@ -227,7 +227,6 @@ func createStorageServiceClient(t *testing.T) (*ServiceClient, error) {
 	var err error
 	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
 	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakestorageaccountkey")
-	fmt.Println("ACCOUNTKEY: ", accountKey)
 
 	if recording.GetRecordMode() == "playback" {
 		cred, err = getSharedKeyCredential(t)

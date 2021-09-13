@@ -74,7 +74,6 @@ steps:
       workingDirectory: '${{parameters.GoWorkspace}}'
       env:
         GO111MODULE: 'on'
-        AZURE_RECORD_MODE: 'playback'
         PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
         ${{ insert }}: ${{ parameters.EnvVars }}
 

@@ -92,6 +92,8 @@ jobs:
           Image: $(OSVmImage)
           GoVersion: $(GoVersion)
           RunTests: true
+          EnvVars:
+            AZURE_RECORD_MODE: 'record'
 
       - ${{ parameters.PostSteps }}
 

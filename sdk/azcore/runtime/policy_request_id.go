@@ -13,31 +13,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 )
 
-const requestIdHeader = "x-ms-client-request-id"
+type requestIdPolicy struct{}
 
-type requestIdPolicy struct {
-	o policy.ClientRequestOptions
-}
-
-func NewRequestIdPolicy(o *policy.ClientRequestOptions) *requestIdPolicy {
-	if o == nil {
-		o = &policy.ClientRequestOptions{AutoRequestId: true}
-	}
-
-	return &requestIdPolicy{o: *o}
+func NewRequestIdPolicy() policy.Policy {
+	return &requestIdPolicy{}
 }
 
 func (r *requestIdPolicy) Do(req *policy.Request) (*http.Response, error) {
+	const requestIdHeader = "x-ms-client-request-id"
 	if req.Raw().Header.Get(requestIdHeader) == "" {
-		if r.o.RequestId != "" {
-			req.Raw().Header.Set(requestIdHeader, r.o.RequestId)
-		} else if r.o.AutoRequestId {
-			id, err := uuid.New()
-			if err != nil {
-				return nil, err
-			}
-			req.Raw().Header.Set(requestIdHeader, id.String())
+		id, err := uuid.New()
+		if err != nil {
+			return nil, err
 		}
+		req.Raw().Header.Set(requestIdHeader, id.String())
 	}
 
 	return req.Next()

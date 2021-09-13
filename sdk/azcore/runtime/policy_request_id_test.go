@@ -11,15 +11,14 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-func TestAutoSetRequestId(t *testing.T) {
+func TestRequestIdPolicy(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
-	pl := NewPipeline(srv, NewRequestIdPolicy(nil))
+	pl := NewPipeline(srv, NewRequestIdPolicy())
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -35,57 +34,7 @@ func TestAutoSetRequestId(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if resp.Request.Header.Get(requestIdHeader) == "" {
+	if resp.Request.Header.Get("x-ms-client-request-id") == "" {
 		t.Fatalf("client request id header was not set")
-	}
-}
-
-func TestSetRequestId(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
-	pl := NewPipeline(srv, NewRequestIdPolicy(&policy.ClientRequestOptions{RequestId: "my-request-id"}))
-	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	body := newRewindTrackingBody("stuff")
-	if err := req.SetBody(body, "text/plain"); err != nil {
-		t.Fatal(err)
-	}
-	resp, err := pl.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code: %d", resp.StatusCode)
-	}
-	if resp.Request.Header.Get(requestIdHeader) == "" {
-		t.Fatalf("client request id header was not set")
-	}
-}
-
-func TestNoRequestId(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
-	pl := NewPipeline(srv, NewRequestIdPolicy(&policy.ClientRequestOptions{AutoRequestId: false}))
-	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	body := newRewindTrackingBody("stuff")
-	if err := req.SetBody(body, "text/plain"); err != nil {
-		t.Fatal(err)
-	}
-	resp, err := pl.Do(req)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code: %d", resp.StatusCode)
-	}
-	if resp.Request.Header.Get(requestIdHeader) != "" {
-		t.Fatalf("client request id header was set but should not have been")
 	}
 }

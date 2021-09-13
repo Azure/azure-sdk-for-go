@@ -27,9 +27,7 @@ steps:
   - pwsh: |
       $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
       foreach ($md in $modDirs) {
-        pushd $md
-        Get-ChildItem doc.go
-        if ($LASTEXITCODE) { exit $LASTEXITCODE }
+        Get-ChildItem $md/doc.go
       }
     displayName: 'Verify doc.go'
     workingDirectory: '${{parameters.GoWorkspace}}'

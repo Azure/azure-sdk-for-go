@@ -36,15 +36,16 @@ func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Poli
 }
 
 func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-	originalURLHost := req.Raw().URL.Host
-	req.Raw().URL.Scheme = "https"
-	req.Raw().URL.Host = p.options.Host
-	req.Raw().Host = p.options.Host
+	if !recording.IsLiveOnly(p.t) {
+		originalURLHost := req.Raw().URL.Host
+		req.Raw().URL.Scheme = "https"
+		req.Raw().URL.Host = p.options.Host
+		req.Raw().Host = p.options.Host
 
-	req.Raw().Header.Set(recording.UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.Scheme, originalURLHost))
-	req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
-	req.Raw().Header.Set(recording.IdHeader, recording.GetRecordingId(p.t))
-
+		req.Raw().Header.Set(recording.UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.Scheme, originalURLHost))
+		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
+		req.Raw().Header.Set(recording.IdHeader, recording.GetRecordingId(p.t))
+	}
 	return req.Next()
 }
 
@@ -226,6 +227,7 @@ func createStorageServiceClient(t *testing.T) (*ServiceClient, error) {
 	var err error
 	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
 	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakestorageaccountkey")
+	fmt.Println("ACCOUNTKEY: ", accountKey)
 
 	if recording.GetRecordMode() == "playback" {
 		cred, err = getSharedKeyCredential(t)

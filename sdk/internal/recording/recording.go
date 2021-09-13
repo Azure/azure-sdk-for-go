@@ -452,13 +452,17 @@ const (
 	UpstreamUriHeader  = "x-recording-upstream-base-uri"
 )
 
-var recordingIds = map[string]string{}
-
-var tr = &http.Transport{
-	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+type recordedTest struct {
+	recordingId string
+	liveOnly    bool
 }
+
+var testSuite = map[string]recordedTest{}
+
 var client = http.Client{
-	Transport: tr,
+	Transport: &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	},
 }
 
 type RecordingOptions struct {
@@ -493,15 +497,21 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 	if !(recordMode == modeRecording || recordMode == modePlayback) {
 		return fmt.Errorf("AZURE_RECORD_MODE was not understood, options are %s or %s Received: %v", modeRecording, modePlayback, recordMode)
 	}
+
+	if testStruct, ok := testSuite[t.Name()]; ok {
+		if testStruct.liveOnly {
+			// test should only be run live, don't want to generate recording
+			return nil
+		}
+	}
+
 	testId := getTestId(pathToRecordings, t)
 
 	url := fmt.Sprintf("%s/%s/start", options.HostScheme(), recordMode)
-
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
 	}
-
 	req.Header.Set("x-recording-file", testId)
 
 	resp, err := client.Do(req)
@@ -516,7 +526,12 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 		}
 		return fmt.Errorf("Recording ID was not returned by the response. Response body: %s", b)
 	}
-	recordingIds[t.Name()] = recId
+	if val, ok := testSuite[t.Name()]; ok {
+		val.recordingId = recId
+		testSuite[t.Name()] = val
+	} else {
+		testSuite[t.Name()] = recordedTest{recordingId: recId, liveOnly: false}
+	}
 	return nil
 }
 
@@ -525,17 +540,24 @@ func StopRecording(t *testing.T, options *RecordingOptions) error {
 		options = defaultOptions()
 	}
 
+	if testStruct, ok := testSuite[t.Name()]; ok {
+		if testStruct.liveOnly {
+			// test should only be run live, don't want to generate recording
+			return nil
+		}
+	}
+
 	url := fmt.Sprintf("%v/%v/stop", options.HostScheme(), recordMode)
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
 	}
-	var recId string
+	var recTest recordedTest
 	var ok bool
-	if recId, ok = recordingIds[t.Name()]; !ok {
+	if recTest, ok = testSuite[t.Name()]; !ok {
 		return errors.New("Recording ID was never set. Did you call StartRecording?")
 	}
-	req.Header.Set("x-recording-id", recId)
+	req.Header.Set("x-recording-id", recTest.recordingId)
 	_, err = client.Do(req)
 	if err != nil {
 		t.Errorf(err.Error())
@@ -579,6 +601,9 @@ func (o *RecordingOptions) Init() {
 
 // This looks up an environment variable and if it is not found, returns the recordedValue
 func GetEnvVariable(t *testing.T, varName string, recordedValue string) string {
+	if GetRecordMode() == modePlayback {
+		return recordedValue
+	}
 	val, ok := os.LookupEnv(varName)
 	if !ok {
 		t.Logf("Could not find environment variable: %v", varName)
@@ -588,6 +613,12 @@ func GetEnvVariable(t *testing.T, varName string, recordedValue string) string {
 }
 
 func LiveOnly(t *testing.T) {
+	if val, ok := testSuite[t.Name()]; ok {
+		val.liveOnly = true
+		testSuite[t.Name()] = val
+	} else {
+		testSuite[t.Name()] = recordedTest{liveOnly: true}
+	}
 	if GetRecordMode() != modeRecording {
 		t.Skip("Live Test Only")
 	}
@@ -602,7 +633,7 @@ func Sleep(duration time.Duration) {
 }
 
 func GetRecordingId(t *testing.T) string {
-	return recordingIds[t.Name()]
+	return testSuite[t.Name()].recordingId
 }
 
 func GetRecordMode() string {
@@ -653,4 +684,11 @@ func GetHTTPClient(t *testing.T) (*http.Client, error) {
 		Transport: transport,
 	}
 	return defaultHttpClient, nil
+}
+
+func IsLiveOnly(t *testing.T) bool {
+	if s, ok := testSuite[t.Name()]; ok {
+		return s.liveOnly
+	}
+	return false
 }

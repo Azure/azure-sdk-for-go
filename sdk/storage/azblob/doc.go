@@ -130,16 +130,12 @@ Examples
 		handle(errors.New("AZURE_STORAGE_ACCOUNT_KEY could not be found"))
 	}
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
-	if err != nil {
-		handle(err)
-	}
+	handle(err)
 
 	// Open up a service client.
 	// You'll need to specify a service URL, which for blob endpoints usually makes up the syntax http(s)://<account>.blob.core.windows.net/
 	service, err := NewServiceClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
-	if err != nil {
-		handle(err)
-	}
+	handle(err)
 
 	// All operations in the Azure Storage Blob SDK for Go operate on a context.Context, allowing you to control cancellation/timeout.
 	ctx := context.Background() // This example has no expiry.
@@ -154,9 +150,7 @@ Examples
 	// Note that, all service-side requests have an options bag attached, allowing you to specify things like metadata, public access types, etc.
 	// Specifying nil omits all options.
 	_, err = container.Create(ctx, nil)
-	if err != nil {
-		handle(err)
-	}
+	handle(err)
 
 	// ===== 2. Uploading/downloading a block blob =====
 	// We'll specify our data up-front, rather than reading a file for simplicity's sake.
@@ -167,29 +161,21 @@ Examples
 
 	// Upload data to the block blob
 	_, err = blockBlob.Upload(ctx, NopCloser(strings.NewReader(data)), nil)
-	if err != nil {
-		handle(err)
-	}
+	handle(err)
 
 	// Download the blob's contents and ensure that the download worked properly
 	get, err := blockBlob.Download(ctx, nil)
-	if err != nil {
-		handle(err)
-	}
+	handle(err)
 
 	// Open a buffer, reader, and then download!
 	downloadedData := &bytes.Buffer{}
 	reader := get.Body(RetryReaderOptions{}) // RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
 	_, err = downloadedData.ReadFrom(reader)
-	if err != nil {
-		handle(err)
-	}
+	handle(err)
 	err = reader.Close()
-	if err != nil {
-		handle(err)
-	}
+	handle(err)
 	if data != downloadedData.String() {
-		log.Fatal("downloaded data doesn't match uploaded data")
+		handle(errors.New("downloaded data doesn't match uploaded data"))
 	}
 
 	// ===== 3. list blobs =====
@@ -212,15 +198,11 @@ Examples
 
 	// Delete the blob we created earlier.
 	_, err = blockBlob.Delete(ctx, nil)
-	if err != nil {
-		handle(err)
-	}
+	handle(err)
 
 	// Delete the container we created earlier.
 	_, err = container.Delete(ctx, nil)
-	if err != nil {
-		handle(err)
-	}
+	handle(err)
 */
 
 package azblob

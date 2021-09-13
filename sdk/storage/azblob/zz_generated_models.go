@@ -594,7 +594,7 @@ type BlobSetAccessControlOptions struct {
 // BlobSetExpiryOptions contains the optional parameters for the Blob.SetExpiry method.
 type BlobSetExpiryOptions struct {
 	// The time to set the blob to expiry
-	ExpiresOn *time.Time
+	ExpiresOn *string
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
 	RequestID *string
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations">Setting
@@ -1434,10 +1434,10 @@ type JSONTextConfiguration struct {
 // KeyInfo - Key information
 type KeyInfo struct {
 	// REQUIRED; The date-time the key expires in ISO 8601 UTC time
-	Expiry *time.Time `xml:"Expiry"`
+	Expiry *string `xml:"Expiry"`
 
 	// REQUIRED; The date-time the key is active in ISO 8601 UTC time
-	Start *time.Time `xml:"Start"`
+	Start *string `xml:"Start"`
 }
 
 // LeaseAccessConditions contains a group of parameters for the Container.GetProperties method.

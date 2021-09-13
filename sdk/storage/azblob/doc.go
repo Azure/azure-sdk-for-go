@@ -80,9 +80,8 @@ You can generate a SAS token from the Azure Portal under Shared Access Signature
 	serviceClient, err := azblob.NewServiceClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), credential, nil)
 	handle(err)
 
-    // Provide the convenience function with relevant info (resourceType, list of permissions, serviceType, startTime, and endTime)
-	accountSAS, err := serviceClient.GetSASToken(AccountSASResourceTypes{Object: true, Service: true, Container: true},
-		AccountSASPermissions{Read: true, List: true}, AccountSASServices{Blob: true}, time.Now(), time.Now().Add(48*time.Hour))
+    // Provide the convenience function with relevant info
+	accountSAS, err := serviceClient.GetSASToken(AccountSASResourceTypes{Object: true, Service: true, Container: true}, AccountSASPermissions{Read: true, List: true}, AccountSASServices{Blob: true}, time.Now(), time.Now().Add(48*time.Hour))
 	handle(err)
 
 	urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, accountSAS)
@@ -119,10 +118,28 @@ There are three different clients provided to interact with the various componen
 
 Examples
 
+	// Use your storage account's name and key to create a credential object, used to access your account.
+	// You can obtain these details from the Azure Portal.
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		handle(errors.New("AZURE_STORAGE_ACCOUNT_NAME could not be found"))
+	}
+
+	accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
+	if !ok {
+		handle(errors.New("AZURE_STORAGE_ACCOUNT_KEY could not be found"))
+	}
+	cred, err := NewSharedKeyCredential(accountName, accountKey)
+	if err != nil {
+		handle(err)
+	}
+
 	// Open up a service client.
 	// You'll need to specify a service URL, which for blob endpoints usually makes up the syntax http(s)://<account>.blob.core.windows.net/
-	service, err := azblob.NewServiceClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
-	handle(err)
+	service, err := NewServiceClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	if err != nil {
+		handle(err)
+	}
 
 	// All operations in the Azure Storage Blob SDK for Go operate on a context.Context, allowing you to control cancellation/timeout.
 	ctx := context.Background() // This example has no expiry.
@@ -137,7 +154,9 @@ Examples
 	// Note that, all service-side requests have an options bag attached, allowing you to specify things like metadata, public access types, etc.
 	// Specifying nil omits all options.
 	_, err = container.Create(ctx, nil)
-	handle(err)
+	if err != nil {
+		handle(err)
+	}
 
 	// ===== 2. Uploading/downloading a block blob =====
 	// We'll specify our data up-front, rather than reading a file for simplicity's sake.
@@ -148,22 +167,26 @@ Examples
 
 	// Upload data to the block blob
 	_, err = blockBlob.Upload(ctx, NopCloser(strings.NewReader(data)), nil)
-	handle(err)
+	if err != nil {
+		handle(err)
+	}
 
 	// Download the blob's contents and ensure that the download worked properly
 	get, err := blockBlob.Download(ctx, nil)
-	handle(err)
+	if err != nil {
+		handle(err)
+	}
 
 	// Open a buffer, reader, and then download!
 	downloadedData := &bytes.Buffer{}
 	reader := get.Body(RetryReaderOptions{}) // RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
 	_, err = downloadedData.ReadFrom(reader)
 	if err != nil {
-		return
+		handle(err)
 	}
 	err = reader.Close()
 	if err != nil {
-		return
+		handle(err)
 	}
 	if data != downloadedData.String() {
 		log.Fatal("downloaded data doesn't match uploaded data")
@@ -189,11 +212,15 @@ Examples
 
 	// Delete the blob we created earlier.
 	_, err = blockBlob.Delete(ctx, nil)
-	handle(err)
+	if err != nil {
+		handle(err)
+	}
 
 	// Delete the container we created earlier.
 	_, err = container.Delete(ctx, nil)
-	handle(err)
+	if err != nil {
+		handle(err)
+	}
 */
 
 package azblob

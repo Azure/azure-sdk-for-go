@@ -2,8 +2,8 @@
 
 ## Introduction
 
-The Microsoft Azure Storage SDK for Go allows you to build applications that takes advantage of Azure's scalable cloud
-storage. This SDK replaces the previously previewed [azblob package](https://github.com/azure/azure-storage-blob-go) in the separate repository.
+The Microsoft Azure Storage SDK for Go allows you to build applications that takes advantage of Azure's scalable cloud storage. 
+This SDK replaces the previously previewed [azblob package](https://github.com/azure/azure-storage-blob-go).
 
 ## Getting Started
 
@@ -11,12 +11,12 @@ The Azure Blob SDK can access an Azure Storage account.
 
 ### Prerequisites
 
-* Go versions 1.16 or higher. If you don't already have it, install [the Go distribution](https://golang.org/dl/)
+* Go versions 1.16 or higher
 * You must have an [Azure storage account][azure_storage_account]
 
 #### Create account
 
-* To create a new Storage account, you can use [Azure Portal][azure_portal_create_account], [Azure PowerShell][azure_powershell_create_account], or [Azure CLI][azure_cli_create_account]:
+* To create a new Storage account, you can use [Azure Portal][azure_portal_create_account], [Azure PowerShell][azure_powershell_create_account], or [Azure CLI][azure_cli_create_account].
 
 ### Install the package
 * Install the Azure blob storage for Go with `go get`:
@@ -37,8 +37,8 @@ To create a client object, you will need the account's blob service endpoint URL
 The `endpoint` can be found on the page for your storage account in the [Azure Portal][azure_portal_account_url] under the "Access Keys" section or by running the following Azure CLI command:
 
 ```bash
-# Get the table service URL for the account
-az storage account show -n mystorageaccount -g MyResourceGroup --query "primaryEndpoints.table"
+# Get the blob service URL for the account
+az storage account show -n mystorageaccount -g MyResourceGroup --query "primaryEndpoints.blob"
 ```
 
 Once you have the account URL, it can be used to create the service client:
@@ -54,9 +54,7 @@ For more information about blob service URL's and how to configure custom domain
 #### Types of credentials
 
 The clients support different forms of authentication. Storage accounts can use a Shared Key Credential, Connection
-String, or a Shared Access Signature Token for authentication
-in [`azidentity`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity)
-like `azidentity.NewDefaultAzureCredential()`.
+String, or a Shared Access Signature Token for authentication.
 
 The azblob package supports any of the types that implement the `azcore.TokenCredential` interface, authorization via a
 Connection String, or authorization with a Shared Access Signature Token.
@@ -71,11 +69,11 @@ running the following Azure CLI command:
 az storage account keys list -g MyResourceGroup -n MyStorageAccount
 ```
 
-Use AAD authentication as the credential parameter to authenticate the client:
+Use Shared Key authentication as the credential parameter to authenticate the client:
 ```golang
-cred, err := azidentity.NewDefaultAzureCredential(nil)
+credential, err := azblob.NewSharedKeyCredential("accountName", "accountKey")
 handle(err)
-serviceClient, err := aztables.NewServiceClient("https://<myAccountName>.table.core.windows.net/", cred, nil)
+serviceClient, err := azblob.NewServiceClient("https://<myAccountName>.blob.core.windows.net/", credential, nil)
 handle(err)
 ```
 
@@ -94,30 +92,27 @@ connStr := "DefaultEndpointsProtocol=https;AccountName=<myAccountName>;AccountKe
 serviceClient, err := azblob.NewServiceClientFromConnectionString(connStr, nil)
 ```
 
-##### Creating the client from a SAS token
+##### 3. Creating the client from a SAS token
 
 To use a [shared access signature (SAS) token][azure_sas_token], provide the token as a string. 
-If your account URL includes the SAS token, replace credential parameter with `azcore.NewAnonymousCredential()`. 
-If your account URL includes the SAS token, replace credential parameter with `azcore.NewAnonymousCredential()`. 
+If your account URL includes the SAS token, replace credential parameter with `azcore.NewAnonymousCredential()`.  
 You can generate a SAS token from the Azure Portal under [Shared access signature](https://docs.microsoft.com/rest/api/storageservices/create-service-sas) or use
 the `ServiceClient.GetSASToken` or `ContainerClient.GetSASToken()` methods.
 
-```go
+```golang
 credential, err := azblob.NewSharedKeyCredential("accountName", "accountKey")
 if err != nil {
-log.Fatal(err)
+	handle(err)
 }
 serviceClient, err := azblob.NewServiceClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), credential, nil)
 if err != nil {
-log.Fatal(err)
+	handle(err)
 }
 // Provide the convenience function with relevant info (services, resource types, permissions, and duration)
 // The SAS token will be valid from this moment onwards.
 accountSAS, err := serviceClient.GetAccountSASToken(AccountSASResourceTypes{Object: true, Service: true, Container: true},
 AccountSASPermissions{Read: true, List: true}, AccountSASServices{Blob: true}, time.Now(), time.Now().Add(48*time.Hour))
-if err != nil {
-log.Fatal(err)
-}
+handle(err)
 urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, accountSAS)
 // You can hand off this URL to someone else via any mechanism you choose.
 
@@ -125,9 +120,7 @@ urlToSend := fmt.Sprintf("https://%s.blob.core.windows.net/?%s", accountName, ac
 
 // When someone receives the URL, they can access the resource using it in code like this, or a tool of some variety.
 serviceClient, err = NewServiceClient(urlToSend, azcore.NewAnonymousCredential(), nil)
-if err != nil {
-log.Fatal(err)
-}
+handle(err)
 ```
 
 ### Clients
@@ -151,110 +144,109 @@ Three different clients are provided to interact with the various components of 
 
 ### Example
 ```go
-// Use your storage account's name and key to create a credential object, used to access your account.
- // You can obtain these details from the Azure Portal.
- accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
- if !ok {
-     panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
- }
+	// Use your storage account's name and key to create a credential object, used to access your account.
+	// You can obtain these details from the Azure Portal.
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		handle(errors.New("AZURE_STORAGE_ACCOUNT_NAME could not be found"))
+	}
 
- accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
- if !ok {
-     panic("AZURE_STORAGE_ACCOUNT_KEY could not be found")
- }
- cred, err := NewSharedKeyCredential(accountName, accountKey)
- if err != nil {
-     log.Fatal(err)
- }
+	accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
+	if !ok {
+		handle(errors.New("AZURE_STORAGE_ACCOUNT_KEY could not be found"))
+	}
+	cred, err := NewSharedKeyCredential(accountName, accountKey)
+	if err != nil {
+		handle(err)
+	}
 
- // Open up a service client.
- // You'll need to specify a service URL, which for blob endpoints usually makes up the syntax http(s)://<account>.blob.core.windows.net/
- service, err := NewServiceClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
- if err != nil {
-     log.Fatal(err)
- }
+	// Open up a service client.
+	// You'll need to specify a service URL, which for blob endpoints usually makes up the syntax http(s)://<account>.blob.core.windows.net/
+	service, err := NewServiceClient(fmt.Sprintf("https://%s.blob.core.windows.net/", accountName), cred, nil)
+	if err != nil {
+		handle(err)
+	}
 
- // All operations in the Azure Storage Blob SDK for Go operate on a context.Context, allowing you to control cancellation/timeout.
- ctx := context.Background() // This example has no expiry.
+	// All operations in the Azure Storage Blob SDK for Go operate on a context.Context, allowing you to control cancellation/timeout.
+	ctx := context.Background() // This example has no expiry.
 
- // This example showcases several common operations to help you get started, such as:
+	// This example showcases several common operations to help you get started, such as:
 
- // ===== 1. Creating a container =====
+	// ===== 1. Creating a container =====
 
- // First, branch off of the service client and create a container client.
- container := service.NewContainerClient("myContainer")
- // Then, fire off a create operation on the container client.
- // Note that, all service-side requests have an options bag attached, allowing you to specify things like metadata, public access types, etc.
- // Specifying nil omits all options.
- _, err = container.Create(ctx, nil)
- if err != nil {
-     log.Fatal(err)
- }
+	// First, branch off of the service client and create a container client.
+	container := service.NewContainerClient("myContainer")
+	// Then, fire off a create operation on the container client.
+	// Note that, all service-side requests have an options bag attached, allowing you to specify things like metadata, public access types, etc.
+	// Specifying nil omits all options.
+	_, err = container.Create(ctx, nil)
+	if err != nil {
+		handle(err)
+	}
 
- // ===== 2. Uploading/downloading a block blob =====
- // We'll specify our data up-front, rather than reading a file for simplicity's sake.
- data := "Hello world!"
+	// ===== 2. Uploading/downloading a block blob =====
+	// We'll specify our data up-front, rather than reading a file for simplicity's sake.
+	data := "Hello world!"
 
- // Branch off of the container into a block blob client
- blockBlob := container.NewBlockBlobClient("HelloWorld.txt")
+	// Branch off of the container into a block blob client
+	blockBlob := container.NewBlockBlobClient("HelloWorld.txt")
 
- // Upload data to the block blob
- _, err = blockBlob.Upload(ctx, NopCloser(strings.NewReader(data)), nil)
- if err != nil {
-     log.Fatal(err)
- }
+	// Upload data to the block blob
+	_, err = blockBlob.Upload(ctx, NopCloser(strings.NewReader(data)), nil)
+	if err != nil {
+		handle(err)
+	}
 
- // Download the blob's contents and ensure that the download worked properly
- get, err := blockBlob.Download(ctx, nil)
- if err != nil {
-     log.Fatal(err)
- }
+	// Download the blob's contents and ensure that the download worked properly
+	get, err := blockBlob.Download(ctx, nil)
+	if err != nil {
+		handle(err)
+	}
 
- // Open a buffer, reader, and then download!
- downloadedData := &bytes.Buffer{}
- reader := get.Body(RetryReaderOptions{}) // RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
- _, err = downloadedData.ReadFrom(reader)
- if err != nil {
-     return
- }
- err = reader.Close()
- if err != nil {
-     return
- }
- if data != downloadedData.String() {
-     log.Fatal("downloaded data doesn't match uploaded data")
- }
+	// Open a buffer, reader, and then download!
+	downloadedData := &bytes.Buffer{}
+	reader := get.Body(RetryReaderOptions{}) // RetryReaderOptions has a lot of in-depth tuning abilities, but for the sake of simplicity, we'll omit those here.
+	_, err = downloadedData.ReadFrom(reader)
+	if err != nil {
+		handle(err)
+	}
+	err = reader.Close()
+	if err != nil {
+		handle(err)
+	}
+	if data != downloadedData.String() {
+		handle(errors.New()
+	}
 
- // ===== 3. list blobs =====
- // The ListBlobs and ListContainers APIs return two channels, a values channel, and an errors channel.
- // You should enumerate on a range over the values channel, and then check the errors channel, as only ONE value will ever be passed to the errors channel.
- // The AutoPagerTimeout defines how long it will wait to place into the items channel before it exits & cleans itself up. A zero time will result in no timeout.
- pager := container.ListBlobsFlatSegment(nil)
+	// ===== 3. list blobs =====
+	// The ListBlobs and ListContainers APIs return two channels, a values channel, and an errors channel.
+	// You should enumerate on a range over the values channel, and then check the errors channel, as only ONE value will ever be passed to the errors channel.
+	// The AutoPagerTimeout defines how long it will wait to place into the items channel before it exits & cleans itself up. A zero time will result in no timeout.
+	pager := container.ListBlobsFlat(nil)
 
- for pager.NextPage(ctx) {
-     resp := pager.PageResponse()
+	for pager.NextPage(ctx) {
+		resp := pager.PageResponse()
 
-     for _, v := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
-         fmt.Println(*v.Name)
-     }
- }
+		for _, v := range resp.ContainerListBlobFlatSegmentResult.Segment.BlobItems {
+			fmt.Println(*v.Name)
+		}
+	}
 
- if err = pager.Err(); err != nil {
-     log.Fatal(err)
- }
+	if err = pager.Err(); err != nil {
+		handle(err)
+	}
 
- // Delete the blob we created earlier.
- _, err = blockBlob.Delete(ctx, nil)
- if err != nil {
-     log.Fatal(err)
- }
+	// Delete the blob we created earlier.
+	_, err = blockBlob.Delete(ctx, nil)
+	if err != nil {
+		handle(err)
+	}
 
- // Delete the container we created earlier.
- _, err = container.Delete(ctx, nil)
- if err != nil {
-     log.Fatal(err)
- }
-
+	// Delete the container we created earlier.
+	_, err = container.Delete(ctx, nil)
+	if err != nil {
+		handle(err)
+	}
 ```
 
 ## Troubleshooting
@@ -269,7 +261,7 @@ var errResp azcore.HTTPResponse
 resp, err := serviceClient.CreateContainer(context.Background(), "testcontainername", nil)
 if err != nil {
    if errors.As(err, &errResp) {
-   // do something with errResp.RawResponse()
+        // do something with errResp.RawResponse()
    }
 }
 ```
@@ -290,7 +282,7 @@ be like the following:
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 // Set log to output to the console
 azlog.SetListener(func(cls azlog.Classification, msg string) {
-		fmt.Println(msg) // printing log out to the console
+	fmt.Println(msg) // printing log out to the console
 })
 
 // Includes only requests and responses in credential logs

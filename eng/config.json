@@ -15,6 +15,10 @@
         {
             "Name": "data",
             "CoverageGoal": 0.62
+        },
+        {
+            "Name": "azblob",
+            "CoverageGoal": 0.45
         }
     ]
 }

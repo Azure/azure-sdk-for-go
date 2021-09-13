@@ -96,9 +96,10 @@ serviceClient, err := azblob.NewServiceClientFromConnectionString(connStr, nil)
 
 ##### Creating the client from a SAS token
 
-To use a [shared access signature (SAS) token][azure_sas_token], provide the token as a string. If your account URL
-includes the SAS token, omit the credential parameter. You can generate a SAS token from the Azure Portal
-under [Shared access signature](https://docs.microsoft.com/rest/api/storageservices/create-service-sas) or use
+To use a [shared access signature (SAS) token][azure_sas_token], provide the token as a string. 
+If your account URL includes the SAS token, replace credential parameter with `azcore.NewAnonymousCredential()`. 
+If your account URL includes the SAS token, replace credential parameter with `azcore.NewAnonymousCredential()`. 
+You can generate a SAS token from the Azure Portal under [Shared access signature](https://docs.microsoft.com/rest/api/storageservices/create-service-sas) or use
 the `ServiceClient.GetSASToken` or `ContainerClient.GetSASToken()` methods.
 
 ```go
@@ -288,7 +289,7 @@ be like the following:
 ```golang
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 // Set log to output to the console
-log.SetListener(func(cls log.Classification, msg string) {
+azlog.SetListener(func(cls azlog.Classification, msg string) {
 		fmt.Println(msg) // printing log out to the console
 })
 

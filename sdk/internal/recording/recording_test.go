@@ -388,7 +388,10 @@ func TestRecordingOptions(t *testing.T) {
 	require.Equal(t, r.HostScheme(), "http://localhost:5000")
 
 	require.Equal(t, GetEnvVariable(t, "Nonexistentevnvar", "somefakevalue"), "somefakevalue")
+	temp := recordMode
+	recordMode = modeRecording
 	require.NotEqual(t, GetEnvVariable(t, "PROXY_CERT", "fake/path/to/proxycert"), "fake/path/to/proxycert")
+	recordMode = temp
 
 	r.Init()
 	require.Equal(t, r.Host, "localhost:5000")
@@ -556,5 +559,11 @@ func TestBackwardSlashPath(t *testing.T) {
 	packagePathBackslash := "sdk\\internal\\recordings"
 
 	err := StartRecording(t, packagePathBackslash, nil)
-	require.Error(t, err)
+	require.NoError(t, err)
+}
+
+func TestLiveOnly(t *testing.T) {
+	require.Equal(t, IsLiveOnly(t), false)
+	LiveOnly(t)
+	require.Equal(t, IsLiveOnly(t), true)
 }

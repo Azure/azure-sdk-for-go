@@ -23,12 +23,12 @@ func TestBatchAdd(t *testing.T) {
 			defer delete()
 
 			entitiesToCreate := createComplexEntities(10, "partition")
-			batch := make([]TransactionAction, 10)
+			var batch []TransactionAction
 
-			for i, e := range *entitiesToCreate {
+			for _, e := range *entitiesToCreate {
 				marshalled, err := json.Marshal(e)
 				require.NoError(t, err)
-				batch[i] = TransactionAction{ActionType: Add, Entity: marshalled}
+				batch = append(batch, TransactionAction{ActionType: Add, Entity: marshalled})
 			}
 
 			u1, err := uuid.New()
@@ -63,15 +63,15 @@ func TestBatchMixed(t *testing.T) {
 			defer delete()
 
 			entitiesToCreate := createComplexEntities(5, "partition")
-			batch := make([]TransactionAction, 3)
+			var batch []TransactionAction
 
 			for i := range batch {
 				marshalled, err := json.Marshal((*entitiesToCreate)[i])
 				require.NoError(t, err)
-				batch[i] = TransactionAction{
+				batch = append(batch, TransactionAction{
 					ActionType: Add,
 					Entity:     marshalled,
-				}
+				})
 			}
 
 			u1, err := uuid.New()
@@ -98,7 +98,7 @@ func TestBatchMixed(t *testing.T) {
 			require.NoError(t, err)
 
 			// create a new batch slice.
-			batch = make([]TransactionAction, 5)
+			var batch2 []TransactionAction
 
 			// create a merge action for the first added entity
 			mergeProp := "MergeProperty"
@@ -111,16 +111,16 @@ func TestBatchMixed(t *testing.T) {
 			marshalledMergeEntity, err := json.Marshal(mergeEntity)
 			require.NoError(t, err)
 			etag := azcore.ETag((*resp.TransactionResponses)[0].Header.Get(etag))
-			batch[0] = TransactionAction{
+			batch2 = append(batch, TransactionAction{
 				ActionType: UpdateMerge,
 				Entity:     marshalledMergeEntity,
 				IfMatch:    &etag,
-			}
+			})
 
 			// create a delete action for the second added entity
 			marshalledSecondEntity, err := json.Marshal((*entitiesToCreate)[1])
 			require.NoError(t, err)
-			batch[1] = TransactionAction{ActionType: Delete, Entity: marshalledSecondEntity}
+			batch2 = append(batch, TransactionAction{ActionType: Delete, Entity: marshalledSecondEntity})
 
 			// create an insert action to replace the third added entity with a new value
 			replaceProp := "ReplaceProperty"
@@ -131,21 +131,21 @@ func TestBatchMixed(t *testing.T) {
 			}
 			marshalledThirdEntity, err := json.Marshal(replaceProperties)
 			require.NoError(t, err)
-			batch[2] = TransactionAction{ActionType: InsertReplace, Entity: marshalledThirdEntity}
+			batch2 = append(batch2, TransactionAction{ActionType: InsertReplace, Entity: marshalledThirdEntity})
 
 			// Add the remaining 2 entities.
 			marshalled4thEntity, err := json.Marshal((*entitiesToCreate)[3])
 			require.NoError(t, err)
 			marshalled5thEntity, err := json.Marshal((*entitiesToCreate)[4])
 			require.NoError(t, err)
-			batch[3] = TransactionAction{ActionType: Add, Entity: marshalled4thEntity}
-			batch[4] = TransactionAction{ActionType: Add, Entity: marshalled5thEntity}
+			batch2 = append(batch2, TransactionAction{ActionType: Add, Entity: marshalled4thEntity})
+			batch2 = append(batch2, TransactionAction{ActionType: Add, Entity: marshalled5thEntity})
 
 			u1, err = uuid.New()
 			require.NoError(t, err)
 			u2, err = uuid.New()
 			require.NoError(t, err)
-			resp, err = client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
+			resp, err = client.submitTransactionInternal(ctx, &batch2, u1, u2, nil)
 			require.NoError(t, err)
 
 			for i := 0; i < len(*resp.TransactionResponses); i++ {
@@ -180,12 +180,13 @@ func TestBatchError(t *testing.T) {
 			entitiesToCreate := createComplexEntities(3, "partition")
 
 			// Create the batch.
-			batch := make([]TransactionAction, 0, 3)
+			var batch []TransactionAction
 
 			u1, err := uuid.New()
 			require.NoError(t, err)
 			u2, err := uuid.New()
 			require.NoError(t, err)
+
 			// Sending an empty batch throws.
 			_, err = client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
 			require.NotNil(t, err)
@@ -208,12 +209,9 @@ func TestBatchError(t *testing.T) {
 			require.NoError(t, err)
 			u2, err = uuid.New()
 			require.NoError(t, err)
-			resp, err := client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
+			_, err = client.submitTransactionInternal(ctx, &batch, u1, u2, nil)
 			require.NotNil(t, err)
-			transactionError, ok := err.(*transactionError)
-			require.Truef(t, ok, "err should be of type TableTransactionError")
-			require.Equal(t, "EntityAlreadyExists", transactionError.ErrorCode())
-			require.Equal(t, http.StatusConflict, (*resp.TransactionResponses)[0].StatusCode)
+			require.Contains(t, err.Error(), "EntityAlreadyExists")
 		})
 	}
 }
@@ -230,42 +228,42 @@ func TestBatchComplex(t *testing.T) {
 			edmEntity3 := createEdmEntity(3, "pk001")
 			edmEntity4 := createEdmEntity(4, "pk001")
 			edmEntity5 := createEdmEntity(5, "pk001")
-			batch := make([]TransactionAction, 5)
+			var batch []TransactionAction
 
 			marshalled1, err := json.Marshal(edmEntity)
 			require.NoError(t, err)
-			batch[0] = TransactionAction{
+			batch = append(batch, TransactionAction{
 				ActionType: Add,
 				Entity:     marshalled1,
-			}
+			})
 
 			marshalled2, err := json.Marshal(edmEntity2)
 			require.NoError(t, err)
-			batch[1] = TransactionAction{
+			batch = append(batch, TransactionAction{
 				ActionType: Add,
 				Entity:     marshalled2,
-			}
+			})
 
 			marshalled3, err := json.Marshal(edmEntity3)
 			require.NoError(t, err)
-			batch[2] = TransactionAction{
+			batch = append(batch, TransactionAction{
 				ActionType: Add,
 				Entity:     marshalled3,
-			}
+			})
 
 			marshalled4, err := json.Marshal(edmEntity4)
 			require.NoError(t, err)
-			batch[3] = TransactionAction{
+			batch = append(batch, TransactionAction{
 				ActionType: Add,
 				Entity:     marshalled4,
-			}
+			})
 
 			marshalled5, err := json.Marshal(edmEntity5)
 			require.NoError(t, err)
-			batch[4] = TransactionAction{
+			batch = append(batch, TransactionAction{
 				ActionType: Add,
 				Entity:     marshalled5,
-			}
+			})
 
 			u1, err := uuid.New()
 			require.NoError(t, err)
@@ -278,30 +276,30 @@ func TestBatchComplex(t *testing.T) {
 				require.Equal(t, http.StatusNoContent, r.StatusCode)
 			}
 
-			batch2 := make([]TransactionAction, 3)
+			var batch2 []TransactionAction
 			edmEntity.Properties["Bool"] = false
 			edmEntity2.Properties["Int32"] = int32(10)
 
 			marshalled1, err = json.Marshal(edmEntity)
 			require.NoError(t, err)
-			batch2[0] = TransactionAction{
+			batch2 = append(batch2, TransactionAction{
 				ActionType: InsertMerge,
 				Entity:     marshalled1,
-			}
+			})
 
 			marshalled2, err = json.Marshal(edmEntity2)
 			require.NoError(t, err)
-			batch2[1] = TransactionAction{
+			batch2 = append(batch2, TransactionAction{
 				ActionType: InsertReplace,
 				Entity:     marshalled2,
-			}
+			})
 
 			marshalled3, err = json.Marshal(edmEntity3)
 			require.NoError(t, err)
-			batch2[2] = TransactionAction{
+			batch2 = append(batch2, TransactionAction{
 				ActionType: Delete,
 				Entity:     marshalled3,
-			}
+			})
 
 			u1, err = uuid.New()
 			require.NoError(t, err)

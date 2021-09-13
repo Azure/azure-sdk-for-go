@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/cosmos/azcosmos"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/cosmos/azcosmos"
 )
 
 func TestItemCRUD(t *testing.T) {

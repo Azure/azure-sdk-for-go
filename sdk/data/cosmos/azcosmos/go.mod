@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/cosmos/azcosmos
+module github.com/Azure/azure-sdk-for-go/sdk/data/cosmos/azcosmos
 
 go 1.13
 

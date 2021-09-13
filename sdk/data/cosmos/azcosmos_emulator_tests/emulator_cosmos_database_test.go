@@ -7,7 +7,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/cosmos/azcosmos"
+	"github.com/Azure/azure-sdk-for-go/sdk/data/cosmos/azcosmos"
 )
 
 func TestDatabaseCRUD(t *testing.T) {

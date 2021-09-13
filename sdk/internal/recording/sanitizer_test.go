@@ -306,7 +306,7 @@ func TestBodyKeySanitizer(t *testing.T) {
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, "https://jsonplaceholder.typicode.com/posts/1")
+	req.Header.Set(UpstreamUriHeader, "https://azsdkengsys.azurecr.io/acr/v1/_catalog")
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId(t))
 
@@ -359,7 +359,7 @@ func TestBodyRegexSanitizer(t *testing.T) {
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, "https://jsonplaceholder.typicode.com/posts/1")
+	req.Header.Set(UpstreamUriHeader, "https://azsdkengsys.azurecr.io/acr/v1/_catalog")
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId(t))
 

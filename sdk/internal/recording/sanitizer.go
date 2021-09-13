@@ -101,7 +101,7 @@ func handleProxyResponse(resp *http.Response, err error) error {
 		return nil
 	}
 
-	fmt.Println(resp.StatusCode)
+	fmt.Println(resp)
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {

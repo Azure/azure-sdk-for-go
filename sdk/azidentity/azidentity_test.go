@@ -13,18 +13,25 @@ const (
 	customHostString = "https://custommock.com/"
 )
 
-func Test_SetEnvAuthorityHost(t *testing.T) {
-	err := os.Setenv("AZURE_AUTHORITY_HOST", envHostString)
-	defer func() {
-		// Unset that host environment variable to avoid other tests failed.
-		err = os.Unsetenv("AZURE_AUTHORITY_HOST")
-		if err != nil {
-			t.Fatalf("Unexpected error when unset environment variable: %v", err)
-		}
-	}()
+// Set AZURE_AUTHORITY_HOST for the duration of a test. Restore its prior value
+// after the test completes. Prevents tests which set the variable from breaking live
+// tests in sovereign clouds. Obviated by 1.17's T.Setenv
+func setEnvAuthorityHost(host string, t *testing.T) {
+	originalHost := os.Getenv("AZURE_AUTHORITY_HOST")
+	err := os.Setenv("AZURE_AUTHORITY_HOST", host)
 	if err != nil {
-		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
+		t.Fatalf("Unexpected error setting AZURE_AUTHORITY_HOST: %v", err)
 	}
+	t.Cleanup(func() {
+		err = os.Setenv("AZURE_AUTHORITY_HOST", originalHost)
+		if err != nil {
+			t.Fatalf("Unexpected error resetting AZURE_AUTHORITY_HOST: %v", err)
+		}
+	})
+}
+
+func Test_SetEnvAuthorityHost(t *testing.T) {
+	setEnvAuthorityHost(envHostString, t)
 	authorityHost, err := setAuthorityHost("")
 	if err != nil {
 		t.Fatal(err)
@@ -35,17 +42,7 @@ func Test_SetEnvAuthorityHost(t *testing.T) {
 }
 
 func Test_CustomAuthorityHost(t *testing.T) {
-	err := os.Setenv("AZURE_AUTHORITY_HOST", envHostString)
-	defer func() {
-		// Unset that host environment variable to avoid other tests failed.
-		err = os.Unsetenv("AZURE_AUTHORITY_HOST")
-		if err != nil {
-			t.Fatalf("Unexpected error when unset environment variable: %v", err)
-		}
-	}()
-	if err != nil {
-		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
-	}
+	setEnvAuthorityHost(envHostString, t)
 	authorityHost, err := setAuthorityHost(customHostString)
 	if err != nil {
 		t.Fatal(err)
@@ -57,6 +54,7 @@ func Test_CustomAuthorityHost(t *testing.T) {
 }
 
 func Test_DefaultAuthorityHost(t *testing.T) {
+	setEnvAuthorityHost("", t)
 	authorityHost, err := setAuthorityHost("")
 	if err != nil {
 		t.Fatal(err)
@@ -67,6 +65,7 @@ func Test_DefaultAuthorityHost(t *testing.T) {
 }
 
 func Test_NonHTTPSAuthorityHost(t *testing.T) {
+	setEnvAuthorityHost("", t)
 	authorityHost, err := setAuthorityHost("http://foo.com")
 	if err == nil {
 		t.Fatal("Expected an error but did not receive one.")

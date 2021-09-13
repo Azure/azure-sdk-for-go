@@ -5,6 +5,61 @@ parameters:
   - name:  RunTests
     type: string
     default: false
+  - name:  RunLiveTests
+    type: string
+    default: false
+  - name: Clouds
+    type: string
+    default: 'Public'
+  - name: SupportedClouds
+    type: string
+    default: 'Public,UsGov,China'
+  - name: UnsupportedClouds
+    type: string
+    default: ''
+  - name: PreSteps
+    type: object
+    default: []
+  - name: PostSteps
+    type: object
+    default: []
+  - name: TimeoutInMinutes
+    type: number
+    default: 60
+  - name: Location
+    type: string
+    default: ''
+  - name: CloudConfig
+    type: object
+    default:
+      Public:
+        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      Preview:
+        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+      Canary:
+        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+        Location: 'centraluseuap'
+      UsGov:
+        SubscriptionConfiguration: $(sub-config-gov-test-resources)
+      China:
+        SubscriptionConfiguration: $(sub-config-cn-test-resources)
+  - name: MatrixConfigs
+    type: object
+    default:
+      - Name: Go_live_test_base
+        Path: eng/pipelines/templates/stages/platform-matrix.json
+        Selection: all
+        GenerateVMJobs: true
+  - name: AdditionalMatrixConfigs
+    type: object
+    default: []
+  - name: MatrixFilters
+    type: object
+    default: []
+  - name: MatrixReplace
+    type: object
+    default: []
+
 
 stages:
   - stage: Build
@@ -59,6 +114,8 @@ stages:
           Image: $(vm.image)
           GoVersion: $(go.version)
           RunTests: ${{ parameters.RunTests }}
+          EnvVars:
+            AZURE_RECORD_MODE: 'playback'
 
     - job: Analyze
       displayName: Analyze
@@ -87,9 +144,58 @@ stages:
           Scope: $(SCOPE)
           LintVersion: $(GoLintCLIVersion)
 
+  # Run live tests for internal only, not public CI builds. This can be triggered manually for via an `/azp run` comment.
+  - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
+    - ${{ each cloud in parameters.CloudConfig }}:
+      # Run all clouds by default for weekly test pipeline, except for clouds specifically unsupported by the calling pipeline
+      - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
+        - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
+          - stage: ${{ cloud.key }}
+            displayName: Live Test ${{ cloud.key }}
+            dependsOn: []
+            jobs:
+            - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+              parameters:
+                JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
+                AdditionalParameters:
+                  ServiceDirectory: ${{ parameters.ServiceDirectory }}
+                  EnvVars: ${{ parameters.EnvVars }}
+                  TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+                  Location: ${{ parameters.Location }}
+                  PreSteps:
+                    - ${{ parameters.PreSteps }}
+                  PostSteps:
+                    - ${{ parameters.PostSteps }}
+                MatrixConfigs:
+                  # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).
+                  - ${{ each config in parameters.MatrixConfigs }}:
+                    -  ${{ config }}
+                  - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                    -  ${{ config }}
+                MatrixFilters:
+                  - ${{ each cloudFilter in cloud.value.MatrixFilters }}:
+                    - ${{ cloudFilter }}
+                  - ${{ parameters.MatrixFilters }}
+                MatrixReplace:
+                  - ${{ each cloudReplace in cloud.value.MatrixReplace }}:
+                    - ${{ cloudReplace }}
+                  - ${{ parameters.MatrixReplace }}
+                CloudConfig:
+                  SubscriptionConfiguration: ${{ cloud.value.SubscriptionConfiguration }}
+                  SubscriptionConfigurations: ${{ cloud.value.SubscriptionConfigurations }}
+                  Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
+                  Cloud: ${{ cloud.key }}
+
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
     - template: archetype-go-release.yml
       parameters:
-        DependsOn: Build
-        ServiceDirectory: ${{parameters.ServiceDirectory}}
+        DependsOn:
+          - Build
+          # Copy cloud conditional logic from live test stage
+          - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:
+            - ${{ each cloud in parameters.CloudConfig }}:
+              - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
+                - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
+                  - ${{ cloud.key }}
+        ServiceDirectory: ${{ parameters.ServiceDirectory }}

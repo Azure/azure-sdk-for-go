@@ -2,15 +2,16 @@
 trigger:
   paths:
     include:
-    - sdk/data/
+    - sdk/data/aztables
 
 pr:
   paths:
     include:
-    - sdk/data/
+    - sdk/data/aztables
 
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: 'data'
     RunTests: true
+    RunLiveTests: true

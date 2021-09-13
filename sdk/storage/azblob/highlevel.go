@@ -49,7 +49,7 @@ type HighLevelUploadToBlockBlobOption struct {
 
 	// Parallelism indicates the maximum number of blocks to upload in parallel (0=default)
 	Parallelism uint16
-
+	// Optional header, Specifies the transactional crc64 for the body, to be validated by the service.
 	TransactionalContentCRC64 *[]byte
 	// Specify the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 *[]byte

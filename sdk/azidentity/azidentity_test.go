@@ -4,7 +4,6 @@
 package azidentity
 
 import (
-	"net/url"
 	"os"
 	"testing"
 )
@@ -13,13 +12,6 @@ const (
 	envHostString    = "https://mock.com/"
 	customHostString = "https://custommock.com/"
 )
-
-func Test_AuthorityHost_Parse(t *testing.T) {
-	_, err := url.Parse(AzurePublicCloud)
-	if err != nil {
-		t.Fatalf("Failed to parse default authority host: %v", err)
-	}
-}
 
 func Test_SetEnvAuthorityHost(t *testing.T) {
 	err := os.Setenv("AZURE_AUTHORITY_HOST", envHostString)
@@ -69,38 +61,8 @@ func Test_DefaultAuthorityHost(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if authorityHost != AzurePublicCloud {
+	if authorityHost != string(AzurePublicCloud) {
 		t.Fatalf("Unexpected host when set default AuthorityHost: %v", authorityHost)
-	}
-}
-
-func Test_AzureGermanyAuthorityHost(t *testing.T) {
-	authorityHost, err := setAuthorityHost(AzureGermany)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if authorityHost != AzureGermany {
-		t.Fatalf("Did not retrieve expected authority host string")
-	}
-}
-
-func Test_AzureChinaAuthorityHost(t *testing.T) {
-	authorityHost, err := setAuthorityHost(AzureChina)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if authorityHost != AzureChina {
-		t.Fatalf("Did not retrieve expected authority host string")
-	}
-}
-
-func Test_AzureGovernmentAuthorityHost(t *testing.T) {
-	authorityHost, err := setAuthorityHost(AzureGovernment)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if authorityHost != AzureGovernment {
-		t.Fatalf("Did not retrieve expected authority host string")
 	}
 }
 

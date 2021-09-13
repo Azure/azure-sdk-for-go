@@ -25,7 +25,7 @@ steps:
     workingDirectory: '${{parameters.GoWorkspace}}'
 
   - pwsh: |
-      $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
+      $modDirs = ./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE)
       foreach ($md in $modDirs) {
         Get-ChildItem $md/doc.go
       }

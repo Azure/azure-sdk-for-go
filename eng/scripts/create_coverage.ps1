@@ -30,20 +30,11 @@ if ($patternMatches.Length -eq 0) {
   Exit $1
 }
 
-Get-Content ./coverage.xml
+[double] $coverageFloat = $patternMatches.Matches.Groups[1].Value
 
-try {
-  Write-Host $patternMatches.Matches.Groups[1].Value
+Write-Host "Found a coverage of $coverageFloat"
 
-  [double] $coverageFloat = $patternMatches.Matches.Groups[1].Value
-
-  Write-Host $coverageFloat
-} catch {
-  Write-Host "The regex failed and could not find a double in the coverage.xml file"
-  Get-Content ./coverage.xml
-}
 # Read eng/config.json to find appropriate Value
-
 $coverageGoals = Get-Content ./eng/config.json | Out-String | ConvertFrom-Json
 
 Write-Host $coverageGoals
@@ -54,7 +45,7 @@ Foreach ($pkg in $coverageGoals.Packages) {
     $goalCoverage = [double] $pkg.CoverageGoal
 
     if ($goalCoverage -le $coverageFloat) {
-      Write-Host "Coverage is lower than the coverage goal"
+      Write-Host "Coverage ($coverageFloat) is lower than the coverage goal ($goalCoverage)"
       Exit 1
     } else {
       Exit 0

@@ -73,8 +73,8 @@ func (client *Client) NewProcessor(options ...ProcessorOption) (*Processor, erro
 }
 
 // NewSender creates a Sender, which allows you to send messages or schedule messages.
-func (client *Client) NewSender(queueOrTopic string, options ...SenderOption) (*Sender, error) {
-	sender, err := newSender(client.namespace, queueOrTopic, options...)
+func (client *Client) NewSender(queueOrTopic string) (*Sender, error) {
+	sender, err := newSender(client.namespace, queueOrTopic)
 
 	if err != nil {
 		return nil, err

@@ -29,7 +29,6 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Azure/azure-amqp-common-go/v3/uuid"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/devigned/tab"
 )
@@ -167,41 +166,6 @@ func (q *Queue) Send(ctx context.Context, msg *Message) error {
 	return q.sender.Send(ctx, msg)
 }
 
-// SendBatch sends a batch of messages to the Queue
-func (q *Queue) SendBatch(ctx context.Context, iterator BatchIterator) error {
-	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.SendBatch")
-	defer span.End()
-
-	err := q.ensureSender(ctx)
-	if err != nil {
-		tab.For(ctx).Error(err)
-		return err
-	}
-
-	for !iterator.Done() {
-		id, err := uuid.NewV4()
-		if err != nil {
-			tab.For(ctx).Error(err)
-			return err
-		}
-
-		batch, err := iterator.Next(id.String(), &BatchOptions{
-			SessionID: q.sender.sessionID,
-		})
-		if err != nil {
-			tab.For(ctx).Error(err)
-			return err
-		}
-
-		if err := q.sender.trySend(ctx, batch); err != nil {
-			tab.For(ctx).Error(err)
-			return err
-		}
-	}
-
-	return nil
-}
-
 // ReceiveOne will listen to receive a single message. ReceiveOne will only wait as long as the context allows.
 //
 // Handler must call a disposition action such as Complete, Abandon, Deadletter on the message. If the messages does not
@@ -258,7 +222,7 @@ func (q *Queue) NewReceiver(ctx context.Context, opts ...ReceiverOption) (Legacy
 }
 
 // NewSender will create a new Sender for sending messages to the queue
-func (q *Queue) NewSender(ctx context.Context, opts ...SenderOption) (*Sender, error) {
+func (q *Queue) NewSender(ctx context.Context) (*Sender, error) {
 	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.NewSender")
 	defer span.End()
 

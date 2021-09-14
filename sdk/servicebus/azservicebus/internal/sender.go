@@ -49,34 +49,33 @@ type (
 		cancelAuthRefresh func() <-chan struct{}
 	}
 
-	// SendOption provides a way to customize a message on sending
-	SendOption func(event *Message) error
-
 	eventer interface {
 		toMsg() (*amqp.Message, error)
 		GetKeyValues() map[string]interface{}
 		Set(key string, value interface{})
 	}
-
-	// SenderOption provides a way to customize a Sender
-	SenderOption func(*Sender) error
 )
 
+// ie: `*internal.Sender`
+type LegacySender interface {
+	SendAMQPMessage(ctx context.Context, msg *amqp.Message) error
+	Close(ctx context.Context) error
+	MaxMessageSize() uint64
+}
+
+// NewLegacySender is just a wrapper for `NewSender` that returns an interface. Makes testing simpler.
+func (ns *Namespace) NewLegacySender(ctx context.Context, entityPath string) (LegacySender, error) {
+	return ns.NewSender(ctx, entityPath)
+}
+
 // NewSender creates a new Service Bus message Sender given an AMQP client and entity path
-func (ns *Namespace) NewSender(ctx context.Context, entityPath string, opts ...SenderOption) (*Sender, error) {
+func (ns *Namespace) NewSender(ctx context.Context, entityPath string) (*Sender, error) {
 	ctx, span := ns.startSpanFromContext(ctx, "sb.Namespace.NewSender")
 	defer span.End()
 
 	s := &Sender{
 		namespace:  ns,
 		entityPath: entityPath,
-	}
-
-	for _, opt := range opts {
-		if err := opt(s); err != nil {
-			tab.For(ctx).Error(err)
-			return nil, err
-		}
 	}
 
 	// no need to take the write lock as we're creating a new Sender
@@ -86,6 +85,11 @@ func (ns *Namespace) NewSender(ctx context.Context, entityPath string, opts ...S
 	}
 
 	return s, err
+}
+
+// MaxMessageSize is the maximum message size for this sender link.
+func (s *Sender) MaxMessageSize() uint64 {
+	return s.sender.MaxMessageSize()
 }
 
 // Recover will attempt to close the current session and link, then rebuild them
@@ -149,13 +153,20 @@ func (s *Sender) close(ctx context.Context) error {
 	return lastErr
 }
 
+func (s *Sender) SendAMQPMessage(ctx context.Context, msg *amqp.Message) error {
+	ctx, span := s.startProducerSpanFromContext(ctx, "sb.Sender.Send")
+	defer span.End()
+	return s.sendMessage(ctx, msg)
+}
+
 // Send will send a message to the entity path with options
 //
 // This will retry sending the message if the server responds with a busy error.
-func (s *Sender) Send(ctx context.Context, msg *Message, opts ...SendOption) error {
+func (s *Sender) Send(ctx context.Context, msg *Message) error {
 	ctx, span := s.startProducerSpanFromContext(ctx, "sb.Sender.Send")
 	defer span.End()
 
+	// TODO: I don't think this code needs to exist.
 	if msg.SessionID == nil {
 		s.clientMu.RLock()
 		if s.session == nil {
@@ -176,14 +187,6 @@ func (s *Sender) Send(ctx context.Context, msg *Message, opts ...SendOption) err
 			return err
 		}
 		msg.ID = id.String()
-	}
-
-	for _, opt := range opts {
-		err := opt(msg)
-		if err != nil {
-			tab.For(ctx).Error(err)
-			return err
-		}
 	}
 
 	return s.trySend(ctx, msg)
@@ -209,13 +212,19 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 		sp.AddAttributes(tab.StringAttribute("sb.message.id", msg.Properties.MessageID.(string)))
 	}
 
+	return s.sendMessage(ctx, msg)
+}
+
+func (s *Sender) sendMessage(ctx context.Context, amqpMessage *amqp.Message) error {
+	// TOOD: infinite loop....
 	for {
 		select {
 		case <-ctx.Done():
-			if err = ctx.Err(); err != nil {
+			if err := ctx.Err(); err != nil {
 				tab.For(ctx).Error(err)
+				return err
 			}
-			return err
+			return nil
 		default:
 			// try as long as the context is not dead
 			s.clientMu.RLock()
@@ -224,11 +233,11 @@ func (s *Sender) trySend(ctx context.Context, evt eventer) error {
 				s.clientMu.RUnlock()
 				return s.connClosedError(ctx)
 			}
-			err = s.sender.Send(ctx, msg)
+			err := s.sender.Send(ctx, amqpMessage)
 			s.clientMu.RUnlock()
 			if err == nil {
 				// successful send
-				return err
+				return nil
 			}
 
 			switch err.(type) {
@@ -354,19 +363,12 @@ func (s *Sender) newSessionAndLink(ctx context.Context) error {
 		tab.For(ctx).Error(err)
 		return err
 	}
+
+	// TODO: unclear on when this would happen.
 	if s.sessionID != nil {
 		s.session.SessionID = *s.sessionID
 	}
 
 	s.sender = amqpSender
 	return nil
-}
-
-// SenderWithSession configures the message to send with a specific session and sequence. By default, a Sender has a
-// default session (uuid.NewV4()) and sequence generator.
-func SenderWithSession(sessionID *string) SenderOption {
-	return func(sender *Sender) error {
-		sender.sessionID = sessionID
-		return nil
-	}
 }

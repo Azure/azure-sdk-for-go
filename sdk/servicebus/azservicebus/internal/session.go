@@ -83,7 +83,7 @@ type (
 
 	// SenderBuilder describes the ability of an entity to build sender links
 	SenderBuilder interface {
-		NewSender(ctx context.Context, opts ...SenderOption) (*Sender, error)
+		NewSender(ctx context.Context) (*Sender, error)
 	}
 
 	// EntityManagementAddresser describes the ability of an entity to provide an addressable path to it's management
@@ -309,7 +309,9 @@ func (qs *QueueSession) ensureSender(ctx context.Context) error {
 		return nil
 	}
 
-	s, err := qs.builder.NewSender(ctx, SenderWithSession(qs.sessionID))
+	// TODO: this is broken now (SenderWithSession(qs.sessionID) was removed as we
+	// don't support a default session ID)
+	s, err := qs.builder.NewSender(ctx)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return err
@@ -572,7 +574,9 @@ func (ts *TopicSession) ensureSender(ctx context.Context) error {
 	ts.builderMu.Lock()
 	defer ts.builderMu.Unlock()
 
-	s, err := ts.builder.NewSender(ctx, SenderWithSession(ts.sessionID))
+	// TODO: this is broken now (SenderWithSession(qs.sessionID) was removed as we
+	// don't support a default session ID)
+	s, err := ts.builder.NewSender(ctx)
 	if err != nil {
 		return err
 	}

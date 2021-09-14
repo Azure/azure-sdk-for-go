@@ -29,7 +29,6 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Azure/azure-amqp-common-go/v3/uuid"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/devigned/tab"
 )
@@ -93,7 +92,7 @@ func (ns *Namespace) NewTopic(name string, opts ...TopicOption) (*Topic, error) 
 }
 
 // Send sends messages to the Topic
-func (t *Topic) Send(ctx context.Context, event *Message, opts ...SendOption) error {
+func (t *Topic) Send(ctx context.Context, event *Message) error {
 	ctx, span := t.startSpanFromContext(ctx, "sb.Topic.Send")
 	defer span.End()
 
@@ -102,42 +101,7 @@ func (t *Topic) Send(ctx context.Context, event *Message, opts ...SendOption) er
 		tab.For(ctx).Error(err)
 		return err
 	}
-	return t.sender.Send(ctx, event, opts...)
-}
-
-// SendBatch sends a batch of messages to the Topic
-func (t *Topic) SendBatch(ctx context.Context, iterator BatchIterator) error {
-	ctx, span := t.startSpanFromContext(ctx, "sb.Topic.SendBatch")
-	defer span.End()
-
-	err := t.ensureSender(ctx)
-	if err != nil {
-		tab.For(ctx).Error(err)
-		return err
-	}
-
-	for !iterator.Done() {
-		id, err := uuid.NewV4()
-		if err != nil {
-			tab.For(ctx).Error(err)
-			return err
-		}
-
-		batch, err := iterator.Next(id.String(), &BatchOptions{
-			SessionID: t.sender.sessionID,
-		})
-		if err != nil {
-			tab.For(ctx).Error(err)
-			return err
-		}
-
-		if err := t.sender.trySend(ctx, batch); err != nil {
-			tab.For(ctx).Error(err)
-			return err
-		}
-	}
-
-	return nil
+	return t.sender.Send(ctx, event)
 }
 
 // NewSession will create a new session based sender for the topic
@@ -151,7 +115,7 @@ func (t *Topic) NewSession(sessionID *string) *TopicSession {
 }
 
 // NewSender will create a new Sender for sending messages to the queue
-func (t *Topic) NewSender(ctx context.Context, opts ...SenderOption) (*Sender, error) {
+func (t *Topic) NewSender(ctx context.Context) (*Sender, error) {
 	return t.namespace.NewSender(ctx, t.Name)
 }
 

@@ -44,7 +44,7 @@ Foreach ($pkg in $coverageGoals.Packages) {
   if ($pkg.Name -Match $serviceDirectory) {
     $goalCoverage = [double] $pkg.CoverageGoal
 
-    if ($goalCoverage -le $coverageFloat) {
+    if ($coverageFloat -le $goalCoverage) {
       Write-Host "Coverage ($coverageFloat) is lower than the coverage goal ($goalCoverage)"
       Exit 1
     } else {

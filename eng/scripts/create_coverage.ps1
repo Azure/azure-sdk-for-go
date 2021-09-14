@@ -33,9 +33,9 @@ if ($patternMatches.Length -eq 0) {
 Get-Content ./coverage.xml
 
 try {
-  Write-Host $patternMatches.Matches.Groups[1].Captures
+  Write-Host $patternMatches.Matches.Groups[1].Value
 
-  [double] $coverageFloat = $patternMatches.Matches.Groups[1].Captures
+  [double] $coverageFloat = $patternMatches.Matches.Groups[1].Value
 
   Write-Host $coverageFloat
 } catch {

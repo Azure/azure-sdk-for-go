@@ -513,6 +513,8 @@ type AccountProperties struct {
 	AllowBlobPublicAccess *bool `json:"allowBlobPublicAccess,omitempty"`
 	// MinimumTLSVersion - Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property. Possible values include: 'TLS10', 'TLS11', 'TLS12'
 	MinimumTLSVersion MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
+	// AllowSharedKeyAccess - Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+	AllowSharedKeyAccess *bool `json:"allowSharedKeyAccess,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for AccountProperties.
@@ -535,6 +537,9 @@ func (ap AccountProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ap.MinimumTLSVersion != "" {
 		objectMap["minimumTlsVersion"] = ap.MinimumTLSVersion
+	}
+	if ap.AllowSharedKeyAccess != nil {
+		objectMap["allowSharedKeyAccess"] = ap.AllowSharedKeyAccess
 	}
 	return json.Marshal(objectMap)
 }
@@ -561,6 +566,8 @@ type AccountPropertiesCreateParameters struct {
 	AllowBlobPublicAccess *bool `json:"allowBlobPublicAccess,omitempty"`
 	// MinimumTLSVersion - Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property. Possible values include: 'TLS10', 'TLS11', 'TLS12'
 	MinimumTLSVersion MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
+	// AllowSharedKeyAccess - Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+	AllowSharedKeyAccess *bool `json:"allowSharedKeyAccess,omitempty"`
 }
 
 // AccountPropertiesUpdateParameters the parameters used when updating a storage account.
@@ -583,6 +590,8 @@ type AccountPropertiesUpdateParameters struct {
 	AllowBlobPublicAccess *bool `json:"allowBlobPublicAccess,omitempty"`
 	// MinimumTLSVersion - Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this property. Possible values include: 'TLS10', 'TLS11', 'TLS12'
 	MinimumTLSVersion MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
+	// AllowSharedKeyAccess - Indicates whether the storage account permits requests to be authorized with the account access key via Shared Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+	AllowSharedKeyAccess *bool `json:"allowSharedKeyAccess,omitempty"`
 }
 
 // AccountRegenerateKeyParameters the parameters used to regenerate the storage account key.

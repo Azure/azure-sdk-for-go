@@ -38,7 +38,10 @@ func NewObjectReplicationPoliciesClientWithBaseURI(baseURI string, subscriptionI
 // insensitive.
 // accountName - the name of the storage account within the specified resource group. Storage account names
 // must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-// objectReplicationPolicyID - the ID of object replication policy or 'default' if the policy ID is unknown.
+// objectReplicationPolicyID - for the destination account, provide the value 'default'. Configure the policy
+// on the destination account first. For the source account, provide the value of the policy ID that is
+// returned when you download the policy that was defined on the destination account. The policy is downloaded
+// as a JSON file.
 // properties - the object replication policy set to a storage account. A unique policy ID will be created if
 // absent.
 func (client ObjectReplicationPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyID string, properties ObjectReplicationPolicy) (result ObjectReplicationPolicy, err error) {
@@ -142,7 +145,10 @@ func (client ObjectReplicationPoliciesClient) CreateOrUpdateResponder(resp *http
 // insensitive.
 // accountName - the name of the storage account within the specified resource group. Storage account names
 // must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-// objectReplicationPolicyID - the ID of object replication policy or 'default' if the policy ID is unknown.
+// objectReplicationPolicyID - for the destination account, provide the value 'default'. Configure the policy
+// on the destination account first. For the source account, provide the value of the policy ID that is
+// returned when you download the policy that was defined on the destination account. The policy is downloaded
+// as a JSON file.
 func (client ObjectReplicationPoliciesClient) Delete(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyID string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ObjectReplicationPoliciesClient.Delete")
@@ -236,7 +242,10 @@ func (client ObjectReplicationPoliciesClient) DeleteResponder(resp *http.Respons
 // insensitive.
 // accountName - the name of the storage account within the specified resource group. Storage account names
 // must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-// objectReplicationPolicyID - the ID of object replication policy or 'default' if the policy ID is unknown.
+// objectReplicationPolicyID - for the destination account, provide the value 'default'. Configure the policy
+// on the destination account first. For the source account, provide the value of the policy ID that is
+// returned when you download the policy that was defined on the destination account. The policy is downloaded
+// as a JSON file.
 func (client ObjectReplicationPoliciesClient) Get(ctx context.Context, resourceGroupName string, accountName string, objectReplicationPolicyID string) (result ObjectReplicationPolicy, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ObjectReplicationPoliciesClient.Get")

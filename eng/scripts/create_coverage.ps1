@@ -30,10 +30,16 @@ if ($patternMatches.Length -eq 0) {
   Exit $1
 }
 
-[double] $coverageFloat = $patternMatches.Matches.Groups[1].Captures
+try {
+  Write-Host $patternMatches.Matches.Groups[1].Captures
 
-Write-Host $coverageFloat
+  [double] $coverageFloat = $patternMatches.Matches.Groups[1].Captures
 
+  Write-Host $coverageFloat
+} catch {
+  Write-Host "The regex failed and could not find a double"
+  Get-Content ./coverage.xml
+}
 # Read eng/config.json to find appropriate Value
 
 $coverageGoals = Get-Content ./eng/config.json | Out-String | ConvertFrom-Json

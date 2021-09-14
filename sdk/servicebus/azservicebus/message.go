@@ -29,17 +29,24 @@ type ReceivedMessage struct {
 }
 
 func (m *Message) toAMQPMessage() (*amqp.Message, error) {
-	return &amqp.Message{
+	msg := &amqp.Message{
 		Data: [][]byte{m.Body},
 		Properties: &amqp.MessageProperties{
 			MessageID: m.ID,
 			GroupID:   m.SessionID,
 		},
-		Annotations: amqp.Annotations{
-			"x-opt-partition-key":     m.PartitionKey,
-			"x-opt-via-partition-key": m.TransactionPartitionKey,
-		},
-	}, nil
+		Annotations: amqp.Annotations{},
+	}
+
+	if m.PartitionKey != nil {
+		msg.Annotations["x-opt-partition-key"] = m.PartitionKey
+	}
+
+	if m.TransactionPartitionKey != nil {
+		msg.Annotations["x-opt-via-partition-key"] = m.TransactionPartitionKey
+	}
+
+	return msg, nil
 }
 
 func convertToReceivedMessage(legacyMessage *internal.Message) *ReceivedMessage {

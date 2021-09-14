@@ -1,6 +1,6 @@
 module github.com/Azure/azure-sdk-for-go/sdk/data/cosmos/azcosmos_emulator_tests
 
-go 1.13
+go 1.16
 
 replace github.com/Azure/azure-sdk-for-go/sdk/data/cosmos/azcosmos => ../azcosmos
 

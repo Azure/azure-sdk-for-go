@@ -6,6 +6,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 	"github.com/Azure/go-amqp"
+	"github.com/Azure/go-autorest/autorest/to"
 )
 
 // SenderOption specifies an option that can configure a Sender.
@@ -30,10 +31,27 @@ type SendableMessage interface {
 	toAMQPMessage() (*amqp.Message, error)
 }
 
-// CreateMessageBatch can be used to create a batch that contain multiple
+type messageBatchOptions struct {
+	maxSizeInBytes *int
+}
+
+// MessageBatchOption is an option for configuring batch creation in
+// `NewMessageBatch`.
+type MessageBatchOption func(options *messageBatchOptions) error
+
+// MessageBatchWithMaxSize overrides the max size (in bytes) for a batch.
+// By default NewMessageBatch will use the max message size provided by the service.
+func MessageBatchWithMaxSize(maxSizeInBytes int) func(options *messageBatchOptions) error {
+	return func(options *messageBatchOptions) error {
+		options.maxSizeInBytes = &maxSizeInBytes
+		return nil
+	}
+}
+
+// NewMessageBatch can be used to create a batch that contain multiple
 // messages. Sending a batch of messages is more efficient than sending the
 // messages one at a time.
-func (s *Sender) CreateMessageBatch(ctx context.Context) (*MessageBatch, error) {
+func (s *Sender) NewMessageBatch(ctx context.Context, options ...MessageBatchOption) (*MessageBatch, error) {
 	if s.linkState.Closed() {
 		return nil, s.linkState.Err()
 	}
@@ -44,7 +62,17 @@ func (s *Sender) CreateMessageBatch(ctx context.Context) (*MessageBatch, error) 
 		return nil, err
 	}
 
-	return newMessageBatch(int(legacySender.MaxMessageSize())), nil
+	opts := &messageBatchOptions{
+		maxSizeInBytes: to.IntPtr(int(legacySender.MaxMessageSize())),
+	}
+
+	for _, opt := range options {
+		if err := opt(opts); err != nil {
+			return nil, err
+		}
+	}
+
+	return newMessageBatch(*opts.maxSizeInBytes), nil
 }
 
 // SendMessage sends a message to a queue or topic.

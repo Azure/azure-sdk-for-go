@@ -14,9 +14,6 @@ parameters:
   - name:  GoVersion
     type: string
     default: ''
-  - name:  RunTests
-    type: boolean
-    default: false
   - name: EnvVars
     type: object
     default: {}

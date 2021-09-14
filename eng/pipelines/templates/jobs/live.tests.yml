@@ -91,7 +91,6 @@ jobs:
           Scope: $(SCOPE)
           Image: $(OSVmImage)
           GoVersion: $(GoVersion)
-          RunTests: true
           EnvVars:
             AZURE_RECORD_MODE: 'record'
 

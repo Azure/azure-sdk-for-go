@@ -2,9 +2,6 @@ parameters:
   - name:  ServiceDirectory
     type: string
     default: ''
-  - name:  RunTests
-    type: string
-    default: false
   - name:  RunLiveTests
     type: string
     default: false
@@ -113,7 +110,6 @@ stages:
           Scope: $(SCOPE)
           Image: $(vm.image)
           GoVersion: $(go.version)
-          RunTests: ${{ parameters.RunTests }}
           EnvVars:
             AZURE_RECORD_MODE: 'playback'
 

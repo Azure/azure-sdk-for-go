@@ -61,7 +61,7 @@ type sdkRepository struct {
 
 func (s *sdkRepository) AddReleaseCommit(rpName, namespaceName, specHash, version string) error {
 	log.Printf("Add release package and commit")
-	if err := s.Add(fmt.Sprintf("sdk\\%s\\%s", rpName, namespaceName)); err != nil {
+	if err := s.Add(fmt.Sprintf("sdk/%s/%s", rpName, namespaceName)); err != nil {
 		return fmt.Errorf("failed to add 'profiles': %+v", err)
 	}
 

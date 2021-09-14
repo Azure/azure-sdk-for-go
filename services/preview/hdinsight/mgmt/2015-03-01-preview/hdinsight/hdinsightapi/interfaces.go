@@ -18,6 +18,7 @@ type ClustersClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ClustersDeleteFuture, err error)
 	ExecuteScriptActions(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ExecuteScriptActionParameters) (result hdinsight.ClustersExecuteScriptActionsFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.Cluster, err error)
+	GetAzureAsyncOperationStatus(ctx context.Context, resourceGroupName string, clusterName string, operationID string) (result hdinsight.AsyncOperationResult, err error)
 	GetGatewaySettings(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.GatewaySettings, err error)
 	List(ctx context.Context) (result hdinsight.ClusterListResultPage, err error)
 	ListComplete(ctx context.Context) (result hdinsight.ClusterListResultIterator, err error)
@@ -28,6 +29,7 @@ type ClustersClientAPI interface {
 	Update(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterPatchParameters) (result hdinsight.Cluster, err error)
 	UpdateAutoScaleConfiguration(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.AutoscaleConfigurationUpdateParameter) (result hdinsight.ClustersUpdateAutoScaleConfigurationFuture, err error)
 	UpdateGatewaySettings(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.UpdateGatewaySettingsParameters) (result hdinsight.ClustersUpdateGatewaySettingsFuture, err error)
+	UpdateIdentityCertificate(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.UpdateClusterIdentityCertificateParameters) (result hdinsight.ClustersUpdateIdentityCertificateFuture, err error)
 }
 
 var _ ClustersClientAPI = (*hdinsight.ClustersClient)(nil)
@@ -37,6 +39,7 @@ type ApplicationsClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, parameters hdinsight.Application) (result hdinsight.ApplicationsCreateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, clusterName string, applicationName string) (result hdinsight.ApplicationsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, clusterName string, applicationName string) (result hdinsight.Application, err error)
+	GetAzureAsyncOperationStatus(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, operationID string) (result hdinsight.AsyncOperationResult, err error)
 	List(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ApplicationListResultPage, err error)
 	ListComplete(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ApplicationListResultIterator, err error)
 }
@@ -45,9 +48,12 @@ var _ ApplicationsClientAPI = (*hdinsight.ApplicationsClient)(nil)
 
 // LocationsClientAPI contains the set of methods on the LocationsClient type.
 type LocationsClientAPI interface {
+	CheckNameAvailability(ctx context.Context, location string, parameters hdinsight.NameAvailabilityCheckRequestParameters) (result hdinsight.NameAvailabilityCheckResult, err error)
+	GetAzureAsyncOperationStatus(ctx context.Context, location string, operationID string) (result hdinsight.AsyncOperationResult, err error)
 	GetCapabilities(ctx context.Context, location string) (result hdinsight.CapabilitiesResult, err error)
 	ListBillingSpecs(ctx context.Context, location string) (result hdinsight.BillingResponseListResult, err error)
 	ListUsages(ctx context.Context, location string) (result hdinsight.UsagesListResult, err error)
+	ValidateClusterCreateRequest(ctx context.Context, location string, parameters hdinsight.ClusterCreateRequestValidationParameters) (result hdinsight.ClusterCreateValidationResult, err error)
 }
 
 var _ LocationsClientAPI = (*hdinsight.LocationsClient)(nil)
@@ -63,19 +69,30 @@ var _ ConfigurationsClientAPI = (*hdinsight.ConfigurationsClient)(nil)
 
 // ExtensionClientAPI contains the set of methods on the ExtensionClient type.
 type ExtensionClientAPI interface {
-	Create(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, parameters hdinsight.Extension) (result autorest.Response, err error)
-	Delete(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (result autorest.Response, err error)
+	Create(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, parameters hdinsight.Extension) (result hdinsight.ExtensionCreateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (result hdinsight.ExtensionDeleteFuture, err error)
 	DisableMonitoring(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ExtensionDisableMonitoringFuture, err error)
 	EnableMonitoring(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.ClusterMonitoringRequest) (result hdinsight.ExtensionEnableMonitoringFuture, err error)
-	Get(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (result hdinsight.Extension, err error)
+	Get(ctx context.Context, resourceGroupName string, clusterName string, extensionName string) (result hdinsight.ClusterMonitoringResponse, err error)
 	GetMonitoringStatus(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ClusterMonitoringResponse, err error)
 }
 
 var _ ExtensionClientAPI = (*hdinsight.ExtensionClient)(nil)
 
+// ExtensionsClientAPI contains the set of methods on the ExtensionsClient type.
+type ExtensionsClientAPI interface {
+	DisableAzureMonitor(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ExtensionsDisableAzureMonitorFuture, err error)
+	EnableAzureMonitor(ctx context.Context, resourceGroupName string, clusterName string, parameters hdinsight.AzureMonitorRequest) (result hdinsight.ExtensionsEnableAzureMonitorFuture, err error)
+	GetAzureAsyncOperationStatus(ctx context.Context, resourceGroupName string, clusterName string, extensionName string, operationID string) (result hdinsight.AsyncOperationResult, err error)
+	GetAzureMonitorStatus(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.AzureMonitorResponse, err error)
+}
+
+var _ ExtensionsClientAPI = (*hdinsight.ExtensionsClient)(nil)
+
 // ScriptActionsClientAPI contains the set of methods on the ScriptActionsClient type.
 type ScriptActionsClientAPI interface {
 	Delete(ctx context.Context, resourceGroupName string, clusterName string, scriptName string) (result autorest.Response, err error)
+	GetExecutionAsyncOperationStatus(ctx context.Context, resourceGroupName string, clusterName string, operationID string) (result hdinsight.AsyncOperationResult, err error)
 	GetExecutionDetail(ctx context.Context, resourceGroupName string, clusterName string, scriptExecutionID string) (result hdinsight.RuntimeScriptActionDetail, err error)
 	ListPersistedScripts(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ScriptActionsListPage, err error)
 	ListPersistedScriptsComplete(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ScriptActionsListIterator, err error)
@@ -99,3 +116,12 @@ type OperationsClientAPI interface {
 }
 
 var _ OperationsClientAPI = (*hdinsight.OperationsClient)(nil)
+
+// VirtualMachinesClientAPI contains the set of methods on the VirtualMachinesClient type.
+type VirtualMachinesClientAPI interface {
+	GetAsyncOperationStatus(ctx context.Context, resourceGroupName string, clusterName string, operationID string) (result hdinsight.AsyncOperationResult, err error)
+	ListHosts(ctx context.Context, resourceGroupName string, clusterName string) (result hdinsight.ListHostInfo, err error)
+	RestartHosts(ctx context.Context, resourceGroupName string, clusterName string, hosts []string) (result hdinsight.VirtualMachinesRestartHostsFuture, err error)
+}
+
+var _ VirtualMachinesClientAPI = (*hdinsight.VirtualMachinesClient)(nil)

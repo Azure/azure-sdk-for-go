@@ -19,6 +19,24 @@ import (
 // The package's fully qualified name.
 const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/mgmt/2015-03-01-preview/hdinsight"
 
+// AaddsResourceDetails the Azure active directory domain service resource details.
+type AaddsResourceDetails struct {
+	// DomainName - The Azure active directory domain service name.
+	DomainName *string `json:"domainName,omitempty"`
+	// InitialSyncComplete - This indicates whether initial sync complete or not.
+	InitialSyncComplete *bool `json:"initialSyncComplete,omitempty"`
+	// LdapsEnabled - This indicates whether enable ldaps or not.
+	LdapsEnabled *bool `json:"ldapsEnabled,omitempty"`
+	// LdapsPublicCertificateInBase64 - The base 64 format string of public ldap certificate.
+	LdapsPublicCertificateInBase64 *string `json:"ldapsPublicCertificateInBase64,omitempty"`
+	// ResourceID - The resource id of azure active directory domain service.
+	ResourceID *string `json:"resourceId,omitempty"`
+	// SubnetID - The subnet resource id.
+	SubnetID *string `json:"subnetId,omitempty"`
+	// TenantID - The tenant id of azure active directory domain service .
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
 // Application the HDInsight cluster application
 type Application struct {
 	autorest.Response `json:"-"`
@@ -59,22 +77,47 @@ type ApplicationGetEndpoint struct {
 	DestinationPort *int32 `json:"destinationPort,omitempty"`
 	// PublicPort - The public port to connect to.
 	PublicPort *int32 `json:"publicPort,omitempty"`
+	// PrivateIPAddress - The private ip address of the endpoint.
+	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
 }
 
 // ApplicationGetHTTPSEndpoint gets the application HTTP endpoints.
 type ApplicationGetHTTPSEndpoint struct {
 	// AccessModes - The list of access modes for the application.
 	AccessModes *[]string `json:"accessModes,omitempty"`
-	// Location - The location of the endpoint.
+	// Location - READ-ONLY; The location of the endpoint.
 	Location *string `json:"location,omitempty"`
 	// DestinationPort - The destination port to connect to.
 	DestinationPort *int32 `json:"destinationPort,omitempty"`
-	// PublicPort - The public port to connect to.
+	// PublicPort - READ-ONLY; The public port to connect to.
 	PublicPort *int32 `json:"publicPort,omitempty"`
+	// PrivateIPAddress - The private ip address of the endpoint.
+	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
 	// SubDomainSuffix - The subdomain suffix of the application.
 	SubDomainSuffix *string `json:"subDomainSuffix,omitempty"`
-	// DisableGatewayAuth - Disable gateway authentication.
+	// DisableGatewayAuth - The value indicates whether to disable GatewayAuth.
 	DisableGatewayAuth *bool `json:"disableGatewayAuth,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ApplicationGetHTTPSEndpoint.
+func (aghe ApplicationGetHTTPSEndpoint) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if aghe.AccessModes != nil {
+		objectMap["accessModes"] = aghe.AccessModes
+	}
+	if aghe.DestinationPort != nil {
+		objectMap["destinationPort"] = aghe.DestinationPort
+	}
+	if aghe.PrivateIPAddress != nil {
+		objectMap["privateIPAddress"] = aghe.PrivateIPAddress
+	}
+	if aghe.SubDomainSuffix != nil {
+		objectMap["subDomainSuffix"] = aghe.SubDomainSuffix
+	}
+	if aghe.DisableGatewayAuth != nil {
+		objectMap["disableGatewayAuth"] = aghe.DisableGatewayAuth
+	}
+	return json.Marshal(objectMap)
 }
 
 // ApplicationListResult result of the request to list cluster Applications. It contains a list of
@@ -379,6 +422,15 @@ func (future *ApplicationsDeleteFuture) result(client ApplicationsClient) (ar au
 	return
 }
 
+// AsyncOperationResult the azure async operation response.
+type AsyncOperationResult struct {
+	autorest.Response `json:"-"`
+	// Status - The async operation state. Possible values include: 'InProgress', 'Succeeded', 'Failed'
+	Status AsyncOperationState `json:"status,omitempty"`
+	// Error - The operation error information.
+	Error *Errors `json:"error,omitempty"`
+}
+
 // Autoscale the autoscale request parameters
 type Autoscale struct {
 	// Capacity - Parameters for load-based autoscale
@@ -428,6 +480,58 @@ type AutoscaleTimeAndCapacity struct {
 	MaxInstanceCount *int32 `json:"maxInstanceCount,omitempty"`
 }
 
+// AzureMonitorRequest the azure monitor parameters.
+type AzureMonitorRequest struct {
+	// WorkspaceID - The Log Analytics workspace ID.
+	WorkspaceID *string `json:"workspaceId,omitempty"`
+	// PrimaryKey - The Log Analytics workspace key.
+	PrimaryKey *string `json:"primaryKey,omitempty"`
+	// SelectedConfigurations - The selected configurations.
+	SelectedConfigurations *AzureMonitorSelectedConfigurations `json:"selectedConfigurations,omitempty"`
+}
+
+// AzureMonitorResponse the azure monitor status response.
+type AzureMonitorResponse struct {
+	autorest.Response `json:"-"`
+	// ClusterMonitoringEnabled - The status of the monitor on the HDInsight cluster.
+	ClusterMonitoringEnabled *bool `json:"clusterMonitoringEnabled,omitempty"`
+	// WorkspaceID - The workspace ID of the monitor on the HDInsight cluster.
+	WorkspaceID *string `json:"workspaceId,omitempty"`
+	// SelectedConfigurations - The selected configurations.
+	SelectedConfigurations *AzureMonitorSelectedConfigurations `json:"selectedConfigurations,omitempty"`
+}
+
+// AzureMonitorSelectedConfigurations the selected configurations for azure monitor.
+type AzureMonitorSelectedConfigurations struct {
+	// ConfigurationVersion - The configuration version.
+	ConfigurationVersion *string `json:"configurationVersion,omitempty"`
+	// GlobalConfigurations - The global configurations of selected configurations.
+	GlobalConfigurations map[string]*string `json:"globalConfigurations"`
+	// TableList - The table list.
+	TableList *[]AzureMonitorTableConfiguration `json:"tableList,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureMonitorSelectedConfigurations.
+func (amsc AzureMonitorSelectedConfigurations) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if amsc.ConfigurationVersion != nil {
+		objectMap["configurationVersion"] = amsc.ConfigurationVersion
+	}
+	if amsc.GlobalConfigurations != nil {
+		objectMap["globalConfigurations"] = amsc.GlobalConfigurations
+	}
+	if amsc.TableList != nil {
+		objectMap["tableList"] = amsc.TableList
+	}
+	return json.Marshal(objectMap)
+}
+
+// AzureMonitorTableConfiguration the table configuration for the Log Analytics integration.
+type AzureMonitorTableConfiguration struct {
+	// Name - The name.
+	Name *string `json:"name,omitempty"`
+}
+
 // BillingMeters the billing meters.
 type BillingMeters struct {
 	// MeterParameter - The virtual machine sizes.
@@ -454,10 +558,32 @@ type BillingResponseListResult struct {
 	autorest.Response `json:"-"`
 	// VMSizes - The virtual machine sizes to include or exclude.
 	VMSizes *[]string `json:"vmSizes,omitempty"`
+	// VMSizesWithEncryptionAtHost - The vm sizes which enable encryption at host.
+	VMSizesWithEncryptionAtHost *[]string `json:"vmSizesWithEncryptionAtHost,omitempty"`
 	// VMSizeFilters - The virtual machine filtering mode. Effectively this can enabling or disabling the virtual machine sizes in a particular set.
 	VMSizeFilters *[]VMSizeCompatibilityFilterV2 `json:"vmSizeFilters,omitempty"`
+	// VMSizeProperties - READ-ONLY; The vm size properties.
+	VMSizeProperties *[]VMSizeProperty `json:"vmSizeProperties,omitempty"`
 	// BillingResources - The billing and managed disk billing resources for a region.
 	BillingResources *[]BillingResources `json:"billingResources,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for BillingResponseListResult.
+func (brlr BillingResponseListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if brlr.VMSizes != nil {
+		objectMap["vmSizes"] = brlr.VMSizes
+	}
+	if brlr.VMSizesWithEncryptionAtHost != nil {
+		objectMap["vmSizesWithEncryptionAtHost"] = brlr.VMSizesWithEncryptionAtHost
+	}
+	if brlr.VMSizeFilters != nil {
+		objectMap["vmSizeFilters"] = brlr.VMSizeFilters
+	}
+	if brlr.BillingResources != nil {
+		objectMap["billingResources"] = brlr.BillingResources
+	}
+	return json.Marshal(objectMap)
 }
 
 // CapabilitiesResult the Get Capabilities operation response.
@@ -467,10 +593,10 @@ type CapabilitiesResult struct {
 	Versions map[string]*VersionsCapability `json:"versions"`
 	// Regions - The virtual machine size compatibility features.
 	Regions map[string]*RegionsCapability `json:"regions"`
-	// VMSizes - The virtual machine sizes.
-	VMSizes map[string]*VMSizesCapability `json:"vmSizes"`
-	// VMSizeFilters - The virtual machine size compatibility filters.
-	VMSizeFilters *[]VMSizeCompatibilityFilter `json:"vmSize_filters,omitempty"`
+	// Vmsizes - The virtual machine sizes.
+	Vmsizes map[string]*VMSizesCapability `json:"vmsizes"`
+	// VmsizeFilters - The virtual machine size compatibility filters.
+	VmsizeFilters *[]VMSizeCompatibilityFilter `json:"vmsize_filters,omitempty"`
 	// Features - The capability features.
 	Features *[]string `json:"features,omitempty"`
 	// Quota - The quota capability.
@@ -486,11 +612,11 @@ func (cr CapabilitiesResult) MarshalJSON() ([]byte, error) {
 	if cr.Regions != nil {
 		objectMap["regions"] = cr.Regions
 	}
-	if cr.VMSizes != nil {
-		objectMap["vmSizes"] = cr.VMSizes
+	if cr.Vmsizes != nil {
+		objectMap["vmsizes"] = cr.Vmsizes
 	}
-	if cr.VMSizeFilters != nil {
-		objectMap["vmSize_filters"] = cr.VMSizeFilters
+	if cr.VmsizeFilters != nil {
+		objectMap["vmsize_filters"] = cr.VmsizeFilters
 	}
 	if cr.Features != nil {
 		objectMap["features"] = cr.Features
@@ -623,6 +749,71 @@ type ClusterCreateProperties struct {
 	MinSupportedTLSVersion *string `json:"minSupportedTlsVersion,omitempty"`
 	// NetworkProperties - The network properties.
 	NetworkProperties *NetworkProperties `json:"networkProperties,omitempty"`
+	// ComputeIsolationProperties - The compute isolation properties.
+	ComputeIsolationProperties *ComputeIsolationProperties `json:"computeIsolationProperties,omitempty"`
+}
+
+// ClusterCreateRequestValidationParameters the cluster create request specification.
+type ClusterCreateRequestValidationParameters struct {
+	// Name - The cluster name.
+	Name *string `json:"name,omitempty"`
+	// Type - The resource type.
+	Type *string `json:"type,omitempty"`
+	// TenantID - The tenant id.
+	TenantID *string `json:"tenantId,omitempty"`
+	// FetchAaddsResource - This indicates whether fetch Aadds resource or not.
+	FetchAaddsResource *bool `json:"fetchAaddsResource,omitempty"`
+	// Location - The location of the cluster.
+	Location *string `json:"location,omitempty"`
+	// Tags - The resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Properties - The cluster create parameters.
+	Properties *ClusterCreateProperties `json:"properties,omitempty"`
+	// Identity - The identity of the cluster, if configured.
+	Identity *ClusterIdentity `json:"identity,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ClusterCreateRequestValidationParameters.
+func (ccrvp ClusterCreateRequestValidationParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ccrvp.Name != nil {
+		objectMap["name"] = ccrvp.Name
+	}
+	if ccrvp.Type != nil {
+		objectMap["type"] = ccrvp.Type
+	}
+	if ccrvp.TenantID != nil {
+		objectMap["tenantId"] = ccrvp.TenantID
+	}
+	if ccrvp.FetchAaddsResource != nil {
+		objectMap["fetchAaddsResource"] = ccrvp.FetchAaddsResource
+	}
+	if ccrvp.Location != nil {
+		objectMap["location"] = ccrvp.Location
+	}
+	if ccrvp.Tags != nil {
+		objectMap["tags"] = ccrvp.Tags
+	}
+	if ccrvp.Properties != nil {
+		objectMap["properties"] = ccrvp.Properties
+	}
+	if ccrvp.Identity != nil {
+		objectMap["identity"] = ccrvp.Identity
+	}
+	return json.Marshal(objectMap)
+}
+
+// ClusterCreateValidationResult the response of cluster create request validation.
+type ClusterCreateValidationResult struct {
+	autorest.Response `json:"-"`
+	// ValidationErrors - The validation errors.
+	ValidationErrors *[]ValidationErrorInfo `json:"validationErrors,omitempty"`
+	// ValidationWarnings - The validation warnings.
+	ValidationWarnings *[]ValidationErrorInfo `json:"validationWarnings,omitempty"`
+	// EstimatedCreationDuration - The estimated creation duration.
+	EstimatedCreationDuration *string `json:"estimatedCreationDuration,omitempty"`
+	// AaddsResourcesDetails - The Azure active directory domain service resource details.
+	AaddsResourcesDetails *[]AaddsResourceDetails `json:"aaddsResourcesDetails,omitempty"`
 }
 
 // ClusterDefinition the cluster definition.
@@ -669,6 +860,8 @@ type ClusterDiskEncryptionParameters struct {
 type ClusterGetProperties struct {
 	// ClusterVersion - The version of the cluster.
 	ClusterVersion *string `json:"clusterVersion,omitempty"`
+	// ClusterHdpVersion - The hdp version of the cluster.
+	ClusterHdpVersion *string `json:"clusterHdpVersion,omitempty"`
 	// OsType - The type of operating system. Possible values include: 'Windows', 'Linux'
 	OsType OSType `json:"osType,omitempty"`
 	// Tier - The cluster tier. Possible values include: 'Standard', 'Premium'
@@ -699,10 +892,16 @@ type ClusterGetProperties struct {
 	DiskEncryptionProperties *DiskEncryptionProperties `json:"diskEncryptionProperties,omitempty"`
 	// EncryptionInTransitProperties - The encryption-in-transit properties.
 	EncryptionInTransitProperties *EncryptionInTransitProperties `json:"encryptionInTransitProperties,omitempty"`
+	// StorageProfile - The storage profile.
+	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
 	// MinSupportedTLSVersion - The minimal supported tls version.
 	MinSupportedTLSVersion *string `json:"minSupportedTlsVersion,omitempty"`
+	// ExcludedServicesConfig - The excluded services config.
+	ExcludedServicesConfig *ExcludedServicesConfig `json:"excludedServicesConfig,omitempty"`
 	// NetworkProperties - The network properties.
 	NetworkProperties *NetworkProperties `json:"networkProperties,omitempty"`
+	// ComputeIsolationProperties - The compute isolation properties.
+	ComputeIsolationProperties *ComputeIsolationProperties `json:"computeIsolationProperties,omitempty"`
 }
 
 // ClusterIdentity identity for the cluster.
@@ -735,11 +934,16 @@ type ClusterIdentityUserAssignedIdentitiesValue struct {
 	PrincipalID *string `json:"principalId,omitempty"`
 	// ClientID - READ-ONLY; The client id of user assigned identity.
 	ClientID *string `json:"clientId,omitempty"`
+	// TenantID - The tenant id of user assigned identity.
+	TenantID *string `json:"tenantId,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ClusterIdentityUserAssignedIdentitiesValue.
 func (ciAiv ClusterIdentityUserAssignedIdentitiesValue) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if ciAiv.TenantID != nil {
+		objectMap["tenantId"] = ciAiv.TenantID
+	}
 	return json.Marshal(objectMap)
 }
 
@@ -942,20 +1146,20 @@ func (clrsadr ClusterListRuntimeScriptActionDetailResult) MarshalJSON() ([]byte,
 	return json.Marshal(objectMap)
 }
 
-// ClusterMonitoringRequest the Operations Management Suite (OMS) parameters.
+// ClusterMonitoringRequest the cluster monitor parameters.
 type ClusterMonitoringRequest struct {
-	// WorkspaceID - The Operations Management Suite (OMS) workspace ID.
+	// WorkspaceID - The cluster monitor workspace ID.
 	WorkspaceID *string `json:"workspaceId,omitempty"`
-	// PrimaryKey - The Operations Management Suite (OMS) workspace key.
+	// PrimaryKey - The cluster monitor workspace key.
 	PrimaryKey *string `json:"primaryKey,omitempty"`
 }
 
-// ClusterMonitoringResponse the Operations Management Suite (OMS) status response
+// ClusterMonitoringResponse the cluster monitoring status response.
 type ClusterMonitoringResponse struct {
 	autorest.Response `json:"-"`
-	// ClusterMonitoringEnabled - The status of the Operations Management Suite (OMS) on the HDInsight cluster.
+	// ClusterMonitoringEnabled - The status of the monitor on the HDInsight cluster.
 	ClusterMonitoringEnabled *bool `json:"clusterMonitoringEnabled,omitempty"`
-	// WorkspaceID - The workspace ID of the Operations Management Suite (OMS) on the HDInsight cluster.
+	// WorkspaceID - The workspace ID of the monitor on the HDInsight cluster.
 	WorkspaceID *string `json:"workspaceId,omitempty"`
 }
 
@@ -1245,6 +1449,51 @@ func (future *ClustersUpdateGatewaySettingsFuture) result(client ClustersClient)
 	return
 }
 
+// ClustersUpdateIdentityCertificateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ClustersUpdateIdentityCertificateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ClustersClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ClustersUpdateIdentityCertificateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ClustersUpdateIdentityCertificateFuture.Result.
+func (future *ClustersUpdateIdentityCertificateFuture) result(client ClustersClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ClustersUpdateIdentityCertificateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("hdinsight.ClustersUpdateIdentityCertificateFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ComputeIsolationProperties the compute isolation properties.
+type ComputeIsolationProperties struct {
+	// EnableComputeIsolation - The flag indicates whether enable compute isolation or not.
+	EnableComputeIsolation *bool `json:"enableComputeIsolation,omitempty"`
+	// HostSku - The host sku.
+	HostSku *string `json:"hostSku,omitempty"`
+}
+
 // ComputeProfile describes the compute profile.
 type ComputeProfile struct {
 	// Roles - The list of roles in the cluster.
@@ -1298,6 +1547,8 @@ type ConnectivityEndpoint struct {
 	Location *string `json:"location,omitempty"`
 	// Port - The port to connect to.
 	Port *int32 `json:"port,omitempty"`
+	// PrivateIPAddress - The private ip address of the endpoint.
+	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
 }
 
 // DataDisksGroups the data disks groups for the role.
@@ -1317,6 +1568,18 @@ func (ddg DataDisksGroups) MarshalJSON() ([]byte, error) {
 		objectMap["disksPerNode"] = ddg.DisksPerNode
 	}
 	return json.Marshal(objectMap)
+}
+
+// Dimension the definition of Dimension.
+type Dimension struct {
+	// Name - The name of the dimension.
+	Name *string `json:"name,omitempty"`
+	// DisplayName - The display name of the dimension.
+	DisplayName *string `json:"displayName,omitempty"`
+	// InternalName - The display name of the dimension.
+	InternalName *string `json:"internalName,omitempty"`
+	// ToBeExportedForShoebox - The flag indicates whether the metric will be exported for shoebox or not.
+	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
 }
 
 // DiskBillingMeters the disk billing meters.
@@ -1367,6 +1630,14 @@ type Errors struct {
 	Message *string `json:"message,omitempty"`
 }
 
+// ExcludedServicesConfig the configuration that services will be excluded when creating cluster.
+type ExcludedServicesConfig struct {
+	// ExcludedServicesConfigID - The config id of excluded services.
+	ExcludedServicesConfigID *string `json:"excludedServicesConfigId,omitempty"`
+	// ExcludedServicesList - The list of excluded services.
+	ExcludedServicesList *string `json:"excludedServicesList,omitempty"`
+}
+
 // ExecuteScriptActionParameters the parameters for the script actions to execute on a running cluster.
 type ExecuteScriptActionParameters struct {
 	// ScriptActions - The list of run time script actions.
@@ -1377,11 +1648,84 @@ type ExecuteScriptActionParameters struct {
 
 // Extension cluster monitoring extensions
 type Extension struct {
-	autorest.Response `json:"-"`
 	// WorkspaceID - The workspace ID for the cluster monitoring extension.
 	WorkspaceID *string `json:"workspaceId,omitempty"`
 	// PrimaryKey - The certificate for the cluster monitoring extensions.
 	PrimaryKey *string `json:"primaryKey,omitempty"`
+}
+
+// ExtensionCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ExtensionCreateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ExtensionClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ExtensionCreateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ExtensionCreateFuture.Result.
+func (future *ExtensionCreateFuture) result(client ExtensionClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionCreateFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ExtensionDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type ExtensionDeleteFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ExtensionClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ExtensionDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ExtensionDeleteFuture.Result.
+func (future *ExtensionDeleteFuture) result(client ExtensionClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
 }
 
 // ExtensionDisableMonitoringFuture an abstraction for monitoring and retrieving the results of a
@@ -1458,6 +1802,80 @@ func (future *ExtensionEnableMonitoringFuture) result(client ExtensionClient) (a
 	return
 }
 
+// ExtensionsDisableAzureMonitorFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ExtensionsDisableAzureMonitorFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ExtensionsClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ExtensionsDisableAzureMonitorFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ExtensionsDisableAzureMonitorFuture.Result.
+func (future *ExtensionsDisableAzureMonitorFuture) result(client ExtensionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsDisableAzureMonitorFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionsDisableAzureMonitorFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// ExtensionsEnableAzureMonitorFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ExtensionsEnableAzureMonitorFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ExtensionsClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ExtensionsEnableAzureMonitorFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ExtensionsEnableAzureMonitorFuture.Result.
+func (future *ExtensionsEnableAzureMonitorFuture) result(client ExtensionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsEnableAzureMonitorFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionsEnableAzureMonitorFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // GatewaySettings gateway settings.
 type GatewaySettings struct {
 	autorest.Response `json:"-"`
@@ -1481,10 +1899,34 @@ type HardwareProfile struct {
 	VMSize *string `json:"vmSize,omitempty"`
 }
 
+// HostInfo the cluster host information.
+type HostInfo struct {
+	// Name - The host name
+	Name *string `json:"name,omitempty"`
+	// Fqdn - The Fully Qualified Domain Name of host
+	Fqdn *string `json:"fqdn,omitempty"`
+	// EffectiveDiskEncryptionKeyURL - The effective disk encryption key URL used by the host
+	EffectiveDiskEncryptionKeyURL *string `json:"effectiveDiskEncryptionKeyUrl,omitempty"`
+}
+
 // KafkaRestProperties the kafka rest proxy configuration which contains AAD security group information.
 type KafkaRestProperties struct {
 	// ClientGroupInfo - The information of AAD security group.
 	ClientGroupInfo *ClientGroupInfo `json:"clientGroupInfo,omitempty"`
+	// ConfigurationOverride - The configurations that need to be overriden.
+	ConfigurationOverride map[string]*string `json:"configurationOverride"`
+}
+
+// MarshalJSON is the custom marshaler for KafkaRestProperties.
+func (krp KafkaRestProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if krp.ClientGroupInfo != nil {
+		objectMap["clientGroupInfo"] = krp.ClientGroupInfo
+	}
+	if krp.ConfigurationOverride != nil {
+		objectMap["configurationOverride"] = krp.ConfigurationOverride
+	}
+	return json.Marshal(objectMap)
 }
 
 // LinuxOperatingSystemProfile the ssh username, password, and ssh public key.
@@ -1497,12 +1939,84 @@ type LinuxOperatingSystemProfile struct {
 	SSHProfile *SSHProfile `json:"sshProfile,omitempty"`
 }
 
+// ListHostInfo ...
+type ListHostInfo struct {
+	autorest.Response `json:"-"`
+	Value             *[]HostInfo `json:"value,omitempty"`
+}
+
 // LocalizedName the details about the localizable name of a type of usage.
 type LocalizedName struct {
 	// Value - The name of the used resource.
 	Value *string `json:"value,omitempty"`
 	// LocalizedValue - The localized name of the used resource.
 	LocalizedValue *string `json:"localizedValue,omitempty"`
+}
+
+// MetricSpecifications the details of metric specifications.
+type MetricSpecifications struct {
+	// Name - The name of the metric specification.
+	Name *string `json:"name,omitempty"`
+	// DisplayName - The display name of the metric specification.
+	DisplayName *string `json:"displayName,omitempty"`
+	// DisplayDescription - The display description of the metric specification.
+	DisplayDescription *string `json:"displayDescription,omitempty"`
+	// Unit - The unit of the metric specification.
+	Unit *string `json:"unit,omitempty"`
+	// AggregationType - The aggregation type of the metric specification.
+	AggregationType *string `json:"aggregationType,omitempty"`
+	// SupportedAggregationTypes - The supported aggregation types of the metric specification.
+	SupportedAggregationTypes *[]string `json:"supportedAggregationTypes,omitempty"`
+	// SupportedTimeGrainTypes - The supported time grain types of the metric specification.
+	SupportedTimeGrainTypes *[]string `json:"supportedTimeGrainTypes,omitempty"`
+	// EnableRegionalMdmAccount - The flag indicates whether enable regional mdm account or not.
+	EnableRegionalMdmAccount *bool `json:"enableRegionalMdmAccount,omitempty"`
+	// SourceMdmAccount - The source mdm account.
+	SourceMdmAccount *string `json:"sourceMdmAccount,omitempty"`
+	// SourceMdmNamespace - The source mdm namespace.
+	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty"`
+	// MetricFilterPattern - The metric filter pattern.
+	MetricFilterPattern *string `json:"metricFilterPattern,omitempty"`
+	// FillGapWithZero - The flag indicates whether filling gap with zero.
+	FillGapWithZero *bool `json:"fillGapWithZero,omitempty"`
+	// Category - The category of the metric.
+	Category *string `json:"category,omitempty"`
+	// ResourceIDDimensionNameOverride - The override name of resource id dimension name.
+	ResourceIDDimensionNameOverride *string `json:"resourceIdDimensionNameOverride,omitempty"`
+	// IsInternal - The flag indicates whether the metric is internal or not.
+	IsInternal *bool `json:"isInternal,omitempty"`
+	// DelegateMetricNameOverride - The override name of delegate metric.
+	DelegateMetricNameOverride *string `json:"delegateMetricNameOverride,omitempty"`
+	// Dimensions - The dimensions of the metric specification.
+	Dimensions *[]Dimension `json:"dimensions,omitempty"`
+}
+
+// NameAvailabilityCheckRequestParameters the request spec of checking name availability.
+type NameAvailabilityCheckRequestParameters struct {
+	// Name - The resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - The resource type
+	Type *string `json:"type,omitempty"`
+}
+
+// NameAvailabilityCheckResult the response spec of checking name availability.
+type NameAvailabilityCheckResult struct {
+	autorest.Response `json:"-"`
+	// NameAvailable - This indicates whether the name is available.
+	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	// Reason - READ-ONLY; The reason of the result.
+	Reason *string `json:"reason,omitempty"`
+	// Message - READ-ONLY; The related message.
+	Message *string `json:"message,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NameAvailabilityCheckResult.
+func (nacr NameAvailabilityCheckResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if nacr.NameAvailable != nil {
+		objectMap["nameAvailable"] = nacr.NameAvailable
+	}
+	return json.Marshal(objectMap)
 }
 
 // NetworkProperties the network properties.
@@ -1519,6 +2033,8 @@ type Operation struct {
 	Name *string `json:"name,omitempty"`
 	// Display - The object that represents the operation.
 	Display *OperationDisplay `json:"display,omitempty"`
+	// Properties - The operation properties.
+	Properties *OperationProperties `json:"properties,omitempty"`
 }
 
 // OperationDisplay the object that represents the operation.
@@ -1529,6 +2045,8 @@ type OperationDisplay struct {
 	Resource *string `json:"resource,omitempty"`
 	// Operation - The operation type: read, write, delete, etc.
 	Operation *string `json:"operation,omitempty"`
+	// Description - Localized friendly description for the operation
+	Description *string `json:"description,omitempty"`
 }
 
 // OperationListResult result of the request to list HDInsight operations. It contains a list of operations
@@ -1691,12 +2209,10 @@ func NewOperationListResultPage(cur OperationListResult, getNextPage func(contex
 	}
 }
 
-// OperationResource the azure async operation response.
-type OperationResource struct {
-	// Status - The async operation state. Possible values include: 'InProgress', 'Succeeded', 'Failed'
-	Status AsyncOperationState `json:"status,omitempty"`
-	// Error - The operation error information.
-	Error *Errors `json:"error,omitempty"`
+// OperationProperties the details of operation.
+type OperationProperties struct {
+	// ServiceSpecification - The specification of the service.
+	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
 }
 
 // OsProfile the Linux operation systems profile.
@@ -1778,6 +2294,8 @@ type Role struct {
 	MinInstanceCount *int32 `json:"minInstanceCount,omitempty"`
 	// TargetInstanceCount - The instance count of the cluster.
 	TargetInstanceCount *int32 `json:"targetInstanceCount,omitempty"`
+	// VMGroupName - The name of the virtual machine group.
+	VMGroupName *string `json:"VMGroupName,omitempty"`
 	// AutoscaleConfiguration - The autoscale configurations.
 	AutoscaleConfiguration *Autoscale `json:"autoscale,omitempty"`
 	// HardwareProfile - The hardware profile.
@@ -1790,6 +2308,8 @@ type Role struct {
 	DataDisksGroups *[]DataDisksGroups `json:"dataDisksGroups,omitempty"`
 	// ScriptActions - The list of script actions on the role.
 	ScriptActions *[]ScriptAction `json:"scriptActions,omitempty"`
+	// EncryptDataDisks - Indicates whether encrypt the data disks.
+	EncryptDataDisks *bool `json:"encryptDataDisks,omitempty"`
 }
 
 // RuntimeScriptAction describes a script action on a running cluster.
@@ -2265,6 +2785,12 @@ type SecurityProfile struct {
 	MsiResourceID *string `json:"msiResourceId,omitempty"`
 }
 
+// ServiceSpecification the specification of the service.
+type ServiceSpecification struct {
+	// MetricSpecifications - The metric specifications.
+	MetricSpecifications *[]MetricSpecifications `json:"metricSpecifications,omitempty"`
+}
+
 // SetString ...
 type SetString struct {
 	autorest.Response `json:"-"`
@@ -2308,6 +2834,10 @@ type StorageAccount struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 	// MsiResourceID - The managed identity (MSI) that is allowed to access the storage account, only to be specified for Azure Data Lake Storage Gen 2.
 	MsiResourceID *string `json:"msiResourceId,omitempty"`
+	// Saskey - The shared access signature key.
+	Saskey *string `json:"saskey,omitempty"`
+	// Fileshare - The file share name.
+	Fileshare *string `json:"fileshare,omitempty"`
 }
 
 // StorageProfile the storage profile.
@@ -2342,6 +2872,16 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// UpdateClusterIdentityCertificateParameters the update cluster identity certificate request parameters.
+type UpdateClusterIdentityCertificateParameters struct {
+	// ApplicationID - The application id.
+	ApplicationID *string `json:"applicationId,omitempty"`
+	// Certificate - The certificate in base64 encoded format.
+	Certificate *string `json:"certificate,omitempty"`
+	// CertificatePassword - The password of the certificate.
+	CertificatePassword *string `json:"certificatePassword,omitempty"`
+}
+
 // UpdateGatewaySettingsParameters the update gateway settings request parameters.
 type UpdateGatewaySettingsParameters struct {
 	// IsCredentialEnabled - Indicates whether or not the gateway settings based authorization is enabled.
@@ -2357,9 +2897,9 @@ type Usage struct {
 	// Unit - The type of measurement for usage.
 	Unit *string `json:"unit,omitempty"`
 	// CurrentValue - The current usage.
-	CurrentValue *int32 `json:"currentValue,omitempty"`
+	CurrentValue *int64 `json:"currentValue,omitempty"`
 	// Limit - The maximum allowed usage.
-	Limit *int32 `json:"limit,omitempty"`
+	Limit *int64 `json:"limit,omitempty"`
 	// Name - The details about the localizable name of the used resource.
 	Name *LocalizedName `json:"name,omitempty"`
 }
@@ -2369,6 +2909,18 @@ type UsagesListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of usages.
 	Value *[]Usage `json:"value,omitempty"`
+}
+
+// ValidationErrorInfo the validation error information.
+type ValidationErrorInfo struct {
+	// Code - The error code.
+	Code *string `json:"code,omitempty"`
+	// Message - The error message.
+	Message *string `json:"message,omitempty"`
+	// ErrorResource - The error resource.
+	ErrorResource *string `json:"errorResource,omitempty"`
+	// MessageArguments - The message arguments
+	MessageArguments *[]string `json:"messageArguments,omitempty"`
 }
 
 // VersionsCapability the version capability.
@@ -2384,7 +2936,7 @@ type VersionSpec struct {
 	// DisplayName - The display name
 	DisplayName *string `json:"displayName,omitempty"`
 	// IsDefault - Whether or not the version is the default version.
-	IsDefault *string `json:"isDefault,omitempty"`
+	IsDefault *bool `json:"isDefault,omitempty"`
 	// ComponentVersions - The component version property.
 	ComponentVersions map[string]*string `json:"componentVersions"`
 }
@@ -2407,6 +2959,43 @@ func (vs VersionSpec) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// VirtualMachinesRestartHostsFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type VirtualMachinesRestartHostsFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(VirtualMachinesClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *VirtualMachinesRestartHostsFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for VirtualMachinesRestartHostsFuture.Result.
+func (future *VirtualMachinesRestartHostsFuture) result(client VirtualMachinesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.VirtualMachinesRestartHostsFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("hdinsight.VirtualMachinesRestartHostsFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // VirtualNetworkProfile the virtual network properties.
 type VirtualNetworkProfile struct {
 	// ID - The ID of the virtual network.
@@ -2427,8 +3016,14 @@ type VMSizeCompatibilityFilter struct {
 	NodeTypes *[]string `json:"NodeTypes,omitempty"`
 	// ClusterVersions - The list of cluster versions.
 	ClusterVersions *[]string `json:"ClusterVersions,omitempty"`
-	// Vmsizes - The list of virtual machine sizes.
-	Vmsizes *[]string `json:"vmsizes,omitempty"`
+	// OsType - The list of OS types.
+	OsType *[]string `json:"OsType,omitempty"`
+	// VMSizes - The list of virtual machine sizes.
+	VMSizes *[]string `json:"VMSizes,omitempty"`
+	// ESPApplied - Whether apply for ESP cluster. 'true' means only for ESP, 'false' means only for non-ESP, null or empty string or others mean for both.
+	ESPApplied *string `json:"ESPApplied,omitempty"`
+	// ComputeIsolationSupported - Whether support compute isolation. 'true' means only for ComputeIsolationEnabled, 'false' means only for regular cluster.
+	ComputeIsolationSupported *string `json:"ComputeIsolationSupported,omitempty"`
 }
 
 // VMSizeCompatibilityFilterV2 this class represent a single filter object that defines a multidimensional
@@ -2437,7 +3032,7 @@ type VMSizeCompatibilityFilter struct {
 // sizes in affect of exclusion/inclusion) and the ordering of the Filters. Later filters override previous
 // settings if conflicted.
 type VMSizeCompatibilityFilterV2 struct {
-	// FilterMode - The filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set. Possible values include: 'Exclude', 'Include'
+	// FilterMode - The filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set. Possible values include: 'Exclude', 'Include', 'Recommend', 'Default'
 	FilterMode FilterMode `json:"filterMode,omitempty"`
 	// Regions - The list of regions under the effect of the filter.
 	Regions *[]string `json:"regions,omitempty"`
@@ -2451,6 +3046,30 @@ type VMSizeCompatibilityFilterV2 struct {
 	OsType *[]OSType `json:"osType,omitempty"`
 	// VMSizes - The list of virtual machine sizes to include or exclude.
 	VMSizes *[]string `json:"vmSizes,omitempty"`
+}
+
+// VMSizeProperty the vm size property
+type VMSizeProperty struct {
+	// Name - The vm size name.
+	Name *string `json:"name,omitempty"`
+	// Cores - The number of cores that the vm size has.
+	Cores *int32 `json:"cores,omitempty"`
+	// DataDiskStorageTier - The data disk storage tier of the vm size.
+	DataDiskStorageTier *string `json:"dataDiskStorageTier,omitempty"`
+	// Label - The label of the vm size.
+	Label *string `json:"label,omitempty"`
+	// MaxDataDiskCount - The max data disk count of the vm size.
+	MaxDataDiskCount *int64 `json:"maxDataDiskCount,omitempty"`
+	// MemoryInMb - The memory whose unit is MB of the vm size.
+	MemoryInMb *int64 `json:"memoryInMb,omitempty"`
+	// SupportedByVirtualMachines - This indicates this vm size is supported by virtual machines or not
+	SupportedByVirtualMachines *bool `json:"supportedByVirtualMachines,omitempty"`
+	// SupportedByWebWorkerRoles - The indicates this vm size is supported by web worker roles or not
+	SupportedByWebWorkerRoles *bool `json:"supportedByWebWorkerRoles,omitempty"`
+	// VirtualMachineResourceDiskSizeInMb - The virtual machine resource disk size whose unit is MB of the vm size.
+	VirtualMachineResourceDiskSizeInMb *int64 `json:"virtualMachineResourceDiskSizeInMb,omitempty"`
+	// WebWorkerResourceDiskSizeInMb - The web worker resource disk size whose unit is MB of the vm size.
+	WebWorkerResourceDiskSizeInMb *int64 `json:"webWorkerResourceDiskSizeInMb,omitempty"`
 }
 
 // VMSizesCapability the virtual machine sizes capability.

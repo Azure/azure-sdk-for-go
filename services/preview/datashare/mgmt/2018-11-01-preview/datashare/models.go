@@ -27,14 +27,14 @@ type Account struct {
 	Identity *Identity `json:"identity,omitempty"`
 	// AccountProperties - Properties on the account
 	*AccountProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; The resource id of the azure resource
-	ID *string `json:"id,omitempty"`
 	// Location - Location of the azure resource.
 	Location *string `json:"location,omitempty"`
-	// Name - READ-ONLY; Name of the azure resource
-	Name *string `json:"name,omitempty"`
 	// Tags - Tags on the azure resource.
 	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; The resource id of the azure resource
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Name of the azure resource
+	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty"`
 }
@@ -84,15 +84,6 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 				}
 				a.AccountProperties = &accountProperties
 			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				a.ID = &ID
-			}
 		case "location":
 			if v != nil {
 				var location string
@@ -102,15 +93,6 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 				}
 				a.Location = &location
 			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				a.Name = &name
-			}
 		case "tags":
 			if v != nil {
 				var tags map[string]*string
@@ -119,6 +101,24 @@ func (a *Account) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				a.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				a.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				a.Name = &name
 			}
 		case "type":
 			if v != nil {
@@ -4437,14 +4437,14 @@ func (future *DataSetsDeleteFuture) result(client DataSetsClient) (ar autorest.R
 
 // DefaultDto base data transfer object implementation for default resources.
 type DefaultDto struct {
-	// ID - READ-ONLY; The resource id of the azure resource
-	ID *string `json:"id,omitempty"`
 	// Location - Location of the azure resource.
 	Location *string `json:"location,omitempty"`
-	// Name - READ-ONLY; Name of the azure resource
-	Name *string `json:"name,omitempty"`
 	// Tags - Tags on the azure resource.
 	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; The resource id of the azure resource
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Name of the azure resource
+	Name *string `json:"name,omitempty"`
 	// Type - READ-ONLY; Type of the azure resource
 	Type *string `json:"type,omitempty"`
 }
@@ -5660,6 +5660,8 @@ type OperationMetaMetricSpecification struct {
 	DisplayName *string `json:"displayName,omitempty"`
 	// EnableRegionalMdmAccount - enable regional mdm account
 	EnableRegionalMdmAccount *string `json:"enableRegionalMdmAccount,omitempty"`
+	// FillGapWithZero - fill gap with zero
+	FillGapWithZero *bool `json:"fillGapWithZero,omitempty"`
 	// InternalMetricName - internal metric name
 	InternalMetricName *string `json:"internalMetricName,omitempty"`
 	// Name - name of the metric

@@ -242,6 +242,23 @@ func PossibleRecurrenceIntervalValues() []RecurrenceInterval {
 	return []RecurrenceInterval{Day, Hour}
 }
 
+// RegistrationStatus enumerates the values for registration status.
+type RegistrationStatus string
+
+const (
+	// Activated ...
+	Activated RegistrationStatus = "Activated"
+	// ActivationAttemptsExhausted ...
+	ActivationAttemptsExhausted RegistrationStatus = "ActivationAttemptsExhausted"
+	// ActivationPending ...
+	ActivationPending RegistrationStatus = "ActivationPending"
+)
+
+// PossibleRegistrationStatusValues returns an array of possible values for the RegistrationStatus const type.
+func PossibleRegistrationStatusValues() []RegistrationStatus {
+	return []RegistrationStatus{Activated, ActivationAttemptsExhausted, ActivationPending}
+}
+
 // ShareKind enumerates the values for share kind.
 type ShareKind string
 

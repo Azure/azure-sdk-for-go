@@ -1,11 +1,9 @@
-# Change History
+# Unreleased
 
 ## Additive Changes
 
-### New Funcs
+### Struct Changes
 
-1. AccountProperties.MarshalJSON() ([]byte, error)
-1. ConsumerSourceDataSetProperties.MarshalJSON() ([]byte, error)
-1. ProviderShareSubscriptionProperties.MarshalJSON() ([]byte, error)
-1. ProxyDto.MarshalJSON() ([]byte, error)
-1. SynchronizationDetails.MarshalJSON() ([]byte, error)
+#### New Struct Fields
+
+1. OperationMetaMetricSpecification.FillGapWithZero

@@ -161,7 +161,7 @@ func (client ConsumerInvitationsClient) ListInvitationsPreparer(ctx context.Cont
 	preparer := autorest.CreatePreparer(
 		autorest.AsGet(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPath("/providers/Microsoft.DataShare/ListInvitations"),
+		autorest.WithPath("/providers/Microsoft.DataShare/listInvitations"),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))
 }
@@ -280,7 +280,7 @@ func (client ConsumerInvitationsClient) RejectInvitationPreparer(ctx context.Con
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPost(),
 		autorest.WithBaseURL(client.BaseURI),
-		autorest.WithPathParameters("/providers/Microsoft.DataShare/locations/{location}/RejectInvitation", pathParameters),
+		autorest.WithPathParameters("/providers/Microsoft.DataShare/locations/{location}/rejectInvitation", pathParameters),
 		autorest.WithJSON(invitation),
 		autorest.WithQueryParameters(queryParameters))
 	return preparer.Prepare((&http.Request{}).WithContext(ctx))

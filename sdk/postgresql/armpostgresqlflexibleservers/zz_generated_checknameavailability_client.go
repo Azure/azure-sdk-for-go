@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CheckNameAvailabilityClient contains the methods for the CheckNameAvailability group.
 // Don't use this type directly, use NewCheckNameAvailabilityClient() instead.
 type CheckNameAvailabilityClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewCheckNameAvailabilityClient creates a new instance of CheckNameAvailabilityClient with the specified values.
-func NewCheckNameAvailabilityClient(con *armcore.Connection, subscriptionID string) *CheckNameAvailabilityClient {
-	return &CheckNameAvailabilityClient{con: con, subscriptionID: subscriptionID}
+func NewCheckNameAvailabilityClient(con *arm.Connection, subscriptionID string) *CheckNameAvailabilityClient {
+	return &CheckNameAvailabilityClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Execute - Check the availability of name for resource
@@ -37,53 +41,52 @@ func (client *CheckNameAvailabilityClient) Execute(ctx context.Context, nameAvai
 	if err != nil {
 		return CheckNameAvailabilityExecuteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return CheckNameAvailabilityExecuteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return CheckNameAvailabilityExecuteResponse{}, client.executeHandleError(resp)
 	}
 	return client.executeHandleResponse(resp)
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *CheckNameAvailabilityClient) executeCreateRequest(ctx context.Context, nameAvailabilityRequest NameAvailabilityRequest, options *CheckNameAvailabilityExecuteOptions) (*azcore.Request, error) {
+func (client *CheckNameAvailabilityClient) executeCreateRequest(ctx context.Context, nameAvailabilityRequest NameAvailabilityRequest, options *CheckNameAvailabilityExecuteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(nameAvailabilityRequest)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, nameAvailabilityRequest)
 }
 
 // executeHandleResponse handles the Execute response.
-func (client *CheckNameAvailabilityClient) executeHandleResponse(resp *azcore.Response) (CheckNameAvailabilityExecuteResponse, error) {
-	result := CheckNameAvailabilityExecuteResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.NameAvailability); err != nil {
+func (client *CheckNameAvailabilityClient) executeHandleResponse(resp *http.Response) (CheckNameAvailabilityExecuteResponse, error) {
+	result := CheckNameAvailabilityExecuteResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailability); err != nil {
 		return CheckNameAvailabilityExecuteResponse{}, err
 	}
 	return result, nil
 }
 
 // executeHandleError handles the Execute error response.
-func (client *CheckNameAvailabilityClient) executeHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *CheckNameAvailabilityClient) executeHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

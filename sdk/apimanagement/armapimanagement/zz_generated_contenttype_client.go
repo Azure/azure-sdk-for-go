@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ContentTypeClient contains the methods for the ContentType group.
 // Don't use this type directly, use NewContentTypeClient() instead.
 type ContentTypeClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewContentTypeClient creates a new instance of ContentTypeClient with the specified values.
-func NewContentTypeClient(con *armcore.Connection, subscriptionID string) *ContentTypeClient {
-	return &ContentTypeClient{con: con, subscriptionID: subscriptionID}
+func NewContentTypeClient(con *arm.Connection, subscriptionID string) *ContentTypeClient {
+	return &ContentTypeClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates or updates the developer portal's content type. Content types describe content items' properties, validation rules, and constraints.
@@ -39,18 +43,18 @@ func (client *ContentTypeClient) CreateOrUpdate(ctx context.Context, resourceGro
 	if err != nil {
 		return ContentTypeCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ContentTypeCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return ContentTypeCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ContentTypeClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, options *ContentTypeCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *ContentTypeClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, options *ContentTypeCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -68,44 +72,43 @@ func (client *ContentTypeClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header.Set("If-Match", *options.IfMatch)
 	}
-	req.Header.Set("Accept", "application/json")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ContentTypeClient) createOrUpdateHandleResponse(resp *azcore.Response) (ContentTypeCreateOrUpdateResponse, error) {
-	result := ContentTypeCreateOrUpdateResponse{RawResponse: resp.Response}
+func (client *ContentTypeClient) createOrUpdateHandleResponse(resp *http.Response) (ContentTypeCreateOrUpdateResponse, error) {
+	result := ContentTypeCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.ContentTypeContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ContentTypeContract); err != nil {
 		return ContentTypeCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *ContentTypeClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ContentTypeClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Removes the specified developer portal's content type. Content types describe content items' properties, validation rules, and constraints.
@@ -117,18 +120,18 @@ func (client *ContentTypeClient) Delete(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ContentTypeDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ContentTypeDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return ContentTypeDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return ContentTypeDeleteResponse{RawResponse: resp.Response}, nil
+	return ContentTypeDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ContentTypeClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, ifMatch string, options *ContentTypeDeleteOptions) (*azcore.Request, error) {
+func (client *ContentTypeClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, ifMatch string, options *ContentTypeDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -146,30 +149,29 @@ func (client *ContentTypeClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("If-Match", ifMatch)
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("If-Match", ifMatch)
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *ContentTypeClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ContentTypeClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets the details of the developer portal's content type. Content types describe content items' properties, validation rules, and constraints.
@@ -179,18 +181,18 @@ func (client *ContentTypeClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ContentTypeGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ContentTypeGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ContentTypeGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ContentTypeClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, options *ContentTypeGetOptions) (*azcore.Request, error) {
+func (client *ContentTypeClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, contentTypeID string, options *ContentTypeGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes/{contentTypeId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -208,59 +210,58 @@ func (client *ContentTypeClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ContentTypeClient) getHandleResponse(resp *azcore.Response) (ContentTypeGetResponse, error) {
-	result := ContentTypeGetResponse{RawResponse: resp.Response}
+func (client *ContentTypeClient) getHandleResponse(resp *http.Response) (ContentTypeGetResponse, error) {
+	result := ContentTypeGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.ContentTypeContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.ContentTypeContract); err != nil {
 		return ContentTypeGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ContentTypeClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ContentTypeClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByService - Lists the developer portal's content types. Content types describe content items' properties, validation rules, and constraints.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *ContentTypeClient) ListByService(resourceGroupName string, serviceName string, options *ContentTypeListByServiceOptions) ContentTypeListByServicePager {
-	return &contentTypeListByServicePager{
+func (client *ContentTypeClient) ListByService(resourceGroupName string, serviceName string, options *ContentTypeListByServiceOptions) *ContentTypeListByServicePager {
+	return &ContentTypeListByServicePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp ContentTypeListByServiceResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ContentTypeCollection.NextLink)
+		advancer: func(ctx context.Context, resp ContentTypeListByServiceResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ContentTypeCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *ContentTypeClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ContentTypeListByServiceOptions) (*azcore.Request, error) {
+func (client *ContentTypeClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ContentTypeListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/contentTypes"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -274,36 +275,35 @@ func (client *ContentTypeClient) listByServiceCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *ContentTypeClient) listByServiceHandleResponse(resp *azcore.Response) (ContentTypeListByServiceResponse, error) {
-	result := ContentTypeListByServiceResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ContentTypeCollection); err != nil {
+func (client *ContentTypeClient) listByServiceHandleResponse(resp *http.Response) (ContentTypeListByServiceResponse, error) {
+	result := ContentTypeListByServiceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ContentTypeCollection); err != nil {
 		return ContentTypeListByServiceResponse{}, err
 	}
 	return result, nil
 }
 
 // listByServiceHandleError handles the ListByService error response.
-func (client *ContentTypeClient) listByServiceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ContentTypeClient) listByServiceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

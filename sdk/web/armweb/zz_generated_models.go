@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,9 +10,11 @@ package armweb
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // APIDefinitionInfo - Information about the formal API definition for the app.
@@ -189,28 +192,33 @@ func (a AddressResponseProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// AllowedAudiencesValidation - The configuration settings of the Allowed Audiences validation flow.
 type AllowedAudiencesValidation struct {
-	ProxyOnlyResource
-	// AllowedAudiencesValidation resource specific properties
-	Properties *AllowedAudiencesValidationProperties `json:"properties,omitempty"`
+	// The configuration settings of the allowed list of audiences from which to validate the JWT token.
+	AllowedAudiences []*string `json:"allowedAudiences,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type AllowedAudiencesValidation.
 func (a AllowedAudiencesValidation) MarshalJSON() ([]byte, error) {
-	objectMap := a.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", a.Properties)
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "allowedAudiences", a.AllowedAudiences)
 	return json.Marshal(objectMap)
 }
 
-// AllowedAudiencesValidationProperties - AllowedAudiencesValidation resource specific properties
-type AllowedAudiencesValidationProperties struct {
-	AllowedAudiences []*string `json:"allowedAudiences,omitempty"`
+// AllowedPrincipals - The configuration settings of the Azure Active Directory allowed principals.
+type AllowedPrincipals struct {
+	// The list of the allowed groups.
+	Groups []*string `json:"groups,omitempty"`
+
+	// The list of the allowed identities.
+	Identities []*string `json:"identities,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AllowedAudiencesValidationProperties.
-func (a AllowedAudiencesValidationProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AllowedPrincipals.
+func (a AllowedPrincipals) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "allowedAudiences", a.AllowedAudiences)
+	populate(objectMap, "groups", a.Groups)
+	populate(objectMap, "identities", a.Identities)
 	return json.Marshal(objectMap)
 }
 
@@ -279,20 +287,6 @@ type AppLogsConfiguration struct {
 
 // AppRegistration - The configuration settings of the app registration for providers that have app ids and app secrets
 type AppRegistration struct {
-	ProxyOnlyResource
-	// AppRegistration resource specific properties
-	Properties *AppRegistrationProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppRegistration.
-func (a AppRegistration) MarshalJSON() ([]byte, error) {
-	objectMap := a.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AppRegistrationProperties - AppRegistration resource specific properties
-type AppRegistrationProperties struct {
 	// The App ID of the app used for login.
 	AppID *string `json:"appId,omitempty"`
 
@@ -861,6 +855,9 @@ type AppServiceEnvironment struct {
 	// DNS suffix of the App Service Environment.
 	DNSSuffix *string `json:"dnsSuffix,omitempty"`
 
+	// Dedicated Host Count
+	DedicatedHostCount *int32 `json:"dedicatedHostCount,omitempty"`
+
 	// Scale factor for front-ends.
 	FrontEndScaleFactor *int32 `json:"frontEndScaleFactor,omitempty"`
 
@@ -876,8 +873,8 @@ type AppServiceEnvironment struct {
 	// User added ip ranges to whitelist on ASE db
 	UserWhitelistedIPRanges []*string `json:"userWhitelistedIpRanges,omitempty"`
 
-	// READ-ONLY; Dedicated Host Count
-	DedicatedHostCount *int32 `json:"dedicatedHostCount,omitempty" azure:"ro"`
+	// Whether or not this App Service Environment is zone-redundant.
+	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
 
 	// READ-ONLY; Flag that displays whether an ASE has linux workers or not
 	HasLinuxWorkers *bool `json:"hasLinuxWorkers,omitempty" azure:"ro"`
@@ -918,6 +915,7 @@ func (a AppServiceEnvironment) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "suspended", a.Suspended)
 	populate(objectMap, "userWhitelistedIpRanges", a.UserWhitelistedIPRanges)
 	populate(objectMap, "virtualNetwork", a.VirtualNetwork)
+	populate(objectMap, "zoneRedundant", a.ZoneRedundant)
 	return json.Marshal(objectMap)
 }
 
@@ -1297,6 +1295,9 @@ type AppServicePlanPatchResourceProperties struct {
 	// Target worker tier assigned to the App Service plan.
 	WorkerTierName *string `json:"workerTierName,omitempty"`
 
+	// If true, this App Service Plan will perform availability zone balancing. If false, this App Service Plan will not perform availability zone balancing.
+	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+
 	// READ-ONLY; Geographical location for the App Service plan.
 	GeoRegion *string `json:"geoRegion,omitempty" azure:"ro"`
 
@@ -1343,6 +1344,7 @@ func (a AppServicePlanPatchResourceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "targetWorkerCount", a.TargetWorkerCount)
 	populate(objectMap, "targetWorkerSizeId", a.TargetWorkerSizeID)
 	populate(objectMap, "workerTierName", a.WorkerTierName)
+	populate(objectMap, "zoneRedundant", a.ZoneRedundant)
 	return json.Marshal(objectMap)
 }
 
@@ -1422,6 +1424,9 @@ func (a *AppServicePlanPatchResourceProperties) UnmarshalJSON(data []byte) error
 		case "workerTierName":
 			err = unpopulate(val, &a.WorkerTierName)
 			delete(rawMsg, key)
+		case "zoneRedundant":
+			err = unpopulate(val, &a.ZoneRedundant)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1475,6 +1480,9 @@ type AppServicePlanProperties struct {
 	// Target worker tier assigned to the App Service plan.
 	WorkerTierName *string `json:"workerTierName,omitempty"`
 
+	// If true, this App Service Plan will perform availability zone balancing. If false, this App Service Plan will not perform availability zone balancing.
+	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+
 	// READ-ONLY; Geographical location for the App Service plan.
 	GeoRegion *string `json:"geoRegion,omitempty" azure:"ro"`
 
@@ -1521,6 +1529,7 @@ func (a AppServicePlanProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "targetWorkerCount", a.TargetWorkerCount)
 	populate(objectMap, "targetWorkerSizeId", a.TargetWorkerSizeID)
 	populate(objectMap, "workerTierName", a.WorkerTierName)
+	populate(objectMap, "zoneRedundant", a.ZoneRedundant)
 	return json.Marshal(objectMap)
 }
 
@@ -1599,6 +1608,9 @@ func (a *AppServicePlanProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "workerTierName":
 			err = unpopulate(val, &a.WorkerTierName)
+			delete(rawMsg, key)
+		case "zoneRedundant":
+			err = unpopulate(val, &a.ZoneRedundant)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1756,20 +1768,6 @@ type AppServicePlansUpdateVnetRouteOptions struct {
 
 // Apple - The configuration settings of the Apple provider.
 type Apple struct {
-	ProxyOnlyResource
-	// Apple resource specific properties
-	Properties *AppleProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Apple.
-func (a Apple) MarshalJSON() ([]byte, error) {
-	objectMap := a.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AppleProperties - Apple resource specific properties
-type AppleProperties struct {
 	// false if the Apple provider should not be enabled despite the set registration; otherwise, true.
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -1782,20 +1780,6 @@ type AppleProperties struct {
 
 // AppleRegistration - The configuration settings of the registration for the Apple provider
 type AppleRegistration struct {
-	ProxyOnlyResource
-	// AppleRegistration resource specific properties
-	Properties *AppleRegistrationProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AppleRegistration.
-func (a AppleRegistration) MarshalJSON() ([]byte, error) {
-	objectMap := a.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AppleRegistrationProperties - AppleRegistration resource specific properties
-type AppleRegistrationProperties struct {
 	// The Client ID of the app used for login.
 	ClientID *string `json:"clientId,omitempty"`
 
@@ -1960,6 +1944,12 @@ type AseV3NetworkingConfigurationProperties struct {
 	AllowNewPrivateEndpointConnections *bool `json:"allowNewPrivateEndpointConnections,omitempty"`
 
 	// READ-ONLY
+	ExternalInboundIPAddresses []*string `json:"externalInboundIpAddresses,omitempty" azure:"ro"`
+
+	// READ-ONLY
+	InternalInboundIPAddresses []*string `json:"internalInboundIpAddresses,omitempty" azure:"ro"`
+
+	// READ-ONLY
 	LinuxOutboundIPAddresses []*string `json:"linuxOutboundIpAddresses,omitempty" azure:"ro"`
 
 	// READ-ONLY
@@ -1970,6 +1960,8 @@ type AseV3NetworkingConfigurationProperties struct {
 func (a AseV3NetworkingConfigurationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "allowNewPrivateEndpointConnections", a.AllowNewPrivateEndpointConnections)
+	populate(objectMap, "externalInboundIpAddresses", a.ExternalInboundIPAddresses)
+	populate(objectMap, "internalInboundIpAddresses", a.InternalInboundIPAddresses)
 	populate(objectMap, "linuxOutboundIpAddresses", a.LinuxOutboundIPAddresses)
 	populate(objectMap, "windowsOutboundIpAddresses", a.WindowsOutboundIPAddresses)
 	return json.Marshal(objectMap)
@@ -1977,20 +1969,6 @@ func (a AseV3NetworkingConfigurationProperties) MarshalJSON() ([]byte, error) {
 
 // AuthPlatform - The configuration settings of the platform of App Service Authentication/Authorization.
 type AuthPlatform struct {
-	ProxyOnlyResource
-	// AuthPlatform resource specific properties
-	Properties *AuthPlatformProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AuthPlatform.
-func (a AuthPlatform) MarshalJSON() ([]byte, error) {
-	objectMap := a.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AuthPlatformProperties - AuthPlatform resource specific properties
-type AuthPlatformProperties struct {
 	// The path of the config file containing auth settings if they come from a file. If the path is relative, base will the site's root directory.
 	ConfigFilePath *string `json:"configFilePath,omitempty"`
 
@@ -2068,50 +2046,6 @@ func (a AutoHealTriggers) MarshalJSON() ([]byte, error) {
 
 // AzureActiveDirectory - The configuration settings of the Azure Active directory provider.
 type AzureActiveDirectory struct {
-	ProxyOnlyResource
-	// AzureActiveDirectory resource specific properties
-	Properties *AzureActiveDirectoryProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureActiveDirectory.
-func (a AzureActiveDirectory) MarshalJSON() ([]byte, error) {
-	objectMap := a.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AzureActiveDirectoryLogin - The configuration settings of the Azure Active Directory login flow.
-type AzureActiveDirectoryLogin struct {
-	ProxyOnlyResource
-	// AzureActiveDirectoryLogin resource specific properties
-	Properties *AzureActiveDirectoryLoginProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureActiveDirectoryLogin.
-func (a AzureActiveDirectoryLogin) MarshalJSON() ([]byte, error) {
-	objectMap := a.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AzureActiveDirectoryLoginProperties - AzureActiveDirectoryLogin resource specific properties
-type AzureActiveDirectoryLoginProperties struct {
-	DisableWWWAuthenticate *bool `json:"disableWWWAuthenticate,omitempty"`
-
-	// Login parameters to send to the OpenID Connect authorization endpoint when a user logs in. Each parameter must be in the form "key=value".
-	LoginParameters []*string `json:"loginParameters,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureActiveDirectoryLoginProperties.
-func (a AzureActiveDirectoryLoginProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "disableWWWAuthenticate", a.DisableWWWAuthenticate)
-	populate(objectMap, "loginParameters", a.LoginParameters)
-	return json.Marshal(objectMap)
-}
-
-// AzureActiveDirectoryProperties - AzureActiveDirectory resource specific properties
-type AzureActiveDirectoryProperties struct {
 	// false if the Azure Active Directory provider should not be enabled despite the set registration; otherwise, true.
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -2130,26 +2064,39 @@ type AzureActiveDirectoryProperties struct {
 	Validation *AzureActiveDirectoryValidation `json:"validation,omitempty"`
 }
 
-// AzureActiveDirectoryRegistration - The configuration settings of the Azure Active Directory app registration.
-type AzureActiveDirectoryRegistration struct {
-	ProxyOnlyResource
-	// AzureActiveDirectoryRegistration resource specific properties
-	Properties *AzureActiveDirectoryRegistrationProperties `json:"properties,omitempty"`
+// AzureActiveDirectoryLogin - The configuration settings of the Azure Active Directory login flow.
+type AzureActiveDirectoryLogin struct {
+	// true if the www-authenticate provider should be omitted from the request; otherwise, false.
+	DisableWWWAuthenticate *bool `json:"disableWWWAuthenticate,omitempty"`
+
+	// Login parameters to send to the OpenID Connect authorization endpoint when a user logs in. Each parameter must be in the form "key=value".
+	LoginParameters []*string `json:"loginParameters,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AzureActiveDirectoryRegistration.
-func (a AzureActiveDirectoryRegistration) MarshalJSON() ([]byte, error) {
-	objectMap := a.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", a.Properties)
+// MarshalJSON implements the json.Marshaller interface for type AzureActiveDirectoryLogin.
+func (a AzureActiveDirectoryLogin) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "disableWWWAuthenticate", a.DisableWWWAuthenticate)
+	populate(objectMap, "loginParameters", a.LoginParameters)
 	return json.Marshal(objectMap)
 }
 
-// AzureActiveDirectoryRegistrationProperties - AzureActiveDirectoryRegistration resource specific properties
-type AzureActiveDirectoryRegistrationProperties struct {
+// AzureActiveDirectoryRegistration - The configuration settings of the Azure Active Directory app registration.
+type AzureActiveDirectoryRegistration struct {
 	// The Client ID of this relying party application, known as the clientid. This setting is required for enabling OpenID Connection authentication with Azure
 	// Active Directory or other 3rd party OpenID
 	// Connect providers. More information on OpenID Connect: http://openid.net/specs/openid-connect-core-10.html
 	ClientID *string `json:"clientId,omitempty"`
+
+	// An alternative to the client secret thumbprint, that is the issuer of a certificate used for signing purposes. This property acts as a replacement for
+	// the Client Secret Certificate Thumbprint. It is
+	// also optional.
+	ClientSecretCertificateIssuer *string `json:"clientSecretCertificateIssuer,omitempty"`
+
+	// An alternative to the client secret thumbprint, that is the subject alternative name of a certificate used for signing purposes. This property acts as
+	// a replacement for the Client Secret Certificate
+	// Thumbprint. It is also optional.
+	ClientSecretCertificateSubjectAlternativeName *string `json:"clientSecretCertificateSubjectAlternativeName,omitempty"`
 
 	// An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This property acts as a replacement for the Client
 	// Secret. It is also optional.
@@ -2168,31 +2115,21 @@ type AzureActiveDirectoryRegistrationProperties struct {
 
 // AzureActiveDirectoryValidation - The configuration settings of the Azure Active Directory token validation flow.
 type AzureActiveDirectoryValidation struct {
-	ProxyOnlyResource
-	// AzureActiveDirectoryValidation resource specific properties
-	Properties *AzureActiveDirectoryValidationProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureActiveDirectoryValidation.
-func (a AzureActiveDirectoryValidation) MarshalJSON() ([]byte, error) {
-	objectMap := a.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AzureActiveDirectoryValidationProperties - AzureActiveDirectoryValidation resource specific properties
-type AzureActiveDirectoryValidationProperties struct {
 	// The list of audiences that can make successful authentication/authorization requests.
 	AllowedAudiences []*string `json:"allowedAudiences,omitempty"`
+
+	// The configuration settings of the default authorization policy.
+	DefaultAuthorizationPolicy *DefaultAuthorizationPolicy `json:"defaultAuthorizationPolicy,omitempty"`
 
 	// The configuration settings of the checks that should be made while validating the JWT Claims.
 	JwtClaimChecks *JwtClaimChecks `json:"jwtClaimChecks,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AzureActiveDirectoryValidationProperties.
-func (a AzureActiveDirectoryValidationProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AzureActiveDirectoryValidation.
+func (a AzureActiveDirectoryValidation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "allowedAudiences", a.AllowedAudiences)
+	populate(objectMap, "defaultAuthorizationPolicy", a.DefaultAuthorizationPolicy)
 	populate(objectMap, "jwtClaimChecks", a.JwtClaimChecks)
 	return json.Marshal(objectMap)
 }
@@ -2223,20 +2160,6 @@ type AzureBlobStorageHTTPLogsConfig struct {
 
 // AzureStaticWebApps - The configuration settings of the Azure Static Web Apps provider.
 type AzureStaticWebApps struct {
-	ProxyOnlyResource
-	// AzureStaticWebApps resource specific properties
-	Properties *AzureStaticWebAppsProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureStaticWebApps.
-func (a AzureStaticWebApps) MarshalJSON() ([]byte, error) {
-	objectMap := a.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AzureStaticWebAppsProperties - AzureStaticWebApps resource specific properties
-type AzureStaticWebAppsProperties struct {
 	// false if the Azure Static Web Apps provider should not be enabled despite the set registration; otherwise, true.
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -2246,20 +2169,6 @@ type AzureStaticWebAppsProperties struct {
 
 // AzureStaticWebAppsRegistration - The configuration settings of the registration for the Azure Static Web Apps provider
 type AzureStaticWebAppsRegistration struct {
-	ProxyOnlyResource
-	// AzureStaticWebAppsRegistration resource specific properties
-	Properties *AzureStaticWebAppsRegistrationProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureStaticWebAppsRegistration.
-func (a AzureStaticWebAppsRegistration) MarshalJSON() ([]byte, error) {
-	objectMap := a.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", a.Properties)
-	return json.Marshal(objectMap)
-}
-
-// AzureStaticWebAppsRegistrationProperties - AzureStaticWebAppsRegistration resource specific properties
-type AzureStaticWebAppsRegistrationProperties struct {
 	// The Client ID of the app used for login.
 	ClientID *string `json:"clientId,omitempty"`
 }
@@ -2642,20 +2551,6 @@ type BillingMeterProperties struct {
 
 // BlobStorageTokenStore - The configuration settings of the storage of the tokens if blob storage is used.
 type BlobStorageTokenStore struct {
-	ProxyOnlyResource
-	// BlobStorageTokenStore resource specific properties
-	Properties *BlobStorageTokenStoreProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BlobStorageTokenStore.
-func (b BlobStorageTokenStore) MarshalJSON() ([]byte, error) {
-	objectMap := b.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
-}
-
-// BlobStorageTokenStoreProperties - BlobStorageTokenStore resource specific properties
-type BlobStorageTokenStoreProperties struct {
 	// The name of the app setting containing the SAS URL of the blob storage containing the tokens.
 	SasURLSettingName *string `json:"sasUrlSettingName,omitempty"`
 }
@@ -3016,7 +2911,7 @@ type CertificatePatchResourceProperties struct {
 func (c CertificatePatchResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "canonicalName", c.CanonicalName)
-	populateByteArray(objectMap, "cerBlob", c.CerBlob, azcore.Base64StdFormat)
+	populateByteArray(objectMap, "cerBlob", c.CerBlob, runtime.Base64StdFormat)
 	populate(objectMap, "domainValidationMethod", c.DomainValidationMethod)
 	populate(objectMap, "expirationDate", (*timeRFC3339)(c.ExpirationDate))
 	populate(objectMap, "friendlyName", c.FriendlyName)
@@ -3028,7 +2923,7 @@ func (c CertificatePatchResourceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "keyVaultSecretName", c.KeyVaultSecretName)
 	populate(objectMap, "keyVaultSecretStatus", c.KeyVaultSecretStatus)
 	populate(objectMap, "password", c.Password)
-	populateByteArray(objectMap, "pfxBlob", c.PfxBlob, azcore.Base64StdFormat)
+	populateByteArray(objectMap, "pfxBlob", c.PfxBlob, runtime.Base64StdFormat)
 	populate(objectMap, "publicKeyHash", c.PublicKeyHash)
 	populate(objectMap, "selfLink", c.SelfLink)
 	populate(objectMap, "serverFarmId", c.ServerFarmID)
@@ -3052,7 +2947,7 @@ func (c *CertificatePatchResourceProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &c.CanonicalName)
 			delete(rawMsg, key)
 		case "cerBlob":
-			err = azcore.DecodeByteArray(string(val), &c.CerBlob, azcore.Base64StdFormat)
+			err = runtime.DecodeByteArray(string(val), &c.CerBlob, runtime.Base64StdFormat)
 			delete(rawMsg, key)
 		case "domainValidationMethod":
 			err = unpopulate(val, &c.DomainValidationMethod)
@@ -3092,7 +2987,7 @@ func (c *CertificatePatchResourceProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &c.Password)
 			delete(rawMsg, key)
 		case "pfxBlob":
-			err = azcore.DecodeByteArray(string(val), &c.PfxBlob, azcore.Base64StdFormat)
+			err = runtime.DecodeByteArray(string(val), &c.PfxBlob, runtime.Base64StdFormat)
 			delete(rawMsg, key)
 		case "publicKeyHash":
 			err = unpopulate(val, &c.PublicKeyHash)
@@ -3193,7 +3088,7 @@ type CertificateProperties struct {
 func (c CertificateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "canonicalName", c.CanonicalName)
-	populateByteArray(objectMap, "cerBlob", c.CerBlob, azcore.Base64StdFormat)
+	populateByteArray(objectMap, "cerBlob", c.CerBlob, runtime.Base64StdFormat)
 	populate(objectMap, "domainValidationMethod", c.DomainValidationMethod)
 	populate(objectMap, "expirationDate", (*timeRFC3339)(c.ExpirationDate))
 	populate(objectMap, "friendlyName", c.FriendlyName)
@@ -3205,7 +3100,7 @@ func (c CertificateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "keyVaultSecretName", c.KeyVaultSecretName)
 	populate(objectMap, "keyVaultSecretStatus", c.KeyVaultSecretStatus)
 	populate(objectMap, "password", c.Password)
-	populateByteArray(objectMap, "pfxBlob", c.PfxBlob, azcore.Base64StdFormat)
+	populateByteArray(objectMap, "pfxBlob", c.PfxBlob, runtime.Base64StdFormat)
 	populate(objectMap, "publicKeyHash", c.PublicKeyHash)
 	populate(objectMap, "selfLink", c.SelfLink)
 	populate(objectMap, "serverFarmId", c.ServerFarmID)
@@ -3229,7 +3124,7 @@ func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &c.CanonicalName)
 			delete(rawMsg, key)
 		case "cerBlob":
-			err = azcore.DecodeByteArray(string(val), &c.CerBlob, azcore.Base64StdFormat)
+			err = runtime.DecodeByteArray(string(val), &c.CerBlob, runtime.Base64StdFormat)
 			delete(rawMsg, key)
 		case "domainValidationMethod":
 			err = unpopulate(val, &c.DomainValidationMethod)
@@ -3269,7 +3164,7 @@ func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &c.Password)
 			delete(rawMsg, key)
 		case "pfxBlob":
-			err = azcore.DecodeByteArray(string(val), &c.PfxBlob, azcore.Base64StdFormat)
+			err = runtime.DecodeByteArray(string(val), &c.PfxBlob, runtime.Base64StdFormat)
 			delete(rawMsg, key)
 		case "publicKeyHash":
 			err = unpopulate(val, &c.PublicKeyHash)
@@ -3338,20 +3233,6 @@ type CertificatesUpdateOptions struct {
 
 // ClientRegistration - The configuration settings of the app registration for providers that have client ids and client secrets
 type ClientRegistration struct {
-	ProxyOnlyResource
-	// ClientRegistration resource specific properties
-	Properties *ClientRegistrationProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ClientRegistration.
-func (c ClientRegistration) MarshalJSON() ([]byte, error) {
-	objectMap := c.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
-}
-
-// ClientRegistrationProperties - ClientRegistration resource specific properties
-type ClientRegistrationProperties struct {
 	// The Client ID of the app used for login.
 	ClientID *string `json:"clientId,omitempty"`
 
@@ -3681,20 +3562,6 @@ func (c ContinuousWebJobProperties) MarshalJSON() ([]byte, error) {
 
 // CookieExpiration - The configuration settings of the session cookie's expiration.
 type CookieExpiration struct {
-	ProxyOnlyResource
-	// CookieExpiration resource specific properties
-	Properties *CookieExpirationProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CookieExpiration.
-func (c CookieExpiration) MarshalJSON() ([]byte, error) {
-	objectMap := c.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
-}
-
-// CookieExpirationProperties - CookieExpiration resource specific properties
-type CookieExpirationProperties struct {
 	// The convention used when determining the session cookie's expiration.
 	Convention *CookieExpirationConvention `json:"convention,omitempty"`
 
@@ -3964,20 +3831,6 @@ func (c CustomHostnameAnalysisResultProperties) MarshalJSON() ([]byte, error) {
 
 // CustomOpenIDConnectProvider - The configuration settings of the custom Open ID Connect provider.
 type CustomOpenIDConnectProvider struct {
-	ProxyOnlyResource
-	// CustomOpenIdConnectProvider resource specific properties
-	Properties *CustomOpenIDConnectProviderProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CustomOpenIDConnectProvider.
-func (c CustomOpenIDConnectProvider) MarshalJSON() ([]byte, error) {
-	objectMap := c.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
-}
-
-// CustomOpenIDConnectProviderProperties - CustomOpenIdConnectProvider resource specific properties
-type CustomOpenIDConnectProviderProperties struct {
 	// false if the custom Open ID provider provider should not be enabled; otherwise, true.
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -4066,6 +3919,23 @@ type DatabaseBackupSetting struct {
 	// Contains a connection string name that is linked to the SiteConfig.ConnectionStrings. This is used during restore with overwrite connection strings options.
 	ConnectionStringName *string `json:"connectionStringName,omitempty"`
 	Name                 *string `json:"name,omitempty"`
+}
+
+// DefaultAuthorizationPolicy - The configuration settings of the Azure Active Directory default authorization policy.
+type DefaultAuthorizationPolicy struct {
+	// The configuration settings of the Azure Active Directory allowed applications.
+	AllowedApplications []*string `json:"allowedApplications,omitempty"`
+
+	// The configuration settings of the Azure Active Directory allowed principals.
+	AllowedPrincipals *AllowedPrincipals `json:"allowedPrincipals,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DefaultAuthorizationPolicy.
+func (d DefaultAuthorizationPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "allowedApplications", d.AllowedApplications)
+	populate(objectMap, "allowedPrincipals", d.AllowedPrincipals)
+	return json.Marshal(objectMap)
 }
 
 // DefaultErrorResponse - App Service error response.
@@ -4457,20 +4327,6 @@ func (d *DetectorAbnormalTimePeriod) UnmarshalJSON(data []byte) error {
 
 // DetectorDefinition - Class representing detector definition
 type DetectorDefinition struct {
-	ProxyOnlyResource
-	// DetectorDefinition resource specific properties
-	Properties *DetectorDefinitionProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DetectorDefinition.
-func (d DetectorDefinition) MarshalJSON() ([]byte, error) {
-	objectMap := d.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", d.Properties)
-	return json.Marshal(objectMap)
-}
-
-// DetectorDefinitionProperties - DetectorDefinition resource specific properties
-type DetectorDefinitionProperties struct {
 	// READ-ONLY; Description of the detector
 	Description *string `json:"description,omitempty" azure:"ro"`
 
@@ -4482,6 +4338,20 @@ type DetectorDefinitionProperties struct {
 
 	// READ-ONLY; Detector Rank
 	Rank *float64 `json:"rank,omitempty" azure:"ro"`
+}
+
+// DetectorDefinitionResource - ARM resource for a detector definition
+type DetectorDefinitionResource struct {
+	ProxyOnlyResource
+	// Core resource properties
+	Properties *DetectorDefinition `json:"properties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type DetectorDefinitionResource.
+func (d DetectorDefinitionResource) MarshalJSON() ([]byte, error) {
+	objectMap := d.ProxyOnlyResource.marshalInternal()
+	populate(objectMap, "properties", d.Properties)
+	return json.Marshal(objectMap)
 }
 
 // DetectorInfo - Definition of Detector
@@ -4734,7 +4604,7 @@ type DiagnosticData struct {
 // DiagnosticDetectorCollection - Collection of Diagnostic Detectors
 type DiagnosticDetectorCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*DetectorDefinition `json:"value,omitempty"`
+	Value []*DetectorDefinitionResource `json:"value,omitempty"`
 
 	// READ-ONLY; Link to next page of resources.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -5779,6 +5649,9 @@ type ErrorEntity struct {
 	// Basic error code.
 	Code *string `json:"code,omitempty"`
 
+	// Error Details.
+	Details []*ErrorEntity `json:"details,omitempty"`
+
 	// Type of error.
 	ExtendedCode *string `json:"extendedCode,omitempty"`
 
@@ -5793,17 +5666,22 @@ type ErrorEntity struct {
 
 	// Parameters for the template.
 	Parameters []*string `json:"parameters,omitempty"`
+
+	// The error target.
+	Target *string `json:"target,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type ErrorEntity.
 func (e ErrorEntity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "code", e.Code)
+	populate(objectMap, "details", e.Details)
 	populate(objectMap, "extendedCode", e.ExtendedCode)
 	populate(objectMap, "innerErrors", e.InnerErrors)
 	populate(objectMap, "message", e.Message)
 	populate(objectMap, "messageTemplate", e.MessageTemplate)
 	populate(objectMap, "parameters", e.Parameters)
+	populate(objectMap, "target", e.Target)
 	return json.Marshal(objectMap)
 }
 
@@ -5831,20 +5709,6 @@ type ExtendedLocation struct {
 
 // Facebook - The configuration settings of the Facebook provider.
 type Facebook struct {
-	ProxyOnlyResource
-	// Facebook resource specific properties
-	Properties *FacebookProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Facebook.
-func (f Facebook) MarshalJSON() ([]byte, error) {
-	objectMap := f.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", f.Properties)
-	return json.Marshal(objectMap)
-}
-
-// FacebookProperties - Facebook resource specific properties
-type FacebookProperties struct {
 	// false if the Facebook provider should not be enabled despite the set registration; otherwise, true.
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -5879,40 +5743,12 @@ type FileSystemHTTPLogsConfig struct {
 
 // FileSystemTokenStore - The configuration settings of the storage of the tokens if a file system is used.
 type FileSystemTokenStore struct {
-	ProxyOnlyResource
-	// FileSystemTokenStore resource specific properties
-	Properties *FileSystemTokenStoreProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type FileSystemTokenStore.
-func (f FileSystemTokenStore) MarshalJSON() ([]byte, error) {
-	objectMap := f.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", f.Properties)
-	return json.Marshal(objectMap)
-}
-
-// FileSystemTokenStoreProperties - FileSystemTokenStore resource specific properties
-type FileSystemTokenStoreProperties struct {
 	// The directory in which the tokens will be stored.
 	Directory *string `json:"directory,omitempty"`
 }
 
 // ForwardProxy - The configuration settings of a forward proxy used to make the requests.
 type ForwardProxy struct {
-	ProxyOnlyResource
-	// ForwardProxy resource specific properties
-	Properties *ForwardProxyProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ForwardProxy.
-func (f ForwardProxy) MarshalJSON() ([]byte, error) {
-	objectMap := f.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", f.Properties)
-	return json.Marshal(objectMap)
-}
-
-// ForwardProxyProperties - ForwardProxy resource specific properties
-type ForwardProxyProperties struct {
 	// The convention used to determine the url of the request made.
 	Convention *ForwardProxyConvention `json:"convention,omitempty"`
 
@@ -6301,16 +6137,14 @@ type GeoRegionProperties struct {
 
 // GitHub - The configuration settings of the GitHub provider.
 type GitHub struct {
-	ProxyOnlyResource
-	// GitHub resource specific properties
-	Properties *GitHubProperties `json:"properties,omitempty"`
-}
+	// false if the GitHub provider should not be enabled despite the set registration; otherwise, true.
+	Enabled *bool `json:"enabled,omitempty"`
 
-// MarshalJSON implements the json.Marshaller interface for type GitHub.
-func (g GitHub) MarshalJSON() ([]byte, error) {
-	objectMap := g.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", g.Properties)
-	return json.Marshal(objectMap)
+	// The configuration settings of the login flow.
+	Login *LoginScopes `json:"login,omitempty"`
+
+	// The configuration settings of the app registration for the GitHub provider.
+	Registration *ClientRegistration `json:"registration,omitempty"`
 }
 
 // GitHubActionCodeConfiguration - The GitHub action code configuration.
@@ -6359,18 +6193,6 @@ type GitHubActionWebAppStackSettings struct {
 
 	// READ-ONLY; The minor version that is supported for GitHub Actions.
 	SupportedVersion *string `json:"supportedVersion,omitempty" azure:"ro"`
-}
-
-// GitHubProperties - GitHub resource specific properties
-type GitHubProperties struct {
-	// false if the GitHub provider should not be enabled despite the set registration; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// The configuration settings of the login flow.
-	Login *LoginScopes `json:"login,omitempty"`
-
-	// The configuration settings of the app registration for the GitHub provider.
-	Registration *ClientRegistration `json:"registration,omitempty"`
 }
 
 // GlobalCsmSKUDescription - A Global SKU Description.
@@ -6427,20 +6249,6 @@ type GlobalGetSubscriptionOperationWithAsyncResponseOptions struct {
 
 // GlobalValidation - The configuration settings that determines the validation flow of users using App Service Authentication/Authorization.
 type GlobalValidation struct {
-	ProxyOnlyResource
-	// GlobalValidation resource specific properties
-	Properties *GlobalValidationProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GlobalValidation.
-func (g GlobalValidation) MarshalJSON() ([]byte, error) {
-	objectMap := g.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", g.Properties)
-	return json.Marshal(objectMap)
-}
-
-// GlobalValidationProperties - GlobalValidation resource specific properties
-type GlobalValidationProperties struct {
 	// The paths for which unauthenticated flow would not be redirected to the login page.
 	ExcludedPaths []*string `json:"excludedPaths,omitempty"`
 
@@ -6456,8 +6264,8 @@ type GlobalValidationProperties struct {
 	UnauthenticatedClientAction *UnauthenticatedClientActionV2 `json:"unauthenticatedClientAction,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GlobalValidationProperties.
-func (g GlobalValidationProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type GlobalValidation.
+func (g GlobalValidation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "excludedPaths", g.ExcludedPaths)
 	populate(objectMap, "redirectToProvider", g.RedirectToProvider)
@@ -6468,20 +6276,6 @@ func (g GlobalValidationProperties) MarshalJSON() ([]byte, error) {
 
 // Google - The configuration settings of the Google provider.
 type Google struct {
-	ProxyOnlyResource
-	// Google resource specific properties
-	Properties *GoogleProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Google.
-func (g Google) MarshalJSON() ([]byte, error) {
-	objectMap := g.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", g.Properties)
-	return json.Marshal(objectMap)
-}
-
-// GoogleProperties - Google resource specific properties
-type GoogleProperties struct {
 	// false if the Google provider should not be enabled despite the set registration; otherwise, true.
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -6506,20 +6300,6 @@ type HTTPLogsConfig struct {
 
 // HTTPSettings - The configuration settings of the HTTP requests for authentication and authorization requests made against App Service Authentication/Authorization.
 type HTTPSettings struct {
-	ProxyOnlyResource
-	// HttpSettings resource specific properties
-	Properties *HTTPSettingsProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HTTPSettings.
-func (h HTTPSettings) MarshalJSON() ([]byte, error) {
-	objectMap := h.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", h.Properties)
-	return json.Marshal(objectMap)
-}
-
-// HTTPSettingsProperties - HttpSettings resource specific properties
-type HTTPSettingsProperties struct {
 	// The configuration settings of a forward proxy used to make the requests.
 	ForwardProxy *ForwardProxy `json:"forwardProxy,omitempty"`
 
@@ -6532,20 +6312,6 @@ type HTTPSettingsProperties struct {
 
 // HTTPSettingsRoutes - The configuration settings of the paths HTTP requests.
 type HTTPSettingsRoutes struct {
-	ProxyOnlyResource
-	// HttpSettingsRoutes resource specific properties
-	Properties *HTTPSettingsRoutesProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type HTTPSettingsRoutes.
-func (h HTTPSettingsRoutes) MarshalJSON() ([]byte, error) {
-	objectMap := h.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", h.Properties)
-	return json.Marshal(objectMap)
-}
-
-// HTTPSettingsRoutesProperties - HttpSettingsRoutes resource specific properties
-type HTTPSettingsRoutesProperties struct {
 	// The prefix that should precede all the authentication/authorization paths.
 	APIPrefix *string `json:"apiPrefix,omitempty"`
 }
@@ -6941,20 +6707,6 @@ type IdentifierProperties struct {
 
 // IdentityProviders - The configuration settings of each of the identity providers used to configure App Service Authentication/Authorization.
 type IdentityProviders struct {
-	ProxyOnlyResource
-	// IdentityProviders resource specific properties
-	Properties *IdentityProvidersProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type IdentityProviders.
-func (i IdentityProviders) MarshalJSON() ([]byte, error) {
-	objectMap := i.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", i.Properties)
-	return json.Marshal(objectMap)
-}
-
-// IdentityProvidersProperties - IdentityProviders resource specific properties
-type IdentityProvidersProperties struct {
 	// The configuration settings of the Apple provider.
 	Apple *Apple `json:"apple,omitempty"`
 
@@ -6983,8 +6735,8 @@ type IdentityProvidersProperties struct {
 	Twitter *Twitter `json:"twitter,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IdentityProvidersProperties.
-func (i IdentityProvidersProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type IdentityProviders.
+func (i IdentityProviders) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "apple", i.Apple)
 	populate(objectMap, "azureActiveDirectory", i.AzureActiveDirectory)
@@ -7038,20 +6790,6 @@ func (i InboundEnvironmentEndpointCollection) MarshalJSON() ([]byte, error) {
 
 // JwtClaimChecks - The configuration settings of the checks that should be made while validating the JWT Claims.
 type JwtClaimChecks struct {
-	ProxyOnlyResource
-	// JwtClaimChecks resource specific properties
-	Properties *JwtClaimChecksProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type JwtClaimChecks.
-func (j JwtClaimChecks) MarshalJSON() ([]byte, error) {
-	objectMap := j.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", j.Properties)
-	return json.Marshal(objectMap)
-}
-
-// JwtClaimChecksProperties - JwtClaimChecks resource specific properties
-type JwtClaimChecksProperties struct {
 	// The list of the allowed client applications.
 	AllowedClientApplications []*string `json:"allowedClientApplications,omitempty"`
 
@@ -7059,8 +6797,8 @@ type JwtClaimChecksProperties struct {
 	AllowedGroups []*string `json:"allowedGroups,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type JwtClaimChecksProperties.
-func (j JwtClaimChecksProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type JwtClaimChecks.
+func (j JwtClaimChecks) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "allowedClientApplications", j.AllowedClientApplications)
 	populate(objectMap, "allowedGroups", j.AllowedGroups)
@@ -7231,20 +6969,6 @@ type KubeEnvironmentsUpdateOptions struct {
 
 // LegacyMicrosoftAccount - The configuration settings of the legacy Microsoft Account provider.
 type LegacyMicrosoftAccount struct {
-	ProxyOnlyResource
-	// LegacyMicrosoftAccount resource specific properties
-	Properties *LegacyMicrosoftAccountProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LegacyMicrosoftAccount.
-func (l LegacyMicrosoftAccount) MarshalJSON() ([]byte, error) {
-	objectMap := l.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", l.Properties)
-	return json.Marshal(objectMap)
-}
-
-// LegacyMicrosoftAccountProperties - LegacyMicrosoftAccount resource specific properties
-type LegacyMicrosoftAccountProperties struct {
 	// false if the legacy Microsoft Account provider should not be enabled despite the set registration; otherwise, true.
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -7366,20 +7090,6 @@ type LogSpecification struct {
 
 // Login - The configuration settings of the login flow of users using App Service Authentication/Authorization.
 type Login struct {
-	ProxyOnlyResource
-	// Login resource specific properties
-	Properties *LoginProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Login.
-func (l Login) MarshalJSON() ([]byte, error) {
-	objectMap := l.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", l.Properties)
-	return json.Marshal(objectMap)
-}
-
-// LoginProperties - Login resource specific properties
-type LoginProperties struct {
 	// External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part of the URL is ignored. This
 	// is an advanced setting typically only needed by
 	// Windows Store application backends. Note that URLs within the current domain are always implicitly allowed.
@@ -7401,8 +7111,8 @@ type LoginProperties struct {
 	TokenStore *TokenStore `json:"tokenStore,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LoginProperties.
-func (l LoginProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type Login.
+func (l Login) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "allowedExternalRedirectUrls", l.AllowedExternalRedirectUrls)
 	populate(objectMap, "cookieExpiration", l.CookieExpiration)
@@ -7415,46 +7125,18 @@ func (l LoginProperties) MarshalJSON() ([]byte, error) {
 
 // LoginRoutes - The routes that specify the endpoints used for login and logout requests.
 type LoginRoutes struct {
-	ProxyOnlyResource
-	// LoginRoutes resource specific properties
-	Properties *LoginRoutesProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LoginRoutes.
-func (l LoginRoutes) MarshalJSON() ([]byte, error) {
-	objectMap := l.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", l.Properties)
-	return json.Marshal(objectMap)
-}
-
-// LoginRoutesProperties - LoginRoutes resource specific properties
-type LoginRoutesProperties struct {
 	// The endpoint at which a logout request should be made.
 	LogoutEndpoint *string `json:"logoutEndpoint,omitempty"`
 }
 
 // LoginScopes - The configuration settings of the login flow, including the scopes that should be requested.
 type LoginScopes struct {
-	ProxyOnlyResource
-	// LoginScopes resource specific properties
-	Properties *LoginScopesProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type LoginScopes.
-func (l LoginScopes) MarshalJSON() ([]byte, error) {
-	objectMap := l.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", l.Properties)
-	return json.Marshal(objectMap)
-}
-
-// LoginScopesProperties - LoginScopes resource specific properties
-type LoginScopesProperties struct {
 	// A list of the scopes that should be requested while authenticating.
 	Scopes []*string `json:"scopes,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type LoginScopesProperties.
-func (l LoginScopesProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type LoginScopes.
+func (l LoginScopes) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "scopes", l.Scopes)
 	return json.Marshal(objectMap)
@@ -7878,20 +7560,6 @@ type NetworkTrace struct {
 
 // Nonce - The configuration settings of the nonce used in the login flow.
 type Nonce struct {
-	ProxyOnlyResource
-	// Nonce resource specific properties
-	Properties *NonceProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Nonce.
-func (n Nonce) MarshalJSON() ([]byte, error) {
-	objectMap := n.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", n.Properties)
-	return json.Marshal(objectMap)
-}
-
-// NonceProperties - Nonce resource specific properties
-type NonceProperties struct {
 	// The time after the request is made when the nonce should expire.
 	NonceExpirationInterval *string `json:"nonceExpirationInterval,omitempty"`
 
@@ -7901,20 +7569,6 @@ type NonceProperties struct {
 
 // OpenIDConnectClientCredential - The authentication client credentials of the custom Open ID Connect provider.
 type OpenIDConnectClientCredential struct {
-	ProxyOnlyResource
-	// OpenIdConnectClientCredential resource specific properties
-	Properties *OpenIDConnectClientCredentialProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OpenIDConnectClientCredential.
-func (o OpenIDConnectClientCredential) MarshalJSON() ([]byte, error) {
-	objectMap := o.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", o.Properties)
-	return json.Marshal(objectMap)
-}
-
-// OpenIDConnectClientCredentialProperties - OpenIdConnectClientCredential resource specific properties
-type OpenIDConnectClientCredentialProperties struct {
 	// The app setting that contains the client secret for the custom Open ID Connect provider.
 	ClientSecretSettingName *string `json:"clientSecretSettingName,omitempty"`
 
@@ -7924,20 +7578,6 @@ type OpenIDConnectClientCredentialProperties struct {
 
 // OpenIDConnectConfig - The configuration settings of the endpoints used for the custom Open ID Connect provider.
 type OpenIDConnectConfig struct {
-	ProxyOnlyResource
-	// OpenIdConnectConfig resource specific properties
-	Properties *OpenIDConnectConfigProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OpenIDConnectConfig.
-func (o OpenIDConnectConfig) MarshalJSON() ([]byte, error) {
-	objectMap := o.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", o.Properties)
-	return json.Marshal(objectMap)
-}
-
-// OpenIDConnectConfigProperties - OpenIdConnectConfig resource specific properties
-type OpenIDConnectConfigProperties struct {
 	// The endpoint to be used to make an authorization request.
 	AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
 
@@ -7956,20 +7596,6 @@ type OpenIDConnectConfigProperties struct {
 
 // OpenIDConnectLogin - The configuration settings of the login flow of the custom Open ID Connect provider.
 type OpenIDConnectLogin struct {
-	ProxyOnlyResource
-	// OpenIdConnectLogin resource specific properties
-	Properties *OpenIDConnectLoginProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OpenIDConnectLogin.
-func (o OpenIDConnectLogin) MarshalJSON() ([]byte, error) {
-	objectMap := o.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", o.Properties)
-	return json.Marshal(objectMap)
-}
-
-// OpenIDConnectLoginProperties - OpenIdConnectLogin resource specific properties
-type OpenIDConnectLoginProperties struct {
 	// The name of the claim that contains the users name.
 	NameClaimType *string `json:"nameClaimType,omitempty"`
 
@@ -7977,8 +7603,8 @@ type OpenIDConnectLoginProperties struct {
 	Scopes []*string `json:"scopes,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type OpenIDConnectLoginProperties.
-func (o OpenIDConnectLoginProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type OpenIDConnectLogin.
+func (o OpenIDConnectLogin) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "nameClaimType", o.NameClaimType)
 	populate(objectMap, "scopes", o.Scopes)
@@ -7987,20 +7613,6 @@ func (o OpenIDConnectLoginProperties) MarshalJSON() ([]byte, error) {
 
 // OpenIDConnectRegistration - The configuration settings of the app registration for the custom Open ID Connect provider.
 type OpenIDConnectRegistration struct {
-	ProxyOnlyResource
-	// OpenIdConnectRegistration resource specific properties
-	Properties *OpenIDConnectRegistrationProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OpenIDConnectRegistration.
-func (o OpenIDConnectRegistration) MarshalJSON() ([]byte, error) {
-	objectMap := o.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", o.Properties)
-	return json.Marshal(objectMap)
-}
-
-// OpenIDConnectRegistrationProperties - OpenIdConnectRegistration resource specific properties
-type OpenIDConnectRegistrationProperties struct {
 	// The authentication credentials of the custom Open ID Connect provider.
 	ClientCredential *OpenIDConnectClientCredential `json:"clientCredential,omitempty"`
 
@@ -9205,7 +8817,7 @@ type PublicCertificateProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type PublicCertificateProperties.
 func (p PublicCertificateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populateByteArray(objectMap, "blob", p.Blob, azcore.Base64StdFormat)
+	populateByteArray(objectMap, "blob", p.Blob, runtime.Base64StdFormat)
 	populate(objectMap, "publicCertificateLocation", p.PublicCertificateLocation)
 	populate(objectMap, "thumbprint", p.Thumbprint)
 	return json.Marshal(objectMap)
@@ -9221,7 +8833,7 @@ func (p *PublicCertificateProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "blob":
-			err = azcore.DecodeByteArray(string(val), &p.Blob, azcore.Base64StdFormat)
+			err = runtime.DecodeByteArray(string(val), &p.Blob, runtime.Base64StdFormat)
 			delete(rawMsg, key)
 		case "publicCertificateLocation":
 			err = unpopulate(val, &p.PublicCertificateLocation)
@@ -14084,20 +13696,6 @@ func (t TldLegalAgreementCollection) MarshalJSON() ([]byte, error) {
 
 // TokenStore - The configuration settings of the token store.
 type TokenStore struct {
-	ProxyOnlyResource
-	// TokenStore resource specific properties
-	Properties *TokenStoreProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TokenStore.
-func (t TokenStore) MarshalJSON() ([]byte, error) {
-	objectMap := t.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
-}
-
-// TokenStoreProperties - TokenStore resource specific properties
-type TokenStoreProperties struct {
 	// The configuration settings of the storage of the tokens if blob storage is used.
 	AzureBlobStorage *BlobStorageTokenStore `json:"azureBlobStorage,omitempty"`
 
@@ -14218,20 +13816,6 @@ func (t TriggeredJobHistoryProperties) MarshalJSON() ([]byte, error) {
 
 // TriggeredJobRun - Triggered Web Job Run Information.
 type TriggeredJobRun struct {
-	ProxyOnlyResource
-	// TriggeredJobRun resource specific properties
-	Properties *TriggeredJobRunProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TriggeredJobRun.
-func (t TriggeredJobRun) MarshalJSON() ([]byte, error) {
-	objectMap := t.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
-}
-
-// TriggeredJobRunProperties - TriggeredJobRun resource specific properties
-type TriggeredJobRunProperties struct {
 	// Job duration.
 	Duration *string `json:"duration,omitempty"`
 
@@ -14266,8 +13850,8 @@ type TriggeredJobRunProperties struct {
 	WebJobName *string `json:"web_job_name,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TriggeredJobRunProperties.
-func (t TriggeredJobRunProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type TriggeredJobRun.
+func (t TriggeredJobRun) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "duration", t.Duration)
 	populate(objectMap, "end_time", (*timeRFC3339)(t.EndTime))
@@ -14283,8 +13867,8 @@ func (t TriggeredJobRunProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type TriggeredJobRunProperties.
-func (t *TriggeredJobRunProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type TriggeredJobRun.
+func (t *TriggeredJobRun) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
@@ -14419,20 +14003,6 @@ func (t TriggeredWebJobProperties) MarshalJSON() ([]byte, error) {
 
 // Twitter - The configuration settings of the Twitter provider.
 type Twitter struct {
-	ProxyOnlyResource
-	// Twitter resource specific properties
-	Properties *TwitterProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Twitter.
-func (t Twitter) MarshalJSON() ([]byte, error) {
-	objectMap := t.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
-}
-
-// TwitterProperties - Twitter resource specific properties
-type TwitterProperties struct {
 	// false if the Twitter provider should not be enabled despite the set registration; otherwise, true.
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -14442,20 +14012,6 @@ type TwitterProperties struct {
 
 // TwitterRegistration - The configuration settings of the app registration for the Twitter provider.
 type TwitterRegistration struct {
-	ProxyOnlyResource
-	// TwitterRegistration resource specific properties
-	Properties *TwitterRegistrationProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TwitterRegistration.
-func (t TwitterRegistration) MarshalJSON() ([]byte, error) {
-	objectMap := t.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
-}
-
-// TwitterRegistrationProperties - TwitterRegistration resource specific properties
-type TwitterRegistrationProperties struct {
 	// The OAuth 1.0a consumer key of the Twitter application used for sign-in. This setting is required for enabling Twitter Sign-In. Twitter Sign-In documentation:
 	// https://dev.twitter.com/web/sign-in
 	ConsumerKey *string `json:"consumerKey,omitempty"`
@@ -14790,20 +14346,6 @@ type VnetGatewayProperties struct {
 
 // VnetInfo - Virtual Network information contract.
 type VnetInfo struct {
-	ProxyOnlyResource
-	// VnetInfo resource specific properties
-	Properties *VnetInfoProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type VnetInfo.
-func (v VnetInfo) MarshalJSON() ([]byte, error) {
-	objectMap := v.ProxyOnlyResource.marshalInternal()
-	populate(objectMap, "properties", v.Properties)
-	return json.Marshal(objectMap)
-}
-
-// VnetInfoProperties - VnetInfo resource specific properties
-type VnetInfoProperties struct {
 	// A certificate file (.cer) blob containing the public key of the private key used to authenticate a Point-To-Site VPN connection.
 	CertBlob *string `json:"certBlob,omitempty"`
 
@@ -14826,8 +14368,8 @@ type VnetInfoProperties struct {
 	Routes []*VnetRoute `json:"routes,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type VnetInfoProperties.
-func (v VnetInfoProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type VnetInfo.
+func (v VnetInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "certBlob", v.CertBlob)
 	populate(objectMap, "certThumbprint", v.CertThumbprint)
@@ -14836,6 +14378,20 @@ func (v VnetInfoProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "resyncRequired", v.ResyncRequired)
 	populate(objectMap, "routes", v.Routes)
 	populate(objectMap, "vnetResourceId", v.VnetResourceID)
+	return json.Marshal(objectMap)
+}
+
+// VnetInfoResource - Virtual Network information ARM resource.
+type VnetInfoResource struct {
+	ProxyOnlyResource
+	// Core resource properties
+	Properties *VnetInfo `json:"properties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VnetInfoResource.
+func (v VnetInfoResource) MarshalJSON() ([]byte, error) {
+	objectMap := v.ProxyOnlyResource.marshalInternal()
+	populate(objectMap, "properties", v.Properties)
 	return json.Marshal(objectMap)
 }
 
@@ -17587,13 +17143,13 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func populateByteArray(m map[string]interface{}, k string, b []byte, f azcore.Base64Encoding) {
+func populateByteArray(m map[string]interface{}, k string, b []byte, f runtime.Base64Encoding) {
 	if azcore.IsNullValue(b) {
 		m[k] = nil
 	} else if len(b) == 0 {
 		return
 	} else {
-		m[k] = azcore.EncodeByteArray(b, f)
+		m[k] = runtime.EncodeByteArray(b, f)
 	}
 }
 

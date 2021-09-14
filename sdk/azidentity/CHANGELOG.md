@@ -1,6 +1,21 @@
 # Release History
 
-## v0.9.3 (Unreleased)
+## v0.11.0 (2021-09-08)
+### Breaking Changes
+* Unexported `AzureCLICredentialOptions.TokenProvider` and its type,
+  `AzureCLITokenProvider`
+
+### Bug Fixes
+* `ManagedIdentityCredential.GetToken` returns `CredentialUnavailableError`
+  when IMDS has no assigned identity, signaling `DefaultAzureCredential` to
+  try other credentials
+
+
+## v0.10.0 (2021-08-30)
+### Breaking Changes
+* Update based on `azcore` refactor [#15383](https://github.com/Azure/azure-sdk-for-go/pull/15383)
+
+## v0.9.3 (2021-08-20)
 
 ### Bugs Fixed
 * `ManagedIdentityCredential.GetToken` no longer mutates its `opts.Scopes`
@@ -95,7 +110,7 @@
 ## v0.2.0 (2020-09-11)
 ### Features Added
 * Refactor `azidentity` on top of `azcore` refactor
-* Updated policies to conform to `azcore.Policy` interface changes.
+* Updated policies to conform to `policy.Policy` interface changes.
 * Updated non-retriable errors to conform to `azcore.NonRetriableError`.
 * Fixed calls to `Request.SetBody()` to include content type.
 * Switched endpoints to string types and removed extra parsing code.

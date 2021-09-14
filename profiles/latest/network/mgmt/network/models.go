@@ -12,7 +12,7 @@ package network
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2021-02-01/network"
+	original "github.com/Azure/azure-sdk-for-go/services/network/mgmt/2021-03-01/network"
 )
 
 const (
@@ -55,6 +55,14 @@ type ApplicationGatewayFirewallMode = original.ApplicationGatewayFirewallMode
 const (
 	ApplicationGatewayFirewallModeDetection  ApplicationGatewayFirewallMode = original.ApplicationGatewayFirewallModeDetection
 	ApplicationGatewayFirewallModePrevention ApplicationGatewayFirewallMode = original.ApplicationGatewayFirewallModePrevention
+)
+
+type ApplicationGatewayLoadDistributionAlgorithm = original.ApplicationGatewayLoadDistributionAlgorithm
+
+const (
+	ApplicationGatewayLoadDistributionAlgorithmIPHash           ApplicationGatewayLoadDistributionAlgorithm = original.ApplicationGatewayLoadDistributionAlgorithmIPHash
+	ApplicationGatewayLoadDistributionAlgorithmLeastConnections ApplicationGatewayLoadDistributionAlgorithm = original.ApplicationGatewayLoadDistributionAlgorithmLeastConnections
+	ApplicationGatewayLoadDistributionAlgorithmRoundRobin       ApplicationGatewayLoadDistributionAlgorithm = original.ApplicationGatewayLoadDistributionAlgorithmRoundRobin
 )
 
 type ApplicationGatewayOperationalState = original.ApplicationGatewayOperationalState
@@ -1442,6 +1450,7 @@ type ApplicationGatewayFrontendIPConfiguration = original.ApplicationGatewayFron
 type ApplicationGatewayFrontendIPConfigurationPropertiesFormat = original.ApplicationGatewayFrontendIPConfigurationPropertiesFormat
 type ApplicationGatewayFrontendPort = original.ApplicationGatewayFrontendPort
 type ApplicationGatewayFrontendPortPropertiesFormat = original.ApplicationGatewayFrontendPortPropertiesFormat
+type ApplicationGatewayGlobalConfiguration = original.ApplicationGatewayGlobalConfiguration
 type ApplicationGatewayHTTPListener = original.ApplicationGatewayHTTPListener
 type ApplicationGatewayHTTPListenerPropertiesFormat = original.ApplicationGatewayHTTPListenerPropertiesFormat
 type ApplicationGatewayHeaderConfiguration = original.ApplicationGatewayHeaderConfiguration
@@ -1450,6 +1459,10 @@ type ApplicationGatewayIPConfigurationPropertiesFormat = original.ApplicationGat
 type ApplicationGatewayListResult = original.ApplicationGatewayListResult
 type ApplicationGatewayListResultIterator = original.ApplicationGatewayListResultIterator
 type ApplicationGatewayListResultPage = original.ApplicationGatewayListResultPage
+type ApplicationGatewayLoadDistributionPolicy = original.ApplicationGatewayLoadDistributionPolicy
+type ApplicationGatewayLoadDistributionPolicyPropertiesFormat = original.ApplicationGatewayLoadDistributionPolicyPropertiesFormat
+type ApplicationGatewayLoadDistributionTarget = original.ApplicationGatewayLoadDistributionTarget
+type ApplicationGatewayLoadDistributionTargetPropertiesFormat = original.ApplicationGatewayLoadDistributionTargetPropertiesFormat
 type ApplicationGatewayOnDemandProbe = original.ApplicationGatewayOnDemandProbe
 type ApplicationGatewayPathRule = original.ApplicationGatewayPathRule
 type ApplicationGatewayPathRulePropertiesFormat = original.ApplicationGatewayPathRulePropertiesFormat
@@ -1610,6 +1623,7 @@ type BastionHostPropertiesFormat = original.BastionHostPropertiesFormat
 type BastionHostsClient = original.BastionHostsClient
 type BastionHostsCreateOrUpdateFuture = original.BastionHostsCreateOrUpdateFuture
 type BastionHostsDeleteFuture = original.BastionHostsDeleteFuture
+type BastionHostsUpdateTagsFuture = original.BastionHostsUpdateTagsFuture
 type BastionSessionDeleteResult = original.BastionSessionDeleteResult
 type BastionSessionDeleteResultIterator = original.BastionSessionDeleteResultIterator
 type BastionSessionDeleteResultPage = original.BastionSessionDeleteResultPage
@@ -1735,6 +1749,7 @@ type Error = original.Error
 type ErrorDetails = original.ErrorDetails
 type ErrorResponse = original.ErrorResponse
 type EvaluatedNetworkSecurityGroup = original.EvaluatedNetworkSecurityGroup
+type ExplicitProxySettings = original.ExplicitProxySettings
 type ExpressRouteCircuit = original.ExpressRouteCircuit
 type ExpressRouteCircuitArpTable = original.ExpressRouteCircuitArpTable
 type ExpressRouteCircuitAuthorization = original.ExpressRouteCircuitAuthorization
@@ -1876,6 +1891,7 @@ type FirewallPolicyRuleCollectionGroupsClient = original.FirewallPolicyRuleColle
 type FirewallPolicyRuleCollectionGroupsCreateOrUpdateFuture = original.FirewallPolicyRuleCollectionGroupsCreateOrUpdateFuture
 type FirewallPolicyRuleCollectionGroupsDeleteFuture = original.FirewallPolicyRuleCollectionGroupsDeleteFuture
 type FirewallPolicySNAT = original.FirewallPolicySNAT
+type FirewallPolicySQL = original.FirewallPolicySQL
 type FirewallPolicySku = original.FirewallPolicySku
 type FirewallPolicyThreatIntelWhitelist = original.FirewallPolicyThreatIntelWhitelist
 type FirewallPolicyTransportSecurity = original.FirewallPolicyTransportSecurity
@@ -2190,6 +2206,8 @@ type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionLis
 type PrivateEndpointConnectionListResultIterator = original.PrivateEndpointConnectionListResultIterator
 type PrivateEndpointConnectionListResultPage = original.PrivateEndpointConnectionListResultPage
 type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointIPConfiguration = original.PrivateEndpointIPConfiguration
+type PrivateEndpointIPConfigurationProperties = original.PrivateEndpointIPConfigurationProperties
 type PrivateEndpointListResult = original.PrivateEndpointListResult
 type PrivateEndpointListResultIterator = original.PrivateEndpointListResultIterator
 type PrivateEndpointListResultPage = original.PrivateEndpointListResultPage
@@ -2249,6 +2267,7 @@ type PublicIPPrefixesCreateOrUpdateFuture = original.PublicIPPrefixesCreateOrUpd
 type PublicIPPrefixesDeleteFuture = original.PublicIPPrefixesDeleteFuture
 type PutBastionShareableLinkAllFuture = original.PutBastionShareableLinkAllFuture
 type PutBastionShareableLinkFuture = original.PutBastionShareableLinkFuture
+type QosDefinition = original.QosDefinition
 type QosIPRange = original.QosIPRange
 type QosPortRange = original.QosPortRange
 type QueryTroubleshootingParameters = original.QueryTroubleshootingParameters
@@ -2349,6 +2368,10 @@ type ServiceEndpointPolicyListResultPage = original.ServiceEndpointPolicyListRes
 type ServiceEndpointPolicyPropertiesFormat = original.ServiceEndpointPolicyPropertiesFormat
 type ServiceEndpointPropertiesFormat = original.ServiceEndpointPropertiesFormat
 type ServiceTagInformation = original.ServiceTagInformation
+type ServiceTagInformationClient = original.ServiceTagInformationClient
+type ServiceTagInformationListResult = original.ServiceTagInformationListResult
+type ServiceTagInformationListResultIterator = original.ServiceTagInformationListResultIterator
+type ServiceTagInformationListResultPage = original.ServiceTagInformationListResultPage
 type ServiceTagInformationPropertiesFormat = original.ServiceTagInformationPropertiesFormat
 type ServiceTagsClient = original.ServiceTagsClient
 type ServiceTagsListResult = original.ServiceTagsListResult
@@ -3596,6 +3619,18 @@ func NewServiceEndpointPolicyListResultIterator(page ServiceEndpointPolicyListRe
 func NewServiceEndpointPolicyListResultPage(cur ServiceEndpointPolicyListResult, getNextPage func(context.Context, ServiceEndpointPolicyListResult) (ServiceEndpointPolicyListResult, error)) ServiceEndpointPolicyListResultPage {
 	return original.NewServiceEndpointPolicyListResultPage(cur, getNextPage)
 }
+func NewServiceTagInformationClient(subscriptionID string) ServiceTagInformationClient {
+	return original.NewServiceTagInformationClient(subscriptionID)
+}
+func NewServiceTagInformationClientWithBaseURI(baseURI string, subscriptionID string) ServiceTagInformationClient {
+	return original.NewServiceTagInformationClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewServiceTagInformationListResultIterator(page ServiceTagInformationListResultPage) ServiceTagInformationListResultIterator {
+	return original.NewServiceTagInformationListResultIterator(page)
+}
+func NewServiceTagInformationListResultPage(cur ServiceTagInformationListResult, getNextPage func(context.Context, ServiceTagInformationListResult) (ServiceTagInformationListResult, error)) ServiceTagInformationListResultPage {
+	return original.NewServiceTagInformationListResultPage(cur, getNextPage)
+}
 func NewServiceTagsClient(subscriptionID string) ServiceTagsClient {
 	return original.NewServiceTagsClient(subscriptionID)
 }
@@ -3895,6 +3930,9 @@ func PossibleApplicationGatewayCustomErrorStatusCodeValues() []ApplicationGatewa
 }
 func PossibleApplicationGatewayFirewallModeValues() []ApplicationGatewayFirewallMode {
 	return original.PossibleApplicationGatewayFirewallModeValues()
+}
+func PossibleApplicationGatewayLoadDistributionAlgorithmValues() []ApplicationGatewayLoadDistributionAlgorithm {
+	return original.PossibleApplicationGatewayLoadDistributionAlgorithmValues()
 }
 func PossibleApplicationGatewayOperationalStateValues() []ApplicationGatewayOperationalState {
 	return original.PossibleApplicationGatewayOperationalStateValues()

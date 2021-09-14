@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // GlobalClient contains the methods for the Global group.
 // Don't use this type directly, use NewGlobalClient() instead.
 type GlobalClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewGlobalClient creates a new instance of GlobalClient with the specified values.
-func NewGlobalClient(con *armcore.Connection, subscriptionID string) *GlobalClient {
-	return &GlobalClient{con: con, subscriptionID: subscriptionID}
+func NewGlobalClient(con *arm.Connection, subscriptionID string) *GlobalClient {
+	return &GlobalClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // GetDeletedWebApp - Description for Get deleted app for a subscription.
@@ -37,18 +41,18 @@ func (client *GlobalClient) GetDeletedWebApp(ctx context.Context, deletedSiteID 
 	if err != nil {
 		return GlobalGetDeletedWebAppResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return GlobalGetDeletedWebAppResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return GlobalGetDeletedWebAppResponse{}, client.getDeletedWebAppHandleError(resp)
 	}
 	return client.getDeletedWebAppHandleResponse(resp)
 }
 
 // getDeletedWebAppCreateRequest creates the GetDeletedWebApp request.
-func (client *GlobalClient) getDeletedWebAppCreateRequest(ctx context.Context, deletedSiteID string, options *GlobalGetDeletedWebAppOptions) (*azcore.Request, error) {
+func (client *GlobalClient) getDeletedWebAppCreateRequest(ctx context.Context, deletedSiteID string, options *GlobalGetDeletedWebAppOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/deletedSites/{deletedSiteId}"
 	if deletedSiteID == "" {
 		return nil, errors.New("parameter deletedSiteID cannot be empty")
@@ -58,38 +62,37 @@ func (client *GlobalClient) getDeletedWebAppCreateRequest(ctx context.Context, d
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getDeletedWebAppHandleResponse handles the GetDeletedWebApp response.
-func (client *GlobalClient) getDeletedWebAppHandleResponse(resp *azcore.Response) (GlobalGetDeletedWebAppResponse, error) {
-	result := GlobalGetDeletedWebAppResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DeletedSite); err != nil {
+func (client *GlobalClient) getDeletedWebAppHandleResponse(resp *http.Response) (GlobalGetDeletedWebAppResponse, error) {
+	result := GlobalGetDeletedWebAppResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedSite); err != nil {
 		return GlobalGetDeletedWebAppResponse{}, err
 	}
 	return result, nil
 }
 
 // getDeletedWebAppHandleError handles the GetDeletedWebApp error response.
-func (client *GlobalClient) getDeletedWebAppHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *GlobalClient) getDeletedWebAppHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetDeletedWebAppSnapshots - Description for Get all deleted apps for a subscription.
@@ -99,18 +102,18 @@ func (client *GlobalClient) GetDeletedWebAppSnapshots(ctx context.Context, delet
 	if err != nil {
 		return GlobalGetDeletedWebAppSnapshotsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return GlobalGetDeletedWebAppSnapshotsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return GlobalGetDeletedWebAppSnapshotsResponse{}, client.getDeletedWebAppSnapshotsHandleError(resp)
 	}
 	return client.getDeletedWebAppSnapshotsHandleResponse(resp)
 }
 
 // getDeletedWebAppSnapshotsCreateRequest creates the GetDeletedWebAppSnapshots request.
-func (client *GlobalClient) getDeletedWebAppSnapshotsCreateRequest(ctx context.Context, deletedSiteID string, options *GlobalGetDeletedWebAppSnapshotsOptions) (*azcore.Request, error) {
+func (client *GlobalClient) getDeletedWebAppSnapshotsCreateRequest(ctx context.Context, deletedSiteID string, options *GlobalGetDeletedWebAppSnapshotsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/deletedSites/{deletedSiteId}/snapshots"
 	if deletedSiteID == "" {
 		return nil, errors.New("parameter deletedSiteID cannot be empty")
@@ -120,38 +123,37 @@ func (client *GlobalClient) getDeletedWebAppSnapshotsCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getDeletedWebAppSnapshotsHandleResponse handles the GetDeletedWebAppSnapshots response.
-func (client *GlobalClient) getDeletedWebAppSnapshotsHandleResponse(resp *azcore.Response) (GlobalGetDeletedWebAppSnapshotsResponse, error) {
-	result := GlobalGetDeletedWebAppSnapshotsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SnapshotArray); err != nil {
+func (client *GlobalClient) getDeletedWebAppSnapshotsHandleResponse(resp *http.Response) (GlobalGetDeletedWebAppSnapshotsResponse, error) {
+	result := GlobalGetDeletedWebAppSnapshotsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotArray); err != nil {
 		return GlobalGetDeletedWebAppSnapshotsResponse{}, err
 	}
 	return result, nil
 }
 
 // getDeletedWebAppSnapshotsHandleError handles the GetDeletedWebAppSnapshots error response.
-func (client *GlobalClient) getDeletedWebAppSnapshotsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *GlobalClient) getDeletedWebAppSnapshotsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetSubscriptionOperationWithAsyncResponse - Description for Gets an operation in a subscription and given region
@@ -161,18 +163,18 @@ func (client *GlobalClient) GetSubscriptionOperationWithAsyncResponse(ctx contex
 	if err != nil {
 		return GlobalGetSubscriptionOperationWithAsyncResponseResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return GlobalGetSubscriptionOperationWithAsyncResponseResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusNoContent) {
 		return GlobalGetSubscriptionOperationWithAsyncResponseResponse{}, client.getSubscriptionOperationWithAsyncResponseHandleError(resp)
 	}
-	return GlobalGetSubscriptionOperationWithAsyncResponseResponse{RawResponse: resp.Response}, nil
+	return GlobalGetSubscriptionOperationWithAsyncResponseResponse{RawResponse: resp}, nil
 }
 
 // getSubscriptionOperationWithAsyncResponseCreateRequest creates the GetSubscriptionOperationWithAsyncResponse request.
-func (client *GlobalClient) getSubscriptionOperationWithAsyncResponseCreateRequest(ctx context.Context, location string, operationID string, options *GlobalGetSubscriptionOperationWithAsyncResponseOptions) (*azcore.Request, error) {
+func (client *GlobalClient) getSubscriptionOperationWithAsyncResponseCreateRequest(ctx context.Context, location string, operationID string, options *GlobalGetSubscriptionOperationWithAsyncResponseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/operations/{operationId}"
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -186,27 +188,26 @@ func (client *GlobalClient) getSubscriptionOperationWithAsyncResponseCreateReque
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getSubscriptionOperationWithAsyncResponseHandleError handles the GetSubscriptionOperationWithAsyncResponse error response.
-func (client *GlobalClient) getSubscriptionOperationWithAsyncResponseHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *GlobalClient) getSubscriptionOperationWithAsyncResponseHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

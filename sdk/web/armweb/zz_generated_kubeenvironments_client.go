@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // KubeEnvironmentsClient contains the methods for the KubeEnvironments group.
 // Don't use this type directly, use NewKubeEnvironmentsClient() instead.
 type KubeEnvironmentsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewKubeEnvironmentsClient creates a new instance of KubeEnvironmentsClient with the specified values.
-func NewKubeEnvironmentsClient(con *armcore.Connection, subscriptionID string) *KubeEnvironmentsClient {
-	return &KubeEnvironmentsClient{con: con, subscriptionID: subscriptionID}
+func NewKubeEnvironmentsClient(con *arm.Connection, subscriptionID string) *KubeEnvironmentsClient {
+	return &KubeEnvironmentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Description for Creates or updates a Kubernetes Environment.
@@ -39,65 +43,37 @@ func (client *KubeEnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, r
 		return KubeEnvironmentsCreateOrUpdatePollerResponse{}, err
 	}
 	result := KubeEnvironmentsCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("KubeEnvironmentsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return KubeEnvironmentsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &kubeEnvironmentsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (KubeEnvironmentsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new KubeEnvironmentsCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to KubeEnvironmentsCreateOrUpdatePoller.ResumeToken().
-func (client *KubeEnvironmentsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (KubeEnvironmentsCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("KubeEnvironmentsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return KubeEnvironmentsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &kubeEnvironmentsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return KubeEnvironmentsCreateOrUpdatePollerResponse{}, err
-	}
-	result := KubeEnvironmentsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (KubeEnvironmentsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("KubeEnvironmentsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return KubeEnvironmentsCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &KubeEnvironmentsCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Description for Creates or updates a Kubernetes Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *KubeEnvironmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, kubeEnvironmentEnvelope KubeEnvironment, options *KubeEnvironmentsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *KubeEnvironmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, kubeEnvironmentEnvelope KubeEnvironment, options *KubeEnvironmentsBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, kubeEnvironmentEnvelope, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *KubeEnvironmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, kubeEnvironmentEnvelope KubeEnvironment, options *KubeEnvironmentsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *KubeEnvironmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, kubeEnvironmentEnvelope KubeEnvironment, options *KubeEnvironmentsBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/kubeEnvironments/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -111,29 +87,28 @@ func (client *KubeEnvironmentsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(kubeEnvironmentEnvelope)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, kubeEnvironmentEnvelope)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *KubeEnvironmentsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *KubeEnvironmentsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDelete - Description for Delete a Kubernetes Environment.
@@ -144,65 +119,37 @@ func (client *KubeEnvironmentsClient) BeginDelete(ctx context.Context, resourceG
 		return KubeEnvironmentsDeletePollerResponse{}, err
 	}
 	result := KubeEnvironmentsDeletePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("KubeEnvironmentsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return KubeEnvironmentsDeletePollerResponse{}, err
-	}
-	poller := &kubeEnvironmentsDeletePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (KubeEnvironmentsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new KubeEnvironmentsDeletePoller from the specified resume token.
-// token - The value must come from a previous call to KubeEnvironmentsDeletePoller.ResumeToken().
-func (client *KubeEnvironmentsClient) ResumeDelete(ctx context.Context, token string) (KubeEnvironmentsDeletePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("KubeEnvironmentsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return KubeEnvironmentsDeletePollerResponse{}, err
-	}
-	poller := &kubeEnvironmentsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return KubeEnvironmentsDeletePollerResponse{}, err
-	}
-	result := KubeEnvironmentsDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (KubeEnvironmentsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("KubeEnvironmentsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return KubeEnvironmentsDeletePollerResponse{}, err
+	}
+	result.Poller = &KubeEnvironmentsDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Description for Delete a Kubernetes Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *KubeEnvironmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *KubeEnvironmentsBeginDeleteOptions) (*azcore.Response, error) {
+func (client *KubeEnvironmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *KubeEnvironmentsBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *KubeEnvironmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *KubeEnvironmentsBeginDeleteOptions) (*azcore.Request, error) {
+func (client *KubeEnvironmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *KubeEnvironmentsBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/kubeEnvironments/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -216,29 +163,28 @@ func (client *KubeEnvironmentsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *KubeEnvironmentsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *KubeEnvironmentsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Description for Get the properties of a Kubernetes Environment.
@@ -248,18 +194,18 @@ func (client *KubeEnvironmentsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return KubeEnvironmentsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KubeEnvironmentsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return KubeEnvironmentsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *KubeEnvironmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, options *KubeEnvironmentsGetOptions) (*azcore.Request, error) {
+func (client *KubeEnvironmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, options *KubeEnvironmentsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/kubeEnvironments/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -273,56 +219,55 @@ func (client *KubeEnvironmentsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *KubeEnvironmentsClient) getHandleResponse(resp *azcore.Response) (KubeEnvironmentsGetResponse, error) {
-	result := KubeEnvironmentsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.KubeEnvironment); err != nil {
+func (client *KubeEnvironmentsClient) getHandleResponse(resp *http.Response) (KubeEnvironmentsGetResponse, error) {
+	result := KubeEnvironmentsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.KubeEnvironment); err != nil {
 		return KubeEnvironmentsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *KubeEnvironmentsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *KubeEnvironmentsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByResourceGroup - Description for Get all the Kubernetes Environments in a resource group.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *KubeEnvironmentsClient) ListByResourceGroup(resourceGroupName string, options *KubeEnvironmentsListByResourceGroupOptions) KubeEnvironmentsListByResourceGroupPager {
-	return &kubeEnvironmentsListByResourceGroupPager{
+func (client *KubeEnvironmentsClient) ListByResourceGroup(resourceGroupName string, options *KubeEnvironmentsListByResourceGroupOptions) *KubeEnvironmentsListByResourceGroupPager {
+	return &KubeEnvironmentsListByResourceGroupPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp KubeEnvironmentsListByResourceGroupResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.KubeEnvironmentCollection.NextLink)
+		advancer: func(ctx context.Context, resp KubeEnvironmentsListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.KubeEnvironmentCollection.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *KubeEnvironmentsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *KubeEnvironmentsListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *KubeEnvironmentsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *KubeEnvironmentsListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/kubeEnvironments"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -332,93 +277,91 @@ func (client *KubeEnvironmentsClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *KubeEnvironmentsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (KubeEnvironmentsListByResourceGroupResponse, error) {
-	result := KubeEnvironmentsListByResourceGroupResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.KubeEnvironmentCollection); err != nil {
+func (client *KubeEnvironmentsClient) listByResourceGroupHandleResponse(resp *http.Response) (KubeEnvironmentsListByResourceGroupResponse, error) {
+	result := KubeEnvironmentsListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.KubeEnvironmentCollection); err != nil {
 		return KubeEnvironmentsListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *KubeEnvironmentsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *KubeEnvironmentsClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListBySubscription - Description for Get all Kubernetes Environments for a subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *KubeEnvironmentsClient) ListBySubscription(options *KubeEnvironmentsListBySubscriptionOptions) KubeEnvironmentsListBySubscriptionPager {
-	return &kubeEnvironmentsListBySubscriptionPager{
+func (client *KubeEnvironmentsClient) ListBySubscription(options *KubeEnvironmentsListBySubscriptionOptions) *KubeEnvironmentsListBySubscriptionPager {
+	return &KubeEnvironmentsListBySubscriptionPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp KubeEnvironmentsListBySubscriptionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.KubeEnvironmentCollection.NextLink)
+		advancer: func(ctx context.Context, resp KubeEnvironmentsListBySubscriptionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.KubeEnvironmentCollection.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *KubeEnvironmentsClient) listBySubscriptionCreateRequest(ctx context.Context, options *KubeEnvironmentsListBySubscriptionOptions) (*azcore.Request, error) {
+func (client *KubeEnvironmentsClient) listBySubscriptionCreateRequest(ctx context.Context, options *KubeEnvironmentsListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/kubeEnvironments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *KubeEnvironmentsClient) listBySubscriptionHandleResponse(resp *azcore.Response) (KubeEnvironmentsListBySubscriptionResponse, error) {
-	result := KubeEnvironmentsListBySubscriptionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.KubeEnvironmentCollection); err != nil {
+func (client *KubeEnvironmentsClient) listBySubscriptionHandleResponse(resp *http.Response) (KubeEnvironmentsListBySubscriptionResponse, error) {
+	result := KubeEnvironmentsListBySubscriptionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.KubeEnvironmentCollection); err != nil {
 		return KubeEnvironmentsListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *KubeEnvironmentsClient) listBySubscriptionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *KubeEnvironmentsClient) listBySubscriptionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Update - Description for Creates or updates a Kubernetes Environment.
@@ -428,18 +371,18 @@ func (client *KubeEnvironmentsClient) Update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return KubeEnvironmentsUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return KubeEnvironmentsUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return KubeEnvironmentsUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *KubeEnvironmentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, kubeEnvironmentEnvelope KubeEnvironmentPatchResource, options *KubeEnvironmentsUpdateOptions) (*azcore.Request, error) {
+func (client *KubeEnvironmentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, kubeEnvironmentEnvelope KubeEnvironmentPatchResource, options *KubeEnvironmentsUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/kubeEnvironments/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -453,36 +396,35 @@ func (client *KubeEnvironmentsClient) updateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(kubeEnvironmentEnvelope)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, kubeEnvironmentEnvelope)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *KubeEnvironmentsClient) updateHandleResponse(resp *azcore.Response) (KubeEnvironmentsUpdateResponse, error) {
-	result := KubeEnvironmentsUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.KubeEnvironment); err != nil {
+func (client *KubeEnvironmentsClient) updateHandleResponse(resp *http.Response) (KubeEnvironmentsUpdateResponse, error) {
+	result := KubeEnvironmentsUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.KubeEnvironment); err != nil {
 		return KubeEnvironmentsUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *KubeEnvironmentsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *KubeEnvironmentsClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

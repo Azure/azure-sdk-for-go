@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,7 +8,10 @@
 
 package armcompute
 
-const telemetryInfo = "azsdk-go-armcompute/v0.2.0"
+const (
+	module  = "armcompute"
+	version = "v0.3.0"
+)
 
 type AccessLevel string
 
@@ -103,6 +107,42 @@ func PossibleCachingTypesValues() []CachingTypes {
 
 // ToPtr returns a *CachingTypes pointing to the current value.
 func (c CachingTypes) ToPtr() *CachingTypes {
+	return &c
+}
+
+type CapacityReservationGroupInstanceViewTypes string
+
+const (
+	CapacityReservationGroupInstanceViewTypesInstanceView CapacityReservationGroupInstanceViewTypes = "instanceView"
+)
+
+// PossibleCapacityReservationGroupInstanceViewTypesValues returns the possible values for the CapacityReservationGroupInstanceViewTypes const type.
+func PossibleCapacityReservationGroupInstanceViewTypesValues() []CapacityReservationGroupInstanceViewTypes {
+	return []CapacityReservationGroupInstanceViewTypes{
+		CapacityReservationGroupInstanceViewTypesInstanceView,
+	}
+}
+
+// ToPtr returns a *CapacityReservationGroupInstanceViewTypes pointing to the current value.
+func (c CapacityReservationGroupInstanceViewTypes) ToPtr() *CapacityReservationGroupInstanceViewTypes {
+	return &c
+}
+
+type CapacityReservationInstanceViewTypes string
+
+const (
+	CapacityReservationInstanceViewTypesInstanceView CapacityReservationInstanceViewTypes = "instanceView"
+)
+
+// PossibleCapacityReservationInstanceViewTypesValues returns the possible values for the CapacityReservationInstanceViewTypes const type.
+func PossibleCapacityReservationInstanceViewTypesValues() []CapacityReservationInstanceViewTypes {
+	return []CapacityReservationInstanceViewTypes{
+		CapacityReservationInstanceViewTypesInstanceView,
+	}
+}
+
+// ToPtr returns a *CapacityReservationInstanceViewTypes pointing to the current value.
+func (c CapacityReservationInstanceViewTypes) ToPtr() *CapacityReservationInstanceViewTypes {
 	return &c
 }
 
@@ -569,6 +609,26 @@ func (c ExecutionState) ToPtr() *ExecutionState {
 	return &c
 }
 
+type ExpandTypesForGetCapacityReservationGroups string
+
+const (
+	ExpandTypesForGetCapacityReservationGroupsVirtualMachineScaleSetVMsRef ExpandTypesForGetCapacityReservationGroups = "virtualMachineScaleSetVMs/$ref"
+	ExpandTypesForGetCapacityReservationGroupsVirtualMachinesRef           ExpandTypesForGetCapacityReservationGroups = "virtualMachines/$ref"
+)
+
+// PossibleExpandTypesForGetCapacityReservationGroupsValues returns the possible values for the ExpandTypesForGetCapacityReservationGroups const type.
+func PossibleExpandTypesForGetCapacityReservationGroupsValues() []ExpandTypesForGetCapacityReservationGroups {
+	return []ExpandTypesForGetCapacityReservationGroups{
+		ExpandTypesForGetCapacityReservationGroupsVirtualMachineScaleSetVMsRef,
+		ExpandTypesForGetCapacityReservationGroupsVirtualMachinesRef,
+	}
+}
+
+// ToPtr returns a *ExpandTypesForGetCapacityReservationGroups pointing to the current value.
+func (c ExpandTypesForGetCapacityReservationGroups) ToPtr() *ExpandTypesForGetCapacityReservationGroups {
+	return &c
+}
+
 type ExpandTypesForGetVMScaleSets string
 
 const (
@@ -584,6 +644,25 @@ func PossibleExpandTypesForGetVMScaleSetsValues() []ExpandTypesForGetVMScaleSets
 
 // ToPtr returns a *ExpandTypesForGetVMScaleSets pointing to the current value.
 func (c ExpandTypesForGetVMScaleSets) ToPtr() *ExpandTypesForGetVMScaleSets {
+	return &c
+}
+
+// ExtendedLocationType - The type of the extended location.
+type ExtendedLocationType string
+
+const (
+	ExtendedLocationTypeEdgeZone ExtendedLocationType = "EdgeZone"
+)
+
+// PossibleExtendedLocationTypeValues returns the possible values for the ExtendedLocationType const type.
+func PossibleExtendedLocationTypeValues() []ExtendedLocationType {
+	return []ExtendedLocationType{
+		ExtendedLocationTypeEdgeZone,
+	}
+}
+
+// ToPtr returns a *ExtendedLocationType pointing to the current value.
+func (c ExtendedLocationType) ToPtr() *ExtendedLocationType {
 	return &c
 }
 
@@ -1040,11 +1119,13 @@ func (c NetworkAccessPolicy) ToPtr() *NetworkAccessPolicy {
 	return &c
 }
 
-// OperatingSystemStateTypes - This property allows the user to specify whether the virtual machines created under this image are 'Generalized' or 'Specialized'.
+// OperatingSystemStateTypes - The OS State.
 type OperatingSystemStateTypes string
 
 const (
+	// OperatingSystemStateTypesGeneralized - Generalized image. Needs to be provisioned during deployment time.
 	OperatingSystemStateTypesGeneralized OperatingSystemStateTypes = "Generalized"
+	// OperatingSystemStateTypesSpecialized - Specialized image. Contains already provisioned OS Disk.
 	OperatingSystemStateTypesSpecialized OperatingSystemStateTypes = "Specialized"
 )
 
@@ -1082,10 +1163,7 @@ func (c OperatingSystemType) ToPtr() *OperatingSystemType {
 	return &c
 }
 
-// OperatingSystemTypes - This property allows you to specify the supported type of the OS that application is built for.
-// Possible values are:
-// Windows
-// Linux
+// OperatingSystemTypes - The Operating System type.
 type OperatingSystemTypes string
 
 const (
@@ -1428,6 +1506,27 @@ func (c PublicIPAllocationMethod) ToPtr() *PublicIPAllocationMethod {
 	return &c
 }
 
+// ReplicationMode - Optional parameter which specifies the mode to be used for replication. This property is not updatable.
+type ReplicationMode string
+
+const (
+	ReplicationModeFull    ReplicationMode = "Full"
+	ReplicationModeShallow ReplicationMode = "Shallow"
+)
+
+// PossibleReplicationModeValues returns the possible values for the ReplicationMode const type.
+func PossibleReplicationModeValues() []ReplicationMode {
+	return []ReplicationMode{
+		ReplicationModeFull,
+		ReplicationModeShallow,
+	}
+}
+
+// ToPtr returns a *ReplicationMode pointing to the current value.
+func (c ReplicationMode) ToPtr() *ReplicationMode {
+	return &c
+}
+
 // ReplicationState - This is the regional replication state.
 type ReplicationState string
 
@@ -1624,6 +1723,26 @@ func PossibleRollingUpgradeStatusCodeValues() []RollingUpgradeStatusCode {
 
 // ToPtr returns a *RollingUpgradeStatusCode pointing to the current value.
 func (c RollingUpgradeStatusCode) ToPtr() *RollingUpgradeStatusCode {
+	return &c
+}
+
+// SecurityTypes - Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings.
+// Default: UefiSettings will not be enabled unless this property is set as TrustedLaunch.
+type SecurityTypes string
+
+const (
+	SecurityTypesTrustedLaunch SecurityTypes = "TrustedLaunch"
+)
+
+// PossibleSecurityTypesValues returns the possible values for the SecurityTypes const type.
+func PossibleSecurityTypesValues() []SecurityTypes {
+	return []SecurityTypes{
+		SecurityTypesTrustedLaunch,
+	}
+}
+
+// ToPtr returns a *SecurityTypes pointing to the current value.
+func (c SecurityTypes) ToPtr() *SecurityTypes {
 	return &c
 }
 

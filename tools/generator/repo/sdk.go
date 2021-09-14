@@ -6,6 +6,8 @@ package repo
 import (
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 
 	"github.com/go-git/go-git/v5/plumbing"
 )
@@ -27,13 +29,39 @@ func OpenSDKRepository(path string) (SDKRepository, error) {
 	}, nil
 }
 
+func CloneSDKRepository(repoUrl, commitID string) (SDKRepository, error) {
+	repoBasePath := filepath.Join(os.TempDir(), "generator_sdk")
+	if _, err := os.Stat(repoBasePath); err == nil {
+		os.RemoveAll(repoBasePath)
+	}
+	if err := os.Mkdir(repoBasePath, os.ModePerm); err != nil {
+		return nil, fmt.Errorf("failed to create tmp folder for generation: %+v", err)
+	}
+
+	wt, err := CloneWorkTree(fmt.Sprintf("%s.git", repoUrl), repoBasePath)
+	if err != nil {
+		return nil, err
+	}
+
+	err = wt.Checkout(&CheckoutOptions{
+		Hash: plumbing.NewHash(commitID),
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &sdkRepository{
+		WorkTree: wt,
+	}, nil
+}
+
 type sdkRepository struct {
 	WorkTree
 }
 
 func (s *sdkRepository) AddReleaseCommit(rpName, namespaceName, specHash, version string) error {
 	log.Printf("Add release package and commit")
-	if err := s.Add(fmt.Sprintf("sdk\\%s\\%s", rpName, namespaceName)); err != nil {
+	if err := s.Add(fmt.Sprintf("sdk/%s/%s", rpName, namespaceName)); err != nil {
 		return fmt.Errorf("failed to add 'profiles': %+v", err)
 	}
 

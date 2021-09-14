@@ -1,24 +1,50 @@
 parameters:
-  ServiceDirectory: ''
-  GoWorkspace: ''
-  Scope: 'sdk/...'
-  Image: ''
-  GoVersion: ''
-  RunTests: false
+  - name:  ServiceDirectory
+    type: string
+    default: ''
+  - name:  GoWorkspace
+    type: string
+    default: ''
+  - name:  Scope
+    type: string
+    default: 'sdk/...'
+  - name:  Image
+    type: string
+    default: ''
+  - name:  GoVersion
+    type: string
+    default: ''
+  - name:  RunTests
+    type: boolean
+    default: false
+  - name: EnvVars
+    type: object
+    default: {}
 
 steps:
-
-  - pwsh: ./eng/scripts/build.ps1
-    displayName: 'Build'
-    workingDirectory: '${{parameters.GoWorkspace}}'
+  - task: Powershell@2
+    displayName: Build
     env:
       GO111MODULE: 'on'
+    inputs:
+      targetType: filePath
+      pwsh: true
+      filePath: eng/scripts/build.ps1
+      arguments: -filter '${{ parameters.ServiceDirectory }}'
+      workingDirectory: '${{ parameters.GoWorkspace }}'
 
-  - pwsh: ./eng/scripts/build.ps1 -vet -skipBuild
-    displayName: 'Vet'
-    workingDirectory: '${{parameters.GoWorkspace}}'
+  - task: Powershell@2
+    displayName: Vet
     env:
       GO111MODULE: 'on'
+    inputs:
+      targetType: filePath
+      pwsh: true
+      filePath: eng/scripts/build.ps1
+      arguments: -vet -skipBuild -filter '${{ parameters.ServiceDirectory }}'
+      workingDirectory: '${{ parameters.GoWorkspace }}'
+
+  - template: /eng/common/testproxy/test-proxy-docker.yml
 
   - task: PowerShell@2
     displayName: 'Run Tests'
@@ -52,3 +78,46 @@ steps:
       summaryFileLocation: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/coverage.xml'
       additionalCodeCoverageFiles: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/coverage.html'
       failIfCoverageEmpty: true
+
+  # - pwsh: |
+  #     $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
+  #     foreach ($td in $testDirs) {
+  #       pushd $td
+  #       Write-Host "##[command]Executing 'go test -run "^Test" -v -coverprofile coverage.txt .' in $td"
+  #       go test -run "^Test" -v -coverprofile coverage.txt . | Tee-Object -FilePath outfile.txt
+  #       if ($LASTEXITCODE) { exit $LASTEXITCODE }
+  #       cat outfile.txt | go-junit-report > report.xml
+  #       # if no tests were actually run (e.g. examples) delete the coverage file so it's omitted from the coverage report
+  #       if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simplematch -quiet) {
+  #         Write-Host "##[command]Deleting empty coverage file"
+  #         rm coverage.txt
+  #       }
+  #     }
+  #   displayName: 'Run Tests'
+  #   workingDirectory: '${{parameters.GoWorkspace}}'
+  #   env:
+  #     GO111MODULE: 'on'
+  #     PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
+  #     ${{ insert }}: ${{ parameters.EnvVars }}
+
+  # - pwsh: ../eng/scripts/create_coverage.ps1 ${{parameters.ServiceDirectory}}
+  #   displayName: 'Generate Coverage XML'
+  #   workingDirectory: '${{parameters.GoWorkspace}}sdk'
+  #   env:
+  #     GO111MODULE: 'off'
+
+  # - task: PublishTestResults@2
+  #   condition: succeededOrFailed()
+  #   inputs:
+  #     testRunner: JUnit
+  #     testResultsFiles: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/**/report.xml'
+  #     testRunTitle: 'Go ${{ parameters.GoVersion }} on ${{ parameters.Image }}'
+  #     failTaskOnFailedTests: true
+
+  # - task: PublishCodeCoverageResults@1
+  #   condition: succeededOrFailed()
+  #   inputs:
+  #     codeCoverageTool: Cobertura
+  #     summaryFileLocation: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/coverage.xml'
+  #     additionalCodeCoverageFiles: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/coverage.html'
+  #     failIfCoverageEmpty: true

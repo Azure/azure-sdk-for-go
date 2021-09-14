@@ -79,7 +79,7 @@ function Get-go-PackageInfoFromPackageFile($pkg, $workingDirectory)
     return $resultObj
 }
 
-function Get-AllPackageInfoFromRepo ($serviceDirectory, $pkgDirectory)
+function Get-AllPackageInfoFromRepo($serviceDirectory, $pkgDirectory)
 {
   $allPackageProps = @()
   $searchPath = Join-Path $RepoRoot "sdk"

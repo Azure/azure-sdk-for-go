@@ -5,6 +5,11 @@ import (
 	"github.com/Azure/go-amqp"
 )
 
+const (
+	annotationPartitionKey    = "x-opt-partition-key"
+	annotationViaPartitionKey = "x-opt-via-partition-key"
+)
+
 // Message represents a sendable message, including only user-settable properties.
 // A message that has been received from Service Bus will be of type `ReceivedMessage`.
 type Message struct {
@@ -13,7 +18,7 @@ type Message struct {
 	PartitionKey            *string
 	TransactionPartitionKey *string
 
-	// TODO: SessionID seems like it should be a pointer (ie: optional)
+	// TODO: is an empty session ID valid?
 	SessionID string
 }
 
@@ -21,7 +26,7 @@ type Message struct {
 type ReceivedMessage struct {
 	Message
 	LockToken      *string
-	SequenceNumber int64
+	SequenceNumber *int64
 
 	PartitionID *int16
 
@@ -39,11 +44,11 @@ func (m *Message) toAMQPMessage() (*amqp.Message, error) {
 	}
 
 	if m.PartitionKey != nil {
-		msg.Annotations["x-opt-partition-key"] = m.PartitionKey
+		msg.Annotations[annotationPartitionKey] = m.PartitionKey
 	}
 
 	if m.TransactionPartitionKey != nil {
-		msg.Annotations["x-opt-via-partition-key"] = m.TransactionPartitionKey
+		msg.Annotations[annotationViaPartitionKey] = m.TransactionPartitionKey
 	}
 
 	return msg, nil
@@ -57,19 +62,31 @@ func convertToReceivedMessage(legacyMessage *internal.Message) *ReceivedMessage 
 		lockToken = &tmp
 	}
 
+	var sequenceNumber *int64
+	var partitionKey *string
+	var viaPartitionKey *string
+	var partitionID *int16
+
+	if legacyMessage.SystemProperties != nil {
+		sequenceNumber = legacyMessage.SystemProperties.SequenceNumber
+		partitionKey = legacyMessage.SystemProperties.PartitionKey
+		viaPartitionKey = legacyMessage.SystemProperties.ViaPartitionKey
+		partitionID = legacyMessage.SystemProperties.PartitionID
+	}
+
 	rm := &ReceivedMessage{
 		// TODO: When we swap out the encoding from the legacy we should also make it so LockToken is simply a string, not expected to be a UUID.
 		// Ie, it should be opaque to us.
 		LockToken:      lockToken,
-		SequenceNumber: *legacyMessage.SystemProperties.SequenceNumber,
+		SequenceNumber: sequenceNumber,
 		Message: Message{
 			Body:                    legacyMessage.Data,
 			ID:                      legacyMessage.ID,
-			PartitionKey:            legacyMessage.SystemProperties.PartitionKey,
-			TransactionPartitionKey: legacyMessage.SystemProperties.ViaPartitionKey,
+			PartitionKey:            partitionKey,
+			TransactionPartitionKey: viaPartitionKey,
 		},
 		legacyMessage: legacyMessage,
-		PartitionID:   legacyMessage.SystemProperties.PartitionID,
+		PartitionID:   partitionID,
 	}
 
 	return rm

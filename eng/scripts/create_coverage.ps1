@@ -14,19 +14,17 @@ Get-ChildItem -recurse -path . -filter coverage.txt | ForEach-Object {
   $coverageFiles.Add($covFile)
 }
 
+Pop-Location
+
 # merge coverage files
 gocovmerge $coverageFiles > mergedCoverage.txt
 gocov convert ./mergedCoverage.txt > ./coverage.json
 
 # gocov converts rely on standard input
-Get-Content ./coverage.json | gocov-xml > $serviceDirectory/coverage.xml
-Get-Content ./coverage.json | gocov-html > $serviceDirectory/coverage.html
+Get-Content ./coverage.json | gocov-xml > ./coverage.xml
+Get-Content ./coverage.json | gocov-html > ./coverage.html
 
-Pop-Location
-# go run ../tools/internal/coverage/main.go  -serviceDirectory $serviceDirectory
-
-$patternMatches = Get-Content $serviceDirectory/coverage.xml | Select-String -Pattern '<coverage line-rate=\"(\d\.\d+)\"'
-
+$patternMatches = Get-Content ./coverage.xml | Select-String -Pattern '<coverage line-rate=\"(\d\.\d+)\"'
 if ($patternMatches.Length -eq 0) {
   Write-Host "Coverage.xml file did not contain coverage information"
   Exit $1

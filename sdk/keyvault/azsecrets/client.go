@@ -59,7 +59,7 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 		options = &ClientOptions{}
 	}
 
-	conn := internal.NewConnection(options.toConnectionOptions())
+	conn := internal.NewConnection(credential, options.toConnectionOptions())
 
 	return &Client{
 		kvClient: &internal.KeyVaultClient{

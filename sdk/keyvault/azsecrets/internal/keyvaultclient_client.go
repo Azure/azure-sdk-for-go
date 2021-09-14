@@ -4174,6 +4174,7 @@ func (client *KeyVaultClient) SetSecret(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientSetSecretResponse{}, err
 	}
+	fmt.Println(req)
 	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientSetSecretResponse{}, err
@@ -4194,6 +4195,7 @@ func (client *KeyVaultClient) setSecretCreateRequest(ctx context.Context, vaultB
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secret-name}", url.PathEscape(secretName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
+	fmt.Println(req)
 	if err != nil {
 		return nil, err
 	}

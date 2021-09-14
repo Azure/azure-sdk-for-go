@@ -8,6 +8,7 @@ package azsecrets
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -53,7 +54,7 @@ func (c *ClientOptions) toConnectionOptions() *internal.ConnectionOptions {
 }
 
 // NewClient returns a pointer to a Client object affinitized to a vaultUrl.
-func NewClient(vaultUrl string, credential azcore.TokenCredential, options *ClientOptions) *Client {
+func NewClient(vaultUrl string, credential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -64,7 +65,8 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 		kvClient: &internal.KeyVaultClient{
 			Con: conn,
 		},
-	}
+		vaultUrl: vaultUrl,
+	}, nil
 }
 
 type GetSecretOptions struct {
@@ -87,8 +89,8 @@ type GetSecretResponse struct {
 	Managed     *bool
 }
 
-func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) GetSecretResponse {
-	return GetSecretResponse{
+func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) *GetSecretResponse {
+	return &GetSecretResponse{
 		RawResponse: i.RawResponse,
 		Attributes:  i.Attributes,
 		ID:          i.ID,
@@ -101,5 +103,74 @@ func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) 
 
 func (c *Client) GetSecret(ctx context.Context, name string, secretVersion string, options *GetSecretOptions) (GetSecretResponse, error) {
 	resp, err := c.kvClient.GetSecret(ctx, c.vaultUrl, name, secretVersion, options.toGenerated())
-	return getSecretResponseFromGenerated(resp), err
+	return *getSecretResponseFromGenerated(resp), err
+}
+
+type SetSecretOptions struct {
+	// Type of the secret value such as a password.
+	ContentType *string `json:"contentType,omitempty"`
+
+	// The secret management attributes.
+	SecretAttributes *internal.SecretAttributes `json:"attributes,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+func (s *SetSecretOptions) toGenerated() *internal.KeyVaultClientSetSecretOptions {
+	if s == nil {
+		return nil
+	}
+	return &internal.KeyVaultClientSetSecretOptions{}
+}
+
+type SetSecretResponse struct {
+	RawResponse *http.Response
+
+	// The secret management attributes.
+	Attributes *internal.SecretAttributes `json:"attributes,omitempty"`
+
+	// The secret id.
+	ID *string `json:"id,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// The secret value.
+	Value *string `json:"value,omitempty"`
+
+	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV certificate.
+	Kid *string `json:"kid,omitempty" azure:"ro"`
+
+	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed will be true.
+	Managed *bool `json:"managed,omitempty" azure:"ro"`
+}
+
+func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) *SetSecretResponse {
+	return &SetSecretResponse{
+		RawResponse: i.RawResponse,
+		Attributes:  i.Attributes,
+		ID:          i.ID,
+		Tags:        i.Tags,
+		Value:       i.Value,
+		Kid:         i.Kid,
+		Managed:     i.Managed,
+	}
+}
+
+type SetSecretParameters struct {
+}
+
+func (c *Client) SetSecret(ctx context.Context, name string, value string, options *SetSecretOptions) (SetSecretResponse, error) {
+	if options == nil {
+		options = &SetSecretOptions{}
+	}
+	fmt.Println("VaultURL: ", c.vaultUrl)
+	resp, err := c.kvClient.SetSecret(ctx, c.vaultUrl, name, internal.SecretSetParameters{
+		Value:            &value,
+		ContentType:      options.ContentType,
+		SecretAttributes: options.SecretAttributes,
+		Tags:             options.Tags,
+	}, options.toGenerated())
+	return *setSecretResponseFromGenerated(resp), err
 }

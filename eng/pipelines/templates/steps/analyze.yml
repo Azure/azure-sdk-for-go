@@ -24,6 +24,14 @@ steps:
     failOnStderr: false
     workingDirectory: '${{parameters.GoWorkspace}}'
 
+  - pwsh: |
+      $modDirs = ./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE)
+      foreach ($md in $modDirs) {
+        Get-ChildItem $md/doc.go
+      }
+    displayName: 'Verify doc.go'
+    workingDirectory: '${{parameters.GoWorkspace}}'
+
   - script: |
       echo scanning copyright headers in $(pwd)
       grep -L -r --include \*.go -P "Copyright (\d{4}|\(c\)) Microsoft" . | tee >&2

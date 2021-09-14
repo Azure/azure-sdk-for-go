@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"sort"
 	"testing"
 	"time"
 
@@ -28,14 +29,44 @@ func TestSender(t *testing.T) {
 	sender, err := serviceBusClient.NewSender(queueName)
 	require.NoError(t, err)
 
+	defer sender.Close(ctx)
+
 	batch, err := sender.CreateMessageBatch(ctx)
 	require.NoError(t, err)
 
 	err = batch.Add(&Message{
-		Body: []byte("hello world"),
+		Body: []byte("[0] message in batch"),
+	})
+	require.NoError(t, err)
+
+	err = batch.Add(&Message{
+		Body: []byte("[1] message in batch"),
 	})
 	require.NoError(t, err)
 
 	err = sender.SendMessage(ctx, batch)
 	require.NoError(t, err)
+
+	receiver, err := serviceBusClient.NewReceiver(
+		ReceiverWithQueue(queueName),
+		ReceiverWithReceiveMode(ReceiveAndDelete))
+	require.NoError(t, err)
+	defer receiver.Close(ctx)
+
+	// we sent a single batch with two messages in it
+	messages, err := receiver.ReceiveMessages(ctx, 2)
+	require.NoError(t, err)
+
+	require.EqualValues(t, []string{"[0] message in batch", "[1] message in batch"}, getSortedBodies(messages))
+}
+
+func getSortedBodies(messages []*ReceivedMessage) []string {
+	var bodies []string
+
+	for _, msg := range messages {
+		bodies = append(bodies, string(msg.Body))
+	}
+
+	sort.Strings(bodies)
+	return bodies
 }

@@ -20,7 +20,7 @@ type Message struct {
 // ReceivedMessage represents a message received from Service Bus.
 type ReceivedMessage struct {
 	Message
-	LockToken      string
+	LockToken      *string
 	SequenceNumber int64
 
 	PartitionID *int16
@@ -50,10 +50,17 @@ func (m *Message) toAMQPMessage() (*amqp.Message, error) {
 }
 
 func convertToReceivedMessage(legacyMessage *internal.Message) *ReceivedMessage {
+	var lockToken *string
+
+	if legacyMessage.LockToken != nil {
+		tmp := legacyMessage.LockToken.String()
+		lockToken = &tmp
+	}
+
 	rm := &ReceivedMessage{
 		// TODO: When we swap out the encoding from the legacy we should also make it so LockToken is simply a string, not expected to be a UUID.
 		// Ie, it should be opaque to us.
-		LockToken:      legacyMessage.LockToken.String(),
+		LockToken:      lockToken,
 		SequenceNumber: *legacyMessage.SystemProperties.SequenceNumber,
 		Message: Message{
 			Body:                    legacyMessage.Data,

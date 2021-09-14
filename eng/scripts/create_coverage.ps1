@@ -4,7 +4,6 @@ Param(
     [string] $serviceDirectory
 )
 
-Write-Host $serviceDirectory
 Push-Location ./sdk/$serviceDirectory
 
 $coverageFiles = [Collections.Generic.List[String]]@()
@@ -32,15 +31,10 @@ if ($patternMatches.Length -eq 0) {
 
 [double] $coverageFloat = $patternMatches.Matches.Groups[1].Value
 
-Write-Host "Found a coverage of $coverageFloat"
-
 # Read eng/config.json to find appropriate Value
 $coverageGoals = Get-Content ./eng/config.json | Out-String | ConvertFrom-Json
 
-Write-Host $coverageGoals
-
 Foreach ($pkg in $coverageGoals.Packages) {
-  Write-Host $pkg
   if ($pkg.Name -Match $serviceDirectory) {
     $goalCoverage = [double] $pkg.CoverageGoal
 

@@ -10,7 +10,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ManagedIdentityIDKind is used to specify the type of identifier that is passed in for a user-assigned managed identity.
@@ -107,12 +106,6 @@ func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.To
 	logGetTokenSuccess(c, opts)
 	logMSIEnv(c.client.msiType)
 	return tk, err
-}
-
-// NewAuthenticationPolicy implements the azcore.Credential interface on ManagedIdentityCredential.
-// NOTE: The TokenRequestOptions included in AuthenticationOptions must be a slice of resources in this case and not scopes.
-func (c *ManagedIdentityCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
-	return newBearerTokenPolicy(c, options)
 }
 
 var _ azcore.TokenCredential = (*ManagedIdentityCredential)(nil)

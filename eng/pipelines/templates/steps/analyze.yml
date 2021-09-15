@@ -24,14 +24,15 @@ steps:
     failOnStderr: false
     workingDirectory: '${{parameters.GoWorkspace}}'
 
-  - ${{ if contains(parameters.ServiceDirectory, '/arm') }}:
-    - pwsh: |
-        $modDirs = ./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE)
-        foreach ($md in $modDirs) {
+  - pwsh: |
+      $modDirs = ./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE)
+      foreach ($md in $modDirs) {
+        if (-Not $md -Match "/arm") {
           Get-ChildItem $md/doc.go
         }
-      displayName: 'Verify doc.go'
-      workingDirectory: '${{parameters.GoWorkspace}}'
+      }
+    displayName: 'Verify doc.go'
+    workingDirectory: '${{parameters.GoWorkspace}}'
 
   - script: |
       echo scanning copyright headers in $(pwd)

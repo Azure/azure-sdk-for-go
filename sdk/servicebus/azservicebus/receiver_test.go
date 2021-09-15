@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"os"
 	"sort"
 	"testing"
 	"time"
@@ -17,7 +16,7 @@ import (
 )
 
 func TestReceiver(t *testing.T) {
-	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
+	cs := getConnectionString(t)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*5)
 	defer cancel()

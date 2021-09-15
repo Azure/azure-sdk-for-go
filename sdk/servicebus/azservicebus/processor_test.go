@@ -16,13 +16,22 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func getConnectionString(t *testing.T) string {
+	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
+
+	if cs == "" {
+		t.Skip()
+	}
+
+	return cs
+}
+
 // createQueue creates a queue using a subset of entries in 'queueDescription':
 // - EnablePartitioning
 // - RequiresSession
 func createQueue(t *testing.T, connectionString string, queueDescription *internal.QueueDescription) (string, func()) {
 	nanoSeconds := time.Now().UnixNano()
 	queueName := fmt.Sprintf("queue-%X", nanoSeconds)
-
 	ns, err := internal.NewNamespace(internal.NamespaceWithConnectionString(connectionString))
 	require.NoError(t, err)
 
@@ -51,7 +60,7 @@ func createQueue(t *testing.T, connectionString string, queueDescription *intern
 }
 
 func TestProcessor(t *testing.T) {
-	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
+	cs := getConnectionString(t)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*5)
 	defer cancel()

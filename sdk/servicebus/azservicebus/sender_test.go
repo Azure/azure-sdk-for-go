@@ -2,7 +2,6 @@ package azservicebus
 
 import (
 	"context"
-	"os"
 	"sort"
 	"testing"
 
@@ -12,7 +11,7 @@ import (
 )
 
 func TestSender(t *testing.T) {
-	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
+	cs := getConnectionString(t)
 
 	serviceBusClient, err := NewClient(WithConnectionString(cs))
 	require.NoError(t, err)

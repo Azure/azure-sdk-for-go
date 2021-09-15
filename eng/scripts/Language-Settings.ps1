@@ -1,82 +1,126 @@
 $Language = "go"
 $packagePattern = "go.mod"
-# rewrite from ChangeLog-Operations.ps1 used in Get-ChangeLogEntriesFromContent for go uses vx.x.x as version number
-$RELEASE_TITLE_REGEX = "(?<releaseNoteTitle>^\#+\s+(?<version>v$([AzureEngSemanticVersion]::SEMVER_REGEX))(\s+(?<releaseStatus>\(.+\))))"
+$LanguageDisplayName = "go"
+
+# get version from specific files (*constants.go, *version.go)
+function Get-GoModuleVersionInfo ($modPath)
+{
+  $VERSION_LINE_REGEX = ".+\s*=\s*`".*v(?<version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
+
+  $versionFiles = Get-ChildItem -Recurse -Path $modPath -Filter *.go
+
+  # for each version file, use regex to search go version num
+  foreach ($versionFile in $versionFiles)
+  {
+    # limit the search to constant and version file
+    if (!$versionFile.Name.Contains("constant") -and !$versionFile.Name.Contains("version")) {
+      continue
+    }
+    $content = Get-Content $versionFile -Raw
+    # finding where the version number are
+    if ($content -match $VERSION_LINE_REGEX) {
+        return "$($matches["version"])", $versionFile
+    }
+  }
+
+  LogWarning "Unable to find version for $modPath"
+  return $null
+}
+
+function Get-GoModuleProperties($goModPath)
+{
+    if ($goModPath -match "(?<modPath>sdk[\\/](?:(?<modGroup>[^\\/]+)[\\/])?(?<modName>[^\\/]+$))")
+    {
+      $modPath = $matches["modPath"] -replace "\\", "/"
+      $modName = $matches["modName"] # We may need to start readong this from the go.mod file if the path and mod config start to differ
+      $modGroup = $matches["modGroup"]
+      $sdkType = "client"
+      if ($modName.StartsWith("arm")) { $sdkType = "mgmt" }
+
+      $modVersion, $versionFile = Get-GoModuleVersionInfo $goModPath
+
+      if (!$modVersion) {
+        return $null
+      }
+
+      $pkgProp = [PackageProps]::new($modPath, $modVersion, $goModPath, $modGroup)
+      $pkgProp.IsNewSdk = $true
+      $pkgProp.SdkType = $sdkType
+
+      $pkgProp | Add-Member -NotePropertyName "VersionFile" -NotePropertyValue $versionFile
+      $pkgProp | Add-Member -NotePropertyName "ModuleName" -NotePropertyValue $modName
+
+      return $pkgProp
+    }
+    return $null
+}
 
 # rewrite from artifact-metadata-parsing.ps1 used in RetrievePackages for fetch go single module info
-function Get-go-PackageInfoFromPackageFile ($pkg, $workingDirectory)
+function Get-go-PackageInfoFromPackageFile($pkg, $workingDirectory)
 {
-    $workFolder = $pkg.Directory
     $releaseNotes = ""
+    $packageProperties = Get-GoModuleProperties $pkg.Directory
 
-    if ($workFolder -match "sdk[\/|\\]((?<repopath>(?<service>.*?)[\/|\\])?(?<arm>arm)?(?<pkgname>.*))")
+    if ($packageProperties.ChangeLogPath -and $packageProperties.Version)
     {
-        if ($matches["arm"])
-        {
-            $packageName = "arm" + $matches["pkgname"]
-            $rpName = $matches["service"]
-            $pkgId = "sdk/$rpName/$packageName"
-        }
-        else
-        {
-            $packageName = $matches["pkgname"]
-            $pkgId = "sdk/$packageName"
-        }
-    }
-
-    $pkgVersion = Get-Version $workFolder
-
-    $changeLogLoc = @(Get-ChildItem -Path $workFolder -Recurse -Include "CHANGELOG.md")[0]
-    if ($changeLogLoc)
-    {
-        $releaseNotes = Get-ChangeLogEntryAsString -ChangeLogLocation $changeLogLoc -VersionString v$pkgVersion
+      $releaseNotes = Get-ChangeLogEntryAsString -ChangeLogLocation $packageProperties.ChangeLogPath `
+        -VersionString $packageProperties.Version
     }
 
     $resultObj = New-Object PSObject -Property @{
-        PackageId      = $pkgId
-        PackageVersion = $pkgVersion
-        ReleaseTag     = "$pkgId/v$pkgVersion"
-        Deployable     = $true
-        ReleaseNotes   = $releaseNotes
+      PackageId      = $packageProperties.Name
+      PackageVersion = $packageProperties.Version
+      ReleaseTag     = "$($packageProperties.Name)/v$($packageProperties.Version)"
+      Deployable     = $true
+      ReleaseNotes   = $releaseNotes
+
     }
 
     return $resultObj
 }
 
-# get version from specific files (*constants.go, *version.go)
-function Get-Version ($pkgPath)
+function Get-AllPackageInfoFromRepo ($serviceDirectory, $pkgDirectory)
 {
-    # find any file with suffix
-    $versionFiles = @()
-    $version_file_suffixs = "*constants.go", "*version.go"
-    foreach ($versionFileSuffix in $version_file_suffixs)
-    {
-        Get-ChildItem -Recurse -Path $pkgPath -Filter $versionFileSuffix | ForEach-Object {
-            Write-Host "Adding $_ to list of version files"
-            $versionFiles += $_
-        }
-    }
-    
-    # for each version file, use regex to search go version num
-    $go_version_regex = ".+\s*=\s*`".*v?(?<version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
-    foreach ($versionFile in $versionFiles)
-    {
-        try
-        {
-            $content = Get-Content $versionFile -Raw
-            # finding where the version number are
-            if ($content -match $go_version_regex)
-            {
-                return $matches["version"]
-            }
-        }
-        catch
-        {
-            Write-Error "Error parsing version."
-            Write-Error $_
-        }
-    }
+  $allPackageProps = @()
+  $searchPath = Join-Path $RepoRoot "sdk"
+  if ($serviceDirectory) {
+    $searchPath = Join-Path $searchPath $serviceDirectory
+  }
 
-    Write-Host "Cannot find release version."
-    exit 1
+  if ($pkgDirectory) {
+    $searchPath = Join-Path $searchPath $pkgDirectory
+  }
+
+  $pkgFiles = Get-ChildItem -Path $searchPath -Include "go.mod" -Recurse
+
+  foreach ($pkgFile in $pkgFiles)
+  {
+    $modPropertes = Get-GoModuleProperties $pkgFile.DirectoryName
+
+    if ($modPropertes) {
+      $allPackageProps += $modPropertes
+    }
+  }
+  return $allPackageProps
+}
+
+function SetPackageVersion ($PackageName, $Version, $ReleaseDate, $PackageProperties)
+{
+  if(!$ReleaseDate) {
+    $ReleaseDate = Get-Date -Format "yyyy-MM-dd"
+  }
+
+  if (!$PackageProperties) {
+    $PackageProperties = Get-PkgProperties -PackageName $PackageName
+  }
+
+  # Update version in version file.
+  $versionFileContent = Get-Content -Path $PackageProperties.VersionFile -Raw
+  $newVersionFileContent = $versionFileContent -replace $PackageProperties.Version, $Version
+  $newVersionFileContent | Set-Content -Path $PackageProperties.VersionFile -NoNewline
+
+  # Update content in change log
+  & "${EngCommonScriptsDir}/Update-ChangeLog.ps1" -Version $Version `
+      -ChangelogPath $PackageProperties.ChangeLogPath -Unreleased $False `
+      -ReplaceLatestEntryTitle $True -ReleaseDate $ReleaseDate
 }

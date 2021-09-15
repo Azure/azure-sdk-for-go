@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,44 +12,47 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // VirtualApplianceSKUsClient contains the methods for the VirtualApplianceSKUs group.
 // Don't use this type directly, use NewVirtualApplianceSKUsClient() instead.
 type VirtualApplianceSKUsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewVirtualApplianceSKUsClient creates a new instance of VirtualApplianceSKUsClient with the specified values.
-func NewVirtualApplianceSKUsClient(con *armcore.Connection, subscriptionID string) *VirtualApplianceSKUsClient {
-	return &VirtualApplianceSKUsClient{con: con, subscriptionID: subscriptionID}
+func NewVirtualApplianceSKUsClient(con *arm.Connection, subscriptionID string) *VirtualApplianceSKUsClient {
+	return &VirtualApplianceSKUsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Retrieves a single available sku for network virtual appliance.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualApplianceSKUsClient) Get(ctx context.Context, skuName string, options *VirtualApplianceSKUsGetOptions) (NetworkVirtualApplianceSKUResponse, error) {
+func (client *VirtualApplianceSKUsClient) Get(ctx context.Context, skuName string, options *VirtualApplianceSKUsGetOptions) (VirtualApplianceSKUsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, skuName, options)
 	if err != nil {
-		return NetworkVirtualApplianceSKUResponse{}, err
+		return VirtualApplianceSKUsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return NetworkVirtualApplianceSKUResponse{}, err
+		return VirtualApplianceSKUsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return NetworkVirtualApplianceSKUResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return VirtualApplianceSKUsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VirtualApplianceSKUsClient) getCreateRequest(ctx context.Context, skuName string, options *VirtualApplianceSKUsGetOptions) (*azcore.Request, error) {
+func (client *VirtualApplianceSKUsClient) getCreateRequest(ctx context.Context, skuName string, options *VirtualApplianceSKUsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkVirtualApplianceSkus/{skuName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -58,94 +62,89 @@ func (client *VirtualApplianceSKUsClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter skuName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{skuName}", url.PathEscape(skuName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualApplianceSKUsClient) getHandleResponse(resp *azcore.Response) (NetworkVirtualApplianceSKUResponse, error) {
-	var val *NetworkVirtualApplianceSKU
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return NetworkVirtualApplianceSKUResponse{}, err
+func (client *VirtualApplianceSKUsClient) getHandleResponse(resp *http.Response) (VirtualApplianceSKUsGetResponse, error) {
+	result := VirtualApplianceSKUsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkVirtualApplianceSKU); err != nil {
+		return VirtualApplianceSKUsGetResponse{}, err
 	}
-	return NetworkVirtualApplianceSKUResponse{RawResponse: resp.Response, NetworkVirtualApplianceSKU: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *VirtualApplianceSKUsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualApplianceSKUsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - List all SKUs available for a virtual appliance.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualApplianceSKUsClient) List(options *VirtualApplianceSKUsListOptions) NetworkVirtualApplianceSKUListResultPager {
-	return &networkVirtualApplianceSKUListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *VirtualApplianceSKUsClient) List(options *VirtualApplianceSKUsListOptions) *VirtualApplianceSKUsListPager {
+	return &VirtualApplianceSKUsListPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp NetworkVirtualApplianceSKUListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.NetworkVirtualApplianceSKUListResult.NextLink)
+		advancer: func(ctx context.Context, resp VirtualApplianceSKUsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.NetworkVirtualApplianceSKUListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *VirtualApplianceSKUsClient) listCreateRequest(ctx context.Context, options *VirtualApplianceSKUsListOptions) (*azcore.Request, error) {
+func (client *VirtualApplianceSKUsClient) listCreateRequest(ctx context.Context, options *VirtualApplianceSKUsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkVirtualApplianceSkus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualApplianceSKUsClient) listHandleResponse(resp *azcore.Response) (NetworkVirtualApplianceSKUListResultResponse, error) {
-	var val *NetworkVirtualApplianceSKUListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return NetworkVirtualApplianceSKUListResultResponse{}, err
+func (client *VirtualApplianceSKUsClient) listHandleResponse(resp *http.Response) (VirtualApplianceSKUsListResponse, error) {
+	result := VirtualApplianceSKUsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkVirtualApplianceSKUListResult); err != nil {
+		return VirtualApplianceSKUsListResponse{}, err
 	}
-	return NetworkVirtualApplianceSKUListResultResponse{RawResponse: resp.Response, NetworkVirtualApplianceSKUListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *VirtualApplianceSKUsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualApplianceSKUsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

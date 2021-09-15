@@ -4,14 +4,18 @@
 package azidentity
 
 import (
+	"bytes"
 	"context"
+	"errors"
+	"io"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -28,6 +32,26 @@ func clearEnvVars(envVars ...string) {
 		_ = os.Setenv(ev, "")
 	}
 }
+
+// A simple fake IMDS. Similar to mock.Server but doesn't wrap httptest.Server. That's
+// important because IMDS is at 169.254.169.254, not httptest.Server's default 127.0.0.1.
+type mockIMDS struct {
+	resp []http.Response
+}
+
+func newMockImds(responses ...http.Response) (m *mockIMDS) {
+	return &mockIMDS{resp: responses}
+}
+
+func (m *mockIMDS) Do(req *http.Request) (*http.Response, error) {
+	if len(m.resp) > 0 {
+		resp := m.resp[0]
+		m.resp = m.resp[1:]
+		return &resp, nil
+	}
+	panic("no more responses")
+}
+
 func TestManagedIdentityCredential_GetTokenInAzureArcLive(t *testing.T) {
 	if len(os.Getenv(arcIMDSEndpoint)) == 0 {
 		t.Skip()
@@ -36,7 +60,7 @@ func TestManagedIdentityCredential_GetTokenInAzureArcLive(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err != nil {
 		t.Fatalf("Received an error when attempting to retrieve a token")
 	}
@@ -50,7 +74,7 @@ func TestManagedIdentityCredential_GetTokenInCloudShellLive(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err != nil {
 		t.Fatalf("Received an error when attempting to retrieve a token")
 	}
@@ -69,7 +93,7 @@ func TestManagedIdentityCredential_GetTokenInCloudShellMock(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err != nil {
 		t.Fatalf("Received an error when attempting to retrieve a token")
 	}
@@ -88,7 +112,7 @@ func TestManagedIdentityCredential_GetTokenInCloudShellMockFail(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
@@ -108,7 +132,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20170901Mock_windows(t *
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	tk, err := msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	tk, err := msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err != nil {
 		t.Fatalf("Received an error when attempting to retrieve a token")
 	}
@@ -134,7 +158,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20170901Mock_linux(t *te
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	tk, err := msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	tk, err := msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err != nil {
 		t.Fatalf("Received an error when attempting to retrieve a token")
 	}
@@ -160,7 +184,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20190801Mock_windows(t *
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	tk, err := msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	tk, err := msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err != nil {
 		t.Fatalf("Received an error when attempting to retrieve a token")
 	}
@@ -186,7 +210,7 @@ func TestManagedIdentityCredential_GetTokenInAppServiceV20190801Mock_linux(t *te
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	tk, err := msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	tk, err := msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err != nil {
 		t.Fatalf("Received an error when attempting to retrieve a token")
 	}
@@ -217,7 +241,7 @@ func TestManagedIdentityCredential_GetTokenInAzureFunctions_linux(t *testing.T) 
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	tk, err := msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	tk, err := msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err != nil {
 		t.Fatalf("Received an error when attempting to retrieve a token")
 	}
@@ -244,10 +268,10 @@ func TestManagedIdentityCredential_CreateAppServiceAuthRequestV20190801(t *testi
 	if err != nil {
 		t.Fatal(err)
 	}
-	if req.Request.Header.Get("X-IDENTITY-HEADER") != "header" {
+	if req.Raw().Header.Get("X-IDENTITY-HEADER") != "header" {
 		t.Fatalf("Unexpected value for secret header")
 	}
-	reqQueryParams, err := url.ParseQuery(req.URL.RawQuery)
+	reqQueryParams, err := url.ParseQuery(req.Raw().URL.RawQuery)
 	if err != nil {
 		t.Fatalf("Unable to parse App Service request query params: %v", err)
 	}
@@ -277,10 +301,10 @@ func TestManagedIdentityCredential_CreateAppServiceAuthRequestV20170901(t *testi
 	if err != nil {
 		t.Fatal(err)
 	}
-	if req.Request.Header.Get("secret") != "secret" {
+	if req.Raw().Header.Get("secret") != "secret" {
 		t.Fatalf("Unexpected value for secret header")
 	}
-	reqQueryParams, err := url.ParseQuery(req.URL.RawQuery)
+	reqQueryParams, err := url.ParseQuery(req.Raw().URL.RawQuery)
 	if err != nil {
 		t.Fatalf("Unable to parse App Service request query params: %v", err)
 	}
@@ -309,7 +333,7 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnStringInt(t *testin
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err != nil {
 		t.Fatalf("Received an error when attempting to retrieve a token")
 	}
@@ -329,40 +353,36 @@ func TestManagedIdentityCredential_GetTokenInAppServiceMockFail(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
 }
 
-// func TestManagedIdentityCredential_GetTokenIMDSMock(t *testing.T) {
-// 	timeout := time.After(5 * time.Second)
-// 	done := make(chan bool)
-// 	go func() {
-// 		err := resetEnvironmentVarsForTest()
-// 		if err != nil {
-// 			t.Fatalf("Unable to set environment variables")
-// 		}
-// 		srv, close := mock.NewServer()
-// 		defer close()
-// 		srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-//		options := DefaultManagedIdentityCredentialOptions()
-//		options.HTTPClient = srv
-// 		msiCred := NewManagedIdentityCredential("", &options)
-// 		_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
-// 		if err == nil {
-// 			t.Fatalf("Cannot run IMDS test in this environment")
-// 		}
-// 		time.Sleep(550 * time.Millisecond)
-// 		done <- true
-// 	}()
-
-// 	select {
-// 	case <-timeout:
-// 		t.Fatal("Test didn't finish in time")
-// 	case <-done:
-// 	}
-// }
+func TestManagedIdentityCredential_GetTokenIMDS400(t *testing.T) {
+	resetEnvironmentVarsForTest()
+	options := ManagedIdentityCredentialOptions{}
+	res1 := http.Response{
+		StatusCode: http.StatusBadRequest,
+		Header:     http.Header{},
+		Body:       io.NopCloser(bytes.NewBufferString("")),
+	}
+	res2 := res1
+	options.HTTPClient = newMockImds(res1, res2)
+	cred, err := NewManagedIdentityCredential("", &options)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	// cred should return CredentialUnavailableError when IMDS responds 400 to a token request.
+	// Also, it shouldn't send another token request (mockIMDS will appropriately panic if it does).
+	var expected *CredentialUnavailableError
+	for i := 0; i < 3; i++ {
+		_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
+		if !errors.As(err, &expected) {
+			t.Fatalf("Expected %T, got %T", expected, err)
+		}
+	}
+}
 
 func TestManagedIdentityCredential_NewManagedIdentityCredentialFail(t *testing.T) {
 	resetEnvironmentVarsForTest()
@@ -377,7 +397,7 @@ func TestManagedIdentityCredential_NewManagedIdentityCredentialFail(t *testing.T
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
@@ -397,7 +417,7 @@ func TestBearerPolicy_ManagedIdentityCredential(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	pipeline := defaultTestPipeline(srv, cred, msiScope)
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -420,7 +440,7 @@ func TestManagedIdentityCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err == nil {
 		t.Fatalf("Expected a JSON marshal error but received nil")
 	}
@@ -440,10 +460,10 @@ func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if req.Request.Header.Get(headerMetadata) != "true" {
+	if req.Raw().Header.Get(headerMetadata) != "true" {
 		t.Fatalf("Unexpected value for Content-Type header")
 	}
-	reqQueryParams, err := url.ParseQuery(req.URL.RawQuery)
+	reqQueryParams, err := url.ParseQuery(req.Raw().URL.RawQuery)
 	if err != nil {
 		t.Fatalf("Unable to parse IMDS query params: %v", err)
 	}
@@ -456,10 +476,10 @@ func TestManagedIdentityCredential_CreateIMDSAuthRequest(t *testing.T) {
 	if reqQueryParams["client_id"][0] != clientID {
 		t.Fatalf("Unexpected client ID. Expected: %s, Received: %s", clientID, reqQueryParams["client_id"][0])
 	}
-	if u := req.Request.URL.String(); !strings.HasPrefix(u, imdsEndpoint) {
+	if u := req.Raw().URL.String(); !strings.HasPrefix(u, imdsEndpoint) {
 		t.Fatalf("Unexpected default authority host %s", u)
 	}
-	if req.Request.URL.Scheme != "http" {
+	if req.Raw().URL.Scheme != "http" {
 		t.Fatalf("Wrong request scheme")
 	}
 }
@@ -481,7 +501,7 @@ func TestManagedIdentityCredential_GetTokenEnvVar(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	at, err := msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	at, err := msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err != nil {
 		t.Fatalf("Received an error when attempting to retrieve a token")
 	}
@@ -503,12 +523,37 @@ func TestManagedIdentityCredential_GetTokenNilResource(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: nil})
+	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: nil})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
 	if err.Error() != "must specify a resource in order to authenticate" {
 		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+func TestManagedIdentityCredential_ScopesImmutable(t *testing.T) {
+	resetEnvironmentVarsForTest()
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(expiresOnIntResp)))
+	_ = os.Setenv(msiEndpoint, srv.URL())
+	defer clearEnvVars(msiEndpoint)
+	options := ManagedIdentityCredentialOptions{
+		HTTPClient: srv,
+	}
+	cred, err := NewManagedIdentityCredential("", &options)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	scope := "https://localhost/.default"
+	scopes := []string{scope}
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: scopes})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if scopes[0] != scope {
+		t.Fatalf("GetToken shouldn't mutate arguments")
 	}
 }
 
@@ -525,7 +570,7 @@ func TestManagedIdentityCredential_GetTokenMultipleResources(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{"resource1", "resource2"}})
+	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"resource1", "resource2"}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
@@ -549,7 +594,7 @@ func TestManagedIdentityCredential_UseResourceID(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	tk, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -574,10 +619,10 @@ func TestManagedIdentityCredential_ResourceID_AppService(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if req.Request.Header.Get("X-IDENTITY-HEADER") != "header" {
+	if req.Raw().Header.Get("X-IDENTITY-HEADER") != "header" {
 		t.Fatalf("Unexpected value for secret header")
 	}
-	reqQueryParams, err := url.ParseQuery(req.URL.RawQuery)
+	reqQueryParams, err := url.ParseQuery(req.Raw().URL.RawQuery)
 	if err != nil {
 		t.Fatalf("Unable to parse App Service request query params: %v", err)
 	}
@@ -607,7 +652,7 @@ func TestManagedIdentityCredential_ResourceID_IMDS(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	reqQueryParams, err := url.ParseQuery(req.URL.RawQuery)
+	reqQueryParams, err := url.ParseQuery(req.Raw().URL.RawQuery)
 	if err != nil {
 		t.Fatalf("Unable to parse App Service request query params: %v", err)
 	}
@@ -636,7 +681,7 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnInt(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err != nil {
 		t.Fatalf("Received an error when attempting to retrieve a token")
 	}
@@ -657,7 +702,7 @@ func TestManagedIdentityCredential_CreateAccessTokenExpiresOnFail(t *testing.T) 
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	_, err = msiCred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{msiScope}})
+	_, err = msiCred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 	if err == nil {
 		t.Fatalf("expected to receive an error but received none")
 	}

@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -759,6 +760,7 @@ type OperationUpdateContract = original.OperationUpdateContract
 type OperationUpdateContractProperties = original.OperationUpdateContractProperties
 type OperationsClient = original.OperationsClient
 type ParameterContract = original.ParameterContract
+type ParameterExampleContract = original.ParameterExampleContract
 type PipelineDiagnosticSettings = original.PipelineDiagnosticSettings
 type PolicyClient = original.PolicyClient
 type PolicyCollection = original.PolicyCollection

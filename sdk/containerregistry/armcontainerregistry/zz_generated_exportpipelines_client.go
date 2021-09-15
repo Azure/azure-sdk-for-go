@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,93 +11,68 @@ package armcontainerregistry
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ExportPipelinesClient contains the methods for the ExportPipelines group.
 // Don't use this type directly, use NewExportPipelinesClient() instead.
 type ExportPipelinesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewExportPipelinesClient creates a new instance of ExportPipelinesClient with the specified values.
-func NewExportPipelinesClient(con *armcore.Connection, subscriptionID string) *ExportPipelinesClient {
-	return &ExportPipelinesClient{con: con, subscriptionID: subscriptionID}
+func NewExportPipelinesClient(con *arm.Connection, subscriptionID string) *ExportPipelinesClient {
+	return &ExportPipelinesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreate - Creates an export pipeline for a container registry with the specified parameters.
 // If the operation fails it returns a generic error.
-func (client *ExportPipelinesClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, exportPipelineCreateParameters ExportPipeline, options *ExportPipelinesBeginCreateOptions) (ExportPipelinePollerResponse, error) {
+func (client *ExportPipelinesClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, exportPipelineCreateParameters ExportPipeline, options *ExportPipelinesBeginCreateOptions) (ExportPipelinesCreatePollerResponse, error) {
 	resp, err := client.create(ctx, resourceGroupName, registryName, exportPipelineName, exportPipelineCreateParameters, options)
 	if err != nil {
-		return ExportPipelinePollerResponse{}, err
+		return ExportPipelinesCreatePollerResponse{}, err
 	}
-	result := ExportPipelinePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ExportPipelinesClient.Create", "", resp, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return ExportPipelinePollerResponse{}, err
-	}
-	poller := &exportPipelinePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExportPipelineResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreate creates a new ExportPipelinePoller from the specified resume token.
-// token - The value must come from a previous call to ExportPipelinePoller.ResumeToken().
-func (client *ExportPipelinesClient) ResumeCreate(ctx context.Context, token string) (ExportPipelinePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ExportPipelinesClient.Create", token, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return ExportPipelinePollerResponse{}, err
-	}
-	poller := &exportPipelinePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return ExportPipelinePollerResponse{}, err
-	}
-	result := ExportPipelinePollerResponse{
+	result := ExportPipelinesCreatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (ExportPipelineResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ExportPipelinesClient.Create", "", resp, client.pl, client.createHandleError)
+	if err != nil {
+		return ExportPipelinesCreatePollerResponse{}, err
+	}
+	result.Poller = &ExportPipelinesCreatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates an export pipeline for a container registry with the specified parameters.
 // If the operation fails it returns a generic error.
-func (client *ExportPipelinesClient) create(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, exportPipelineCreateParameters ExportPipeline, options *ExportPipelinesBeginCreateOptions) (*azcore.Response, error) {
+func (client *ExportPipelinesClient) create(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, exportPipelineCreateParameters ExportPipeline, options *ExportPipelinesBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, exportPipelineName, exportPipelineCreateParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, client.createHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *ExportPipelinesClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, exportPipelineCreateParameters ExportPipeline, options *ExportPipelinesBeginCreateOptions) (*azcore.Request, error) {
+func (client *ExportPipelinesClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, exportPipelineCreateParameters ExportPipeline, options *ExportPipelinesBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/exportPipelines/{exportPipelineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -114,97 +90,68 @@ func (client *ExportPipelinesClient) createCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter exportPipelineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{exportPipelineName}", url.PathEscape(exportPipelineName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(exportPipelineCreateParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, exportPipelineCreateParameters)
 }
 
 // createHandleError handles the Create error response.
-func (client *ExportPipelinesClient) createHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ExportPipelinesClient) createHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginDelete - Deletes an export pipeline from a container registry.
 // If the operation fails it returns a generic error.
-func (client *ExportPipelinesClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, options *ExportPipelinesBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *ExportPipelinesClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, options *ExportPipelinesBeginDeleteOptions) (ExportPipelinesDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, exportPipelineName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return ExportPipelinesDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("ExportPipelinesClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *ExportPipelinesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("ExportPipelinesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := ExportPipelinesDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("ExportPipelinesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return ExportPipelinesDeletePollerResponse{}, err
+	}
+	result.Poller = &ExportPipelinesDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes an export pipeline from a container registry.
 // If the operation fails it returns a generic error.
-func (client *ExportPipelinesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, options *ExportPipelinesBeginDeleteOptions) (*azcore.Response, error) {
+func (client *ExportPipelinesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, options *ExportPipelinesBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, exportPipelineName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ExportPipelinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, options *ExportPipelinesBeginDeleteOptions) (*azcore.Request, error) {
+func (client *ExportPipelinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, options *ExportPipelinesBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/exportPipelines/{exportPipelineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -222,48 +169,47 @@ func (client *ExportPipelinesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter exportPipelineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{exportPipelineName}", url.PathEscape(exportPipelineName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *ExportPipelinesClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ExportPipelinesClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets the properties of the export pipeline.
 // If the operation fails it returns a generic error.
-func (client *ExportPipelinesClient) Get(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, options *ExportPipelinesGetOptions) (ExportPipelineResponse, error) {
+func (client *ExportPipelinesClient) Get(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, options *ExportPipelinesGetOptions) (ExportPipelinesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, exportPipelineName, options)
 	if err != nil {
-		return ExportPipelineResponse{}, err
+		return ExportPipelinesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ExportPipelineResponse{}, err
+		return ExportPipelinesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return ExportPipelineResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return ExportPipelinesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ExportPipelinesClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, options *ExportPipelinesGetOptions) (*azcore.Request, error) {
+func (client *ExportPipelinesClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, exportPipelineName string, options *ExportPipelinesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/exportPipelines/{exportPipelineName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -281,58 +227,54 @@ func (client *ExportPipelinesClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter exportPipelineName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{exportPipelineName}", url.PathEscape(exportPipelineName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExportPipelinesClient) getHandleResponse(resp *azcore.Response) (ExportPipelineResponse, error) {
-	var val *ExportPipeline
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ExportPipelineResponse{}, err
+func (client *ExportPipelinesClient) getHandleResponse(resp *http.Response) (ExportPipelinesGetResponse, error) {
+	result := ExportPipelinesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExportPipeline); err != nil {
+		return ExportPipelinesGetResponse{}, err
 	}
-	return ExportPipelineResponse{RawResponse: resp.Response, ExportPipeline: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *ExportPipelinesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ExportPipelinesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // List - Lists all export pipelines for the specified container registry.
 // If the operation fails it returns a generic error.
-func (client *ExportPipelinesClient) List(resourceGroupName string, registryName string, options *ExportPipelinesListOptions) ExportPipelineListResultPager {
-	return &exportPipelineListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *ExportPipelinesClient) List(resourceGroupName string, registryName string, options *ExportPipelinesListOptions) *ExportPipelinesListPager {
+	return &ExportPipelinesListPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, registryName, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp ExportPipelineListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ExportPipelineListResult.NextLink)
+		advancer: func(ctx context.Context, resp ExportPipelinesListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ExportPipelineListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *ExportPipelinesClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *ExportPipelinesListOptions) (*azcore.Request, error) {
+func (client *ExportPipelinesClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *ExportPipelinesListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/exportPipelines"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -346,35 +288,34 @@ func (client *ExportPipelinesClient) listCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ExportPipelinesClient) listHandleResponse(resp *azcore.Response) (ExportPipelineListResultResponse, error) {
-	var val *ExportPipelineListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ExportPipelineListResultResponse{}, err
+func (client *ExportPipelinesClient) listHandleResponse(resp *http.Response) (ExportPipelinesListResponse, error) {
+	result := ExportPipelinesListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExportPipelineListResult); err != nil {
+		return ExportPipelinesListResponse{}, err
 	}
-	return ExportPipelineListResultResponse{RawResponse: resp.Response, ExportPipelineListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *ExportPipelinesClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ExportPipelinesClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

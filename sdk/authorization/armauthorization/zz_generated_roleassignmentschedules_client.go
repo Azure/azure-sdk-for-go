@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,43 +12,46 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RoleAssignmentSchedulesClient contains the methods for the RoleAssignmentSchedules group.
 // Don't use this type directly, use NewRoleAssignmentSchedulesClient() instead.
 type RoleAssignmentSchedulesClient struct {
-	con *armcore.Connection
+	ep string
+	pl runtime.Pipeline
 }
 
 // NewRoleAssignmentSchedulesClient creates a new instance of RoleAssignmentSchedulesClient with the specified values.
-func NewRoleAssignmentSchedulesClient(con *armcore.Connection) *RoleAssignmentSchedulesClient {
-	return &RoleAssignmentSchedulesClient{con: con}
+func NewRoleAssignmentSchedulesClient(con *arm.Connection) *RoleAssignmentSchedulesClient {
+	return &RoleAssignmentSchedulesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
 }
 
 // Get - Get the specified role assignment schedule for a resource scope
 // If the operation fails it returns the *CloudError error type.
-func (client *RoleAssignmentSchedulesClient) Get(ctx context.Context, scope string, roleAssignmentScheduleName string, options *RoleAssignmentSchedulesGetOptions) (RoleAssignmentScheduleResponse, error) {
+func (client *RoleAssignmentSchedulesClient) Get(ctx context.Context, scope string, roleAssignmentScheduleName string, options *RoleAssignmentSchedulesGetOptions) (RoleAssignmentSchedulesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, roleAssignmentScheduleName, options)
 	if err != nil {
-		return RoleAssignmentScheduleResponse{}, err
+		return RoleAssignmentSchedulesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RoleAssignmentScheduleResponse{}, err
+		return RoleAssignmentSchedulesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return RoleAssignmentScheduleResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return RoleAssignmentSchedulesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RoleAssignmentSchedulesClient) getCreateRequest(ctx context.Context, scope string, roleAssignmentScheduleName string, options *RoleAssignmentSchedulesGetOptions) (*azcore.Request, error) {
+func (client *RoleAssignmentSchedulesClient) getCreateRequest(ctx context.Context, scope string, roleAssignmentScheduleName string, options *RoleAssignmentSchedulesGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignmentSchedules/{roleAssignmentScheduleName}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -57,97 +61,92 @@ func (client *RoleAssignmentSchedulesClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter roleAssignmentScheduleName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentScheduleName}", url.PathEscape(roleAssignmentScheduleName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-10-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RoleAssignmentSchedulesClient) getHandleResponse(resp *azcore.Response) (RoleAssignmentScheduleResponse, error) {
-	var val *RoleAssignmentSchedule
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RoleAssignmentScheduleResponse{}, err
+func (client *RoleAssignmentSchedulesClient) getHandleResponse(resp *http.Response) (RoleAssignmentSchedulesGetResponse, error) {
+	result := RoleAssignmentSchedulesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentSchedule); err != nil {
+		return RoleAssignmentSchedulesGetResponse{}, err
 	}
-	return RoleAssignmentScheduleResponse{RawResponse: resp.Response, RoleAssignmentSchedule: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *RoleAssignmentSchedulesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RoleAssignmentSchedulesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListForScope - Gets role assignment schedules for a resource scope.
 // If the operation fails it returns the *CloudError error type.
-func (client *RoleAssignmentSchedulesClient) ListForScope(scope string, options *RoleAssignmentSchedulesListForScopeOptions) RoleAssignmentScheduleListResultPager {
-	return &roleAssignmentScheduleListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *RoleAssignmentSchedulesClient) ListForScope(scope string, options *RoleAssignmentSchedulesListForScopeOptions) *RoleAssignmentSchedulesListForScopePager {
+	return &RoleAssignmentSchedulesListForScopePager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listForScopeCreateRequest(ctx, scope, options)
 		},
-		responder: client.listForScopeHandleResponse,
-		errorer:   client.listForScopeHandleError,
-		advancer: func(ctx context.Context, resp RoleAssignmentScheduleListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.RoleAssignmentScheduleListResult.NextLink)
+		advancer: func(ctx context.Context, resp RoleAssignmentSchedulesListForScopeResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.RoleAssignmentScheduleListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listForScopeCreateRequest creates the ListForScope request.
-func (client *RoleAssignmentSchedulesClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleAssignmentSchedulesListForScopeOptions) (*azcore.Request, error) {
+func (client *RoleAssignmentSchedulesClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleAssignmentSchedulesListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignmentSchedules"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
 	reqQP.Set("api-version", "2020-10-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listForScopeHandleResponse handles the ListForScope response.
-func (client *RoleAssignmentSchedulesClient) listForScopeHandleResponse(resp *azcore.Response) (RoleAssignmentScheduleListResultResponse, error) {
-	var val *RoleAssignmentScheduleListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RoleAssignmentScheduleListResultResponse{}, err
+func (client *RoleAssignmentSchedulesClient) listForScopeHandleResponse(resp *http.Response) (RoleAssignmentSchedulesListForScopeResponse, error) {
+	result := RoleAssignmentSchedulesListForScopeResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentScheduleListResult); err != nil {
+		return RoleAssignmentSchedulesListForScopeResponse{}, err
 	}
-	return RoleAssignmentScheduleListResultResponse{RawResponse: resp.Response, RoleAssignmentScheduleListResult: val}, nil
+	return result, nil
 }
 
 // listForScopeHandleError handles the ListForScope error response.
-func (client *RoleAssignmentSchedulesClient) listForScopeHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RoleAssignmentSchedulesClient) listForScopeHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

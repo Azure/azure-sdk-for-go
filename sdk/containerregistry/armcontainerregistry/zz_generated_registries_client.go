@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,151 +12,125 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RegistriesClient contains the methods for the Registries group.
 // Don't use this type directly, use NewRegistriesClient() instead.
 type RegistriesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewRegistriesClient creates a new instance of RegistriesClient with the specified values.
-func NewRegistriesClient(con *armcore.Connection, subscriptionID string) *RegistriesClient {
-	return &RegistriesClient{con: con, subscriptionID: subscriptionID}
+func NewRegistriesClient(con *arm.Connection, subscriptionID string) *RegistriesClient {
+	return &RegistriesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CheckNameAvailability - Checks whether the container registry name is available for use. The name must contain only alphanumeric characters, be globally
 // unique, and between 5 and 50 characters in length.
 // If the operation fails it returns a generic error.
-func (client *RegistriesClient) CheckNameAvailability(ctx context.Context, registryNameCheckRequest RegistryNameCheckRequest, options *RegistriesCheckNameAvailabilityOptions) (RegistryNameStatusResponse, error) {
+func (client *RegistriesClient) CheckNameAvailability(ctx context.Context, registryNameCheckRequest RegistryNameCheckRequest, options *RegistriesCheckNameAvailabilityOptions) (RegistriesCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, registryNameCheckRequest, options)
 	if err != nil {
-		return RegistryNameStatusResponse{}, err
+		return RegistriesCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RegistryNameStatusResponse{}, err
+		return RegistriesCheckNameAvailabilityResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return RegistryNameStatusResponse{}, client.checkNameAvailabilityHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return RegistriesCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *RegistriesClient) checkNameAvailabilityCreateRequest(ctx context.Context, registryNameCheckRequest RegistryNameCheckRequest, options *RegistriesCheckNameAvailabilityOptions) (*azcore.Request, error) {
+func (client *RegistriesClient) checkNameAvailabilityCreateRequest(ctx context.Context, registryNameCheckRequest RegistryNameCheckRequest, options *RegistriesCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(registryNameCheckRequest)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, registryNameCheckRequest)
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *RegistriesClient) checkNameAvailabilityHandleResponse(resp *azcore.Response) (RegistryNameStatusResponse, error) {
-	var val *RegistryNameStatus
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RegistryNameStatusResponse{}, err
-	}
-	return RegistryNameStatusResponse{RawResponse: resp.Response, RegistryNameStatus: val}, nil
-}
-
-// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *RegistriesClient) checkNameAvailabilityHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
-	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
-	}
-	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-}
-
-// BeginCreate - Creates a container registry with the specified parameters.
-// If the operation fails it returns a generic error.
-func (client *RegistriesClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, registry Registry, options *RegistriesBeginCreateOptions) (RegistryPollerResponse, error) {
-	resp, err := client.create(ctx, resourceGroupName, registryName, registry, options)
-	if err != nil {
-		return RegistryPollerResponse{}, err
-	}
-	result := RegistryPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("RegistriesClient.Create", "", resp, client.con.Pipeline(), client.createHandleError)
-	if err != nil {
-		return RegistryPollerResponse{}, err
-	}
-	poller := &registryPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RegistryResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+func (client *RegistriesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (RegistriesCheckNameAvailabilityResponse, error) {
+	result := RegistriesCheckNameAvailabilityResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryNameStatus); err != nil {
+		return RegistriesCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
-// ResumeCreate creates a new RegistryPoller from the specified resume token.
-// token - The value must come from a previous call to RegistryPoller.ResumeToken().
-func (client *RegistriesClient) ResumeCreate(ctx context.Context, token string) (RegistryPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("RegistriesClient.Create", token, client.con.Pipeline(), client.createHandleError)
+// checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
+func (client *RegistriesClient) checkNameAvailabilityHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return RegistryPollerResponse{}, err
+		return runtime.NewResponseError(err, resp)
 	}
-	poller := &registryPoller{
-		pt: pt,
+	if len(body) == 0 {
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	resp, err := poller.Poll(ctx)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
+}
+
+// BeginCreate - Creates a container registry with the specified parameters.
+// If the operation fails it returns a generic error.
+func (client *RegistriesClient) BeginCreate(ctx context.Context, resourceGroupName string, registryName string, registry Registry, options *RegistriesBeginCreateOptions) (RegistriesCreatePollerResponse, error) {
+	resp, err := client.create(ctx, resourceGroupName, registryName, registry, options)
 	if err != nil {
-		return RegistryPollerResponse{}, err
+		return RegistriesCreatePollerResponse{}, err
 	}
-	result := RegistryPollerResponse{
+	result := RegistriesCreatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RegistryResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("RegistriesClient.Create", "", resp, client.pl, client.createHandleError)
+	if err != nil {
+		return RegistriesCreatePollerResponse{}, err
+	}
+	result.Poller = &RegistriesCreatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Create - Creates a container registry with the specified parameters.
 // If the operation fails it returns a generic error.
-func (client *RegistriesClient) create(ctx context.Context, resourceGroupName string, registryName string, registry Registry, options *RegistriesBeginCreateOptions) (*azcore.Response, error) {
+func (client *RegistriesClient) create(ctx context.Context, resourceGroupName string, registryName string, registry Registry, options *RegistriesBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, registryName, registry, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, client.createHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *RegistriesClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, registry Registry, options *RegistriesBeginCreateOptions) (*azcore.Request, error) {
+func (client *RegistriesClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, registry Registry, options *RegistriesBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -169,97 +144,68 @@ func (client *RegistriesClient) createCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(registry)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, registry)
 }
 
 // createHandleError handles the Create error response.
-func (client *RegistriesClient) createHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RegistriesClient) createHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginDelete - Deletes a container registry.
 // If the operation fails it returns a generic error.
-func (client *RegistriesClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *RegistriesClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesBeginDeleteOptions) (RegistriesDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return RegistriesDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("RegistriesClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *RegistriesClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("RegistriesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := RegistriesDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("RegistriesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return RegistriesDeletePollerResponse{}, err
+	}
+	result.Poller = &RegistriesDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a container registry.
 // If the operation fails it returns a generic error.
-func (client *RegistriesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesBeginDeleteOptions) (*azcore.Response, error) {
+func (client *RegistriesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, registryName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RegistriesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesBeginDeleteOptions) (*azcore.Request, error) {
+func (client *RegistriesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -273,96 +219,67 @@ func (client *RegistriesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *RegistriesClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RegistriesClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginGenerateCredentials - Generate keys for a token of a specified container registry.
 // If the operation fails it returns a generic error.
-func (client *RegistriesClient) BeginGenerateCredentials(ctx context.Context, resourceGroupName string, registryName string, generateCredentialsParameters GenerateCredentialsParameters, options *RegistriesBeginGenerateCredentialsOptions) (GenerateCredentialsResultPollerResponse, error) {
+func (client *RegistriesClient) BeginGenerateCredentials(ctx context.Context, resourceGroupName string, registryName string, generateCredentialsParameters GenerateCredentialsParameters, options *RegistriesBeginGenerateCredentialsOptions) (RegistriesGenerateCredentialsPollerResponse, error) {
 	resp, err := client.generateCredentials(ctx, resourceGroupName, registryName, generateCredentialsParameters, options)
 	if err != nil {
-		return GenerateCredentialsResultPollerResponse{}, err
+		return RegistriesGenerateCredentialsPollerResponse{}, err
 	}
-	result := GenerateCredentialsResultPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("RegistriesClient.GenerateCredentials", "", resp, client.con.Pipeline(), client.generateCredentialsHandleError)
-	if err != nil {
-		return GenerateCredentialsResultPollerResponse{}, err
-	}
-	poller := &generateCredentialsResultPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenerateCredentialsResultResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeGenerateCredentials creates a new GenerateCredentialsResultPoller from the specified resume token.
-// token - The value must come from a previous call to GenerateCredentialsResultPoller.ResumeToken().
-func (client *RegistriesClient) ResumeGenerateCredentials(ctx context.Context, token string) (GenerateCredentialsResultPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("RegistriesClient.GenerateCredentials", token, client.con.Pipeline(), client.generateCredentialsHandleError)
-	if err != nil {
-		return GenerateCredentialsResultPollerResponse{}, err
-	}
-	poller := &generateCredentialsResultPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return GenerateCredentialsResultPollerResponse{}, err
-	}
-	result := GenerateCredentialsResultPollerResponse{
+	result := RegistriesGenerateCredentialsPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GenerateCredentialsResultResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("RegistriesClient.GenerateCredentials", "", resp, client.pl, client.generateCredentialsHandleError)
+	if err != nil {
+		return RegistriesGenerateCredentialsPollerResponse{}, err
+	}
+	result.Poller = &RegistriesGenerateCredentialsPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // GenerateCredentials - Generate keys for a token of a specified container registry.
 // If the operation fails it returns a generic error.
-func (client *RegistriesClient) generateCredentials(ctx context.Context, resourceGroupName string, registryName string, generateCredentialsParameters GenerateCredentialsParameters, options *RegistriesBeginGenerateCredentialsOptions) (*azcore.Response, error) {
+func (client *RegistriesClient) generateCredentials(ctx context.Context, resourceGroupName string, registryName string, generateCredentialsParameters GenerateCredentialsParameters, options *RegistriesBeginGenerateCredentialsOptions) (*http.Response, error) {
 	req, err := client.generateCredentialsCreateRequest(ctx, resourceGroupName, registryName, generateCredentialsParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.generateCredentialsHandleError(resp)
 	}
 	return resp, nil
 }
 
 // generateCredentialsCreateRequest creates the GenerateCredentials request.
-func (client *RegistriesClient) generateCredentialsCreateRequest(ctx context.Context, resourceGroupName string, registryName string, generateCredentialsParameters GenerateCredentialsParameters, options *RegistriesBeginGenerateCredentialsOptions) (*azcore.Request, error) {
+func (client *RegistriesClient) generateCredentialsCreateRequest(ctx context.Context, resourceGroupName string, registryName string, generateCredentialsParameters GenerateCredentialsParameters, options *RegistriesBeginGenerateCredentialsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/generateCredentials"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -376,49 +293,48 @@ func (client *RegistriesClient) generateCredentialsCreateRequest(ctx context.Con
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(generateCredentialsParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, generateCredentialsParameters)
 }
 
 // generateCredentialsHandleError handles the GenerateCredentials error response.
-func (client *RegistriesClient) generateCredentialsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RegistriesClient) generateCredentialsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets the properties of the specified container registry.
 // If the operation fails it returns a generic error.
-func (client *RegistriesClient) Get(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesGetOptions) (RegistryResponse, error) {
+func (client *RegistriesClient) Get(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesGetOptions) (RegistriesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, options)
 	if err != nil {
-		return RegistryResponse{}, err
+		return RegistriesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RegistryResponse{}, err
+		return RegistriesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return RegistryResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return RegistriesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RegistriesClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesGetOptions) (*azcore.Request, error) {
+func (client *RegistriesClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -432,58 +348,57 @@ func (client *RegistriesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RegistriesClient) getHandleResponse(resp *azcore.Response) (RegistryResponse, error) {
-	var val *Registry
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RegistryResponse{}, err
+func (client *RegistriesClient) getHandleResponse(resp *http.Response) (RegistriesGetResponse, error) {
+	result := RegistriesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Registry); err != nil {
+		return RegistriesGetResponse{}, err
 	}
-	return RegistryResponse{RawResponse: resp.Response, Registry: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *RegistriesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RegistriesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // GetBuildSourceUploadURL - Get the upload location for the user to be able to upload the source.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *RegistriesClient) GetBuildSourceUploadURL(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesGetBuildSourceUploadURLOptions) (SourceUploadDefinitionResponse, error) {
+func (client *RegistriesClient) GetBuildSourceUploadURL(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesGetBuildSourceUploadURLOptions) (RegistriesGetBuildSourceUploadURLResponse, error) {
 	req, err := client.getBuildSourceUploadURLCreateRequest(ctx, resourceGroupName, registryName, options)
 	if err != nil {
-		return SourceUploadDefinitionResponse{}, err
+		return RegistriesGetBuildSourceUploadURLResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SourceUploadDefinitionResponse{}, err
+		return RegistriesGetBuildSourceUploadURLResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return SourceUploadDefinitionResponse{}, client.getBuildSourceUploadURLHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return RegistriesGetBuildSourceUploadURLResponse{}, client.getBuildSourceUploadURLHandleError(resp)
 	}
 	return client.getBuildSourceUploadURLHandleResponse(resp)
 }
 
 // getBuildSourceUploadURLCreateRequest creates the GetBuildSourceUploadURL request.
-func (client *RegistriesClient) getBuildSourceUploadURLCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesGetBuildSourceUploadURLOptions) (*azcore.Request, error) {
+func (client *RegistriesClient) getBuildSourceUploadURLCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesGetBuildSourceUploadURLOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/listBuildSourceUploadUrl"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -497,107 +412,78 @@ func (client *RegistriesClient) getBuildSourceUploadURLCreateRequest(ctx context
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getBuildSourceUploadURLHandleResponse handles the GetBuildSourceUploadURL response.
-func (client *RegistriesClient) getBuildSourceUploadURLHandleResponse(resp *azcore.Response) (SourceUploadDefinitionResponse, error) {
-	var val *SourceUploadDefinition
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SourceUploadDefinitionResponse{}, err
-	}
-	return SourceUploadDefinitionResponse{RawResponse: resp.Response, SourceUploadDefinition: val}, nil
-}
-
-// getBuildSourceUploadURLHandleError handles the GetBuildSourceUploadURL error response.
-func (client *RegistriesClient) getBuildSourceUploadURLHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
-	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
-	}
-	return azcore.NewResponseError(&errType, resp.Response)
-}
-
-// BeginImportImage - Copies an image to this container registry from the specified container registry.
-// If the operation fails it returns a generic error.
-func (client *RegistriesClient) BeginImportImage(ctx context.Context, resourceGroupName string, registryName string, parameters ImportImageParameters, options *RegistriesBeginImportImageOptions) (HTTPPollerResponse, error) {
-	resp, err := client.importImage(ctx, resourceGroupName, registryName, parameters, options)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("RegistriesClient.ImportImage", "", resp, client.con.Pipeline(), client.importImageHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+func (client *RegistriesClient) getBuildSourceUploadURLHandleResponse(resp *http.Response) (RegistriesGetBuildSourceUploadURLResponse, error) {
+	result := RegistriesGetBuildSourceUploadURLResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SourceUploadDefinition); err != nil {
+		return RegistriesGetBuildSourceUploadURLResponse{}, err
 	}
 	return result, nil
 }
 
-// ResumeImportImage creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *RegistriesClient) ResumeImportImage(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("RegistriesClient.ImportImage", token, client.con.Pipeline(), client.importImageHandleError)
+// getBuildSourceUploadURLHandleError handles the GetBuildSourceUploadURL error response.
+func (client *RegistriesClient) getBuildSourceUploadURLHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return runtime.NewResponseError(err, resp)
 	}
-	poller := &httpPoller{
-		pt: pt,
+	errType := ErrorResponse{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	resp, err := poller.Poll(ctx)
+	return runtime.NewResponseError(&errType, resp)
+}
+
+// BeginImportImage - Copies an image to this container registry from the specified container registry.
+// If the operation fails it returns a generic error.
+func (client *RegistriesClient) BeginImportImage(ctx context.Context, resourceGroupName string, registryName string, parameters ImportImageParameters, options *RegistriesBeginImportImageOptions) (RegistriesImportImagePollerResponse, error) {
+	resp, err := client.importImage(ctx, resourceGroupName, registryName, parameters, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return RegistriesImportImagePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := RegistriesImportImagePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("RegistriesClient.ImportImage", "", resp, client.pl, client.importImageHandleError)
+	if err != nil {
+		return RegistriesImportImagePollerResponse{}, err
+	}
+	result.Poller = &RegistriesImportImagePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // ImportImage - Copies an image to this container registry from the specified container registry.
 // If the operation fails it returns a generic error.
-func (client *RegistriesClient) importImage(ctx context.Context, resourceGroupName string, registryName string, parameters ImportImageParameters, options *RegistriesBeginImportImageOptions) (*azcore.Response, error) {
+func (client *RegistriesClient) importImage(ctx context.Context, resourceGroupName string, registryName string, parameters ImportImageParameters, options *RegistriesBeginImportImageOptions) (*http.Response, error) {
 	req, err := client.importImageCreateRequest(ctx, resourceGroupName, registryName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.importImageHandleError(resp)
 	}
 	return resp, nil
 }
 
 // importImageCreateRequest creates the ImportImage request.
-func (client *RegistriesClient) importImageCreateRequest(ctx context.Context, resourceGroupName string, registryName string, parameters ImportImageParameters, options *RegistriesBeginImportImageOptions) (*azcore.Request, error) {
+func (client *RegistriesClient) importImageCreateRequest(ctx context.Context, resourceGroupName string, registryName string, parameters ImportImageParameters, options *RegistriesBeginImportImageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/importImage"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -611,105 +497,97 @@ func (client *RegistriesClient) importImageCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // importImageHandleError handles the ImportImage error response.
-func (client *RegistriesClient) importImageHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RegistriesClient) importImageHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // List - Lists all the container registries under the specified subscription.
 // If the operation fails it returns a generic error.
-func (client *RegistriesClient) List(options *RegistriesListOptions) RegistryListResultPager {
-	return &registryListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *RegistriesClient) List(options *RegistriesListOptions) *RegistriesListPager {
+	return &RegistriesListPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp RegistryListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.RegistryListResult.NextLink)
+		advancer: func(ctx context.Context, resp RegistriesListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.RegistryListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *RegistriesClient) listCreateRequest(ctx context.Context, options *RegistriesListOptions) (*azcore.Request, error) {
+func (client *RegistriesClient) listCreateRequest(ctx context.Context, options *RegistriesListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/registries"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RegistriesClient) listHandleResponse(resp *azcore.Response) (RegistryListResultResponse, error) {
-	var val *RegistryListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RegistryListResultResponse{}, err
+func (client *RegistriesClient) listHandleResponse(resp *http.Response) (RegistriesListResponse, error) {
+	result := RegistriesListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryListResult); err != nil {
+		return RegistriesListResponse{}, err
 	}
-	return RegistryListResultResponse{RawResponse: resp.Response, RegistryListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *RegistriesClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RegistriesClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByResourceGroup - Lists all the container registries under the specified resource group.
 // If the operation fails it returns a generic error.
-func (client *RegistriesClient) ListByResourceGroup(resourceGroupName string, options *RegistriesListByResourceGroupOptions) RegistryListResultPager {
-	return &registryListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *RegistriesClient) ListByResourceGroup(resourceGroupName string, options *RegistriesListByResourceGroupOptions) *RegistriesListByResourceGroupPager {
+	return &RegistriesListByResourceGroupPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listByResourceGroupHandleResponse,
-		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp RegistryListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.RegistryListResult.NextLink)
+		advancer: func(ctx context.Context, resp RegistriesListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.RegistryListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *RegistriesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *RegistriesListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *RegistriesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *RegistriesListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -719,58 +597,57 @@ func (client *RegistriesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *RegistriesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (RegistryListResultResponse, error) {
-	var val *RegistryListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RegistryListResultResponse{}, err
+func (client *RegistriesClient) listByResourceGroupHandleResponse(resp *http.Response) (RegistriesListByResourceGroupResponse, error) {
+	result := RegistriesListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryListResult); err != nil {
+		return RegistriesListByResourceGroupResponse{}, err
 	}
-	return RegistryListResultResponse{RawResponse: resp.Response, RegistryListResult: val}, nil
+	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *RegistriesClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RegistriesClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListCredentials - Lists the login credentials for the specified container registry.
 // If the operation fails it returns a generic error.
-func (client *RegistriesClient) ListCredentials(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesListCredentialsOptions) (RegistryListCredentialsResultResponse, error) {
+func (client *RegistriesClient) ListCredentials(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesListCredentialsOptions) (RegistriesListCredentialsResponse, error) {
 	req, err := client.listCredentialsCreateRequest(ctx, resourceGroupName, registryName, options)
 	if err != nil {
-		return RegistryListCredentialsResultResponse{}, err
+		return RegistriesListCredentialsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RegistryListCredentialsResultResponse{}, err
+		return RegistriesListCredentialsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return RegistryListCredentialsResultResponse{}, client.listCredentialsHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return RegistriesListCredentialsResponse{}, client.listCredentialsHandleError(resp)
 	}
 	return client.listCredentialsHandleResponse(resp)
 }
 
 // listCredentialsCreateRequest creates the ListCredentials request.
-func (client *RegistriesClient) listCredentialsCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesListCredentialsOptions) (*azcore.Request, error) {
+func (client *RegistriesClient) listCredentialsCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesListCredentialsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/listCredentials"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -784,58 +661,54 @@ func (client *RegistriesClient) listCredentialsCreateRequest(ctx context.Context
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listCredentialsHandleResponse handles the ListCredentials response.
-func (client *RegistriesClient) listCredentialsHandleResponse(resp *azcore.Response) (RegistryListCredentialsResultResponse, error) {
-	var val *RegistryListCredentialsResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RegistryListCredentialsResultResponse{}, err
+func (client *RegistriesClient) listCredentialsHandleResponse(resp *http.Response) (RegistriesListCredentialsResponse, error) {
+	result := RegistriesListCredentialsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryListCredentialsResult); err != nil {
+		return RegistriesListCredentialsResponse{}, err
 	}
-	return RegistryListCredentialsResultResponse{RawResponse: resp.Response, RegistryListCredentialsResult: val}, nil
+	return result, nil
 }
 
 // listCredentialsHandleError handles the ListCredentials error response.
-func (client *RegistriesClient) listCredentialsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RegistriesClient) listCredentialsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListPrivateLinkResources - Lists the private link resources for a container registry.
 // If the operation fails it returns a generic error.
-func (client *RegistriesClient) ListPrivateLinkResources(resourceGroupName string, registryName string, options *RegistriesListPrivateLinkResourcesOptions) PrivateLinkResourceListResultPager {
-	return &privateLinkResourceListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *RegistriesClient) ListPrivateLinkResources(resourceGroupName string, registryName string, options *RegistriesListPrivateLinkResourcesOptions) *RegistriesListPrivateLinkResourcesPager {
+	return &RegistriesListPrivateLinkResourcesPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listPrivateLinkResourcesCreateRequest(ctx, resourceGroupName, registryName, options)
 		},
-		responder: client.listPrivateLinkResourcesHandleResponse,
-		errorer:   client.listPrivateLinkResourcesHandleError,
-		advancer: func(ctx context.Context, resp PrivateLinkResourceListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkResourceListResult.NextLink)
+		advancer: func(ctx context.Context, resp RegistriesListPrivateLinkResourcesResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateLinkResourceListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listPrivateLinkResourcesCreateRequest creates the ListPrivateLinkResources request.
-func (client *RegistriesClient) listPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesListPrivateLinkResourcesOptions) (*azcore.Request, error) {
+func (client *RegistriesClient) listPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesListPrivateLinkResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -849,58 +722,57 @@ func (client *RegistriesClient) listPrivateLinkResourcesCreateRequest(ctx contex
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listPrivateLinkResourcesHandleResponse handles the ListPrivateLinkResources response.
-func (client *RegistriesClient) listPrivateLinkResourcesHandleResponse(resp *azcore.Response) (PrivateLinkResourceListResultResponse, error) {
-	var val *PrivateLinkResourceListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateLinkResourceListResultResponse{}, err
+func (client *RegistriesClient) listPrivateLinkResourcesHandleResponse(resp *http.Response) (RegistriesListPrivateLinkResourcesResponse, error) {
+	result := RegistriesListPrivateLinkResourcesResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
+		return RegistriesListPrivateLinkResourcesResponse{}, err
 	}
-	return PrivateLinkResourceListResultResponse{RawResponse: resp.Response, PrivateLinkResourceListResult: val}, nil
+	return result, nil
 }
 
 // listPrivateLinkResourcesHandleError handles the ListPrivateLinkResources error response.
-func (client *RegistriesClient) listPrivateLinkResourcesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RegistriesClient) listPrivateLinkResourcesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListUsages - Gets the quota usages for the specified container registry.
 // If the operation fails it returns a generic error.
-func (client *RegistriesClient) ListUsages(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesListUsagesOptions) (RegistryUsageListResultResponse, error) {
+func (client *RegistriesClient) ListUsages(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesListUsagesOptions) (RegistriesListUsagesResponse, error) {
 	req, err := client.listUsagesCreateRequest(ctx, resourceGroupName, registryName, options)
 	if err != nil {
-		return RegistryUsageListResultResponse{}, err
+		return RegistriesListUsagesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RegistryUsageListResultResponse{}, err
+		return RegistriesListUsagesResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return RegistryUsageListResultResponse{}, client.listUsagesHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return RegistriesListUsagesResponse{}, client.listUsagesHandleError(resp)
 	}
 	return client.listUsagesHandleResponse(resp)
 }
 
 // listUsagesCreateRequest creates the ListUsages request.
-func (client *RegistriesClient) listUsagesCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesListUsagesOptions) (*azcore.Request, error) {
+func (client *RegistriesClient) listUsagesCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesListUsagesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/listUsages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -914,58 +786,57 @@ func (client *RegistriesClient) listUsagesCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listUsagesHandleResponse handles the ListUsages response.
-func (client *RegistriesClient) listUsagesHandleResponse(resp *azcore.Response) (RegistryUsageListResultResponse, error) {
-	var val *RegistryUsageListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RegistryUsageListResultResponse{}, err
+func (client *RegistriesClient) listUsagesHandleResponse(resp *http.Response) (RegistriesListUsagesResponse, error) {
+	result := RegistriesListUsagesResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryUsageListResult); err != nil {
+		return RegistriesListUsagesResponse{}, err
 	}
-	return RegistryUsageListResultResponse{RawResponse: resp.Response, RegistryUsageListResult: val}, nil
+	return result, nil
 }
 
 // listUsagesHandleError handles the ListUsages error response.
-func (client *RegistriesClient) listUsagesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RegistriesClient) listUsagesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // RegenerateCredential - Regenerates one of the login credentials for the specified container registry.
 // If the operation fails it returns a generic error.
-func (client *RegistriesClient) RegenerateCredential(ctx context.Context, resourceGroupName string, registryName string, regenerateCredentialParameters RegenerateCredentialParameters, options *RegistriesRegenerateCredentialOptions) (RegistryListCredentialsResultResponse, error) {
+func (client *RegistriesClient) RegenerateCredential(ctx context.Context, resourceGroupName string, registryName string, regenerateCredentialParameters RegenerateCredentialParameters, options *RegistriesRegenerateCredentialOptions) (RegistriesRegenerateCredentialResponse, error) {
 	req, err := client.regenerateCredentialCreateRequest(ctx, resourceGroupName, registryName, regenerateCredentialParameters, options)
 	if err != nil {
-		return RegistryListCredentialsResultResponse{}, err
+		return RegistriesRegenerateCredentialResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RegistryListCredentialsResultResponse{}, err
+		return RegistriesRegenerateCredentialResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return RegistryListCredentialsResultResponse{}, client.regenerateCredentialHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return RegistriesRegenerateCredentialResponse{}, client.regenerateCredentialHandleError(resp)
 	}
 	return client.regenerateCredentialHandleResponse(resp)
 }
 
 // regenerateCredentialCreateRequest creates the RegenerateCredential request.
-func (client *RegistriesClient) regenerateCredentialCreateRequest(ctx context.Context, resourceGroupName string, registryName string, regenerateCredentialParameters RegenerateCredentialParameters, options *RegistriesRegenerateCredentialOptions) (*azcore.Request, error) {
+func (client *RegistriesClient) regenerateCredentialCreateRequest(ctx context.Context, resourceGroupName string, registryName string, regenerateCredentialParameters RegenerateCredentialParameters, options *RegistriesRegenerateCredentialOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/regenerateCredential"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -979,106 +850,77 @@ func (client *RegistriesClient) regenerateCredentialCreateRequest(ctx context.Co
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(regenerateCredentialParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, regenerateCredentialParameters)
 }
 
 // regenerateCredentialHandleResponse handles the RegenerateCredential response.
-func (client *RegistriesClient) regenerateCredentialHandleResponse(resp *azcore.Response) (RegistryListCredentialsResultResponse, error) {
-	var val *RegistryListCredentialsResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RegistryListCredentialsResultResponse{}, err
-	}
-	return RegistryListCredentialsResultResponse{RawResponse: resp.Response, RegistryListCredentialsResult: val}, nil
-}
-
-// regenerateCredentialHandleError handles the RegenerateCredential error response.
-func (client *RegistriesClient) regenerateCredentialHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
-	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
-	}
-	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-}
-
-// BeginScheduleRun - Schedules a new run based on the request parameters and add it to the run queue.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RegistriesClient) BeginScheduleRun(ctx context.Context, resourceGroupName string, registryName string, runRequest RunRequestClassification, options *RegistriesBeginScheduleRunOptions) (RunPollerResponse, error) {
-	resp, err := client.scheduleRun(ctx, resourceGroupName, registryName, runRequest, options)
-	if err != nil {
-		return RunPollerResponse{}, err
-	}
-	result := RunPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("RegistriesClient.ScheduleRun", "", resp, client.con.Pipeline(), client.scheduleRunHandleError)
-	if err != nil {
-		return RunPollerResponse{}, err
-	}
-	poller := &runPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RunResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+func (client *RegistriesClient) regenerateCredentialHandleResponse(resp *http.Response) (RegistriesRegenerateCredentialResponse, error) {
+	result := RegistriesRegenerateCredentialResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryListCredentialsResult); err != nil {
+		return RegistriesRegenerateCredentialResponse{}, err
 	}
 	return result, nil
 }
 
-// ResumeScheduleRun creates a new RunPoller from the specified resume token.
-// token - The value must come from a previous call to RunPoller.ResumeToken().
-func (client *RegistriesClient) ResumeScheduleRun(ctx context.Context, token string) (RunPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("RegistriesClient.ScheduleRun", token, client.con.Pipeline(), client.scheduleRunHandleError)
+// regenerateCredentialHandleError handles the RegenerateCredential error response.
+func (client *RegistriesClient) regenerateCredentialHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return RunPollerResponse{}, err
+		return runtime.NewResponseError(err, resp)
 	}
-	poller := &runPoller{
-		pt: pt,
+	if len(body) == 0 {
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	resp, err := poller.Poll(ctx)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
+}
+
+// BeginScheduleRun - Schedules a new run based on the request parameters and add it to the run queue.
+// If the operation fails it returns the *ErrorResponse error type.
+func (client *RegistriesClient) BeginScheduleRun(ctx context.Context, resourceGroupName string, registryName string, runRequest RunRequestClassification, options *RegistriesBeginScheduleRunOptions) (RegistriesScheduleRunPollerResponse, error) {
+	resp, err := client.scheduleRun(ctx, resourceGroupName, registryName, runRequest, options)
 	if err != nil {
-		return RunPollerResponse{}, err
+		return RegistriesScheduleRunPollerResponse{}, err
 	}
-	result := RunPollerResponse{
+	result := RegistriesScheduleRunPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RunResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("RegistriesClient.ScheduleRun", "", resp, client.pl, client.scheduleRunHandleError)
+	if err != nil {
+		return RegistriesScheduleRunPollerResponse{}, err
+	}
+	result.Poller = &RegistriesScheduleRunPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // ScheduleRun - Schedules a new run based on the request parameters and add it to the run queue.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *RegistriesClient) scheduleRun(ctx context.Context, resourceGroupName string, registryName string, runRequest RunRequestClassification, options *RegistriesBeginScheduleRunOptions) (*azcore.Response, error) {
+func (client *RegistriesClient) scheduleRun(ctx context.Context, resourceGroupName string, registryName string, runRequest RunRequestClassification, options *RegistriesBeginScheduleRunOptions) (*http.Response, error) {
 	req, err := client.scheduleRunCreateRequest(ctx, resourceGroupName, registryName, runRequest, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.scheduleRunHandleError(resp)
 	}
 	return resp, nil
 }
 
 // scheduleRunCreateRequest creates the ScheduleRun request.
-func (client *RegistriesClient) scheduleRunCreateRequest(ctx context.Context, resourceGroupName string, registryName string, runRequest RunRequestClassification, options *RegistriesBeginScheduleRunOptions) (*azcore.Request, error) {
+func (client *RegistriesClient) scheduleRunCreateRequest(ctx context.Context, resourceGroupName string, registryName string, runRequest RunRequestClassification, options *RegistriesBeginScheduleRunOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/scheduleRun"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1092,98 +934,69 @@ func (client *RegistriesClient) scheduleRunCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(runRequest)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, runRequest)
 }
 
 // scheduleRunHandleError handles the ScheduleRun error response.
-func (client *RegistriesClient) scheduleRunHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RegistriesClient) scheduleRunHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginUpdate - Updates a container registry with the specified parameters.
 // If the operation fails it returns a generic error.
-func (client *RegistriesClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, registryUpdateParameters RegistryUpdateParameters, options *RegistriesBeginUpdateOptions) (RegistryPollerResponse, error) {
+func (client *RegistriesClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, registryUpdateParameters RegistryUpdateParameters, options *RegistriesBeginUpdateOptions) (RegistriesUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, registryName, registryUpdateParameters, options)
 	if err != nil {
-		return RegistryPollerResponse{}, err
+		return RegistriesUpdatePollerResponse{}, err
 	}
-	result := RegistryPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("RegistriesClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return RegistryPollerResponse{}, err
-	}
-	poller := &registryPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RegistryResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdate creates a new RegistryPoller from the specified resume token.
-// token - The value must come from a previous call to RegistryPoller.ResumeToken().
-func (client *RegistriesClient) ResumeUpdate(ctx context.Context, token string) (RegistryPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("RegistriesClient.Update", token, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return RegistryPollerResponse{}, err
-	}
-	poller := &registryPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return RegistryPollerResponse{}, err
-	}
-	result := RegistryPollerResponse{
+	result := RegistriesUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RegistryResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("RegistriesClient.Update", "", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return RegistriesUpdatePollerResponse{}, err
+	}
+	result.Poller = &RegistriesUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates a container registry with the specified parameters.
 // If the operation fails it returns a generic error.
-func (client *RegistriesClient) update(ctx context.Context, resourceGroupName string, registryName string, registryUpdateParameters RegistryUpdateParameters, options *RegistriesBeginUpdateOptions) (*azcore.Response, error) {
+func (client *RegistriesClient) update(ctx context.Context, resourceGroupName string, registryName string, registryUpdateParameters RegistryUpdateParameters, options *RegistriesBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, registryUpdateParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *RegistriesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, registryUpdateParameters RegistryUpdateParameters, options *RegistriesBeginUpdateOptions) (*azcore.Request, error) {
+func (client *RegistriesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, registryUpdateParameters RegistryUpdateParameters, options *RegistriesBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1197,26 +1010,25 @@ func (client *RegistriesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(registryUpdateParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, registryUpdateParameters)
 }
 
 // updateHandleError handles the Update error response.
-func (client *RegistriesClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RegistriesClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

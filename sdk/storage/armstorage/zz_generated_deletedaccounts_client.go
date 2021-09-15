@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,44 +12,47 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DeletedAccountsClient contains the methods for the DeletedAccounts group.
 // Don't use this type directly, use NewDeletedAccountsClient() instead.
 type DeletedAccountsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewDeletedAccountsClient creates a new instance of DeletedAccountsClient with the specified values.
-func NewDeletedAccountsClient(con *armcore.Connection, subscriptionID string) *DeletedAccountsClient {
-	return &DeletedAccountsClient{con: con, subscriptionID: subscriptionID}
+func NewDeletedAccountsClient(con *arm.Connection, subscriptionID string) *DeletedAccountsClient {
+	return &DeletedAccountsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Get properties of specified deleted account resource.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *DeletedAccountsClient) Get(ctx context.Context, deletedAccountName string, location string, options *DeletedAccountsGetOptions) (DeletedAccountResponse, error) {
+func (client *DeletedAccountsClient) Get(ctx context.Context, deletedAccountName string, location string, options *DeletedAccountsGetOptions) (DeletedAccountsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, deletedAccountName, location, options)
 	if err != nil {
-		return DeletedAccountResponse{}, err
+		return DeletedAccountsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DeletedAccountResponse{}, err
+		return DeletedAccountsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return DeletedAccountResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return DeletedAccountsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DeletedAccountsClient) getCreateRequest(ctx context.Context, deletedAccountName string, location string, options *DeletedAccountsGetOptions) (*azcore.Request, error) {
+func (client *DeletedAccountsClient) getCreateRequest(ctx context.Context, deletedAccountName string, location string, options *DeletedAccountsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/locations/{location}/deletedAccounts/{deletedAccountName}"
 	if deletedAccountName == "" {
 		return nil, errors.New("parameter deletedAccountName cannot be empty")
@@ -62,94 +66,89 @@ func (client *DeletedAccountsClient) getCreateRequest(ctx context.Context, delet
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DeletedAccountsClient) getHandleResponse(resp *azcore.Response) (DeletedAccountResponse, error) {
-	var val *DeletedAccount
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DeletedAccountResponse{}, err
+func (client *DeletedAccountsClient) getHandleResponse(resp *http.Response) (DeletedAccountsGetResponse, error) {
+	result := DeletedAccountsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedAccount); err != nil {
+		return DeletedAccountsGetResponse{}, err
 	}
-	return DeletedAccountResponse{RawResponse: resp.Response, DeletedAccount: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *DeletedAccountsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DeletedAccountsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Lists deleted accounts under the subscription.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *DeletedAccountsClient) List(options *DeletedAccountsListOptions) DeletedAccountListResultPager {
-	return &deletedAccountListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *DeletedAccountsClient) List(options *DeletedAccountsListOptions) *DeletedAccountsListPager {
+	return &DeletedAccountsListPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp DeletedAccountListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DeletedAccountListResult.NextLink)
+		advancer: func(ctx context.Context, resp DeletedAccountsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DeletedAccountListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *DeletedAccountsClient) listCreateRequest(ctx context.Context, options *DeletedAccountsListOptions) (*azcore.Request, error) {
+func (client *DeletedAccountsClient) listCreateRequest(ctx context.Context, options *DeletedAccountsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Storage/deletedAccounts"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DeletedAccountsClient) listHandleResponse(resp *azcore.Response) (DeletedAccountListResultResponse, error) {
-	var val *DeletedAccountListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DeletedAccountListResultResponse{}, err
+func (client *DeletedAccountsClient) listHandleResponse(resp *http.Response) (DeletedAccountsListResponse, error) {
+	result := DeletedAccountsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedAccountListResult); err != nil {
+		return DeletedAccountsListResponse{}, err
 	}
-	return DeletedAccountListResultResponse{RawResponse: resp.Response, DeletedAccountListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *DeletedAccountsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DeletedAccountsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

@@ -12,6 +12,14 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// BaseClientAPI contains the set of methods on the BaseClient type.
+type BaseClientAPI interface {
+	LocationGet(ctx context.Context, location string) (result documentdb.LocationGetResult, err error)
+	LocationList(ctx context.Context) (result documentdb.LocationListResult, err error)
+}
+
+var _ BaseClientAPI = (*documentdb.BaseClient)(nil)
+
 // DatabaseAccountsClientAPI contains the set of methods on the DatabaseAccountsClient type.
 type DatabaseAccountsClientAPI interface {
 	CheckNameExists(ctx context.Context, accountName string) (result autorest.Response, err error)

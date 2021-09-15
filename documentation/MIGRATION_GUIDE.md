@@ -46,7 +46,7 @@ client.Authorizer = authorizer
 
 ```go
 credential, err := azidentity.NewClientSecretCredential("<TenantId>", "<ClientId>", "<ClientSecret>", nil)
-connection := armcore.NewDefaultConnection(credential, nil)
+connection := arm.NewDefaultConnection(credential, nil)
 client := armresources.NewResourceGroupsClient(connection, "<SubscriptionId>")
 ```
 
@@ -174,11 +174,11 @@ Because of adopting Azure Core which is a shared library across all Azure SDKs, 
 
 In old version (`services/**/mgmt/**`), we use the `(autorest.Client).Sender`, `(autorest.Client).RequestInspector` and `(autorest.Client).ResponseInspector` properties in `github.com/Azure/go-autorest/autorest` module to provide customized interceptor for the HTTP traffic.
 
-In new version (`sdk/**/arm**`), we use `(armcore.ConnectionOptions).PerCallPolicies` and `(armcore.ConnectionOptions).PerRetryPolicies` in `github.com/Azure/azure-sdk-for-go/sdk/armcore` module instead to inject customized policy to the pipeline.
+In new version (`sdk/**/arm**`), we use `(arm.ConnectionOptions).PerCallPolicies` and `(arm.ConnectionOptions).PerRetryPolicies` in `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` package instead to inject customized policy to the pipeline.
 
 ### Custom HTTP Client
 
-Similar to the customized policy, there are changes regarding how the custom HTTP client is configured as well. You can now use the `(armcore.ConnectionOptions).HTTPClient` option in `github.com/Azure/azure-sdk-for-go/sdk/armcore` module to use your own implementation of HTTP client and plug in what they need into the configuration.
+Similar to the customized policy, there are changes regarding how the custom HTTP client is configured as well. You can now use the `(arm.ConnectionOptions).HTTPClient` option in `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` package to use your own implementation of HTTP client and plug in what they need into the configuration.
 
 **In old version (`services/**/mgmt/**`)**
 ```go
@@ -191,7 +191,7 @@ client.Sender = &httpClient
 
 ```go
 httpClient := NewYourOwnHTTPClient{}
-connection := armcore.NewConnection(credential, &armcore.ConnectionOptions{
+connection := arm.NewConnection(credential, &arm.ConnectionOptions{
     HTTPClient: &httpClient,
 })
 client := armresources.NewResourceGroupsClient(connection, "<SubscriptionId>")

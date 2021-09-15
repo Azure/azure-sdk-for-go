@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,25 +11,28 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // EventChannelsClient contains the methods for the EventChannels group.
 // Don't use this type directly, use NewEventChannelsClient() instead.
 type EventChannelsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewEventChannelsClient creates a new instance of EventChannelsClient with the specified values.
-func NewEventChannelsClient(con *armcore.Connection, subscriptionID string) *EventChannelsClient {
-	return &EventChannelsClient{con: con, subscriptionID: subscriptionID}
+func NewEventChannelsClient(con *arm.Connection, subscriptionID string) *EventChannelsClient {
+	return &EventChannelsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Asynchronously creates a new event channel with the specified parameters.
@@ -38,18 +42,18 @@ func (client *EventChannelsClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return EventChannelsCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return EventChannelsCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return EventChannelsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *EventChannelsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, eventChannelName string, eventChannelInfo EventChannel, options *EventChannelsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *EventChannelsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, eventChannelName string, eventChannelInfo EventChannel, options *EventChannelsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/eventChannels/{eventChannelName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -67,37 +71,36 @@ func (client *EventChannelsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter eventChannelName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{eventChannelName}", url.PathEscape(eventChannelName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(eventChannelInfo)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, eventChannelInfo)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *EventChannelsClient) createOrUpdateHandleResponse(resp *azcore.Response) (EventChannelsCreateOrUpdateResponse, error) {
-	result := EventChannelsCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.EventChannel); err != nil {
+func (client *EventChannelsClient) createOrUpdateHandleResponse(resp *http.Response) (EventChannelsCreateOrUpdateResponse, error) {
+	result := EventChannelsCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.EventChannel); err != nil {
 		return EventChannelsCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *EventChannelsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *EventChannelsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginDelete - Delete existing event channel.
@@ -108,65 +111,37 @@ func (client *EventChannelsClient) BeginDelete(ctx context.Context, resourceGrou
 		return EventChannelsDeletePollerResponse{}, err
 	}
 	result := EventChannelsDeletePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("EventChannelsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return EventChannelsDeletePollerResponse{}, err
-	}
-	poller := &eventChannelsDeletePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (EventChannelsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new EventChannelsDeletePoller from the specified resume token.
-// token - The value must come from a previous call to EventChannelsDeletePoller.ResumeToken().
-func (client *EventChannelsClient) ResumeDelete(ctx context.Context, token string) (EventChannelsDeletePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("EventChannelsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return EventChannelsDeletePollerResponse{}, err
-	}
-	poller := &eventChannelsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return EventChannelsDeletePollerResponse{}, err
-	}
-	result := EventChannelsDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (EventChannelsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("EventChannelsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return EventChannelsDeletePollerResponse{}, err
+	}
+	result.Poller = &EventChannelsDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete existing event channel.
 // If the operation fails it returns a generic error.
-func (client *EventChannelsClient) deleteOperation(ctx context.Context, resourceGroupName string, partnerNamespaceName string, eventChannelName string, options *EventChannelsBeginDeleteOptions) (*azcore.Response, error) {
+func (client *EventChannelsClient) deleteOperation(ctx context.Context, resourceGroupName string, partnerNamespaceName string, eventChannelName string, options *EventChannelsBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, partnerNamespaceName, eventChannelName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *EventChannelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, eventChannelName string, options *EventChannelsBeginDeleteOptions) (*azcore.Request, error) {
+func (client *EventChannelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, eventChannelName string, options *EventChannelsBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/eventChannels/{eventChannelName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -184,27 +159,26 @@ func (client *EventChannelsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter eventChannelName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{eventChannelName}", url.PathEscape(eventChannelName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *EventChannelsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *EventChannelsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Get properties of an event channel.
@@ -214,18 +188,18 @@ func (client *EventChannelsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return EventChannelsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return EventChannelsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return EventChannelsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *EventChannelsClient) getCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, eventChannelName string, options *EventChannelsGetOptions) (*azcore.Request, error) {
+func (client *EventChannelsClient) getCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, eventChannelName string, options *EventChannelsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/eventChannels/{eventChannelName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -243,55 +217,54 @@ func (client *EventChannelsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter eventChannelName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{eventChannelName}", url.PathEscape(eventChannelName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *EventChannelsClient) getHandleResponse(resp *azcore.Response) (EventChannelsGetResponse, error) {
-	result := EventChannelsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.EventChannel); err != nil {
+func (client *EventChannelsClient) getHandleResponse(resp *http.Response) (EventChannelsGetResponse, error) {
+	result := EventChannelsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.EventChannel); err != nil {
 		return EventChannelsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *EventChannelsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *EventChannelsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByPartnerNamespace - List all the event channels in a partner namespace.
 // If the operation fails it returns a generic error.
-func (client *EventChannelsClient) ListByPartnerNamespace(resourceGroupName string, partnerNamespaceName string, options *EventChannelsListByPartnerNamespaceOptions) EventChannelsListByPartnerNamespacePager {
-	return &eventChannelsListByPartnerNamespacePager{
+func (client *EventChannelsClient) ListByPartnerNamespace(resourceGroupName string, partnerNamespaceName string, options *EventChannelsListByPartnerNamespaceOptions) *EventChannelsListByPartnerNamespacePager {
+	return &EventChannelsListByPartnerNamespacePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByPartnerNamespaceCreateRequest(ctx, resourceGroupName, partnerNamespaceName, options)
 		},
-		advancer: func(ctx context.Context, resp EventChannelsListByPartnerNamespaceResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.EventChannelsListResult.NextLink)
+		advancer: func(ctx context.Context, resp EventChannelsListByPartnerNamespaceResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.EventChannelsListResult.NextLink)
 		},
 	}
 }
 
 // listByPartnerNamespaceCreateRequest creates the ListByPartnerNamespace request.
-func (client *EventChannelsClient) listByPartnerNamespaceCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, options *EventChannelsListByPartnerNamespaceOptions) (*azcore.Request, error) {
+func (client *EventChannelsClient) listByPartnerNamespaceCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, options *EventChannelsListByPartnerNamespaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/eventChannels"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -305,12 +278,11 @@ func (client *EventChannelsClient) listByPartnerNamespaceCreateRequest(ctx conte
 		return nil, errors.New("parameter partnerNamespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerNamespaceName}", url.PathEscape(partnerNamespaceName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
@@ -318,28 +290,28 @@ func (client *EventChannelsClient) listByPartnerNamespaceCreateRequest(ctx conte
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByPartnerNamespaceHandleResponse handles the ListByPartnerNamespace response.
-func (client *EventChannelsClient) listByPartnerNamespaceHandleResponse(resp *azcore.Response) (EventChannelsListByPartnerNamespaceResponse, error) {
-	result := EventChannelsListByPartnerNamespaceResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.EventChannelsListResult); err != nil {
+func (client *EventChannelsClient) listByPartnerNamespaceHandleResponse(resp *http.Response) (EventChannelsListByPartnerNamespaceResponse, error) {
+	result := EventChannelsListByPartnerNamespaceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.EventChannelsListResult); err != nil {
 		return EventChannelsListByPartnerNamespaceResponse{}, err
 	}
 	return result, nil
 }
 
 // listByPartnerNamespaceHandleError handles the ListByPartnerNamespace error response.
-func (client *EventChannelsClient) listByPartnerNamespaceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *EventChannelsClient) listByPartnerNamespaceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

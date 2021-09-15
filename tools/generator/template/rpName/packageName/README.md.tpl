@@ -48,7 +48,7 @@ For more information on ARM connections, please see the documentation for `azcor
 Azure {{PackageTitle}} modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `arm.Connection`.
 
 ```go
-client := {{packageName}}.{{NewClientMethod}}(con, "<subscription ID>")
+client := {{packageName}}.{{NewClientMethod}}
 ```
 
 ## Provide Feedback

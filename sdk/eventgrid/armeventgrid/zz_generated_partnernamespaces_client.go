@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,25 +11,28 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PartnerNamespacesClient contains the methods for the PartnerNamespaces group.
 // Don't use this type directly, use NewPartnerNamespacesClient() instead.
 type PartnerNamespacesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewPartnerNamespacesClient creates a new instance of PartnerNamespacesClient with the specified values.
-func NewPartnerNamespacesClient(con *armcore.Connection, subscriptionID string) *PartnerNamespacesClient {
-	return &PartnerNamespacesClient{con: con, subscriptionID: subscriptionID}
+func NewPartnerNamespacesClient(con *arm.Connection, subscriptionID string) *PartnerNamespacesClient {
+	return &PartnerNamespacesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Asynchronously creates a new partner namespace with the specified parameters.
@@ -39,65 +43,37 @@ func (client *PartnerNamespacesClient) BeginCreateOrUpdate(ctx context.Context, 
 		return PartnerNamespacesCreateOrUpdatePollerResponse{}, err
 	}
 	result := PartnerNamespacesCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("PartnerNamespacesClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return PartnerNamespacesCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &partnerNamespacesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PartnerNamespacesCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new PartnerNamespacesCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to PartnerNamespacesCreateOrUpdatePoller.ResumeToken().
-func (client *PartnerNamespacesClient) ResumeCreateOrUpdate(ctx context.Context, token string) (PartnerNamespacesCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("PartnerNamespacesClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return PartnerNamespacesCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &partnerNamespacesCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return PartnerNamespacesCreateOrUpdatePollerResponse{}, err
-	}
-	result := PartnerNamespacesCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PartnerNamespacesCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("PartnerNamespacesClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return PartnerNamespacesCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &PartnerNamespacesCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Asynchronously creates a new partner namespace with the specified parameters.
 // If the operation fails it returns a generic error.
-func (client *PartnerNamespacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, partnerNamespaceName string, partnerNamespaceInfo PartnerNamespace, options *PartnerNamespacesBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *PartnerNamespacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, partnerNamespaceName string, partnerNamespaceInfo PartnerNamespace, options *PartnerNamespacesBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, partnerNamespaceName, partnerNamespaceInfo, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PartnerNamespacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, partnerNamespaceInfo PartnerNamespace, options *PartnerNamespacesBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *PartnerNamespacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, partnerNamespaceInfo PartnerNamespace, options *PartnerNamespacesBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -111,28 +87,27 @@ func (client *PartnerNamespacesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter partnerNamespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerNamespaceName}", url.PathEscape(partnerNamespaceName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(partnerNamespaceInfo)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, partnerNamespaceInfo)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *PartnerNamespacesClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PartnerNamespacesClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginDelete - Delete existing partner namespace.
@@ -143,65 +118,37 @@ func (client *PartnerNamespacesClient) BeginDelete(ctx context.Context, resource
 		return PartnerNamespacesDeletePollerResponse{}, err
 	}
 	result := PartnerNamespacesDeletePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("PartnerNamespacesClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return PartnerNamespacesDeletePollerResponse{}, err
-	}
-	poller := &partnerNamespacesDeletePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PartnerNamespacesDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new PartnerNamespacesDeletePoller from the specified resume token.
-// token - The value must come from a previous call to PartnerNamespacesDeletePoller.ResumeToken().
-func (client *PartnerNamespacesClient) ResumeDelete(ctx context.Context, token string) (PartnerNamespacesDeletePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("PartnerNamespacesClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return PartnerNamespacesDeletePollerResponse{}, err
-	}
-	poller := &partnerNamespacesDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return PartnerNamespacesDeletePollerResponse{}, err
-	}
-	result := PartnerNamespacesDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PartnerNamespacesDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("PartnerNamespacesClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return PartnerNamespacesDeletePollerResponse{}, err
+	}
+	result.Poller = &PartnerNamespacesDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete existing partner namespace.
 // If the operation fails it returns a generic error.
-func (client *PartnerNamespacesClient) deleteOperation(ctx context.Context, resourceGroupName string, partnerNamespaceName string, options *PartnerNamespacesBeginDeleteOptions) (*azcore.Response, error) {
+func (client *PartnerNamespacesClient) deleteOperation(ctx context.Context, resourceGroupName string, partnerNamespaceName string, options *PartnerNamespacesBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, partnerNamespaceName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PartnerNamespacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, options *PartnerNamespacesBeginDeleteOptions) (*azcore.Request, error) {
+func (client *PartnerNamespacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, options *PartnerNamespacesBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -215,27 +162,26 @@ func (client *PartnerNamespacesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter partnerNamespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerNamespaceName}", url.PathEscape(partnerNamespaceName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *PartnerNamespacesClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PartnerNamespacesClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Get properties of a partner namespace.
@@ -245,18 +191,18 @@ func (client *PartnerNamespacesClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return PartnerNamespacesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PartnerNamespacesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PartnerNamespacesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PartnerNamespacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, options *PartnerNamespacesGetOptions) (*azcore.Request, error) {
+func (client *PartnerNamespacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, options *PartnerNamespacesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -270,55 +216,54 @@ func (client *PartnerNamespacesClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter partnerNamespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerNamespaceName}", url.PathEscape(partnerNamespaceName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PartnerNamespacesClient) getHandleResponse(resp *azcore.Response) (PartnerNamespacesGetResponse, error) {
-	result := PartnerNamespacesGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PartnerNamespace); err != nil {
+func (client *PartnerNamespacesClient) getHandleResponse(resp *http.Response) (PartnerNamespacesGetResponse, error) {
+	result := PartnerNamespacesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerNamespace); err != nil {
 		return PartnerNamespacesGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *PartnerNamespacesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PartnerNamespacesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByResourceGroup - List all the partner namespaces under a resource group.
 // If the operation fails it returns a generic error.
-func (client *PartnerNamespacesClient) ListByResourceGroup(resourceGroupName string, options *PartnerNamespacesListByResourceGroupOptions) PartnerNamespacesListByResourceGroupPager {
-	return &partnerNamespacesListByResourceGroupPager{
+func (client *PartnerNamespacesClient) ListByResourceGroup(resourceGroupName string, options *PartnerNamespacesListByResourceGroupOptions) *PartnerNamespacesListByResourceGroupPager {
+	return &PartnerNamespacesListByResourceGroupPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp PartnerNamespacesListByResourceGroupResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.PartnerNamespacesListResult.NextLink)
+		advancer: func(ctx context.Context, resp PartnerNamespacesListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.PartnerNamespacesListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *PartnerNamespacesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PartnerNamespacesListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *PartnerNamespacesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PartnerNamespacesListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -328,12 +273,11 @@ func (client *PartnerNamespacesClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
@@ -341,59 +285,58 @@ func (client *PartnerNamespacesClient) listByResourceGroupCreateRequest(ctx cont
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *PartnerNamespacesClient) listByResourceGroupHandleResponse(resp *azcore.Response) (PartnerNamespacesListByResourceGroupResponse, error) {
-	result := PartnerNamespacesListByResourceGroupResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PartnerNamespacesListResult); err != nil {
+func (client *PartnerNamespacesClient) listByResourceGroupHandleResponse(resp *http.Response) (PartnerNamespacesListByResourceGroupResponse, error) {
+	result := PartnerNamespacesListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerNamespacesListResult); err != nil {
 		return PartnerNamespacesListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *PartnerNamespacesClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PartnerNamespacesClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListBySubscription - List all the partner namespaces under an Azure subscription.
 // If the operation fails it returns a generic error.
-func (client *PartnerNamespacesClient) ListBySubscription(options *PartnerNamespacesListBySubscriptionOptions) PartnerNamespacesListBySubscriptionPager {
-	return &partnerNamespacesListBySubscriptionPager{
+func (client *PartnerNamespacesClient) ListBySubscription(options *PartnerNamespacesListBySubscriptionOptions) *PartnerNamespacesListBySubscriptionPager {
+	return &PartnerNamespacesListBySubscriptionPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp PartnerNamespacesListBySubscriptionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.PartnerNamespacesListResult.NextLink)
+		advancer: func(ctx context.Context, resp PartnerNamespacesListBySubscriptionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.PartnerNamespacesListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *PartnerNamespacesClient) listBySubscriptionCreateRequest(ctx context.Context, options *PartnerNamespacesListBySubscriptionOptions) (*azcore.Request, error) {
+func (client *PartnerNamespacesClient) listBySubscriptionCreateRequest(ctx context.Context, options *PartnerNamespacesListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/partnerNamespaces"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
@@ -401,30 +344,30 @@ func (client *PartnerNamespacesClient) listBySubscriptionCreateRequest(ctx conte
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *PartnerNamespacesClient) listBySubscriptionHandleResponse(resp *azcore.Response) (PartnerNamespacesListBySubscriptionResponse, error) {
-	result := PartnerNamespacesListBySubscriptionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PartnerNamespacesListResult); err != nil {
+func (client *PartnerNamespacesClient) listBySubscriptionHandleResponse(resp *http.Response) (PartnerNamespacesListBySubscriptionResponse, error) {
+	result := PartnerNamespacesListBySubscriptionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerNamespacesListResult); err != nil {
 		return PartnerNamespacesListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *PartnerNamespacesClient) listBySubscriptionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PartnerNamespacesClient) listBySubscriptionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListSharedAccessKeys - List the two keys used to publish to a partner namespace.
@@ -434,18 +377,18 @@ func (client *PartnerNamespacesClient) ListSharedAccessKeys(ctx context.Context,
 	if err != nil {
 		return PartnerNamespacesListSharedAccessKeysResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PartnerNamespacesListSharedAccessKeysResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PartnerNamespacesListSharedAccessKeysResponse{}, client.listSharedAccessKeysHandleError(resp)
 	}
 	return client.listSharedAccessKeysHandleResponse(resp)
 }
 
 // listSharedAccessKeysCreateRequest creates the ListSharedAccessKeys request.
-func (client *PartnerNamespacesClient) listSharedAccessKeysCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, options *PartnerNamespacesListSharedAccessKeysOptions) (*azcore.Request, error) {
+func (client *PartnerNamespacesClient) listSharedAccessKeysCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, options *PartnerNamespacesListSharedAccessKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/listKeys"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -459,37 +402,36 @@ func (client *PartnerNamespacesClient) listSharedAccessKeysCreateRequest(ctx con
 		return nil, errors.New("parameter partnerNamespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerNamespaceName}", url.PathEscape(partnerNamespaceName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listSharedAccessKeysHandleResponse handles the ListSharedAccessKeys response.
-func (client *PartnerNamespacesClient) listSharedAccessKeysHandleResponse(resp *azcore.Response) (PartnerNamespacesListSharedAccessKeysResponse, error) {
-	result := PartnerNamespacesListSharedAccessKeysResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PartnerNamespaceSharedAccessKeys); err != nil {
+func (client *PartnerNamespacesClient) listSharedAccessKeysHandleResponse(resp *http.Response) (PartnerNamespacesListSharedAccessKeysResponse, error) {
+	result := PartnerNamespacesListSharedAccessKeysResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerNamespaceSharedAccessKeys); err != nil {
 		return PartnerNamespacesListSharedAccessKeysResponse{}, err
 	}
 	return result, nil
 }
 
 // listSharedAccessKeysHandleError handles the ListSharedAccessKeys error response.
-func (client *PartnerNamespacesClient) listSharedAccessKeysHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PartnerNamespacesClient) listSharedAccessKeysHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // RegenerateKey - Regenerate a shared access key for a partner namespace.
@@ -499,18 +441,18 @@ func (client *PartnerNamespacesClient) RegenerateKey(ctx context.Context, resour
 	if err != nil {
 		return PartnerNamespacesRegenerateKeyResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PartnerNamespacesRegenerateKeyResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PartnerNamespacesRegenerateKeyResponse{}, client.regenerateKeyHandleError(resp)
 	}
 	return client.regenerateKeyHandleResponse(resp)
 }
 
 // regenerateKeyCreateRequest creates the RegenerateKey request.
-func (client *PartnerNamespacesClient) regenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, regenerateKeyRequest PartnerNamespaceRegenerateKeyRequest, options *PartnerNamespacesRegenerateKeyOptions) (*azcore.Request, error) {
+func (client *PartnerNamespacesClient) regenerateKeyCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, regenerateKeyRequest PartnerNamespaceRegenerateKeyRequest, options *PartnerNamespacesRegenerateKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}/regenerateKey"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -524,37 +466,36 @@ func (client *PartnerNamespacesClient) regenerateKeyCreateRequest(ctx context.Co
 		return nil, errors.New("parameter partnerNamespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerNamespaceName}", url.PathEscape(partnerNamespaceName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(regenerateKeyRequest)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, regenerateKeyRequest)
 }
 
 // regenerateKeyHandleResponse handles the RegenerateKey response.
-func (client *PartnerNamespacesClient) regenerateKeyHandleResponse(resp *azcore.Response) (PartnerNamespacesRegenerateKeyResponse, error) {
-	result := PartnerNamespacesRegenerateKeyResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PartnerNamespaceSharedAccessKeys); err != nil {
+func (client *PartnerNamespacesClient) regenerateKeyHandleResponse(resp *http.Response) (PartnerNamespacesRegenerateKeyResponse, error) {
+	result := PartnerNamespacesRegenerateKeyResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerNamespaceSharedAccessKeys); err != nil {
 		return PartnerNamespacesRegenerateKeyResponse{}, err
 	}
 	return result, nil
 }
 
 // regenerateKeyHandleError handles the RegenerateKey error response.
-func (client *PartnerNamespacesClient) regenerateKeyHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PartnerNamespacesClient) regenerateKeyHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginUpdate - Asynchronously updates a partner namespace with the specified parameters.
@@ -565,65 +506,37 @@ func (client *PartnerNamespacesClient) BeginUpdate(ctx context.Context, resource
 		return PartnerNamespacesUpdatePollerResponse{}, err
 	}
 	result := PartnerNamespacesUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("PartnerNamespacesClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return PartnerNamespacesUpdatePollerResponse{}, err
-	}
-	poller := &partnerNamespacesUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PartnerNamespacesUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdate creates a new PartnerNamespacesUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to PartnerNamespacesUpdatePoller.ResumeToken().
-func (client *PartnerNamespacesClient) ResumeUpdate(ctx context.Context, token string) (PartnerNamespacesUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("PartnerNamespacesClient.Update", token, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return PartnerNamespacesUpdatePollerResponse{}, err
-	}
-	poller := &partnerNamespacesUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return PartnerNamespacesUpdatePollerResponse{}, err
-	}
-	result := PartnerNamespacesUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (PartnerNamespacesUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("PartnerNamespacesClient.Update", "", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return PartnerNamespacesUpdatePollerResponse{}, err
+	}
+	result.Poller = &PartnerNamespacesUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Asynchronously updates a partner namespace with the specified parameters.
 // If the operation fails it returns a generic error.
-func (client *PartnerNamespacesClient) update(ctx context.Context, resourceGroupName string, partnerNamespaceName string, partnerNamespaceUpdateParameters PartnerNamespaceUpdateParameters, options *PartnerNamespacesBeginUpdateOptions) (*azcore.Response, error) {
+func (client *PartnerNamespacesClient) update(ctx context.Context, resourceGroupName string, partnerNamespaceName string, partnerNamespaceUpdateParameters PartnerNamespaceUpdateParameters, options *PartnerNamespacesBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, partnerNamespaceName, partnerNamespaceUpdateParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PartnerNamespacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, partnerNamespaceUpdateParameters PartnerNamespaceUpdateParameters, options *PartnerNamespacesBeginUpdateOptions) (*azcore.Request, error) {
+func (client *PartnerNamespacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, partnerNamespaceName string, partnerNamespaceUpdateParameters PartnerNamespaceUpdateParameters, options *PartnerNamespacesBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerNamespaces/{partnerNamespaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -637,26 +550,25 @@ func (client *PartnerNamespacesClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter partnerNamespaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerNamespaceName}", url.PathEscape(partnerNamespaceName))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(partnerNamespaceUpdateParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, partnerNamespaceUpdateParameters)
 }
 
 // updateHandleError handles the Update error response.
-func (client *PartnerNamespacesClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PartnerNamespacesClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -8,6 +9,45 @@
 package armauthorization
 
 import "encoding/json"
+
+func unmarshalAccessReviewDecisionTargetClassification(rawMsg json.RawMessage) (AccessReviewDecisionTargetClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var m map[string]interface{}
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b AccessReviewDecisionTargetClassification
+	switch m["type"] {
+	case string(DecisionTargetTypeServicePrincipal):
+		b = &ServicePrincipalDecisionTarget{}
+	case string(DecisionTargetTypeUser):
+		b = &UserDecisionTarget{}
+	default:
+		b = &AccessReviewDecisionTarget{}
+	}
+	return b, json.Unmarshal(rawMsg, b)
+}
+
+func unmarshalAccessReviewDecisionTargetClassificationArray(rawMsg json.RawMessage) ([]AccessReviewDecisionTargetClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]AccessReviewDecisionTargetClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalAccessReviewDecisionTargetClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}
 
 func unmarshalRoleManagementPolicyRuleClassification(rawMsg json.RawMessage) (RoleManagementPolicyRuleClassification, error) {
 	if rawMsg == nil {

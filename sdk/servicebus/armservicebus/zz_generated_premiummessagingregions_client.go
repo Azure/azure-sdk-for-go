@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,76 +12,78 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PremiumMessagingRegionsClient contains the methods for the PremiumMessagingRegions group.
 // Don't use this type directly, use NewPremiumMessagingRegionsClient() instead.
 type PremiumMessagingRegionsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewPremiumMessagingRegionsClient creates a new instance of PremiumMessagingRegionsClient with the specified values.
-func NewPremiumMessagingRegionsClient(con *armcore.Connection, subscriptionID string) *PremiumMessagingRegionsClient {
-	return &PremiumMessagingRegionsClient{con: con, subscriptionID: subscriptionID}
+func NewPremiumMessagingRegionsClient(con *arm.Connection, subscriptionID string) *PremiumMessagingRegionsClient {
+	return &PremiumMessagingRegionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // List - Gets the available premium messaging regions for servicebus
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *PremiumMessagingRegionsClient) List(options *PremiumMessagingRegionsListOptions) PremiumMessagingRegionsListPager {
-	return &premiumMessagingRegionsListPager{
+func (client *PremiumMessagingRegionsClient) List(options *PremiumMessagingRegionsListOptions) *PremiumMessagingRegionsListPager {
+	return &PremiumMessagingRegionsListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp PremiumMessagingRegionsListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.PremiumMessagingRegionsListResult.NextLink)
+		advancer: func(ctx context.Context, resp PremiumMessagingRegionsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.PremiumMessagingRegionsListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *PremiumMessagingRegionsClient) listCreateRequest(ctx context.Context, options *PremiumMessagingRegionsListOptions) (*azcore.Request, error) {
+func (client *PremiumMessagingRegionsClient) listCreateRequest(ctx context.Context, options *PremiumMessagingRegionsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/premiumMessagingRegions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PremiumMessagingRegionsClient) listHandleResponse(resp *azcore.Response) (PremiumMessagingRegionsListResponse, error) {
-	result := PremiumMessagingRegionsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PremiumMessagingRegionsListResult); err != nil {
+func (client *PremiumMessagingRegionsClient) listHandleResponse(resp *http.Response) (PremiumMessagingRegionsListResponse, error) {
+	result := PremiumMessagingRegionsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PremiumMessagingRegionsListResult); err != nil {
 		return PremiumMessagingRegionsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *PremiumMessagingRegionsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PremiumMessagingRegionsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

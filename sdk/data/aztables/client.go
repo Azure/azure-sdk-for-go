@@ -170,15 +170,7 @@ func newListEntitiesPage(resp *generated.TableQueryEntitiesResponse) (ListEntiti
 // If the result is false, the value of Err() will indicate if an error occurred.
 //
 // PageResponse returns the results from the page most recently fetched from the service.
-// Example usage of this in combination with NextPage would look like the following:
-//
-// for pager.NextPage(ctx) {
-//     resp = pager.PageResponse()
-//     fmt.Printf("The page contains %i results.\n", len(resp.Entities))
-// }
-// err := pager.Err()
 type ListEntitiesPager interface {
-
 	// PageResponse returns the current TableQueryResponseResponse.
 	PageResponse() ListEntitiesPage
 	// NextPage returns true if there is another page of data available, false if not
@@ -217,13 +209,6 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 }
 
 // PageResponse returns the results from the page most recently fetched from the service.
-// Example usage of this in combination with NextPage would look like the following:
-//
-// for pager.NextPage(ctx) {
-//     resp = pager.PageResponse()
-//     fmt.Printf("The page contains %i results.\n", len(resp.Entities))
-// }
-// err := pager.Err()
 func (p *tableEntityQueryResponsePager) PageResponse() ListEntitiesPage {
 	return *p.current
 }
@@ -245,15 +230,7 @@ func (p *tableEntityQueryResponsePager) Err() error {
 // Top: The maximum number of entities that will be returned per page of results.
 // Note: This value does not limit the total number of results if NextPage is called on the returned Pager until it returns false.
 //
-// List returns a Pager, which allows iteration through each page of results. Example:
-//
-// options := &ListEntitiesOptions{Filter: to.StringPtr("PartitionKey eq 'pk001'"), Top: to.Int32Ptr(25), Select: to.StringPtr("PartitionKey,RowKey,Value,Price")}
-// pager := client.List(options) // Pass in 'nil' if you want to return all Entities for an account.
-// for pager.NextPage(ctx) {
-//     resp = pager.PageResponse()
-//     fmt.Printf("The page contains %i results.\n", len(resp.Entities))
-// }
-// err := pager.Err()
+// List returns a Pager, which allows iteration through each page of results.
 func (t *Client) List(listOptions *ListEntitiesOptions) ListEntitiesPager {
 	return &tableEntityQueryResponsePager{
 		tableClient:       t,
@@ -283,14 +260,19 @@ type GetEntityResponse struct {
 }
 
 // newGetEntityResponse transforms a generated response to the GetEntityResponse type
-func newGetEntityResponse(m generated.TableQueryEntityWithPartitionAndRowKeyResponse) (GetEntityResponse, error) {
-	marshalledValue, err := json.Marshal(m.Value)
+func newGetEntityResponse(g generated.TableQueryEntityWithPartitionAndRowKeyResponse) (GetEntityResponse, error) {
+	marshalledValue, err := json.Marshal(g.Value)
 	if err != nil {
 		return GetEntityResponse{}, err
 	}
+
+	var ETag azcore.ETag
+	if g.ETag != nil {
+		ETag = azcore.ETag(*g.ETag)
+	}
 	return GetEntityResponse{
-		ETag:        azcore.ETag(*m.ETag),
-		RawResponse: m.RawResponse,
+		ETag:        ETag,
+		RawResponse: g.RawResponse,
 		Value:       marshalledValue,
 	}, nil
 }
@@ -325,9 +307,13 @@ func addEntityResponseFromGenerated(g *generated.TableInsertEntityResponse) AddE
 		return AddEntityResponse{}
 	}
 
+	var ETag azcore.ETag
+	if g.ETag != nil {
+		ETag = azcore.ETag(*g.ETag)
+	}
 	return AddEntityResponse{
 		RawResponse: g.RawResponse,
-		ETag:        azcore.ETag(*g.ETag),
+		ETag:        ETag,
 	}
 }
 
@@ -417,9 +403,13 @@ func updateEntityResponseFromMergeGenerated(g *generated.TableMergeEntityRespons
 		return UpdateEntityResponse{}
 	}
 
+	var ETag azcore.ETag
+	if g.ETag != nil {
+		ETag = azcore.ETag(*g.ETag)
+	}
 	return UpdateEntityResponse{
 		RawResponse: g.RawResponse,
-		ETag:        azcore.ETag(*g.ETag),
+		ETag:        ETag,
 	}
 }
 
@@ -428,9 +418,13 @@ func updateEntityResponseFromUpdateGenerated(g *generated.TableUpdateEntityRespo
 		return UpdateEntityResponse{}
 	}
 
+	var ETag azcore.ETag
+	if g.ETag != nil {
+		ETag = azcore.ETag(*g.ETag)
+	}
 	return UpdateEntityResponse{
 		RawResponse: g.RawResponse,
-		ETag:        azcore.ETag(*g.ETag),
+		ETag:        ETag,
 	}
 }
 
@@ -492,9 +486,13 @@ func insertEntityFromGeneratedMerge(g *generated.TableMergeEntityResponse) Inser
 		return InsertEntityResponse{}
 	}
 
+	var ETag azcore.ETag
+	if g.ETag != nil {
+		ETag = azcore.ETag(*g.ETag)
+	}
 	return InsertEntityResponse{
 		RawResponse: g.RawResponse,
-		ETag:        azcore.ETag(*g.ETag),
+		ETag:        ETag,
 	}
 }
 
@@ -503,9 +501,13 @@ func insertEntityFromGeneratedUpdate(g *generated.TableUpdateEntityResponse) Ins
 		return InsertEntityResponse{}
 	}
 
+	var ETag azcore.ETag
+	if g.ETag != nil {
+		ETag = azcore.ETag(*g.ETag)
+	}
 	return InsertEntityResponse{
 		RawResponse: g.RawResponse,
-		ETag:        azcore.ETag(*g.ETag),
+		ETag:        ETag,
 	}
 }
 

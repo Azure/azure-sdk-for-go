@@ -1,10 +1,12 @@
 # Release History
 
-## v0.20.0 (Unreleased)
+## v0.19.1 (Unreleased)
 
 ### Features Added
 * Updating Documentation
 
+### Bug Fixes
+* Fixed a potential panic when creating the default Transporter.
 
 ## v0.19.0 (2021-08-25)
 

@@ -105,9 +105,6 @@ func TestListSecrets(t *testing.T) {
 	for pager.NextPage(context.Background()) {
 		page := pager.PageResponse()
 		count += len(page.Secrets)
-		for _, s := range page.Secrets {
-			fmt.Println(*s.ID)
-		}
 	}
 	require.Greater(t, count, 0)
 

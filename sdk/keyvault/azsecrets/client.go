@@ -412,14 +412,18 @@ type ListSecretsPage struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
-	Secrets []*internal.SecretItem `json:"value,omitempty" azure:"ro"`
+	Secrets []*SecretItem `json:"value,omitempty" azure:"ro"`
 }
 
 func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretVersionsResponse) ListSecretsPage {
+	var secrets []*SecretItem
+	for _, s := range i.Value {
+		secrets = append(secrets, secretItemFromGenerated(s))
+	}
 	return ListSecretsPage{
 		RawResponse: i.RawResponse,
-		NextLink: i.NextLink,
-		Secrets: i.Value,
+		NextLink:    i.NextLink,
+		Secrets:     secrets,
 	}
 }
 
@@ -428,14 +432,12 @@ func (c *Client) ListSecretVersions(name string, options *ListSecretVersionsOpti
 		options = &ListSecretVersionsOptions{}
 	}
 
-	genPager := c.kvClient.GetSecretVersions(
-		c.vaultUrl,
-		name,
-		options.toGenerated(),
-	)
-
 	return &listSecretsPager{
-		genPager: genPager,
+		genPager: c.kvClient.GetSecretVersions(
+			c.vaultUrl,
+			name,
+			options.toGenerated(),
+		),
 	}
 }
 

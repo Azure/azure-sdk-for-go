@@ -6,7 +6,11 @@
 
 package azsecrets
 
-import "time"
+import (
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
+)
 
 // DeletedSecretBundle - A Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
 type DeletedSecretBundle struct {
@@ -57,6 +61,23 @@ type SecretAttributes struct {
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 }
 
+func secretAttributesFromGenerated(i *internal.SecretAttributes) *SecretAttributes {
+	if i == nil {
+		return nil
+	}
+	return &SecretAttributes{
+		RecoverableDays: i.RecoverableDays,
+		RecoveryLevel:   (*DeletionRecoveryLevel)(i.RecoveryLevel),
+		Attributes: Attributes{
+			Enabled:   i.Enabled,
+			Expires:   i.Expires,
+			NotBefore: i.NotBefore,
+			Created:   i.Created,
+			Updated:   i.Updated,
+		},
+	}
+}
+
 // Attributes - The object attributes managed by the KeyVault service.
 type Attributes struct {
 	// Determines whether the object is enabled.
@@ -73,4 +94,36 @@ type Attributes struct {
 
 	// READ-ONLY; Last updated time in UTC.
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
+}
+
+// SecretItem - The secret item containing secret metadata.
+type SecretItem struct {
+	// The secret management attributes.
+	Attributes *SecretAttributes `json:"attributes,omitempty"`
+
+	// Type of the secret value such as a password.
+	ContentType *string `json:"contentType,omitempty"`
+
+	// Secret identifier.
+	ID *string `json:"id,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then managed will be true.
+	Managed *bool `json:"managed,omitempty" azure:"ro"`
+}
+
+func secretItemFromGenerated(i *internal.SecretItem) *SecretItem {
+	if i == nil {
+		return nil
+	}
+
+	return &SecretItem{
+		Attributes:  secretAttributesFromGenerated(i.Attributes),
+		ContentType: i.ContentType,
+		ID:          i.ID,
+		Tags:        i.Tags,
+		Managed:     i.Managed,
+	}
 }

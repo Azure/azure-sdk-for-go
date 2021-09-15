@@ -76,11 +76,6 @@ func TestSender(t *testing.T) {
 		require.EqualValues(t, "partitionKey1", *messages[0].PartitionKey)
 		require.EqualValues(t, "partitionKey1", *messages[1].PartitionKey)
 		require.EqualValues(t, "partitionKey1", *messages[2].PartitionKey)
-
-		// all the messages should have ended up in the same partition
-		require.NotNil(t, messages[0].PartitionID)
-		require.EqualValues(t, *messages[0].PartitionID, *messages[1].PartitionID)
-		require.EqualValues(t, *messages[0].PartitionID, *messages[2].PartitionID)
 	})
 }
 

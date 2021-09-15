@@ -2,7 +2,7 @@
 trigger:
   paths:
     include:
-    - sdk/data/aztables
+    - sdk/servicebus/azservicebus
 
 pr:
   paths:

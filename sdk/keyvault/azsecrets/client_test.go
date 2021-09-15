@@ -70,7 +70,7 @@ func createClient(t *testing.T) (*Client, error) {
 	)
 	require.NoError(t, err)
 
-	return NewClient(vaultUrl, cred, options)
+	return NewClient(vaultUrl, cred, nil)
 }
 
 func TestSetGetSecret(t *testing.T) {
@@ -90,4 +90,27 @@ func TestSetGetSecret(t *testing.T) {
 	getResp, err := client.GetSecret(context.Background(), "mySecret", secretVersion[len(secretVersion)-1], nil)
 	require.NoError(t, err)
 	require.Equal(t, *getResp.Value, secretValue)
+}
+
+
+func TestListSecrets(t *testing.T) {
+	recording.StartRecording(t, pathToPackage, nil)
+	defer recording.StopRecording(t, nil)
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	count := 0
+	pager := client.ListSecretVersions("mySecret", nil)
+	for pager.NextPage(context.Background()) {
+		page := pager.PageResponse()
+		count += len(page.Secrets)
+		for _, s := range page.Secrets {
+			fmt.Println(*s.ID)
+		}
+	}
+	require.Greater(t, count, 0)
+
+	require.NoError(t, pager.Err())
+
 }

@@ -8,6 +8,7 @@ package azsecrets
 
 import (
 	"context"
+	"errors"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -171,4 +172,281 @@ func (c *Client) SetSecret(ctx context.Context, name string, value string, optio
 		Tags:             options.Tags,
 	}, options.toGenerated())
 	return *setSecretResponseFromGenerated(resp), err
+}
+
+type DeleteSecretResponse struct {
+	DeletedSecretBundle
+	RawResponse *http.Response
+}
+
+func deleteSecretResponseFromGenerated(i *internal.KeyVaultClientDeleteSecretResponse) *DeleteSecretResponse {
+	if i == nil {
+		return nil
+	}
+	return &DeleteSecretResponse{
+		RawResponse: i.RawResponse,
+	}
+}
+
+// BeginDeleteSecretOptions contains the optional parameters for the Client.BeginDeleteSecret method.
+type BeginDeleteSecretOptions struct {
+	// placeholder for future optional parameters
+}
+
+func (b *BeginDeleteSecretOptions) toGenerated() *internal.KeyVaultClientDeleteSecretOptions {
+	return &internal.KeyVaultClientDeleteSecretOptions{}
+}
+
+type DeleteSecretPoller interface {
+	// Done returns true if the LRO has reached a terminal state
+	Done() bool
+
+	// ResumeToken returns a value representing the poller that can be used to resume
+	// the LRO at a later time. ResumeTokens are unique per service operation
+	ResumeToken() string
+
+	// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
+	// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
+	// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
+
+	Poll(context.Context) (*http.Response, error)
+	FinalResponse(context.Context) (DeleteSecretResponse, error)
+}
+
+type startDeletePoller struct {
+	secretName     string // This is the secret to Poll for in GetDeletedSecret
+	vaultUrl       string
+	client         *internal.KeyVaultClient
+	deleteResponse internal.KeyVaultClientDeleteSecretResponse
+}
+
+func (s *startDeletePoller) Done() bool {
+	return false
+}
+
+func (s *startDeletePoller) ResumeToken() string {
+	return ""
+}
+
+func (s *startDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+	resp, err := s.client.GetDeletedSecret(context.Background(), s.vaultUrl, s.secretName, nil)
+	if err != nil {
+		return resp.RawResponse, err
+	}
+	return resp.RawResponse, nil
+}
+
+func (s *startDeletePoller) FinalResponse(context.Context) (DeleteSecretResponse, error) {
+	return *deleteSecretResponseFromGenerated(&s.deleteResponse), nil
+}
+
+func (c *Client) BeginDeleteSecret(ctx context.Context, name string, options *BeginDeleteSecretOptions) (DeleteSecretPoller, error) {
+	// TODO: this is kvSecretClient.DeleteSecret and a GetDeletedSecret under the hood for the polling version
+	if options == nil {
+		options = &BeginDeleteSecretOptions{}
+	}
+	resp, err := c.kvClient.DeleteSecret(ctx, c.vaultUrl, name, options.toGenerated())
+	if err != nil {
+		return &startDeletePoller{}, err
+	}
+
+	return &startDeletePoller{
+		vaultUrl:       c.vaultUrl,
+		secretName:     name,
+		client:         c.kvClient,
+		deleteResponse: resp,
+	}, nil
+}
+
+type GetDeletedSecretOptions struct{}
+
+type GetDeletedSecretResponse struct{}
+
+func (c *Client) GetDeletedSecret(ctx context.Context, name string, options *GetDeletedSecretOptions) (GetDeletedSecretResponse, error) {
+	if options == nil {
+		options = &GetDeletedSecretOptions{}
+	}
+
+	return GetDeletedSecretResponse{}, errors.New("not implemented")
+}
+
+type UpdateSecretPropertiesOptions struct{}
+
+type UpdateSecretPropertiesResponse struct{}
+
+func (c *Client) UpdateSecretProperties(ctx context.Context, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
+	if options == nil {
+		options = &UpdateSecretPropertiesOptions{}
+	}
+
+	return UpdateSecretPropertiesResponse{}, errors.New("not implemented")
+}
+
+type BackupSecretOptions struct{}
+
+type BackupSecretResponse struct{}
+
+func (c *Client) BackupSecret(ctx context.Context, options *BackupSecretOptions) (BackupSecretResponse, error) {
+	if options == nil {
+		options = &BackupSecretOptions{}
+	}
+
+	return BackupSecretResponse{}, errors.New("not implemented")
+}
+
+type RestoreSecretBackupOptions struct{}
+
+type RestoreSecretBackupResponse struct{}
+
+func (c *Client) RestoreSecretBackup(ctx context.Context, options *RestoreSecretBackupOptions) (RestoreSecretBackupResponse, error) {
+	if options == nil {
+		options = &RestoreSecretBackupOptions{}
+	}
+
+	return RestoreSecretBackupResponse{}, errors.New("not implemented")
+}
+
+type PurgeDeletedSecretOptions struct{}
+
+type PurgeDeletedSecretResponse struct{}
+
+func (c *Client) PurgeDeletedSecret(ctx context.Context, options *PurgeDeletedSecretOptions) (PurgeDeletedSecretResponse, error) {
+	if options == nil {
+		options = &PurgeDeletedSecretOptions{}
+	}
+
+	return PurgeDeletedSecretResponse{}, errors.New("not implemented")
+}
+
+type StartRecoverDeletedSecretOptions struct{}
+
+type StartRecoverDeletedSecretResponse struct{}
+
+func (c *Client) StartRecoverDeletedSecret(ctx context.Context, options *StartRecoverDeletedSecretOptions) (StartRecoverDeletedSecretResponse, error) {
+	if options == nil {
+		options = &StartRecoverDeletedSecretOptions{}
+	}
+
+	return StartRecoverDeletedSecretResponse{}, errors.New("not implemented")
+}
+
+type GetSecretPropertiesOptions struct{}
+
+type GetSecretPropertiesResponse struct{}
+
+func (c *Client) GetSecretProperties(ctx context.Context, options *GetSecretPropertiesOptions) (GetSecretPropertiesResponse, error) {
+	if options == nil {
+		options = &GetSecretPropertiesOptions{}
+	}
+
+	return GetSecretPropertiesResponse{}, errors.New("not implemented")
+}
+
+type GetSecretVersionsPropertiesOptions struct{}
+
+type GetSecretVersionsPropertiesResponse struct{}
+
+func (c *Client) GetSecretVersionsProperties(ctx context.Context, options *GetSecretVersionsPropertiesOptions) (GetSecretVersionsPropertiesResponse, error) {
+	if options == nil {
+		options = &GetSecretVersionsPropertiesOptions{}
+	}
+
+	return GetSecretVersionsPropertiesResponse{}, errors.New("not implemented")
+}
+
+type ListDeletedSecretsOptions struct{}
+
+type ListDeletedSecretsResponse struct{}
+
+func (c *Client) ListDeletedSecrets(ctx context.Context, options *ListDeletedSecretsOptions) (ListDeletedSecretsResponse, error) {
+	if options == nil {
+		options = &ListDeletedSecretsOptions{}
+	}
+
+	return ListDeletedSecretsResponse{}, errors.New("not implemented")
+}
+
+type ListSecretsPager interface {
+	PageResponse() ListSecretsPage
+
+	Err() error
+
+	NextPage(context.Context) bool
+}
+
+type listSecretsPager struct {
+	genPager *internal.KeyVaultClientGetSecretVersionsPager
+}
+
+func (l *listSecretsPager) PageResponse() ListSecretsPage {
+	return listSecretsPageFromGenerated(l.genPager.PageResponse())
+}
+
+func (l *listSecretsPager) Err() error {
+	return l.genPager.Err()
+}
+
+func (l *listSecretsPager) NextPage(ctx context.Context) bool {
+	return l.genPager.NextPage(ctx)
+}
+
+type ListSecretVersionsOptions struct {
+	MaxResults *int32
+}
+
+func (l *ListSecretVersionsOptions) toGenerated() *internal.KeyVaultClientGetSecretVersionsOptions {
+	if l == nil {
+		return &internal.KeyVaultClientGetSecretVersionsOptions{}
+	}
+	return &internal.KeyVaultClientGetSecretVersionsOptions{
+		Maxresults: l.MaxResults,
+	}
+}
+
+// The secret list result
+type ListSecretsPage struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+
+	// READ-ONLY; The URL to get the next set of secrets.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
+	Secrets []*internal.SecretItem `json:"value,omitempty" azure:"ro"`
+}
+
+func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretVersionsResponse) ListSecretsPage {
+	return ListSecretsPage{
+		RawResponse: i.RawResponse,
+		NextLink: i.NextLink,
+		Secrets: i.Value,
+	}
+}
+
+func (c *Client) ListSecretVersions(name string, options *ListSecretVersionsOptions) ListSecretsPager {
+	if options == nil {
+		options = &ListSecretVersionsOptions{}
+	}
+
+	genPager := c.kvClient.GetSecretVersions(
+		c.vaultUrl,
+		name,
+		options.toGenerated(),
+	)
+
+	return &listSecretsPager{
+		genPager: genPager,
+	}
+}
+
+type ListSecretsOptions struct{}
+
+type ListSecretsResponse struct{}
+
+func (c *Client) ListSecrets(ctx context.Context, options *ListSecretsOptions) (ListSecretsResponse, error) {
+	if options == nil {
+		options = &ListSecretsOptions{}
+	}
+
+	return ListSecretsResponse{}, errors.New("not implemented")
 }

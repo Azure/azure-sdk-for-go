@@ -562,30 +562,6 @@ func testDeferMessage(ctx context.Context, t *testing.T, queue *Queue) {
 	assert.NoError(t, err)
 }
 
-func (suite *serviceBusSuite) TestQueueWithoutDuplicateDetection() {
-	tests := map[string]func(context.Context, *testing.T, *Queue){
-		"SendBatch_NoZeroCheck": testSendBatch,
-	}
-
-	mgmtOpts := []QueueManagementOption{
-		QueueEntityWithPartitioning(),
-	}
-	suite.queueMessageTestWithMgmtOptions(tests, mgmtOpts...)
-}
-
-func testSendBatch(ctx context.Context, t *testing.T, q *Queue) {
-	msgCount := 10000
-	messages := make([]*Message, msgCount)
-	for i := 0; i < msgCount; i++ {
-		rmsg := test.RandomString("foo", 10)
-		messages[i] = NewMessageFromString(fmt.Sprintf("hello %s!", rmsg))
-	}
-
-	iterator := NewMessageBatchIterator(StandardMaxMessageSizeInBytes, messages...)
-	assert.NoError(t, q.SendBatch(ctx, iterator))
-	assertMessageCount(ctx, t, q.namespace, q.Name, int64(msgCount))
-}
-
 func testDuplicateDetection(ctx context.Context, t *testing.T, queue *Queue) {
 	messages := []*Message{
 		NewMessageFromString("hello, "),

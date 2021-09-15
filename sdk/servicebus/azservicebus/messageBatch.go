@@ -1,8 +1,6 @@
 package azservicebus
 
 import (
-	"errors"
-
 	"github.com/Azure/azure-amqp-common-go/v3/uuid"
 	"github.com/Azure/go-amqp"
 )
@@ -33,8 +31,19 @@ func newMessageBatch(maxBytes int) *MessageBatch {
 	return mb
 }
 
-// TODO: change to the standardized error pattern.
-var ErrMessageTooLarge = errors.New("message too large to fit in batch")
+type MessageTooLarge interface {
+	MessageTooLarge()
+}
+
+type errMessageTooLarge struct {
+}
+
+func (e errMessageTooLarge) Error() string {
+	return "message too large to fit in batch"
+}
+
+func (e errMessageTooLarge) NonRetriable()    {}
+func (e errMessageTooLarge) MessageTooLarge() {}
 
 // Add adds a message to the batch if the message will not exceed the max size of the batch
 // If the message is too large, an error of type 'ErrMessageTooLarge' will be returned.
@@ -62,7 +71,7 @@ func (mb *MessageBatch) Add(m *Message) error {
 	}
 
 	if mb.Size()+len(bin) > int(mb.maxBytes) {
-		return ErrMessageTooLarge
+		return &errMessageTooLarge{}
 	}
 
 	mb.size += len(bin)

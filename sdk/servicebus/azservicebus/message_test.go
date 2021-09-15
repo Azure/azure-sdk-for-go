@@ -17,6 +17,7 @@ func TestMessageUnitTest(t *testing.T) {
 		amqpMessage, err := message.toAMQPMessage()
 		require.NoError(t, err)
 		require.Empty(t, amqpMessage.Annotations)
+		require.NotEmpty(t, amqpMessage.Properties.MessageID, "MessageID is (currently) automatically filled out if you don't specify one")
 
 		message = &Message{
 			ID:                      "message id",
@@ -36,8 +37,8 @@ func TestMessageUnitTest(t *testing.T) {
 		require.EqualValues(t, 1, len(amqpMessage.Data))
 
 		require.EqualValues(t, map[interface{}]interface{}{
-			annotationPartitionKey:    to.StringPtr("partition key"),
-			annotationViaPartitionKey: to.StringPtr("via partition key"),
+			annotationPartitionKey:    "partition key",
+			annotationViaPartitionKey: "via partition key",
 		}, amqpMessage.Annotations)
 	})
 

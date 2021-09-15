@@ -17,6 +17,8 @@ import (
 )
 
 func TestReceiver(t *testing.T) {
+	t.Parallel()
+
 	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*5)
@@ -25,19 +27,17 @@ func TestReceiver(t *testing.T) {
 	serviceBusClient, err := NewClient(WithConnectionString(cs))
 	require.NoError(t, err)
 
-	nanoSeconds := time.Now().UnixNano()
-	queueName := fmt.Sprintf("queue-%X", nanoSeconds)
-	cleanupQueue := createQueue(t, cs, queueName)
-	defer cleanupQueue()
-
 	t.Run("SendFiveReceiveFive", func(t *testing.T) {
+		queueName, cleanupQueue := createQueue(t, cs, nil)
+		defer cleanupQueue()
+
 		sender, err := serviceBusClient.NewSender(queueName)
 		require.NoError(t, err)
 		defer sender.Close(ctx)
 
 		for i := 0; i < 5; i++ {
 			err = sender.SendMessage(ctx, &Message{
-				Body: []byte(fmt.Sprintf("[%X,%d]: send five, receive five", nanoSeconds, i)),
+				Body: []byte(fmt.Sprintf("[%d]: send five, receive five", i)),
 			})
 			require.NoError(t, err)
 		}
@@ -54,7 +54,7 @@ func TestReceiver(t *testing.T) {
 
 		for i := 0; i < 5; i++ {
 			require.EqualValues(t,
-				fmt.Sprintf("[%X,%d]: send five, receive five", nanoSeconds, i),
+				fmt.Sprintf("[%d]: send five, receive five", i),
 				string(messages[i].Body))
 
 			require.NoError(t, receiver.CompleteMessage(ctx, messages[i]))
@@ -62,13 +62,16 @@ func TestReceiver(t *testing.T) {
 	})
 
 	t.Run("ForceTimeoutWithTooFewMessages", func(t *testing.T) {
+		queueName, cleanupQueue := createQueue(t, cs, nil)
+		defer cleanupQueue()
+
 		sender, err := serviceBusClient.NewSender(queueName)
 		require.NoError(t, err)
 		defer sender.Close(ctx)
 
 		for i := 0; i < 5; i++ {
 			err = sender.SendMessage(ctx, &Message{
-				Body: []byte(fmt.Sprintf("[%X,%d]: force timeout waiting for messages", nanoSeconds, i)),
+				Body: []byte(fmt.Sprintf("[%d]: force timeout waiting for messages", i)),
 			})
 			require.NoError(t, err)
 		}
@@ -85,7 +88,7 @@ func TestReceiver(t *testing.T) {
 
 		for i := 0; i < 5; i++ {
 			require.EqualValues(t,
-				fmt.Sprintf("[%X,%d]: force timeout waiting for messages", nanoSeconds, i),
+				fmt.Sprintf("[%d]: force timeout waiting for messages", i),
 				string(messages[i].Body))
 
 			require.NoError(t, receiver.CompleteMessage(ctx, messages[i]))
@@ -93,12 +96,15 @@ func TestReceiver(t *testing.T) {
 	})
 
 	t.Run("ReceiveAndAbandon", func(t *testing.T) {
+		queueName, cleanupQueue := createQueue(t, cs, nil)
+		defer cleanupQueue()
+
 		sender, err := serviceBusClient.NewSender(queueName)
 		require.NoError(t, err)
 		defer sender.Close(ctx)
 
 		err = sender.SendMessage(ctx, &Message{
-			Body: []byte(fmt.Sprintf("[%X]: send and abandon test", nanoSeconds)),
+			Body: []byte("send and abandon test"),
 		})
 		require.NoError(t, err)
 
@@ -122,12 +128,15 @@ func TestReceiver(t *testing.T) {
 	// Receive has two timeouts - an explicit one (passed in via ReceiveWithMaxTimeout)
 	// and an implicit one that kicks in as soon as we receive our first message.
 	t.Run("ReceiveWithEarlyFirstMessageTimeout", func(t *testing.T) {
+		queueName, cleanupQueue := createQueue(t, cs, nil)
+		defer cleanupQueue()
+
 		sender, err := serviceBusClient.NewSender(queueName)
 		require.NoError(t, err)
 		defer sender.Close(ctx)
 
 		err = sender.SendMessage(ctx, &Message{
-			Body: []byte(fmt.Sprintf("[%X]: send and abandon test", nanoSeconds)),
+			Body: []byte("send and abandon test"),
 		})
 		require.NoError(t, err)
 
@@ -147,6 +156,9 @@ func TestReceiver(t *testing.T) {
 	})
 
 	t.Run("SendAndReceiveManyTimes", func(t *testing.T) {
+		queueName, cleanupQueue := createQueue(t, cs, nil)
+		defer cleanupQueue()
+
 		sender, err := serviceBusClient.NewSender(queueName)
 		require.NoError(t, err)
 
@@ -154,7 +166,7 @@ func TestReceiver(t *testing.T) {
 
 		for i := 0; i < 100; i++ {
 			err = sender.SendMessage(ctx, &Message{
-				Body: []byte(fmt.Sprintf("[%X:%d]: many messages", nanoSeconds, i)),
+				Body: []byte(fmt.Sprintf("[%d]: many messages", i)),
 			})
 			require.NoError(t, err)
 		}

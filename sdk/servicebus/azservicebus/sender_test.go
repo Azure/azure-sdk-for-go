@@ -2,53 +2,53 @@ package azservicebus
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"sort"
 	"testing"
-	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/stretchr/testify/require"
 )
 
 func TestSender(t *testing.T) {
-	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
+	t.Parallel()
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*5)
-	defer cancel()
+	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
 
 	serviceBusClient, err := NewClient(WithConnectionString(cs))
 	require.NoError(t, err)
 
-	nanoSeconds := time.Now().UnixNano()
-	queueName := fmt.Sprintf("queue-%X", nanoSeconds)
-
-	cleanupQueue := createQueue(t, cs, queueName)
-	defer cleanupQueue()
-
 	t.Run("testSendBatchOfTwo", func(t *testing.T) {
-		testSendBatchOfTwo(ctx, t, serviceBusClient, queueName)
+		queueName, cleanupQueue := createQueue(t, cs, nil)
+		defer cleanupQueue()
+		testSendBatchOfTwo(context.Background(), t, serviceBusClient, queueName)
 	})
 
 	t.Run("testUsingPartitionedQueue", func(t *testing.T) {
-		sender, err := serviceBusClient.NewSender("partitionedQueue")
+		queueName, cleanupQueue := createQueue(t, cs, &internal.QueueDescription{
+			EnablePartitioning: to.BoolPtr(true),
+		})
+		defer cleanupQueue()
+
+		sender, err := serviceBusClient.NewSender(queueName)
 		require.NoError(t, err)
-		defer sender.Close(ctx)
+		defer sender.Close(context.Background())
 
 		receiver, err := serviceBusClient.NewReceiver(
-			ReceiverWithQueue("partitionedQueue"),
+			ReceiverWithQueue(queueName),
 			ReceiverWithReceiveMode(ReceiveAndDelete))
 		require.NoError(t, err)
-		defer receiver.Close(ctx)
+		defer receiver.Close(context.Background())
 
-		err = sender.SendMessage(ctx, &Message{
+		err = sender.SendMessage(context.Background(), &Message{
+			ID:           "message ID",
 			Body:         []byte("1. single partitioned message"),
 			PartitionKey: to.StringPtr("partitionKey1"),
 		})
 		require.NoError(t, err)
 
-		batch, err := sender.NewMessageBatch(ctx)
+		batch, err := sender.NewMessageBatch(context.Background())
 		require.NoError(t, err)
 
 		err = batch.Add(&Message{
@@ -59,25 +59,28 @@ func TestSender(t *testing.T) {
 
 		err = batch.Add(&Message{
 			Body:         []byte("3. Message in batch"),
-			PartitionKey: to.StringPtr("partitionKey that gets ignored because first message in the batch wins"),
+			PartitionKey: to.StringPtr("partitionKey1"),
 		})
 		require.NoError(t, err)
 
-		err = sender.SendMessage(ctx, batch)
+		err = sender.SendMessage(context.Background(), batch)
 		require.NoError(t, err)
 
-		messages, err := receiver.ReceiveMessages(ctx, 1+2)
+		messages, err := receiver.ReceiveMessages(context.Background(), 1+2)
 		require.NoError(t, err)
 
 		sort.Sort(receivedMessages(messages))
 
 		require.EqualValues(t, 3, len(messages))
 
-		require.EqualValues(t, "partitionKey1", messages[0].PartitionKey)
-		// (used the same partition key for the _first_ message in the batch, which was then also applied
-		// to every message in the batch (ie, it override the second message's partition key)
-		require.EqualValues(t, "partitionKey1", messages[1].PartitionKey)
-		require.EqualValues(t, "partitionKey1", messages[2].PartitionKey)
+		require.EqualValues(t, "partitionKey1", *messages[0].PartitionKey)
+		require.EqualValues(t, "partitionKey1", *messages[1].PartitionKey)
+		require.EqualValues(t, "partitionKey1", *messages[2].PartitionKey)
+
+		// all the messages should have ended up in the same partition
+		require.NotNil(t, messages[0].PartitionID)
+		require.EqualValues(t, *messages[0].PartitionID, *messages[1].PartitionID)
+		require.EqualValues(t, *messages[0].PartitionID, *messages[2].PartitionID)
 	})
 }
 

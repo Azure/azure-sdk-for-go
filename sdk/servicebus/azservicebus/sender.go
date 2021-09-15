@@ -27,6 +27,8 @@ type Sender struct {
 	nsCreateLegacySender func(ctx context.Context, entityPath string) (internal.LegacySender, error)
 }
 
+// SendableMessage are sendable using Sender.SendMessage.
+// Message, MessageBatch implement this interface.
 type SendableMessage interface {
 	toAMQPMessage() (*amqp.Message, error)
 }

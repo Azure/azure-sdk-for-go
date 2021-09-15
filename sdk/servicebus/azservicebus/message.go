@@ -1,6 +1,7 @@
 package azservicebus
 
 import (
+	"github.com/Azure/azure-amqp-common-go/v3/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
 	"github.com/Azure/go-amqp"
 )
@@ -34,21 +35,35 @@ type ReceivedMessage struct {
 }
 
 func (m *Message) toAMQPMessage() (*amqp.Message, error) {
+	messageID := m.ID
+
+	// TODO: I don't think this should be strictly required. Need to
+	// look into why it won't send properly without one.
+	if messageID == "" {
+		uuid, err := uuid.NewV4()
+
+		if err != nil {
+			return nil, err
+		}
+
+		messageID = uuid.String()
+	}
+
 	msg := &amqp.Message{
 		Data: [][]byte{m.Body},
 		Properties: &amqp.MessageProperties{
-			MessageID: m.ID,
+			MessageID: messageID,
 			GroupID:   m.SessionID,
 		},
 		Annotations: amqp.Annotations{},
 	}
 
 	if m.PartitionKey != nil {
-		msg.Annotations[annotationPartitionKey] = m.PartitionKey
+		msg.Annotations[annotationPartitionKey] = *m.PartitionKey
 	}
 
 	if m.TransactionPartitionKey != nil {
-		msg.Annotations[annotationViaPartitionKey] = m.TransactionPartitionKey
+		msg.Annotations[annotationViaPartitionKey] = *m.TransactionPartitionKey
 	}
 
 	return msg, nil

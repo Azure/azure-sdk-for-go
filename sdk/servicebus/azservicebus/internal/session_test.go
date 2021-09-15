@@ -24,8 +24,8 @@ func (m *MockedBuilder) NewReceiver(ctx context.Context, opts ...ReceiverOption)
 	return args.Get(0).(*Receiver), args.Error(1)
 }
 
-func (m *MockedBuilder) NewSender(ctx context.Context, opts ...SenderOption) (*Sender, error) {
-	args := m.Called(ctx, opts)
+func (m *MockedBuilder) NewSender(ctx context.Context) (*Sender, error) {
+	args := m.Called(ctx)
 	return args.Get(0).(*Sender), args.Error(1)
 }
 

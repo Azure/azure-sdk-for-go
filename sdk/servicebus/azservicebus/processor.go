@@ -363,20 +363,6 @@ func (p *Processor) DeferMessage(ctx context.Context, message *ReceivedMessage) 
 	return message.legacyMessage.Defer(ctx)
 }
 
-func convertToReceivedMessage(legacyMessage *internal.Message) *ReceivedMessage {
-	return &ReceivedMessage{
-		// TODO: When we swap out the encoding from the legacy we should also make it so LockToken is simply a string, not expected to be a UUID.
-		// Ie, it should be opaque to us.
-		LockToken:      legacyMessage.LockToken.String(),
-		SequenceNumber: *legacyMessage.SystemProperties.SequenceNumber,
-		Message: Message{
-			Body: legacyMessage.Data,
-			ID:   legacyMessage.ID,
-		},
-		legacyMessage: legacyMessage,
-	}
-}
-
 func wrapNotifyError(fn func(err error), wg *sync.WaitGroup) func(err error) {
 	return func(err error) {
 		if err == nil {

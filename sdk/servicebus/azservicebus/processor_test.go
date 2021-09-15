@@ -16,16 +16,34 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func createQueue(t *testing.T, connectionString string, queueName string) func() {
+// createQueue creates a queue using a subset of entries in 'queueDescription':
+// - EnablePartitioning
+// - RequiresSession
+func createQueue(t *testing.T, connectionString string, queueDescription *internal.QueueDescription) (string, func()) {
+	nanoSeconds := time.Now().UnixNano()
+	queueName := fmt.Sprintf("queue-%X", nanoSeconds)
+
 	ns, err := internal.NewNamespace(internal.NamespaceWithConnectionString(connectionString))
 	require.NoError(t, err)
 
 	qm := ns.NewQueueManager()
 
-	_, err = qm.Put(context.TODO(), queueName)
+	var opts []internal.QueueManagementOption
+
+	if queueDescription != nil {
+		if queueDescription.EnablePartitioning != nil && *queueDescription.EnablePartitioning {
+			opts = append(opts, internal.QueueEntityWithPartitioning())
+		}
+
+		if queueDescription != nil && queueDescription.RequiresSession != nil && *queueDescription.RequiresSession {
+			opts = append(opts, internal.QueueEntityWithRequiredSessions())
+		}
+	}
+
+	_, err = qm.Put(context.TODO(), queueName, opts...)
 	require.NoError(t, err)
 
-	return func() {
+	return queueName, func() {
 		if err := qm.Delete(context.TODO(), queueName); err != nil {
 			require.NoError(t, err)
 		}
@@ -41,9 +59,7 @@ func TestProcessor(t *testing.T) {
 	serviceBusClient, err := NewClient(WithConnectionString(cs))
 	require.NoError(t, err)
 
-	nanoSeconds := time.Now().UnixNano()
-	queueName := fmt.Sprintf("queue-%X", nanoSeconds)
-	cleanupQueue := createQueue(t, cs, queueName)
+	queueName, cleanupQueue := createQueue(t, cs, nil)
 	defer cleanupQueue()
 
 	t.Run("ReceiveMessagesUsingProcessor", func(t *testing.T) {
@@ -96,8 +112,6 @@ func TestProcessor(t *testing.T) {
 }
 
 func TestProcessorUnitTests(t *testing.T) {
-	t.Parallel()
-
 	t.Run("Processor", func(t *testing.T) {
 		t.Run("StartAndClose", func(t *testing.T) {
 			fakeNs := internal.NewFakeNamespace()

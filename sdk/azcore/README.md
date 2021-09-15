@@ -15,7 +15,7 @@ Typically, you will not need to explicitly install `azcore` as it will be instal
 To add the latest version to your `go.mod` file, execute the following command.
 
 ```bash
-go get -u github.com/Azure/azure-sdk-for-go/sdk/azcore
+go get github.com/Azure/azure-sdk-for-go/sdk/azcore
 ```
 
 General documentation and examples can be found on [pkg.go.dev](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).

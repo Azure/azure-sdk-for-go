@@ -22,6 +22,8 @@ type WorkTree interface {
 	CreateBranch(branch *Branch) error
 	DeleteBranch(name string) error
 	CherryPick(commit string) error
+	Stash() error
+	StashPop() error
 	Head() (*plumbing.Reference, error)
 	Tags() (storer.ReferenceIter, error)
 }
@@ -47,6 +49,25 @@ func NewWorkTree(path string) (WorkTree, error) {
 	if err != nil {
 		return nil, fmt.Errorf("cannot get the work tree of '%s': %+v", path, err)
 	}
+	return &repository{
+		Repository: r,
+		wt:         wt,
+		root:       wt.Filesystem.Root(),
+	}, nil
+}
+
+func CloneWorkTree(repoURL, workingPath string) (WorkTree, error) {
+	r, err := git.PlainClone(workingPath, false, &git.CloneOptions{
+		URL: repoURL,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("cannot clone '%s' to '%s': %+v", repoURL, workingPath, err)
+	}
+	wt, err := r.Worktree()
+	if err != nil {
+		return nil, fmt.Errorf("cannot get the work tree of '%s': %+v", workingPath, err)
+	}
+
 	return &repository{
 		Repository: r,
 		wt:         wt,
@@ -146,6 +167,28 @@ func (r *repository) DeleteBranch(name string) error {
 // TODO -- go-git now does not support cherry-pick (or I did not find this?), therefore we use the git command as a workaround
 func (r *repository) CherryPick(commit string) error {
 	cmd := exec.Command("git", "cherry-pick", commit)
+	cmd.Dir = r.root
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf(string(output))
+	}
+	return nil
+}
+
+// TODO -- go-git now does not support stash (or I did not find this?), therefore we use the git command as a workaround
+func (r *repository) Stash() error {
+	cmd := exec.Command("git", "stash")
+	cmd.Dir = r.root
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf(string(output))
+	}
+	return nil
+}
+
+// TODO -- go-git now does not support stash (or I did not find this?), therefore we use the git command as a workaround
+func (r *repository) StashPop() error {
+	cmd := exec.Command("git", "stash", "pop")
 	cmd.Dir = r.root
 	output, err := cmd.CombinedOutput()
 	if err != nil {

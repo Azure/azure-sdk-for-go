@@ -4,8 +4,8 @@
 
 ``` yaml
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/dec9c6c39c2c24aa51a3f70c0b1133912653b180/specification/postgresql/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/dec9c6c39c2c24aa51a3f70c0b1133912653b180/specification/postgresql/resource-manager/readme.go.md
-module-version: 0.1.0
+- https://github.com/Azure/azure-rest-api-specs/blob/851fac2e61b195c3980992de0b837c3dfb8075a1/specification/postgresql/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/851fac2e61b195c3980992de0b837c3dfb8075a1/specification/postgresql/resource-manager/readme.go.md
+module-version: 0.2.0
 package-singleservers: true
 ```

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,42 +12,45 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // APIProductClient contains the methods for the APIProduct group.
 // Don't use this type directly, use NewAPIProductClient() instead.
 type APIProductClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewAPIProductClient creates a new instance of APIProductClient with the specified values.
-func NewAPIProductClient(con *armcore.Connection, subscriptionID string) *APIProductClient {
-	return &APIProductClient{con: con, subscriptionID: subscriptionID}
+func NewAPIProductClient(con *arm.Connection, subscriptionID string) *APIProductClient {
+	return &APIProductClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // ListByApis - Lists all Products, which the API is part of.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *APIProductClient) ListByApis(resourceGroupName string, serviceName string, apiID string, options *APIProductListByApisOptions) APIProductListByApisPager {
-	return &apiProductListByApisPager{
+func (client *APIProductClient) ListByApis(resourceGroupName string, serviceName string, apiID string, options *APIProductListByApisOptions) *APIProductListByApisPager {
+	return &APIProductListByApisPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByApisCreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
 		},
-		advancer: func(ctx context.Context, resp APIProductListByApisResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ProductCollection.NextLink)
+		advancer: func(ctx context.Context, resp APIProductListByApisResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ProductCollection.NextLink)
 		},
 	}
 }
 
 // listByApisCreateRequest creates the ListByApis request.
-func (client *APIProductClient) listByApisCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APIProductListByApisOptions) (*azcore.Request, error) {
+func (client *APIProductClient) listByApisCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *APIProductListByApisOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/products"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -64,12 +68,11 @@ func (client *APIProductClient) listByApisCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -79,30 +82,30 @@ func (client *APIProductClient) listByApisCreateRequest(ctx context.Context, res
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByApisHandleResponse handles the ListByApis response.
-func (client *APIProductClient) listByApisHandleResponse(resp *azcore.Response) (APIProductListByApisResponse, error) {
-	result := APIProductListByApisResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ProductCollection); err != nil {
+func (client *APIProductClient) listByApisHandleResponse(resp *http.Response) (APIProductListByApisResponse, error) {
+	result := APIProductListByApisResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ProductCollection); err != nil {
 		return APIProductListByApisResponse{}, err
 	}
 	return result, nil
 }
 
 // listByApisHandleError handles the ListByApis error response.
-func (client *APIProductClient) listByApisHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIProductClient) listByApisHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

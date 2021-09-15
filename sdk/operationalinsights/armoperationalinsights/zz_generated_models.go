@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,9 +10,10 @@ package armoperationalinsights
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AssociatedWorkspace - The list of Log Analytics workspaces associated with the cluster.
@@ -213,7 +215,7 @@ func (c ClusterProperties) MarshalJSON() ([]byte, error) {
 // ClusterSKU - The cluster sku definition.
 type ClusterSKU struct {
 	// The capacity value
-	Capacity *int64 `json:"capacity,omitempty"`
+	Capacity *Capacity `json:"capacity,omitempty"`
 
 	// The name of the SKU.
 	Name *ClusterSKUNameEnum `json:"name,omitempty"`
@@ -1301,7 +1303,7 @@ type StorageInsightConfigsListByWorkspaceOptions struct {
 // StorageInsightListResult - The list storage insights operation response.
 type StorageInsightListResult struct {
 	// The link (url) to the next page of results.
-	OdataNextLink *string `json:"@odata.nextLink,omitempty"`
+	ODataNextLink *string `json:"@odata.nextLink,omitempty"`
 
 	// A list of storage insight items.
 	Value []*StorageInsight `json:"value,omitempty"`
@@ -1310,7 +1312,7 @@ type StorageInsightListResult struct {
 // MarshalJSON implements the json.Marshaller interface for type StorageInsightListResult.
 func (s StorageInsightListResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "@odata.nextLink", s.OdataNextLink)
+	populate(objectMap, "@odata.nextLink", s.ODataNextLink)
 	populate(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
 }
@@ -1347,54 +1349,6 @@ type StorageInsightStatus struct {
 
 	// Description of the state of the storage insight.
 	Description *string `json:"description,omitempty"`
-}
-
-// Table - Workspace data table definition.
-type Table struct {
-	ProxyResource
-	// Table properties.
-	Properties *TableProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Table.
-func (t Table) MarshalJSON() ([]byte, error) {
-	objectMap := t.ProxyResource.marshalInternal()
-	populate(objectMap, "properties", t.Properties)
-	return json.Marshal(objectMap)
-}
-
-// TableProperties - Table properties.
-type TableProperties struct {
-	// The data table data retention in days, between 30 and 730. Setting this property to null will default to the workspace retention.
-	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
-}
-
-// TablesGetOptions contains the optional parameters for the Tables.Get method.
-type TablesGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TablesListByWorkspaceOptions contains the optional parameters for the Tables.ListByWorkspace method.
-type TablesListByWorkspaceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// TablesListResult - The list tables operation response.
-type TablesListResult struct {
-	// A list of data tables.
-	Value []*Table `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type TablesListResult.
-func (t TablesListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", t.Value)
-	return json.Marshal(objectMap)
-}
-
-// TablesUpdateOptions contains the optional parameters for the Tables.Update method.
-type TablesUpdateOptions struct {
-	// placeholder for future optional parameters
 }
 
 // Tag - A tag of a saved search.
@@ -1796,8 +1750,8 @@ type WorkspaceSKU struct {
 	// REQUIRED; The name of the SKU.
 	Name *WorkspaceSKUNameEnum `json:"name,omitempty"`
 
-	// The capacity reservation level for this workspace, when CapacityReservation sku is selected.
-	CapacityReservationLevel *int32 `json:"capacityReservationLevel,omitempty"`
+	// The capacity reservation level in GB for this workspace, when CapacityReservation sku is selected.
+	CapacityReservationLevel *CapacityReservationLevel `json:"capacityReservationLevel,omitempty"`
 
 	// READ-ONLY; The last time when the sku was updated.
 	LastSKUUpdate *string `json:"lastSkuUpdate,omitempty" azure:"ro"`

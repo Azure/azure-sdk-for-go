@@ -12,8 +12,6 @@ import (
 )
 
 func TestSender(t *testing.T) {
-	t.Parallel()
-
 	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
 
 	serviceBusClient, err := NewClient(WithConnectionString(cs))

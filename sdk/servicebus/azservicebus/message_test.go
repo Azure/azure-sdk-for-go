@@ -46,7 +46,7 @@ func TestMessageUnitTest(t *testing.T) {
 		receivedMessage := convertToReceivedMessage(&internal.Message{})
 
 		require.EqualValues(t, "", receivedMessage.LockToken)
-		require.Nil(t, receivedMessage.SequenceNumber)
+		require.EqualValues(t, 0, receivedMessage.SequenceNumber)
 		require.Nil(t, receivedMessage.PartitionKey)
 		require.Nil(t, receivedMessage.TransactionPartitionKey) // `ViaPartitionKey`
 
@@ -64,7 +64,7 @@ func TestMessageUnitTest(t *testing.T) {
 		})
 
 		require.EqualValues(t, uuid.String(), receivedMessage.LockToken)
-		require.EqualValues(t, 111, *receivedMessage.SequenceNumber)
+		require.EqualValues(t, 111, receivedMessage.SequenceNumber)
 		require.EqualValues(t, "partition key", *receivedMessage.PartitionKey)
 		require.EqualValues(t, "via partition key", *receivedMessage.TransactionPartitionKey) // `ViaPartitionKey`
 	})

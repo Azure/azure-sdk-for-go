@@ -27,7 +27,7 @@ type Message struct {
 type ReceivedMessage struct {
 	Message
 	LockToken      string
-	SequenceNumber *int64
+	SequenceNumber int64
 
 	legacyMessage *internal.Message
 }
@@ -74,12 +74,15 @@ func convertToReceivedMessage(legacyMessage *internal.Message) *ReceivedMessage 
 		lockToken = legacyMessage.LockToken.String()
 	}
 
-	var sequenceNumber *int64
+	var sequenceNumber int64
 	var partitionKey *string
 	var viaPartitionKey *string
 
 	if legacyMessage.SystemProperties != nil {
-		sequenceNumber = legacyMessage.SystemProperties.SequenceNumber
+		if legacyMessage.SystemProperties.SequenceNumber != nil {
+			sequenceNumber = *legacyMessage.SystemProperties.SequenceNumber
+		}
+
 		partitionKey = legacyMessage.SystemProperties.PartitionKey
 		viaPartitionKey = legacyMessage.SystemProperties.ViaPartitionKey
 	}

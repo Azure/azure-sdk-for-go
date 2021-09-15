@@ -112,8 +112,6 @@ func TestProcessor(t *testing.T) {
 }
 
 func TestProcessorUnitTests(t *testing.T) {
-	t.Parallel()
-
 	t.Run("Processor", func(t *testing.T) {
 		t.Run("StartAndClose", func(t *testing.T) {
 			fakeNs := internal.NewFakeNamespace()

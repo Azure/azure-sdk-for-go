@@ -17,8 +17,6 @@ import (
 )
 
 func TestReceiver(t *testing.T) {
-	t.Parallel()
-
 	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*5)

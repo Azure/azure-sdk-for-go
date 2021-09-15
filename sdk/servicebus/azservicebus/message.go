@@ -26,7 +26,7 @@ type Message struct {
 // ReceivedMessage represents a message received from Service Bus.
 type ReceivedMessage struct {
 	Message
-	LockToken      *string
+	LockToken      string
 	SequenceNumber *int64
 
 	legacyMessage *internal.Message
@@ -68,11 +68,10 @@ func (m *Message) toAMQPMessage() (*amqp.Message, error) {
 }
 
 func convertToReceivedMessage(legacyMessage *internal.Message) *ReceivedMessage {
-	var lockToken *string
+	var lockToken string
 
 	if legacyMessage.LockToken != nil {
-		tmp := legacyMessage.LockToken.String()
-		lockToken = &tmp
+		lockToken = legacyMessage.LockToken.String()
 	}
 
 	var sequenceNumber *int64

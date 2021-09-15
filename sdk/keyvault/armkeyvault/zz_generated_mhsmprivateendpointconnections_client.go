@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,94 +12,69 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // MHSMPrivateEndpointConnectionsClient contains the methods for the MHSMPrivateEndpointConnections group.
 // Don't use this type directly, use NewMHSMPrivateEndpointConnectionsClient() instead.
 type MHSMPrivateEndpointConnectionsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewMHSMPrivateEndpointConnectionsClient creates a new instance of MHSMPrivateEndpointConnectionsClient with the specified values.
-func NewMHSMPrivateEndpointConnectionsClient(con *armcore.Connection, subscriptionID string) *MHSMPrivateEndpointConnectionsClient {
-	return &MHSMPrivateEndpointConnectionsClient{con: con, subscriptionID: subscriptionID}
+func NewMHSMPrivateEndpointConnectionsClient(con *arm.Connection, subscriptionID string) *MHSMPrivateEndpointConnectionsClient {
+	return &MHSMPrivateEndpointConnectionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginDelete - Deletes the specified private endpoint connection associated with the managed hsm pool.
 // If the operation fails it returns the *CloudError error type.
-func (client *MHSMPrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *MHSMPrivateEndpointConnectionsBeginDeleteOptions) (MHSMPrivateEndpointConnectionPollerResponse, error) {
+func (client *MHSMPrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *MHSMPrivateEndpointConnectionsBeginDeleteOptions) (MHSMPrivateEndpointConnectionsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
 	if err != nil {
-		return MHSMPrivateEndpointConnectionPollerResponse{}, err
+		return MHSMPrivateEndpointConnectionsDeletePollerResponse{}, err
 	}
-	result := MHSMPrivateEndpointConnectionPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("MHSMPrivateEndpointConnectionsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return MHSMPrivateEndpointConnectionPollerResponse{}, err
-	}
-	poller := &mhsmPrivateEndpointConnectionPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MHSMPrivateEndpointConnectionResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new MHSMPrivateEndpointConnectionPoller from the specified resume token.
-// token - The value must come from a previous call to MHSMPrivateEndpointConnectionPoller.ResumeToken().
-func (client *MHSMPrivateEndpointConnectionsClient) ResumeDelete(ctx context.Context, token string) (MHSMPrivateEndpointConnectionPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("MHSMPrivateEndpointConnectionsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return MHSMPrivateEndpointConnectionPollerResponse{}, err
-	}
-	poller := &mhsmPrivateEndpointConnectionPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return MHSMPrivateEndpointConnectionPollerResponse{}, err
-	}
-	result := MHSMPrivateEndpointConnectionPollerResponse{
+	result := MHSMPrivateEndpointConnectionsDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MHSMPrivateEndpointConnectionResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("MHSMPrivateEndpointConnectionsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return MHSMPrivateEndpointConnectionsDeletePollerResponse{}, err
+	}
+	result.Poller = &MHSMPrivateEndpointConnectionsDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes the specified private endpoint connection associated with the managed hsm pool.
 // If the operation fails it returns the *CloudError error type.
-func (client *MHSMPrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *MHSMPrivateEndpointConnectionsBeginDeleteOptions) (*azcore.Response, error) {
+func (client *MHSMPrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *MHSMPrivateEndpointConnectionsBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *MHSMPrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *MHSMPrivateEndpointConnectionsBeginDeleteOptions) (*azcore.Request, error) {
+func (client *MHSMPrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *MHSMPrivateEndpointConnectionsBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -116,50 +92,49 @@ func (client *MHSMPrivateEndpointConnectionsClient) deleteCreateRequest(ctx cont
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *MHSMPrivateEndpointConnectionsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MHSMPrivateEndpointConnectionsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets the specified private endpoint connection associated with the managed HSM Pool.
 // If the operation fails it returns the *ManagedHsmError error type.
-func (client *MHSMPrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *MHSMPrivateEndpointConnectionsGetOptions) (MHSMPrivateEndpointConnectionResponse, error) {
+func (client *MHSMPrivateEndpointConnectionsClient) Get(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *MHSMPrivateEndpointConnectionsGetOptions) (MHSMPrivateEndpointConnectionsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
 	if err != nil {
-		return MHSMPrivateEndpointConnectionResponse{}, err
+		return MHSMPrivateEndpointConnectionsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MHSMPrivateEndpointConnectionResponse{}, err
+		return MHSMPrivateEndpointConnectionsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return MHSMPrivateEndpointConnectionResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return MHSMPrivateEndpointConnectionsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *MHSMPrivateEndpointConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *MHSMPrivateEndpointConnectionsGetOptions) (*azcore.Request, error) {
+func (client *MHSMPrivateEndpointConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *MHSMPrivateEndpointConnectionsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -177,71 +152,55 @@ func (client *MHSMPrivateEndpointConnectionsClient) getCreateRequest(ctx context
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *MHSMPrivateEndpointConnectionsClient) getHandleResponse(resp *azcore.Response) (MHSMPrivateEndpointConnectionResponse, error) {
-	var val *MHSMPrivateEndpointConnection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return MHSMPrivateEndpointConnectionResponse{}, err
-	}
-	result := MHSMPrivateEndpointConnectionResponse{RawResponse: resp.Response, MHSMPrivateEndpointConnection: val}
-	if val := resp.Header.Get("Retry-After"); val != "" {
-		retryAfter32, err := strconv.ParseInt(val, 10, 32)
-		retryAfter := int32(retryAfter32)
-		if err != nil {
-			return MHSMPrivateEndpointConnectionResponse{}, err
-		}
-		result.RetryAfter = &retryAfter
-	}
-	if val := resp.Header.Get("Azure-AsyncOperation"); val != "" {
-		result.AzureAsyncOperation = &val
+func (client *MHSMPrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response) (MHSMPrivateEndpointConnectionsGetResponse, error) {
+	result := MHSMPrivateEndpointConnectionsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MHSMPrivateEndpointConnection); err != nil {
+		return MHSMPrivateEndpointConnectionsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *MHSMPrivateEndpointConnectionsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MHSMPrivateEndpointConnectionsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ManagedHsmError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByResource - The List operation gets information about the private endpoint connections associated with the managed HSM Pool.
 // If the operation fails it returns the *ManagedHsmError error type.
-func (client *MHSMPrivateEndpointConnectionsClient) ListByResource(resourceGroupName string, name string, options *MHSMPrivateEndpointConnectionsListByResourceOptions) MHSMPrivateEndpointConnectionsListResultPager {
-	return &mhsmPrivateEndpointConnectionsListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *MHSMPrivateEndpointConnectionsClient) ListByResource(resourceGroupName string, name string, options *MHSMPrivateEndpointConnectionsListByResourceOptions) *MHSMPrivateEndpointConnectionsListByResourcePager {
+	return &MHSMPrivateEndpointConnectionsListByResourcePager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		responder: client.listByResourceHandleResponse,
-		errorer:   client.listByResourceHandleError,
-		advancer: func(ctx context.Context, resp MHSMPrivateEndpointConnectionsListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.MHSMPrivateEndpointConnectionsListResult.NextLink)
+		advancer: func(ctx context.Context, resp MHSMPrivateEndpointConnectionsListByResourceResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.MHSMPrivateEndpointConnectionsListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listByResourceCreateRequest creates the ListByResource request.
-func (client *MHSMPrivateEndpointConnectionsClient) listByResourceCreateRequest(ctx context.Context, resourceGroupName string, name string, options *MHSMPrivateEndpointConnectionsListByResourceOptions) (*azcore.Request, error) {
+func (client *MHSMPrivateEndpointConnectionsClient) listByResourceCreateRequest(ctx context.Context, resourceGroupName string, name string, options *MHSMPrivateEndpointConnectionsListByResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/privateEndpointConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -255,59 +214,58 @@ func (client *MHSMPrivateEndpointConnectionsClient) listByResourceCreateRequest(
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceHandleResponse handles the ListByResource response.
-func (client *MHSMPrivateEndpointConnectionsClient) listByResourceHandleResponse(resp *azcore.Response) (MHSMPrivateEndpointConnectionsListResultResponse, error) {
-	var val *MHSMPrivateEndpointConnectionsListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return MHSMPrivateEndpointConnectionsListResultResponse{}, err
+func (client *MHSMPrivateEndpointConnectionsClient) listByResourceHandleResponse(resp *http.Response) (MHSMPrivateEndpointConnectionsListByResourceResponse, error) {
+	result := MHSMPrivateEndpointConnectionsListByResourceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MHSMPrivateEndpointConnectionsListResult); err != nil {
+		return MHSMPrivateEndpointConnectionsListByResourceResponse{}, err
 	}
-	return MHSMPrivateEndpointConnectionsListResultResponse{RawResponse: resp.Response, MHSMPrivateEndpointConnectionsListResult: val}, nil
+	return result, nil
 }
 
 // listByResourceHandleError handles the ListByResource error response.
-func (client *MHSMPrivateEndpointConnectionsClient) listByResourceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MHSMPrivateEndpointConnectionsClient) listByResourceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ManagedHsmError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Put - Updates the specified private endpoint connection associated with the managed hsm pool.
 // If the operation fails it returns the *CloudError error type.
-func (client *MHSMPrivateEndpointConnectionsClient) Put(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, properties MHSMPrivateEndpointConnection, options *MHSMPrivateEndpointConnectionsPutOptions) (MHSMPrivateEndpointConnectionResponse, error) {
+func (client *MHSMPrivateEndpointConnectionsClient) Put(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, properties MHSMPrivateEndpointConnection, options *MHSMPrivateEndpointConnectionsPutOptions) (MHSMPrivateEndpointConnectionsPutResponse, error) {
 	req, err := client.putCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, properties, options)
 	if err != nil {
-		return MHSMPrivateEndpointConnectionResponse{}, err
+		return MHSMPrivateEndpointConnectionsPutResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return MHSMPrivateEndpointConnectionResponse{}, err
+		return MHSMPrivateEndpointConnectionsPutResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return MHSMPrivateEndpointConnectionResponse{}, client.putHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return MHSMPrivateEndpointConnectionsPutResponse{}, client.putHandleError(resp)
 	}
 	return client.putHandleResponse(resp)
 }
 
 // putCreateRequest creates the Put request.
-func (client *MHSMPrivateEndpointConnectionsClient) putCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, properties MHSMPrivateEndpointConnection, options *MHSMPrivateEndpointConnectionsPutOptions) (*azcore.Request, error) {
+func (client *MHSMPrivateEndpointConnectionsClient) putCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, properties MHSMPrivateEndpointConnection, options *MHSMPrivateEndpointConnectionsPutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -325,48 +283,46 @@ func (client *MHSMPrivateEndpointConnectionsClient) putCreateRequest(ctx context
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(properties)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, properties)
 }
 
 // putHandleResponse handles the Put response.
-func (client *MHSMPrivateEndpointConnectionsClient) putHandleResponse(resp *azcore.Response) (MHSMPrivateEndpointConnectionResponse, error) {
-	var val *MHSMPrivateEndpointConnection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return MHSMPrivateEndpointConnectionResponse{}, err
-	}
-	result := MHSMPrivateEndpointConnectionResponse{RawResponse: resp.Response, MHSMPrivateEndpointConnection: val}
+func (client *MHSMPrivateEndpointConnectionsClient) putHandleResponse(resp *http.Response) (MHSMPrivateEndpointConnectionsPutResponse, error) {
+	result := MHSMPrivateEndpointConnectionsPutResponse{RawResponse: resp}
 	if val := resp.Header.Get("Retry-After"); val != "" {
 		retryAfter32, err := strconv.ParseInt(val, 10, 32)
 		retryAfter := int32(retryAfter32)
 		if err != nil {
-			return MHSMPrivateEndpointConnectionResponse{}, err
+			return MHSMPrivateEndpointConnectionsPutResponse{}, err
 		}
 		result.RetryAfter = &retryAfter
 	}
 	if val := resp.Header.Get("Azure-AsyncOperation"); val != "" {
 		result.AzureAsyncOperation = &val
 	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MHSMPrivateEndpointConnection); err != nil {
+		return MHSMPrivateEndpointConnectionsPutResponse{}, err
+	}
 	return result, nil
 }
 
 // putHandleError handles the Put error response.
-func (client *MHSMPrivateEndpointConnectionsClient) putHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MHSMPrivateEndpointConnectionsClient) putHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

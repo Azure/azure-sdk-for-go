@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -26,7 +27,7 @@ type ActionClassification interface {
 // Action descriptor.
 type Action struct {
 	// REQUIRED; Specifies the action. Supported values - AlertingAction, LogToMetricAction
-	OdataType *string `json:"odata.type,omitempty"`
+	ODataType *string `json:"odata.type,omitempty"`
 }
 
 // GetAction implements the ActionClassification interface for type Action.
@@ -43,8 +44,8 @@ func (a *Action) UnmarshalJSON(data []byte) error {
 
 func (a Action) marshalInternal(discValue string) map[string]interface{} {
 	objectMap := make(map[string]interface{})
-	a.OdataType = &discValue
-	objectMap["odata.type"] = a.OdataType
+	a.ODataType = &discValue
+	objectMap["odata.type"] = a.ODataType
 	return objectMap
 }
 
@@ -53,7 +54,7 @@ func (a *Action) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 		var err error
 		switch key {
 		case "odata.type":
-			err = unpopulate(val, &a.OdataType)
+			err = unpopulate(val, &a.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2742,7 +2743,7 @@ type MetricAlertCriteriaClassification interface {
 // MetricAlertCriteria - The rule criteria that defines the conditions of the alert rule.
 type MetricAlertCriteria struct {
 	// REQUIRED; specifies the type of the alert criteria.
-	OdataType *Odatatype `json:"odata.type,omitempty"`
+	ODataType *Odatatype `json:"odata.type,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]map[string]interface{}
@@ -2762,8 +2763,8 @@ func (m *MetricAlertCriteria) UnmarshalJSON(data []byte) error {
 
 func (m MetricAlertCriteria) marshalInternal(discValue Odatatype) map[string]interface{} {
 	objectMap := make(map[string]interface{})
-	m.OdataType = &discValue
-	objectMap["odata.type"] = m.OdataType
+	m.ODataType = &discValue
+	objectMap["odata.type"] = m.ODataType
 	if m.AdditionalProperties != nil {
 		for key, val := range m.AdditionalProperties {
 			objectMap[key] = val
@@ -2777,7 +2778,7 @@ func (m *MetricAlertCriteria) unmarshalInternal(rawMsg map[string]json.RawMessag
 		var err error
 		switch key {
 		case "odata.type":
-			err = unpopulate(val, &m.OdataType)
+			err = unpopulate(val, &m.ODataType)
 			delete(rawMsg, key)
 		default:
 			if m.AdditionalProperties == nil {
@@ -4369,7 +4370,7 @@ type RuleActionClassification interface {
 // RuleAction - The action that is performed when the alert rule becomes active, and when an alert condition is resolved.
 type RuleAction struct {
 	// REQUIRED; specifies the type of the action. There are two types of actions: RuleEmailAction and RuleWebhookAction.
-	OdataType *string `json:"odata.type,omitempty"`
+	ODataType *string `json:"odata.type,omitempty"`
 }
 
 // GetRuleAction implements the RuleActionClassification interface for type RuleAction.
@@ -4386,8 +4387,8 @@ func (r *RuleAction) UnmarshalJSON(data []byte) error {
 
 func (r RuleAction) marshalInternal(discValue string) map[string]interface{} {
 	objectMap := make(map[string]interface{})
-	r.OdataType = &discValue
-	objectMap["odata.type"] = r.OdataType
+	r.ODataType = &discValue
+	objectMap["odata.type"] = r.ODataType
 	return objectMap
 }
 
@@ -4396,7 +4397,7 @@ func (r *RuleAction) unmarshalInternal(rawMsg map[string]json.RawMessage) error 
 		var err error
 		switch key {
 		case "odata.type":
-			err = unpopulate(val, &r.OdataType)
+			err = unpopulate(val, &r.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4420,7 +4421,7 @@ type RuleCondition struct {
 	// REQUIRED; specifies the type of condition. This can be one of three types: ManagementEventRuleCondition (occurrences of management events), LocationThresholdRuleCondition
 	// (based on the number of failures of a
 	// web test), and ThresholdRuleCondition (based on the threshold of a metric).
-	OdataType *string `json:"odata.type,omitempty"`
+	ODataType *string `json:"odata.type,omitempty"`
 
 	// the resource from which the rule collects its data. For this type dataSource will always be of type RuleMetricDataSource.
 	DataSource RuleDataSourceClassification `json:"dataSource,omitempty"`
@@ -4441,8 +4442,8 @@ func (r *RuleCondition) UnmarshalJSON(data []byte) error {
 func (r RuleCondition) marshalInternal(discValue string) map[string]interface{} {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "dataSource", r.DataSource)
-	r.OdataType = &discValue
-	objectMap["odata.type"] = r.OdataType
+	r.ODataType = &discValue
+	objectMap["odata.type"] = r.ODataType
 	return objectMap
 }
 
@@ -4454,7 +4455,7 @@ func (r *RuleCondition) unmarshalInternal(rawMsg map[string]json.RawMessage) err
 			r.DataSource, err = unmarshalRuleDataSourceClassification(val)
 			delete(rawMsg, key)
 		case "odata.type":
-			err = unpopulate(val, &r.OdataType)
+			err = unpopulate(val, &r.ODataType)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -4476,7 +4477,7 @@ type RuleDataSourceClassification interface {
 // RuleDataSource - The resource from which the rule collects its data.
 type RuleDataSource struct {
 	// REQUIRED; specifies the type of data source. There are two types of rule data sources: RuleMetricDataSource and RuleManagementEventDataSource
-	OdataType *string `json:"odata.type,omitempty"`
+	ODataType *string `json:"odata.type,omitempty"`
 
 	// the legacy resource identifier of the resource the rule monitors. NOTE: this property cannot be updated for an existing rule.
 	LegacyResourceID *string `json:"legacyResourceId,omitempty"`
@@ -4507,8 +4508,8 @@ func (r RuleDataSource) marshalInternal(discValue string) map[string]interface{}
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "legacyResourceId", r.LegacyResourceID)
 	populate(objectMap, "metricNamespace", r.MetricNamespace)
-	r.OdataType = &discValue
-	objectMap["odata.type"] = r.OdataType
+	r.ODataType = &discValue
+	objectMap["odata.type"] = r.ODataType
 	populate(objectMap, "resourceLocation", r.ResourceLocation)
 	populate(objectMap, "resourceUri", r.ResourceURI)
 	return objectMap
@@ -4525,7 +4526,7 @@ func (r *RuleDataSource) unmarshalInternal(rawMsg map[string]json.RawMessage) er
 			err = unpopulate(val, &r.MetricNamespace)
 			delete(rawMsg, key)
 		case "odata.type":
-			err = unpopulate(val, &r.OdataType)
+			err = unpopulate(val, &r.ODataType)
 			delete(rawMsg, key)
 		case "resourceLocation":
 			err = unpopulate(val, &r.ResourceLocation)

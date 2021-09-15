@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,93 +12,68 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // VirtualHubRouteTableV2SClient contains the methods for the VirtualHubRouteTableV2S group.
 // Don't use this type directly, use NewVirtualHubRouteTableV2SClient() instead.
 type VirtualHubRouteTableV2SClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewVirtualHubRouteTableV2SClient creates a new instance of VirtualHubRouteTableV2SClient with the specified values.
-func NewVirtualHubRouteTableV2SClient(con *armcore.Connection, subscriptionID string) *VirtualHubRouteTableV2SClient {
-	return &VirtualHubRouteTableV2SClient{con: con, subscriptionID: subscriptionID}
+func NewVirtualHubRouteTableV2SClient(con *arm.Connection, subscriptionID string) *VirtualHubRouteTableV2SClient {
+	return &VirtualHubRouteTableV2SClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
 // If the operation fails it returns the *Error error type.
-func (client *VirtualHubRouteTableV2SClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, virtualHubRouteTableV2Parameters VirtualHubRouteTableV2, options *VirtualHubRouteTableV2SBeginCreateOrUpdateOptions) (VirtualHubRouteTableV2PollerResponse, error) {
+func (client *VirtualHubRouteTableV2SClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, virtualHubRouteTableV2Parameters VirtualHubRouteTableV2, options *VirtualHubRouteTableV2SBeginCreateOrUpdateOptions) (VirtualHubRouteTableV2SCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters, options)
 	if err != nil {
-		return VirtualHubRouteTableV2PollerResponse{}, err
+		return VirtualHubRouteTableV2SCreateOrUpdatePollerResponse{}, err
 	}
-	result := VirtualHubRouteTableV2PollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualHubRouteTableV2SClient.CreateOrUpdate", "azure-async-operation", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return VirtualHubRouteTableV2PollerResponse{}, err
-	}
-	poller := &virtualHubRouteTableV2Poller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualHubRouteTableV2Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new VirtualHubRouteTableV2Poller from the specified resume token.
-// token - The value must come from a previous call to VirtualHubRouteTableV2Poller.ResumeToken().
-func (client *VirtualHubRouteTableV2SClient) ResumeCreateOrUpdate(ctx context.Context, token string) (VirtualHubRouteTableV2PollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualHubRouteTableV2SClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return VirtualHubRouteTableV2PollerResponse{}, err
-	}
-	poller := &virtualHubRouteTableV2Poller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return VirtualHubRouteTableV2PollerResponse{}, err
-	}
-	result := VirtualHubRouteTableV2PollerResponse{
+	result := VirtualHubRouteTableV2SCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (VirtualHubRouteTableV2Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualHubRouteTableV2SClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return VirtualHubRouteTableV2SCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &VirtualHubRouteTableV2SCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates a VirtualHubRouteTableV2 resource if it doesn't exist else updates the existing VirtualHubRouteTableV2.
 // If the operation fails it returns the *Error error type.
-func (client *VirtualHubRouteTableV2SClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, virtualHubRouteTableV2Parameters VirtualHubRouteTableV2, options *VirtualHubRouteTableV2SBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *VirtualHubRouteTableV2SClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, virtualHubRouteTableV2Parameters VirtualHubRouteTableV2, options *VirtualHubRouteTableV2SBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, virtualHubRouteTableV2Parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VirtualHubRouteTableV2SClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, virtualHubRouteTableV2Parameters VirtualHubRouteTableV2, options *VirtualHubRouteTableV2SBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *VirtualHubRouteTableV2SClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, virtualHubRouteTableV2Parameters VirtualHubRouteTableV2, options *VirtualHubRouteTableV2SBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeTables/{routeTableName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -115,98 +91,69 @@ func (client *VirtualHubRouteTableV2SClient) createOrUpdateCreateRequest(ctx con
 		return nil, errors.New("parameter routeTableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{routeTableName}", url.PathEscape(routeTableName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(virtualHubRouteTableV2Parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, virtualHubRouteTableV2Parameters)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VirtualHubRouteTableV2SClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualHubRouteTableV2SClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := Error{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDelete - Deletes a VirtualHubRouteTableV2.
 // If the operation fails it returns the *Error error type.
-func (client *VirtualHubRouteTableV2SClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *VirtualHubRouteTableV2SBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *VirtualHubRouteTableV2SClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *VirtualHubRouteTableV2SBeginDeleteOptions) (VirtualHubRouteTableV2SDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, virtualHubName, routeTableName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return VirtualHubRouteTableV2SDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("VirtualHubRouteTableV2SClient.Delete", "location", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *VirtualHubRouteTableV2SClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("VirtualHubRouteTableV2SClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := VirtualHubRouteTableV2SDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("VirtualHubRouteTableV2SClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return VirtualHubRouteTableV2SDeletePollerResponse{}, err
+	}
+	result.Poller = &VirtualHubRouteTableV2SDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a VirtualHubRouteTableV2.
 // If the operation fails it returns the *Error error type.
-func (client *VirtualHubRouteTableV2SClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *VirtualHubRouteTableV2SBeginDeleteOptions) (*azcore.Response, error) {
+func (client *VirtualHubRouteTableV2SClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *VirtualHubRouteTableV2SBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VirtualHubRouteTableV2SClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *VirtualHubRouteTableV2SBeginDeleteOptions) (*azcore.Request, error) {
+func (client *VirtualHubRouteTableV2SClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *VirtualHubRouteTableV2SBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeTables/{routeTableName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -224,50 +171,49 @@ func (client *VirtualHubRouteTableV2SClient) deleteCreateRequest(ctx context.Con
 		return nil, errors.New("parameter routeTableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{routeTableName}", url.PathEscape(routeTableName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *VirtualHubRouteTableV2SClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualHubRouteTableV2SClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := Error{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Retrieves the details of a VirtualHubRouteTableV2.
 // If the operation fails it returns the *Error error type.
-func (client *VirtualHubRouteTableV2SClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *VirtualHubRouteTableV2SGetOptions) (VirtualHubRouteTableV2Response, error) {
+func (client *VirtualHubRouteTableV2SClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *VirtualHubRouteTableV2SGetOptions) (VirtualHubRouteTableV2SGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, options)
 	if err != nil {
-		return VirtualHubRouteTableV2Response{}, err
+		return VirtualHubRouteTableV2SGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualHubRouteTableV2Response{}, err
+		return VirtualHubRouteTableV2SGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return VirtualHubRouteTableV2Response{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return VirtualHubRouteTableV2SGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VirtualHubRouteTableV2SClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *VirtualHubRouteTableV2SGetOptions) (*azcore.Request, error) {
+func (client *VirtualHubRouteTableV2SClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *VirtualHubRouteTableV2SGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeTables/{routeTableName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -285,59 +231,55 @@ func (client *VirtualHubRouteTableV2SClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter routeTableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{routeTableName}", url.PathEscape(routeTableName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualHubRouteTableV2SClient) getHandleResponse(resp *azcore.Response) (VirtualHubRouteTableV2Response, error) {
-	var val *VirtualHubRouteTableV2
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return VirtualHubRouteTableV2Response{}, err
+func (client *VirtualHubRouteTableV2SClient) getHandleResponse(resp *http.Response) (VirtualHubRouteTableV2SGetResponse, error) {
+	result := VirtualHubRouteTableV2SGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualHubRouteTableV2); err != nil {
+		return VirtualHubRouteTableV2SGetResponse{}, err
 	}
-	return VirtualHubRouteTableV2Response{RawResponse: resp.Response, VirtualHubRouteTableV2: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *VirtualHubRouteTableV2SClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualHubRouteTableV2SClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := Error{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Retrieves the details of all VirtualHubRouteTableV2s.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualHubRouteTableV2SClient) List(resourceGroupName string, virtualHubName string, options *VirtualHubRouteTableV2SListOptions) ListVirtualHubRouteTableV2SResultPager {
-	return &listVirtualHubRouteTableV2SResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *VirtualHubRouteTableV2SClient) List(resourceGroupName string, virtualHubName string, options *VirtualHubRouteTableV2SListOptions) *VirtualHubRouteTableV2SListPager {
+	return &VirtualHubRouteTableV2SListPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, virtualHubName, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp ListVirtualHubRouteTableV2SResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ListVirtualHubRouteTableV2SResult.NextLink)
+		advancer: func(ctx context.Context, resp VirtualHubRouteTableV2SListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListVirtualHubRouteTableV2SResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *VirtualHubRouteTableV2SClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, options *VirtualHubRouteTableV2SListOptions) (*azcore.Request, error) {
+func (client *VirtualHubRouteTableV2SClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, options *VirtualHubRouteTableV2SListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeTables"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -351,36 +293,35 @@ func (client *VirtualHubRouteTableV2SClient) listCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter virtualHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualHubName}", url.PathEscape(virtualHubName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-02-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-03-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualHubRouteTableV2SClient) listHandleResponse(resp *azcore.Response) (ListVirtualHubRouteTableV2SResultResponse, error) {
-	var val *ListVirtualHubRouteTableV2SResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ListVirtualHubRouteTableV2SResultResponse{}, err
+func (client *VirtualHubRouteTableV2SClient) listHandleResponse(resp *http.Response) (VirtualHubRouteTableV2SListResponse, error) {
+	result := VirtualHubRouteTableV2SListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListVirtualHubRouteTableV2SResult); err != nil {
+		return VirtualHubRouteTableV2SListResponse{}, err
 	}
-	return ListVirtualHubRouteTableV2SResultResponse{RawResponse: resp.Response, ListVirtualHubRouteTableV2SResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *VirtualHubRouteTableV2SClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *VirtualHubRouteTableV2SClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,44 +12,47 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SharedGalleryImagesClient contains the methods for the SharedGalleryImages group.
 // Don't use this type directly, use NewSharedGalleryImagesClient() instead.
 type SharedGalleryImagesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewSharedGalleryImagesClient creates a new instance of SharedGalleryImagesClient with the specified values.
-func NewSharedGalleryImagesClient(con *armcore.Connection, subscriptionID string) *SharedGalleryImagesClient {
-	return &SharedGalleryImagesClient{con: con, subscriptionID: subscriptionID}
+func NewSharedGalleryImagesClient(con *arm.Connection, subscriptionID string) *SharedGalleryImagesClient {
+	return &SharedGalleryImagesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // Get - Get a shared gallery image by subscription id or tenant id.
 // If the operation fails it returns the *CloudError error type.
-func (client *SharedGalleryImagesClient) Get(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImagesGetOptions) (SharedGalleryImageResponse, error) {
+func (client *SharedGalleryImagesClient) Get(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImagesGetOptions) (SharedGalleryImagesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, galleryUniqueName, galleryImageName, options)
 	if err != nil {
-		return SharedGalleryImageResponse{}, err
+		return SharedGalleryImagesGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SharedGalleryImageResponse{}, err
+		return SharedGalleryImagesGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return SharedGalleryImageResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return SharedGalleryImagesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SharedGalleryImagesClient) getCreateRequest(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImagesGetOptions) (*azcore.Request, error) {
+func (client *SharedGalleryImagesClient) getCreateRequest(ctx context.Context, location string, galleryUniqueName string, galleryImageName string, options *SharedGalleryImagesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries/{galleryUniqueName}/images/{galleryImageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -66,59 +70,55 @@ func (client *SharedGalleryImagesClient) getCreateRequest(ctx context.Context, l
 		return nil, errors.New("parameter galleryImageName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryImageName}", url.PathEscape(galleryImageName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-09-30")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SharedGalleryImagesClient) getHandleResponse(resp *azcore.Response) (SharedGalleryImageResponse, error) {
-	var val *SharedGalleryImage
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SharedGalleryImageResponse{}, err
+func (client *SharedGalleryImagesClient) getHandleResponse(resp *http.Response) (SharedGalleryImagesGetResponse, error) {
+	result := SharedGalleryImagesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SharedGalleryImage); err != nil {
+		return SharedGalleryImagesGetResponse{}, err
 	}
-	return SharedGalleryImageResponse{RawResponse: resp.Response, SharedGalleryImage: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *SharedGalleryImagesClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SharedGalleryImagesClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - List shared gallery images by subscription id or tenant id.
 // If the operation fails it returns the *CloudError error type.
-func (client *SharedGalleryImagesClient) List(location string, galleryUniqueName string, options *SharedGalleryImagesListOptions) SharedGalleryImageListPager {
-	return &sharedGalleryImageListPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *SharedGalleryImagesClient) List(location string, galleryUniqueName string, options *SharedGalleryImagesListOptions) *SharedGalleryImagesListPager {
+	return &SharedGalleryImagesListPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, location, galleryUniqueName, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp SharedGalleryImageListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.SharedGalleryImageList.NextLink)
+		advancer: func(ctx context.Context, resp SharedGalleryImagesListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SharedGalleryImageList.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *SharedGalleryImagesClient) listCreateRequest(ctx context.Context, location string, galleryUniqueName string, options *SharedGalleryImagesListOptions) (*azcore.Request, error) {
+func (client *SharedGalleryImagesClient) listCreateRequest(ctx context.Context, location string, galleryUniqueName string, options *SharedGalleryImagesListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/sharedGalleries/{galleryUniqueName}/images"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -132,39 +132,38 @@ func (client *SharedGalleryImagesClient) listCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter galleryUniqueName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryUniqueName}", url.PathEscape(galleryUniqueName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-09-30")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
 	if options != nil && options.SharedTo != nil {
 		reqQP.Set("sharedTo", string(*options.SharedTo))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SharedGalleryImagesClient) listHandleResponse(resp *azcore.Response) (SharedGalleryImageListResponse, error) {
-	var val *SharedGalleryImageList
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return SharedGalleryImageListResponse{}, err
+func (client *SharedGalleryImagesClient) listHandleResponse(resp *http.Response) (SharedGalleryImagesListResponse, error) {
+	result := SharedGalleryImagesListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SharedGalleryImageList); err != nil {
+		return SharedGalleryImagesListResponse{}, err
 	}
-	return SharedGalleryImageListResponse{RawResponse: resp.Response, SharedGalleryImageList: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *SharedGalleryImagesClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *SharedGalleryImagesClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

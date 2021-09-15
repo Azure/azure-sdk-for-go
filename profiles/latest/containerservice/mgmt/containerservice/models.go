@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -11,7 +12,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-05-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-08-01/containerservice"
 )
 
 const (
@@ -170,8 +171,10 @@ const (
 type OutboundType = original.OutboundType
 
 const (
-	OutboundTypeLoadBalancer       OutboundType = original.OutboundTypeLoadBalancer
-	OutboundTypeUserDefinedRouting OutboundType = original.OutboundTypeUserDefinedRouting
+	OutboundTypeLoadBalancer           OutboundType = original.OutboundTypeLoadBalancer
+	OutboundTypeManagedNATGateway      OutboundType = original.OutboundTypeManagedNATGateway
+	OutboundTypeUserAssignedNATGateway OutboundType = original.OutboundTypeUserAssignedNATGateway
+	OutboundTypeUserDefinedRouting     OutboundType = original.OutboundTypeUserDefinedRouting
 )
 
 type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
@@ -183,12 +186,26 @@ const (
 	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateSucceeded
 )
 
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
+)
+
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
 	ResourceIdentityTypeNone           ResourceIdentityType = original.ResourceIdentityTypeNone
 	ResourceIdentityTypeSystemAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
 	ResourceIdentityTypeUserAssigned   ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
+)
+
+type ScaleDownMode = original.ScaleDownMode
+
+const (
+	ScaleDownModeDeallocate ScaleDownMode = original.ScaleDownModeDeallocate
+	ScaleDownModeDelete     ScaleDownMode = original.ScaleDownModeDelete
 )
 
 type ScaleSetEvictionPolicy = original.ScaleSetEvictionPolicy
@@ -203,6 +220,12 @@ type ScaleSetPriority = original.ScaleSetPriority
 const (
 	ScaleSetPriorityRegular ScaleSetPriority = original.ScaleSetPriorityRegular
 	ScaleSetPrioritySpot    ScaleSetPriority = original.ScaleSetPrioritySpot
+)
+
+type SnapshotType = original.SnapshotType
+
+const (
+	SnapshotTypeNodePool SnapshotType = original.SnapshotTypeNodePool
 )
 
 type StorageProfileTypes = original.StorageProfileTypes
@@ -413,6 +436,13 @@ const (
 	WeekDayWednesday WeekDay = original.WeekDayWednesday
 )
 
+type WorkloadRuntime = original.WorkloadRuntime
+
+const (
+	WorkloadRuntimeOCIContainer WorkloadRuntime = original.WorkloadRuntimeOCIContainer
+	WorkloadRuntimeWasmWasi     WorkloadRuntime = original.WorkloadRuntimeWasmWasi
+)
+
 type AccessProfile = original.AccessProfile
 type AgentPool = original.AgentPool
 type AgentPoolAvailableVersions = original.AgentPoolAvailableVersions
@@ -433,6 +463,7 @@ type BaseClient = original.BaseClient
 type CloudError = original.CloudError
 type CloudErrorBody = original.CloudErrorBody
 type CommandResultProperties = original.CommandResultProperties
+type CreationData = original.CreationData
 type CredentialResult = original.CredentialResult
 type CredentialResults = original.CredentialResults
 type DiagnosticsProfile = original.DiagnosticsProfile
@@ -467,16 +498,21 @@ type ManagedClusterLoadBalancerProfile = original.ManagedClusterLoadBalancerProf
 type ManagedClusterLoadBalancerProfileManagedOutboundIPs = original.ManagedClusterLoadBalancerProfileManagedOutboundIPs
 type ManagedClusterLoadBalancerProfileOutboundIPPrefixes = original.ManagedClusterLoadBalancerProfileOutboundIPPrefixes
 type ManagedClusterLoadBalancerProfileOutboundIPs = original.ManagedClusterLoadBalancerProfileOutboundIPs
+type ManagedClusterManagedOutboundIPProfile = original.ManagedClusterManagedOutboundIPProfile
+type ManagedClusterNATGatewayProfile = original.ManagedClusterNATGatewayProfile
 type ManagedClusterPodIdentity = original.ManagedClusterPodIdentity
 type ManagedClusterPodIdentityException = original.ManagedClusterPodIdentityException
 type ManagedClusterPodIdentityProfile = original.ManagedClusterPodIdentityProfile
+type ManagedClusterPodIdentityProvisioningError = original.ManagedClusterPodIdentityProvisioningError
+type ManagedClusterPodIdentityProvisioningErrorBody = original.ManagedClusterPodIdentityProvisioningErrorBody
 type ManagedClusterPodIdentityProvisioningInfo = original.ManagedClusterPodIdentityProvisioningInfo
 type ManagedClusterPoolUpgradeProfile = original.ManagedClusterPoolUpgradeProfile
 type ManagedClusterPoolUpgradeProfileUpgradesItem = original.ManagedClusterPoolUpgradeProfileUpgradesItem
 type ManagedClusterProperties = original.ManagedClusterProperties
 type ManagedClusterPropertiesAutoScalerProfile = original.ManagedClusterPropertiesAutoScalerProfile
-type ManagedClusterPropertiesIdentityProfileValue = original.ManagedClusterPropertiesIdentityProfileValue
 type ManagedClusterSKU = original.ManagedClusterSKU
+type ManagedClusterSecurityProfile = original.ManagedClusterSecurityProfile
+type ManagedClusterSecurityProfileAzureDefender = original.ManagedClusterSecurityProfileAzureDefender
 type ManagedClusterServicePrincipalProfile = original.ManagedClusterServicePrincipalProfile
 type ManagedClusterUpgradeProfile = original.ManagedClusterUpgradeProfile
 type ManagedClusterUpgradeProfileProperties = original.ManagedClusterUpgradeProfileProperties
@@ -522,6 +558,12 @@ type RunCommandRequest = original.RunCommandRequest
 type RunCommandResult = original.RunCommandResult
 type SSHConfiguration = original.SSHConfiguration
 type SSHPublicKey = original.SSHPublicKey
+type Snapshot = original.Snapshot
+type SnapshotListResult = original.SnapshotListResult
+type SnapshotListResultIterator = original.SnapshotListResultIterator
+type SnapshotListResultPage = original.SnapshotListResultPage
+type SnapshotProperties = original.SnapshotProperties
+type SnapshotsClient = original.SnapshotsClient
 type SubResource = original.SubResource
 type SysctlConfig = original.SysctlConfig
 type SystemData = original.SystemData
@@ -600,6 +642,18 @@ func NewResolvePrivateLinkServiceIDClient(subscriptionID string) ResolvePrivateL
 func NewResolvePrivateLinkServiceIDClientWithBaseURI(baseURI string, subscriptionID string) ResolvePrivateLinkServiceIDClient {
 	return original.NewResolvePrivateLinkServiceIDClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewSnapshotListResultIterator(page SnapshotListResultPage) SnapshotListResultIterator {
+	return original.NewSnapshotListResultIterator(page)
+}
+func NewSnapshotListResultPage(cur SnapshotListResult, getNextPage func(context.Context, SnapshotListResult) (SnapshotListResult, error)) SnapshotListResultPage {
+	return original.NewSnapshotListResultPage(cur, getNextPage)
+}
+func NewSnapshotsClient(subscriptionID string) SnapshotsClient {
+	return original.NewSnapshotsClient(subscriptionID)
+}
+func NewSnapshotsClientWithBaseURI(baseURI string, subscriptionID string) SnapshotsClient {
+	return original.NewSnapshotsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
@@ -669,14 +723,23 @@ func PossibleOutboundTypeValues() []OutboundType {
 func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
 	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
 }
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
+}
 func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 	return original.PossibleResourceIdentityTypeValues()
+}
+func PossibleScaleDownModeValues() []ScaleDownMode {
+	return original.PossibleScaleDownModeValues()
 }
 func PossibleScaleSetEvictionPolicyValues() []ScaleSetEvictionPolicy {
 	return original.PossibleScaleSetEvictionPolicyValues()
 }
 func PossibleScaleSetPriorityValues() []ScaleSetPriority {
 	return original.PossibleScaleSetPriorityValues()
+}
+func PossibleSnapshotTypeValues() []SnapshotType {
+	return original.PossibleSnapshotTypeValues()
 }
 func PossibleStorageProfileTypesValues() []StorageProfileTypes {
 	return original.PossibleStorageProfileTypesValues()
@@ -689,6 +752,9 @@ func PossibleVMSizeTypesValues() []VMSizeTypes {
 }
 func PossibleWeekDayValues() []WeekDay {
 	return original.PossibleWeekDayValues()
+}
+func PossibleWorkloadRuntimeValues() []WorkloadRuntime {
+	return original.PossibleWorkloadRuntimeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

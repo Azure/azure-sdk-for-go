@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,44 +12,47 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ProviderResourceTypesClient contains the methods for the ProviderResourceTypes group.
 // Don't use this type directly, use NewProviderResourceTypesClient() instead.
 type ProviderResourceTypesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewProviderResourceTypesClient creates a new instance of ProviderResourceTypesClient with the specified values.
-func NewProviderResourceTypesClient(con *armcore.Connection, subscriptionID string) *ProviderResourceTypesClient {
-	return &ProviderResourceTypesClient{con: con, subscriptionID: subscriptionID}
+func NewProviderResourceTypesClient(con *arm.Connection, subscriptionID string) *ProviderResourceTypesClient {
+	return &ProviderResourceTypesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // List - List the resource types for a specified resource provider.
 // If the operation fails it returns the *CloudError error type.
-func (client *ProviderResourceTypesClient) List(ctx context.Context, resourceProviderNamespace string, options *ProviderResourceTypesListOptions) (ProviderResourceTypeListResultResponse, error) {
+func (client *ProviderResourceTypesClient) List(ctx context.Context, resourceProviderNamespace string, options *ProviderResourceTypesListOptions) (ProviderResourceTypesListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceProviderNamespace, options)
 	if err != nil {
-		return ProviderResourceTypeListResultResponse{}, err
+		return ProviderResourceTypesListResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return ProviderResourceTypeListResultResponse{}, err
+		return ProviderResourceTypesListResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return ProviderResourceTypeListResultResponse{}, client.listHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return ProviderResourceTypesListResponse{}, client.listHandleError(resp)
 	}
 	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *ProviderResourceTypesClient) listCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProviderResourceTypesListOptions) (*azcore.Request, error) {
+func (client *ProviderResourceTypesClient) listCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProviderResourceTypesListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/resourceTypes"
 	if resourceProviderNamespace == "" {
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
@@ -58,39 +62,38 @@ func (client *ProviderResourceTypesClient) listCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
 	reqQP.Set("api-version", "2021-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ProviderResourceTypesClient) listHandleResponse(resp *azcore.Response) (ProviderResourceTypeListResultResponse, error) {
-	var val *ProviderResourceTypeListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return ProviderResourceTypeListResultResponse{}, err
+func (client *ProviderResourceTypesClient) listHandleResponse(resp *http.Response) (ProviderResourceTypesListResponse, error) {
+	result := ProviderResourceTypesListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderResourceTypeListResult); err != nil {
+		return ProviderResourceTypesListResponse{}, err
 	}
-	return ProviderResourceTypeListResultResponse{RawResponse: resp.Response, ProviderResourceTypeListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *ProviderResourceTypesClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ProviderResourceTypesClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

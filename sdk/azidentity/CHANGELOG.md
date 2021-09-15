@@ -1,5 +1,11 @@
 # Release History
 
+## 0.12.0 (Unreleased)
+### Breaking Changes
+* The `AuthorityHost` field in credential options structs is now a custom type,
+  `AzureAuthorityHost`, with underlying type `string`
+
+
 ## v0.11.0 (2021-09-08)
 ### Breaking Changes
 * Unexported `AzureCLICredentialOptions.TokenProvider` and its type,

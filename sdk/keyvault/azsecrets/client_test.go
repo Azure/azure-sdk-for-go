@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -45,7 +46,12 @@ func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
 	return req.Next()
 }
 
-func createClient(t *testing.T, vaultUrl string) (*Client, error) {
+func createClient(t *testing.T) (*Client, error) {
+	vaultUrl, ok := os.LookupEnv("AZURE_KEYVAULT_URL")
+	if !ok {
+		t.Fatal("Could not find environment variable AZURE_KEYVAULT_URL")
+	}
+
 	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient(t)
 	require.NoError(t, err)
@@ -54,25 +60,34 @@ func createClient(t *testing.T, vaultUrl string) (*Client, error) {
 		PerCallPolicies: []policy.Policy{p},
 		HTTPClient:      client,
 	}
+	_ = options
 
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	cred, err := azidentity.NewClientSecretCredential(
+		os.Getenv("KEYVAULT_TENANT_ID"),
+		os.Getenv("KEYVAULT_CLIENT_ID"),
+		os.Getenv("KEYVAULT_CLIENT_SECRET"),
+		nil,
+	)
 	require.NoError(t, err)
 
 	return NewClient(vaultUrl, cred, options)
 }
 
-func TestSetSecret(t *testing.T) {
+func TestSetGetSecret(t *testing.T) {
 	recording.StartRecording(t, pathToPackage, nil)
 	defer recording.StopRecording(t, nil)
 
-	vaultUrl, ok := os.LookupEnv("AZURE_KEYVAULT_URL")
-	if !ok {
-		t.Fatal("Could not find environment variable AZURE_KEYVAULT_URL")
-	}
-	fmt.Println(vaultUrl)
-	client, err := createClient(t, vaultUrl)
+	client, err := createClient(t)
 	require.NoError(t, err)
 
-	_, err = client.SetSecret(context.Background(), "mySecret", "mySecretValue", nil)
+	secretValue := "mySecretValue"
+	resp, err := client.SetSecret(context.Background(), "mySecret", secretValue, nil)
 	require.NoError(t, err)
+	require.Equal(t, *resp.Value, secretValue)
+
+	secretVersion := strings.Split(*resp.ID, "/")
+
+	getResp, err := client.GetSecret(context.Background(), "mySecret", secretVersion[len(secretVersion)-1], nil)
+	require.NoError(t, err)
+	require.Equal(t, *getResp.Value, secretValue)
 }

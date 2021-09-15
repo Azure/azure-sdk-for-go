@@ -8,7 +8,6 @@ package azsecrets
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -165,7 +164,6 @@ func (c *Client) SetSecret(ctx context.Context, name string, value string, optio
 	if options == nil {
 		options = &SetSecretOptions{}
 	}
-	fmt.Println("VaultURL: ", c.vaultUrl)
 	resp, err := c.kvClient.SetSecret(ctx, c.vaultUrl, name, internal.SecretSetParameters{
 		Value:            &value,
 		ContentType:      options.ContentType,

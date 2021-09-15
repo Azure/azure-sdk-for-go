@@ -92,8 +92,7 @@ func TestSetGetSecret(t *testing.T) {
 	require.Equal(t, *getResp.Value, secretValue)
 }
 
-
-func TestListSecrets(t *testing.T) {
+func TestListSecretVersionss(t *testing.T) {
 	recording.StartRecording(t, pathToPackage, nil)
 	defer recording.StopRecording(t, nil)
 
@@ -105,6 +104,25 @@ func TestListSecrets(t *testing.T) {
 	for pager.NextPage(context.Background()) {
 		page := pager.PageResponse()
 		count += len(page.Secrets)
+	}
+	require.Greater(t, count, 0)
+
+	require.NoError(t, pager.Err())
+
+}
+
+func TestListSecrets(t *testing.T) {
+	recording.StartRecording(t, pathToPackage, nil)
+	defer recording.StopRecording(t, nil)
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	count := 0
+	pager := client.ListSecrets(nil)
+	for pager.NextPage(context.Background()) {
+		page := pager.PageResponse()
+		count += len(page.Value)
 	}
 	require.Greater(t, count, 0)
 

@@ -61,6 +61,7 @@ type SecretAttributes struct {
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 }
 
+// create a SecretAttributes object from an internal.SecretAttributes object
 func secretAttributesFromGenerated(i *internal.SecretAttributes) *SecretAttributes {
 	if i == nil {
 		return nil
@@ -114,6 +115,7 @@ type SecretItem struct {
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
+// create a SecretItem from the internal.SecretItem model
 func secretItemFromGenerated(i *internal.SecretItem) *SecretItem {
 	if i == nil {
 		return nil

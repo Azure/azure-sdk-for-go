@@ -378,22 +378,30 @@ type listSecretsPager struct {
 	genPager *internal.KeyVaultClientGetSecretVersionsPager
 }
 
+// PageResponse returns the results from the page most recently fetched from the service.
 func (l *listSecretsPager) PageResponse() ListSecretsPage {
 	return listSecretsPageFromGenerated(l.genPager.PageResponse())
 }
 
+// Err returns an error value if the most recent call to NextPage was not successful, else nil.
 func (l *listSecretsPager) Err() error {
 	return l.genPager.Err()
 }
 
+// NextPage fetches the next available page of results from the service. If the fetched page
+// contains results, the return value is true, else false. Results fetched from the service
+// can be evaluated by calling PageResponse on this Pager.
 func (l *listSecretsPager) NextPage(ctx context.Context) bool {
 	return l.genPager.NextPage(ctx)
 }
 
+// ListSecretVersionsOptions contains the options for the ListSecretVersions operations
 type ListSecretVersionsOptions struct {
+	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
 	MaxResults *int32
 }
 
+// convert the public ListSecretVersionsOptions to the generated version
 func (l *ListSecretVersionsOptions) toGenerated() *internal.KeyVaultClientGetSecretVersionsOptions {
 	if l == nil {
 		return &internal.KeyVaultClientGetSecretVersionsOptions{}
@@ -415,6 +423,7 @@ type ListSecretsPage struct {
 	Secrets []*SecretItem `json:"value,omitempty" azure:"ro"`
 }
 
+// create ListSecretsPage from generated pager
 func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretVersionsResponse) ListSecretsPage {
 	var secrets []*SecretItem
 	for _, s := range i.Value {
@@ -427,6 +436,9 @@ func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretVersionsResp
 	}
 }
 
+// ListSecretVersions lists all versions of the specified secret. The full secret identifer and
+// attributes are provided in the response. No values are returned for the secrets. This operation
+// requires the secrets/list permission.
 func (c *Client) ListSecretVersions(name string, options *ListSecretVersionsOptions) ListSecretsPager {
 	if options == nil {
 		options = &ListSecretVersionsOptions{}

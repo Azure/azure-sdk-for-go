@@ -12,7 +12,7 @@ pr:
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: 'servicebus'
+    ServiceDirectory: 'messaging'
     RunTests: true
     RunLiveTests: true
     

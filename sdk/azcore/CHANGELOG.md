@@ -8,7 +8,7 @@
 ### Bug Fixes
 * Fixed a potential panic when creating the default Transporter.
 
-## v0.19.0 (2021-08-25)
+## 0.19.0 (2021-08-25)
 
 ### Breaking Changes
 * Split content out of `azcore` into various packages.  The intent is to separate content based on its usage (common, uncommon, SDK authors).
@@ -33,7 +33,7 @@
   * This required some changes to the internal interfaces for core pollers.
 * The core poller types have been improved, including more logging and test coverage.
 
-## v0.18.1 (2021-08-20)
+## 0.18.1 (2021-08-20)
 
 ### Features Added
 * Adds an `ETag` type for comparing etags and handling etags on requests
@@ -45,7 +45,7 @@
 ### Other Changes
 * Bumps dependency on `internal` module to the latest version (v0.7.0)
 
-## v0.18.0 (2021-07-29)
+## 0.18.0 (2021-07-29)
 ### Features Added
 * Replaces methods from Logger type with two package methods for interacting with the logging functionality.
 * `azcore.SetClassifications` replaces `azcore.Logger().SetClassifications`
@@ -55,7 +55,7 @@
 * Removes `Logger` type from `azcore`
 
 
-## v0.17.0 (2021-07-27)
+## 0.17.0 (2021-07-27)
 ### Features Added
 * Adding TenantID to TokenRequestOptions (https://github.com/Azure/azure-sdk-for-go/pull/14879)
 * Adding AuxiliaryTenants to AuthenticationOptions (https://github.com/Azure/azure-sdk-for-go/pull/15123)
@@ -66,27 +66,27 @@
 * Make Header constants private (https://github.com/Azure/azure-sdk-for-go/pull/15038)
 
 
-## v0.16.2 (2021-05-26)
+## 0.16.2 (2021-05-26)
 ### Features Added
 * Improved support for byte arrays [#14715](https://github.com/Azure/azure-sdk-for-go/pull/14715)
 
 
-## v0.16.1 (2021-05-19)
+## 0.16.1 (2021-05-19)
 ### Features Added
 * Add license.txt to azcore module [#14682](https://github.com/Azure/azure-sdk-for-go/pull/14682)
 
 
-## v0.16.0 (2021-05-07)
+## 0.16.0 (2021-05-07)
 ### Features Added
 * Remove extra `*` in UnmarshalAsByteArray() [#14642](https://github.com/Azure/azure-sdk-for-go/pull/14642)
 
 
-## v0.15.1 (2021-05-06)
+## 0.15.1 (2021-05-06)
 ### Features Added
 * Cache the original request body on Request [#14634](https://github.com/Azure/azure-sdk-for-go/pull/14634)
 
 
-## v0.15.0 (2021-05-05)
+## 0.15.0 (2021-05-05)
 ### Features Added
 * Add support for null map and slice
 * Export `Response.Payload` method
@@ -95,12 +95,12 @@
 * remove `Response.UnmarshalError` as it's no longer required
 
 
-## v0.14.5 (2021-04-23)
+## 0.14.5 (2021-04-23)
 ### Features Added
 * Add `UnmarshalError()` on `azcore.Response`
 
 
-## v0.14.4 (2021-04-22)
+## 0.14.4 (2021-04-22)
 ### Features Added
 * Support for basic LRO polling
 * Added type `LROPoller` and supporting types for basic polling on long running operations.
@@ -110,13 +110,13 @@
 * Fixed content type detection bug in logging.
 
 
-## v0.14.3 (2021-03-29)
+## 0.14.3 (2021-03-29)
 ### Features Added
 * Add support for multi-part form data
 * Added method `WriteMultipartFormData()` to Request.
 
 
-## v0.14.2 (2021-03-17)
+## 0.14.2 (2021-03-17)
 ### Features Added
 * Add support for encoding JSON null values
 * Adds `NullValue()` and `IsNullValue()` functions for setting and detecting sentinel values used for encoding a JSON null.
@@ -126,12 +126,12 @@
 * Fixed improper error wrapping
 
 
-## v0.14.1 (2021-02-08)
+## 0.14.1 (2021-02-08)
 ### Features Added
 * Add `Pager` and `Poller` interfaces to azcore
 
 
-## v0.14.0 (2021-01-12)
+## 0.14.0 (2021-01-12)
 ### Features Added
 * Accept zero-value options for default values
 * Specify zero-value options structs to accept default values.
@@ -140,46 +140,46 @@
 * make per-try timeout opt-in
 
 
-## v0.13.4 (2020-11-20)
+## 0.13.4 (2020-11-20)
 ### Features Added
 * Include telemetry string in User Agent
 
 
-## v0.13.3 (2020-11-20)
+## 0.13.3 (2020-11-20)
 ### Features Added
 * Updating response body handling on `azcore.Response`
 
 
-## v0.13.2 (2020-11-13)
+## 0.13.2 (2020-11-13)
 ### Features Added
 * Remove implementation of stateless policies as first-class functions.
 
 
-## v0.13.1 (2020-11-05)
+## 0.13.1 (2020-11-05)
 ### Features Added
 * Add `Telemetry()` method to `azcore.Request()`
 
 
-## v0.13.0 (2020-10-14)
+## 0.13.0 (2020-10-14)
 ### Features Added
 * Rename `log` to `logger` to avoid name collision with the log package.
 * Documentation improvements
 * Simplified `DefaultHTTPClientTransport()` implementation
 
 
-## v0.12.1 (2020-10-13)
+## 0.12.1 (2020-10-13)
 ### Features Added
 * Update `internal` module dependence to `v0.5.0`
 
 
-## v0.12.0 (2020-10-08)
+## 0.12.0 (2020-10-08)
 ### Features Added
 * Removed storage specific content
 * Removed internal content to prevent API clutter
 * Refactored various policy options to conform with our options pattern
 
 
-## v0.11.0 (2020-09-22)
+## 0.11.0 (2020-09-22)
 ### Features Added
 
 * Removed `LogError` and `LogSlowResponse`.
@@ -191,7 +191,7 @@
 * Fix `RequestLogOptions` comment
 
 
-## v0.10.1 (2020-09-17)
+## 0.10.1 (2020-09-17)
 ### Features Added
 * Add default console logger
 * Default console logger writes to stderr. To enable it, set env var `AZURE_SDK_GO_LOGGING` to the value 'all'.
@@ -199,7 +199,7 @@
 * Add `LogLongRunningOperation`
 
 
-## v0.10.0 (2020-09-10)
+## 0.10.0 (2020-09-10)
 ### Features Added
 * The `request` and `transport` interfaces have been refactored to align with the patterns in the standard library.
 * `NewRequest()` now uses `http.NewRequestWithContext()` and performs additional validation, it also requires a context parameter.
@@ -210,19 +210,19 @@
 * moved path concatenation into `JoinPaths()` func
 
 
-## v0.9.6 (2020-08-18)
+## 0.9.6 (2020-08-18)
 ### Features Added
 * Improvements to body download policy
 * Always download the response body for error responses, i.e. HTTP status codes >= 400.
 * Simplify variable declarations
 
 
-## v0.9.5 (2020-08-11)
+## 0.9.5 (2020-08-11)
 ### Features Added
 * Set the Content-Length header in `Request.SetBody`
 
 
-## v0.9.4 (2020-08-03)
+## 0.9.4 (2020-08-03)
 ### Features Added
 * Fix cancellation of per try timeout
 * Per try timeout is used to ensure that an HTTP operation doesn't take too long, e.g. that a GET on some URL doesn't take an inordinant amount of time.
@@ -231,7 +231,7 @@
 * Do not retry non-idempotent operations when body download fails
 
 
-## v0.9.3 (2020-07-28)
+## 0.9.3 (2020-07-28)
 ### Features Added
 * Add support for custom HTTP request headers
 * Inserts an internal policy into the pipeline that can extract HTTP header values from the caller's context, adding them to the request.
@@ -239,7 +239,7 @@
 * Remove method specific to Go 1.14
 
 
-## v0.9.2 (2020-07-28)
+## 0.9.2 (2020-07-28)
 ### Features Added
 * Omit read-only content from request payloads
 * If any field in a payload's object graph contains `azure:"ro"`, make a clone of the object graph, omitting all fields with this annotation.
@@ -249,19 +249,19 @@
 * Add messages to failures
 
 
-## v0.9.1 (2020-07-22)
+## 0.9.1 (2020-07-22)
 ### Features Added
 * Updated dependency on internal module to fix race condition.
 
 
-## v0.9.0 (2020-07-09)
+## 0.9.0 (2020-07-09)
 ### Features Added
 * Add `HTTPResponse` interface to be used by callers to access the raw HTTP response from an error in the event of an API call failure.
 * Updated `sdk/internal` dependency to latest version.
 * Rename package alias
 
 
-## v0.8.2 (2020-06-29)
+## 0.8.2 (2020-06-29)
 ### Features Added
 * Added missing documentation comments
 
@@ -269,32 +269,32 @@
 * Fixed a bug in body download policy.
 
 
-## v0.8.1 (2020-06-26)
+## 0.8.1 (2020-06-26)
 ### Features Added
 * Miscellaneous clean-up reported by linters
 
 
-## v0.8.0 (2020-06-01)
+## 0.8.0 (2020-06-01)
 ### Features Added
 * Differentiate between standard and URL encoding.
 
 
-## v0.7.1 (2020-05-27)
+## 0.7.1 (2020-05-27)
 ### Features Added
 * Add support for for base64 encoding and decoding of payloads.
 
 
-## v0.7.0 (2020-05-12)
+## 0.7.0 (2020-05-12)
 ### Features Added
 * Change `RetryAfter()` to a function.
 
 
-## v0.6.0 (2020-04-29)
+## 0.6.0 (2020-04-29)
 ### Features Added
 * Updating `RetryAfter` to only return the detaion in the RetryAfter header
 
 
-## v0.5.0 (2020-03-23)
+## 0.5.0 (2020-03-23)
 ### Features Added
 * Export `TransportFunc`
 
@@ -302,7 +302,7 @@
 * Removed `IterationDone`
 
 
-## v0.4.1 (2020-02-25)
+## 0.4.1 (2020-02-25)
 ### Features Added
 * Ensure per-try timeout is properly cancelled
 * Explicitly call cancel the per-try timeout when the response body has been read/closed by the body download policy.
@@ -310,7 +310,7 @@
 * `Logger.Should()` will return false if no listener is set.
 
 
-## v0.4.0 (2020-02-18)
+## 0.4.0 (2020-02-18)
 ### Features Added
 * Enable custom `RetryOptions` to be specified per API call
 * Added `WithRetryOptions()` that adds a custom `RetryOptions` to the provided context, allowing custom settings per API call.
@@ -321,7 +321,7 @@
 * Remove `Request.SetQueryParam()`
 * Renamed `MaxTries` to `MaxRetries`
 
-## v0.3.0 (2020-01-16)
+## 0.3.0 (2020-01-16)
 ### Features Added
 * Added `DefaultRetryOptions` to create initialized default options.
 
@@ -329,13 +329,13 @@
 * Removed `Response.CheckStatusCode()`
 
 
-## v0.2.0 (2020-01-15)
+## 0.2.0 (2020-01-15)
 ### Features Added
 * Add support for marshalling and unmarshalling JSON
 * Removed `Response.Payload` field
 * Exit early when unmarsahlling if there is no payload
 
 
-## v0.1.0 (2020-01-10)
+## 0.1.0 (2020-01-10)
 ### Features Added
 * Initial release

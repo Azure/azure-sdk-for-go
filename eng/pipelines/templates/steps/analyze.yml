@@ -27,7 +27,9 @@ steps:
   - pwsh: |
       $modDirs = ./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE)
       foreach ($md in $modDirs) {
-        Get-ChildItem $md/doc.go
+        if (-Not $md -Match "/arm") {
+          Get-ChildItem $md/doc.go
+        }
       }
     displayName: 'Verify doc.go'
     workingDirectory: '${{parameters.GoWorkspace}}'

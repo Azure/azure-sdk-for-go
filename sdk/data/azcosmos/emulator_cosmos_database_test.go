@@ -1,20 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azcosmos_emulator_tests
+package azcosmos
 
 import (
 	"context"
 	"testing"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/data/cosmos/azcosmos"
 )
 
 func TestDatabaseCRUD(t *testing.T) {
-	emulatorTests := newEmulatorTests()
+	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t)
 
-	database := azcosmos.CosmosDatabaseProperties{Id: "baseDbTest"}
+	database := CosmosDatabaseProperties{Id: "baseDbTest"}
 
 	resp, err := client.CreateDatabase(context.TODO(), database, nil, nil)
 	if err != nil {
@@ -46,11 +44,11 @@ func TestDatabaseCRUD(t *testing.T) {
 }
 
 func TestDatabaseWithOfferCRUD(t *testing.T) {
-	emulatorTests := newEmulatorTests()
+	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t)
 
-	database := azcosmos.CosmosDatabaseProperties{Id: "baseDbTest"}
-	tp := azcosmos.NewManualThroughputProperties(400)
+	database := CosmosDatabaseProperties{Id: "baseDbTest"}
+	tp := NewManualThroughputProperties(400)
 	resp, err := client.CreateDatabase(context.TODO(), database, tp, nil)
 	if err != nil {
 		t.Fatalf("Failed to create database: %v", err)
@@ -83,7 +81,7 @@ func TestDatabaseWithOfferCRUD(t *testing.T) {
 		t.Errorf("Unexpected throughput: %v", mt)
 	}
 
-	newScale := azcosmos.NewManualThroughputProperties(500)
+	newScale := NewManualThroughputProperties(500)
 	_, err = resp.DatabaseProperties.Database.ReplaceThroughput(context.TODO(), *newScale, nil)
 	if err != nil {
 		t.Errorf("Failed to read throughput: %v", err)

@@ -7,7 +7,7 @@ trigger:
       - release/*
   paths:
     include:
-    - sdk/data/cosmos/
+    - sdk/data/azcosmos/
 
 pr:
   branches:
@@ -18,12 +18,13 @@ pr:
       - release/*
   paths:
     include:
-    - sdk/data/cosmos/
+    - sdk/data/azcosmos/
 
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: 'data/cosmos/azcosmos'
+    ServiceDirectory: 'data/azcosmos'
+    RunTests: true
 
 - stage: Emulator
   displayName: 'Cosmos Emulator'
@@ -72,12 +73,12 @@ stages:
 
     - template:  /eng/pipelines/templates/steps/set-scope.yml
       parameters: 
-        ServiceDirectory: 'data/cosmos/azcosmos_emulator_tests'
+        ServiceDirectory: 'data/azcosmos'
         GoWorkspace: $(GO_WORKSPACE_PATH)
 
     - template:  /eng/pipelines/templates/steps/build-test.yml
       parameters: 
-        ServiceDirectory: 'data/cosmos/azcosmos_emulator_tests'
+        ServiceDirectory: 'data/azcosmos'
         GoWorkspace: $(GO_WORKSPACE_PATH)
         Scope: $(SCOPE)
         Image: $(vm.image)

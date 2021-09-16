@@ -1,25 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azcosmos_emulator_tests
+package azcosmos
 
 import (
 	"context"
 	"encoding/json"
 	"testing"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/data/cosmos/azcosmos"
 )
 
 func TestItemCRUD(t *testing.T) {
-	emulatorTests := newEmulatorTests()
+	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t)
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
-	properties := azcosmos.CosmosContainerProperties{
+	properties := CosmosContainerProperties{
 		Id: "aContainer",
-		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
+		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths: []string{"/id"},
 		},
 	}
@@ -35,7 +33,7 @@ func TestItemCRUD(t *testing.T) {
 	}
 
 	container := resp.ContainerProperties.Container
-	pk, err := azcosmos.NewPartitionKey("1")
+	pk, err := NewPartitionKey("1")
 	if err != nil {
 		t.Fatalf("Failed to create pk: %v", err)
 	}
@@ -72,7 +70,7 @@ func TestItemCRUD(t *testing.T) {
 	}
 
 	item["value"] = "3"
-	itemResponse, err = container.ReplaceItem(context.TODO(), pk, "1", item, &azcosmos.CosmosItemRequestOptions{EnableContentResponseOnWrite: true})
+	itemResponse, err = container.ReplaceItem(context.TODO(), pk, "1", item, &CosmosItemRequestOptions{EnableContentResponseOnWrite: true})
 	if err != nil {
 		t.Fatalf("Failed to replace item: %v", err)
 	}
@@ -94,7 +92,7 @@ func TestItemCRUD(t *testing.T) {
 	}
 
 	item["value"] = "4"
-	itemResponse, err = container.UpsertItem(context.TODO(), pk, item, &azcosmos.CosmosItemRequestOptions{EnableContentResponseOnWrite: true})
+	itemResponse, err = container.UpsertItem(context.TODO(), pk, item, &CosmosItemRequestOptions{EnableContentResponseOnWrite: true})
 	if err != nil {
 		t.Fatalf("Failed to upsert item: %v", err)
 	}

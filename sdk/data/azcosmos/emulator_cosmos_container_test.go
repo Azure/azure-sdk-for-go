@@ -1,39 +1,37 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azcosmos_emulator_tests
+package azcosmos
 
 import (
 	"context"
 	"testing"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/data/cosmos/azcosmos"
 )
 
 func TestContainerCRUD(t *testing.T) {
-	emulatorTests := newEmulatorTests()
+	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t)
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "containerCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
-	properties := azcosmos.CosmosContainerProperties{
+	properties := CosmosContainerProperties{
 		Id: "aContainer",
-		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
+		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths: []string{"/id"},
 		},
-		IndexingPolicy: &azcosmos.IndexingPolicy{
-			IncludedPaths: []azcosmos.IncludedPath{
+		IndexingPolicy: &IndexingPolicy{
+			IncludedPaths: []IncludedPath{
 				{Path: "/*"},
 			},
-			ExcludedPaths: []azcosmos.ExcludedPath{
+			ExcludedPaths: []ExcludedPath{
 				{Path: "/\"_etag\"/?"},
 			},
 			Automatic:    true,
-			IndexingMode: azcosmos.IndexingModeConsistent,
+			IndexingMode: IndexingModeConsistent,
 		},
 	}
 
-	throughput := azcosmos.NewManualThroughputProperties(400)
+	throughput := NewManualThroughputProperties(400)
 
 	resp, err := database.CreateContainer(context.TODO(), properties, throughput, nil)
 	if err != nil {
@@ -54,16 +52,16 @@ func TestContainerCRUD(t *testing.T) {
 		t.Fatalf("Failed to read container: %v", err)
 	}
 
-	updatedProperties := azcosmos.CosmosContainerProperties{
+	updatedProperties := CosmosContainerProperties{
 		Id: "aContainer",
-		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
+		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths: []string{"/id"},
 		},
-		IndexingPolicy: &azcosmos.IndexingPolicy{
-			IncludedPaths: []azcosmos.IncludedPath{},
-			ExcludedPaths: []azcosmos.ExcludedPath{},
+		IndexingPolicy: &IndexingPolicy{
+			IncludedPaths: []IncludedPath{},
+			ExcludedPaths: []ExcludedPath{},
 			Automatic:     false,
-			IndexingMode:  azcosmos.IndexingModeNone,
+			IndexingMode:  IndexingModeNone,
 		},
 	}
 
@@ -86,7 +84,7 @@ func TestContainerCRUD(t *testing.T) {
 		t.Errorf("Unexpected throughput: %v", mt)
 	}
 
-	newScale := azcosmos.NewManualThroughputProperties(500)
+	newScale := NewManualThroughputProperties(500)
 	_, err = container.ReplaceThroughput(context.TODO(), *newScale, nil)
 	if err != nil {
 		t.Errorf("Failed to read throughput: %v", err)
@@ -99,29 +97,29 @@ func TestContainerCRUD(t *testing.T) {
 }
 
 func TestContainerAutoscaleCRUD(t *testing.T) {
-	emulatorTests := newEmulatorTests()
+	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t)
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "containerCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
-	properties := azcosmos.CosmosContainerProperties{
+	properties := CosmosContainerProperties{
 		Id: "aContainer",
-		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
+		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths: []string{"/id"},
 		},
-		IndexingPolicy: &azcosmos.IndexingPolicy{
-			IncludedPaths: []azcosmos.IncludedPath{
+		IndexingPolicy: &IndexingPolicy{
+			IncludedPaths: []IncludedPath{
 				{Path: "/*"},
 			},
-			ExcludedPaths: []azcosmos.ExcludedPath{
+			ExcludedPaths: []ExcludedPath{
 				{Path: "/\"_etag\"/?"},
 			},
 			Automatic:    true,
-			IndexingMode: azcosmos.IndexingModeConsistent,
+			IndexingMode: IndexingModeConsistent,
 		},
 	}
 
-	throughput := azcosmos.NewAutoscaleThroughputProperties(5000)
+	throughput := NewAutoscaleThroughputProperties(5000)
 
 	resp, err := database.CreateContainer(context.TODO(), properties, throughput, nil)
 	if err != nil {
@@ -156,7 +154,7 @@ func TestContainerAutoscaleCRUD(t *testing.T) {
 		t.Errorf("Unexpected throughput: %v", maxru)
 	}
 
-	newScale := azcosmos.NewAutoscaleThroughputProperties(10000)
+	newScale := NewAutoscaleThroughputProperties(10000)
 	_, err = container.ReplaceThroughput(context.TODO(), *newScale, nil)
 	if err != nil {
 		t.Errorf("Failed to read throughput: %v", err)

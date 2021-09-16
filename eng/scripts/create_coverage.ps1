@@ -4,7 +4,7 @@ Param(
     [string] $serviceDirectory
 )
 
-Push-Location ./sdk/$serviceDirectory
+# Push-Location ./sdk/$serviceDirectory
 
 $coverageFiles = [Collections.Generic.List[String]]@()
 Get-ChildItem -recurse -path . -filter coverage.txt | ForEach-Object {
@@ -13,7 +13,7 @@ Get-ChildItem -recurse -path . -filter coverage.txt | ForEach-Object {
   $coverageFiles.Add($covFile)
 }
 
-Pop-Location
+# Pop-Location
 
 # merge coverage files
 gocovmerge $coverageFiles > mergedCoverage.txt

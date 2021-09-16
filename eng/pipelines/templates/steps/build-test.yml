@@ -5,9 +5,6 @@ parameters:
   - name:  GoWorkspace
     type: string
     default: ''
-  - name:  Scope
-    type: string
-    default: 'sdk/...'
   - name:  Image
     type: string
     default: ''

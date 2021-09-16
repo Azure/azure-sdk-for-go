@@ -4,9 +4,11 @@ Param(
 
 $cwd = Get-Location
 
+. (Join-Path $PSScriptRoot .. common scripts common.ps1)
+
 # 0. Find all test directories
 Write-Host "Finding test directories in 'sdk/$serviceDir'"
-$testDirs = & $PSScriptRoot/get_test_dirs.ps1 -serviceDir sdk/$serviceDir
+$testDirs = Get-AllPackageInfoFromRepo $serviceDir
 # Issues here, not returning any objects
 Write-Host "Found test directories $testDirs"
 

@@ -65,8 +65,8 @@ func TestBatchMixed(t *testing.T) {
 			entitiesToCreate := createComplexEntities(5, "partition")
 			var batch []TransactionAction
 
-			for i := range batch {
-				marshalled, err := json.Marshal((*entitiesToCreate)[i])
+			for _, e := range *entitiesToCreate {
+				marshalled, err := json.Marshal(e)
 				require.NoError(t, err)
 				batch = append(batch, TransactionAction{
 					ActionType: Add,
@@ -111,7 +111,7 @@ func TestBatchMixed(t *testing.T) {
 			marshalledMergeEntity, err := json.Marshal(mergeEntity)
 			require.NoError(t, err)
 			etag := azcore.ETag((*resp.TransactionResponses)[0].Header.Get(etag))
-			batch2 = append(batch, TransactionAction{
+			batch2 = append(batch2, TransactionAction{
 				ActionType: UpdateMerge,
 				Entity:     marshalledMergeEntity,
 				IfMatch:    &etag,
@@ -120,7 +120,7 @@ func TestBatchMixed(t *testing.T) {
 			// create a delete action for the second added entity
 			marshalledSecondEntity, err := json.Marshal((*entitiesToCreate)[1])
 			require.NoError(t, err)
-			batch2 = append(batch, TransactionAction{ActionType: Delete, Entity: marshalledSecondEntity})
+			batch2 = append(batch2, TransactionAction{ActionType: Delete, Entity: marshalledSecondEntity})
 
 			// create an insert action to replace the third added entity with a new value
 			replaceProp := "ReplaceProperty"
@@ -138,8 +138,8 @@ func TestBatchMixed(t *testing.T) {
 			require.NoError(t, err)
 			marshalled5thEntity, err := json.Marshal((*entitiesToCreate)[4])
 			require.NoError(t, err)
-			batch2 = append(batch2, TransactionAction{ActionType: Add, Entity: marshalled4thEntity})
-			batch2 = append(batch2, TransactionAction{ActionType: Add, Entity: marshalled5thEntity})
+			batch2 = append(batch2, TransactionAction{ActionType: UpdateMerge, Entity: marshalled4thEntity})
+			batch2 = append(batch2, TransactionAction{ActionType: InsertMerge, Entity: marshalled5thEntity})
 
 			u1, err = uuid.New()
 			require.NoError(t, err)
@@ -199,8 +199,8 @@ func TestBatchError(t *testing.T) {
 			require.NoError(t, err)
 
 			// Add the entities to the batch
-			for i := 0; i < cap(batch); i++ {
-				marshalledEntity, err := json.Marshal((*entitiesToCreate)[i])
+			for _, e := range *entitiesToCreate {
+				marshalledEntity, err := json.Marshal(e)
 				require.NoError(t, err)
 				batch = append(batch, TransactionAction{ActionType: Add, Entity: marshalledEntity})
 			}

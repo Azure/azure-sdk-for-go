@@ -1,9 +1,7 @@
 #Requires -Version 7.0
 param([string]$filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, [switch]$cleanGenerated, [switch]$format, [switch]$tidy, [string]$config = "autorest.md", [string]$outputFolder)
 
-. $PSScriptRoot/meta_generation.ps1
-. $PSScriptRoot/get_module_dirs.ps1
-
+. (Join-Path $PSScriptRoot .. common scripts common.ps1)
 
 function Process-Sdk () {
     $currentDirectory = Get-Location
@@ -64,30 +62,15 @@ function Process-Sdk () {
         Write-Host "##[command]Executing go vet ./... in " $currentDirectory
         go vet ./...
     }
-
-}
-
-$startingDirectory = Get-Location
-$root = Resolve-Path ($PSScriptRoot + "/../..")
-Set-Location $root
-$sdks = @{};
-
-foreach ($sdk in (Get-ModuleDirs 'sdk/')) {
-    $name = $sdk | split-path -leaf
-    $sdks[$name] = @{
-        'path' = $sdk;
-    }
-}
-
-$keys = $sdks.Keys | Sort-Object;
-if (![string]::IsNullOrWhiteSpace($filter)) {
-    Write-Host "Using filter: $filter"
-    $keys = $keys.Where( { $_ -match $filter })
 }
 
 try {
-    $keys | ForEach-Object { $sdks[$_] } | ForEach-Object {
-        Push-Location $_.path
+    $startingDirectory = Get-Location
+
+    $sdks = Get-AllPackageInfoFromRepo $filter
+
+    foreach ($sdk in $sdks) {
+        Push-Location $sdk.DirectoryPath
         Process-Sdk
         Pop-Location
     }

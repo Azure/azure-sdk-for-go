@@ -5,9 +5,6 @@ parameters:
   - name:  GoWorkspace
     type: string
     default: ''
-  - name:  Scope
-    type: string
-    default: 'sdk/...'
   - name:  Image
     type: string
     default: ''
@@ -57,7 +54,7 @@ steps:
     - template: /eng/common/testproxy/test-proxy-docker.yml
 
     - pwsh: |
-        $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
+        $testDirs = ./eng/scripts/get_test_dirs.ps1 '${{ parameters.ServiceDirectory }}'
         foreach ($td in $testDirs) {
           pushd $td
           Write-Host "##[command]Executing 'go test -run "^Test" -v -coverprofile coverage.txt .' in $td"

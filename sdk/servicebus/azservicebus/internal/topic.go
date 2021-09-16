@@ -24,7 +24,6 @@ package internal
 
 import (
 	"encoding/xml"
-	"sync"
 
 	"github.com/Azure/go-autorest/autorest/date"
 )
@@ -41,8 +40,6 @@ type (
 	// Messages are received from a subscription identically to the way they are received from a queue.
 	Topic struct {
 		*sendingEntity
-		sender   *Sender
-		senderMu sync.Mutex
 	}
 
 	// TopicDescription is the content type for Topic management requests

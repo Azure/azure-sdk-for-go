@@ -24,18 +24,6 @@ type MessageSession struct {
 	cancel sync.Once
 }
 
-func newMessageSession(r LegacyReceiver, entity EntityManagementAddresser, sessionID *string) (retval *MessageSession, _ error) {
-	retval = &MessageSession{
-		Receiver:       r,
-		entity:         entity,
-		sessionID:      sessionID,
-		lockExpiration: time.Now(),
-		done:           make(chan struct{}),
-	}
-
-	return
-}
-
 // Close communicates that Handler receiving messages should no longer continue to be executed. This can happen when:
 // - A Handler recognizes that no further messages will come to this session.
 // - A Handler has given up on receiving more messages before a session. Future messages should be delegated to the next

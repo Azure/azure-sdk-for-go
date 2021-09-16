@@ -614,11 +614,3 @@ func (r *rpcClient) CancelScheduled(ctx context.Context, seq ...int64) error {
 
 	return nil
 }
-
-func rpcClientWithSession(sessionID *string) rpcClientOption {
-	return func(r *rpcClient) error {
-		r.sessionID = sessionID
-		r.isSessionFilterSet = true
-		return nil
-	}
-}

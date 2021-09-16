@@ -9,7 +9,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 )
 
 func panicOnError(message string, err error) {

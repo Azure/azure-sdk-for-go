@@ -10,8 +10,8 @@ import (
 	"time"
 
 	amqpCommon "github.com/Azure/azure-amqp-common-go/v3"
-	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 )
 
 type processorConfig struct {

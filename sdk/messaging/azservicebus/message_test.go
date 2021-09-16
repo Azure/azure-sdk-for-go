@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-amqp-common-go/v3/uuid"
-	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/stretchr/testify/require"
 )

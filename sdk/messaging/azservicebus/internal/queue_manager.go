@@ -15,7 +15,7 @@ import (
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/devigned/tab"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/servicebus/azservicebus/internal/atom"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 )
 
 type (

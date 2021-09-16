@@ -2,12 +2,12 @@
 trigger:
   paths:
     include:
-    - sdk/servicebus/azservicebus
+    - sdk/messaging/azservicebus
 
 pr:
   paths:
     include:
-    - sdk/servicebus/azservicebus
+    - sdk/messaging/azservicebus
 
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml

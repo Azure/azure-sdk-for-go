@@ -24,10 +24,13 @@ stages:
                 steps:
                   - checkout: self
                   - template: /eng/common/pipelines/templates/steps/retain-run.yml
+                  - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+                    parameters:
+                      PackageName: 'sdk/${{parameters.ServiceDirectory}}'
+                      ForRelease: true
                   - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                     parameters:
                       ArtifactLocation: $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
                       ReleaseSha: $(Build.SourceVersion)
                       RepoId: Azure/azure-sdk-for-go
                       WorkingDirectory: $(System.DefaultWorkingDirectory)
-                

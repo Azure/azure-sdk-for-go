@@ -3,7 +3,7 @@ $packagePattern = "go.mod"
 $LanguageDisplayName = "go"
 
 # get version from specific files (*constants.go, *version.go)
-function Get-GoModuleVersionInfo ($modPath)
+function Get-GoModuleVersionInfo($modPath)
 {
   $VERSION_LINE_REGEX = ".+\s*=\s*`".*v(?<version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
 
@@ -79,16 +79,12 @@ function Get-go-PackageInfoFromPackageFile($pkg, $workingDirectory)
     return $resultObj
 }
 
-function Get-AllPackageInfoFromRepo($serviceDirectory, $pkgDirectory)
+function Get-AllPackageInfoFromRepo($serviceDirectory)
 {
   $allPackageProps = @()
   $searchPath = Join-Path $RepoRoot "sdk"
   if ($serviceDirectory) {
     $searchPath = Join-Path $searchPath $serviceDirectory
-  }
-
-  if ($pkgDirectory) {
-    $searchPath = Join-Path $searchPath $pkgDirectory
   }
 
   $pkgFiles = Get-ChildItem -Path $searchPath -Include "go.mod" -Recurse

@@ -41,13 +41,17 @@ type (
 )
 
 func TestSB(t *testing.T) {
+	if os.Getenv("SERVICEBUS_CONNECTION_STRING") == "" {
+		t.Skipf("environment variable SERVICEBUS_CONNECTION_STRING was not set")
+	}
+
 	suite.Run(t, new(serviceBusSuite))
 }
 
 func (suite *serviceBusSuite) TestCreateNamespaceFromConnectionString() {
 	connStr := os.Getenv("SERVICEBUS_CONNECTION_STRING") // `Endpoint=sb://XXXX.servicebus.windows.net/;SharedAccessKeyName=XXXX;SharedAccessKey=XXXX`
 	if connStr == "" {
-		suite.FailNow("environment variable SERVICEBUS_CONNECTION_STRING was not set")
+		suite.T().Skipf("environment variable SERVICEBUS_CONNECTION_STRING was not set")
 	}
 
 	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))

@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
@@ -219,7 +220,7 @@ func CalculateNewVersion(changelog *model.Changelog, packageRootPath string) (*s
 }
 
 // add new changelog md to changelog file
-func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, packageRootPath string) (string, error) {
+func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, packageRootPath, releaseDate string) (string, error) {
 	path := filepath.Join(packageRootPath, common.ChangelogFilename)
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -228,7 +229,10 @@ func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, pac
 	oldChangelog := string(b)
 	insertPos := strings.Index(oldChangelog, "##")
 	additionalChangelog := changelog.ToCompactMarkdown()
-	newChangelog := oldChangelog[:insertPos] + "## v" + version.String() + " (released)\n" + additionalChangelog + "\n\n" + oldChangelog[insertPos:]
+	if releaseDate == "" {
+		releaseDate = time.Now().Format("2006-01-02")
+	}
+	newChangelog := oldChangelog[:insertPos] + "## " + version.String() + " (" + releaseDate + ")\n" + additionalChangelog + "\n\n" + oldChangelog[insertPos:]
 	err = ioutil.WriteFile(path, []byte(newChangelog), 0644)
 	if err != nil {
 		return "", err

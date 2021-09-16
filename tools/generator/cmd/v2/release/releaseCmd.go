@@ -63,6 +63,7 @@ type Flags struct {
 	PackageTitle  string
 	SDKRepo       string
 	SpecRPName    string
+	ReleaseDate   string
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
@@ -71,6 +72,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("sdk-repo", "https://github.com/Azure/azure-sdk-for-go", "Specifies the sdk repo URL for generation")
 	flagSet.String("spec-repo", "https://github.com/Azure/azure-rest-api-specs", "Specifies the swagger repo URL for generation")
 	flagSet.String("spec-rp-name", "", "Specifies the swagger spec RP name, default is RP name")
+	flagSet.String("release-date", "", "Specifies the release date in changelog")
 }
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
@@ -80,6 +82,7 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		SDKRepo:       flags.GetString(flagSet, "sdk-repo"),
 		SwaggerRepo:   flags.GetString(flagSet, "spec-repo"),
 		SpecRPName:    flags.GetString(flagSet, "spec-rp-name"),
+		ReleaseDate:   flags.GetString(flagSet, "release-date"),
 	}
 }
 
@@ -146,6 +149,7 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 		SpecficPackageTitle: c.flags.PackageTitle,
 		SpecficVersion:      c.flags.VersionNumber,
 		SpecRPName:          c.flags.SpecRPName,
+		ReleaseDate:         c.flags.ReleaseDate,
 	})
 	if err != nil {
 		return fmt.Errorf("failed to finish release generation process: %+v", err)

@@ -22,6 +22,7 @@ import (
 
 type SDKRepository interface {
 	WorkTree
+	RepositoryWithChangelog
 	CreateReleaseBranch(releaseBranchName string) error
 	AddReleaseCommit(rpName, namespaceName, specHash, version string) error
 }

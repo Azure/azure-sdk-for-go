@@ -99,7 +99,7 @@ stages:
           version: '$(go.version)'
         displayName: "Select Go Version"
 
-      - template: ../steps/create-go-workspace.yml
+      # - template: ../steps/create-go-workspace.yml
 
       - template: ../steps/build-test.yml
         parameters:

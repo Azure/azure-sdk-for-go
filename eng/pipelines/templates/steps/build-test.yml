@@ -28,7 +28,7 @@ steps:
       pwsh: true
       filePath: eng/scripts/build.ps1
       arguments: -filter '${{ parameters.ServiceDirectory }}'
-      workingDirectory: '${{ parameters.GoWorkspace }}'
+      workingDirectory: $(System.DefaultWorkingDirectory)
 
   - task: Powershell@2
     displayName: Vet
@@ -39,7 +39,7 @@ steps:
       pwsh: true
       filePath: eng/scripts/build.ps1
       arguments: -vet -skipBuild -filter '${{ parameters.ServiceDirectory }}'
-      workingDirectory: '${{ parameters.GoWorkspace }}'
+      workingDirectory: $(System.DefaultWorkingDirectory)
 
   - ${{ if eq(parameters.RunTests, 'true') }}:
     - pwsh: |
@@ -49,7 +49,7 @@ steps:
         go get github.com/matm/gocov-html
         go get -u github.com/wadey/gocovmerge
       displayName: "Install Coverage and Junit Dependencies"
-      workingDirectory: '${{parameters.GoWorkspace}}'
+      workingDirectory: $(System.DefaultWorkingDirectory)
 
     - template: /eng/common/testproxy/test-proxy-docker.yml
 
@@ -68,7 +68,7 @@ steps:
           }
         }
       displayName: 'Run Tests'
-      workingDirectory: '${{parameters.GoWorkspace}}'
+      workingDirectory: $(System.DefaultWorkingDirectory)
       env:
         GO111MODULE: 'on'
         PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
@@ -76,7 +76,7 @@ steps:
 
     - pwsh: ../eng/scripts/create_coverage.ps1 ${{parameters.ServiceDirectory}}
       displayName: 'Generate Coverage XML'
-      workingDirectory: '${{parameters.GoWorkspace}}sdk'
+      workingDirectory: $(System.DefaultWorkingDirectory)/sdk
       env:
         GO111MODULE: 'off'
 
@@ -84,7 +84,7 @@ steps:
       condition: succeededOrFailed()
       inputs:
         testRunner: JUnit
-        testResultsFiles: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/**/report.xml'
+        testResultsFiles: '$(System.DefaultWorkingDirectory)/sdk/${{parameters.ServiceDirectory}}/**/report.xml'
         testRunTitle: 'Go ${{ parameters.GoVersion }} on ${{ parameters.Image }}'
         failTaskOnFailedTests: true
 
@@ -92,6 +92,6 @@ steps:
       condition: succeededOrFailed()
       inputs:
         codeCoverageTool: Cobertura
-        summaryFileLocation: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/coverage.xml'
-        additionalCodeCoverageFiles: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/coverage.html'
+        summaryFileLocation: '$$(System.DefaultWorkingDirectory)/sdk/${{parameters.ServiceDirectory}}/coverage.xml'
+        additionalCodeCoverageFiles: '$$(System.DefaultWorkingDirectory)/sdk/${{parameters.ServiceDirectory}}/coverage.html'
         failIfCoverageEmpty: true

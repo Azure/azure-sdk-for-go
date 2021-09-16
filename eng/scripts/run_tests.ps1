@@ -6,7 +6,7 @@ $cwd = Get-Location
 
 # 0. Find all test directories
 Write-Host "Finding test directories in 'sdk/$serviceDir'"
-$testDirs = & $PSScriptRoot/get_test_dirs.ps1 -serviceDir sdk/$serviceDir
+$testDirs = & $PSScriptRoot/get_test_dirs.ps1 -serviceDir $serviceDir
 # Issues here, not returning any objects
 Write-Host "Found test directories $testDirs"
 

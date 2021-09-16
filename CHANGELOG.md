@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## `v57.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/extendedlocation/mgmt/2021-08-15/extendedlocation`
+- `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2021-06-01-preview/policy`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2021-07-01/features` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/resources/mgmt/2021-07-01/features/CHANGELOG.md) |
+
 ## `v57.2.0`
 
 ### New Packages

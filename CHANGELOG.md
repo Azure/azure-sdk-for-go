@@ -11,7 +11,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2021-07-01/features` | [details](https://github.com/Azure/azure-sdk-for-go/tree/master/services/resources/mgmt/2021-07-01/features/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2021-07-01/features` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v57.2.0/master/services/resources/mgmt/2021-07-01/features/CHANGELOG.md) |
 
 ## `v57.2.0`
 

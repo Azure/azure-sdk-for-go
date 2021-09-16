@@ -12,7 +12,8 @@ import (
 )
 
 func main() {
-	godotenv.Load()
+	_ = godotenv.Load()
+
 	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
 	queue := os.Getenv("QUEUE_NAME")
 

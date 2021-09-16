@@ -23,14 +23,10 @@ package internal
 //	SOFTWARE
 
 import (
-	"context"
 	"encoding/xml"
-	"fmt"
-	"strings"
 	"sync"
 
 	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/devigned/tab"
 )
 
 type (
@@ -71,115 +67,4 @@ type (
 		EnableExpress                       *bool         `xml:"EnableExpress,omitempty"`
 		CountDetails                        *CountDetails `xml:"CountDetails,omitempty"`
 	}
-
-	// TopicOption represents named options for assisting Topic message handling
-	TopicOption func(*Topic) error
 )
-
-// NewTopic creates a new Topic Sender
-func (ns *Namespace) NewTopic(name string, opts ...TopicOption) (*Topic, error) {
-	topic := &Topic{
-		sendingEntity: newSendingEntity(newEntity(name, topicManagementPath(name), ns)),
-	}
-
-	for i := range opts {
-		if err := opts[i](topic); err != nil {
-			return nil, err
-		}
-	}
-
-	return topic, nil
-}
-
-// Send sends messages to the Topic
-func (t *Topic) Send(ctx context.Context, event *Message) error {
-	ctx, span := t.startSpanFromContext(ctx, "sb.Topic.Send")
-	defer span.End()
-
-	err := t.ensureSender(ctx)
-	if err != nil {
-		tab.For(ctx).Error(err)
-		return err
-	}
-	return t.sender.Send(ctx, event)
-}
-
-// NewSession will create a new session based sender for the topic
-//
-// Microsoft Azure Service Bus sessions enable joint and ordered handling of unbounded sequences of related messages.
-// To realize a FIFO guarantee in Service Bus, use Sessions. Service Bus is not prescriptive about the nature of the
-// relationship between the messages, and also does not define a particular model for determining where a message
-// sequence starts or ends.
-func (t *Topic) NewSession(sessionID *string) *TopicSession {
-	return NewTopicSession(t, sessionID)
-}
-
-// NewSender will create a new Sender for sending messages to the queue
-func (t *Topic) NewSender(ctx context.Context) (*Sender, error) {
-	return t.namespace.NewSender(ctx, t.Name)
-}
-
-// Close the underlying connection to Service Bus
-func (t *Topic) Close(ctx context.Context) error {
-	ctx, span := t.startSpanFromContext(ctx, "sb.Topic.Close")
-	defer span.End()
-
-	if t.sender != nil {
-		err := t.sender.Close(ctx)
-		t.sender = nil
-		if err != nil && !isConnectionClosed(err) {
-			tab.For(ctx).Error(err)
-			return err
-		}
-	}
-
-	return nil
-}
-
-// NewTransferDeadLetter creates an entity that represents the transfer dead letter sub queue of the topic
-//
-// Messages will be sent to the transfer dead-letter queue under the following conditions:
-//   - A message passes through more than 3 queues or topics that are chained together.
-//   - The destination queue or topic is disabled or deleted.
-//   - The destination queue or topic exceeds the maximum entity size.
-func (t *Topic) NewTransferDeadLetter() *TransferDeadLetter {
-	return NewTransferDeadLetter(t)
-}
-
-// NewTransferDeadLetterReceiver builds a receiver for the Queue's transfer dead letter queue
-//
-// Messages will be sent to the transfer dead-letter queue under the following conditions:
-//   - A message passes through more than 3 queues or topics that are chained together.
-//   - The destination queue or topic is disabled or deleted.
-//   - The destination queue or topic exceeds the maximum entity size.
-func (t *Topic) NewTransferDeadLetterReceiver(ctx context.Context, opts ...ReceiverOption) (ReceiveOner, error) {
-	ctx, span := t.startSpanFromContext(ctx, "sb.Topic.NewTransferDeadLetterReceiver")
-	defer span.End()
-
-	transferDeadLetterEntityPath := strings.Join([]string{t.Name, TransferDeadLetterQueueName}, "/")
-	return t.namespace.NewReceiver(ctx, transferDeadLetterEntityPath, opts...)
-}
-
-func topicManagementPath(name string) string {
-	return fmt.Sprintf("%s/$management", name)
-}
-
-func (t *Topic) ensureSender(ctx context.Context) error {
-	ctx, span := t.startSpanFromContext(ctx, "sb.Topic.ensureSender")
-	defer span.End()
-
-	t.senderMu.Lock()
-	defer t.senderMu.Unlock()
-
-	if t.sender != nil {
-		return nil
-	}
-
-	s, err := t.namespace.NewSender(ctx, t.Name)
-	if err != nil {
-		tab.For(ctx).Error(err)
-		return err
-	}
-	t.sender = s
-	return nil
-}

@@ -21,7 +21,7 @@ type (
 	// SubscriptionManager provides CRUD functionality for Service Bus Subscription
 	SubscriptionManager struct {
 		*entityManager
-		Topic *Topic
+		topicName string
 	}
 
 	// FilterDescriber can transform itself into a FilterDescription
@@ -188,19 +188,15 @@ func ListSubscriptionsWithTop(top int) ListSubscriptionsOption {
 func (t *Topic) NewSubscriptionManager() *SubscriptionManager {
 	return &SubscriptionManager{
 		entityManager: newEntityManager(t.namespace.getHTTPSHostURI(), t.namespace.TokenProvider),
-		Topic:         t,
+		topicName:     t.Name,
 	}
 }
 
 // NewSubscriptionManager creates a new SubscriptionManger for a Service Bus Namespace
 func (ns *Namespace) NewSubscriptionManager(topicName string) (*SubscriptionManager, error) {
-	t, err := ns.NewTopic(topicName)
-	if err != nil {
-		return nil, err
-	}
 	return &SubscriptionManager{
-		entityManager: newEntityManager(t.namespace.getHTTPSHostURI(), t.namespace.TokenProvider),
-		Topic:         t,
+		entityManager: newEntityManager(ns.getHTTPSHostURI(), ns.TokenProvider),
+		topicName:     topicName,
 	}, nil
 }
 
@@ -289,7 +285,7 @@ func (sm *SubscriptionManager) List(ctx context.Context, options ...ListSubscrip
 		}
 	}
 
-	basePath := ConstructAtomPath("/"+sm.Topic.Name+"/subscriptions", listSubscriptionsOptions.skip, listSubscriptionsOptions.top)
+	basePath := ConstructAtomPath("/"+sm.topicName+"/subscriptions", listSubscriptionsOptions.skip, listSubscriptionsOptions.top)
 
 	res, err := sm.entityManager.Get(ctx, basePath)
 	defer closeRes(ctx, res)
@@ -496,7 +492,7 @@ func subscriptionEntryToEntity(entry *subscriptionEntry) *SubscriptionEntity {
 }
 
 func (sm *SubscriptionManager) getResourceURI(name string) string {
-	return "/" + sm.Topic.Name + "/subscriptions/" + name
+	return "/" + sm.topicName + "/subscriptions/" + name
 }
 
 func (sm *SubscriptionManager) getRulesResourceURI(subscriptionName string) string {

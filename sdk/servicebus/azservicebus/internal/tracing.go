@@ -77,12 +77,6 @@ func (e *entity) startSpanFromContext(ctx context.Context, operationName string)
 	return ctx, span
 }
 
-func (si sessionIdentifiable) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
-	ctx, span := tab.StartSpan(ctx, operationName)
-	applyComponentInfo(span)
-	return ctx, span
-}
-
 func (s *Sender) startProducerSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
 	ctx, span := tab.StartSpan(ctx, operationName)
 	applyComponentInfo(span)

@@ -62,7 +62,7 @@ func (e ErrMissingField) Error() string {
 }
 
 func (e ErrMalformedMessage) Error() string {
-	return fmt.Sprintf("message was expected in the form of []byte was not a []byte")
+	return "message was expected in the form of []byte was not a []byte"
 }
 
 // NewErrIncorrectType lets you skip using the `reflect` package. Just provide a variable of the desired type as

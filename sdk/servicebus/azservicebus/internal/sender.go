@@ -41,11 +41,10 @@ type (
 		namespace         *Namespace
 		client            *amqp.Client
 		clientMu          sync.RWMutex
-		session           *session
+		session           *amqp.Session
 		sender            *amqp.Sender
 		entityPath        string
 		Name              string
-		sessionID         *string
 		cancelAuthRefresh func() <-chan struct{}
 	}
 
@@ -165,20 +164,6 @@ func (s *Sender) SendAMQPMessage(ctx context.Context, msg *amqp.Message) error {
 func (s *Sender) Send(ctx context.Context, msg *Message) error {
 	ctx, span := s.startProducerSpanFromContext(ctx, "sb.Sender.Send")
 	defer span.End()
-
-	// TODO: I don't think this code needs to exist.
-	if msg.SessionID == nil {
-		s.clientMu.RLock()
-		if s.session == nil {
-			// another goroutine has closed the connection
-			s.clientMu.RUnlock()
-			return s.connClosedError(ctx)
-		}
-		msg.SessionID = &s.session.SessionID
-		next := s.session.getNext()
-		s.clientMu.RUnlock()
-		msg.GroupSequence = &next
-	}
 
 	if msg.ID == "" {
 		id, err := uuid.NewV4()
@@ -358,17 +343,7 @@ func (s *Sender) newSessionAndLink(ctx context.Context) error {
 		return err
 	}
 
-	s.session, err = newSession(amqpSession)
-	if err != nil {
-		tab.For(ctx).Error(err)
-		return err
-	}
-
-	// TODO: unclear on when this would happen.
-	if s.sessionID != nil {
-		s.session.SessionID = *s.sessionID
-	}
-
+	s.session = amqpSession
 	s.sender = amqpSender
 	return nil
 }

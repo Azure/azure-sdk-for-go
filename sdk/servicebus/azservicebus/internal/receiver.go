@@ -44,7 +44,7 @@ type (
 		namespace          *Namespace
 		client             *amqp.Client
 		clientMu           sync.RWMutex
-		session            *session
+		session            *amqp.Session
 		receiver           *amqp.Receiver
 		entityPath         string
 		doneListening      func()
@@ -270,7 +270,7 @@ func (r *Receiver) AbandonMessage(ctx context.Context, message *Message) error {
 
 // Session returns the underlying *amqp.Session struct in `r.session.Session`.
 func (r *Receiver) Session() *amqp.Session {
-	return r.session.Session
+	return r.session
 }
 
 // Client returns the underlying *amqp.Client struct in `r.client`.
@@ -281,62 +281,6 @@ func (r *Receiver) Client() *amqp.Client {
 // SessionID returns the sessionID in `r.sessionID`.
 func (r *Receiver) SessionID() *string {
 	return r.sessionID
-}
-
-func (r *Receiver) handleMessage(ctx context.Context, msg *amqp.Message, handler Handler) {
-	const optName = "sb.Receiver.handleMessage"
-
-	event, err := messageFromAMQPMessage(msg)
-	if err != nil {
-		_, span := r.startConsumerSpanFromContext(ctx, optName)
-		span.Logger().Error(err)
-		r.setLastError(err)
-		if r.doneListening != nil {
-			r.doneListening()
-		}
-		return
-	}
-
-	ctx, span := tab.StartSpanWithRemoteParent(ctx, optName, event)
-	defer span.End()
-
-	id := messageID(msg)
-	if idStr, ok := id.(string); ok {
-		span.AddAttributes(tab.StringAttribute("amqp.message.id", idStr))
-	}
-
-	if err := handler.Handle(ctx, event); err != nil {
-		// stop handling messages since the message consumer ran into an unexpected error
-		r.setLastError(err)
-		if r.doneListening != nil {
-			r.doneListening()
-		}
-		return
-	}
-
-	// nothing more to be done. The message was settled when it was accepted by the Receiver
-	if r.mode == ReceiveAndDeleteMode {
-		return
-	}
-
-	// nothing more to be done. The Receiver has no default disposition, so the handler is solely responsible for
-	// disposition
-	if r.DefaultDisposition == nil {
-		return
-	}
-
-	// default disposition is set, so try to send the disposition. If the message disposition has already been set, the
-	// underlying AMQP library will ignore the second disposition respecting the disposition of the handler func.
-	if err := r.DefaultDisposition(ctx); err != nil {
-		// if an error is returned by the default disposition, then we must alert the message consumer as we can't
-		// be sure the final message disposition.
-		tab.For(ctx).Error(err)
-		r.setLastError(err)
-		if r.doneListening != nil {
-			r.doneListening()
-		}
-		return
-	}
 }
 
 func (r *Receiver) listenForMessages(ctx context.Context, handler amqpHandler) {
@@ -448,11 +392,7 @@ func (r *Receiver) newSessionAndLink(ctx context.Context) error {
 		return err
 	}
 
-	r.session, err = newSession(amqpSession)
-	if err != nil {
-		tab.For(ctx).Error(err)
-		return err
-	}
+	r.session = amqpSession
 
 	receiveMode := amqp.ModeSecond
 	if r.mode == ReceiveAndDeleteMode {

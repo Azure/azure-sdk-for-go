@@ -48,6 +48,12 @@ type (
 	}
 
 	rpcClientOption func(*rpcClient) error
+
+	// EntityManagementAddresser describes the ability of an entity to provide an addressable path to it's management
+	// endpoint
+	EntityManagementAddresser interface {
+		ManagementPath() string
+	}
 )
 
 func newRPCClient(ctx context.Context, ec entityConnector, opts ...rpcClientOption) (*rpcClient, error) {

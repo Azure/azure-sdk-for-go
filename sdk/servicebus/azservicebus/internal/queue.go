@@ -202,16 +202,6 @@ func (q *Queue) Receive(ctx context.Context, handler Handler) error {
 	return handle.Err()
 }
 
-// NewSession will create a new session based receiver and sender for the queue
-//
-// Microsoft Azure Service Bus sessions enable joint and ordered handling of unbounded sequences of related messages.
-// To realize a FIFO guarantee in Service Bus, use Sessions. Service Bus is not prescriptive about the nature of the
-// relationship between the messages, and also does not define a particular model for determining where a message
-// sequence starts or ends.
-func (q *Queue) NewSession(sessionID *string) *QueueSession {
-	return NewQueueSession(q, sessionID)
-}
-
 // NewReceiver will create a new Receiver for receiving messages off of a queue
 func (q *Queue) NewReceiver(ctx context.Context, opts ...ReceiverOption) (LegacyReceiver, error) {
 	ctx, span := q.startSpanFromContext(ctx, "sb.Queue.NewReceiver")

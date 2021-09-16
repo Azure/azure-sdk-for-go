@@ -15,4 +15,3 @@ stages:
     ServiceDirectory: 'messaging'
     RunTests: true
     RunLiveTests: true
-    

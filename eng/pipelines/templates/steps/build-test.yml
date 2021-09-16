@@ -48,8 +48,8 @@ steps:
         go get github.com/AlekSi/gocov-xml
         go get github.com/matm/gocov-html
         go get -u github.com/wadey/gocovmerge
+        Write-Host "##vso[task.prependpath]$(go env GOPATH)/bin"
       displayName: "Install Coverage and Junit Dependencies"
-      workingDirectory: $(System.DefaultWorkingDirectory)
 
     - template: /eng/common/testproxy/test-proxy-docker.yml
 

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,44 +12,47 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 type PrivateLinkResourcesClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient with the specified values.
-func NewPrivateLinkResourcesClient(con *armcore.Connection, subscriptionID string) *PrivateLinkResourcesClient {
-	return &PrivateLinkResourcesClient{con: con, subscriptionID: subscriptionID}
+func NewPrivateLinkResourcesClient(con *arm.Connection, subscriptionID string) *PrivateLinkResourcesClient {
+	return &PrivateLinkResourcesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // ListByVault - Gets the private link resources supported for the key vault.
 // If the operation fails it returns the *CloudError error type.
-func (client *PrivateLinkResourcesClient) ListByVault(ctx context.Context, resourceGroupName string, vaultName string, options *PrivateLinkResourcesListByVaultOptions) (PrivateLinkResourceListResultResponse, error) {
+func (client *PrivateLinkResourcesClient) ListByVault(ctx context.Context, resourceGroupName string, vaultName string, options *PrivateLinkResourcesListByVaultOptions) (PrivateLinkResourcesListByVaultResponse, error) {
 	req, err := client.listByVaultCreateRequest(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
-		return PrivateLinkResourceListResultResponse{}, err
+		return PrivateLinkResourcesListByVaultResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return PrivateLinkResourceListResultResponse{}, err
+		return PrivateLinkResourcesListByVaultResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return PrivateLinkResourceListResultResponse{}, client.listByVaultHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return PrivateLinkResourcesListByVaultResponse{}, client.listByVaultHandleError(resp)
 	}
 	return client.listByVaultHandleResponse(resp)
 }
 
 // listByVaultCreateRequest creates the ListByVault request.
-func (client *PrivateLinkResourcesClient) listByVaultCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *PrivateLinkResourcesListByVaultOptions) (*azcore.Request, error) {
+func (client *PrivateLinkResourcesClient) listByVaultCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, options *PrivateLinkResourcesListByVaultOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/privateLinkResources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -62,36 +66,35 @@ func (client *PrivateLinkResourcesClient) listByVaultCreateRequest(ctx context.C
 		return nil, errors.New("parameter vaultName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-06-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByVaultHandleResponse handles the ListByVault response.
-func (client *PrivateLinkResourcesClient) listByVaultHandleResponse(resp *azcore.Response) (PrivateLinkResourceListResultResponse, error) {
-	var val *PrivateLinkResourceListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return PrivateLinkResourceListResultResponse{}, err
+func (client *PrivateLinkResourcesClient) listByVaultHandleResponse(resp *http.Response) (PrivateLinkResourcesListByVaultResponse, error) {
+	result := PrivateLinkResourcesListByVaultResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
+		return PrivateLinkResourcesListByVaultResponse{}, err
 	}
-	return PrivateLinkResourceListResultResponse{RawResponse: resp.Response, PrivateLinkResourceListResult: val}, nil
+	return result, nil
 }
 
 // listByVaultHandleError handles the ListByVault error response.
-func (client *PrivateLinkResourcesClient) listByVaultHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PrivateLinkResourcesClient) listByVaultHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

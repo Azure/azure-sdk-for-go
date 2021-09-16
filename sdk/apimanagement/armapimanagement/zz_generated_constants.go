@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,7 +8,10 @@
 
 package armapimanagement
 
-const telemetryInfo = "azsdk-go-armapimanagement/v0.1.0"
+const (
+	module  = "armapimanagement"
+	version = "v0.2.0"
+)
 
 // APIManagementSKUCapacityScaleType - The scale type applicable to the sku.
 type APIManagementSKUCapacityScaleType string
@@ -78,8 +82,9 @@ func (c APIManagementSKURestrictionsType) ToPtr() *APIManagementSKURestrictionsT
 type APIType string
 
 const (
-	APITypeHTTP APIType = "http"
-	APITypeSoap APIType = "soap"
+	APITypeHTTP      APIType = "http"
+	APITypeSoap      APIType = "soap"
+	APITypeWebsocket APIType = "websocket"
 )
 
 // PossibleAPITypeValues returns the possible values for the APIType const type.
@@ -87,6 +92,7 @@ func PossibleAPITypeValues() []APIType {
 	return []APIType{
 		APITypeHTTP,
 		APITypeSoap,
+		APITypeWebsocket,
 	}
 }
 
@@ -352,6 +358,54 @@ func (c CertificateConfigurationStoreName) ToPtr() *CertificateConfigurationStor
 	return &c
 }
 
+// CertificateSource - Certificate Source.
+type CertificateSource string
+
+const (
+	CertificateSourceBuiltIn  CertificateSource = "BuiltIn"
+	CertificateSourceCustom   CertificateSource = "Custom"
+	CertificateSourceKeyVault CertificateSource = "KeyVault"
+	CertificateSourceManaged  CertificateSource = "Managed"
+)
+
+// PossibleCertificateSourceValues returns the possible values for the CertificateSource const type.
+func PossibleCertificateSourceValues() []CertificateSource {
+	return []CertificateSource{
+		CertificateSourceBuiltIn,
+		CertificateSourceCustom,
+		CertificateSourceKeyVault,
+		CertificateSourceManaged,
+	}
+}
+
+// ToPtr returns a *CertificateSource pointing to the current value.
+func (c CertificateSource) ToPtr() *CertificateSource {
+	return &c
+}
+
+// CertificateStatus - Certificate Status.
+type CertificateStatus string
+
+const (
+	CertificateStatusCompleted  CertificateStatus = "Completed"
+	CertificateStatusFailed     CertificateStatus = "Failed"
+	CertificateStatusInProgress CertificateStatus = "InProgress"
+)
+
+// PossibleCertificateStatusValues returns the possible values for the CertificateStatus const type.
+func PossibleCertificateStatusValues() []CertificateStatus {
+	return []CertificateStatus{
+		CertificateStatusCompleted,
+		CertificateStatusFailed,
+		CertificateStatusInProgress,
+	}
+}
+
+// ToPtr returns a *CertificateStatus pointing to the current value.
+func (c CertificateStatus) ToPtr() *CertificateStatus {
+	return &c
+}
+
 type ClientAuthenticationMethod string
 
 const (
@@ -557,17 +611,17 @@ func (c ExportFormat) ToPtr() *ExportFormat {
 	return &c
 }
 
-// ExportResultFormat - Format in which the Api Details are exported to the Storage Blob with Sas Key valid for 5 minutes.
+// ExportResultFormat - Format in which the API Details are exported to the Storage Blob with Sas Key valid for 5 minutes.
 type ExportResultFormat string
 
 const (
-	// ExportResultFormatOpenAPI - Export the Api Definition in OpenApi Specification 3.0 to Storage Blob.
+	// ExportResultFormatOpenAPI - Export the API Definition in OpenAPI Specification 3.0 to Storage Blob.
 	ExportResultFormatOpenAPI ExportResultFormat = "openapi-link"
-	// ExportResultFormatSwagger - The Api Definition is exported in OpenApi Specification 2.0 format to the Storage Blob.
+	// ExportResultFormatSwagger - The API Definition is exported in OpenAPI Specification 2.0 format to the Storage Blob.
 	ExportResultFormatSwagger ExportResultFormat = "swagger-link-json"
-	// ExportResultFormatWadl - Export the Api Definition in WADL Schema to Storage Blob.
+	// ExportResultFormatWadl - Export the API Definition in WADL Schema to Storage Blob.
 	ExportResultFormatWadl ExportResultFormat = "wadl-link-json"
-	// ExportResultFormatWsdl - The Api Definition is exported in WSDL Schema to Storage Blob. This is only supported for APIs of Type `soap`
+	// ExportResultFormatWsdl - The API Definition is exported in WSDL Schema to Storage Blob. This is only supported for APIs of Type `soap`
 	ExportResultFormatWsdl ExportResultFormat = "wsdl-link+xml"
 )
 
@@ -956,17 +1010,17 @@ func (c PolicyScopeContract) ToPtr() *PolicyScopeContract {
 	return &c
 }
 
-// PortalRevisionStatus - Portal revision publishing status
+// PortalRevisionStatus - Status of the portal's revision.
 type PortalRevisionStatus string
 
 const (
-	// PortalRevisionStatusCompleted - Portal revision publishing completed
+	// PortalRevisionStatusCompleted - Portal's revision publishing completed.
 	PortalRevisionStatusCompleted PortalRevisionStatus = "completed"
-	// PortalRevisionStatusFailed - Portal revision publishing failed
+	// PortalRevisionStatusFailed - Portal's revision publishing failed.
 	PortalRevisionStatusFailed PortalRevisionStatus = "failed"
-	// PortalRevisionStatusPending - Portal revision publishing is pending
+	// PortalRevisionStatusPending - Portal's revision has been queued.
 	PortalRevisionStatusPending PortalRevisionStatus = "pending"
-	// PortalRevisionStatusPublishing - Portal revision is publishing
+	// PortalRevisionStatusPublishing - Portal's revision is being published.
 	PortalRevisionStatusPublishing PortalRevisionStatus = "publishing"
 )
 
@@ -1013,6 +1067,8 @@ type Protocol string
 const (
 	ProtocolHTTP  Protocol = "http"
 	ProtocolHTTPS Protocol = "https"
+	ProtocolWs    Protocol = "ws"
+	ProtocolWss   Protocol = "wss"
 )
 
 // PossibleProtocolValues returns the possible values for the Protocol const type.
@@ -1020,6 +1076,8 @@ func PossibleProtocolValues() []Protocol {
 	return []Protocol{
 		ProtocolHTTP,
 		ProtocolHTTPS,
+		ProtocolWs,
+		ProtocolWss,
 	}
 }
 
@@ -1127,9 +1185,10 @@ func (c SettingsTypeName) ToPtr() *SettingsTypeName {
 	return &c
 }
 
-// SoapAPIType - Type of Api to create.
-// * http creates a SOAP to REST API
-// * soap creates a SOAP pass-through API .
+// SoapAPIType - Type of API to create.
+// * http creates a REST API
+// * soap creates a SOAP pass-through API
+// * websocket creates websocket API.
 type SoapAPIType string
 
 const (
@@ -1137,6 +1196,8 @@ const (
 	SoapAPITypeSoapPassThrough SoapAPIType = "soap"
 	// SoapAPITypeSoapToRest - Imports a SOAP API having a RESTful front end.
 	SoapAPITypeSoapToRest SoapAPIType = "http"
+	// SoapAPITypeWebSocket - Imports the Soap API having a Websocket front end.
+	SoapAPITypeWebSocket SoapAPIType = "websocket"
 )
 
 // PossibleSoapAPITypeValues returns the possible values for the SoapAPIType const type.
@@ -1144,6 +1205,7 @@ func PossibleSoapAPITypeValues() []SoapAPIType {
 	return []SoapAPIType{
 		SoapAPITypeSoapPassThrough,
 		SoapAPITypeSoapToRest,
+		SoapAPITypeWebSocket,
 	}
 }
 

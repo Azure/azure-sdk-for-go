@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,6 +12,8 @@ import (
 	"context"
 	"net/http"
 	"time"
+
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // AvailableServiceTiersListByWorkspaceResponse contains the response from method AvailableServiceTiers.ListByWorkspace.
@@ -28,14 +31,40 @@ type AvailableServiceTiersListByWorkspaceResult struct {
 
 // ClustersCreateOrUpdatePollerResponse contains the response from method Clusters.CreateOrUpdate.
 type ClustersCreateOrUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (ClustersCreateOrUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller ClustersCreateOrUpdatePoller
+	Poller *ClustersCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l ClustersCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClustersCreateOrUpdateResponse, error) {
+	respType := ClustersCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Cluster)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ClustersCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *ClustersCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *ClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ClustersClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &ClustersCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // ClustersCreateOrUpdateResponse contains the response from method Clusters.CreateOrUpdate.
@@ -52,14 +81,40 @@ type ClustersCreateOrUpdateResult struct {
 
 // ClustersDeletePollerResponse contains the response from method Clusters.Delete.
 type ClustersDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (ClustersDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller ClustersDeletePoller
+	Poller *ClustersDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l ClustersDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ClustersDeleteResponse, error) {
+	respType := ClustersDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a ClustersDeletePollerResponse from the provided client and resume token.
+func (l *ClustersDeletePollerResponse) Resume(ctx context.Context, client *ClustersClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("ClustersClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &ClustersDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // ClustersDeleteResponse contains the response from method Clusters.Delete.
@@ -257,14 +312,40 @@ type IntelligencePacksListResult struct {
 
 // LinkedServicesCreateOrUpdatePollerResponse contains the response from method LinkedServices.CreateOrUpdate.
 type LinkedServicesCreateOrUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (LinkedServicesCreateOrUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller LinkedServicesCreateOrUpdatePoller
+	Poller *LinkedServicesCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l LinkedServicesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LinkedServicesCreateOrUpdateResponse, error) {
+	respType := LinkedServicesCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.LinkedService)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a LinkedServicesCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *LinkedServicesCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *LinkedServicesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("LinkedServicesClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &LinkedServicesCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // LinkedServicesCreateOrUpdateResponse contains the response from method LinkedServices.CreateOrUpdate.
@@ -281,14 +362,40 @@ type LinkedServicesCreateOrUpdateResult struct {
 
 // LinkedServicesDeletePollerResponse contains the response from method LinkedServices.Delete.
 type LinkedServicesDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (LinkedServicesDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller LinkedServicesDeletePoller
+	Poller *LinkedServicesDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l LinkedServicesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LinkedServicesDeleteResponse, error) {
+	respType := LinkedServicesDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.LinkedService)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a LinkedServicesDeletePollerResponse from the provided client and resume token.
+func (l *LinkedServicesDeletePollerResponse) Resume(ctx context.Context, client *LinkedServicesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("LinkedServicesClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &LinkedServicesDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // LinkedServicesDeleteResponse contains the response from method LinkedServices.Delete.
@@ -525,42 +632,6 @@ type StorageInsightConfigsListByWorkspaceResult struct {
 	StorageInsightListResult
 }
 
-// TablesGetResponse contains the response from method Tables.Get.
-type TablesGetResponse struct {
-	TablesGetResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TablesGetResult contains the result from method Tables.Get.
-type TablesGetResult struct {
-	Table
-}
-
-// TablesListByWorkspaceResponse contains the response from method Tables.ListByWorkspace.
-type TablesListByWorkspaceResponse struct {
-	TablesListByWorkspaceResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TablesListByWorkspaceResult contains the result from method Tables.ListByWorkspace.
-type TablesListByWorkspaceResult struct {
-	TablesListResult
-}
-
-// TablesUpdateResponse contains the response from method Tables.Update.
-type TablesUpdateResponse struct {
-	TablesUpdateResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// TablesUpdateResult contains the result from method Tables.Update.
-type TablesUpdateResult struct {
-	Table
-}
-
 // UsagesListResponse contains the response from method Usages.List.
 type UsagesListResponse struct {
 	UsagesListResult
@@ -601,14 +672,40 @@ type WorkspacePurgePurgeResult struct {
 
 // WorkspacesCreateOrUpdatePollerResponse contains the response from method Workspaces.CreateOrUpdate.
 type WorkspacesCreateOrUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WorkspacesCreateOrUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WorkspacesCreateOrUpdatePoller
+	Poller *WorkspacesCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WorkspacesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WorkspacesCreateOrUpdateResponse, error) {
+	respType := WorkspacesCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.Workspace)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WorkspacesCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *WorkspacesCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *WorkspacesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WorkspacesClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WorkspacesCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WorkspacesCreateOrUpdateResponse contains the response from method Workspaces.CreateOrUpdate.
@@ -625,14 +722,40 @@ type WorkspacesCreateOrUpdateResult struct {
 
 // WorkspacesDeletePollerResponse contains the response from method Workspaces.Delete.
 type WorkspacesDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (WorkspacesDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller WorkspacesDeletePoller
+	Poller *WorkspacesDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l WorkspacesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (WorkspacesDeleteResponse, error) {
+	respType := WorkspacesDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a WorkspacesDeletePollerResponse from the provided client and resume token.
+func (l *WorkspacesDeletePollerResponse) Resume(ctx context.Context, client *WorkspacesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("WorkspacesClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &WorkspacesDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // WorkspacesDeleteResponse contains the response from method Workspaces.Delete.

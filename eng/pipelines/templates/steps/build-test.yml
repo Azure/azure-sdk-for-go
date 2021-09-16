@@ -22,17 +22,27 @@ parameters:
     default: {}
 
 steps:
-  - pwsh: ./eng/scripts/build.ps1
-    displayName: 'Build'
-    workingDirectory: '${{parameters.GoWorkspace}}'
+  - task: Powershell@2
+    displayName: Build
     env:
       GO111MODULE: 'on'
+    inputs:
+      targetType: filePath
+      pwsh: true
+      filePath: eng/scripts/build.ps1
+      arguments: -filter '${{ parameters.ServiceDirectory }}'
+      workingDirectory: '${{ parameters.GoWorkspace }}'
 
-  - pwsh: ./eng/scripts/build.ps1 -vet -skipBuild
-    displayName: 'Vet'
-    workingDirectory: '${{parameters.GoWorkspace}}'
+  - task: Powershell@2
+    displayName: Vet
     env:
       GO111MODULE: 'on'
+    inputs:
+      targetType: filePath
+      pwsh: true
+      filePath: eng/scripts/build.ps1
+      arguments: -vet -skipBuild -filter '${{ parameters.ServiceDirectory }}'
+      workingDirectory: '${{ parameters.GoWorkspace }}'
 
   - ${{ if eq(parameters.RunTests, 'true') }}:
     - pwsh: |
@@ -43,6 +53,8 @@ steps:
         go get -u github.com/wadey/gocovmerge
       displayName: "Install Coverage and Junit Dependencies"
       workingDirectory: '${{parameters.GoWorkspace}}'
+
+    - template: /eng/common/testproxy/test-proxy-docker.yml
 
     - pwsh: |
         $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
@@ -62,11 +74,14 @@ steps:
       workingDirectory: '${{parameters.GoWorkspace}}'
       env:
         GO111MODULE: 'on'
+        PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
         ${{ insert }}: ${{ parameters.EnvVars }}
 
     - pwsh: ../eng/scripts/create_coverage.ps1 ${{parameters.ServiceDirectory}}
       displayName: 'Generate Coverage XML'
       workingDirectory: '${{parameters.GoWorkspace}}sdk'
+      env:
+        GO111MODULE: 'off'
 
     - task: PublishTestResults@2
       condition: succeededOrFailed()

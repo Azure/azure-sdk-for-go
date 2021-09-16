@@ -9,6 +9,7 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+	"os"
 	"path/filepath"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
@@ -23,11 +24,36 @@ type SDKRepository interface {
 	WorkTree
 	CreateReleaseBranch(releaseBranchName string) error
 	AddReleaseCommit(rpName, namespaceName, specHash, version string) error
-	RepositoryWithChangelog
 }
 
 func OpenSDKRepository(path string) (SDKRepository, error) {
 	wt, err := NewWorkTree(path)
+	if err != nil {
+		return nil, err
+	}
+
+	return &sdkRepository{
+		WorkTree: wt,
+	}, nil
+}
+
+func CloneSDKRepository(repoUrl, commitID string) (SDKRepository, error) {
+	repoBasePath := filepath.Join(os.TempDir(), "generator_sdk")
+	if _, err := os.Stat(repoBasePath); err == nil {
+		os.RemoveAll(repoBasePath)
+	}
+	if err := os.Mkdir(repoBasePath, os.ModePerm); err != nil {
+		return nil, fmt.Errorf("failed to create tmp folder for generation: %+v", err)
+	}
+
+	wt, err := CloneWorkTree(fmt.Sprintf("%s.git", repoUrl), repoBasePath)
+	if err != nil {
+		return nil, err
+	}
+
+	err = wt.Checkout(&CheckoutOptions{
+		Hash: plumbing.NewHash(commitID),
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +69,7 @@ type sdkRepository struct {
 
 func (s *sdkRepository) AddReleaseCommit(rpName, namespaceName, specHash, version string) error {
 	log.Printf("Add release package and commit")
-	if err := s.Add(fmt.Sprintf("sdk\\%s\\%s", rpName, namespaceName)); err != nil {
+	if err := s.Add(fmt.Sprintf("sdk/%s/%s", rpName, namespaceName)); err != nil {
 		return fmt.Errorf("failed to add 'profiles': %+v", err)
 	}
 

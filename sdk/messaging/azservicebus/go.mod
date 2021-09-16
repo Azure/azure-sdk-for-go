@@ -1,6 +1,6 @@
 module github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus
 
-go 1.12
+go 1.16
 
 require (
 	github.com/Azure/azure-amqp-common-go/v3 v3.1.0

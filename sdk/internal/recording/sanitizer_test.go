@@ -185,8 +185,12 @@ type Entry struct {
 }
 
 func TestUriSanitizer(t *testing.T) {
-	os.Setenv("AZURE_RECORD_MODE", "record")
-	defer os.Unsetenv("AZURE_RECORD_MODE")
+	temp := recordMode
+	recordMode = "record"
+	f := func() {
+		recordMode = temp
+	}
+	defer f()
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -232,9 +236,13 @@ func TestUriSanitizer(t *testing.T) {
 }
 
 func TestHeaderRegexSanitizer(t *testing.T) {
-	os.Setenv("AZURE_RECORD_MODE", "record")
-	defer os.Unsetenv("AZURE_RECORD_MODE")
-	// defer reset(t)
+	temp := recordMode
+	recordMode = "record"
+	f := func() {
+		recordMode = temp
+	}
+	defer f()
+	defer reset(t)
 
 	err := ResetSanitizers(nil)
 	require.NoError(t, err)
@@ -291,8 +299,12 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 }
 
 func TestBodyKeySanitizer(t *testing.T) {
-	os.Setenv("AZURE_RECORD_MODE", "record")
-	defer os.Unsetenv("AZURE_RECORD_MODE")
+	temp := recordMode
+	recordMode = "record"
+	f := func() {
+		recordMode = temp
+	}
+	defer f()
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -344,8 +356,12 @@ func TestBodyKeySanitizer(t *testing.T) {
 }
 
 func TestBodyRegexSanitizer(t *testing.T) {
-	os.Setenv("AZURE_RECORD_MODE", "record")
-	defer os.Unsetenv("AZURE_RECORD_MODE")
+	temp := recordMode
+	recordMode = "record"
+	f := func() {
+		recordMode = temp
+	}
+	defer f()
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -397,8 +413,12 @@ func TestBodyRegexSanitizer(t *testing.T) {
 }
 
 func TestRemoveHeaderSanitizer(t *testing.T) {
-	os.Setenv("AZURE_RECORD_MODE", "record")
-	defer os.Unsetenv("AZURE_RECORD_MODE")
+	temp := recordMode
+	recordMode = "record"
+	f := func() {
+		recordMode = temp
+	}
+	defer f()
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -447,8 +467,12 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 }
 
 func TestContinuationSanitizer(t *testing.T) {
-	os.Setenv("AZURE_RECORD_MODE", "record")
-	defer os.Unsetenv("AZURE_RECORD_MODE")
+	temp := recordMode
+	recordMode = "record"
+	f := func() {
+		recordMode = temp
+	}
+	defer f()
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -512,8 +536,12 @@ func TestContinuationSanitizer(t *testing.T) {
 }
 
 func TestGeneralRegexSanitizer(t *testing.T) {
-	os.Setenv("AZURE_RECORD_MODE", "record")
-	defer os.Unsetenv("AZURE_RECORD_MODE")
+	temp := recordMode
+	recordMode = "record"
+	f := func() {
+		recordMode = temp
+	}
+	defer f()
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -562,8 +590,12 @@ func TestOAuthResponseSanitizer(t *testing.T) {
 }
 
 func TestUriSubscriptionIdSanitizer(t *testing.T) {
-	os.Setenv("AZURE_RECORD_MODE", "record")
-	defer os.Unsetenv("AZURE_RECORD_MODE")
+	temp := recordMode
+	recordMode = "record"
+	f := func() {
+		recordMode = temp
+	}
+	defer f()
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -609,8 +641,12 @@ func TestUriSubscriptionIdSanitizer(t *testing.T) {
 }
 
 func TestResetSanitizers(t *testing.T) {
-	os.Setenv("AZURE_RECORD_MODE", "record")
-	defer os.Unsetenv("AZURE_RECORD_MODE")
+	temp := recordMode
+	recordMode = "record"
+	f := func () {
+		recordMode = temp
+	}
+	defer f()
 	defer reset(t)
 
 	err := ResetSanitizers(nil)

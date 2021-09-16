@@ -7,12 +7,14 @@ $cwd = Get-Location
 # 0. Find all test directories
 Write-Host "Finding test directories in 'sdk/$serviceDir'"
 $testDirs = & $PSScriptRoot/get_test_dirs.ps1 -serviceDir $serviceDir
+Write-Host $testDirs
 # Issues here, not returning any objects
 Write-Host "Found test directories $testDirs"
 
 $runTests = $false
 # 0b. Verify there are test files with tests to run in at least one of these directories
 foreach ($testDir in $testDirs) {
+    Write-Host $testDir
     $testFiles = Get-ChildItem -Path $testDir -Filter *_test.go
     foreach ($testFile in $testFiles) {
         if (Select-String -path $testFile -pattern 'Test' -SimpleMatch) {
@@ -38,6 +40,7 @@ Write-Host "Proceeding to run tests and add coverage"
 
 # 1. Run tests
 foreach ($td in $testDirs) {
+    Write-Host $td
     Push-Location $td
     Write-Host "##[command]Executing 'go test -run ""^Test"" -v -coverprofile coverage.txt .' in $td"
     go test -run "^Test" -v -coverprofile coverage.txt . | Tee-Object -FilePath outfile.txt
@@ -54,6 +57,7 @@ foreach ($td in $testDirs) {
         Exit 0
     }
     Remove-Item outfile.txt
+    Pop-Location
 }
 
 Set-Location $PSScriptRoot

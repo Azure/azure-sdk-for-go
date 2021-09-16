@@ -12,7 +12,7 @@ package policy
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2020-09-01-preview/policy"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2021-06-01-preview/policy"
 )
 
 const (
@@ -94,6 +94,7 @@ type ResourceIdentityType = original.ResourceIdentityType
 const (
 	ResourceIdentityTypeNone           ResourceIdentityType = original.ResourceIdentityTypeNone
 	ResourceIdentityTypeSystemAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+	ResourceIdentityTypeUserAssigned   ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
 )
 
 type Type = original.Type
@@ -114,6 +115,7 @@ type AssignmentListResult = original.AssignmentListResult
 type AssignmentListResultIterator = original.AssignmentListResultIterator
 type AssignmentListResultPage = original.AssignmentListResultPage
 type AssignmentProperties = original.AssignmentProperties
+type AssignmentUpdate = original.AssignmentUpdate
 type AssignmentsClient = original.AssignmentsClient
 type BaseClient = original.BaseClient
 type CloudError = original.CloudError
@@ -143,6 +145,7 @@ type ExemptionListResultPage = original.ExemptionListResultPage
 type ExemptionProperties = original.ExemptionProperties
 type ExemptionsClient = original.ExemptionsClient
 type Identity = original.Identity
+type IdentityUserAssignedIdentitiesValue = original.IdentityUserAssignedIdentitiesValue
 type NonComplianceMessage = original.NonComplianceMessage
 type ParameterDefinitionsValue = original.ParameterDefinitionsValue
 type ParameterDefinitionsValueMetadata = original.ParameterDefinitionsValueMetadata

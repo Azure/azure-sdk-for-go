@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## `v57.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/extendedlocation/mgmt/2021-08-15/extendedlocation`
+- `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2021-06-01-preview/policy`
+
 ## `v57.2.0`
 
 ### New Packages
@@ -12,7 +19,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v57.2.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
 
 ## `v57.1.0`
 

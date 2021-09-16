@@ -3,7 +3,6 @@ parameters:
   ServiceDirectory: ''
   GoWorkspace: ''
   LintVersion: ''
-  Scope: 'sdk/...'
 
 steps:
 
@@ -14,7 +13,7 @@ steps:
     workingDirectory: '${{parameters.GoWorkspace}}'
 
   - pwsh: |
-      $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
+      $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
       foreach ($md in $modDirs) {
         pushd $md
         Write-Host "##[command]Executing golangci-lint run -c ${{parameters.GoWorkspace}}eng/.golangci.yml in $md"
@@ -25,7 +24,7 @@ steps:
     workingDirectory: '${{parameters.GoWorkspace}}'
 
   - pwsh: |
-      $modDirs = ./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE)
+      $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
       foreach ($md in $modDirs) {
         if (-Not $md -Match "/arm") {
           Get-ChildItem $md/doc.go

@@ -49,6 +49,18 @@ type SecretBundle struct {
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
+func secretBundleFromGenerated(i internal.SecretBundle) SecretBundle {
+	return SecretBundle{
+		Attributes:  secretAttributesFromGenerated(i.Attributes),
+		ContentType: i.ContentType,
+		ID:          i.ID,
+		Tags:        i.Tags,
+		Value:       i.Value,
+		Kid:         i.Kid,
+		Managed:     i.Managed,
+	}
+}
+
 // SecretAttributes - The secret management attributes.
 type SecretAttributes struct {
 	Attributes
@@ -127,5 +139,31 @@ func secretItemFromGenerated(i *internal.SecretItem) *SecretItem {
 		ID:          i.ID,
 		Tags:        i.Tags,
 		Managed:     i.Managed,
+	}
+}
+
+// DeletedSecretItem - The deleted secret item containing metadata about the deleted secret.
+type DeletedSecretItem struct {
+	SecretItem
+	// The url of the recovery object, used to identify and recover the deleted secret.
+	RecoveryID *string `json:"recoveryId,omitempty"`
+
+	// READ-ONLY; The time when the secret was deleted, in UTC
+	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time when the secret is scheduled to be purged, in UTC
+	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
+}
+
+func deletedSecretItemFromGenerated(i *internal.DeletedSecretItem) *DeletedSecretItem {
+	if i == nil {
+		return nil
+	}
+
+	return &DeletedSecretItem{
+		RecoveryID:         i.RecoveryID,
+		DeletedDate:        i.DeletedDate,
+		ScheduledPurgeDate: i.ScheduledPurgeDate,
+		SecretItem:         *secretItemFromGenerated(&i.SecretItem),
 	}
 }

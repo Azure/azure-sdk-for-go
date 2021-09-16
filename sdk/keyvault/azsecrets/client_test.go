@@ -10,6 +10,7 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -106,9 +107,7 @@ func TestListSecretVersionss(t *testing.T) {
 		count += len(page.Secrets)
 	}
 	require.Greater(t, count, 0)
-
 	require.NoError(t, pager.Err())
-
 }
 
 func TestListSecrets(t *testing.T) {
@@ -125,7 +124,35 @@ func TestListSecrets(t *testing.T) {
 		count += len(page.Value)
 	}
 	require.Greater(t, count, 0)
-
 	require.NoError(t, pager.Err())
+}
 
+func TestListDeletedSecrets(t *testing.T) {
+	recording.StartRecording(t, pathToPackage, nil)
+	defer recording.StopRecording(t, nil)
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	count := 0
+	pager := client.ListDeletedSecrets(nil)
+	for pager.NextPage(context.Background()) {
+		page := pager.PageResponse()
+		count += len(page.Value)
+	}
+	require.Equal(t, count, 0) // No ability to delete yet
+	require.NoError(t, pager.Err())
+}
+
+func TestDeletedSecret(t *testing.T) {
+	recording.StartRecording(t, pathToPackage, nil)
+	defer recording.StopRecording(t, nil)
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	poller, err := client.BeginDeleteSecret(context.Background(), "mySecret", nil)
+	require.NoError(t, err)
+
+	resp, err := poller.PollUntilDone(context.Background(), 1*time.Second)
 }

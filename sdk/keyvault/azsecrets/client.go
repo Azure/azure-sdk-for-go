@@ -10,6 +10,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -208,9 +209,13 @@ type DeleteSecretPoller interface {
 	// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
 	// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 	// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
-
 	Poll(context.Context) (*http.Response, error)
+
+	// FinalResponse returns the final response after the operations has finished
 	FinalResponse(context.Context) (DeleteSecretResponse, error)
+
+	// PollUntilDone runs the Poll method until the operation completes
+	PollUntilDone(context.Context, time.Duration) (DeleteSecretResponse, error)
 }
 
 type startDeletePoller struct {
@@ -218,14 +223,15 @@ type startDeletePoller struct {
 	vaultUrl       string
 	client         *internal.KeyVaultClient
 	deleteResponse internal.KeyVaultClientDeleteSecretResponse
+	lastResponse   internal.KeyVaultClientGetDeletedSecretResponse
 }
 
 func (s *startDeletePoller) Done() bool {
-	return false
+	return s.lastResponse.RawResponse.StatusCode == http.StatusOK
 }
 
 func (s *startDeletePoller) ResumeToken() string {
-	return ""
+	return s.secretName
 }
 
 func (s *startDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
@@ -233,11 +239,26 @@ func (s *startDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	if err != nil {
 		return resp.RawResponse, err
 	}
+	s.lastResponse = resp
 	return resp.RawResponse, nil
 }
 
-func (s *startDeletePoller) FinalResponse(context.Context) (DeleteSecretResponse, error) {
+func (s *startDeletePoller) FinalResponse(ctx context.Context) (DeleteSecretResponse, error) {
 	return *deleteSecretResponseFromGenerated(&s.deleteResponse), nil
+}
+
+// PollUntilDone continually calls the Poll operation until the operation is completed. In between each
+// Poll is a wait determined by the t parameter.
+func (s *startDeletePoller) PollUntilDone(ctx context.Context, t time.Duration) (DeleteSecretResponse, error) {
+	for {
+		s.Poll(ctx)
+		if s.Done() {
+			break
+		}
+		time.Sleep(t)
+	}
+
+	return DeleteSecretResponse{}, nil
 }
 
 func (c *Client) BeginDeleteSecret(ctx context.Context, name string, options *BeginDeleteSecretOptions) (DeleteSecretPoller, error) {
@@ -258,16 +279,52 @@ func (c *Client) BeginDeleteSecret(ctx context.Context, name string, options *Be
 	}, nil
 }
 
+func (c *Client) CreateBeginDeleteSecretFromResumeToken(ctx context.Context, resumeToken string) DeleteSecretPoller {
+	ret := &startDeletePoller{
+		secretName: resumeToken,
+		client: c.kvClient,
+	}
+	return ret
+}
+
 type GetDeletedSecretOptions struct{}
 
-type GetDeletedSecretResponse struct{}
+func (g *GetDeletedSecretOptions) toGenerated() *internal.KeyVaultClientGetDeletedSecretOptions {
+	return &internal.KeyVaultClientGetDeletedSecretOptions{}
+}
+
+type GetDeletedSecretResponse struct {
+	SecretBundle
+	// The url of the recovery object, used to identify and recover the deleted secret.
+	RecoveryID *string `json:"recoveryId,omitempty"`
+
+	// READ-ONLY; The time when the secret was deleted, in UTC
+	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time when the secret is scheduled to be purged, in UTC
+	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
+
+	RawResponse *http.Response
+}
+
+func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSecretResponse) GetDeletedSecretResponse {
+	return GetDeletedSecretResponse{
+		RawResponse:        i.RawResponse,
+		RecoveryID:         i.RecoveryID,
+		DeletedDate:        i.DeletedDate,
+		ScheduledPurgeDate: i.ScheduledPurgeDate,
+		SecretBundle:       secretBundleFromGenerated(i.SecretBundle),
+	}
+}
 
 func (c *Client) GetDeletedSecret(ctx context.Context, name string, options *GetDeletedSecretOptions) (GetDeletedSecretResponse, error) {
 	if options == nil {
 		options = &GetDeletedSecretOptions{}
 	}
 
-	return GetDeletedSecretResponse{}, errors.New("not implemented")
+	resp, err := c.kvClient.GetDeletedSecret(ctx, c.vaultUrl, name, options.toGenerated())
+
+	return getDeletedSecretResponseFromGenerated(resp), err
 }
 
 type UpdateSecretPropertiesOptions struct{}
@@ -354,16 +411,75 @@ func (c *Client) GetSecretVersionsProperties(ctx context.Context, options *GetSe
 	return GetSecretVersionsPropertiesResponse{}, errors.New("not implemented")
 }
 
-type ListDeletedSecretsOptions struct{}
+type ListDeletedSecretsPager interface {
+	// PageResponse returns the current ListSecretVersionsPage
+	PageResponse() ListDeletedSecretsPage
+
+	// Err returns true if there is another page of data available, false if not
+	Err() error
+
+	// NextPage returns true if there is another page of data available, false if not
+	NextPage(context.Context) bool
+}
+
+type listDeletedSecretsPager struct {
+	genPager *internal.KeyVaultClientGetDeletedSecretsPager
+}
+
+func (l *listDeletedSecretsPager) PageResponse() ListDeletedSecretsPage {
+	resp := l.genPager.PageResponse()
+
+	var values []*DeletedSecretItem
+	for _, d := range resp.Value {
+		values = append(values, deletedSecretItemFromGenerated(d))
+	}
+
+	return ListDeletedSecretsPage{
+		RawResponse: resp.RawResponse,
+		NextLink:    resp.NextLink,
+		Value:       values,
+	}
+}
+
+func (l *listDeletedSecretsPager) Err() error {
+	return l.genPager.Err()
+}
+
+func (l *listDeletedSecretsPager) NextPage(ctx context.Context) bool {
+	return l.genPager.NextPage(ctx)
+}
+
+type ListDeletedSecretsPage struct {
+	RawResponse *http.Response
+	// READ-ONLY; The URL to get the next set of deleted secrets.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; A response message containing a list of the deleted secrets in the vault along with a link to the next page of deleted secrets
+	Value []*DeletedSecretItem `json:"value,omitempty" azure:"ro"`
+}
+
+type ListDeletedSecretsOptions struct {
+	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+	Maxresults *int32
+}
+
+func (l *ListDeletedSecretsOptions) toGenerated() *internal.KeyVaultClientGetDeletedSecretsOptions {
+	return &internal.KeyVaultClientGetDeletedSecretsOptions{
+		Maxresults: l.Maxresults,
+	}
+}
 
 type ListDeletedSecretsResponse struct{}
 
-func (c *Client) ListDeletedSecrets(ctx context.Context, options *ListDeletedSecretsOptions) (ListDeletedSecretsResponse, error) {
+func (c *Client) ListDeletedSecrets(options *ListDeletedSecretsOptions) ListDeletedSecretsPager {
 	if options == nil {
 		options = &ListDeletedSecretsOptions{}
 	}
 
-	return ListDeletedSecretsResponse{}, errors.New("not implemented")
+	return &listDeletedSecretsPager{
+		genPager: c.kvClient.GetDeletedSecrets(c.vaultUrl, options.toGenerated()),
+	}
+
 }
 
 // ListSecretVersionsPager is a Pager for SecretVersion results
@@ -456,7 +572,6 @@ func (c *Client) ListSecretVersions(name string, options *ListSecretVersionsOpti
 		),
 	}
 }
-
 
 // ListSecretsPager is a Pager for SecretVersion results
 type ListSecretsPager interface {

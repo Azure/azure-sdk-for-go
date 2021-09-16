@@ -83,3 +83,6 @@ stages:
         Scope: $(SCOPE)
         Image: $(vm.image)
         GoVersion: $(go.version)
+        RunTests: true
+        EnvVars: 
+          EMULATOR: true

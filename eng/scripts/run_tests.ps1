@@ -19,11 +19,11 @@ foreach ($testDir in $testDirs) {
             $runTests = $true
         }
     }
+}
 
-    if (!$runTests) {
-        Write-Host "There were no test files found."
-        Exit 0
-    }
+if (!$runTests) {
+    Write-Host "There were no test files found."
+    Exit 0
 }
 
 Write-Host "Downloading coverage tools"

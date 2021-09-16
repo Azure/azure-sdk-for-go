@@ -13,8 +13,9 @@ Write-Host "Found test directories $testDirs"
 $runTests = $false
 # 0b. Verify there are test files with tests to run in at least one of these directories
 foreach ($testDir in $testDirs) {
-    Get-ChildItem -Path $testDur -Filter *_test.go | ForEach-Object {
-        if (Select-String -path $_ -pattern 'Test' -SimpleMatch) {
+    $testFiles = Get-ChildItem -Path $testDur -Filter *_test.go
+    foreach ($testFile in $testFiles) {
+        if (Select-String -path $testFile -pattern 'Test' -SimpleMatch) {
             $runTests = $true
         }
     }

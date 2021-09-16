@@ -28,7 +28,6 @@ steps:
       pwsh: true
       filePath: eng/scripts/build.ps1
       arguments: -filter '${{ parameters.ServiceDirectory }}'
-      workingDirectory: $(System.DefaultWorkingDirectory)
 
   - task: Powershell@2
     displayName: Vet
@@ -39,7 +38,6 @@ steps:
       pwsh: true
       filePath: eng/scripts/build.ps1
       arguments: -vet -skipBuild -filter '${{ parameters.ServiceDirectory }}'
-      workingDirectory: $(System.DefaultWorkingDirectory)
 
   - ${{ if eq(parameters.RunTests, 'true') }}:
     - pwsh: |
@@ -68,7 +66,6 @@ steps:
           }
         }
       displayName: 'Run Tests'
-      workingDirectory: $(System.DefaultWorkingDirectory)
       env:
         GO111MODULE: 'on'
         PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt

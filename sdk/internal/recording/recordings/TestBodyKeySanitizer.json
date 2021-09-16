@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://jsonplaceholder.typicode.com/",
+      "RequestUri": "https://azsdkengsys.azurecr.io/",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -14,40 +14,14 @@
       "RequestBody": "eyJrZXkxIjoidmFsdWUxIn0=",
       "StatusCode": 404,
       "ResponseHeaders": {
-        "Access-Control-Allow-Credentials": "true",
-        "Alt-Svc": [
-          "h3=\u0022:443\u0022",
-          "h3-29=\u0022:443\u0022",
-          "h3-28=\u0022:443\u0022",
-          "h3-27=\u0022:443\u0022"
-        ],
-        "Cache-Control": "no-cache",
-        "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "68ca6f681843e86a-ATL",
         "Connection": "keep-alive",
-        "Content-Length": "2",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 10 Sep 2021 17:39:21 GMT",
-        "ETag": "W/\u00222-vyGp6PvFo4RvsFtPoIWeCReyIC8\u0022",
-        "Expect-CT": "max-age=604800, report-uri=\u0022https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\u0022",
-        "Expires": "-1",
-        "NEL": "{\u0022success_fraction\u0022:0,\u0022report_to\u0022:\u0022cf-nel\u0022,\u0022max_age\u0022:604800}",
-        "Pragma": "no-cache",
-        "Report-To": "{\u0022endpoints\u0022:[{\u0022url\u0022:\u0022https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=4%2FpSTnmzlz%2FJTkOBGFupdYg0HADP1%2FTYx2bYgoPY11s6Ne4e%2BSu1BI4apmZoFR%2FkNt1BlfXOnguk2rqLMwfeuJk5uzs07ltXDEKE1H%2BIYv9pV%2BB6s%2Btd30WAmHpOqoPQrBrtHlFmxWMwavGc66uW\u0022}],\u0022group\u0022:\u0022cf-nel\u0022,\u0022max_age\u0022:604800}",
-        "Server": "cloudflare",
-        "Vary": [
-          "Origin",
-          "X-HTTP-Method-Override",
-          "Accept-Encoding"
-        ],
-        "Via": "1.1 vegur",
-        "X-Content-Type-Options": "nosniff",
-        "X-Powered-By": "Express",
-        "x-ratelimit-limit": "1000",
-        "x-ratelimit-remaining": "999",
-        "x-ratelimit-reset": "1631295578"
+        "Content-Length": "9",
+        "Content-Type": "application/octet-stream",
+        "Date": "Wed, 15 Sep 2021 22:35:04 GMT",
+        "Server": "openresty",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains"
       },
-      "ResponseBody": {}
+      "ResponseBody": "Tm90IGZvdW5k"
     }
   ],
   "Variables": {}

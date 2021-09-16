@@ -26,6 +26,11 @@ if (!$runTests) {
     Exit 0
 }
 
+Write-Host "Downloading coverage tools"
+go get github.com/axw/gocov/gocov
+go get github.com/AlekSi/gocov-xml
+go get github.com/matm/gocov-html
+go get -u github.com/wadey/gocovmerge
 go get github.com/jstemmer/go-junit-report
 Set-Location $cwd
 

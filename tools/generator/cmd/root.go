@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/automation"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/issue"
@@ -23,6 +24,9 @@ func Command() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use: "generator",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			if err := os.Setenv("NODE_OPTIONS", "--max-old-space-size=8192"); err != nil {
+				return fmt.Errorf("failed to set environment variable: %v", err)
+			}
 			log.SetFlags(0) // remove the time stamp prefix
 			return nil
 		},

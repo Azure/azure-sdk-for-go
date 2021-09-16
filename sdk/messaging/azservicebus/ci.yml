@@ -15,3 +15,4 @@ stages:
     ServiceDirectory: 'servicebus'
     RunTests: true
     RunLiveTests: true
+    

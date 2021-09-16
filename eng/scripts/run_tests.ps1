@@ -13,7 +13,7 @@ Write-Host "Found test directories $testDirs"
 $runTests = $false
 # 0b. Verify there are test files with tests to run in at least one of these directories
 foreach ($testDir in $testDirs) {
-    $testFiles = Get-ChildItem -Path $testDur -Filter *_test.go
+    $testFiles = Get-ChildItem -Path $testDir -Filter *_test.go
     foreach ($testFile in $testFiles) {
         if (Select-String -path $testFile -pattern 'Test' -SimpleMatch) {
             $runTests = $true
@@ -26,12 +26,7 @@ if (!$runTests) {
     Exit 0
 }
 
-Write-Host "Downloading coverage tools"
 go get github.com/jstemmer/go-junit-report
-go get github.com/axw/gocov/gocov
-go get github.com/AlekSi/gocov-xml
-go get github.com/matm/gocov-html
-go get -u github.com/wadey/gocovmerge
 Set-Location $cwd
 
 Write-Host "Proceeding to run tests and add coverage"

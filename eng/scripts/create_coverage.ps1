@@ -15,6 +15,12 @@ Get-ChildItem -recurse -path . -filter coverage.txt | ForEach-Object {
 
 Pop-Location
 
+Write-Host "Downloading coverage tools"
+go get github.com/axw/gocov/gocov
+go get github.com/AlekSi/gocov-xml
+go get github.com/matm/gocov-html
+go get -u github.com/wadey/gocovmerge
+
 # merge coverage files
 gocovmerge $coverageFiles > mergedCoverage.txt
 gocov convert ./mergedCoverage.txt > ./coverage.json

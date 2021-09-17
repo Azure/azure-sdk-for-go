@@ -70,7 +70,9 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 	}, nil
 }
 
+// GetSecretOptions holds the optional parameters for the Client.GetSecret function
 type GetSecretOptions struct {
+	// Version specifies the version of a secret. If unspecified, the most recent version will be returned
 	Version string
 }
 
@@ -83,6 +85,8 @@ func (g *GetSecretOptions) toGenerated() *internal.KeyVaultClientGetSecretOption
 
 type GetSecretResponse struct {
 	SecretBundle
+
+	// RawResponse contains the underlying HTTP response
 	RawResponse *http.Response
 }
 
@@ -159,9 +163,6 @@ func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) 
 		Kid:         i.Kid,
 		Managed:     i.Managed,
 	}
-}
-
-type SetSecretParameters struct {
 }
 
 func (c *Client) SetSecret(ctx context.Context, name string, value string, options *SetSecretOptions) (SetSecretResponse, error) {

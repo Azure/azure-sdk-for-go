@@ -374,3 +374,32 @@ func TestBeginRecoverDeletedSecret(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, *getResp.Value, value)
 }
+
+func TestBackupSecret(t *testing.T) {
+	recording.StartRecording(t, pathToPackage, nil)
+	defer recording.StopRecording(t, nil)
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	secret, err := createRandomName(t, "secret")
+	require.NoError(t, err)
+	value, err := createRandomName(t, "value")
+	require.NoError(t, err)
+
+	defer cleanUpSecret(t, client, secret)
+
+	_, err = client.SetSecret(context.Background(), secret, value, nil)
+	require.NoError(t, err)
+
+	_, err = client.SetSecret(context.Background(), secret, value+"1", nil)
+	require.NoError(t, err)
+
+	resp, err := client.BackupSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+	require.Greater(t, len(resp.Value), 0)
+
+	// One that does not exist should fail
+	resp, err = client.BackupSecret(context.Background(), "secret", nil)
+	require.Error(t, err)
+}

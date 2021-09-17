@@ -181,3 +181,9 @@ func deletedSecretItemFromGenerated(i *internal.DeletedSecretItem) *DeletedSecre
 		SecretItem:         *secretItemFromGenerated(&i.SecretItem),
 	}
 }
+
+// BackupSecretResult - The backup secret result, containing the backup blob.
+type BackupSecretResult struct {
+	// READ-ONLY; The backup blob containing the backed up secret.
+	Value []byte `json:"value,omitempty" azure:"ro"`
+}

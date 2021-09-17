@@ -445,16 +445,39 @@ func (c *Client) UpdateSecretProperties(ctx context.Context, secretName string, 
 	return updateSecretPropertiesResponseFromGenerated(resp), err
 }
 
+// KeyVaultClientBackupSecretOptions contains the optional parameters for the KeyVaultClient.BackupSecret method.
 type BackupSecretOptions struct{}
 
-type BackupSecretResponse struct{}
+func (b *BackupSecretOptions) toGenerated() *internal.KeyVaultClientBackupSecretOptions {
+	return &internal.KeyVaultClientBackupSecretOptions{}
+}
 
-func (c *Client) BackupSecret(ctx context.Context, options *BackupSecretOptions) (BackupSecretResponse, error) {
+type BackupSecretResponse struct {
+	BackupSecretResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func backupSecretResponseFromGenerated(i internal.KeyVaultClientBackupSecretResponse) BackupSecretResponse {
+	return BackupSecretResponse{
+		RawResponse: i.RawResponse,
+		BackupSecretResult: BackupSecretResult{
+			Value: i.Value,
+		},
+	}
+}
+
+func (c *Client) BackupSecret(ctx context.Context, secretName string, options *BackupSecretOptions) (BackupSecretResponse, error) {
 	if options == nil {
 		options = &BackupSecretOptions{}
 	}
 
-	return BackupSecretResponse{}, errors.New("not implemented")
+	resp, err := c.kvClient.BackupSecret(ctx, c.vaultUrl, secretName, options.toGenerated())
+	if err != nil {
+		return BackupSecretResponse{}, err
+	}
+
+	return backupSecretResponseFromGenerated(resp), nil
 }
 
 type RestoreSecretBackupOptions struct{}

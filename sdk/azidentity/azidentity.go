@@ -18,21 +18,21 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
-// The base URL for Azure Active Directory
-type AzureAuthorityHost string
+// AuthorityHost is the base URL for Azure Active Directory
+type AuthorityHost string
 
 const (
 	// AzureChina is a global constant to use in order to access the Azure China cloud.
-	AzureChina AzureAuthorityHost = "https://login.chinacloudapi.cn/"
+	AzureChina AuthorityHost = "https://login.chinacloudapi.cn/"
 	// AzureGermany is a global constant to use in order to access the Azure Germany cloud.
-	AzureGermany AzureAuthorityHost = "https://login.microsoftonline.de/"
+	AzureGermany AuthorityHost = "https://login.microsoftonline.de/"
 	// AzureGovernment is a global constant to use in order to access the Azure Government cloud.
-	AzureGovernment AzureAuthorityHost = "https://login.microsoftonline.us/"
+	AzureGovernment AuthorityHost = "https://login.microsoftonline.us/"
 	// AzurePublicCloud is a global constant to use in order to access the Azure public cloud.
-	AzurePublicCloud AzureAuthorityHost = "https://login.microsoftonline.com"
+	AzurePublicCloud AuthorityHost = "https://login.microsoftonline.com"
 )
 
-// the default AADv2 scope
+// defaultSuffix is the default AADv2 scope
 const defaultSuffix = "/.default"
 
 const (
@@ -152,7 +152,7 @@ type pipelineOptions struct {
 }
 
 // setAuthorityHost initializes the authority host for credentials.
-func setAuthorityHost(authorityHost AzureAuthorityHost) (string, error) {
+func setAuthorityHost(authorityHost AuthorityHost) (string, error) {
 	host := string(authorityHost)
 	if host == "" {
 		if envAuthorityHost := os.Getenv("AZURE_AUTHORITY_HOST"); envAuthorityHost != "" {

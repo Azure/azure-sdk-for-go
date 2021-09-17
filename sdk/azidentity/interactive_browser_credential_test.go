@@ -57,7 +57,7 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	client := &http.Client{Transport: tr}
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := InteractiveBrowserCredentialOptions{}
-	options.AuthorityHost = AzureAuthorityHost(srv.URL())
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = client
 	cred, err := NewInteractiveBrowserCredential(&options)
 	if err != nil {
@@ -89,7 +89,7 @@ func TestInteractiveBrowserCredential_SetPort(t *testing.T) {
 	client := &http.Client{Transport: tr}
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := InteractiveBrowserCredentialOptions{}
-	options.AuthorityHost = AzureAuthorityHost(srv.URL())
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = client
 	options.Port = 8080
 	cred, err := NewInteractiveBrowserCredential(&options)
@@ -126,7 +126,7 @@ func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
 	options := InteractiveBrowserCredentialOptions{}
 	options.ClientSecret = wrongSecret
-	options.AuthorityHost = AzureAuthorityHost(srv.URL())
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = client
 	cred, err := NewInteractiveBrowserCredential(&options)
 	if err != nil {

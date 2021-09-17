@@ -3,7 +3,7 @@
 ## 0.12.0 (Unreleased)
 ### Breaking Changes
 * The `AuthorityHost` field in credential options structs is now a custom type,
-  `AzureAuthorityHost`, with underlying type `string`
+  `AuthorityHost`, with underlying type `string`
 
 
 ## 0.11.0 (2021-09-08)

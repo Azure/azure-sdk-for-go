@@ -155,10 +155,9 @@ type pipelineOptions struct {
 func setAuthorityHost(authorityHost AuthorityHost) (string, error) {
 	host := string(authorityHost)
 	if host == "" {
+		host = string(AzurePublicCloud)
 		if envAuthorityHost := os.Getenv("AZURE_AUTHORITY_HOST"); envAuthorityHost != "" {
 			host = envAuthorityHost
-		} else {
-			host = string(AzurePublicCloud)
 		}
 	}
 	u, err := url.Parse(host)

@@ -107,13 +107,10 @@ func TestSetGetSecret(t *testing.T) {
 
 	defer cleanUpSecret(t, client, secret)
 
-	resp, err := client.SetSecret(context.Background(), secret, value, nil)
+	_, err = client.SetSecret(context.Background(), secret, value, nil)
 	require.NoError(t, err)
-	require.Equal(t, *resp.Value, value)
 
-	secretVersion := strings.Split(*resp.ID, "/")
-
-	getResp, err := client.GetSecret(context.Background(), secret, secretVersion[len(secretVersion)-1], nil)
+	getResp, err := client.GetSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 	require.Equal(t, *getResp.Value, value)
 }
@@ -149,7 +146,7 @@ func TestListSecretVersionss(t *testing.T) {
 	// clean up test
 	poller, err := client.BeginDeleteSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
-	_, err = poller.PollUntilDone(context.Background(), 1*time.Second)
+	_, err = poller.PollUntilDone(context.Background(), 100*time.Millisecond)
 	require.NoError(t, err)
 
 	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
@@ -207,12 +204,12 @@ func TestListDeletedSecrets(t *testing.T) {
 	// 2. Delete both secrets
 	poller, err := client.BeginDeleteSecret(context.Background(), secret1, nil)
 	require.NoError(t, err)
-	_, err = poller.PollUntilDone(context.Background(), 1*time.Second)
+	_, err = poller.PollUntilDone(context.Background(), 100*time.Millisecond)
 	require.NoError(t, err)
 
 	poller, err = client.BeginDeleteSecret(context.Background(), secret2, nil)
 	require.NoError(t, err)
-	_, err = poller.PollUntilDone(context.Background(), 1*time.Second)
+	_, err = poller.PollUntilDone(context.Background(), 100*time.Millisecond)
 	require.NoError(t, err)
 
 	// Make sure both secrets show up in deleted secrets
@@ -258,7 +255,7 @@ func TestDeleteSecret(t *testing.T) {
 	poller, err := client.BeginDeleteSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 
-	_, err = poller.PollUntilDone(context.Background(), 1*time.Second)
+	_, err = poller.PollUntilDone(context.Background(), 100*time.Millisecond)
 	require.NoError(t, err)
 
 	_, err = client.GetDeletedSecret(context.Background(), secret, nil)
@@ -286,7 +283,7 @@ func TestPurgeDeletedSecret(t *testing.T) {
 	poller, err := client.BeginDeleteSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 
-	_, err = poller.PollUntilDone(context.Background(), 1*time.Second)
+	_, err = poller.PollUntilDone(context.Background(), 100*time.Millisecond)
 	require.NoError(t, err)
 
 	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
@@ -320,7 +317,7 @@ func TestUpdateSecretProperties(t *testing.T) {
 
 	secretVersion := strings.Split(*resp.ID, "/")
 
-	getResp, err := client.GetSecret(context.Background(), secret, secretVersion[len(secretVersion)-1], nil)
+	getResp, err := client.GetSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 	require.Equal(t, *getResp.Value, value)
 
@@ -334,9 +331,46 @@ func TestUpdateSecretProperties(t *testing.T) {
 	_, err = client.UpdateSecretProperties(context.Background(), secret, secretVersion[len(secretVersion)-1], params, nil)
 	require.NoError(t, err)
 
-	getResp, err = client.GetSecret(context.Background(), secret, secretVersion[len(secretVersion)-1], nil)
+	getResp, err = client.GetSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 	require.Equal(t, *getResp.Value, value)
 	require.Equal(t, *getResp.Tags["Tag1"], "TagVal1")
 	require.Equal(t, *getResp.ContentType, "password")
+}
+
+func TestBeginRecoverDeletedSecret(t *testing.T) {
+	recording.StartRecording(t, pathToPackage, nil)
+	defer recording.StopRecording(t, nil)
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	secret, err := createRandomName(t, "secret")
+	require.NoError(t, err)
+	value, err := createRandomName(t, "value")
+	require.NoError(t, err)
+
+	defer cleanUpSecret(t, client, secret)
+
+	_, err = client.SetSecret(context.Background(), secret, value, nil)
+	require.NoError(t, err)
+
+	poller, err := client.BeginDeleteSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+
+	_, err = poller.PollUntilDone(context.Background(), 100*time.Millisecond)
+	require.NoError(t, err)
+
+	poller2, err := client.BeginRecoverDeletedSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+
+	_, err = poller2.PollUntilDone(context.Background(), 100*time.Millisecond)
+	require.NoError(t, err)
+
+	_, err = client.SetSecret(context.Background(), secret, value, nil)
+	require.NoError(t, err)
+
+	getResp, err := client.GetSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+	require.Equal(t, *getResp.Value, value)
 }

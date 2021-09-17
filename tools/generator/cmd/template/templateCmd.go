@@ -10,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/flags"
 	"github.com/spf13/cobra"
@@ -57,6 +58,7 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("template-path", "tools/generator/template/rpName/packageName", "Specifies the path of the template")
 	flagSet.String("package-title", "", "Specifies the title of this package")
 	flagSet.String("commit", "", "Specifies the commit hash of azure-rest-api-specs")
+	flagSet.String("release-date", "", "Specifies the release date in changelog")
 }
 
 // ParseFlags parses the flags to a Flags struct
@@ -66,6 +68,7 @@ func ParseFlags(flagSet *pflag.FlagSet) Flags {
 		TemplatePath: flags.GetString(flagSet, "template-path"),
 		PackageTitle: flags.GetString(flagSet, "package-title"),
 		Commit:       flags.GetString(flagSet, "commit"),
+		ReleaseDate:  flags.GetString(flagSet, "release-date"),
 	}
 }
 
@@ -75,6 +78,7 @@ type Flags struct {
 	TemplatePath string
 	PackageTitle string
 	Commit       string
+	ReleaseDate  string
 }
 
 // GeneratePackageByTemplate creates a new set of files based on the things in template directory
@@ -95,7 +99,7 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	}
 
 	// build the replaceMap
-	buildReplaceMap(rpName, packageName, flags.PackageTitle, flags.Commit)
+	buildReplaceMap(rpName, packageName, flags.PackageTitle, flags.Commit, flags.ReleaseDate)
 
 	// copy everything to destination directory
 	for _, file := range fileList {
@@ -119,13 +123,18 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 	return nil
 }
 
-func buildReplaceMap(rpName, packageName, packageTitle, commitID string) {
+func buildReplaceMap(rpName, packageName, packageTitle, commitID, releaseDate string) {
 	replaceMap = make(map[string]string)
 
 	replaceMap[RPNameKey] = rpName
 	replaceMap[PackageNameKey] = packageName
 	replaceMap[PackageTitleKey] = packageTitle
 	replaceMap[CommitIDKey] = commitID
+	if releaseDate == "" {
+		replaceMap[ReleaseDate] = time.Now().Format("2006-01-02")
+	} else {
+		replaceMap[ReleaseDate] = releaseDate
+	}
 }
 
 func readAndReplace(path string) (string, error) {
@@ -166,4 +175,5 @@ const (
 	PackageTitleKey = "{{PackageTitle}}"
 	CommitIDKey     = "{{commitID}}"
 	FilenameSuffix  = ".tpl"
+	ReleaseDate     = "{{releaseDate}}"
 )

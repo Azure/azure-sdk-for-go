@@ -6,6 +6,7 @@ package azsecrets
 import (
 	"context"
 	"fmt"
+	"hash/fnv"
 	"net/http"
 	"os"
 	"strings"
@@ -19,6 +20,12 @@ import (
 )
 
 var pathToPackage = "sdk/keyvault/azsecrets"
+
+func createRandomName(t *testing.T, prefix string) (string, error) {
+	h := fnv.New32a()
+	_, err := h.Write([]byte(t.Name()))
+	return prefix + fmt.Sprint(h.Sum32()), err
+}
 
 type recordingPolicy struct {
 	options recording.RecordingOptions
@@ -74,6 +81,17 @@ func createClient(t *testing.T) (*Client, error) {
 	return NewClient(vaultUrl, cred, nil)
 }
 
+func cleanUpSecret(t *testing.T, client *Client, secret string) {
+	poller, err := client.BeginDeleteSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+
+	_, err = poller.PollUntilDone(context.Background(), 500 * time.Millisecond)
+	require.NoError(t, err)
+
+	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+}
+
 func TestSetGetSecret(t *testing.T) {
 	recording.StartRecording(t, pathToPackage, nil)
 	defer recording.StopRecording(t, nil)
@@ -81,16 +99,22 @@ func TestSetGetSecret(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	secretValue := "mySecretValue"
-	resp, err := client.SetSecret(context.Background(), "mySecret", secretValue, nil)
+	secret, err := createRandomName(t, "secret")
 	require.NoError(t, err)
-	require.Equal(t, *resp.Value, secretValue)
+	value, err := createRandomName(t, "value")
+	require.NoError(t, err)
+
+	defer cleanUpSecret(t, client, secret)
+
+	resp, err := client.SetSecret(context.Background(), secret, value, nil)
+	require.NoError(t, err)
+	require.Equal(t, *resp.Value, value)
 
 	secretVersion := strings.Split(*resp.ID, "/")
 
-	getResp, err := client.GetSecret(context.Background(), "mySecret", secretVersion[len(secretVersion)-1], nil)
+	getResp, err := client.GetSecret(context.Background(), secret, secretVersion[len(secretVersion)-1], nil)
 	require.NoError(t, err)
-	require.Equal(t, *getResp.Value, secretValue)
+	require.Equal(t, *getResp.Value, value)
 }
 
 func TestListSecretVersionss(t *testing.T) {
@@ -100,14 +124,35 @@ func TestListSecretVersionss(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
+	secret, err := createRandomName(t, "secret")
+	require.NoError(t, err)
+	value, err := createRandomName(t, "value")
+	require.NoError(t, err)
+
+	_, err = client.SetSecret(context.Background(), secret, value, nil)
+	require.NoError(t, err)
+	_, err = client.SetSecret(context.Background(), secret, value+"1", nil)
+	require.NoError(t, err)
+	_, err = client.SetSecret(context.Background(), secret, value+"2", nil)
+	require.NoError(t, err)
+
 	count := 0
-	pager := client.ListSecretVersions("mySecret", nil)
+	pager := client.ListSecretVersions(secret, nil)
 	for pager.NextPage(context.Background()) {
 		page := pager.PageResponse()
 		count += len(page.Secrets)
 	}
-	require.Greater(t, count, 0)
+	require.GreaterOrEqual(t, count, 3)
 	require.NoError(t, pager.Err())
+
+	// clean up test
+	poller, err := client.BeginDeleteSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+	_, err = poller.PollUntilDone(context.Background(), 1*time.Second)
+	require.NoError(t, err)
+
+	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
 }
 
 func TestListSecrets(t *testing.T) {
@@ -134,25 +179,123 @@ func TestListDeletedSecrets(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
+	secret1, err := createRandomName(t, "secret1")
+	require.NoError(t, err)
+	value1, err := createRandomName(t, "value1")
+	require.NoError(t, err)
+	secret2, err := createRandomName(t, "secret2")
+	require.NoError(t, err)
+	value2, err := createRandomName(t, "value2")
+	require.NoError(t, err)
+
+	f := func() {
+		_, err := client.PurgeDeletedSecret(context.Background(), secret1, nil)
+		require.NoError(t, err)
+		_, err = client.PurgeDeletedSecret(context.Background(), secret2, nil)
+		require.NoError(t, err)
+	}
+	defer f()
+
+	// 1. Create 2 secrets
+	_, err = client.SetSecret(context.Background(), secret1, value1, nil)
+	require.NoError(t, err)
+
+	_, err = client.SetSecret(context.Background(), secret2, value2, nil)
+	require.NoError(t, err)
+
+	// 2. Delete both secrets
+	poller, err := client.BeginDeleteSecret(context.Background(), secret1, nil)
+	require.NoError(t, err)
+	_, err = poller.PollUntilDone(context.Background(), 1*time.Second)
+	require.NoError(t, err)
+
+	poller, err = client.BeginDeleteSecret(context.Background(), secret2, nil)
+	require.NoError(t, err)
+	_, err = poller.PollUntilDone(context.Background(), 1*time.Second)
+	require.NoError(t, err)
+
+	// Make sure both secrets show up in deleted secrets
+	deletedSecrets := map[string]bool{
+		secret1: false,
+		secret2: false,
+	}
 	count := 0
 	pager := client.ListDeletedSecrets(nil)
 	for pager.NextPage(context.Background()) {
 		page := pager.PageResponse()
 		count += len(page.Value)
+		for _, secret := range page.Value {
+			for deleted := range deletedSecrets {
+				if strings.Contains(*secret.ID, deleted) {
+					deletedSecrets[deleted] = true
+					break
+				}
+			}
+		}
 	}
-	require.Equal(t, count, 0) // No ability to delete yet
-	require.NoError(t, pager.Err())
+
+	for _, deleted := range deletedSecrets {
+		require.True(t, deleted)
+	}
 }
 
-func TestDeletedSecret(t *testing.T) {
+func TestDeleteSecret(t *testing.T) {
 	recording.StartRecording(t, pathToPackage, nil)
 	defer recording.StopRecording(t, nil)
 
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	poller, err := client.BeginDeleteSecret(context.Background(), "mySecret", nil)
+	secret, err := createRandomName(t, "secret1")
+	require.NoError(t, err)
+	value, err := createRandomName(t, "value1")
 	require.NoError(t, err)
 
-	resp, err := poller.PollUntilDone(context.Background(), 1*time.Second)
+	_, err = client.SetSecret(context.Background(), secret, value, nil)
+	require.NoError(t, err)
+
+	poller, err := client.BeginDeleteSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+
+	_, err = poller.PollUntilDone(context.Background(), 1*time.Second)
+	require.NoError(t, err)
+
+	_, err = client.GetDeletedSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+
+	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+}
+
+func TestPurgeDeletedSecret(t *testing.T) {
+	recording.StartRecording(t, pathToPackage, nil)
+	defer recording.StopRecording(t, nil)
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	secret, err := createRandomName(t, "secret1")
+	require.NoError(t, err)
+	value, err := createRandomName(t, "value1")
+	require.NoError(t, err)
+
+	_, err = client.SetSecret(context.Background(), secret, value, nil)
+	require.NoError(t, err)
+
+	poller, err := client.BeginDeleteSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+
+	_, err = poller.PollUntilDone(context.Background(), 1*time.Second)
+	require.NoError(t, err)
+
+	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+
+	pager := client.ListDeletedSecrets(nil)
+	for pager.NextPage(context.Background()) {
+		page := pager.PageResponse()
+		for _, secret := range page.Value {
+			require.NotEqual(t, *secret.ID, secret)
+		}
+	}
 }

@@ -10,6 +10,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -224,10 +225,11 @@ type startDeletePoller struct {
 	client         *internal.KeyVaultClient
 	deleteResponse internal.KeyVaultClientDeleteSecretResponse
 	lastResponse   internal.KeyVaultClientGetDeletedSecretResponse
+	RawResponse    *http.Response
 }
 
 func (s *startDeletePoller) Done() bool {
-	return s.lastResponse.RawResponse.StatusCode == http.StatusOK
+	return s.lastResponse.RawResponse != nil
 }
 
 func (s *startDeletePoller) ResumeToken() string {
@@ -236,8 +238,12 @@ func (s *startDeletePoller) ResumeToken() string {
 
 func (s *startDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	resp, err := s.client.GetDeletedSecret(context.Background(), s.vaultUrl, s.secretName, nil)
-	if err != nil {
-		return resp.RawResponse, err
+	if err == nil {
+		// Service recognizes DeletedSecret, operation is done
+		s.lastResponse = resp
+		return resp.RawResponse, nil
+	} else if err != nil {
+		return s.deleteResponse.RawResponse, nil
 	}
 	s.lastResponse = resp
 	return resp.RawResponse, nil
@@ -251,13 +257,15 @@ func (s *startDeletePoller) FinalResponse(ctx context.Context) (DeleteSecretResp
 // Poll is a wait determined by the t parameter.
 func (s *startDeletePoller) PollUntilDone(ctx context.Context, t time.Duration) (DeleteSecretResponse, error) {
 	for {
-		s.Poll(ctx)
+		resp, err := s.Poll(ctx)
+		if err != nil {
+			return DeleteSecretResponse{}, err
+		}
+		s.RawResponse = resp
 		if s.Done() {
 			break
 		}
-		time.Sleep(t)
 	}
-
 	return DeleteSecretResponse{}, nil
 }
 
@@ -271,18 +279,24 @@ func (c *Client) BeginDeleteSecret(ctx context.Context, name string, options *Be
 		return &startDeletePoller{}, err
 	}
 
+	getResp, err := c.kvClient.GetDeletedSecret(ctx, c.vaultUrl, name, nil)
+	if !strings.Contains(err.Error(), "SecretNotFound") {
+		return &startDeletePoller{}, err
+	}
+
 	return &startDeletePoller{
 		vaultUrl:       c.vaultUrl,
 		secretName:     name,
 		client:         c.kvClient,
 		deleteResponse: resp,
+		lastResponse:   getResp,
 	}, nil
 }
 
 func (c *Client) CreateBeginDeleteSecretFromResumeToken(ctx context.Context, resumeToken string) DeleteSecretPoller {
 	ret := &startDeletePoller{
 		secretName: resumeToken,
-		client: c.kvClient,
+		client:     c.kvClient,
 	}
 	return ret
 }
@@ -365,14 +379,26 @@ func (c *Client) RestoreSecretBackup(ctx context.Context, options *RestoreSecret
 
 type PurgeDeletedSecretOptions struct{}
 
-type PurgeDeletedSecretResponse struct{}
+func (p *PurgeDeletedSecretOptions) toGenerated() *internal.KeyVaultClientPurgeDeletedSecretOptions {
+	return &internal.KeyVaultClientPurgeDeletedSecretOptions{}
+}
 
-func (c *Client) PurgeDeletedSecret(ctx context.Context, options *PurgeDeletedSecretOptions) (PurgeDeletedSecretResponse, error) {
+type PurgeDeletedSecretResponse struct {
+	RawResponse *http.Response
+}
+
+func purgeDeletedSecretResponseFromGenerated(i internal.KeyVaultClientPurgeDeletedSecretResponse) PurgeDeletedSecretResponse {
+	return PurgeDeletedSecretResponse{
+		RawResponse: i.RawResponse,
+	}
+}
+
+func (c *Client) PurgeDeletedSecret(ctx context.Context, secretName string, options *PurgeDeletedSecretOptions) (PurgeDeletedSecretResponse, error) {
 	if options == nil {
 		options = &PurgeDeletedSecretOptions{}
 	}
-
-	return PurgeDeletedSecretResponse{}, errors.New("not implemented")
+	resp, err := c.kvClient.PurgeDeletedSecret(ctx, c.vaultUrl, secretName, options.toGenerated())
+	return purgeDeletedSecretResponseFromGenerated(resp), err
 }
 
 type StartRecoverDeletedSecretOptions struct{}

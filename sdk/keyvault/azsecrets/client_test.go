@@ -78,7 +78,7 @@ func createClient(t *testing.T) (*Client, error) {
 	)
 	require.NoError(t, err)
 
-	return NewClient(vaultUrl, cred, nil)
+	return NewClient(vaultUrl, cred, options)
 }
 
 func cleanUpSecret(t *testing.T, client *Client, secret string) {

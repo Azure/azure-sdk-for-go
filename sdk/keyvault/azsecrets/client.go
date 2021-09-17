@@ -480,16 +480,57 @@ func (c *Client) BackupSecret(ctx context.Context, secretName string, options *B
 	return backupSecretResponseFromGenerated(resp), nil
 }
 
-type RestoreSecretBackupOptions struct{}
+// RestoreSecretBackupOptions contains the optional parameters for the KeyVaultClient.RestoreSecret method.
+type RestoreSecretBackupOptions struct {
+	// placeholder for future optional parameters
+}
 
-type RestoreSecretBackupResponse struct{}
+func (r RestoreSecretBackupOptions) toGenerated() *internal.KeyVaultClientRestoreSecretOptions {
+	return &internal.KeyVaultClientRestoreSecretOptions{}
+}
 
-func (c *Client) RestoreSecretBackup(ctx context.Context, options *RestoreSecretBackupOptions) (RestoreSecretBackupResponse, error) {
+type RestoreSecretBackupResponse struct {
+	SecretBundle
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSecretResponse) RestoreSecretBackupResponse {
+	return RestoreSecretBackupResponse{
+		RawResponse: i.RawResponse,
+		SecretBundle: SecretBundle{
+			ContentType: i.ContentType,
+			ID:          i.ID,
+			Tags:        i.Tags,
+			Value:       i.Value,
+			Kid:         i.Kid,
+			Managed:     i.Managed,
+			Attributes: &SecretAttributes{
+				Attributes: Attributes{
+					Enabled:   i.Attributes.Enabled,
+					Expires:   i.Attributes.Expires,
+					NotBefore: i.Attributes.NotBefore,
+					Created:   i.Attributes.Created,
+					Updated:   i.Attributes.Updated,
+				},
+				RecoverableDays: i.Attributes.RecoverableDays,
+				RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),
+			},
+		},
+	}
+}
+
+func (c *Client) RestoreSecretBackup(ctx context.Context, backup []byte, options *RestoreSecretBackupOptions) (RestoreSecretBackupResponse, error) {
 	if options == nil {
 		options = &RestoreSecretBackupOptions{}
 	}
 
-	return RestoreSecretBackupResponse{}, errors.New("not implemented")
+	resp, err := c.kvClient.RestoreSecret(ctx, c.vaultUrl, internal.SecretRestoreParameters{SecretBundleBackup: backup}, options.toGenerated())
+	if err != nil {
+		return RestoreSecretBackupResponse{}, err
+	}
+
+	return restoreSecretBackupResponseFromGenerated(resp), nil
 }
 
 type PurgeDeletedSecretOptions struct{}

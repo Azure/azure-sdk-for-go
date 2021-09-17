@@ -86,7 +86,7 @@ func cleanUpSecret(t *testing.T, client *Client, secret string) {
 	resp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 
-	_, err = resp.PollUntilDone(context.Background(), 500*time.Millisecond)
+	_, err = resp.PollUntilDone(context.Background(), 100*time.Millisecond)
 	require.NoError(t, err)
 
 	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
@@ -387,19 +387,23 @@ func TestBackupSecret(t *testing.T) {
 	value, err := createRandomName(t, "value")
 	require.NoError(t, err)
 
-	defer cleanUpSecret(t, client, secret)
-
 	_, err = client.SetSecret(context.Background(), secret, value, nil)
-	require.NoError(t, err)
-
-	_, err = client.SetSecret(context.Background(), secret, value+"1", nil)
 	require.NoError(t, err)
 
 	resp, err := client.BackupSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 	require.Greater(t, len(resp.Value), 0)
 
-	// One that does not exist should fail
-	resp, err = client.BackupSecret(context.Background(), "secret", nil)
-	require.Error(t, err)
+	respPoller, err := client.BeginDeleteSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+	_, err = respPoller.PollUntilDone(context.Background(), 100 * time.Millisecond)
+	require.NoError(t, err)
+
+	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
+
+	restoreResp, err := client.RestoreSecretBackup(context.Background(), resp.Value, nil)
+	require.NoError(t, err)
+
+	require.Equal(t, *restoreResp.Value, value)
 }

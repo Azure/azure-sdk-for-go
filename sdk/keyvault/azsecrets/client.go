@@ -471,10 +471,7 @@ type RecoverDeletedSecretPoller interface {
 	Poll(context.Context) (*http.Response, error)
 
 	// FinalResponse returns the final response after the operations has finished
-	FinalResponse(context.Context) (BeginRecoverDeletedSecretResponse, error)
-
-	// PollUntilDone runs the Poll method until the operation completes
-	PollUntilDone(context.Context, time.Duration) (BeginRecoverDeletedSecretResponse, error)
+	FinalResponse(context.Context) (RecoverDeletedSecretResponse, error)
 }
 
 type beginRecoverPoller struct {
@@ -504,11 +501,11 @@ func (b *beginRecoverPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return resp.RawResponse, nil
 }
 
-func (b *beginRecoverPoller) FinalResponse(ctx context.Context) (BeginRecoverDeletedSecretResponse, error) {
+func (b *beginRecoverPoller) FinalResponse(ctx context.Context) (RecoverDeletedSecretResponse, error) {
 	return recoverDeletedSecretResponseFromGenerated(b.recoverResponse), nil
 }
 
-func (b *beginRecoverPoller) PollUntilDone(ctx context.Context, t time.Duration) (BeginRecoverDeletedSecretResponse, error) {
+func (b *beginRecoverPoller) pollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedSecretResponse, error) {
 	for {
 		resp, err := b.Poll(ctx)
 		if err != nil {
@@ -529,13 +526,13 @@ func (b BeginRecoverDeletedSecretOptions) toGenerated() *internal.KeyVaultClient
 	return &internal.KeyVaultClientRecoverDeletedSecretOptions{}
 }
 
-type BeginRecoverDeletedSecretResponse struct {
+type RecoverDeletedSecretResponse struct {
 	SecretBundle
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverDeletedSecretResponse) BeginRecoverDeletedSecretResponse {
+func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverDeletedSecretResponse) RecoverDeletedSecretResponse {
 	var a *SecretAttributes
 	if i.Attributes != nil {
 		a = &SecretAttributes{
@@ -550,7 +547,7 @@ func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverD
 			RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),
 		}
 	}
-	return BeginRecoverDeletedSecretResponse{
+	return RecoverDeletedSecretResponse{
 		RawResponse: i.RawResponse,
 		SecretBundle: SecretBundle{
 			Attributes:  a,
@@ -564,28 +561,45 @@ func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverD
 	}
 }
 
-func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, secretName string, options *BeginRecoverDeletedSecretOptions) (RecoverDeletedSecretPoller, error) {
+type RecoverDeletedSecretPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error occurs
+	PollUntilDone func(context.Context, time.Duration) (RecoverDeletedSecretResponse, error)
+
+	// Poller contains an initialized RecoverDeletedSecretPoller
+	Poller RecoverDeletedSecretPoller
+
+	// RawResponse cotains the underlying HTTP response
+	RawResponse *http.Response
+}
+
+func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, secretName string, options *BeginRecoverDeletedSecretOptions) (RecoverDeletedSecretPollerResponse, error) {
 	// This is a poller. Call RecoverDeletedSecret, then GetSecret until it is successful
 	if options == nil {
 		options = &BeginRecoverDeletedSecretOptions{}
 	}
 	resp, err := c.kvClient.RecoverDeletedSecret(ctx, c.vaultUrl, secretName, options.toGenerated())
 	if err != nil {
-		return &beginRecoverPoller{}, err
+		return RecoverDeletedSecretPollerResponse{}, err
 	}
 
 	getResp, err := c.kvClient.GetSecret(ctx, c.vaultUrl, secretName, "", nil)
 	if !strings.Contains(err.Error(), "SecretNotFound") {
-		return &beginRecoverPoller{}, err
+		return RecoverDeletedSecretPollerResponse{}, err
 	}
 
-	return &beginRecoverPoller{
+	b := &beginRecoverPoller{
 		lastResponse:    getResp,
 		secretName:      secretName,
 		client:          c.kvClient,
 		vaultUrl:        c.vaultUrl,
 		recoverResponse: resp,
 		RawResponse:     getResp.RawResponse,
+	}
+
+	return RecoverDeletedSecretPollerResponse{
+		PollUntilDone: b.pollUntilDone,
+		Poller:        b,
+		RawResponse:   getResp.RawResponse,
 	}, nil
 }
 

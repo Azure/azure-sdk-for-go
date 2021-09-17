@@ -361,10 +361,10 @@ func TestBeginRecoverDeletedSecret(t *testing.T) {
 	_, err = poller.PollUntilDone(context.Background(), 100*time.Millisecond)
 	require.NoError(t, err)
 
-	poller2, err := client.BeginRecoverDeletedSecret(context.Background(), secret, nil)
+	resp, err := client.BeginRecoverDeletedSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 
-	_, err = poller2.PollUntilDone(context.Background(), 100*time.Millisecond)
+	_, err = resp.PollUntilDone(context.Background(), 100*time.Millisecond)
 	require.NoError(t, err)
 
 	_, err = client.SetSecret(context.Background(), secret, value, nil)

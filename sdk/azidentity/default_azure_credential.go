@@ -14,17 +14,7 @@ const (
 )
 
 // DefaultAzureCredentialOptions contains options for configuring how credentials are acquired.
-type DefaultAzureCredentialOptions struct {
-	// set this field to true in order to exclude the AzureCLICredential from the set of
-	// credentials that will be used to authenticate with
-	ExcludeAzureCLICredential bool
-	// set this field to true in order to exclude the EnvironmentCredential from the set of
-	// credentials that will be used to authenticate with
-	ExcludeEnvironmentCredential bool
-	// set this field to true in order to exclude the ManagedIdentityCredential from the set of
-	// credentials that will be used to authenticate with
-	ExcludeMSICredential bool
-}
+type DefaultAzureCredentialOptions struct{}
 
 // NewDefaultAzureCredential provides a default ChainedTokenCredential configuration for applications that will be deployed to Azure.  The following credential
 // types will be tried, in the following order:
@@ -40,31 +30,25 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Chained
 		options = &DefaultAzureCredentialOptions{}
 	}
 
-	if !options.ExcludeEnvironmentCredential {
-		envCred, err := NewEnvironmentCredential(nil)
-		if err == nil {
-			creds = append(creds, envCred)
-		} else {
-			errMsg += err.Error()
-		}
+	envCred, err := NewEnvironmentCredential(nil)
+	if err == nil {
+		creds = append(creds, envCred)
+	} else {
+		errMsg += err.Error()
 	}
 
-	if !options.ExcludeMSICredential {
-		msiCred, err := NewManagedIdentityCredential("", nil)
-		if err == nil {
-			creds = append(creds, msiCred)
-		} else {
-			errMsg += err.Error()
-		}
+	msiCred, err := NewManagedIdentityCredential("", nil)
+	if err == nil {
+		creds = append(creds, msiCred)
+	} else {
+		errMsg += err.Error()
 	}
 
-	if !options.ExcludeAzureCLICredential {
-		cliCred, err := NewAzureCLICredential(nil)
-		if err == nil {
-			creds = append(creds, cliCred)
-		} else {
-			errMsg += err.Error()
-		}
+	cliCred, err := NewAzureCLICredential(nil)
+	if err == nil {
+		creds = append(creds, cliCred)
+	} else {
+		errMsg += err.Error()
 	}
 
 	// if no credentials are added to the slice of TokenCredentials then return a CredentialUnavailableError

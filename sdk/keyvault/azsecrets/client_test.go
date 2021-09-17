@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -85,7 +86,7 @@ func cleanUpSecret(t *testing.T, client *Client, secret string) {
 	poller, err := client.BeginDeleteSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 
-	_, err = poller.PollUntilDone(context.Background(), 500 * time.Millisecond)
+	_, err = poller.PollUntilDone(context.Background(), 500*time.Millisecond)
 	require.NoError(t, err)
 
 	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
@@ -298,4 +299,44 @@ func TestPurgeDeletedSecret(t *testing.T) {
 			require.NotEqual(t, *secret.ID, secret)
 		}
 	}
+}
+
+func TestUpdateSecretProperties(t *testing.T) {
+	recording.StartRecording(t, pathToPackage, nil)
+	defer recording.StopRecording(t, nil)
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	secret, err := createRandomName(t, "secret")
+	require.NoError(t, err)
+	value, err := createRandomName(t, "value")
+	require.NoError(t, err)
+
+	defer cleanUpSecret(t, client, secret)
+
+	resp, err := client.SetSecret(context.Background(), secret, value, nil)
+	require.NoError(t, err)
+
+	secretVersion := strings.Split(*resp.ID, "/")
+
+	getResp, err := client.GetSecret(context.Background(), secret, secretVersion[len(secretVersion)-1], nil)
+	require.NoError(t, err)
+	require.Equal(t, *getResp.Value, value)
+
+	params := SecretProperties{
+		ContentType: to.StringPtr("password"),
+		Tags: map[string]*string{
+			"Tag1": to.StringPtr("TagVal1"),
+		},
+	}
+
+	_, err = client.UpdateSecretProperties(context.Background(), secret, secretVersion[len(secretVersion)-1], params, nil)
+	require.NoError(t, err)
+
+	getResp, err = client.GetSecret(context.Background(), secret, secretVersion[len(secretVersion)-1], nil)
+	require.NoError(t, err)
+	require.Equal(t, *getResp.Value, value)
+	require.Equal(t, *getResp.Tags["Tag1"], "TagVal1")
+	require.Equal(t, *getResp.ContentType, "password")
 }

@@ -73,6 +73,20 @@ type SecretAttributes struct {
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 }
 
+func (s SecretAttributes) toGenerated() *internal.SecretAttributes {
+	return &internal.SecretAttributes{
+		RecoverableDays: s.RecoverableDays,
+		RecoveryLevel:   (*internal.DeletionRecoveryLevel)(s.RecoveryLevel),
+		Attributes: internal.Attributes{
+			Enabled:   s.Enabled,
+			Expires:   s.Expires,
+			NotBefore: s.NotBefore,
+			Created:   s.Created,
+			Updated:   s.Updated,
+		},
+	}
+}
+
 // create a SecretAttributes object from an internal.SecretAttributes object
 func secretAttributesFromGenerated(i *internal.SecretAttributes) *SecretAttributes {
 	if i == nil {

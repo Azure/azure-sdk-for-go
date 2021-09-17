@@ -82,24 +82,22 @@ func (g *GetSecretOptions) toGenerated() *internal.KeyVaultClientGetSecretOption
 }
 
 type GetSecretResponse struct {
+	SecretBundle
 	RawResponse *http.Response
-	Attributes  *internal.SecretAttributes
-	ID          *string
-	Tags        map[string]*string
-	Value       *string
-	Kid         *string
-	Managed     *bool
 }
 
 func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) *GetSecretResponse {
 	return &GetSecretResponse{
 		RawResponse: i.RawResponse,
-		Attributes:  i.Attributes,
-		ID:          i.ID,
-		Tags:        i.Tags,
-		Value:       i.Value,
-		Kid:         i.Kid,
-		Managed:     i.Managed,
+		SecretBundle: SecretBundle{
+			Attributes:  secretAttributesFromGenerated(i.Attributes),
+			ContentType: i.ContentType,
+			ID:          i.ID,
+			Tags:        i.Tags,
+			Value:       i.Value,
+			Kid:         i.Kid,
+			Managed:     i.Managed,
+		},
 	}
 }
 
@@ -341,16 +339,69 @@ func (c *Client) GetDeletedSecret(ctx context.Context, name string, options *Get
 	return getDeletedSecretResponseFromGenerated(resp), err
 }
 
+// UpdateSecretPropertiesOptions contains the optional parameters for the Client.UpdateSecretProperties method.
 type UpdateSecretPropertiesOptions struct{}
 
-type UpdateSecretPropertiesResponse struct{}
+func (u UpdateSecretPropertiesOptions) toGenerated() *internal.KeyVaultClientUpdateSecretOptions {
+	return &internal.KeyVaultClientUpdateSecretOptions{}
+}
 
-func (c *Client) UpdateSecretProperties(ctx context.Context, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
+type UpdateSecretPropertiesResponse struct {
+	SecretBundle
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdateSecretResponse) UpdateSecretPropertiesResponse {
+	return UpdateSecretPropertiesResponse{
+		RawResponse: i.RawResponse,
+		SecretBundle: SecretBundle{
+			Attributes:  secretAttributesFromGenerated(i.Attributes),
+			ContentType: i.ContentType,
+			ID:          i.ID,
+			Tags:        i.Tags,
+			Value:       i.Value,
+			Kid:         i.Kid,
+			Managed:     i.Managed,
+		},
+	}
+}
+
+// SecretUpdateParameters - The secret update parameters.
+type SecretProperties struct {
+	// Type of the secret value such as a password.
+	ContentType *string `json:"contentType,omitempty"`
+
+	// The secret management attributes.
+	SecretAttributes *SecretAttributes `json:"attributes,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+func (s SecretProperties) toGenerated() internal.SecretUpdateParameters {
+	var secAttribs *internal.SecretAttributes
+	if s.SecretAttributes != nil {
+		secAttribs = s.SecretAttributes.toGenerated()
+	}
+	return internal.SecretUpdateParameters{
+		ContentType:      s.ContentType,
+		Tags:             s.Tags,
+		SecretAttributes: secAttribs,
+	}
+}
+
+func (c *Client) UpdateSecretProperties(ctx context.Context, secretName string, secretVersion string, parameters SecretProperties, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
 	if options == nil {
 		options = &UpdateSecretPropertiesOptions{}
 	}
 
-	return UpdateSecretPropertiesResponse{}, errors.New("not implemented")
+	resp, err := c.kvClient.UpdateSecret(ctx, c.vaultUrl, secretName, secretVersion, parameters.toGenerated(), options.toGenerated())
+	if err != nil {
+		return UpdateSecretPropertiesResponse{}, err
+	}
+
+	return updateSecretPropertiesResponseFromGenerated(resp), err
 }
 
 type BackupSecretOptions struct{}
@@ -413,18 +464,6 @@ func (c *Client) StartRecoverDeletedSecret(ctx context.Context, options *StartRe
 	return StartRecoverDeletedSecretResponse{}, errors.New("not implemented")
 }
 
-type GetSecretPropertiesOptions struct{}
-
-type GetSecretPropertiesResponse struct{}
-
-func (c *Client) GetSecretProperties(ctx context.Context, options *GetSecretPropertiesOptions) (GetSecretPropertiesResponse, error) {
-	if options == nil {
-		options = &GetSecretPropertiesOptions{}
-	}
-
-	return GetSecretPropertiesResponse{}, errors.New("not implemented")
-}
-
 type GetSecretVersionsPropertiesOptions struct{}
 
 type GetSecretVersionsPropertiesResponse struct{}
@@ -438,7 +477,7 @@ func (c *Client) GetSecretVersionsProperties(ctx context.Context, options *GetSe
 }
 
 type ListDeletedSecretsPager interface {
-	// PageResponse returns the current ListSecretVersionsPage
+	// PageResponse returns the current ListDeletedSecretPage
 	PageResponse() ListDeletedSecretsPage
 
 	// Err returns true if there is another page of data available, false if not

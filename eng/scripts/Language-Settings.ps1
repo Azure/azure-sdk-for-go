@@ -110,13 +110,8 @@ function SetPackageVersion ($PackageName, $Version, $ReleaseDate, $PackageProper
     $PackageProperties = Get-PkgProperties -PackageName $PackageName
   }
 
-  # Update version in version file.
-  $versionFileContent = Get-Content -Path $PackageProperties.VersionFile -Raw
-  $newVersionFileContent = $versionFileContent -replace $PackageProperties.Version, $Version
-  $newVersionFileContent | Set-Content -Path $PackageProperties.VersionFile -NoNewline
-
-  # Update content in change log
-  & "${EngCommonScriptsDir}/Update-ChangeLog.ps1" -Version $Version `
-      -ChangelogPath $PackageProperties.ChangeLogPath -Unreleased $False `
-      -ReplaceLatestEntryTitle $True -ReleaseDate $ReleaseDate
+  & "${EngScriptsDir}/Update-ModuleVersion.ps1" `
+    -ModulePath $PackageProperties.Name `
+    -NewVersionString $Version `
+    -ReleaseDate $ReleaseDate
 }

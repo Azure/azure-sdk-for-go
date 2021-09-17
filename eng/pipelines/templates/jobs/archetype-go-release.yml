@@ -1,17 +1,18 @@
 parameters:
   DependsOn: Build
+  TestPipeline: false
   ServiceDirectory: ''
 
 stages:
   - ${{if and(eq(variables['Build.Reason'], 'Manual'), eq(variables['System.TeamProject'], 'internal'))}}:
     - stage: Release
-      displayName: 'Release: ${{parameters.ServiceDirectory}}'
-      dependsOn: ${{parameters.DependsOn}}
+      displayName: 'Release: ${{ parameters.ServiceDirectory }}'
+      dependsOn: ${{ parameters.DependsOn }}
       condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-go-pr'))
       jobs:
         - deployment: TagRepository
           displayName: "Create release tag"
-          condition: ne(variables['Skip.TagRepository'], 'true')
+          condition: ne(succeeded(), variables['Skip.TagRepository'], 'true')
           environment: github
 
           pool:
@@ -26,11 +27,37 @@ stages:
                   - template: /eng/common/pipelines/templates/steps/retain-run.yml
                   - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
                     parameters:
-                      PackageName: 'sdk/${{parameters.ServiceDirectory}}'
+                      PackageName: 'sdk/${{ parameters.ServiceDirectory }}'
                       ForRelease: true
                   - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                     parameters:
-                      ArtifactLocation: $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
+                      ArtifactLocation: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
                       ReleaseSha: $(Build.SourceVersion)
                       RepoId: Azure/azure-sdk-for-go
                       WorkingDirectory: $(System.DefaultWorkingDirectory)
+
+        - deployment: UpdatePackageVersion
+          displayName: "Update Package Version"
+          condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
+          environment: github
+          dependsOn: TagRepository
+
+          pool:
+            name: azsdk-pool-mms-ubuntu-2004-general
+            vmImage: MMSUbuntu20.04
+
+          strategy:
+            runOnce:
+              deploy:
+                steps:
+                  - checkout: self
+                  - pwsh: |
+                      eng/scripts/Update-ModuleVersion.ps1 -ModulePath 'sdk/${{parameters.ServiceDirectory}}'
+                    displayName: Increment package version
+                  - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+                    parameters:
+                      PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
+                      CommitMsg: "Increment package version after release of ${{ parameters.ServiceDirectory }}"
+                      PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
+                      PRLabels: "auto-merge"
+                      CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'

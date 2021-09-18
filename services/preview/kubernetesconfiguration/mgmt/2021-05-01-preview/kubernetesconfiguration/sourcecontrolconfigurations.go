@@ -10,6 +10,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -33,7 +34,7 @@ func NewSourceControlConfigurationsClientWithBaseURI(baseURI string, subscriptio
 
 // CreateOrUpdate create a new Kubernetes Source Control Configuration.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // clusterRp - the Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or
 // Microsoft.Kubernetes (for OnPrem K8S clusters).
 // clusterResourceName - the Kubernetes cluster resource name - either managedClusters (for AKS clusters) or
@@ -52,6 +53,15 @@ func (client SourceControlConfigurationsClient) CreateOrUpdate(ctx context.Conte
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("kubernetesconfiguration.SourceControlConfigurationsClient", "CreateOrUpdate", err.Error())
+	}
+
 	req, err := client.CreateOrUpdatePreparer(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, sourceControlConfiguration)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kubernetesconfiguration.SourceControlConfigurationsClient", "CreateOrUpdate", nil, "Failure preparing request")
@@ -85,7 +95,7 @@ func (client SourceControlConfigurationsClient) CreateOrUpdatePreparer(ctx conte
 		"subscriptionId":                 autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-01"
+	const APIVersion = "2021-05-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -121,7 +131,7 @@ func (client SourceControlConfigurationsClient) CreateOrUpdateResponder(resp *ht
 // Delete this will delete the YAML file used to set up the Source control configuration, thus stopping future sync
 // from the source repo.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // clusterRp - the Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or
 // Microsoft.Kubernetes (for OnPrem K8S clusters).
 // clusterResourceName - the Kubernetes cluster resource name - either managedClusters (for AKS clusters) or
@@ -139,6 +149,15 @@ func (client SourceControlConfigurationsClient) Delete(ctx context.Context, reso
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("kubernetesconfiguration.SourceControlConfigurationsClient", "Delete", err.Error())
+	}
+
 	req, err := client.DeletePreparer(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kubernetesconfiguration.SourceControlConfigurationsClient", "Delete", nil, "Failure preparing request")
@@ -165,7 +184,7 @@ func (client SourceControlConfigurationsClient) DeletePreparer(ctx context.Conte
 		"subscriptionId":                 autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-01"
+	const APIVersion = "2021-05-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -207,7 +226,7 @@ func (client SourceControlConfigurationsClient) DeleteResponder(resp *http.Respo
 
 // Get gets details of the Source Control Configuration.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // clusterRp - the Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or
 // Microsoft.Kubernetes (for OnPrem K8S clusters).
 // clusterResourceName - the Kubernetes cluster resource name - either managedClusters (for AKS clusters) or
@@ -225,6 +244,15 @@ func (client SourceControlConfigurationsClient) Get(ctx context.Context, resourc
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("kubernetesconfiguration.SourceControlConfigurationsClient", "Get", err.Error())
+	}
+
 	req, err := client.GetPreparer(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "kubernetesconfiguration.SourceControlConfigurationsClient", "Get", nil, "Failure preparing request")
@@ -258,7 +286,7 @@ func (client SourceControlConfigurationsClient) GetPreparer(ctx context.Context,
 		"subscriptionId":                 autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-01"
+	const APIVersion = "2021-05-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -291,7 +319,7 @@ func (client SourceControlConfigurationsClient) GetResponder(resp *http.Response
 
 // List list all Source Control Configurations.
 // Parameters:
-// resourceGroupName - the name of the resource group.
+// resourceGroupName - the name of the resource group. The name is case insensitive.
 // clusterRp - the Kubernetes cluster RP - either Microsoft.ContainerService (for AKS clusters) or
 // Microsoft.Kubernetes (for OnPrem K8S clusters).
 // clusterResourceName - the Kubernetes cluster resource name - either managedClusters (for AKS clusters) or
@@ -308,6 +336,15 @@ func (client SourceControlConfigurationsClient) List(ctx context.Context, resour
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
+		{TargetValue: resourceGroupName,
+			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("kubernetesconfiguration.SourceControlConfigurationsClient", "List", err.Error())
+	}
+
 	result.fn = client.listNextResults
 	req, err := client.ListPreparer(ctx, resourceGroupName, clusterRp, clusterResourceName, clusterName)
 	if err != nil {
@@ -345,7 +382,7 @@ func (client SourceControlConfigurationsClient) ListPreparer(ctx context.Context
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-01"
+	const APIVersion = "2021-05-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

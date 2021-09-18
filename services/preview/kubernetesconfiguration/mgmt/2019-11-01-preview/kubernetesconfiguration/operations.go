@@ -14,8 +14,7 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the use these APIs to create Source Control Configuration resources through ARM, for Kubernetes
-// Clusters.
+// OperationsClient is the kubernetesConfiguration Client
 type OperationsClient struct {
 	BaseClient
 }

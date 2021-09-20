@@ -680,16 +680,19 @@ func (b *beginRecoverPoller) pollUntilDone(ctx context.Context, t time.Duration)
 // BeginRecoverDeletedSecretOptions contains the optional parameters for the Client.BeginRecoverDeletedSecret operation
 type BeginRecoverDeletedSecretOptions struct{}
 
+// Convert the publicly exposed options object to the generated version
 func (b BeginRecoverDeletedSecretOptions) toGenerated() *internal.KeyVaultClientRecoverDeletedSecretOptions {
 	return &internal.KeyVaultClientRecoverDeletedSecretOptions{}
 }
 
+// RecoverDeletedSecretResponse is the response object for the Client.RecoverDeletedSecret operation.
 type RecoverDeletedSecretResponse struct {
 	SecretBundle
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
+// change recover deleted secret reponse to the generated version.
 func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverDeletedSecretResponse) RecoverDeletedSecretResponse {
 	var a *SecretAttributes
 	if i.Attributes != nil {
@@ -719,6 +722,7 @@ func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverD
 	}
 }
 
+// RecoverDeletedSecretPollerResponse contains the response of the Client.BeginRecoverDeletedSecret operations
 type RecoverDeletedSecretPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error occurs
 	PollUntilDone func(context.Context, time.Duration) (RecoverDeletedSecretResponse, error)
@@ -730,8 +734,9 @@ type RecoverDeletedSecretPollerResponse struct {
 	RawResponse *http.Response
 }
 
+// BeginRecoverDeletedSecret recovers the deleted secret in the specified vault to the latest version.
+// This operation can only be performed on a soft-delete enabled vault. This operation requires the secrets/recover permission.
 func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, secretName string, options *BeginRecoverDeletedSecretOptions) (RecoverDeletedSecretPollerResponse, error) {
-	// This is a poller. Call RecoverDeletedSecret, then GetSecret until it is successful
 	if options == nil {
 		options = &BeginRecoverDeletedSecretOptions{}
 	}
@@ -825,6 +830,7 @@ type ListDeletedSecretsOptions struct {
 	MaxResults *int32
 }
 
+// Convert publicly exposed options to the generated version.
 func (l *ListDeletedSecretsOptions) toGenerated() *internal.KeyVaultClientGetDeletedSecretsOptions {
 	return &internal.KeyVaultClientGetDeletedSecretsOptions{
 		Maxresults: l.MaxResults,

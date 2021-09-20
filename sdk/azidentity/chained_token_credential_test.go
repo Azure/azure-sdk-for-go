@@ -69,13 +69,13 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	secCred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{HTTPClient: srv, AuthorityHost: AuthorityHost(srv.URL())})
 	if err != nil {
 		t.Fatalf("Failed to create environment credential: %v", err)
 	}
@@ -100,7 +100,7 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	secCred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
 	if err != nil {
@@ -129,7 +129,7 @@ func TestChainedTokenCredential_GetTokenWithUnavailableCredentialInChain(t *test
 	srv.AppendError(&CredentialUnavailableError{credentialType: "MockCredential", message: "Mocking a credential unavailable error"})
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	secCred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
 	if err != nil {
@@ -166,7 +166,7 @@ func TestBearerPolicy_ChainedTokenCredential(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {

@@ -3,8 +3,10 @@
 ## 0.2.0 (Unreleased)
 
 ### Features Added
+* Added the `ClientOptions.PerTryPolicies` for policies that execute once per retry of an operation.
 
 ### Breaking Changes
+* Changed the `ClientOptions.PerCallPolicies` field name to `ClientOptions.PerCallPolicies`
 
 ### Bugs Fixed
 

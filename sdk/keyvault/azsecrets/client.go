@@ -242,10 +242,6 @@ type DeleteSecretPoller interface {
 	// Done returns true if the LRO has reached a terminal state
 	Done() bool
 
-	// ResumeToken returns a value representing the poller that can be used to resume
-	// the LRO at a later time. ResumeTokens are unique per service operation
-	ResumeToken() string
-
 	// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
 	// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 	// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
@@ -268,12 +264,6 @@ type startDeleteSecretPoller struct {
 // Done returns true if the LRO has reached a terminal state
 func (s *startDeleteSecretPoller) Done() bool {
 	return s.lastResponse.RawResponse != nil
-}
-
-// ResumeToken returns a value representing the poller that can be used to resume
-// the LRO at a later time. ResumeTokens are unique per service operation
-func (s *startDeleteSecretPoller) ResumeToken() string {
-	return s.secretName
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.(
@@ -602,10 +592,6 @@ type RecoverDeletedSecretPoller interface {
 	// Done returns true if the LRO has reached a terminal state
 	Done() bool
 
-	// ResumeToken returns a value representing the poller that can be used to resume
-	// the LRO at a later time. ResumeTokens are unique per service operation
-	ResumeToken() string
-
 	// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
 	// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
 	// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
@@ -627,12 +613,6 @@ type beginRecoverPoller struct {
 // Done returns true when the polling operation is completed
 func (b *beginRecoverPoller) Done() bool {
 	return b.RawResponse.StatusCode == http.StatusOK
-}
-
-// ResumeToken returns a value representing the poller that can be used to resume
-// the LRO at a later time. ResumeTokens are unique per service operation
-func (b *beginRecoverPoller) ResumeToken() string {
-	return b.secretName
 }
 
 // Poll fetches the latest state of the LRO. It returns an HTTP response or error.

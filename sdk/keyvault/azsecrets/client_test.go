@@ -84,11 +84,18 @@ func createClient(t *testing.T) (*Client, error) {
 	return NewClient(vaultUrl, cred, options)
 }
 
+func delay() time.Duration {
+	if recording.GetRecordMode() == "playback" {
+		return 1 * time.Microsecond
+	}
+	return 250 * time.Millisecond
+}
+
 func cleanUpSecret(t *testing.T, client *Client, secret string) {
 	resp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 
-	_, err = resp.PollUntilDone(context.Background(), 100*time.Millisecond)
+	_, err = resp.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
 
 	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
@@ -148,7 +155,7 @@ func TestListSecretVersionss(t *testing.T) {
 	// clean up test
 	resp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
-	_, err = resp.PollUntilDone(context.Background(), 100*time.Millisecond)
+	_, err = resp.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
 
 	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
@@ -206,12 +213,12 @@ func TestListDeletedSecrets(t *testing.T) {
 	// 2. Delete both secrets
 	resp, err := client.BeginDeleteSecret(context.Background(), secret1, nil)
 	require.NoError(t, err)
-	_, err = resp.PollUntilDone(context.Background(), 100*time.Millisecond)
+	_, err = resp.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
 
 	resp, err = client.BeginDeleteSecret(context.Background(), secret2, nil)
 	require.NoError(t, err)
-	_, err = resp.PollUntilDone(context.Background(), 100*time.Millisecond)
+	_, err = resp.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
 
 	// Make sure both secrets show up in deleted secrets
@@ -257,7 +264,7 @@ func TestDeleteSecret(t *testing.T) {
 	resp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 
-	_, err = resp.PollUntilDone(context.Background(), 100*time.Millisecond)
+	_, err = resp.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
 
 	_, err = client.GetDeletedSecret(context.Background(), secret, nil)
@@ -285,7 +292,7 @@ func TestPurgeDeletedSecret(t *testing.T) {
 	resp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 
-	_, err = resp.PollUntilDone(context.Background(), 100*time.Millisecond)
+	_, err = resp.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
 
 	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
@@ -360,13 +367,13 @@ func TestBeginRecoverDeletedSecret(t *testing.T) {
 	pollerResp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 
-	_, err = pollerResp.PollUntilDone(context.Background(), 100*time.Millisecond)
+	_, err = pollerResp.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
 
 	resp, err := client.BeginRecoverDeletedSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 
-	_, err = resp.PollUntilDone(context.Background(), 100*time.Millisecond)
+	_, err = resp.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
 
 	_, err = client.SetSecret(context.Background(), secret, value, nil)
@@ -398,7 +405,7 @@ func TestBackupSecret(t *testing.T) {
 
 	respPoller, err := client.BeginDeleteSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
-	_, err = respPoller.PollUntilDone(context.Background(), 100*time.Millisecond)
+	_, err = respPoller.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
 
 	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)

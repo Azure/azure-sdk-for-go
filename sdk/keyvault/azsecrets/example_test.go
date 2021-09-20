@@ -120,8 +120,8 @@ func ExampleClient_ListSecrets() {
 	pager := client.ListSecrets(nil)
 	for pager.NextPage(context.Background()) {
 		resp := pager.PageResponse()
-		fmt.Printf("Found %d secrets in this page.\n", len(resp.Value))
-		for _, v := range resp.Value {
+		fmt.Printf("Found %d secrets in this page.\n", len(resp.Secrets))
+		for _, v := range resp.Secrets {
 			fmt.Printf("Secret Name: %s\tSecret Tags: %v", *v.ID, v.Tags)
 		}
 	}

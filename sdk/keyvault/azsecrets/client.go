@@ -991,7 +991,7 @@ type ListSecretsPage struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
-	Value []*SecretItem `json:"value,omitempty" azure:"ro"`
+	Secrets []*SecretItem `json:"value,omitempty" azure:"ro"`
 }
 
 // create a ListSecretsPage from a generated code response
@@ -1003,7 +1003,7 @@ func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretsResponse) L
 	return ListSecretsPage{
 		RawResponse: i.RawResponse,
 		NextLink:    i.NextLink,
-		Value:       secrets,
+		Secrets:       secrets,
 	}
 }
 

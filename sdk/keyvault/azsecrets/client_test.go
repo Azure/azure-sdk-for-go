@@ -166,7 +166,7 @@ func TestListSecrets(t *testing.T) {
 	pager := client.ListSecrets(nil)
 	for pager.NextPage(context.Background()) {
 		page := pager.PageResponse()
-		count += len(page.Value)
+		count += len(page.Secrets)
 	}
 	require.Greater(t, count, 0)
 	require.NoError(t, pager.Err())

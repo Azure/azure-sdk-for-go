@@ -18,10 +18,10 @@ type ClientOptions struct {
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry policy.TelemetryOptions
 
-	// PerCallPolicies are options to run on every request
+	// PerCallPolicies are policies that execute once per operation
 	PerCallPolicies []policy.Policy
 
-	// PerTryPolicies are options to run on every retry
+	// PerTryPolicies are policies that execute once per retry of an operation
 	PerTryPolicies []policy.Policy
 }
 

@@ -15,6 +15,16 @@
   ```
 * Removed `ExcludeAzureCLICredential`, `ExcludeEnvironmentCredential`, and `ExcludeMSICredential`
   from `DefaultAzureCredentialOptions`
+* `NewClientCertificateCredential` requires the bytes of a certificate instead of
+  a path to a certificate file:
+  ```go
+  // before
+  cred, err := NewClientCertificateCredential("tenant", "client-id", "/cert.pem", nil)
+
+  // after
+  certData, err := os.ReadFile("/cert.pem")
+  cred, err := NewClientCertificateCredential("tenant", "client-id", certData, nil)
+  ```
 
 ### Features Added
 * Added connection configuration options to `DefaultAzureCredentialOptions`

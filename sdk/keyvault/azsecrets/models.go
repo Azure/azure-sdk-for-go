@@ -76,7 +76,7 @@ type SecretAttributes struct {
 func (s SecretAttributes) toGenerated() *internal.SecretAttributes {
 	return &internal.SecretAttributes{
 		RecoverableDays: s.RecoverableDays,
-		RecoveryLevel:   (*internal.DeletionRecoveryLevel)(s.RecoveryLevel),
+		RecoveryLevel:   s.RecoveryLevel.toGenerated().ToPtr(),
 		Attributes: internal.Attributes{
 			Enabled:   s.Enabled,
 			Expires:   s.Expires,
@@ -94,7 +94,7 @@ func secretAttributesFromGenerated(i *internal.SecretAttributes) *SecretAttribut
 	}
 	return &SecretAttributes{
 		RecoverableDays: i.RecoverableDays,
-		RecoveryLevel:   (*DeletionRecoveryLevel)(i.RecoveryLevel),
+		RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.RecoveryLevel).ToPtr(),
 		Attributes: Attributes{
 			Enabled:   i.Enabled,
 			Expires:   i.Expires,

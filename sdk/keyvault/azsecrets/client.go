@@ -218,7 +218,7 @@ func deleteSecretResponseFromGenerated(i *internal.KeyVaultClientDeleteSecretRes
 				Attributes: &SecretAttributes{
 					Attributes:      Attributes(i.Attributes.Attributes),
 					RecoverableDays: i.Attributes.RecoverableDays,
-					RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),
+					RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel).ToPtr(),
 				},
 			},
 			RecoveryID:         i.RecoveryID,
@@ -356,15 +356,6 @@ func (c *Client) BeginDeleteSecret(ctx context.Context, name string, options *Be
 		RawResponse:   resp.RawResponse,
 		PollUntilDone: s.pollUntilDone,
 	}, nil
-}
-
-func (c *Client) ResumeDeleteSecretPoller(ctx context.Context, resumeToken string) DeleteSecretPoller {
-	ret := &startDeleteSecretPoller{
-		vaultUrl:   c.vaultUrl,
-		secretName: resumeToken,
-		client:     c.kvClient,
-	}
-	return ret
 }
 
 // GetDeletedSecretOptions contains the optional parameters for the Client.GetDeletedSecret method.
@@ -556,7 +547,7 @@ func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSe
 					Updated:   i.Attributes.Updated,
 				},
 				RecoverableDays: i.Attributes.RecoverableDays,
-				RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),
+				RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel).ToPtr(),
 			},
 		},
 	}
@@ -705,7 +696,7 @@ func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverD
 				Updated:   i.Attributes.Updated,
 			},
 			RecoverableDays: i.Attributes.RecoverableDays,
-			RecoveryLevel:   (*DeletionRecoveryLevel)(i.Attributes.RecoveryLevel),
+			RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel).ToPtr(),
 		}
 	}
 	return RecoverDeletedSecretResponse{

@@ -20,6 +20,9 @@ type ClientOptions struct {
 
 	// PerCallPolicies are options to run on every request
 	PerCallPolicies []policy.Policy
+
+	// PerTryPolicies are options to run on every retry
+	PerTryPolicies []policy.Policy
 }
 
 func (o *ClientOptions) getConnectionOptions() *generated.ConnectionOptions {
@@ -28,9 +31,10 @@ func (o *ClientOptions) getConnectionOptions() *generated.ConnectionOptions {
 	}
 
 	return &generated.ConnectionOptions{
-		HTTPClient:      o.Transporter,
-		Retry:           o.Retry,
-		Telemetry:       o.Telemetry,
-		PerCallPolicies: []policy.Policy{},
+		HTTPClient:       o.Transporter,
+		Retry:            o.Retry,
+		Telemetry:        o.Telemetry,
+		PerCallPolicies:  []policy.Policy{},
+		PerRetryPolicies: []policy.Policy{},
 	}
 }

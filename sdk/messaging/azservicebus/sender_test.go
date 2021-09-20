@@ -117,6 +117,22 @@ func testSendBatchOfTwo(ctx context.Context, t *testing.T, serviceBusClient *Cli
 	require.EqualValues(t, []string{"[0] message in batch", "[1] message in batch"}, getSortedBodies(messages))
 }
 
+func getSortedBodiesFromChannel(ch chan *ReceivedMessage) []string {
+	var messages []*ReceivedMessage
+
+channelLoop:
+	for {
+		select {
+		case m := <-ch:
+			messages = append(messages, m)
+		default:
+			break channelLoop
+		}
+	}
+
+	return getSortedBodies(messages)
+}
+
 func getSortedBodies(messages []*ReceivedMessage) []string {
 	sort.Sort(receivedMessages(messages))
 

@@ -85,6 +85,9 @@ func runBasicSendAndReceiveTest() {
 	cleanupQueue := createQueue(telemetryClient, cs, queueName)
 	defer cleanupQueue()
 
+	ctx, cancel := context.WithTimeout(context.Background(), time.Hour*24*5)
+	defer cancel()
+
 	serviceBusClient, err := azservicebus.NewClient(azservicebus.WithConnectionString(cs))
 	if err != nil {
 		trackException(telemetryClient, "Failed to create service bus client", err)
@@ -92,20 +95,20 @@ func runBasicSendAndReceiveTest() {
 	}
 
 	defer func() {
-		if err := serviceBusClient.Close(context.TODO()); err != nil {
+		if err := serviceBusClient.Close(ctx); err != nil {
 			trackException(telemetryClient, "Error when closing client", err)
 		}
 	}()
 
 	go func() {
 		for {
-			runProcessor(serviceBusClient, queueName, telemetryClient)
+			runProcessor(ctx, serviceBusClient, queueName, telemetryClient)
 		}
 	}()
 
 	go func() {
 		for {
-			continuallySend(serviceBusClient, queueName, telemetryClient)
+			continuallySend(ctx, serviceBusClient, queueName, telemetryClient)
 		}
 	}()
 
@@ -113,9 +116,11 @@ func runBasicSendAndReceiveTest() {
 	<-ch
 }
 
-func runProcessor(client *azservicebus.Client, queueName string, telemetryClient appinsights.TelemetryClient) {
+func runProcessor(ctx context.Context, client *azservicebus.Client, queueName string, telemetryClient appinsights.TelemetryClient) {
 	log.Printf("Starting processor...")
-	processor, err := client.NewProcessor(azservicebus.ProcessorWithQueue(queueName), azservicebus.ProcessorWithMaxConcurrentCalls(10))
+	processor, err := client.NewProcessor(
+		azservicebus.ProcessorWithQueue(queueName),
+		azservicebus.ProcessorWithMaxConcurrentCalls(10))
 
 	if err != nil {
 		trackException(telemetryClient, "Failed when creating processor", err)
@@ -139,13 +144,13 @@ func runProcessor(client *azservicebus.Client, queueName string, telemetryClient
 		return
 	}
 
-	<-processor.Done()
+	<-ctx.Done()
 
 	telemetryClient.TrackEvent("ProcessorStopped")
 	log.Print("Processor was stopped!")
 }
 
-func continuallySend(client *azservicebus.Client, queueName string, telemetryClient appinsights.TelemetryClient) {
+func continuallySend(ctx context.Context, client *azservicebus.Client, queueName string, telemetryClient appinsights.TelemetryClient) {
 	sender, err := client.NewSender(queueName)
 
 	if err != nil {
@@ -153,13 +158,13 @@ func continuallySend(client *azservicebus.Client, queueName string, telemetryCli
 		return
 	}
 
-	defer sender.Close(context.TODO())
+	defer sender.Close(ctx)
 
 	ticker := time.NewTicker(time.Millisecond * 100)
 	defer ticker.Stop()
 
 	for t := range ticker.C {
-		err := sender.SendMessage(context.Background(), &azservicebus.Message{
+		err := sender.SendMessage(ctx, &azservicebus.Message{
 			Body: []byte(fmt.Sprintf("hello world: %s", t.String())),
 		})
 
@@ -167,6 +172,11 @@ func continuallySend(client *azservicebus.Client, queueName string, telemetryCli
 		telemetryClient.TrackMetric("MessageSent", 1)
 
 		if err != nil {
+			if err == context.Canceled || err == context.DeadlineExceeded {
+				log.Printf("Test complete, stopping sender loop")
+				break
+			}
+
 			trackException(telemetryClient, "SendMessage", err)
 			break
 		}
@@ -183,7 +193,7 @@ func createQueue(telemetryClient appinsights.TelemetryClient, connectionString s
 		return nil
 	}
 
-	qm := ns.NewQueueManager()
+	qm := internal.NewQueueManager(ns.GetHTTPSHostURI(), ns.TokenProvider)
 
 	_, err = qm.Put(context.TODO(), queueName)
 

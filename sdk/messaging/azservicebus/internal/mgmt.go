@@ -4,326 +4,604 @@
 package internal
 
 import (
-	"bytes"
 	"context"
-	"encoding/xml"
 	"errors"
 	"fmt"
-	"io"
-	"net/http"
-	"net/http/httputil"
-	"strings"
+	"sync"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/auth"
+	common "github.com/Azure/azure-amqp-common-go/v3"
+	"github.com/Azure/azure-amqp-common-go/v3/rpc"
+	"github.com/Azure/azure-amqp-common-go/v3/uuid"
+	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
 )
 
+type Disposition struct {
+	Status                DispositionStatus
+	LockTokens            []*uuid.UUID
+	DeadLetterReason      *string
+	DeadLetterDescription *string
+}
+
+type DispositionStatus string
+
 const (
-	serviceBusSchema = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
-	schemaInstance   = "http://www.w3.org/2001/XMLSchema-instance"
-	atomSchema       = "http://www.w3.org/2005/Atom"
-	applicationXML   = "application/xml"
+	CompletedDisposition DispositionStatus = "completed"
+	AbandonedDisposition DispositionStatus = "abandoned"
+	SuspendedDisposition DispositionStatus = "suspended"
 )
 
 type (
-	// entityManager provides CRUD functionality for Service Bus entities (Queues, Topics, Subscriptions...)
-	entityManager struct {
-		tokenProvider auth.TokenProvider
-		Host          string
-		mwStack       []MiddlewareFunc
-	}
+	mgmtClient struct {
+		ns             NamespaceForMgmtClient
+		managementPath string
 
-	// BaseEntityDescription provides common fields which are part of Queues, Topics and Subscriptions
-	BaseEntityDescription struct {
-		InstanceMetadataSchema *string `xml:"xmlns:i,attr,omitempty"`
-		ServiceBusSchema       *string `xml:"xmlns,attr,omitempty"`
-	}
+		clientMu sync.RWMutex
+		link     *rpc.Link
 
-	managementError struct {
-		XMLName xml.Name `xml:"Error"`
-		Code    int      `xml:"Code"`
-		Detail  string   `xml:"Detail"`
-	}
-
-	// CountDetails has current active (and other) messages for queue/topic.
-	CountDetails struct {
-		XMLName                        xml.Name `xml:"CountDetails"`
-		ActiveMessageCount             *int32   `xml:"ActiveMessageCount,omitempty"`
-		DeadLetterMessageCount         *int32   `xml:"DeadLetterMessageCount,omitempty"`
-		ScheduledMessageCount          *int32   `xml:"ScheduledMessageCount,omitempty"`
-		TransferDeadLetterMessageCount *int32   `xml:"TransferDeadLetterMessageCount,omitempty"`
-		TransferMessageCount           *int32   `xml:"TransferMessageCount,omitempty"`
-	}
-
-	// EntityStatus enumerates the values for entity status.
-	EntityStatus string
-
-	// MiddlewareFunc allows a consumer of the entity manager to inject handlers within the request / response pipeline
-	//
-	// The example below adds the atom xml content type to the request, calls the next middleware and returns the
-	// result.
-	//
-	// addAtomXMLContentType MiddlewareFunc = func(next RestHandler) RestHandler {
-	//		return func(ctx context.Context, req *http.Request) (res *http.Response, e error) {
-	//			if req.Method != http.MethodGet && req.Method != http.MethodHead {
-	//				req.Header.Add("content-Type", "application/atom+xml;type=entry;charset=utf-8")
-	//			}
-	//			return next(ctx, req)
-	//		}
-	//	}
-	MiddlewareFunc func(next RestHandler) RestHandler
-
-	// RestHandler is used to transform a request and response within the http pipeline
-	RestHandler func(ctx context.Context, req *http.Request) (*http.Response, error)
-)
-
-var (
-	addAtomXMLContentType MiddlewareFunc = func(next RestHandler) RestHandler {
-		return func(ctx context.Context, req *http.Request) (res *http.Response, e error) {
-			if req.Method != http.MethodGet && req.Method != http.MethodHead {
-				req.Header.Add("content-Type", "application/atom+xml;type=entry;charset=utf-8")
-			}
-			return next(ctx, req)
-		}
-	}
-
-	addAPIVersion201704 MiddlewareFunc = func(next RestHandler) RestHandler {
-		return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-			q := req.URL.Query()
-			q.Add("api-version", "2017-04")
-			req.URL.RawQuery = q.Encode()
-			return next(ctx, req)
-		}
-	}
-
-	applyTracing MiddlewareFunc = func(next RestHandler) RestHandler {
-		return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-			ctx, span := startConsumerSpanFromContext(ctx, "sb.Middleware.ApplyTracing")
-			defer span.End()
-
-			applyRequestInfo(span, req)
-			res, err := next(ctx, req)
-			applyResponseInfo(span, res)
-			return res, err
-		}
+		sessionID          *string
+		isSessionFilterSet bool
 	}
 )
 
+// tracing span names
 const (
-	// Active ...
-	Active EntityStatus = "Active"
-	// Creating ...
-	Creating EntityStatus = "Creating"
-	// Deleting ...
-	Deleting EntityStatus = "Deleting"
-	// Disabled ...
-	Disabled EntityStatus = "Disabled"
-	// ReceiveDisabled ...
-	ReceiveDisabled EntityStatus = "ReceiveDisabled"
-	// Renaming ...
-	Renaming EntityStatus = "Renaming"
-	// Restoring ...
-	Restoring EntityStatus = "Restoring"
-	// SendDisabled ...
-	SendDisabled EntityStatus = "SendDisabled"
-	// Unknown ...
-	Unknown EntityStatus = "Unknown"
+	spanNameRenewLock              = "sb.mgmt.RenewLock"
+	spanNameReceiveDeferred        = "sb.mgmt.ReceiveDeferred"
+	spanNameSendDisposition        = "sb.mgmt.SendDisposition"
+	spanNameScheduleMessage        = "sb.mgmt.Schedule"
+	spanNameCancelScheduledMessage = "sb.mgmt.CancelScheduled"
+	spanPeekFromSequenceNumber     = "sb.mgmt.PeekSequenceNumber"
+	spanNameRecover                = "sb.mgmt.Recover"
+	spanNameTryRecover             = "sb.mgmt.TryRecover"
 )
 
-func (m *managementError) String() string {
-	return fmt.Sprintf("Code: %d, Details: %s", m.Code, m.Detail)
+type MgmtClient interface {
+	Close(ctx context.Context) error
+	SendDisposition(ctx context.Context, lockToken *amqp.UUID, state Disposition) error
 }
 
-// newEntityManager creates a new instance of an entityManager given a token provider and host
-func newEntityManager(host string, tokenProvider auth.TokenProvider) *entityManager {
-	return &entityManager{
-		Host:          host,
-		tokenProvider: tokenProvider,
-		mwStack: []MiddlewareFunc{
-			addAPIVersion201704,
-			addAtomXMLContentType,
-			addAuthorization(tokenProvider),
-			applyTracing,
-		},
+func newMgmtClient(ctx context.Context, managementPath string, ns NamespaceForMgmtClient) (MgmtClient, error) {
+	r := &mgmtClient{
+		ns:             ns,
+		managementPath: managementPath,
+	}
+
+	return r, nil
+}
+
+// Recover will attempt to close the current session and link, then rebuild them
+func (mc *mgmtClient) recover(ctx context.Context) error {
+	mc.clientMu.Lock()
+	defer mc.clientMu.Unlock()
+
+	ctx, span := mc.startSpanFromContext(ctx, string(spanNameRecover))
+	defer span.End()
+
+	if mc.link != nil {
+		if err := mc.link.Close(ctx); err != nil {
+			tab.For(ctx).Debug(fmt.Sprintf("Error while closing old link in recovery: %s", err.Error()))
+		}
+		mc.link = nil
+	}
+
+	if _, err := mc.getLinkWithoutLock(ctx); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// getLinkWithoutLock returns the currently cached link (or creates a new one)
+func (mc *mgmtClient) getLinkWithoutLock(ctx context.Context) (*rpc.Link, error) {
+	if mc.link != nil {
+		return mc.link, nil
+	}
+
+	var err error
+	mc.link, err = mc.ns.NewRPCLink(ctx, mc.managementPath)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return mc.link, nil
+}
+
+// Close will close the AMQP connection
+func (mc *mgmtClient) Close(ctx context.Context) error {
+	mc.clientMu.Lock()
+	defer mc.clientMu.Unlock()
+
+	if mc.link == nil {
+		return nil
+	}
+
+	err := mc.link.Close(ctx)
+	mc.link = nil
+	return err
+}
+
+// creates a new link and sends the RPC request, recovering and retrying on certain AMQP errors
+func (mc *mgmtClient) doRPCWithRetry(ctx context.Context, msg *amqp.Message, times int, delay time.Duration, opts ...rpc.LinkOption) (*rpc.Response, error) {
+	// track the number of times we attempt to perform the RPC call.
+	// this is to avoid a potential infinite loop if the returned error
+	// is always transient and Recover() doesn't fail.
+	sendCount := 0
+
+	for {
+		mc.clientMu.RLock()
+		rpcLink, err := mc.getLinkWithoutLock(ctx)
+		mc.clientMu.RUnlock()
+
+		var rsp *rpc.Response
+
+		if err == nil {
+			rsp, err = rpcLink.RetryableRPC(ctx, times, delay, msg)
+
+			if err == nil {
+				return rsp, err
+			}
+		}
+
+		if sendCount >= amqpRetryDefaultTimes || !isAMQPTransientError(ctx, err) {
+			return nil, err
+		}
+		sendCount++
+		// if we get here, recover and try again
+		tab.For(ctx).Debug("recovering RPC connection")
+
+		_, retryErr := common.Retry(amqpRetryDefaultTimes, amqpRetryDefaultDelay, func() (interface{}, error) {
+			ctx, sp := mc.startProducerSpanFromContext(ctx, string(spanNameTryRecover))
+			defer sp.End()
+
+			if err := mc.recover(ctx); err == nil {
+				tab.For(ctx).Debug("recovered RPC connection")
+				return nil, nil
+			}
+			select {
+			case <-ctx.Done():
+				return nil, ctx.Err()
+			default:
+				return nil, common.Retryable(err.Error())
+			}
+		})
+
+		if retryErr != nil {
+			tab.For(ctx).Debug("RPC recovering retried, but error was unrecoverable")
+			return nil, retryErr
+		}
 	}
 }
 
-// Get performs an HTTP Get for a given entity path
-func (em *entityManager) Get(ctx context.Context, entityPath string, mw ...MiddlewareFunc) (*http.Response, error) {
-	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Get")
-	defer span.End()
-
-	return em.Execute(ctx, http.MethodGet, entityPath, http.NoBody, mw...)
+// returns true if the AMQP error is considered transient
+func isAMQPTransientError(ctx context.Context, err error) bool {
+	// always retry on a detach error
+	var amqpDetach *amqp.DetachError
+	if errors.As(err, &amqpDetach) {
+		return true
+	}
+	// for an AMQP error, only retry depending on the condition
+	var amqpErr *amqp.Error
+	if errors.As(err, &amqpErr) {
+		switch amqpErr.Condition {
+		case errorServerBusy, errorTimeout, errorOperationCancelled, errorContainerClose:
+			return true
+		default:
+			tab.For(ctx).Debug(fmt.Sprintf("isAMQPTransientError: condition %s is not transient", amqpErr.Condition))
+			return false
+		}
+	}
+	tab.For(ctx).Debug(fmt.Sprintf("isAMQPTransientError: %T is not transient", err))
+	return false
 }
 
-// Put performs an HTTP PUT for a given entity path and body
-func (em *entityManager) Put(ctx context.Context, entityPath string, body []byte, mw ...MiddlewareFunc) (*http.Response, error) {
-	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Put")
+func (mc *mgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, sequenceNumbers ...int64) ([]*amqp.Message, error) {
+	ctx, span := startConsumerSpanFromContext(ctx, spanNameReceiveDeferred)
 	defer span.End()
 
-	return em.Execute(ctx, http.MethodPut, entityPath, bytes.NewReader(body), mw...)
-}
+	const messagesField, messageField = "messages", "message"
 
-// Delete performs an HTTP DELETE for a given entity path
-func (em *entityManager) Delete(ctx context.Context, entityPath string, mw ...MiddlewareFunc) (*http.Response, error) {
-	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Delete")
-	defer span.End()
+	backwardsMode := uint32(0)
+	if mode == PeekLock {
+		backwardsMode = 1
+	}
 
-	return em.Execute(ctx, http.MethodDelete, entityPath, http.NoBody, mw...)
-}
+	values := map[string]interface{}{
+		"sequence-numbers":     sequenceNumbers,
+		"receiver-settle-mode": uint32(backwardsMode), // pick up messages with peek lock
+	}
 
-// Post performs an HTTP POST for a given entity path and body
-func (em *entityManager) Post(ctx context.Context, entityPath string, body []byte, mw ...MiddlewareFunc) (*http.Response, error) {
-	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Post")
-	defer span.End()
+	var opts []rpc.LinkOption
+	if mc.isSessionFilterSet {
+		opts = append(opts, rpc.LinkWithSessionFilter(mc.sessionID))
+		values["session-id"] = mc.sessionID
+	}
 
-	return em.Execute(ctx, http.MethodPost, entityPath, bytes.NewReader(body), mw...)
-}
+	msg := &amqp.Message{
+		ApplicationProperties: map[string]interface{}{
+			"operation": "com.microsoft:receive-by-sequence-number",
+		},
+		Value: values,
+	}
 
-func (em *entityManager) Execute(ctx context.Context, method string, entityPath string, body io.Reader, mw ...MiddlewareFunc) (*http.Response, error) {
-	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Execute")
-	defer span.End()
-
-	req, err := http.NewRequest(method, em.Host+strings.TrimPrefix(entityPath, "/"), body)
+	rsp, err := mc.doRPCWithRetry(ctx, msg, 5, 5*time.Second, opts...)
 	if err != nil {
 		tab.For(ctx).Error(err)
 		return nil, err
 	}
 
-	final := func(_ RestHandler) RestHandler {
-		return func(reqCtx context.Context, request *http.Request) (*http.Response, error) {
-			client := &http.Client{
-				Timeout: 60 * time.Second,
-			}
-			request = request.WithContext(reqCtx)
-			return client.Do(request)
+	if rsp.Code == 204 {
+		return nil, ErrNoMessages{}
+	}
+
+	// Deferred messages come back in a relatively convoluted manner:
+	// a map (always with one key: "messages")
+	// 	of arrays
+	// 		of maps (always with one key: "message")
+	// 			of an array with raw encoded Service Bus messages
+	val, ok := rsp.Message.Value.(map[string]interface{})
+	if !ok {
+		return nil, NewErrIncorrectType(messageField, map[string]interface{}{}, rsp.Message.Value)
+	}
+
+	rawMessages, ok := val[messagesField]
+	if !ok {
+		return nil, ErrMissingField(messagesField)
+	}
+
+	messages, ok := rawMessages.([]interface{})
+	if !ok {
+		return nil, NewErrIncorrectType(messagesField, []interface{}{}, rawMessages)
+	}
+
+	transformedMessages := make([]*amqp.Message, len(messages))
+	for i := range messages {
+		rawEntry, ok := messages[i].(map[string]interface{})
+		if !ok {
+			return nil, NewErrIncorrectType(messageField, map[string]interface{}{}, messages[i])
 		}
+
+		rawMessage, ok := rawEntry[messageField]
+		if !ok {
+			return nil, ErrMissingField(messageField)
+		}
+
+		marshaled, ok := rawMessage.([]byte)
+		if !ok {
+			return nil, new(ErrMalformedMessage)
+		}
+
+		var rehydrated amqp.Message
+		err = rehydrated.UnmarshalBinary(marshaled)
+		if err != nil {
+			return nil, err
+		}
+
+		transformedMessages[i] = &rehydrated
 	}
 
-	mwStack := []MiddlewareFunc{final}
-	sl := len(em.mwStack) - 1
-	for i := sl; i >= 0; i-- {
-		mwStack = append(mwStack, em.mwStack[i])
-	}
-
-	for i := len(mw) - 1; i >= 0; i-- {
-		mwStack = append(mwStack, mw[i])
-	}
-
-	var h RestHandler
-	for _, mw := range mwStack {
-		h = mw(h)
-	}
-
-	return h(ctx, req)
+	return transformedMessages, nil
 }
 
-// Use adds middleware to the middleware mwStack
-func (em *entityManager) Use(mw ...MiddlewareFunc) {
-	em.mwStack = append(em.mwStack, mw...)
+func (mc *mgmtClient) GetNextPage(ctx context.Context, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error) {
+	ctx, span := startConsumerSpanFromContext(ctx, spanPeekFromSequenceNumber)
+	defer span.End()
+
+	const messagesField, messageField = "messages", "message"
+
+	msg := &amqp.Message{
+		ApplicationProperties: map[string]interface{}{
+			"operation": "com.microsoft:peek-message",
+		},
+		Value: map[string]interface{}{
+			"from-sequence-number": fromSequenceNumber,
+			"message-count":        messageCount,
+		},
+	}
+
+	if deadline, ok := ctx.Deadline(); ok {
+		msg.ApplicationProperties["server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
+	}
+
+	rsp, err := mc.doRPCWithRetry(ctx, msg, 5, 5*time.Second)
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return nil, err
+	}
+
+	if rsp.Code == 204 {
+		return nil, ErrNoMessages{}
+	}
+
+	// Peeked messages come back in a relatively convoluted manner:
+	// a map (always with one key: "messages")
+	// 	of arrays
+	// 		of maps (always with one key: "message")
+	// 			of an array with raw encoded Service Bus messages
+	val, ok := rsp.Message.Value.(map[string]interface{})
+	if !ok {
+		err = NewErrIncorrectType(messageField, map[string]interface{}{}, rsp.Message.Value)
+		tab.For(ctx).Error(err)
+		return nil, err
+	}
+
+	rawMessages, ok := val[messagesField]
+	if !ok {
+		err = ErrMissingField(messagesField)
+		tab.For(ctx).Error(err)
+		return nil, err
+	}
+
+	messages, ok := rawMessages.([]interface{})
+	if !ok {
+		err = NewErrIncorrectType(messagesField, []interface{}{}, rawMessages)
+		tab.For(ctx).Error(err)
+		return nil, err
+	}
+
+	transformedMessages := make([]*amqp.Message, len(messages))
+	for i := range messages {
+		rawEntry, ok := messages[i].(map[string]interface{})
+		if !ok {
+			err = NewErrIncorrectType(messageField, map[string]interface{}{}, messages[i])
+			tab.For(ctx).Error(err)
+			return nil, err
+		}
+
+		rawMessage, ok := rawEntry[messageField]
+		if !ok {
+			err = ErrMissingField(messageField)
+			tab.For(ctx).Error(err)
+			return nil, err
+		}
+
+		marshaled, ok := rawMessage.([]byte)
+		if !ok {
+			err = new(ErrMalformedMessage)
+			tab.For(ctx).Error(err)
+			return nil, err
+		}
+
+		var rehydrated amqp.Message
+		err = rehydrated.UnmarshalBinary(marshaled)
+		if err != nil {
+			tab.For(ctx).Error(err)
+			return nil, err
+		}
+
+		transformedMessages[i] = &rehydrated
+
+		// transformedMessages[i], err = MessageFromAMQPMessage(&rehydrated)
+		// if err != nil {
+		// 	tab.For(ctx).Error(err)
+		// 	return nil, err
+		// }
+
+		// transformedMessages[i].useSession = r.isSessionFilterSet
+		// transformedMessages[i].sessionID = r.sessionID
+	}
+
+	// This sort is done to ensure that folks wanting to peek messages in sequence order may do so.
+	// sort.Slice(transformedMessages, func(i, j int) bool {
+	// 	iSeq := *transformedMessages[i].SystemProperties.SequenceNumber
+	// 	jSeq := *transformedMessages[j].SystemProperties.SequenceNumber
+	// 	return iSeq < jSeq
+	// })
+
+	return transformedMessages, nil
 }
 
-// TokenProvider generates authorization tokens for communicating with the Service Bus management API
-func (em *entityManager) TokenProvider() auth.TokenProvider {
-	return em.tokenProvider
+// RenewLocks renews the locks in a single 'com.microsoft:renew-lock' operation.
+// NOTE: this function assumes all the messages received on the same link.
+func (mc *mgmtClient) RenewLocks(ctx context.Context, linkName string, lockTokens ...*amqp.UUID) (err error) {
+	ctx, span := startConsumerSpanFromContext(ctx, spanNameRenewLock)
+	defer span.End()
+
+	if len(lockTokens) == 0 {
+		return nil
+	}
+
+	renewRequestMsg := &amqp.Message{
+		ApplicationProperties: map[string]interface{}{
+			"operation": "com.microsoft:renew-lock",
+		},
+		Value: map[string]interface{}{
+			"lock-tokens": lockTokens,
+		},
+	}
+
+	if linkName != "" {
+		renewRequestMsg.ApplicationProperties["associated-link-name"] = linkName
+	}
+
+	response, err := mc.doRPCWithRetry(ctx, renewRequestMsg, 3, 1*time.Second)
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return err
+	}
+
+	if response.Code != 200 {
+		err := fmt.Errorf("error renewing locks: %v", response.Description)
+		tab.For(ctx).Error(err)
+		return err
+	}
+
+	return nil
 }
 
-func addAuthorization(tp auth.TokenProvider) MiddlewareFunc {
-	return func(next RestHandler) RestHandler {
-		return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-			signature, err := tp.GetToken(req.URL.String())
+// SendDisposition allows you settle a message using the management link, rather than via your
+// *amqp.Receiver. Use this if the receiver has been closed/lost or if the message isn't associated
+// with a link (ex: deferred messages).
+func (mc *mgmtClient) SendDisposition(ctx context.Context, lockToken *amqp.UUID, state Disposition) error {
+	ctx, span := startConsumerSpanFromContext(ctx, spanNameSendDisposition)
+	defer span.End()
+
+	if lockToken == nil {
+		err := errors.New("lock token on the message is not set, thus cannot send disposition")
+		tab.For(ctx).Error(err)
+		return err
+	}
+
+	var opts []rpc.LinkOption
+	value := map[string]interface{}{
+		"disposition-status": string(state.Status),
+		"lock-tokens":        []amqp.UUID{*lockToken},
+	}
+
+	if state.DeadLetterReason != nil {
+		value["deadletter-reason"] = state.DeadLetterReason
+	}
+
+	if state.DeadLetterDescription != nil {
+		value["deadletter-description"] = state.DeadLetterDescription
+	}
+
+	msg := &amqp.Message{
+		ApplicationProperties: map[string]interface{}{
+			"operation": "com.microsoft:update-disposition",
+		},
+		Value: value,
+	}
+
+	// no error, then it was successful
+	_, err := mc.doRPCWithRetry(ctx, msg, 5, 5*time.Second, opts...)
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return err
+	}
+
+	return nil
+}
+
+// ScheduleMessages will send a batch of messages to a Queue, schedule them to be enqueued, and return the sequence numbers
+// that can be used to cancel each message.
+func (mc *mgmtClient) ScheduleMessages(ctx context.Context, enqueueTime time.Time, messages ...*amqp.Message) ([]int64, error) {
+	ctx, span := startConsumerSpanFromContext(ctx, spanNameScheduleMessage)
+	defer span.End()
+
+	if len(messages) <= 0 {
+		return nil, errors.New("expected one or more messages")
+	}
+
+	transformed := make([]interface{}, 0, len(messages))
+	enqueueTimeAsUTC := enqueueTime.UTC()
+
+	for i := range messages {
+		// TODO: don't like that we're modifying the underlying message here
+		messages[i].Annotations["x-opt-scheduled-enqueue-time"] = &enqueueTimeAsUTC
+
+		if messages[i].Properties == nil {
+			messages[i].Properties = &amqp.MessageProperties{}
+		}
+
+		// TODO: this is in two spots now (in Message, and here). Since this one
+		// could potentially take the raw AMQP message we need to check it, and we assume
+		// that 'nil' is the only zero value that matters.
+		if messages[i].Properties.MessageID == nil {
+			id, err := uuid.NewV4()
 			if err != nil {
 				return nil, err
 			}
-
-			req.Header.Add("Authorization", signature.Token)
-			return next(ctx, req)
+			messages[i].Properties.MessageID = id.String()
 		}
-	}
-}
 
-func addSupplementalAuthorization(supplementalURI string, tp auth.TokenProvider) MiddlewareFunc {
-	return func(next RestHandler) RestHandler {
-		return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-			signature, err := tp.GetToken(supplementalURI)
-			if err != nil {
-				return nil, err
-			}
-
-			req.Header.Add("ServiceBusSupplementaryAuthorization", signature.Token)
-			return next(ctx, req)
+		encoded, err := messages[i].MarshalBinary()
+		if err != nil {
+			return nil, err
 		}
-	}
-}
 
-func addDeadLetterSupplementalAuthorization(targetURI string, tp auth.TokenProvider) MiddlewareFunc {
-	return func(next RestHandler) RestHandler {
-		return func(ctx context.Context, req *http.Request) (response *http.Response, e error) {
-			signature, err := tp.GetToken(targetURI)
-			if err != nil {
-				return nil, err
-			}
-
-			req.Header.Add("ServiceBusDlqSupplementaryAuthorization", signature.Token)
-			return next(ctx, req)
+		individualMessage := map[string]interface{}{
+			"message-id": messages[i].Properties.MessageID,
+			"message":    encoded,
 		}
-	}
-}
 
-// TraceReqAndResponseMiddleware will print the dump of the management request and response.
-//
-// This should only be used for debugging or educational purposes.
-func TraceReqAndResponseMiddleware() MiddlewareFunc {
-	return func(next RestHandler) RestHandler {
-		return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-			if dump, err := httputil.DumpRequest(req, true); err == nil {
-				fmt.Println(string(dump))
-			}
-
-			res, err := next(ctx, req)
-
-			if dump, err := httputil.DumpResponse(res, true); err == nil {
-				fmt.Println(string(dump))
-			}
-
-			return res, err
+		// TODO: I believe empty string should be allowed here. There isn't a way for the
+		// user to opt out of session related information.
+		if messages[i].Properties.GroupID != "" {
+			individualMessage["session-id"] = messages[i].Properties.GroupID
 		}
-	}
-}
 
-func isEmptyFeed(b []byte) bool {
-	var emptyFeed queueFeed
-	feedErr := xml.Unmarshal(b, &emptyFeed)
-	return feedErr == nil && emptyFeed.Title == "Publicly Listed Services"
-}
+		if value, ok := messages[i].Annotations["x-opt-partition-key"]; ok {
+			individualMessage["partition-key"] = value.(string)
+		}
 
-func xmlDoc(content []byte) []byte {
-	return []byte(xml.Header + string(content))
-}
+		if value, ok := messages[i].Annotations["x-opt-via-partition-key"]; ok {
+			individualMessage["via-partition-key"] = value.(string)
+		}
 
-// ptrBool takes a boolean and returns a pointer to that bool. For use in literal pointers, ptrBool(true) -> *bool
-func ptrBool(toPtr bool) *bool {
-	return &toPtr
-}
-
-// ptrString takes a string and returns a pointer to that string. For use in literal pointers,
-// ptrString(fmt.Sprintf("..", foo)) -> *string
-func ptrString(toPtr string) *string {
-	return &toPtr
-}
-
-// durationTo8601Seconds takes a duration and returns a string period of whole seconds (int cast of float)
-func durationTo8601Seconds(duration time.Duration) string {
-	return fmt.Sprintf("PT%dS", duration/time.Second)
-}
-
-func formatManagementError(body []byte) error {
-	var mgmtError managementError
-	unmarshalErr := xml.Unmarshal(body, &mgmtError)
-	if unmarshalErr != nil {
-		return errors.New(string(body))
+		transformed = append(transformed, individualMessage)
 	}
 
-	return fmt.Errorf("error code: %d, Details: %s", mgmtError.Code, mgmtError.Detail)
+	msg := &amqp.Message{
+		ApplicationProperties: map[string]interface{}{
+			"operation": "com.microsoft:schedule-message",
+		},
+		Value: map[string]interface{}{
+			"messages": transformed,
+		},
+	}
+
+	if deadline, ok := ctx.Deadline(); ok {
+		msg.ApplicationProperties["com.microsoft:server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
+	}
+
+	resp, err := mc.doRPCWithRetry(ctx, msg, 5, 5*time.Second)
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return nil, err
+	}
+
+	if resp.Code != 200 {
+		return nil, ErrAMQP(*resp)
+	}
+
+	retval := make([]int64, 0, len(messages))
+	if rawVal, ok := resp.Message.Value.(map[string]interface{}); ok {
+		const sequenceFieldName = "sequence-numbers"
+		if rawArr, ok := rawVal[sequenceFieldName]; ok {
+			if arr, ok := rawArr.([]int64); ok {
+				for i := range arr {
+					retval = append(retval, arr[i])
+				}
+				return retval, nil
+			}
+			return nil, NewErrIncorrectType(sequenceFieldName, []int64{}, rawArr)
+		}
+		return nil, ErrMissingField(sequenceFieldName)
+	}
+	return nil, NewErrIncorrectType("value", map[string]interface{}{}, resp.Message.Value)
+}
+
+// CancelScheduled allows for removal of messages that have been handed to the Service Bus broker for later delivery,
+// but have not yet ben enqueued.
+func (mc *mgmtClient) CancelScheduled(ctx context.Context, seq ...int64) error {
+	ctx, span := startConsumerSpanFromContext(ctx, spanNameCancelScheduledMessage)
+	defer span.End()
+
+	msg := &amqp.Message{
+		ApplicationProperties: map[string]interface{}{
+			"operation": "com.microsoft:cancel-scheduled-message",
+		},
+		Value: map[string]interface{}{
+			"sequence-numbers": seq,
+		},
+	}
+
+	if deadline, ok := ctx.Deadline(); ok {
+		msg.ApplicationProperties["com.microsoft:server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
+	}
+
+	resp, err := mc.doRPCWithRetry(ctx, msg, 5, 5*time.Second)
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return err
+	}
+
+	if resp.Code != 200 {
+		return ErrAMQP(*resp)
+	}
+
+	return nil
 }

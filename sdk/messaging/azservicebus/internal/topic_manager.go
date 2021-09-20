@@ -83,7 +83,7 @@ func ListTopicsWithTop(top int) ListTopicsOption {
 // NewTopicManager creates a new TopicManager for a Service Bus Namespace
 func (ns *Namespace) NewTopicManager() *TopicManager {
 	return &TopicManager{
-		entityManager: newEntityManager(ns.getHTTPSHostURI(), ns.TokenProvider),
+		entityManager: newEntityManager(ns.GetHTTPSHostURI(), ns.TokenProvider),
 	}
 }
 

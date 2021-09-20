@@ -93,14 +93,7 @@ func main() {
 	}
 
 	log.Printf("Waiting for 30 seconds for any messages to arrive")
-
-	select {
-	// processor.Done() can be used for a simple way to block until the processor has closed (for instance,
-	// if your application was shutting down)
-	case <-processor.Done():
-	case <-time.After(time.Second * 30):
-		break
-	}
+	time.Sleep(time.Second * 30)
 
 	if err := processor.Close(context.TODO()); err != nil {
 		log.Fatalf("Failed to close processor: %s", err.Error())

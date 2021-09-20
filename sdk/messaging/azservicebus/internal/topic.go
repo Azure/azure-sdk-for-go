@@ -10,19 +10,6 @@ import (
 )
 
 type (
-	// Topic in contrast to queues, in which each message is processed by a single consumer, topics and subscriptions
-	// provide a one-to-many form of communication, in a publish/subscribe pattern. Useful for scaling to very large
-	// numbers of recipients, each published message is made available to each subscription registered with the topic.
-	// Messages are sent to a topic and delivered to one or more associated subscriptions, depending on filter rules
-	// that can be set on a per-subscription basis. The subscriptions can use additional filters to restrict the
-	// messages that they want to receive. Messages are sent to a topic in the same way they are sent to a queue,
-	// but messages are not received from the topic directly. Instead, they are received from subscriptions. A topic
-	// subscription resembles a virtual queue that receives copies of the messages that are sent to the topic.
-	// Messages are received from a subscription identically to the way they are received from a queue.
-	Topic struct {
-		*sendingEntity
-	}
-
 	// TopicDescription is the content type for Topic management requests
 	TopicDescription struct {
 		XMLName xml.Name `xml:"TopicDescription"`

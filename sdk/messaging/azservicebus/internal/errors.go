@@ -12,6 +12,10 @@ import (
 	"github.com/Azure/go-amqp"
 )
 
+type NonRetriable interface {
+	NonRetriable()
+}
+
 // Error Conditions
 const (
 	// Service Bus Errors
@@ -22,9 +26,8 @@ const (
 )
 
 const (
-	amqpRetryDefaultTimes    int           = 3
-	amqpRetryDefaultDelay    time.Duration = time.Second
-	amqpRetryBusyServerDelay time.Duration = 10 * time.Second
+	amqpRetryDefaultTimes int           = 3
+	amqpRetryDefaultDelay time.Duration = time.Second
 )
 
 type (
@@ -70,7 +73,7 @@ func (e ErrMalformedMessage) Error() string {
 
 // NewErrIncorrectType lets you skip using the `reflect` package. Just provide a variable of the desired type as
 // 'expected'.
-func newErrIncorrectType(key string, expected, actual interface{}) ErrIncorrectType {
+func NewErrIncorrectType(key string, expected, actual interface{}) ErrIncorrectType {
 	return ErrIncorrectType{
 		Key:          key,
 		ExpectedType: reflect.TypeOf(expected),

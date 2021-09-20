@@ -11,7 +11,7 @@ protocol called AMQP.
 This library provides a simple interface for sending, receiving and managing Service Bus entities such as Queues, Topics
 and Subscriptions.
 
-For more information about Service Bus, check out the [Azure documentation](https://azure.microsoft.com/en-us/services/service-bus/).
+For more information about Service Bus, check out the [Azure documentation](https://azure.microsoft.com/services/service-bus/).
 
 This library is a pure Golang implementation of Azure Service Bus over AMQP.
 

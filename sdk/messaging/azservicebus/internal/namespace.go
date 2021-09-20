@@ -16,25 +16,16 @@ import (
 	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-amqp-common-go/v3/cbs"
 	"github.com/Azure/azure-amqp-common-go/v3/conn"
+	"github.com/Azure/azure-amqp-common-go/v3/rpc"
 	"github.com/Azure/azure-amqp-common-go/v3/sas"
 	"github.com/Azure/go-amqp"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/devigned/tab"
+	"github.com/jpillora/backoff"
 	"nhooyr.io/websocket"
 )
 
 const (
-	//	banner = `
-	//   _____                 _               ____
-	//  / ___/___  ______   __(_)________     / __ )__  _______
-	//  \__ \/ _ \/ ___/ | / / // ___/ _ \   / __  / / / / ___/
-	// ___/ /  __/ /   | |/ / // /__/  __/  / /_/ / /_/ (__  )
-	///____/\___/_/    |___/_/ \___/\___/  /_____/\__,_/____/
-	//`
-
-	// Version is the semantic version number
-	Version = "0.10.11"
-
 	rootUserAgent = "/golang-service-bus"
 
 	// default ServiceBus resource uri to authenticate with
@@ -42,8 +33,8 @@ const (
 )
 
 type (
-	// Namespace provides a simplified facade over the AMQP implementation of Azure Service Bus and is the entry point
-	// for using Queues, Topics and Subscriptions
+	// Namespace is an abstraction over an amqp.Client, allowing us to hold onto a single
+	// instance of a connection per ServiceBusClient.
 	Namespace struct {
 		Name          string
 		Suffix        string
@@ -52,15 +43,36 @@ type (
 		tlsConfig     *tls.Config
 		userAgent     string
 		useWebSocket  bool
-		// used to ensure only one goroutine is running for auth auto-refresh
-		initRefresh sync.Once
-		// populated with the result from auto-refresh, to be called elsewhere
-		cancelRefresh func() <-chan struct{}
+
+		baseRetrier Retrier
+
+		clientMu sync.Mutex
+		client   *amqp.Client
+
+		negotiateClaimMu sync.Mutex
 	}
 
 	// NamespaceOption provides structure for configuring a new Service Bus namespace
 	NamespaceOption func(h *Namespace) error
 )
+
+// NamespaceWithNewAMQPLinks is the Namespace surface for consumers of AMQPLinks.
+type NamespaceWithNewAMQPLinks interface {
+	NewAMQPLinks(entityPath string, createLinkFunc CreateLinkFunc) AMQPLinks
+}
+
+// NamespaceForAMQPLinks is the Namespace surface needed for the internals of AMQPLinks.
+type NamespaceForAMQPLinks interface {
+	NegotiateClaim(ctx context.Context, entityPath string) (func() <-chan struct{}, error)
+	NewAMQPSession(ctx context.Context) (AMQPSessionCloser, error)
+	NewMgmtClient(ctx context.Context, managementPath string) (MgmtClient, error)
+	GetEntityAudience(entityPath string) string
+}
+
+// NamespaceForAMQPLinks is the Namespace surface needed for the *MgmtClient.
+type NamespaceForMgmtClient interface {
+	NewRPCLink(ctx context.Context, managementPath string) (*rpc.Link, error)
+}
 
 // NamespaceWithConnectionString configures a namespace with the information provided in a Service Bus connection string
 func NamespaceWithConnectionString(connStr string) NamespaceOption {
@@ -170,6 +182,13 @@ func NamespaceWithTokenProvider(provider auth.TokenProvider) NamespaceOption {
 func NewNamespace(opts ...NamespaceOption) (*Namespace, error) {
 	ns := &Namespace{
 		Environment: azure.PublicCloud,
+		baseRetrier: &BackoffRetrier{
+			MaxRetries: 5,
+			Backoff: backoff.Backoff{
+				Factor: 1,
+				Min:    time.Second * 5,
+			},
+		},
 	}
 
 	for _, opt := range opts {
@@ -213,81 +232,202 @@ func (ns *Namespace) newClient(ctx context.Context) (*amqp.Client, error) {
 		}
 		nConn := websocket.NetConn(context.Background(), wssConn, websocket.MessageBinary)
 
-		return amqp.New(nConn, append(defaultConnOptions, amqp.ConnServerHostname(ns.getHostname()))...)
+		return amqp.New(nConn, append(defaultConnOptions, amqp.ConnServerHostname(ns.GetHostname()))...)
 	}
 
 	return amqp.Dial(ns.getAMQPHostURI(), defaultConnOptions...)
 }
 
-// negotiateClaim performs initial authentication and starts periodic refresh of credentials.
-// the returned func is to cancel() the refresh goroutine.
-func (ns *Namespace) negotiateClaim(ctx context.Context, client *amqp.Client, entityPath string) (func() <-chan struct{}, error) {
-	ctx, span := ns.startSpanFromContext(ctx, "sb.namespace.negotiateClaim")
-	defer span.End()
+// NewAMQPSession creates a new AMQP session with the internally cached *amqp.Client.
+func (ns *Namespace) NewAMQPSession(ctx context.Context) (AMQPSessionCloser, error) {
+	client, err := ns.getAMQPClientImpl(ctx)
 
-	audience := ns.getEntityAudience(entityPath)
-	if err := cbs.NegotiateClaim(ctx, audience, client, ns.TokenProvider); err != nil {
+	if err != nil {
 		return nil, err
 	}
-	ns.initRefresh.Do(func() {
-		// start the periodic refresh of credentials
-		refreshCtx, cancel := context.WithCancel(context.Background())
-		exitChan := make(chan struct{})
-		go func() {
-			defer func() {
-				// reset the guard when the refresh goroutine exits
-				ns.initRefresh = sync.Once{}
-				// signal that the refresh goroutine has exited
-				close(exitChan)
-			}()
-			for {
-				select {
-				case <-refreshCtx.Done():
-					return
-				case <-time.After(15 * time.Minute):
-					refreshCtx, span := ns.startSpanFromContext(refreshCtx, "sb.namespace.negotiateClaim.refresh")
-					defer span.End()
-					if err := cbs.NegotiateClaim(refreshCtx, audience, client, ns.TokenProvider); err != nil {
-						tab.For(refreshCtx).Error(err)
-						// if auth failed cancel auto-refresh
-						cancel()
-					}
-				}
-			}
-		}()
-		ns.cancelRefresh = func() <-chan struct{} {
-			cancel()
-			return exitChan
+
+	return client.NewSession()
+}
+
+// NewMgmtClient creates a new management client with the internally cached *amqp.Client.
+func (ns *Namespace) NewMgmtClient(ctx context.Context, managementPath string) (MgmtClient, error) {
+	return newMgmtClient(ctx, managementPath, ns)
+}
+
+// NewRPCLink creates a new amqp-common *rpc.Link with the internally cached *amqp.Client.
+func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (*rpc.Link, error) {
+	client, err := ns.getAMQPClientImpl(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return rpc.NewLink(client, managementPath)
+}
+
+// NewAMQPLinks creates an AMQPLinks struct, which groups together the commonly needed links for
+// working with Service Bus.
+func (ns *Namespace) NewAMQPLinks(entityPath string, createLinkFunc CreateLinkFunc) AMQPLinks {
+	return newAMQPLinks(ns, entityPath, createLinkFunc)
+}
+
+// Close closes the current cached client.
+func (ns *Namespace) Close(ctx context.Context) error {
+	ns.clientMu.Lock()
+	defer ns.clientMu.Unlock()
+
+	if ns.client != nil {
+		return ns.client.Close()
+	}
+
+	return nil
+}
+
+// Recover destroys the currently held client and recreates it.
+func (ns *Namespace) Recover(ctx context.Context) (*amqp.Client, error) {
+	ns.clientMu.Lock()
+	defer ns.clientMu.Unlock()
+
+	if ns.client != nil {
+		// the error on close isn't critical
+		err := ns.client.Close()
+		tab.For(ctx).Error(err)
+	}
+
+	var err error
+	ns.client, err = ns.newClient(ctx)
+
+	return ns.client, err
+}
+
+// negotiateClaim performs initial authentication and starts periodic refresh of credentials.
+// the returned func is to cancel() the refresh goroutine.
+func (ns *Namespace) NegotiateClaim(ctx context.Context, entityPath string) (func() <-chan struct{}, error) {
+	return ns.negotiateClaimImpl(ctx,
+		entityPath,
+		15*time.Minute,
+		func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error {
+			// You're not allowed to have multiple $cbs links open in a single connect. The current
+			// cbs.NegotiateClaim implementation automatically creates and shuts down it's own
+			// link so we have to guard against that here (for now).
+			ns.negotiateClaimMu.Lock()
+			defer ns.negotiateClaimMu.Unlock()
+			return cbs.NegotiateClaim(ctx, audience, conn, provider)
+		},
+		ns.getAMQPClientImpl,
+		func(err error) {
+			tab.For(ctx).Debug(fmt.Sprintf("refreshing claims failed: %s", err.Error()))
+		})
+}
+
+func (ns *Namespace) negotiateClaimImpl(ctx context.Context,
+	entityPath string,
+	renewalDuration time.Duration,
+	cbsNegotiateClaim func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error,
+	nsGetAMQPClientImpl func(ctx context.Context) (*amqp.Client, error),
+	logError func(err error),
+) (func() <-chan struct{}, error) {
+	audience := ns.GetEntityAudience(entityPath)
+
+	refreshClaim := func() error {
+		amqpClient, err := nsGetAMQPClientImpl(ctx)
+
+		if err != nil {
+			logError(err)
+			return err
 		}
-	})
-	return ns.cancelRefresh, nil
+
+		retrier := ns.baseRetrier.Copy()
+
+		for retrier.Try(ctx) {
+			ctx, span := ns.startSpanFromContext(ctx, "sb.namespace.negotiateClaim")
+			err = cbsNegotiateClaim(ctx, audience, amqpClient, ns.TokenProvider)
+
+			if err == nil {
+				span.End()
+				break
+			}
+
+			logError(err)
+			span.End()
+		}
+
+		return err
+	}
+
+	if err := refreshClaim(); err != nil {
+		return nil, err
+	}
+
+	// start the periodic refresh of credentials
+	refreshCtx, cancel := context.WithCancel(context.Background())
+
+	go func() {
+		for {
+			select {
+			case <-refreshCtx.Done():
+				return
+			case <-time.After(renewalDuration):
+				_ = refreshClaim() // logging will report the error for now
+			}
+		}
+	}()
+
+	cancelRefresh := func() <-chan struct{} {
+		cancel()
+		return refreshCtx.Done()
+	}
+
+	return cancelRefresh, nil
+}
+
+func (ns *Namespace) getAMQPClientImpl(ctx context.Context) (*amqp.Client, error) {
+	ns.clientMu.Lock()
+	defer ns.clientMu.Unlock()
+
+	if ns.client != nil {
+		return ns.client, nil
+	}
+
+	var err error
+	retrier := ns.baseRetrier.Copy()
+
+	for retrier.Try(ctx) {
+		ns.client, err = ns.newClient(ctx)
+
+		if err == nil {
+			break
+		}
+	}
+
+	return ns.client, err
 }
 
 func (ns *Namespace) getWSSHostURI() string {
 	suffix := ns.resolveSuffix()
 	if strings.HasSuffix(suffix, "onebox.windows-int.net") {
-		return fmt.Sprintf("wss://%s:4446/", ns.getHostname())
+		return fmt.Sprintf("wss://%s:4446/", ns.GetHostname())
 	}
-	return fmt.Sprintf("wss://%s/", ns.getHostname())
+	return fmt.Sprintf("wss://%s/", ns.GetHostname())
 }
 
 func (ns *Namespace) getAMQPHostURI() string {
-	return fmt.Sprintf("amqps://%s/", ns.getHostname())
+	return fmt.Sprintf("amqps://%s/", ns.GetHostname())
 }
 
-func (ns *Namespace) getHTTPSHostURI() string {
+func (ns *Namespace) GetHTTPSHostURI() string {
 	suffix := ns.resolveSuffix()
 	if strings.HasSuffix(suffix, "onebox.windows-int.net") {
-		return fmt.Sprintf("https://%s:4446/", ns.getHostname())
+		return fmt.Sprintf("https://%s:4446/", ns.GetHostname())
 	}
-	return fmt.Sprintf("https://%s/", ns.getHostname())
+	return fmt.Sprintf("https://%s/", ns.GetHostname())
 }
 
-func (ns *Namespace) getHostname() string {
+func (ns *Namespace) GetHostname() string {
 	return strings.Join([]string{ns.Name, ns.resolveSuffix()}, ".")
 }
 
-func (ns *Namespace) getEntityAudience(entityPath string) string {
+func (ns *Namespace) GetEntityAudience(entityPath string) string {
 	return ns.getAMQPHostURI() + entityPath
 }
 

@@ -17,26 +17,33 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets/internal"
 )
 
+// Client is the struct for interacting with a KeyVault Secrets instance
 type Client struct {
 	kvClient *internal.KeyVaultClient
 	vaultUrl string
 }
 
+// ClientOptions are the configurable options on a Client.
 type ClientOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
 	HTTPClient policy.Transporter
+
 	// Retry configures the built-in retry policy behavior.
 	Retry policy.RetryOptions
+
 	// Telemetry configures the built-in telemetry policy behavior.
 	Telemetry policy.TelemetryOptions
+
 	// Logging configures the built-in logging policy behavior.
 	Logging policy.LogOptions
+
 	// PerCallPolicies contains custom policies to inject into the pipeline.
 	// Each policy is executed once per request.
 	PerCallPolicies []policy.Policy
+
 	// PerRetryPolicies contains custom policies to inject into the pipeline.
 	// Each policy is executed once per request, and for each retry request.
-	PerRetryPolicies []policy.Policy
+	PerTryPolicies []policy.Policy
 }
 
 func (c *ClientOptions) toConnectionOptions() *internal.ConnectionOptions {
@@ -50,7 +57,7 @@ func (c *ClientOptions) toConnectionOptions() *internal.ConnectionOptions {
 		Telemetry:        c.Telemetry,
 		Logging:          c.Logging,
 		PerCallPolicies:  c.PerCallPolicies,
-		PerRetryPolicies: c.PerRetryPolicies,
+		PerRetryPolicies: c.PerTryPolicies,
 	}
 }
 
@@ -76,6 +83,7 @@ type GetSecretOptions struct {
 	Version string
 }
 
+// convert the exposed options struct to the internal one.
 func (g *GetSecretOptions) toGenerated() *internal.KeyVaultClientGetSecretOptions {
 	if g == nil {
 		return &internal.KeyVaultClientGetSecretOptions{}
@@ -83,6 +91,7 @@ func (g *GetSecretOptions) toGenerated() *internal.KeyVaultClientGetSecretOption
 	return &internal.KeyVaultClientGetSecretOptions{}
 }
 
+// GetSecretResponse is the response object for the Client.GetSecret operation
 type GetSecretResponse struct {
 	SecretBundle
 
@@ -105,6 +114,8 @@ func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) 
 	}
 }
 
+// GetSecret gets a specified secret from a given key vault. The GET operation is applicable to any secret
+// stored in Azure Key Vault. This operation requires the secrets/get permission
 func (c *Client) GetSecret(ctx context.Context, name string, options *GetSecretOptions) (GetSecretResponse, error) {
 	if options == nil {
 		options = &GetSecretOptions{}
@@ -113,6 +124,7 @@ func (c *Client) GetSecret(ctx context.Context, name string, options *GetSecretO
 	return *getSecretResponseFromGenerated(resp), err
 }
 
+// SetSecretOptions contains the optional parameters for a Client.SetSecret operation
 type SetSecretOptions struct {
 	// Type of the secret value such as a password.
 	ContentType *string `json:"contentType,omitempty"`
@@ -124,6 +136,7 @@ type SetSecretOptions struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
+// Convert the exposed struct to the generated code version
 func (s *SetSecretOptions) toGenerated() *internal.KeyVaultClientSetSecretOptions {
 	if s == nil {
 		return nil
@@ -131,6 +144,7 @@ func (s *SetSecretOptions) toGenerated() *internal.KeyVaultClientSetSecretOption
 	return &internal.KeyVaultClientSetSecretOptions{}
 }
 
+// SetSecretResponse is the response struct for the Client.SetSecret operation.
 type SetSecretResponse struct {
 	RawResponse *http.Response
 
@@ -153,8 +167,9 @@ type SetSecretResponse struct {
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
-func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) *SetSecretResponse {
-	return &SetSecretResponse{
+// convert generated response to publicly exposed response.
+func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) SetSecretResponse {
+	return SetSecretResponse{
 		RawResponse: i.RawResponse,
 		Attributes:  i.Attributes,
 		ID:          i.ID,
@@ -165,6 +180,8 @@ func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) 
 	}
 }
 
+// SetSecret sets a secret in a specifed key vault. The SET operation adds a secret to the Azure Key Vault. If the named secret
+// already exists, Azure Key Vault creates a new version of that secret. This operation requires the secrets/set permission.
 func (c *Client) SetSecret(ctx context.Context, name string, value string, options *SetSecretOptions) (SetSecretResponse, error) {
 	if options == nil {
 		options = &SetSecretOptions{}
@@ -175,9 +192,10 @@ func (c *Client) SetSecret(ctx context.Context, name string, value string, optio
 		SecretAttributes: options.SecretAttributes,
 		Tags:             options.Tags,
 	}, options.toGenerated())
-	return *setSecretResponseFromGenerated(resp), err
+	return setSecretResponseFromGenerated(resp), err
 }
 
+// DeletedSecretResponse contains the response for a Client.DeleteSecret operation.
 type DeleteSecretResponse struct {
 	DeletedSecretBundle
 	// RawResponse holds the underlying HTTP response
@@ -212,14 +230,14 @@ func deleteSecretResponseFromGenerated(i *internal.KeyVaultClientDeleteSecretRes
 }
 
 // BeginDeleteSecretOptions contains the optional parameters for the Client.BeginDeleteSecret method.
-type BeginDeleteSecretOptions struct {
-	// placeholder for future optional parameters
-}
+type BeginDeleteSecretOptions struct{}
 
+// convert public options to generated options struct
 func (b *BeginDeleteSecretOptions) toGenerated() *internal.KeyVaultClientDeleteSecretOptions {
 	return &internal.KeyVaultClientDeleteSecretOptions{}
 }
 
+// DeleteSecretPoller is the interface for the Client.DeleteSecret operation.
 type DeleteSecretPoller interface {
 	// Done returns true if the LRO has reached a terminal state
 	Done() bool
@@ -237,7 +255,8 @@ type DeleteSecretPoller interface {
 	FinalResponse(context.Context) (DeleteSecretResponse, error)
 }
 
-type startDeletePoller struct {
+// The poller returned by the Client.StartDeleteSecret operation
+type startDeleteSecretPoller struct {
 	secretName     string // This is the secret to Poll for in GetDeletedSecret
 	vaultUrl       string
 	client         *internal.KeyVaultClient
@@ -246,15 +265,21 @@ type startDeletePoller struct {
 	RawResponse    *http.Response
 }
 
-func (s *startDeletePoller) Done() bool {
+// Done returns true if the LRO has reached a terminal state
+func (s *startDeleteSecretPoller) Done() bool {
 	return s.lastResponse.RawResponse != nil
 }
 
-func (s *startDeletePoller) ResumeToken() string {
+// ResumeToken returns a value representing the poller that can be used to resume
+// the LRO at a later time. ResumeTokens are unique per service operation
+func (s *startDeleteSecretPoller) ResumeToken() string {
 	return s.secretName
 }
 
-func (s *startDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
+// Poll fetches the latest state of the LRO. It returns an HTTP response or error.(
+// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
+// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.)
+func (s *startDeleteSecretPoller) Poll(ctx context.Context) (*http.Response, error) {
 	resp, err := s.client.GetDeletedSecret(ctx, s.vaultUrl, s.secretName, nil)
 	if err == nil {
 		// Service recognizes DeletedSecret, operation is done
@@ -267,13 +292,14 @@ func (s *startDeletePoller) Poll(ctx context.Context) (*http.Response, error) {
 	return resp.RawResponse, nil
 }
 
-func (s *startDeletePoller) FinalResponse(ctx context.Context) (DeleteSecretResponse, error) {
+// FinalResponse returns the final response after the operations has finished
+func (s *startDeleteSecretPoller) FinalResponse(ctx context.Context) (DeleteSecretResponse, error) {
 	return *deleteSecretResponseFromGenerated(&s.deleteResponse), nil
 }
 
 // pollUntilDone continually calls the Poll operation until the operation is completed. In between each
 // Poll is a wait determined by the t parameter.
-func (s *startDeletePoller) pollUntilDone(ctx context.Context, t time.Duration) (DeleteSecretResponse, error) {
+func (s *startDeleteSecretPoller) pollUntilDone(ctx context.Context, t time.Duration) (DeleteSecretResponse, error) {
 	for {
 		resp, err := s.Poll(ctx)
 		if err != nil {
@@ -317,7 +343,7 @@ func (c *Client) BeginDeleteSecret(ctx context.Context, name string, options *Be
 		}
 	}
 
-	s := &startDeletePoller{
+	s := &startDeleteSecretPoller{
 		vaultUrl:       c.vaultUrl,
 		secretName:     name,
 		client:         c.kvClient,
@@ -332,20 +358,23 @@ func (c *Client) BeginDeleteSecret(ctx context.Context, name string, options *Be
 	}, nil
 }
 
-func (c *Client) CreateBeginDeleteSecretFromResumeToken(ctx context.Context, resumeToken string) DeleteSecretPoller {
-	ret := &startDeletePoller{
+func (c *Client) ResumeDeleteSecretPoller(ctx context.Context, resumeToken string) DeleteSecretPoller {
+	ret := &startDeleteSecretPoller{
+		vaultUrl:   c.vaultUrl,
 		secretName: resumeToken,
 		client:     c.kvClient,
 	}
 	return ret
 }
 
+// GetDeletedSecretOptions contains the optional parameters for the Client.GetDeletedSecret method.
 type GetDeletedSecretOptions struct{}
 
 func (g *GetDeletedSecretOptions) toGenerated() *internal.KeyVaultClientGetDeletedSecretOptions {
 	return &internal.KeyVaultClientGetDeletedSecretOptions{}
 }
 
+// GetDeletedSecretResponse contains the response struct for the Client.GetDeletedSecret operation.
 type GetDeletedSecretResponse struct {
 	SecretBundle
 	// The url of the recovery object, used to identify and recover the deleted secret.
@@ -361,6 +390,7 @@ type GetDeletedSecretResponse struct {
 	RawResponse *http.Response
 }
 
+// Convert the generated response to the publicly exposed version
 func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSecretResponse) GetDeletedSecretResponse {
 	return GetDeletedSecretResponse{
 		RawResponse:        i.RawResponse,
@@ -422,6 +452,7 @@ type SecretProperties struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
+// convert the publicly exposed version to the generated version
 func (s SecretProperties) toGenerated() internal.SecretUpdateParameters {
 	var secAttribs *internal.SecretAttributes
 	if s.SecretAttributes != nil {
@@ -464,6 +495,7 @@ type BackupSecretResponse struct {
 	RawResponse *http.Response
 }
 
+// convert generated response to the publicly exposed version.
 func backupSecretResponseFromGenerated(i internal.KeyVaultClientBackupSecretResponse) BackupSecretResponse {
 	return BackupSecretResponse{
 		RawResponse: i.RawResponse,
@@ -504,6 +536,7 @@ type RestoreSecretBackupResponse struct {
 	RawResponse *http.Response
 }
 
+// converts the generated response to the publicly exposed version.
 func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSecretResponse) RestoreSecretBackupResponse {
 	return RestoreSecretBackupResponse{
 		RawResponse: i.RawResponse,
@@ -556,12 +589,15 @@ type PurgeDeletedSecretResponse struct {
 	RawResponse *http.Response
 }
 
+// Converts the generated response to the publicly exposed version.
 func purgeDeletedSecretResponseFromGenerated(i internal.KeyVaultClientPurgeDeletedSecretResponse) PurgeDeletedSecretResponse {
 	return PurgeDeletedSecretResponse{
 		RawResponse: i.RawResponse,
 	}
 }
 
+// PurgeDeletedSecret deletes the specified secret. The purge deleted secret operation removes the secret permanently, without the possibility of recovery.
+// This operation can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge permission.
 func (c *Client) PurgeDeletedSecret(ctx context.Context, secretName string, options *PurgeDeletedSecretOptions) (PurgeDeletedSecretResponse, error) {
 	if options == nil {
 		options = &PurgeDeletedSecretOptions{}
@@ -602,11 +638,15 @@ func (b *beginRecoverPoller) Done() bool {
 	return b.RawResponse.StatusCode == http.StatusOK
 }
 
-// ResumeToken gets a token for 
+// ResumeToken returns a value representing the poller that can be used to resume
+// the LRO at a later time. ResumeTokens are unique per service operation
 func (b *beginRecoverPoller) ResumeToken() string {
 	return b.secretName
 }
 
+// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
+// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
+// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
 func (b *beginRecoverPoller) Poll(ctx context.Context) (*http.Response, error) {
 	resp, err := b.client.GetSecret(ctx, b.vaultUrl, b.secretName, "", nil)
 	b.lastResponse = resp
@@ -617,6 +657,7 @@ func (b *beginRecoverPoller) Poll(ctx context.Context) (*http.Response, error) {
 	return resp.RawResponse, nil
 }
 
+// FinalResponse returns the final response after the operations has finished
 func (b *beginRecoverPoller) FinalResponse(ctx context.Context) (RecoverDeletedSecretResponse, error) {
 	return recoverDeletedSecretResponseFromGenerated(b.recoverResponse), nil
 }
@@ -636,6 +677,7 @@ func (b *beginRecoverPoller) pollUntilDone(ctx context.Context, t time.Duration)
 	return recoverDeletedSecretResponseFromGenerated(b.recoverResponse), nil
 }
 
+// BeginRecoverDeletedSecretOptions contains the optional parameters for the Client.BeginRecoverDeletedSecret operation
 type BeginRecoverDeletedSecretOptions struct{}
 
 func (b BeginRecoverDeletedSecretOptions) toGenerated() *internal.KeyVaultClientRecoverDeletedSecretOptions {
@@ -722,18 +764,7 @@ func (c *Client) BeginRecoverDeletedSecret(ctx context.Context, secretName strin
 	}, nil
 }
 
-type GetSecretVersionsPropertiesOptions struct{}
-
-type GetSecretVersionsPropertiesResponse struct{}
-
-func (c *Client) GetSecretVersionsProperties(ctx context.Context, options *GetSecretVersionsPropertiesOptions) (GetSecretVersionsPropertiesResponse, error) {
-	if options == nil {
-		options = &GetSecretVersionsPropertiesOptions{}
-	}
-
-	return GetSecretVersionsPropertiesResponse{}, errors.New("not implemented")
-}
-
+// ListDeletedSecrets is the interface for the Client.ListDeletedSecrets operation
 type ListDeletedSecretsPager interface {
 	// PageResponse returns the current ListDeletedSecretPage
 	PageResponse() ListDeletedSecretsPage
@@ -745,10 +776,12 @@ type ListDeletedSecretsPager interface {
 	NextPage(context.Context) bool
 }
 
+// listDeletedSecretsPager is the pager returned by Client.ListDeletedSecrets
 type listDeletedSecretsPager struct {
 	genPager *internal.KeyVaultClientGetDeletedSecretsPager
 }
 
+// PageResponse returns the current page of results
 func (l *listDeletedSecretsPager) PageResponse() ListDeletedSecretsPage {
 	resp := l.genPager.PageResponse()
 
@@ -758,42 +791,48 @@ func (l *listDeletedSecretsPager) PageResponse() ListDeletedSecretsPage {
 	}
 
 	return ListDeletedSecretsPage{
-		RawResponse: resp.RawResponse,
-		NextLink:    resp.NextLink,
-		Value:       values,
+		RawResponse:    resp.RawResponse,
+		NextLink:       resp.NextLink,
+		DeletedSecrets: values,
 	}
 }
 
+// Err returns an error if the last operation resulted in an error.
 func (l *listDeletedSecretsPager) Err() error {
 	return l.genPager.Err()
 }
 
+// NextPage fetches the next page of results.
 func (l *listDeletedSecretsPager) NextPage(ctx context.Context) bool {
 	return l.genPager.NextPage(ctx)
 }
 
+// ListDeletedSecretsPage holds the data for a single page.
 type ListDeletedSecretsPage struct {
+	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+
 	// READ-ONLY; The URL to get the next set of deleted secrets.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of the deleted secrets in the vault along with a link to the next page of deleted secrets
-	Value []*DeletedSecretItem `json:"value,omitempty" azure:"ro"`
+	DeletedSecrets []*DeletedSecretItem `json:"value,omitempty" azure:"ro"`
 }
 
+// ListDeletedSecretsOptions contains the optional parameters for the Client.ListDeletedSecrets operation.
 type ListDeletedSecretsOptions struct {
 	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
-	Maxresults *int32
+	MaxResults *int32
 }
 
 func (l *ListDeletedSecretsOptions) toGenerated() *internal.KeyVaultClientGetDeletedSecretsOptions {
 	return &internal.KeyVaultClientGetDeletedSecretsOptions{
-		Maxresults: l.Maxresults,
+		Maxresults: l.MaxResults,
 	}
 }
 
-type ListDeletedSecretsResponse struct{}
-
+// ListDeletedSecrets lists all versions of the specified secret. The full secret identifier and attributes are provided
+// in the response. No values are returned for the secrets. This operation requires the secrets/list permission.
 func (c *Client) ListDeletedSecrets(options *ListDeletedSecretsOptions) ListDeletedSecretsPager {
 	if options == nil {
 		options = &ListDeletedSecretsOptions{}
@@ -805,7 +844,7 @@ func (c *Client) ListDeletedSecrets(options *ListDeletedSecretsOptions) ListDele
 
 }
 
-// ListSecretVersionsPager is a Pager for SecretVersion results
+// ListSecretVersionsPager is a Pager for Client.ListSecretVersions results
 type ListSecretVersionsPager interface {
 	// PageResponse returns the current ListSecretVersionsPage
 	PageResponse() ListSecretVersionsPage
@@ -896,7 +935,7 @@ func (c *Client) ListSecretVersions(name string, options *ListSecretVersionsOpti
 	}
 }
 
-// ListSecretsPager is a Pager for SecretVersion results
+// ListSecretsPager is a Pager for the Client.ListSecrets operation
 type ListSecretsPager interface {
 	// PageResponse returns the current ListSecretsPage
 	PageResponse() ListSecretsPage
@@ -936,7 +975,7 @@ type ListSecretsOptions struct {
 	MaxResults *int32
 }
 
-// create the generated code version of options
+// converts the public struct to the generated code version.
 func (l *ListSecretsOptions) toGenerated() *internal.KeyVaultClientGetSecretsOptions {
 	if l == nil {
 		return nil
@@ -946,7 +985,7 @@ func (l *ListSecretsOptions) toGenerated() *internal.KeyVaultClientGetSecretsOpt
 	}
 }
 
-// The list secrets result
+// ListSecretsPage contains the current page of results for the Client.ListSecrets operation.
 type ListSecretsPage struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response

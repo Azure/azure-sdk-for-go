@@ -223,8 +223,8 @@ func TestListDeletedSecrets(t *testing.T) {
 	pager := client.ListDeletedSecrets(nil)
 	for pager.NextPage(context.Background()) {
 		page := pager.PageResponse()
-		count += len(page.Value)
-		for _, secret := range page.Value {
+		count += len(page.DeletedSecrets)
+		for _, secret := range page.DeletedSecrets {
 			for deleted := range deletedSecrets {
 				if strings.Contains(*secret.ID, deleted) {
 					deletedSecrets[deleted] = true
@@ -294,7 +294,7 @@ func TestPurgeDeletedSecret(t *testing.T) {
 	pager := client.ListDeletedSecrets(nil)
 	for pager.NextPage(context.Background()) {
 		page := pager.PageResponse()
-		for _, secret := range page.Value {
+		for _, secret := range page.DeletedSecrets {
 			require.NotEqual(t, *secret.ID, secret)
 		}
 	}

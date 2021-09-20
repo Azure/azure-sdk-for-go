@@ -10,9 +10,6 @@ import (
 	"encoding/base64"
 	"encoding/pem"
 	"errors"
-	"io/ioutil"
-	"os"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -56,35 +53,18 @@ type ClientCertificateCredential struct {
 // NewClientCertificateCredential creates an instance of ClientCertificateCredential with the details needed to authenticate against Azure Active Directory with the specified certificate.
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
-// certificatePath: The path to the client certificate used to authenticate the client.  Supported formats are PEM and PFX.
+// certificateData: The bytes of a certificate in PEM or PKCS12 format, including the private key.
 // options: ClientCertificateCredentialOptions that can be used to provide additional configurations for the credential, such as the certificate password.
-func NewClientCertificateCredential(tenantID string, clientID string, certificatePath string, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
+func NewClientCertificateCredential(tenantID string, clientID string, certificateData []byte, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
 	if !validTenantID(tenantID) {
 		return nil, &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: tenantIDValidationErr}
-	}
-	_, err := os.Stat(certificatePath)
-	if err != nil {
-		credErr := &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: "Certificate file not found in path: " + certificatePath}
-		logCredentialError(credErr.credentialType, credErr)
-		return nil, credErr
-	}
-	certData, err := ioutil.ReadFile(certificatePath)
-	if err != nil {
-		credErr := &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: err.Error()}
-		logCredentialError(credErr.credentialType, credErr)
-		return nil, credErr
 	}
 	if options == nil {
 		options = &ClientCertificateCredentialOptions{}
 	}
-	var cert *certContents
-	certificatePath = strings.ToUpper(certificatePath)
-	if strings.HasSuffix(certificatePath, ".PEM") {
-		cert, err = extractFromPEMFile(certData, options.Password, options.SendCertificateChain)
-	} else if strings.HasSuffix(certificatePath, ".PFX") {
-		cert, err = extractFromPFXFile(certData, options.Password, options.SendCertificateChain)
-	} else {
-		err = errors.New("only PEM and PFX files are supported")
+	cert, err := extractFromPEMFile(certificateData, options.Password, options.SendCertificateChain)
+	if err != nil {
+		cert, err = extractFromPFXFile(certificateData, options.Password, options.SendCertificateChain)
 	}
 	if err != nil {
 		credErr := &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: err.Error()}

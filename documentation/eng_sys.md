@@ -5,7 +5,7 @@
 
 ## Build and Test
 
-Our build system runs PR changes against Go versions 1.14 and 1.15 on both Windows and Linux
+Our build system runs PR changes against the latest two versions of Go on both Windows and Linux.
 
 ## Analyze
 
@@ -25,7 +25,7 @@ For more information about the linters run checkout the [golangci website][golan
 
 To run this locally, first install the tool with:
 ```bash
-go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.41.1
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.41.1
 ```
 ```bash
 golangci-lint run -c <path_to_root>/eng/.golangci.yml in <path_to_my_package>

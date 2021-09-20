@@ -78,7 +78,7 @@ func (s *ServiceClient) Create(ctx context.Context, name string) (TableResponseR
 	return TableResponseResponse{}, err
 }
 ```
-The `(s *ServiceClient)` portion is the "receiver". Methods can be defined for either pointer (with a `*`) or receiver (without a `*`) types. Pointer receivers will not copy types on method calls and allows the method to mutate the receiving struct. It is best practice to use pointer receivers wherever possible to limit memory copies.
+The `(s *ServiceClient)` portion is the "receiver". Methods can be defined for either pointer (with a `*`) or receiver (without a `*`) types. Pointer receivers will not copy types on method calls and allows the method to mutate the receiving struct. Client methods should use a pointer receiver.
 
 All methods that perform I/O of any kind, sleep, or perform a significant amount of CPU-bound work must have the first parameter be of type [`context.Context`][golang_context] which allows the customer to carry a deadline, cancellation signal, and other values across API boundaries. The remaining parameters should be parameters specific to that method. The return types for methods should be first a "Response" object and second an `error` object.
 

@@ -116,11 +116,11 @@ func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) 
 
 // GetSecret gets a specified secret from a given key vault. The GET operation is applicable to any secret
 // stored in Azure Key Vault. This operation requires the secrets/get permission
-func (c *Client) GetSecret(ctx context.Context, name string, options *GetSecretOptions) (GetSecretResponse, error) {
+func (c *Client) GetSecret(ctx context.Context, secretName string, options *GetSecretOptions) (GetSecretResponse, error) {
 	if options == nil {
 		options = &GetSecretOptions{}
 	}
-	resp, err := c.kvClient.GetSecret(ctx, c.vaultUrl, name, options.Version, options.toGenerated())
+	resp, err := c.kvClient.GetSecret(ctx, c.vaultUrl, secretName, options.Version, options.toGenerated())
 	return *getSecretResponseFromGenerated(resp), err
 }
 
@@ -182,11 +182,11 @@ func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) 
 
 // SetSecret sets a secret in a specifed key vault. The SET operation adds a secret to the Azure Key Vault. If the named secret
 // already exists, Azure Key Vault creates a new version of that secret. This operation requires the secrets/set permission.
-func (c *Client) SetSecret(ctx context.Context, name string, value string, options *SetSecretOptions) (SetSecretResponse, error) {
+func (c *Client) SetSecret(ctx context.Context, secretName string, value string, options *SetSecretOptions) (SetSecretResponse, error) {
 	if options == nil {
 		options = &SetSecretOptions{}
 	}
-	resp, err := c.kvClient.SetSecret(ctx, c.vaultUrl, name, internal.SecretSetParameters{
+	resp, err := c.kvClient.SetSecret(ctx, c.vaultUrl, secretName, internal.SecretSetParameters{
 		Value:            &value,
 		ContentType:      options.ContentType,
 		SecretAttributes: options.SecretAttributes,
@@ -315,17 +315,20 @@ type DeleteSecretPollerResponse struct {
 	RawResponse *http.Response
 }
 
-func (c *Client) BeginDeleteSecret(ctx context.Context, name string, options *BeginDeleteSecretOptions) (DeleteSecretPollerResponse, error) {
+// BeginDeleteSecret deletes a secret from the keyvault. Delete cannot be applied to an individual version of a secret. This operation
+// requires the secrets/delete permission. This response contains a Poller struct that can be used to Poll for a response, or the
+// response PollUntilDone function can be used to poll until completion.
+func (c *Client) BeginDeleteSecret(ctx context.Context, secretName string, options *BeginDeleteSecretOptions) (DeleteSecretPollerResponse, error) {
 	// TODO: this is kvSecretClient.DeleteSecret and a GetDeletedSecret under the hood for the polling version
 	if options == nil {
 		options = &BeginDeleteSecretOptions{}
 	}
-	resp, err := c.kvClient.DeleteSecret(ctx, c.vaultUrl, name, options.toGenerated())
+	resp, err := c.kvClient.DeleteSecret(ctx, c.vaultUrl, secretName, options.toGenerated())
 	if err != nil {
 		return DeleteSecretPollerResponse{}, err
 	}
 
-	getResp, err := c.kvClient.GetDeletedSecret(ctx, c.vaultUrl, name, nil)
+	getResp, err := c.kvClient.GetDeletedSecret(ctx, c.vaultUrl, secretName, nil)
 	var httpErr azcore.HTTPResponse
 	if errors.As(err, &httpErr) {
 		if httpErr.RawResponse().StatusCode != http.StatusNotFound {
@@ -335,7 +338,7 @@ func (c *Client) BeginDeleteSecret(ctx context.Context, name string, options *Be
 
 	s := &startDeleteSecretPoller{
 		vaultUrl:       c.vaultUrl,
-		secretName:     name,
+		secretName:     secretName,
 		client:         c.kvClient,
 		deleteResponse: resp,
 		lastResponse:   getResp,
@@ -384,11 +387,11 @@ func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSe
 
 // GetDeletedSecrets gets the specified deleted secret. The operation returns the deleted secret along with its attributes.
 // This operation requires the secrets/get permission.
-func (c *Client) GetDeletedSecret(ctx context.Context, name string, options *GetDeletedSecretOptions) (GetDeletedSecretResponse, error) {
+func (c *Client) GetDeletedSecret(ctx context.Context, secretName string, options *GetDeletedSecretOptions) (GetDeletedSecretResponse, error) {
 	if options == nil {
 		options = &GetDeletedSecretOptions{}
 	}
-	resp, err := c.kvClient.GetDeletedSecret(ctx, c.vaultUrl, name, options.toGenerated())
+	resp, err := c.kvClient.GetDeletedSecret(ctx, c.vaultUrl, secretName, options.toGenerated())
 	return getDeletedSecretResponseFromGenerated(resp), err
 }
 
@@ -898,7 +901,7 @@ func listSecretVersionsPageFromGenerated(i internal.KeyVaultClientGetSecretVersi
 // ListSecretVersions lists all versions of the specified secret. The full secret identifer and
 // attributes are provided in the response. No values are returned for the secrets. This operation
 // requires the secrets/list permission.
-func (c *Client) ListSecretVersions(name string, options *ListSecretVersionsOptions) ListSecretVersionsPager {
+func (c *Client) ListSecretVersions(secretName string, options *ListSecretVersionsOptions) ListSecretVersionsPager {
 	if options == nil {
 		options = &ListSecretVersionsOptions{}
 	}
@@ -906,7 +909,7 @@ func (c *Client) ListSecretVersions(name string, options *ListSecretVersionsOpti
 	return &listSecretVersionsPager{
 		genPager: c.kvClient.GetSecretVersions(
 			c.vaultUrl,
-			name,
+			secretName,
 			options.toGenerated(),
 		),
 	}
@@ -983,7 +986,7 @@ func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretsResponse) L
 	return ListSecretsPage{
 		RawResponse: i.RawResponse,
 		NextLink:    i.NextLink,
-		Secrets:       secrets,
+		Secrets:     secrets,
 	}
 }
 

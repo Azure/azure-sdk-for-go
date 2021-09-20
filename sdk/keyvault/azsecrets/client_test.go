@@ -398,7 +398,7 @@ func TestBackupSecret(t *testing.T) {
 
 	respPoller, err := client.BeginDeleteSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
-	_, err = respPoller.PollUntilDone(context.Background(), 100 * time.Millisecond)
+	_, err = respPoller.PollUntilDone(context.Background(), 100*time.Millisecond)
 	require.NoError(t, err)
 
 	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
@@ -413,8 +413,19 @@ func TestBackupSecret(t *testing.T) {
 	require.True(t, errors.As(err, &httpErr))
 	require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
 
-	restoreResp, err := client.RestoreSecretBackup(context.Background(), backupResp.Value, nil)
+	// Poll this operation manually
+	var restoreResp RestoreSecretBackupResponse
+	var i int
+	for i = 0; i < 10; i++ {
+		restoreResp, err = client.RestoreSecretBackup(context.Background(), backupResp.Value, nil)
+		if err == nil {
+			break
+		}
+	}
 	require.NoError(t, err)
-	fmt.Println(backupResp)
-	require.Equal(t, *restoreResp.Value, value)
+	require.Contains(t, *restoreResp.ID, secret)
+
+	// Now the Secret should be Get-able
+	_, err = client.GetSecret(context.Background(), secret, nil)
+	require.NoError(t, err)
 }

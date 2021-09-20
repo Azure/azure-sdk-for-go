@@ -830,7 +830,7 @@ type ListDeletedSecretsOptions struct {
 	MaxResults *int32
 }
 
-// Convert publicly exposed options to the generated version.
+// Convert publicly exposed options to the generated version.a
 func (l *ListDeletedSecretsOptions) toGenerated() *internal.KeyVaultClientGetDeletedSecretsOptions {
 	return &internal.KeyVaultClientGetDeletedSecretsOptions{
 		Maxresults: l.MaxResults,

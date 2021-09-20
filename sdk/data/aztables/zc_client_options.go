@@ -21,7 +21,7 @@ type ClientOptions struct {
 	// PerCallPolicies are policies that execute once per operation
 	PerCallPolicies []policy.Policy
 
-	// PerTryPolicies are options to run on every retry
+	// PerTryPolicies are policies that execute once per retry of an operation
 	PerTryPolicies []policy.Policy
 }
 

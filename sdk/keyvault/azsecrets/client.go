@@ -396,7 +396,10 @@ func (c *Client) GetDeletedSecret(ctx context.Context, secretName string, option
 }
 
 // UpdateSecretPropertiesOptions contains the optional parameters for the Client.UpdateSecretProperties method.
-type UpdateSecretPropertiesOptions struct{}
+type UpdateSecretPropertiesOptions struct{
+	// SecretVersion is the specific version of a Secret to update. If not specified it will update the most recent version.
+	SecretVersion string
+}
 
 func (u UpdateSecretPropertiesOptions) toGenerated() *internal.KeyVaultClientUpdateSecretOptions {
 	return &internal.KeyVaultClientUpdateSecretOptions{}
@@ -452,12 +455,12 @@ func (s SecretProperties) toGenerated() internal.SecretUpdateParameters {
 // UpdateSecretProperties updates the attributes associated with a specified secret in a given key vault. The update
 // operation changes specifeied attributes of an existing stored secret, attributes that are not specified in the
 // request are left unchanged. The value of a secret itself cannot be changed. This operation requires the secrets/set permission.
-func (c *Client) UpdateSecretProperties(ctx context.Context, secretName string, secretVersion string, parameters SecretProperties, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
+func (c *Client) UpdateSecretProperties(ctx context.Context, secretName string, parameters SecretProperties, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
 	if options == nil {
 		options = &UpdateSecretPropertiesOptions{}
 	}
 
-	resp, err := c.kvClient.UpdateSecret(ctx, c.vaultUrl, secretName, secretVersion, parameters.toGenerated(), options.toGenerated())
+	resp, err := c.kvClient.UpdateSecret(ctx, c.vaultUrl, secretName, options.SecretVersion, parameters.toGenerated(), options.toGenerated())
 	if err != nil {
 		return UpdateSecretPropertiesResponse{}, err
 	}

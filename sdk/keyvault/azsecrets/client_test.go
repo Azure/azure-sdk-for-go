@@ -321,10 +321,8 @@ func TestUpdateSecretProperties(t *testing.T) {
 
 	defer cleanUpSecret(t, client, secret)
 
-	resp, err := client.SetSecret(context.Background(), secret, value, nil)
+	_, err = client.SetSecret(context.Background(), secret, value, nil)
 	require.NoError(t, err)
-
-	secretVersion := strings.Split(*resp.ID, "/")
 
 	getResp, err := client.GetSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
@@ -337,7 +335,7 @@ func TestUpdateSecretProperties(t *testing.T) {
 		},
 	}
 
-	_, err = client.UpdateSecretProperties(context.Background(), secret, secretVersion[len(secretVersion)-1], params, nil)
+	_, err = client.UpdateSecretProperties(context.Background(), secret, params, nil)
 	require.NoError(t, err)
 
 	getResp, err = client.GetSecret(context.Background(), secret, nil)

@@ -357,6 +357,7 @@ type GetDeletedSecretResponse struct {
 	// READ-ONLY; The time when the secret is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 
+	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
@@ -370,13 +371,13 @@ func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSe
 	}
 }
 
+// GetDeletedSecrets gets the specified deleted secret. The operation returns the deleted secret along with its attributes.
+// This operation requires the secrets/get permission.
 func (c *Client) GetDeletedSecret(ctx context.Context, name string, options *GetDeletedSecretOptions) (GetDeletedSecretResponse, error) {
 	if options == nil {
 		options = &GetDeletedSecretOptions{}
 	}
-
 	resp, err := c.kvClient.GetDeletedSecret(ctx, c.vaultUrl, name, options.toGenerated())
-
 	return getDeletedSecretResponseFromGenerated(resp), err
 }
 
@@ -387,6 +388,7 @@ func (u UpdateSecretPropertiesOptions) toGenerated() *internal.KeyVaultClientUpd
 	return &internal.KeyVaultClientUpdateSecretOptions{}
 }
 
+// UpdateSecretPropertiesResponse contains the underlying response object for the UpdateSecretProperties method
 type UpdateSecretPropertiesResponse struct {
 	SecretBundle
 	// RawResponse contains the underlying HTTP response.
@@ -432,6 +434,9 @@ func (s SecretProperties) toGenerated() internal.SecretUpdateParameters {
 	}
 }
 
+// UpdateSecretProperties updates the attributes associated with a specified secret in a given key vault. The update
+// operation changes specifeied attributes of an existing stored secret, attributes that are not specified in the
+// request are left unchanged. The value of a secret itself cannot be changed. This operation requires the secrets/set permission.
 func (c *Client) UpdateSecretProperties(ctx context.Context, secretName string, secretVersion string, parameters SecretProperties, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
 	if options == nil {
 		options = &UpdateSecretPropertiesOptions{}
@@ -445,13 +450,14 @@ func (c *Client) UpdateSecretProperties(ctx context.Context, secretName string, 
 	return updateSecretPropertiesResponseFromGenerated(resp), err
 }
 
-// KeyVaultClientBackupSecretOptions contains the optional parameters for the KeyVaultClient.BackupSecret method.
+// BackupSecretOptions contains the optional parameters for the Client.BackupSecret method.
 type BackupSecretOptions struct{}
 
 func (b *BackupSecretOptions) toGenerated() *internal.KeyVaultClientBackupSecretOptions {
 	return &internal.KeyVaultClientBackupSecretOptions{}
 }
 
+// BackupSecretResponse contains the response object for the Client.BackupSecret method.
 type BackupSecretResponse struct {
 	BackupSecretResult
 	// RawResponse contains the underlying HTTP response.
@@ -467,6 +473,8 @@ func backupSecretResponseFromGenerated(i internal.KeyVaultClientBackupSecretResp
 	}
 }
 
+// BackupSecrets backs up the specified secret. Requests that a backup of the specified secret be downloaded to the client.
+// All versions of the secret will be downloaded. This operation requires the secrets/backup permission.
 func (c *Client) BackupSecret(ctx context.Context, secretName string, options *BackupSecretOptions) (BackupSecretResponse, error) {
 	if options == nil {
 		options = &BackupSecretOptions{}
@@ -480,7 +488,7 @@ func (c *Client) BackupSecret(ctx context.Context, secretName string, options *B
 	return backupSecretResponseFromGenerated(resp), nil
 }
 
-// RestoreSecretBackupOptions contains the optional parameters for the KeyVaultClient.RestoreSecret method.
+// RestoreSecretBackupOptions contains the optional parameters for the Client.RestoreSecret method.
 type RestoreSecretBackupOptions struct {
 	// placeholder for future optional parameters
 }
@@ -489,6 +497,7 @@ func (r RestoreSecretBackupOptions) toGenerated() *internal.KeyVaultClientRestor
 	return &internal.KeyVaultClientRestoreSecretOptions{}
 }
 
+// RestoreSecretBackupResponse contains the response object for the Client.RestoreSecretBackup operation.
 type RestoreSecretBackupResponse struct {
 	SecretBundle
 	// RawResponse contains the underlying HTTP response.
@@ -520,6 +529,7 @@ func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSe
 	}
 }
 
+// RestoreSecretBackup restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore permission.
 func (c *Client) RestoreSecretBackup(ctx context.Context, backup []byte, options *RestoreSecretBackupOptions) (RestoreSecretBackupResponse, error) {
 	if options == nil {
 		options = &RestoreSecretBackupOptions{}
@@ -533,13 +543,16 @@ func (c *Client) RestoreSecretBackup(ctx context.Context, backup []byte, options
 	return restoreSecretBackupResponseFromGenerated(resp), nil
 }
 
+// PurgeDeletedSecretOptions is the struct for any future options for Client.PurgeDeletedSecret.
 type PurgeDeletedSecretOptions struct{}
 
 func (p *PurgeDeletedSecretOptions) toGenerated() *internal.KeyVaultClientPurgeDeletedSecretOptions {
 	return &internal.KeyVaultClientPurgeDeletedSecretOptions{}
 }
 
+// PurgeDeletedSecretResponse contains the response from method Client.PurgeDeletedSecret.
 type PurgeDeletedSecretResponse struct {
+	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
@@ -557,6 +570,7 @@ func (c *Client) PurgeDeletedSecret(ctx context.Context, secretName string, opti
 	return purgeDeletedSecretResponseFromGenerated(resp), err
 }
 
+// RecoverDeletedSecretPoller is the interface for the Client.RecoverDeletedSecret operation
 type RecoverDeletedSecretPoller interface {
 	// Done returns true if the LRO has reached a terminal state
 	Done() bool
@@ -583,10 +597,12 @@ type beginRecoverPoller struct {
 	RawResponse     *http.Response
 }
 
+// Done returns true when the polling operation is completed
 func (b *beginRecoverPoller) Done() bool {
 	return b.RawResponse.StatusCode == http.StatusOK
 }
 
+// ResumeToken gets a token for 
 func (b *beginRecoverPoller) ResumeToken() string {
 	return b.secretName
 }

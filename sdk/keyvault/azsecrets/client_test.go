@@ -5,6 +5,7 @@ package azsecrets
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"hash/fnv"
 	"net/http"
@@ -13,6 +14,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
@@ -382,7 +384,7 @@ func TestBackupSecret(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	secret, err := createRandomName(t, "secret")
+	secret, err := createRandomName(t, "secrets")
 	require.NoError(t, err)
 	value, err := createRandomName(t, "value")
 	require.NoError(t, err)
@@ -390,9 +392,9 @@ func TestBackupSecret(t *testing.T) {
 	_, err = client.SetSecret(context.Background(), secret, value, nil)
 	require.NoError(t, err)
 
-	resp, err := client.BackupSecret(context.Background(), secret, nil)
+	backupResp, err := client.BackupSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
-	require.Greater(t, len(resp.Value), 0)
+	require.Greater(t, len(backupResp.Value), 0)
 
 	respPoller, err := client.BeginDeleteSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
@@ -402,8 +404,17 @@ func TestBackupSecret(t *testing.T) {
 	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 
-	restoreResp, err := client.RestoreSecretBackup(context.Background(), resp.Value, nil)
-	require.NoError(t, err)
+	_, err = client.GetSecret(context.Background(), secret, nil)
+	var httpErr azcore.HTTPResponse
+	require.True(t, errors.As(err, &httpErr))
+	require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
 
+	_, err = client.GetDeletedSecret(context.Background(), secret, nil)
+	require.True(t, errors.As(err, &httpErr))
+	require.Equal(t, httpErr.RawResponse().StatusCode, http.StatusNotFound)
+
+	restoreResp, err := client.RestoreSecretBackup(context.Background(), backupResp.Value, nil)
+	require.NoError(t, err)
+	fmt.Println(backupResp)
 	require.Equal(t, *restoreResp.Value, value)
 }

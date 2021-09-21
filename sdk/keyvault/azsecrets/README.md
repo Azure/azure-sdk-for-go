@@ -8,7 +8,7 @@ Azure Key Vault helps securely store and control access to tokens, passwords, ce
 ## Getting started
 
 ### Install packages
-Install [azure-keyvault-secrets][package_link] and [azure-identity][azure_identity_pypi]:
+Install [azure-keyvault-secrets][package_link] and [azure-identity][azure_identity_goget]:
 ```
 go get -u github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets
 ```
@@ -140,7 +140,7 @@ This section contains code snippets covering common tasks:
 * [Asynchronously list Secrets](#asynchronously-list-secrets "Asynchronously list Secrets")
 
 ### Set a Secret
-[set_secret](https://aka.ms/azsdk/python/keyvault-secrets/docs#azure.keyvault.secrets.SecretClient.set_secret) creates new secrets and changes the values of existing secrets. If no secret with the given name exists, `set_secret` creates a new secret with that name and the given value. If the given name is in use, `set_secret` creates a new version of that secret, with the given value.
+[set_secret](https://aka.ms/azsdk/go/keyvault) creates new secrets and changes the values of existing secrets. If no secret with the given name exists, `set_secret` creates a new secret with that name and the given value. If the given name is in use, `set_secret` creates a new version of that secret, with the given value.
 
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -155,7 +155,7 @@ fmt.Printf("Name: %s, Value: %s\n", *resp.ID, *resp.Value)
 ```
 
 ### Retrieve a Secret
-[get_secret](https://aka.ms/azsdk/python/keyvault-secrets/docs#azure.keyvault.secrets.SecretClient.get_secret)
+[get_secret](https://aka.ms/azsdk/go/keyvault)
 retrieves a secret previously stored in the Key Vault.
 
 ```golang
@@ -171,7 +171,7 @@ fmt.Printf("Name: %s, Value: %s\n", *resp.ID, *resp.Value)
 ```
 
 ### Update Secret metadata
-[update_secret_properties](https://aka.ms/azsdk/python/keyvault-secrets/docs#azure.keyvault.secrets.SecretClient.update_secret_properties)
+[update_secret_properties](https://aka.ms/azsdk/go/keyvault)
 updates a secret's metadata. It cannot change the secret's value; use [set_secret](#set-a-secret) to set a secret's
 value.
 
@@ -202,7 +202,7 @@ fmt.Printf("Updated on: %v, Content type: %v, Enabled: %v", *resp.Attributes.Upd
 ```
 
 ### Delete a Secret
-[begin_delete_secret](https://aka.ms/azsdk/python/keyvault-secrets/docs#azure.keyvault.secrets.SecretClient.begin_delete_secret)
+[begin_delete_secret](https://aka.ms/azsdk/go/keyvault)
 requests Key Vault delete a secret, returning a poller which allows you to wait for the deletion to finish. Waiting is
 helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge (permanently delete) the secret as
 soon as possible. When [soft-delete][soft_delete] is disabled, `begin_delete_secret` itself is permanent.
@@ -216,7 +216,7 @@ final, err := resp.PollUntilDone(context.Background(), 1 * time.Second)
 ```
 
 ### List secrets
-[list_properties_of_secrets](https://aka.ms/azsdk/python/keyvault-secrets/docs#azure.keyvault.secrets.SecretClient.list_properties_of_secrets)
+[list_properties_of_secrets](https://aka.ms/azsdk/go/keyvault)
 lists the properties of all of the secrets in the client's vault. This list doesn't include the secret's values.
 
 ```golang
@@ -282,11 +282,12 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact opencode@microsoft.com with any additional questions or comments.
 
 [azure_cloud_shell]: https://shell.azure.com/bash
-[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/core/azure-core#azure-core-library-exceptions
-[azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/identity/azure-identity
-[azure_identity_pypi]: https://pypi.org/project/azure-identity/
+[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/core/azure-core#azure-core-library-exceptions
+[azure_identity]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity/
+[azure_identity_goget]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
+<!-- Will add these links at a later date when the samples are in place
 [default_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.DefaultAzureCredential
 [hello_world_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-secrets/samples/hello_world.py
 [hello_world_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-secrets/samples/hello_world_async.py
@@ -295,13 +296,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [list_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-secrets/samples/list_operations.py
 [list_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-secrets/samples/list_operations_async.py
 [recover_purge_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-secrets/samples/recover_purge_operations.py
-[recover_purge_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-secrets/samples/recover_purge_operations_async.py
+[recover_purge_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-secrets/samples/recover_purge_operations_async.py -->
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
 [rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
-[reference_docs]: https://aka.ms/azsdk/python/keyvault-secrets/docs
-[secret_client_src]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-secrets/azure/keyvault/secrets
-[secret_client_docs]: https://aka.ms/azsdk/python/keyvault-secrets/docs#azure.keyvault.secrets.SecretClient
-[secret_samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-secrets/samples
+[reference_docs]: https://aka.ms/azsdk/go/keyvault
+[secret_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azsecrets/client.go
 [soft_delete]: https://docs.microsoft.com/azure/key-vault/general/soft-delete-overview
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fkeyvault%2Fazure-keyvault-secrets%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fkeyvault%2Fazsecrets%2FREADME.png)

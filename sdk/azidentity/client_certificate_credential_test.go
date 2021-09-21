@@ -250,23 +250,6 @@ func TestClientCertificateCredential_GetTokenCheckPrivateKeyBlocks(t *testing.T)
 	}
 }
 
-func TestClientCertificateCredential_GetTokenCheckCertificateBlocks(t *testing.T) {
-	srv, close := mock.NewTLSServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
-	cred, err := NewClientCertificateCredential(tenantID, clientID, pemCert, &options)
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
-	}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
-	}
-}
-
 func TestClientCertificateCredential_NoData(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()

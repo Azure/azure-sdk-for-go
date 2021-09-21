@@ -22,6 +22,24 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestMain(m *testing.M) {
+	// Initialize
+	if recording.GetRecordMode() == "record" {
+		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
+		err := recording.AddUriSanitizer("https://fakekvurl.vault.azure.net", vaultUrl, nil)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	// Run
+	exitVal := m.Run()
+
+	// cleanup
+
+	os.Exit(exitVal)
+}
+
 var pathToPackage = "sdk/keyvault/azsecrets"
 
 func createRandomName(t *testing.T, prefix string) (string, error) {
@@ -59,12 +77,6 @@ func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
 
 func createClient(t *testing.T) (*Client, error) {
 	vaultUrl := recording.GetEnvVariable(t, "AZURE_KEYVAULT_URL", "https://fakekvurl.vault.azure.net/")
-
-	if recording.GetRecordMode() == "record" {
-		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-		err := recording.AddUriSanitizer("https://fakekvurl.vault.azure.net", vaultUrl, nil)
-		require.NoError(t, err)
-	}
 
 	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient(t)

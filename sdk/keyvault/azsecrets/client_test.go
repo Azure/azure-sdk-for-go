@@ -58,9 +58,12 @@ func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
 }
 
 func createClient(t *testing.T) (*Client, error) {
-	vaultUrl, ok := os.LookupEnv("AZURE_KEYVAULT_URL")
-	if !ok {
-		t.Fatal("Could not find environment variable AZURE_KEYVAULT_URL")
+	vaultUrl := recording.GetEnvVariable(t, "AZURE_KEYVAULT_URL", "https://fakekvurl.vault.azure.net/")
+
+	if recording.GetRecordMode() == "record" {
+		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
+		err := recording.AddUriSanitizer("https://fakekvurl.vault.azure.net", vaultUrl, nil)
+		require.NoError(t, err)
 	}
 
 	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
@@ -169,14 +172,28 @@ func TestListSecrets(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
+	_, err = client.SetSecret(context.Background(), "secret1", "value", nil)
+	require.NoError(t, err)
+	_, err = client.SetSecret(context.Background(), "secret2", "value", nil)
+	require.NoError(t, err)
+	_, err = client.SetSecret(context.Background(), "secret3", "value", nil)
+	require.NoError(t, err)
+	_, err = client.SetSecret(context.Background(), "secret4", "value", nil)
+	require.NoError(t, err)
+
 	count := 0
 	pager := client.ListSecrets(nil)
 	for pager.NextPage(context.Background()) {
 		page := pager.PageResponse()
 		count += len(page.Secrets)
 	}
-	require.Greater(t, count, 0)
+	require.Equal(t, count, 4)
 	require.NoError(t, pager.Err())
+
+	cleanUpSecret(t, client, "secret1")
+	cleanUpSecret(t, client, "secret2")
+	cleanUpSecret(t, client, "secret3")
+	cleanUpSecret(t, client, "secret4")
 }
 
 func TestListDeletedSecrets(t *testing.T) {

@@ -443,6 +443,7 @@ func TestBackupSecret(t *testing.T) {
 		if err == nil {
 			break
 		}
+		time.Sleep(delay())
 	}
 	require.NoError(t, err)
 	require.Contains(t, *restoreResp.ID, secret)

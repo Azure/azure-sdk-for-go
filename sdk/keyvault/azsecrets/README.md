@@ -125,7 +125,7 @@ client, err := azsecrets.NewClient("https://my-key-vault.vault.azure.net/", cred
 
 ## Key concepts
 ### Secret
-A secret consists of a secret value and its associated metadata and management information. This library handles secret values as strings, but Azure Key Vault doesn't store them as such. For more information  about secrets and how Key Vault stores and manages them, see the [Key Vault documentation](https://docs.microsoft.com/azure/key-vault/general/about-keys-secrets-certificates).
+A secret consists of a secret value and its associated metadata and management information. This library handles secret values as strings, but Azure Key Vault doesn't store them as such. For more information about secrets and how Key Vault stores and manages them, see the [Key Vault documentation](https://docs.microsoft.com/azure/key-vault/general/about-keys-secrets-certificates).
 
 [SecretClient][secret_client_docs] can set secret values in the vault, update secret metadata, and delete secrets, as shown in the [examples](#examples "examples") below.
 

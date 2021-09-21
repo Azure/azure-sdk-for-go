@@ -53,18 +53,18 @@ type ClientCertificateCredential struct {
 // NewClientCertificateCredential creates an instance of ClientCertificateCredential with the details needed to authenticate against Azure Active Directory with the specified certificate.
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
-// certificateData: The bytes of a certificate in PEM or PKCS12 format, including the private key.
+// certData: The bytes of a certificate in PEM or PKCS12 format, including the private key.
 // options: ClientCertificateCredentialOptions that can be used to provide additional configurations for the credential, such as the certificate password.
-func NewClientCertificateCredential(tenantID string, clientID string, certificateData []byte, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
+func NewClientCertificateCredential(tenantID string, clientID string, certData []byte, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
 	if !validTenantID(tenantID) {
 		return nil, &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: tenantIDValidationErr}
 	}
 	if options == nil {
 		options = &ClientCertificateCredentialOptions{}
 	}
-	cert, err := extractFromPEMFile(certificateData, options.Password, options.SendCertificateChain)
+	cert, err := extractFromPEMFile(certData, options.Password, options.SendCertificateChain)
 	if err != nil {
-		cert, err = extractFromPFXFile(certificateData, options.Password, options.SendCertificateChain)
+		cert, err = extractFromPFXFile(certData, options.Password, options.SendCertificateChain)
 	}
 	if err != nil {
 		credErr := &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: err.Error()}

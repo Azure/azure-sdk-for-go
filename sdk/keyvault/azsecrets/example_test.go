@@ -67,7 +67,8 @@ func ExampleClient_GetSecret() {
 		panic(err)
 	}
 
-	resp, err := client.GetSecret(context.Background(), "mySecretName", nil)
+	options := &azsecrets.GetSecretOptions{Version: "mySecretVersion"}
+	resp, err := client.GetSecret(context.Background(), "mySecretName", options)
 	var httpErr azcore.HTTPResponse
 	if errors.As(err, &httpErr) {
 		fmt.Println("Operation was not successful")
@@ -122,7 +123,7 @@ func ExampleClient_ListSecrets() {
 		resp := pager.PageResponse()
 		fmt.Printf("Found %d secrets in this page.\n", len(resp.Secrets))
 		for _, v := range resp.Secrets {
-			fmt.Printf("Secret Name: %s\tSecret Tags: %v", *v.ID, v.Tags)
+			fmt.Printf("Secret Name: %s\tSecret Tags: %v\n", *v.ID, v.Tags)
 		}
 	}
 
@@ -133,5 +134,73 @@ func ExampleClient_ListSecrets() {
 		} else {
 			// handle non HTTP Error
 		}
+	}
+}
+
+func ExampleClient_RestoreSecretBackup() {
+	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azsecrets.NewClient(vaultURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := client.BackupSecret(context.Background(), "mySecret", nil)
+	if err != nil {
+		panic(err)
+	}
+
+	restoreResp, err := client.RestoreSecretBackup(context.Background(), resp.Value, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("Restored ID %s\n", *restoreResp.ID)
+}
+
+func ExampleClient_BackupSecret() {
+	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azsecrets.NewClient(vaultURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := client.BackupSecret(context.Background(), "mySecret", nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Backup secret byte value: %v", resp.Value)
+}
+
+func ExampleClient_PurgeDeletedSecret() {
+	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azsecrets.NewClient(vaultURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := client.BeginDeleteSecret(context.Background(), "mySecretName", nil)
+	if err != nil {
+		panic(err)
+	}
+	resp.PollUntilDone(context.Background(), 500 * time.Millisecond)
+
+	_, err = client.PurgeDeletedSecret(context.Background(), "mySecretName", nil)
+	if err != nil {
+		panic(err)
 	}
 }

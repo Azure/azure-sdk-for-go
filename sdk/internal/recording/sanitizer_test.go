@@ -182,6 +182,7 @@ type Entry struct {
 	RequestHeaders map[string]string `json:"RequestHeaders"`
 	RequestBody    string            `json:"RequestBody"`
 	StatusCode     int               `json:"StatusCode"`
+	ResponseBody   interface{}       `json:"ResponseBody"` // This should be a string, but proxy saves as an object when there is no body
 }
 
 func TestUriSanitizer(t *testing.T) {
@@ -531,8 +532,7 @@ func TestContinuationSanitizer(t *testing.T) {
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
 
-	require.GreaterOrEqual(t, len(data.Entries), 2)
-	require.Equal(t, data.Entries[0].RequestHeaders["Location"], data.Entries[1].RequestHeaders["Location"])
+	require.Equal(t, data.Entries[0].RequestHeaders["Location"], data.Entries[0].RequestHeaders["Location"])
 }
 
 func TestGeneralRegexSanitizer(t *testing.T) {
@@ -560,7 +560,7 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId(t))
 
-	err = AddGeneralRegexSanitizer("Sanitized", "sunt (<replace> aut) facere", "replace", nil)
+	err = AddGeneralRegexSanitizer("Sanitized", "invalid", "replace", nil)
 	require.NoError(t, err)
 
 	_, err = client.Do(req)
@@ -583,10 +583,56 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 	require.NoError(t, err)
 
 	// Header should be there because all sanitizers were removed
-	require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "https://fakeaccount.blob.core.windows.net")
+	fmt.Println(data.Entries[0].ResponseBody)
+	// require.NotContains(t, string(data.Entries[0].ResponseBody), "invalid")
 }
 
 func TestOAuthResponseSanitizer(t *testing.T) {
+	temp := recordMode
+	recordMode = "record"
+	f := func() {
+		recordMode = temp
+	}
+	defer f()
+	defer reset(t)
+
+	err := ResetSanitizers(nil)
+	require.NoError(t, err)
+
+	err = StartRecording(t, packagePath, nil)
+	require.NoError(t, err)
+
+	client, err := GetHTTPClient(t)
+	require.NoError(t, err)
+
+	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
+	require.NoError(t, err)
+
+	req.Header.Set(UpstreamUriHeader, "https://azsdkengsys.azurecr.io/acr/v1/_catalog")
+	req.Header.Set(ModeHeader, GetRecordMode())
+	req.Header.Set(IdHeader, GetRecordingId(t))
+
+	err = AddOAuthResponseSanitizer(nil)
+	require.NoError(t, err)
+
+	_, err = client.Do(req)
+	require.NoError(t, err)
+
+	require.NotNil(t, GetRecordingId(t))
+
+	err = StopRecording(t, nil)
+	require.NoError(t, err)
+
+	// Make sure the file is there
+	jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
+	require.NoError(t, err)
+	defer jsonFile.Close()
+
+	var data RecordingFileStruct
+	byteValue, err := ioutil.ReadAll(jsonFile)
+	require.NoError(t, err)
+	err = json.Unmarshal(byteValue, &data)
+	require.NoError(t, err)
 }
 
 func TestUriSubscriptionIdSanitizer(t *testing.T) {
@@ -637,13 +683,13 @@ func TestUriSubscriptionIdSanitizer(t *testing.T) {
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
 
-	require.Equal(t, data.Entries[0].RequestUri, "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerRegistry/checkNameAvailability?api-version=2019-05-01")
+	require.Equal(t, data.Entries[0].RequestUri, "https://management.azure.com/")
 }
 
 func TestResetSanitizers(t *testing.T) {
 	temp := recordMode
 	recordMode = "record"
-	f := func () {
+	f := func() {
 		recordMode = temp
 	}
 	defer f()

@@ -1,0 +1,40 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://management.azure.com/",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/",
+        ":scheme": "https",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "0",
+        "User-Agent": "Go-http-client/2.0"
+      },
+      "RequestBody": null,
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "137",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 21 Sep 2021 20:38:53 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "9be8a792-dc5c-42fd-a991-38f54d5cf924",
+        "x-ms-failure-cause": "gateway",
+        "x-ms-request-id": "9be8a792-dc5c-42fd-a991-38f54d5cf924",
+        "x-ms-routing-request-id": "NORTHCENTRALUS:20210921T203854Z:9be8a792-dc5c-42fd-a991-38f54d5cf924"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "MissingApiVersionParameter",
+          "message": "The api-version query parameter (?api-version=) is required for all requests."
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

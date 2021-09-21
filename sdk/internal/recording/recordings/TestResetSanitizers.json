@@ -10,6 +10,7 @@
         ":scheme": "https",
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
+        "fakestoragelocation": "https://fakeaccount.blob.core.windows.net",
         "User-Agent": "Go-http-client/2.0"
       },
       "RequestBody": null,
@@ -24,17 +25,17 @@
         ],
         "Cache-Control": "no-cache",
         "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "68ca6ca8fdbee86a-ATL",
+        "CF-RAY": "6926198eeefa1039-ATL",
         "Connection": "keep-alive",
         "Content-Length": "2",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 10 Sep 2021 17:37:28 GMT",
+        "Date": "Tue, 21 Sep 2021 20:38:54 GMT",
         "ETag": "W/\u00222-vyGp6PvFo4RvsFtPoIWeCReyIC8\u0022",
         "Expect-CT": "max-age=604800, report-uri=\u0022https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\u0022",
         "Expires": "-1",
         "NEL": "{\u0022success_fraction\u0022:0,\u0022report_to\u0022:\u0022cf-nel\u0022,\u0022max_age\u0022:604800}",
         "Pragma": "no-cache",
-        "Report-To": "{\u0022endpoints\u0022:[{\u0022url\u0022:\u0022https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=I1PyZppkS5lPBQuNhqEnQKLvPlb8gyTD23fz%2B1bCJ0XWuFnp5Jc4qZWNCpoMCeeHhcVb2QoeSntn0JlTKXFww9keQf3pEwB9hhSTaZxA5mKB8wNOY2UmW6jNrkMf9brWfLz7zThDmXGSbYfAClg0\u0022}],\u0022group\u0022:\u0022cf-nel\u0022,\u0022max_age\u0022:604800}",
+        "Report-To": "{\u0022endpoints\u0022:[{\u0022url\u0022:\u0022https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=OpRUM4352N0llgA8QVw1FwYpl9oYZeP%2FGC8PnHXpdDJr2BKdqGpm%2FPzS36fUbO3CEPNIVaInl7nVUmc2buH2a85ZNKKQv7y6EqXAbv7tRjJMpfepUOZg1jnjh5WG2fNwKNzC6wpv4zT5Dd%2FCJ1nZ\u0022}],\u0022group\u0022:\u0022cf-nel\u0022,\u0022max_age\u0022:604800}",
         "Server": "cloudflare",
         "Vary": [
           "Origin",
@@ -46,7 +47,7 @@
         "X-Powered-By": "Express",
         "x-ratelimit-limit": "1000",
         "x-ratelimit-remaining": "997",
-        "x-ratelimit-reset": "1631295458"
+        "x-ratelimit-reset": "1632256779"
       },
       "ResponseBody": {}
     }

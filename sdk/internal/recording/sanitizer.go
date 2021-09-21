@@ -174,9 +174,9 @@ func AddBodyRegexSanitizer(value, regex, groupForReplace string, options *Record
 	return handleProxyResponse(client.Do(req))
 }
 
-// value: the substitution value
-// regex: the regex to match on request/response entries
-// groupForReplace: If your regex has multiple groups, the named group which to replace. If your regex does not, make this an empty string
+// key: the name of the header whos value will be replaced from response -> next request
+// method: the method by which the value of the targeted key will be replaced. Defaults to GUID replacement
+// resetAfterFirt: Do we need multiple pairs replaced? Or do we want to replace each value with the same value.
 func AddContinuationSanitizer(key, method string, resetAfterFirst bool, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
@@ -327,7 +327,7 @@ func AddUriSubscriptionIdSanitizer(value string, options *RecordingOptions) erro
 	if err != nil {
 		return err
 	}
-	req.Header.Set("x-abstraction-identifier", "ReplaceRequestSubscriptionId")
+	req.Header.Set("x-abstraction-identifier", "UriSubscriptionIdSanitizer")
 	if value != "" {
 		bodyContent := map[string]string{
 			"value": value,

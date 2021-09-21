@@ -204,3 +204,23 @@ func ExampleClient_PurgeDeletedSecret() {
 		panic(err)
 	}
 }
+
+
+func ExampleClient_BeginRecoverDeletedSecret() {
+	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	client, err := azsecrets.NewClient(vaultURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	resp, err := client.BeginRecoverDeletedSecret(context.Background(), "myDeletedSecret", nil)
+	if err != nil {
+		panic(err)
+	}
+	resp.PollUntilDone(context.Background(), 500 * time.Millisecond)
+}

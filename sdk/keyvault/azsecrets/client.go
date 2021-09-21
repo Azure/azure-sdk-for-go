@@ -130,7 +130,7 @@ type SetSecretOptions struct {
 	ContentType *string `json:"contentType,omitempty"`
 
 	// The secret management attributes.
-	SecretAttributes *internal.SecretAttributes `json:"attributes,omitempty"`
+	SecretAttributes *SecretAttributes `json:"attributes,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
@@ -149,7 +149,7 @@ type SetSecretResponse struct {
 	RawResponse *http.Response
 
 	// The secret management attributes.
-	Attributes *internal.SecretAttributes `json:"attributes,omitempty"`
+	Attributes *SecretAttributes `json:"attributes,omitempty"`
 
 	// The secret id.
 	ID *string `json:"id,omitempty"`
@@ -171,7 +171,7 @@ type SetSecretResponse struct {
 func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) SetSecretResponse {
 	return SetSecretResponse{
 		RawResponse: i.RawResponse,
-		Attributes:  i.Attributes,
+		Attributes:  secretAttributesFromGenerated(i.Attributes),
 		ID:          i.ID,
 		Tags:        i.Tags,
 		Value:       i.Value,
@@ -180,16 +180,20 @@ func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) 
 	}
 }
 
-// SetSecret sets a secret in a specifed key vault. The SET operation adds a secret to the Azure Key Vault. If the named secret
+// SetSecret sets a secret in a specifed key vault. The set operation adds a secret to the Azure Key Vault, if the named secret
 // already exists, Azure Key Vault creates a new version of that secret. This operation requires the secrets/set permission.
 func (c *Client) SetSecret(ctx context.Context, secretName string, value string, options *SetSecretOptions) (SetSecretResponse, error) {
 	if options == nil {
 		options = &SetSecretOptions{}
 	}
+	var secretAttribs internal.SecretAttributes
+	if options.SecretAttributes != nil {
+		secretAttribs = *options.SecretAttributes.toGenerated()
+	}
 	resp, err := c.kvClient.SetSecret(ctx, c.vaultUrl, secretName, internal.SecretSetParameters{
 		Value:            &value,
 		ContentType:      options.ContentType,
-		SecretAttributes: options.SecretAttributes,
+		SecretAttributes: &secretAttribs,
 		Tags:             options.Tags,
 	}, options.toGenerated())
 	return setSecretResponseFromGenerated(resp), err
@@ -396,7 +400,7 @@ func (c *Client) GetDeletedSecret(ctx context.Context, secretName string, option
 }
 
 // UpdateSecretPropertiesOptions contains the optional parameters for the Client.UpdateSecretProperties method.
-type UpdateSecretPropertiesOptions struct{
+type UpdateSecretPropertiesOptions struct {
 	// SecretVersion is the specific version of a Secret to update. If not specified it will update the most recent version.
 	SecretVersion string
 }
@@ -453,7 +457,7 @@ func (s SecretProperties) toGenerated() internal.SecretUpdateParameters {
 }
 
 // UpdateSecretProperties updates the attributes associated with a specified secret in a given key vault. The update
-// operation changes specifeied attributes of an existing stored secret, attributes that are not specified in the
+// operation changes specified attributes of an existing stored secret, attributes that are not specified in the
 // request are left unchanged. The value of a secret itself cannot be changed. This operation requires the secrets/set permission.
 func (c *Client) UpdateSecretProperties(ctx context.Context, secretName string, parameters SecretProperties, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
 	if options == nil {
@@ -993,8 +997,8 @@ func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretsResponse) L
 	}
 }
 
-// List secrets in a specified key vault. The ListSecrets operation is applicable to the entire vault.
-// However, only the base secret identifier and its attributes are provided in the response. Individual
+// ListSecrets list all secrets in a specified key vault. The ListSecrets operation is applicable to the entire vault,
+// however, only the base secret identifier and its attributes are provided in the response. Individual
 // secret versions are not listed in the response. This operation requires the secrets/list permission.
 func (c *Client) ListSecrets(options *ListSecretsOptions) ListSecretsPager {
 	if options == nil {

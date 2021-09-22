@@ -14,25 +14,23 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the billing client provides access to billing resources for Azure Web-Direct subscriptions.
-// Other subscription types which were not purchased directly through the Azure web portal are not supported through
-// this preview API.
+// OperationsClient is the payment management client provides access to payment resources for Azure.
 type OperationsClient struct {
 	BaseClient
 }
 
 // NewOperationsClient creates an instance of the OperationsClient client.
-func NewOperationsClient(subscriptionID string) OperationsClient {
-	return NewOperationsClientWithBaseURI(DefaultBaseURI, subscriptionID)
+func NewOperationsClient() OperationsClient {
+	return NewOperationsClientWithBaseURI(DefaultBaseURI)
 }
 
 // NewOperationsClientWithBaseURI creates an instance of the OperationsClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
-	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
+func NewOperationsClientWithBaseURI(baseURI string) OperationsClient {
+	return OperationsClient{NewWithBaseURI(baseURI)}
 }
 
-// List lists all of the available billing REST API operations.
+// List lists the available billing REST API operations.
 func (client OperationsClient) List(ctx context.Context) (result OperationListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OperationsClient.List")
@@ -73,7 +71,7 @@ func (client OperationsClient) List(ctx context.Context) (result OperationListRe
 
 // ListPreparer prepares the List request.
 func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2017-02-27-preview"
+	const APIVersion = "2021-10-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

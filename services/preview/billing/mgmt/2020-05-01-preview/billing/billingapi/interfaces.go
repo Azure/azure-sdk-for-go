@@ -223,6 +223,16 @@ type AgreementsClientAPI interface {
 
 var _ AgreementsClientAPI = (*billing.AgreementsClient)(nil)
 
+// ReservationsClientAPI contains the set of methods on the ReservationsClient type.
+type ReservationsClientAPI interface {
+	ListByBillingAccount(ctx context.Context, billingAccountName string, filter string, orderby string, refreshSummary string, selectedState string) (result billing.ReservationsListResultPage, err error)
+	ListByBillingAccountComplete(ctx context.Context, billingAccountName string, filter string, orderby string, refreshSummary string, selectedState string) (result billing.ReservationsListResultIterator, err error)
+	ListByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string, filter string, orderby string, refreshSummary string, selectedState string) (result billing.ReservationsListResultPage, err error)
+	ListByBillingProfileComplete(ctx context.Context, billingAccountName string, billingProfileName string, filter string, orderby string, refreshSummary string, selectedState string) (result billing.ReservationsListResultIterator, err error)
+}
+
+var _ ReservationsClientAPI = (*billing.ReservationsClient)(nil)
+
 // EnrollmentAccountsClientAPI contains the set of methods on the EnrollmentAccountsClient type.
 type EnrollmentAccountsClientAPI interface {
 	Get(ctx context.Context, name string) (result billing.EnrollmentAccountSummary, err error)

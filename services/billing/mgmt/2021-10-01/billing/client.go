@@ -1,7 +1,6 @@
-// Package billing implements the Azure ARM Billing service API version 2017-02-27-preview.
+// Package billing implements the Azure ARM Billing service API version 2021-10-01.
 //
-// Billing client provides access to billing resources for Azure Web-Direct subscriptions. Other subscription types
-// which were not purchased directly through the Azure web portal are not supported through this preview API.
+// Payment management client provides access to payment resources for Azure.
 package billing
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -22,21 +21,19 @@ const (
 // BaseClient is the base client for Billing.
 type BaseClient struct {
 	autorest.Client
-	BaseURI        string
-	SubscriptionID string
+	BaseURI string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
+func New() BaseClient {
+	return NewWithBaseURI(DefaultBaseURI)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client using a custom endpoint.  Use this when interacting with
 // an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
+func NewWithBaseURI(baseURI string) BaseClient {
 	return BaseClient{
-		Client:         autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:        baseURI,
-		SubscriptionID: subscriptionID,
+		Client:  autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI: baseURI,
 	}
 }

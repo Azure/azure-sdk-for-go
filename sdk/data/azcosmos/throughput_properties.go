@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 const (
@@ -180,15 +180,15 @@ func (tp *ThroughputProperties) AutoscaleMaxThroughput() (int, error) {
 	return tp.offer.AutoScale.MaxThroughput, nil
 }
 
-func (tp *ThroughputProperties) addHeadersToRequest(req *azcore.Request) {
+func (tp *ThroughputProperties) addHeadersToRequest(req *policy.Request) {
 	if tp == nil {
 		return
 	}
 
 	if tp.offer.Throughput != nil {
-		req.Header.Add(cosmosHeaderOfferThroughput, strconv.Itoa(*tp.offer.Throughput))
+		req.Raw().Header.Add(cosmosHeaderOfferThroughput, strconv.Itoa(*tp.offer.Throughput))
 	} else {
-		req.Header.Add(cosmosHeaderOfferAutoscale, tp.offer.AutoScale.ToJsonString())
+		req.Raw().Header.Add(cosmosHeaderOfferAutoscale, tp.offer.AutoScale.ToJsonString())
 	}
 }
 

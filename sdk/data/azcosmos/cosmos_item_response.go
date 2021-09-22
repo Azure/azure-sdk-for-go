@@ -3,7 +3,11 @@
 
 package azcosmos
 
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+import (
+	"net/http"
+
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+)
 
 // CosmosItemResponse represents the response from an item request.
 type CosmosItemResponse struct {
@@ -17,10 +21,11 @@ func (c *CosmosItemResponse) SessionToken() string {
 	return c.RawResponse.Header.Get(cosmosHeaderSessionToken)
 }
 
-func newCosmosItemResponse(resp *azcore.Response) (CosmosItemResponse, error) {
+func newCosmosItemResponse(resp *http.Response) (CosmosItemResponse, error) {
 	response := CosmosItemResponse{}
-	response.RawResponse = resp.Response
-	body, err := resp.Payload()
+	defer resp.Body.Close()
+	response.RawResponse = resp
+	body, err := azruntime.Payload(resp)
 	if err != nil {
 		return response, err
 	}

@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // cosmosError is used as base error for any error response from the Cosmos service.
@@ -33,14 +33,14 @@ func (e *cosmosError) RawResponse() *http.Response {
 	return e.rawResponse
 }
 
-func newCosmosError(response *azcore.Response) error {
-	bytesRead, err := response.Payload()
+func newCosmosError(response *http.Response) error {
+	bytesRead, err := azruntime.Payload(response)
 	if err != nil {
 		return err
 	}
 
 	cError := cosmosError{
-		rawResponse: response.Response,
+		rawResponse: response,
 		body:        string(bytesRead),
 	}
 

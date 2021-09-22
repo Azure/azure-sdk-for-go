@@ -3,8 +3,6 @@
 
 package azcosmos
 
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
-
 // CosmosDatabaseRequestOptions includes options for operations against a database.
 type CosmosDatabaseRequestOptions struct {
 	IfMatchEtag     string
@@ -18,10 +16,10 @@ func (options *CosmosDatabaseRequestOptions) toHeaders() *map[string]string {
 
 	headers := make(map[string]string)
 	if options.IfMatchEtag != "" {
-		headers[azcore.HeaderIfMatch] = options.IfMatchEtag
+		headers[headerIfMatch] = options.IfMatchEtag
 	}
 	if options.IfNoneMatchEtag != "" {
-		headers[azcore.HeaderIfNoneMatch] = options.IfNoneMatchEtag
+		headers[headerIfNoneMatch] = options.IfNoneMatchEtag
 	}
 	return &headers
 }

@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -19,12 +19,12 @@ func TestCosmosErrorOnEmptyResponse(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(404))
 
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	pl := azcore.NewPipeline(srv)
+	pl := azruntime.NewPipeline(srv)
 	resp, _ := pl.Do(req)
 
 	cError := newCosmosError(resp)
@@ -40,12 +40,12 @@ func TestCosmosErrorOnNonJsonBody(t *testing.T) {
 		mock.WithBody([]byte("This is not JSON")),
 		mock.WithStatusCode(404))
 
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	pl := azcore.NewPipeline(srv)
+	pl := azruntime.NewPipeline(srv)
 	resp, _ := pl.Do(req)
 
 	cError := newCosmosError(resp)
@@ -70,12 +70,12 @@ func TestCosmosErrorOnJsonBody(t *testing.T) {
 		mock.WithBody(jsonString),
 		mock.WithStatusCode(404))
 
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	pl := azcore.NewPipeline(srv)
+	pl := azruntime.NewPipeline(srv)
 	resp, _ := pl.Do(req)
 
 	cError := newCosmosError(resp)

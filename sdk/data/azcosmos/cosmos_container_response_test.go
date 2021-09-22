@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -50,12 +50,12 @@ func TestContainerResponseParsing(t *testing.T) {
 		mock.WithHeader(cosmosHeaderActivityId, "someActivityId"),
 		mock.WithHeader(cosmosHeaderRequestCharge, "13.42"))
 
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	pl := azcore.NewPipeline(srv)
+	pl := azruntime.NewPipeline(srv)
 	resp, _ := pl.Do(req)
 	parsedResponse, err := newCosmosContainerResponse(resp, container)
 	if err != nil {

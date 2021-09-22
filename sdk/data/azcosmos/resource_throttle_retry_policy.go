@@ -7,8 +7,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	sdkruntime "github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 const (
@@ -34,19 +35,19 @@ func newResourceThrottleRetryPolicy(o *CosmosClientOptions) *resourceThrottleRet
 		MaxRetryCount: o.RateLimitedRetry.MaxRetryAttempts}
 }
 
-func (p *resourceThrottleRetryPolicy) Do(req *azcore.Request) (*azcore.Response, error) {
+func (p *resourceThrottleRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 	// Policy disabled
 	if p.MaxRetryCount == 0 {
 		return req.Next()
 	}
 
-	var resp *azcore.Response
+	var resp *http.Response
 	var err error
 	var cumulativeWaitTime time.Duration
 	for attempts := 0; attempts < p.MaxRetryCount; attempts++ {
 		err = req.RewindBody()
 		if err != nil {
-			return resp, newFrameError(err)
+			return resp, err
 		}
 
 		resp, err = req.Next()
@@ -63,14 +64,14 @@ func (p *resourceThrottleRetryPolicy) Do(req *azcore.Request) (*azcore.Response,
 		}
 
 		// drain before retrying so nothing is leaked
-		resp.Drain()
+		azruntime.Drain(resp)
 
 		select {
 		case <-time.After(retryAfterDuration):
 			// retry
-		case <-req.Context().Done():
-			err = req.Context().Err()
-			azcore.Log().Writef(azcore.LogRetryPolicy, "ResourceThrottleRetryPolicy abort due to %v", err)
+		case <-req.Raw().Context().Done():
+			err = req.Raw().Context().Err()
+			log.Writef(log.RetryPolicy, "ResourceThrottleRetryPolicy abort due to %v", err)
 			return resp, err
 		}
 	}
@@ -89,9 +90,4 @@ func parseRetryAfter(retryAfter string) time.Duration {
 	}
 
 	return retryAfterDuration
-}
-
-func newFrameError(inner error) error {
-	// skip ourselves
-	return sdkruntime.NewFrameError(inner, false, 1, azcore.StackFrameCount)
 }

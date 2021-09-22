@@ -9,7 +9,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -29,7 +30,7 @@ func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 		mock.WithBody(jsonString),
 		mock.WithStatusCode(404))
 
-	pl := azcore.NewPipeline(srv)
+	pl := azruntime.NewPipeline(srv)
 	connection := &cosmosClientConnection{endpoint: srv.URL(), Pipeline: pl}
 	operationContext := cosmosOperationContext{
 		resourceType:    resourceTypeDatabase,
@@ -56,7 +57,7 @@ func TestEnsureErrorIsNotGeneratedOnResponse(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 
-	pl := azcore.NewPipeline(srv)
+	pl := azruntime.NewPipeline(srv)
 	connection := &cosmosClientConnection{endpoint: srv.URL(), Pipeline: pl}
 	operationContext := cosmosOperationContext{
 		resourceType:    resourceTypeDatabase,
@@ -74,15 +75,15 @@ func TestRequestEnricherIsCalled(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 
-	pl := azcore.NewPipeline(srv)
+	pl := azruntime.NewPipeline(srv)
 	connection := &cosmosClientConnection{endpoint: srv.URL(), Pipeline: pl}
 	operationContext := cosmosOperationContext{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
 	}
 
-	addHeader := func(r *azcore.Request) {
-		r.Header.Add("my-header", "12345")
+	addHeader := func(r *policy.Request) {
+		r.Raw().Header.Add("my-header", "12345")
 	}
 
 	req, err := connection.createRequest("/", context.Background(), http.MethodGet, operationContext, &CosmosContainerRequestOptions{}, addHeader)
@@ -90,7 +91,7 @@ func TestRequestEnricherIsCalled(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if req.Header.Get("my-header") != "12345" {
-		t.Errorf("Expected %v, but got %v", "12345", req.Header.Get("my-header"))
+	if req.Raw().Header.Get("my-header") != "12345" {
+		t.Errorf("Expected %v, but got %v", "12345", req.Raw().Header.Get("my-header"))
 	}
 }

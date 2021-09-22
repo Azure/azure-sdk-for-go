@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -57,8 +57,8 @@ func TestRetryOn429WithCustomCount(t *testing.T) {
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusTooManyRequests))
 
-	pl := azcore.NewPipeline(srv, retryPolicy)
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	pl := azruntime.NewPipeline(srv, retryPolicy)
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -87,8 +87,8 @@ func TestRetryOn429WithCustomTime(t *testing.T) {
 	// Should wait only 1 second and when the retry comes, it should stop
 	srv.SetResponse(mock.WithStatusCode(http.StatusTooManyRequests), mock.WithHeader(cosmosHeaderRetryAfter, "1000"))
 
-	pl := azcore.NewPipeline(srv, retryPolicy)
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	pl := azruntime.NewPipeline(srv, retryPolicy)
+	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

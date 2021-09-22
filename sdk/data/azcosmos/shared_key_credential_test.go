@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -62,14 +62,14 @@ func Test_buildCanonicalizedAuthHeaderFromRequest(t *testing.T) {
 	signature := cred.computeHMACSHA256(stringToSign)
 	expected := url.QueryEscape(fmt.Sprintf("type=%s&ver=%s&sig=%s", tokenType, version, signature))
 
-	req, _ := azcore.NewRequest(context.TODO(), http.MethodGet, "http://localhost")
+	req, _ := azruntime.NewRequest(context.TODO(), http.MethodGet, "http://localhost")
 	operationContext := cosmosOperationContext{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "dbs/testdb",
 	}
 
-	req.Request.Header.Set(azcore.HeaderXmsDate, xmsDate)
-	req.Request.Header.Set(azcore.HeaderXmsVersion, "2020-11-05")
+	req.Raw().Header.Set(headerXmsDate, xmsDate)
+	req.Raw().Header.Set(headerXmsVersion, "2020-11-05")
 	req.SetOperationValue(operationContext)
 	authHeader, _ := cred.buildCanonicalizedAuthHeaderFromRequest(req)
 
@@ -94,15 +94,15 @@ func Test_buildCanonicalizedAuthHeaderFromRequestWithRid(t *testing.T) {
 	signature := cred.computeHMACSHA256(stringToSign)
 	expected := url.QueryEscape(fmt.Sprintf("type=%s&ver=%s&sig=%s", tokenType, version, signature))
 
-	req, _ := azcore.NewRequest(context.TODO(), http.MethodGet, "http://localhost")
+	req, _ := azruntime.NewRequest(context.TODO(), http.MethodGet, "http://localhost")
 	operationContext := cosmosOperationContext{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "dbs/Rid",
 		isRidBased:      true,
 	}
 
-	req.Request.Header.Set(azcore.HeaderXmsDate, xmsDate)
-	req.Request.Header.Set(azcore.HeaderXmsVersion, "2020-11-05")
+	req.Raw().Header.Set(headerXmsDate, xmsDate)
+	req.Raw().Header.Set(headerXmsVersion, "2020-11-05")
 	req.SetOperationValue(operationContext)
 	authHeader, _ := cred.buildCanonicalizedAuthHeaderFromRequest(req)
 

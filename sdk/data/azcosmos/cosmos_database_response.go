@@ -3,7 +3,11 @@
 
 package azcosmos
 
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+import (
+	"net/http"
+
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+)
 
 // CosmosDatabaseResponse represents the response from a database request.
 type CosmosDatabaseResponse struct {
@@ -12,11 +16,11 @@ type CosmosDatabaseResponse struct {
 	CosmosResponse
 }
 
-func newCosmosDatabaseResponse(resp *azcore.Response, database *CosmosDatabase) (CosmosDatabaseResponse, error) {
+func newCosmosDatabaseResponse(resp *http.Response, database *CosmosDatabase) (CosmosDatabaseResponse, error) {
 	response := CosmosDatabaseResponse{}
-	response.RawResponse = resp.Response
+	response.RawResponse = resp
 	properties := &CosmosDatabaseProperties{}
-	err := resp.UnmarshalAsJSON(properties)
+	err := azruntime.UnmarshalAsJSON(resp, properties)
 	if err != nil {
 		return response, err
 	}

@@ -5,9 +5,10 @@ package azcosmos
 
 import (
 	"fmt"
+	"net/http"
 	"strconv"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ThroughputResponse represents the response from a throughput request.
@@ -49,11 +50,11 @@ func (r *ThroughputResponse) MinThroughput() *int {
 	return &minThroughputAsInt
 }
 
-func newThroughputResponse(resp *azcore.Response, extraRequestCharge *float32) (ThroughputResponse, error) {
+func newThroughputResponse(resp *http.Response, extraRequestCharge *float32) (ThroughputResponse, error) {
 	response := ThroughputResponse{}
-	response.RawResponse = resp.Response
+	response.RawResponse = resp
 	properties := &ThroughputProperties{}
-	err := resp.UnmarshalAsJSON(properties)
+	err := azruntime.UnmarshalAsJSON(resp, properties)
 	if err != nil {
 		return response, err
 	}

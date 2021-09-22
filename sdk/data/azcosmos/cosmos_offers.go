@@ -7,6 +7,8 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 type cosmosOffers struct {
@@ -44,12 +46,12 @@ func (c cosmosOffers) ReadThroughputIfExists(
 	}
 
 	var theOffers cosmosOffersResponse
-	err = azResponse.UnmarshalAsJSON(&theOffers)
+	err = azruntime.UnmarshalAsJSON(azResponse, &theOffers)
 	if err != nil {
 		return ThroughputResponse{}, err
 	}
 
-	queryRequestCharge := (&CosmosResponse{RawResponse: azResponse.Response}).RequestCharge()
+	queryRequestCharge := (&CosmosResponse{RawResponse: azResponse}).RequestCharge()
 	if len(theOffers.Offers) == 0 {
 		return ThroughputResponse{}, newCosmosErrorWithStatusCode(http.StatusNotFound, &queryRequestCharge)
 	}

@@ -4,30 +4,27 @@
 package azcosmos
 
 import (
-	"fmt"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
-
-const telemetryInfo = "azsdk-go-azcosmos/" + serviceLibVersion
 
 // CosmosClientOptions defines the options for the Cosmos client.
 type CosmosClientOptions struct {
 	// HTTPClient sets the transport for making HTTP requests.
-	HTTPClient azcore.Transport
+	HTTPClient policy.Transporter
 	// Retry configures the built-in retry policy behavior.
-	Retry azcore.RetryOptions
+	Retry policy.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior.
-	Telemetry azcore.TelemetryOptions
+	Telemetry policy.TelemetryOptions
 	// Logging configures the built-in logging policy behavior.
-	Logging azcore.LogOptions
+	Logging policy.LogOptions
 	// PerCallPolicies contains custom policies to inject into the pipeline.
 	// Each policy is executed once per request.
-	PerCallPolicies []azcore.Policy
+	PerCallPolicies []policy.Policy
 	// PerRetryPolicies contains custom policies to inject into the pipeline.
 	// Each policy is executed once per request, and for each retry request.
-	PerRetryPolicies []azcore.Policy
+	PerRetryPolicies []policy.Policy
 	// ApplicationPreferredRegions defines list of preferred regions for the client to connect to.
 	ApplicationPreferredRegions *[]string
 	// ConsistencyLevel can be used to weaken the database account consistency level for read operations. If this is not set the database account consistency level will be used for all requests.
@@ -49,21 +46,10 @@ type CosmosClientOptionsRateLimitedRetry struct {
 	MaxRetryWaitTime time.Duration
 }
 
-// enrichTelemetryOptions adds the current package version to the telemetry information, if any.
-func (o *CosmosClientOptions) enrichTelemetryOptions() *azcore.TelemetryOptions {
-	to := o.Telemetry
-	if to.Value == "" {
-		to.Value = telemetryInfo
-	} else {
-		to.Value = fmt.Sprintf("%s %s", telemetryInfo, to.Value)
-	}
-	return &to
-}
-
 // getSDKInternalPolicies builds a list of internal retry policies for the cosmos service.
 // This includes throttling and failover policies.
-func (o *CosmosClientOptions) getSDKInternalPolicies() []azcore.Policy {
-	return []azcore.Policy{
+func (o *CosmosClientOptions) getSDKInternalPolicies() []policy.Policy {
+	return []policy.Policy{
 		newResourceThrottleRetryPolicy(o),
 		// TODO: Add more policies here.
 	}

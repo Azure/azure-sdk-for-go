@@ -9,28 +9,30 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // cosmosClientConnection maintains a Pipeline for the client.
 // The Pipeline is build based on the CosmosClientOptions.
 type cosmosClientConnection struct {
 	endpoint string
-	Pipeline azcore.Pipeline
+	Pipeline azruntime.Pipeline
 }
 
 // newConnection creates an instance of the connection type with the specified endpoint.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
 func newCosmosClientConnection(endpoint string, cred azcore.Credential, options *CosmosClientOptions) *cosmosClientConnection {
-	policies := []azcore.Policy{
-		azcore.NewTelemetryPolicy(options.enrichTelemetryOptions()),
+	policies := []policy.Policy{
+		azruntime.NewTelemetryPolicy("azcosmos", serviceLibVersion, &options.Telemetry),
 	}
 	policies = append(policies, options.PerCallPolicies...)
-	policies = append(policies, azcore.NewRetryPolicy(&options.Retry))
+	policies = append(policies, azruntime.NewRetryPolicy(&options.Retry))
 	policies = append(policies, options.PerRetryPolicies...)
 	policies = append(policies, options.getSDKInternalPolicies()...)
-	policies = append(policies, cred.AuthenticationPolicy(azcore.AuthenticationPolicyOptions{Options: azcore.TokenRequestOptions{Scopes: []string{"none"}}}))
-	policies = append(policies, azcore.NewLogPolicy(&options.Logging))
-	return &cosmosClientConnection{endpoint: endpoint, Pipeline: azcore.NewPipeline(options.HTTPClient, policies...)}
+	policies = append(policies, cred.NewAuthenticationPolicy(azruntime.AuthenticationOptions{}))
+	policies = append(policies, azruntime.NewLogPolicy(&options.Logging))
+	return &cosmosClientConnection{endpoint: endpoint, Pipeline: azruntime.NewPipeline(options.HTTPClient, policies...)}
 }
 
 func (c *cosmosClientConnection) sendPostRequest(
@@ -39,13 +41,13 @@ func (c *cosmosClientConnection) sendPostRequest(
 	content interface{},
 	operationContext cosmosOperationContext,
 	requestOptions cosmosRequestOptions,
-	requestEnricher func(*azcore.Request)) (*azcore.Response, error) {
+	requestEnricher func(*policy.Request)) (*http.Response, error) {
 	req, err := c.createRequest(path, ctx, http.MethodPost, operationContext, requestOptions, requestEnricher)
 	if err != nil {
 		return nil, err
 	}
 
-	err = req.MarshalAsJSON(content)
+	err = azruntime.MarshalAsJSON(req, content)
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +61,7 @@ func (c *cosmosClientConnection) sendQueryRequest(
 	query string,
 	operationContext cosmosOperationContext,
 	requestOptions cosmosRequestOptions,
-	requestEnricher func(*azcore.Request)) (*azcore.Response, error) {
+	requestEnricher func(*policy.Request)) (*http.Response, error) {
 	req, err := c.createRequest(path, ctx, http.MethodPost, operationContext, requestOptions, requestEnricher)
 	if err != nil {
 		return nil, err
@@ -69,16 +71,16 @@ func (c *cosmosClientConnection) sendQueryRequest(
 		Query string `json:"query"`
 	}
 
-	err = req.MarshalAsJSON(queryBody{
+	err = azruntime.MarshalAsJSON(req, queryBody{
 		Query: query,
 	})
 	if err != nil {
 		return nil, err
 	}
 
-	req.Header.Add(cosmosHeaderQuery, "True")
+	req.Raw().Header.Add(cosmosHeaderQuery, "True")
 	// Override content type for query
-	req.Header.Set(azcore.HeaderContentType, cosmosHeaderValuesQuery)
+	req.Raw().Header.Set(headerContentType, cosmosHeaderValuesQuery)
 
 	return c.executeAndEnsureSuccessResponse(req)
 }
@@ -89,13 +91,13 @@ func (c *cosmosClientConnection) sendPutRequest(
 	content interface{},
 	operationContext cosmosOperationContext,
 	requestOptions cosmosRequestOptions,
-	requestEnricher func(*azcore.Request)) (*azcore.Response, error) {
+	requestEnricher func(*policy.Request)) (*http.Response, error) {
 	req, err := c.createRequest(path, ctx, http.MethodPut, operationContext, requestOptions, requestEnricher)
 	if err != nil {
 		return nil, err
 	}
 
-	err = req.MarshalAsJSON(content)
+	err = azruntime.MarshalAsJSON(req, content)
 	if err != nil {
 		return nil, err
 	}
@@ -108,7 +110,7 @@ func (c *cosmosClientConnection) sendGetRequest(
 	ctx context.Context,
 	operationContext cosmosOperationContext,
 	requestOptions cosmosRequestOptions,
-	requestEnricher func(*azcore.Request)) (*azcore.Response, error) {
+	requestEnricher func(*policy.Request)) (*http.Response, error) {
 	req, err := c.createRequest(path, ctx, http.MethodGet, operationContext, requestOptions, requestEnricher)
 	if err != nil {
 		return nil, err
@@ -122,7 +124,7 @@ func (c *cosmosClientConnection) sendDeleteRequest(
 	ctx context.Context,
 	operationContext cosmosOperationContext,
 	requestOptions cosmosRequestOptions,
-	requestEnricher func(*azcore.Request)) (*azcore.Response, error) {
+	requestEnricher func(*policy.Request)) (*http.Response, error) {
 	req, err := c.createRequest(path, ctx, http.MethodDelete, operationContext, requestOptions, requestEnricher)
 	if err != nil {
 		return nil, err
@@ -137,16 +139,16 @@ func (c *cosmosClientConnection) createRequest(
 	method string,
 	operationContext cosmosOperationContext,
 	requestOptions cosmosRequestOptions,
-	requestEnricher func(*azcore.Request)) (*azcore.Request, error) {
+	requestEnricher func(*policy.Request)) (*policy.Request, error) {
 
 	// todo: endpoint will be set originally by globalendpointmanager
 	finalURL := c.endpoint
 
 	if path != "" {
-		finalURL = azcore.JoinPaths(c.endpoint, path)
+		finalURL = azruntime.JoinPaths(c.endpoint, path)
 	}
 
-	req, err := azcore.NewRequest(ctx, method, finalURL)
+	req, err := azruntime.NewRequest(ctx, method, finalURL)
 	if err != nil {
 		return nil, err
 	}
@@ -154,12 +156,12 @@ func (c *cosmosClientConnection) createRequest(
 	headers := requestOptions.toHeaders()
 	if headers != nil {
 		for k, v := range *headers {
-			req.Header.Set(k, v)
+			req.Raw().Header.Set(k, v)
 		}
 	}
 
-	req.Request.Header.Set(azcore.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
-	req.Request.Header.Set(azcore.HeaderXmsVersion, "2020-11-05")
+	req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
+	req.Raw().Header.Set(headerXmsVersion, "2020-11-05")
 
 	req.SetOperationValue(operationContext)
 
@@ -170,7 +172,7 @@ func (c *cosmosClientConnection) createRequest(
 	return req, nil
 }
 
-func (c *cosmosClientConnection) executeAndEnsureSuccessResponse(request *azcore.Request) (*azcore.Response, error) {
+func (c *cosmosClientConnection) executeAndEnsureSuccessResponse(request *policy.Request) (*http.Response, error) {
 	response, err := c.Pipeline.Do(request)
 	if err != nil {
 		return nil, err

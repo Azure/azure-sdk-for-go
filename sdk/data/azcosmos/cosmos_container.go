@@ -7,7 +7,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 // A CosmosContainer lets you perform read, update, change throughput, and delete container operations.
@@ -229,9 +229,9 @@ func (c *CosmosContainer) UpsertItem(
 		return CosmosItemResponse{}, err
 	}
 
-	addHeader := func(r *azcore.Request) {
+	addHeader := func(r *policy.Request) {
 		addHeaderInternal(r)
-		r.Header.Add(cosmosHeaderIsUpsert, "true")
+		r.Raw().Header.Add(cosmosHeaderIsUpsert, "true")
 	}
 
 	if requestOptions == nil {
@@ -397,7 +397,7 @@ func (c *CosmosContainer) DeleteItem(
 func (c *CosmosContainer) buildRequestEnricher(
 	partitionKey *PartitionKey,
 	requestOptions *CosmosItemRequestOptions,
-	writeOperation bool) (func(r *azcore.Request), error) {
+	writeOperation bool) (func(r *policy.Request), error) {
 	if partitionKey == nil {
 		return nil, errors.New("partitionKey is required")
 	}
@@ -414,10 +414,10 @@ func (c *CosmosContainer) buildRequestEnricher(
 		enableContentResponseOnWrite = requestOptions.EnableContentResponseOnWrite
 	}
 
-	return func(r *azcore.Request) {
-		r.Header.Add(cosmosHeaderPartitionKey, pk)
+	return func(r *policy.Request) {
+		r.Raw().Header.Add(cosmosHeaderPartitionKey, pk)
 		if writeOperation && !enableContentResponseOnWrite {
-			r.Header.Add(cosmosHeaderPrefer, cosmosHeaderValuesPreferMinimal)
+			r.Raw().Header.Add(cosmosHeaderPrefer, cosmosHeaderValuesPreferMinimal)
 		}
 	}, nil
 }

@@ -14,7 +14,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 // NewSharedKeyCredential creates an immutable SharedKeyCredential containing the
@@ -51,7 +53,7 @@ func (c *SharedKeyCredential) computeHMACSHA256(s string) (base64String string) 
 	return base64.StdEncoding.EncodeToString(h.Sum(nil))
 }
 
-func (c *SharedKeyCredential) buildCanonicalizedAuthHeaderFromRequest(req *azcore.Request) (string, error) {
+func (c *SharedKeyCredential) buildCanonicalizedAuthHeaderFromRequest(req *policy.Request) (string, error) {
 	var opValues cosmosOperationContext
 	value := ""
 
@@ -67,7 +69,7 @@ func (c *SharedKeyCredential) buildCanonicalizedAuthHeaderFromRequest(req *azcor
 			resourceAddress = strings.ToLower(resourceAddress)
 		}
 
-		value = c.buildCanonicalizedAuthHeader(req.Method, resourceTypePath, resourceAddress, req.Request.Header.Get(azcore.HeaderXmsDate), "master", "1.0")
+		value = c.buildCanonicalizedAuthHeader(req.Raw().Method, resourceTypePath, resourceAddress, req.Raw().Header.Get(headerXmsDate), "master", "1.0")
 	}
 
 	return value, nil
@@ -86,31 +88,43 @@ func (c *SharedKeyCredential) buildCanonicalizedAuthHeader(method, resourceType,
 	return url.QueryEscape(join("type=" + tokenType + "&ver=" + version + "&sig=" + signature))
 }
 
-// AuthenticationPolicy implements the Credential interface on SharedKeyCredential.
-func (c *SharedKeyCredential) AuthenticationPolicy(azcore.AuthenticationPolicyOptions) azcore.Policy {
-	return azcore.PolicyFunc(func(req *azcore.Request) (*azcore.Response, error) {
+type sharedKeyCredPolicy struct {
+	cred *SharedKeyCredential
+}
 
-		// Add a x-ms-date header if it doesn't already exist
-		if d := req.Request.Header.Get(azcore.HeaderXmsDate); d == "" {
-			req.Request.Header.Set(azcore.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
-		}
+func newSharedKeyCredPolicy(cred *SharedKeyCredential, opts runtime.AuthenticationOptions) *sharedKeyCredPolicy {
+	s := &sharedKeyCredPolicy{
+		cred: cred,
+	}
 
-		authHeader, err := c.buildCanonicalizedAuthHeaderFromRequest(req)
-		if err != nil {
-			return nil, err
-		}
+	return s
+}
 
-		if authHeader != "" {
-			req.Request.Header.Set(azcore.HeaderAuthorization, authHeader)
-		}
+func (c *SharedKeyCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
+	return newSharedKeyCredPolicy(c, options)
+}
 
-		response, err := req.Next()
-		if err != nil && response != nil && response.StatusCode == http.StatusForbidden {
-			// Service failed to authenticate request, log it
-			azcore.Log().Write(azcore.LogResponse, "===== HTTP Forbidden status, Authorization:\n"+authHeader+"\n=====\n")
-		}
-		return response, err
-	})
+func (s *sharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
+	// Add a x-ms-date header if it doesn't already exist
+	if d := req.Raw().Header.Get(headerXmsDate); d == "" {
+		req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
+	}
+
+	authHeader, err := s.cred.buildCanonicalizedAuthHeaderFromRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	if authHeader != "" {
+		req.Raw().Header.Set(headerAuthorization, authHeader)
+	}
+
+	response, err := req.Next()
+	if err != nil && response != nil && response.StatusCode == http.StatusForbidden {
+		// Service failed to authenticate request, log it
+		log.Write(log.Response, "===== HTTP Forbidden status, Authorization:\n"+authHeader+"\n=====\n")
+	}
+	return response, err
 }
 
 func join(strs ...string) string {

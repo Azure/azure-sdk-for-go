@@ -5,8 +5,6 @@ package azcosmos
 
 import (
 	"testing"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 func TestDatabaseRequestOptionsToHeaders(t *testing.T) {
@@ -23,10 +21,10 @@ func TestDatabaseRequestOptionsToHeaders(t *testing.T) {
 	}
 
 	headers := *header
-	if headers[azcore.HeaderIfMatch] != options.IfMatchEtag {
-		t.Errorf("IfMatchEtag not set matching expected %v got %v", options.IfMatchEtag, headers[azcore.HeaderIfMatch])
+	if headers[headerIfMatch] != options.IfMatchEtag {
+		t.Errorf("IfMatchEtag not set matching expected %v got %v", options.IfMatchEtag, headers[headerIfMatch])
 	}
-	if headers[azcore.HeaderIfNoneMatch] != options.IfNoneMatchEtag {
-		t.Errorf("IfNoneMatchEtag not set matching expected %v got %v", options.IfNoneMatchEtag, headers[azcore.HeaderIfNoneMatch])
+	if headers[headerIfNoneMatch] != options.IfNoneMatchEtag {
+		t.Errorf("IfNoneMatchEtag not set matching expected %v got %v", options.IfNoneMatchEtag, headers[headerIfNoneMatch])
 	}
 }

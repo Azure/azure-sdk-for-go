@@ -25,10 +25,8 @@ const (
 	headerXmsDate                      string = "x-ms-date"
 	headerAuthorization                string = "Authorization"
 	headerContentType                  string = "Content-Type"
-	headerIfModifiedSince              string = "If-Modified-Since"
 	headerIfMatch                      string = "If-Match"
 	headerIfNoneMatch                  string = "If-None-Match"
-	headerIfUnmodifiedSince            string = "If-Unmodified-Since"
 	headerXmsVersion                   string = "x-ms-version"
 )
 

@@ -5201,7 +5201,7 @@ type ExistingRecoveryVirtualNetwork struct {
 	RecoveryVirtualNetworkID *string `json:"recoveryVirtualNetworkId,omitempty"`
 	// RecoverySubnetName - The recovery subnet name.
 	RecoverySubnetName *string `json:"recoverySubnetName,omitempty"`
-	// ResourceType - Possible values include: 'ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeRecoveryVirtualNetworkCustomDetails', 'ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeExisting'
+	// ResourceType - Possible values include: 'ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeRecoveryVirtualNetworkCustomDetails', 'ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeExisting', 'ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeNew'
 	ResourceType ResourceTypeBasicRecoveryVirtualNetworkCustomDetails `json:"resourceType,omitempty"`
 }
 
@@ -5224,6 +5224,11 @@ func (ervn ExistingRecoveryVirtualNetwork) MarshalJSON() ([]byte, error) {
 // AsExistingRecoveryVirtualNetwork is the BasicRecoveryVirtualNetworkCustomDetails implementation for ExistingRecoveryVirtualNetwork.
 func (ervn ExistingRecoveryVirtualNetwork) AsExistingRecoveryVirtualNetwork() (*ExistingRecoveryVirtualNetwork, bool) {
 	return &ervn, true
+}
+
+// AsNewRecoveryVirtualNetwork is the BasicRecoveryVirtualNetworkCustomDetails implementation for ExistingRecoveryVirtualNetwork.
+func (ervn ExistingRecoveryVirtualNetwork) AsNewRecoveryVirtualNetwork() (*NewRecoveryVirtualNetwork, bool) {
+	return nil, false
 }
 
 // AsRecoveryVirtualNetworkCustomDetails is the BasicRecoveryVirtualNetworkCustomDetails implementation for ExistingRecoveryVirtualNetwork.
@@ -6666,6 +6671,10 @@ type HyperVReplicaAzureEnableProtectionInput struct {
 	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
 	// TargetProximityPlacementGroupID - The proximity placement group ARM Id.
 	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	// TargetAvailabilitySetID - The availability set ARM Id.
+	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	// TargetVMSize - The target VM size.
+	TargetVMSize *string `json:"targetVmSize,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
 	InstanceType InstanceTypeBasicEnableProtectionProviderSpecificInput `json:"instanceType,omitempty"`
 }
@@ -6721,6 +6730,12 @@ func (hvraepi HyperVReplicaAzureEnableProtectionInput) MarshalJSON() ([]byte, er
 	}
 	if hvraepi.TargetProximityPlacementGroupID != nil {
 		objectMap["targetProximityPlacementGroupId"] = hvraepi.TargetProximityPlacementGroupID
+	}
+	if hvraepi.TargetAvailabilitySetID != nil {
+		objectMap["targetAvailabilitySetId"] = hvraepi.TargetAvailabilitySetID
+	}
+	if hvraepi.TargetVMSize != nil {
+		objectMap["targetVmSize"] = hvraepi.TargetVMSize
 	}
 	if hvraepi.InstanceType != "" {
 		objectMap["instanceType"] = hvraepi.InstanceType
@@ -9055,6 +9070,10 @@ type InMageAzureV2EnableProtectionInput struct {
 	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
 	// TargetProximityPlacementGroupID - The proximity placement group ARM Id.
 	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	// TargetAvailabilitySetID - The availability set ARM Id.
+	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	// TargetVMSize - The target VM size.
+	TargetVMSize *string `json:"targetVmSize,omitempty"`
 	// InstanceType - Possible values include: 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeEnableProtectionProviderSpecificInput', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeA2A', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeHyperVReplicaAzure', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageAzureV2', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMage', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeInMageRcm', 'InstanceTypeBasicEnableProtectionProviderSpecificInputInstanceTypeSan'
 	InstanceType InstanceTypeBasicEnableProtectionProviderSpecificInput `json:"instanceType,omitempty"`
 }
@@ -9116,6 +9135,12 @@ func (imavepi InMageAzureV2EnableProtectionInput) MarshalJSON() ([]byte, error) 
 	}
 	if imavepi.TargetProximityPlacementGroupID != nil {
 		objectMap["targetProximityPlacementGroupId"] = imavepi.TargetProximityPlacementGroupID
+	}
+	if imavepi.TargetAvailabilitySetID != nil {
+		objectMap["targetAvailabilitySetId"] = imavepi.TargetAvailabilitySetID
+	}
+	if imavepi.TargetVMSize != nil {
+		objectMap["targetVmSize"] = imavepi.TargetVMSize
 	}
 	if imavepi.InstanceType != "" {
 		objectMap["instanceType"] = imavepi.InstanceType
@@ -14860,6 +14885,53 @@ func (npp NewProtectionProfile) AsBasicProtectionProfileCustomDetails() (BasicPr
 	return &npp, true
 }
 
+// NewRecoveryVirtualNetwork recovery virtual network input to create new virtual network from given source
+// network.
+type NewRecoveryVirtualNetwork struct {
+	// RecoveryVirtualNetworkResourceGroupName - The name of the resource group to be used to create the recovery virtual network. If absent, target network would be created in the same resource group as target VM.
+	RecoveryVirtualNetworkResourceGroupName *string `json:"recoveryVirtualNetworkResourceGroupName,omitempty"`
+	// RecoveryVirtualNetworkName - The recovery virtual network name.
+	RecoveryVirtualNetworkName *string `json:"recoveryVirtualNetworkName,omitempty"`
+	// ResourceType - Possible values include: 'ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeRecoveryVirtualNetworkCustomDetails', 'ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeExisting', 'ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeNew'
+	ResourceType ResourceTypeBasicRecoveryVirtualNetworkCustomDetails `json:"resourceType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for NewRecoveryVirtualNetwork.
+func (nrvn NewRecoveryVirtualNetwork) MarshalJSON() ([]byte, error) {
+	nrvn.ResourceType = ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeNew
+	objectMap := make(map[string]interface{})
+	if nrvn.RecoveryVirtualNetworkResourceGroupName != nil {
+		objectMap["recoveryVirtualNetworkResourceGroupName"] = nrvn.RecoveryVirtualNetworkResourceGroupName
+	}
+	if nrvn.RecoveryVirtualNetworkName != nil {
+		objectMap["recoveryVirtualNetworkName"] = nrvn.RecoveryVirtualNetworkName
+	}
+	if nrvn.ResourceType != "" {
+		objectMap["resourceType"] = nrvn.ResourceType
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsExistingRecoveryVirtualNetwork is the BasicRecoveryVirtualNetworkCustomDetails implementation for NewRecoveryVirtualNetwork.
+func (nrvn NewRecoveryVirtualNetwork) AsExistingRecoveryVirtualNetwork() (*ExistingRecoveryVirtualNetwork, bool) {
+	return nil, false
+}
+
+// AsNewRecoveryVirtualNetwork is the BasicRecoveryVirtualNetworkCustomDetails implementation for NewRecoveryVirtualNetwork.
+func (nrvn NewRecoveryVirtualNetwork) AsNewRecoveryVirtualNetwork() (*NewRecoveryVirtualNetwork, bool) {
+	return &nrvn, true
+}
+
+// AsRecoveryVirtualNetworkCustomDetails is the BasicRecoveryVirtualNetworkCustomDetails implementation for NewRecoveryVirtualNetwork.
+func (nrvn NewRecoveryVirtualNetwork) AsRecoveryVirtualNetworkCustomDetails() (*RecoveryVirtualNetworkCustomDetails, bool) {
+	return nil, false
+}
+
+// AsBasicRecoveryVirtualNetworkCustomDetails is the BasicRecoveryVirtualNetworkCustomDetails implementation for NewRecoveryVirtualNetwork.
+func (nrvn NewRecoveryVirtualNetwork) AsBasicRecoveryVirtualNetworkCustomDetails() (BasicRecoveryVirtualNetworkCustomDetails, bool) {
+	return &nrvn, true
+}
+
 // OperationsDiscovery operations discovery class.
 type OperationsDiscovery struct {
 	// Name - Name of the API. The name of the operation being performed on this particular object. It should match the action name that appears in RBAC / the event service. Examples of operations include: * Microsoft.Compute/virtualMachine/capture/action * Microsoft.Compute/virtualMachine/restart/action * Microsoft.Compute/virtualMachine/write * Microsoft.Compute/virtualMachine/read * Microsoft.Compute/virtualMachine/delete Each action should include, in order: (1) Resource Provider Namespace (2) Type hierarchy for which the action applies (e.g. server/databases for a SQL Azure database) (3) Read, Write, Action or Delete indicating which type applies. If it is a PUT/PATCH on a collection or named value, Write should be used. If it is a GET, Read should be used. If it is a DELETE, Delete should be used. If it is a POST, Action should be used. As a note: all resource providers would need to include the "{Resource Provider Namespace}/register/action" operation in their response. This API is used to register for their service, and should include details about the operation (e.g. a localized name for the resource provider + any special considerations like PII release)
@@ -19784,12 +19856,13 @@ type RecoveryServicesProviderProperties struct {
 // BasicRecoveryVirtualNetworkCustomDetails recovery Virtual network custom input.
 type BasicRecoveryVirtualNetworkCustomDetails interface {
 	AsExistingRecoveryVirtualNetwork() (*ExistingRecoveryVirtualNetwork, bool)
+	AsNewRecoveryVirtualNetwork() (*NewRecoveryVirtualNetwork, bool)
 	AsRecoveryVirtualNetworkCustomDetails() (*RecoveryVirtualNetworkCustomDetails, bool)
 }
 
 // RecoveryVirtualNetworkCustomDetails recovery Virtual network custom input.
 type RecoveryVirtualNetworkCustomDetails struct {
-	// ResourceType - Possible values include: 'ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeRecoveryVirtualNetworkCustomDetails', 'ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeExisting'
+	// ResourceType - Possible values include: 'ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeRecoveryVirtualNetworkCustomDetails', 'ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeExisting', 'ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeNew'
 	ResourceType ResourceTypeBasicRecoveryVirtualNetworkCustomDetails `json:"resourceType,omitempty"`
 }
 
@@ -19805,6 +19878,10 @@ func unmarshalBasicRecoveryVirtualNetworkCustomDetails(body []byte) (BasicRecove
 		var ervn ExistingRecoveryVirtualNetwork
 		err := json.Unmarshal(body, &ervn)
 		return ervn, err
+	case string(ResourceTypeBasicRecoveryVirtualNetworkCustomDetailsResourceTypeNew):
+		var nrvn NewRecoveryVirtualNetwork
+		err := json.Unmarshal(body, &nrvn)
+		return nrvn, err
 	default:
 		var rvncd RecoveryVirtualNetworkCustomDetails
 		err := json.Unmarshal(body, &rvncd)
@@ -19842,6 +19919,11 @@ func (rvncd RecoveryVirtualNetworkCustomDetails) MarshalJSON() ([]byte, error) {
 
 // AsExistingRecoveryVirtualNetwork is the BasicRecoveryVirtualNetworkCustomDetails implementation for RecoveryVirtualNetworkCustomDetails.
 func (rvncd RecoveryVirtualNetworkCustomDetails) AsExistingRecoveryVirtualNetwork() (*ExistingRecoveryVirtualNetwork, bool) {
+	return nil, false
+}
+
+// AsNewRecoveryVirtualNetwork is the BasicRecoveryVirtualNetworkCustomDetails implementation for RecoveryVirtualNetworkCustomDetails.
+func (rvncd RecoveryVirtualNetworkCustomDetails) AsNewRecoveryVirtualNetwork() (*NewRecoveryVirtualNetwork, bool) {
 	return nil, false
 }
 

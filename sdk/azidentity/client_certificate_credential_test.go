@@ -126,7 +126,7 @@ func TestClientCertificateCredential_CreateAuthRequestSuccess_withCertificateCha
 		t.Fatalf("Wrong client assertion type assigned to request")
 	}
 	// create a client assertion for comparison with the one in the request
-	cert, err := extractFromPEMFile(pemCert, "", true)
+	cert, err := loadPEMCert(pemCert, "", true)
 	if err != nil {
 		t.Fatalf("Failed extract data from PEM file: %v", err)
 	}

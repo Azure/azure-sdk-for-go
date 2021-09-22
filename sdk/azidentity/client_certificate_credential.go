@@ -62,9 +62,9 @@ func NewClientCertificateCredential(tenantID string, clientID string, certData [
 	if options == nil {
 		options = &ClientCertificateCredentialOptions{}
 	}
-	cert, err := extractFromPEMFile(certData, options.Password, options.SendCertificateChain)
+	cert, err := loadPEMCert(certData, options.Password, options.SendCertificateChain)
 	if err != nil {
-		cert, err = extractFromPFXFile(certData, options.Password, options.SendCertificateChain)
+		cert, err = loadPKCS12Cert(certData, options.Password, options.SendCertificateChain)
 	}
 	if err != nil {
 		credErr := &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: err.Error()}
@@ -154,7 +154,7 @@ func newCertContents(blocks []*pem.Block, fromPEM bool, sendCertificateChain boo
 	return &cc, nil
 }
 
-func extractFromPEMFile(certData []byte, password string, sendCertificateChain bool) (*certContents, error) {
+func loadPEMCert(certData []byte, password string, sendCertificateChain bool) (*certContents, error) {
 	// TODO: wire up support for password
 	blocks := []*pem.Block{}
 	// read all of the PEM blocks
@@ -167,19 +167,20 @@ func extractFromPEMFile(certData []byte, password string, sendCertificateChain b
 		blocks = append(blocks, block)
 	}
 	if len(blocks) == 0 {
-		return nil, errors.New("didn't find any blocks in PEM file")
+		return nil, errors.New("didn't find any PEM blocks")
 	}
 	return newCertContents(blocks, true, sendCertificateChain)
 }
 
-func extractFromPFXFile(certData []byte, password string, sendCertificateChain bool) (*certContents, error) {
-	// convert PFX binary data to PEM blocks
+func loadPKCS12Cert(certData []byte, password string, sendCertificateChain bool) (*certContents, error) {
+	// convert data to PEM blocks
 	blocks, err := pkcs12.ToPEM(certData, password)
 	if err != nil {
 		return nil, err
 	}
 	if len(blocks) == 0 {
-		return nil, errors.New("didn't find any blocks in PFX file")
+		// not mentioning PKCS12 in this message because we end up here when certData is garbage
+		return nil, errors.New("didn't find any certificate content")
 	}
 	return newCertContents(blocks, false, sendCertificateChain)
 }

@@ -13,6 +13,11 @@
   // after
   cred, err := NewChainedTokenCredential([]azcore.TokenCredential{credA, credB}, nil)
   ```
+* Removed `ExcludeAzureCLICredential`, `ExcludeEnvironmentCredential`, and `ExcludeMSICredential`
+  from `DefaultAzureCredentialOptions`
+
+### Features Added
+* Added connection configuration options to `DefaultAzureCredentialOptions`
 
 
 ## 0.11.0 (2021-09-08)

@@ -1,6 +1,7 @@
 #Requires -Version 7.0
 param([string]$filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, [switch]$cleanGenerated, [switch]$format, [switch]$tidy, [string]$config = "autorest.md", [string]$outputFolder)
 
+. $PSScriptRoot/meta_generation.ps1
 . (Join-Path $PSScriptRoot .. common scripts common.ps1)
 
 function Process-Sdk () {
@@ -29,7 +30,7 @@ function Process-Sdk () {
         if ($outputFolder -eq '') {
             $outputFolder = $currentDirectory
         }
-        autorest --use=$autorestVersion --go --track2 --go-sdk-folder=$root --output-folder=$outputFolder --file-prefix="zz_generated_" --clear-output-folder=false $autorestPath
+        autorest --use=$autorestVersion --go --track2 --output-folder=$outputFolder --file-prefix="zz_generated_" --clear-output-folder=false $autorestPath
         if ($LASTEXITCODE) {
             Write-Host "##[error]Error running autorest.go"
             exit $LASTEXITCODE

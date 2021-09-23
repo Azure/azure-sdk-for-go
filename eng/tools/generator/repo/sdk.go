@@ -12,10 +12,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/packages/track1"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/common"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/packages/track1"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
 	"github.com/Masterminds/semver"
 	"github.com/go-git/go-git/v5/plumbing"
 )

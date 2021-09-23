@@ -3,7 +3,7 @@
 
 package repo
 
-import "github.com/Azure/azure-sdk-for-go/tools/internal/report"
+import "github.com/Azure/azure-sdk-for-go/eng/tools/internal/report"
 
 // GetPkgsReport generates a PkgsReport based on the delta between lhs and rhs
 func GetPkgsReport(lhs, rhs RepoContent, option *report.GenerationOption) report.PkgsReport {

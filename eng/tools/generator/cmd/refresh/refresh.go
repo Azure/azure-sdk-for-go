@@ -10,14 +10,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/config"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/flags"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/repo"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
-	sdkutils "github.com/Azure/azure-sdk-for-go/tools/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/common"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/config"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/flags"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
+	sdkutils "github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
 	"github.com/ahmetb/go-linq/v3"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/hashicorp/go-multierror"
@@ -31,7 +31,7 @@ func Command() *cobra.Command {
 		Short: "Regenerate all the packages in azure-sdk-for-go",
 		Long: `This command will regenerate the specified packages in azure-sdk-for-go using the autorest.go version
 specified in the option, but using the same swagger as it is using now.
-if the [config json file path] is set, the configs are read from the file specified, otherwise this command will 
+if the [config json file path] is set, the configs are read from the file specified, otherwise this command will
 read the config from stdin.
 
 azure-sdk-for-go directory: the directory path of the azure-sdk-for-go with git control

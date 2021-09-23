@@ -10,9 +10,9 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
-	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/exports"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest/model"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 )
 
 type generateContext struct {

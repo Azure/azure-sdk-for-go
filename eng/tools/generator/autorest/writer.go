@@ -11,10 +11,10 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/markdown"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/report"
-	"github.com/Azure/azure-sdk-for-go/tools/internal/utils"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/common"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/markdown"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/report"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/utils"
 	"github.com/ahmetb/go-linq/v3"
 )
 

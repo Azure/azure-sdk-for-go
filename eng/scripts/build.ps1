@@ -1,7 +1,6 @@
 #Requires -Version 7.0
 param([string]$filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, [switch]$cleanGenerated, [switch]$format, [switch]$tidy, [string]$config = "autorest.md", [string]$outputFolder)
 
-. $PSScriptRoot/meta_generation.ps1
 . (Join-Path $PSScriptRoot .. common scripts common.ps1)
 
 function Process-Sdk () {
@@ -21,11 +20,6 @@ function Process-Sdk () {
         Write-Host "##[command]Executing autorest.go in " $currentDirectory
         $autorestPath = "./" + $config
 
-        if (ShouldGenerate-AutorestConfig $autorestPath) {
-            Generate-AutorestConfig $autorestPath
-            $removeAutorestFile = $true
-        }
-
         $autorestVersion = "@autorest/go@4.0.0-preview.27"
         if ($outputFolder -eq '') {
             $outputFolder = $currentDirectory
@@ -34,9 +28,6 @@ function Process-Sdk () {
         if ($LASTEXITCODE) {
             Write-Host "##[error]Error running autorest.go"
             exit $LASTEXITCODE
-        }
-        if ($removeAutorestFile) {
-            Remove-Item $autorestPath
         }
     }
 

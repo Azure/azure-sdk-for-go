@@ -31,7 +31,7 @@ jobs:
       sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
       GO111MODULE: 'off'
       IGNORE_BREAKING_CHANGES: true
-      go.list.filter: '| grep -v vendor | grep -v azure-sdk-for-go/sdk | grep -v azure-sdk-for-go/eng/tools'
+      go.list.filter: '| grep -v vendor | grep -v azure-sdk-for-go/sdk | grep -v azure-sdk-for-go/eng'
       go.test.filter: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./tools -prune'
 
     steps:

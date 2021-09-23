@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## `v57.4.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2021-07-01/containerinstance`
+- `github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2021-03-31/devices`
+- `github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2021-08-27/kusto`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-06-01/netapp` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/netapp/mgmt/2021-06-01/netapp/CHANGELOG.md) |
+
 ## `v57.3.0`
 
 ### New Packages

@@ -112,6 +112,13 @@ const (
 	MirrorStateUninitialized MirrorState = original.MirrorStateUninitialized
 )
 
+type NetworkFeatures = original.NetworkFeatures
+
+const (
+	NetworkFeaturesBasic    NetworkFeatures = original.NetworkFeaturesBasic
+	NetworkFeaturesStandard NetworkFeatures = original.NetworkFeaturesStandard
+)
+
 type QosType = original.QosType
 
 const (
@@ -150,6 +157,14 @@ const (
 	ServiceLevelUltra       ServiceLevel = original.ServiceLevelUltra
 )
 
+type VolumeStorageToNetworkProximity = original.VolumeStorageToNetworkProximity
+
+const (
+	VolumeStorageToNetworkProximityDefault VolumeStorageToNetworkProximity = original.VolumeStorageToNetworkProximityDefault
+	VolumeStorageToNetworkProximityT1      VolumeStorageToNetworkProximity = original.VolumeStorageToNetworkProximityT1
+	VolumeStorageToNetworkProximityT2      VolumeStorageToNetworkProximity = original.VolumeStorageToNetworkProximityT2
+)
+
 type Account = original.Account
 type AccountBackupsClient = original.AccountBackupsClient
 type AccountBackupsDeleteFuture = original.AccountBackupsDeleteFuture
@@ -165,6 +180,7 @@ type AccountsDeleteFuture = original.AccountsDeleteFuture
 type AccountsUpdateFuture = original.AccountsUpdateFuture
 type ActiveDirectory = original.ActiveDirectory
 type AuthorizeRequest = original.AuthorizeRequest
+type AzureEntityResource = original.AzureEntityResource
 type Backup = original.Backup
 type BackupPatch = original.BackupPatch
 type BackupPoliciesClient = original.BackupPoliciesClient
@@ -198,6 +214,7 @@ type Dimension = original.Dimension
 type ExportPolicyRule = original.ExportPolicyRule
 type FilePathAvailabilityRequest = original.FilePathAvailabilityRequest
 type HourlySchedule = original.HourlySchedule
+type LogSpecification = original.LogSpecification
 type MetricSpecification = original.MetricSpecification
 type MonthlySchedule = original.MonthlySchedule
 type MountTarget = original.MountTarget
@@ -214,12 +231,15 @@ type PoolsClient = original.PoolsClient
 type PoolsCreateOrUpdateFuture = original.PoolsCreateOrUpdateFuture
 type PoolsDeleteFuture = original.PoolsDeleteFuture
 type PoolsUpdateFuture = original.PoolsUpdateFuture
+type ProxyResource = original.ProxyResource
 type QuotaAvailabilityRequest = original.QuotaAvailabilityRequest
 type ReplicationObject = original.ReplicationObject
 type ReplicationStatus = original.ReplicationStatus
+type Resource = original.Resource
 type ResourceClient = original.ResourceClient
 type ResourceIdentity = original.ResourceIdentity
 type ResourceNameAvailabilityRequest = original.ResourceNameAvailabilityRequest
+type ResourceQuotaLimitsClient = original.ResourceQuotaLimitsClient
 type RestoreStatus = original.RestoreStatus
 type ServiceSpecification = original.ServiceSpecification
 type Snapshot = original.Snapshot
@@ -238,7 +258,11 @@ type SnapshotsCreateFuture = original.SnapshotsCreateFuture
 type SnapshotsDeleteFuture = original.SnapshotsDeleteFuture
 type SnapshotsList = original.SnapshotsList
 type SnapshotsUpdateFuture = original.SnapshotsUpdateFuture
+type SubscriptionQuotaItem = original.SubscriptionQuotaItem
+type SubscriptionQuotaItemList = original.SubscriptionQuotaItemList
+type SubscriptionQuotaItemProperties = original.SubscriptionQuotaItemProperties
 type SystemData = original.SystemData
+type TrackedResource = original.TrackedResource
 type Vault = original.Vault
 type VaultList = original.VaultList
 type VaultProperties = original.VaultProperties
@@ -328,6 +352,12 @@ func NewResourceClient(subscriptionID string) ResourceClient {
 func NewResourceClientWithBaseURI(baseURI string, subscriptionID string) ResourceClient {
 	return original.NewResourceClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewResourceQuotaLimitsClient(subscriptionID string) ResourceQuotaLimitsClient {
+	return original.NewResourceQuotaLimitsClient(subscriptionID)
+}
+func NewResourceQuotaLimitsClientWithBaseURI(baseURI string, subscriptionID string) ResourceQuotaLimitsClient {
+	return original.NewResourceQuotaLimitsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewSnapshotPoliciesClient(subscriptionID string) SnapshotPoliciesClient {
 	return original.NewSnapshotPoliciesClient(subscriptionID)
 }
@@ -397,6 +427,9 @@ func PossibleMetricAggregationTypeValues() []MetricAggregationType {
 func PossibleMirrorStateValues() []MirrorState {
 	return original.PossibleMirrorStateValues()
 }
+func PossibleNetworkFeaturesValues() []NetworkFeatures {
+	return original.PossibleNetworkFeaturesValues()
+}
 func PossibleQosTypeValues() []QosType {
 	return original.PossibleQosTypeValues()
 }
@@ -411,6 +444,9 @@ func PossibleSecurityStyleValues() []SecurityStyle {
 }
 func PossibleServiceLevelValues() []ServiceLevel {
 	return original.PossibleServiceLevelValues()
+}
+func PossibleVolumeStorageToNetworkProximityValues() []VolumeStorageToNetworkProximity {
+	return original.PossibleVolumeStorageToNetworkProximityValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

@@ -6,12 +6,16 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/automation"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/issue"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/refresh"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/release"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/cmd/template"
 	automation_v2 "github.com/Azure/azure-sdk-for-go/tools/generator/cmd/v2/automation"
 	release_v2 "github.com/Azure/azure-sdk-for-go/tools/generator/cmd/v2/release"
+	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
 	"github.com/spf13/cobra"
 )
 
@@ -20,6 +24,9 @@ func Command() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use: "generator",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+			if err := os.Setenv("NODE_OPTIONS", "--max-old-space-size=8192"); err != nil {
+				return fmt.Errorf("failed to set environment variable: %v", err)
+			}
 			log.SetFlags(0) // remove the time stamp prefix
 			return nil
 		},
@@ -29,12 +36,17 @@ func Command() *cobra.Command {
 		Hidden: true,
 	}
 
+	//bind global flags
+	common.BindGlobalFlags(rootCmd.PersistentFlags())
+
 	rootCmd.AddCommand(
 		automation.Command(),
 		automation_v2.Command(),
 		release_v2.Command(),
 		issue.Command(),
 		template.Command(),
+		refresh.Command(),
+		release.Command(),
 	)
 
 	return rootCmd

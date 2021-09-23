@@ -18,18 +18,22 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
+// AuthorityHost is the base URL for Azure Active Directory
+type AuthorityHost string
+
 const (
 	// AzureChina is a global constant to use in order to access the Azure China cloud.
-	AzureChina = "https://login.chinacloudapi.cn/"
+	AzureChina AuthorityHost = "https://login.chinacloudapi.cn/"
 	// AzureGermany is a global constant to use in order to access the Azure Germany cloud.
-	AzureGermany = "https://login.microsoftonline.de/"
+	AzureGermany AuthorityHost = "https://login.microsoftonline.de/"
 	// AzureGovernment is a global constant to use in order to access the Azure Government cloud.
-	AzureGovernment = "https://login.microsoftonline.us/"
+	AzureGovernment AuthorityHost = "https://login.microsoftonline.us/"
 	// AzurePublicCloud is a global constant to use in order to access the Azure public cloud.
-	AzurePublicCloud = "https://login.microsoftonline.com/"
-	// defaultSuffix is a suffix the signals that a string is in scope format
-	defaultSuffix = "/.default"
+	AzurePublicCloud AuthorityHost = "https://login.microsoftonline.com"
 )
+
+// defaultSuffix is the default AADv2 scope
+const defaultSuffix = "/.default"
 
 const (
 	headerXmsDate                = "x-ms-date"
@@ -148,22 +152,22 @@ type pipelineOptions struct {
 }
 
 // setAuthorityHost initializes the authority host for credentials.
-func setAuthorityHost(authorityHost string) (string, error) {
-	if authorityHost == "" {
-		authorityHost = AzurePublicCloud
-		// NOTE: we only allow overriding the authority host if no host was specified
+func setAuthorityHost(authorityHost AuthorityHost) (string, error) {
+	host := string(authorityHost)
+	if host == "" {
+		host = string(AzurePublicCloud)
 		if envAuthorityHost := os.Getenv("AZURE_AUTHORITY_HOST"); envAuthorityHost != "" {
-			authorityHost = envAuthorityHost
+			host = envAuthorityHost
 		}
 	}
-	u, err := url.Parse(authorityHost)
+	u, err := url.Parse(host)
 	if err != nil {
 		return "", err
 	}
 	if u.Scheme != "https" {
 		return "", errors.New("cannot use an authority host without https")
 	}
-	return authorityHost, nil
+	return host, nil
 }
 
 // newDefaultPipeline creates a pipeline using the specified pipeline options.

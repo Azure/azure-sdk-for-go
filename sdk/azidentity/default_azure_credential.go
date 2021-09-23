@@ -74,5 +74,5 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Chained
 		return nil, err
 	}
 	log.Write(LogCredential, "Azure Identity => NewDefaultAzureCredential() invoking NewChainedTokenCredential()")
-	return NewChainedTokenCredential(creds...)
+	return NewChainedTokenCredential(creds, nil)
 }

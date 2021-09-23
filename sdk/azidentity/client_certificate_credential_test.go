@@ -124,7 +124,7 @@ func TestClientCertificateCredential_CreateAuthRequestSuccess_withCertificateCha
 	if err != nil {
 		t.Fatalf("Failed extract data from PEM file: %v", err)
 	}
-	assertion, err := createClientAssertionJWT(clientID, runtime.JoinPaths(AzurePublicCloud, tenantID, tokenEndpoint(oauthPath(tenantID))), cert, true)
+	assertion, err := createClientAssertionJWT(clientID, runtime.JoinPaths(string(AzurePublicCloud), tenantID, tokenEndpoint(oauthPath(tenantID))), cert, true)
 	if err != nil {
 		t.Fatalf("Failed to create client assertion: %v", err)
 	}
@@ -157,7 +157,7 @@ func TestClientCertificateCredential_GetTokenSuccess(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, &options)
 	if err != nil {
@@ -174,7 +174,7 @@ func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain(t *tes
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.SendCertificateChain = true
 	options.HTTPClient = srv
 	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, &options)
@@ -192,7 +192,7 @@ func TestClientCertificateCredential_GetTokenInvalidCredentials(t *testing.T) {
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, &options)
 	if err != nil {
@@ -213,7 +213,7 @@ func TestClientCertificateCredential_WrongCertificatePath(t *testing.T) {
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	_, err := NewClientCertificateCredential(tenantID, clientID, wrongCertificatePath, &options)
 	if err == nil {
@@ -226,7 +226,7 @@ func TestClientCertificateCredential_GetTokenCheckPrivateKeyBlocks(t *testing.T)
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_formatB.pem", &options)
 	if err != nil {
@@ -243,7 +243,7 @@ func TestClientCertificateCredential_GetTokenCheckCertificateBlocks(t *testing.T
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_formatA.pem", &options)
 	if err != nil {
@@ -260,7 +260,7 @@ func TestClientCertificateCredential_GetTokenEmptyCertificate(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	_, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_empty.pem", &options)
 	if err == nil {
@@ -273,7 +273,7 @@ func TestClientCertificateCredential_GetTokenNoPrivateKey(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	_, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_nokey.pem", &options)
 	if err == nil {
@@ -287,7 +287,7 @@ func TestBearerPolicy_ClientCertificateCredential(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, &options)
 	if err != nil {

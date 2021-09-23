@@ -1,5 +1,20 @@
 # Release History
 
+## 0.12.0 (Unreleased)
+### Breaking Changes
+* The `AuthorityHost` field in credential options structs is now a custom type,
+  `AuthorityHost`, with underlying type `string`
+* `NewChainedTokenCredential` has a new signature to accommodate a placeholder
+  options struct:
+  ```go
+  // before
+  cred, err := NewChainedTokenCredential(credA, credB)
+
+  // after
+  cred, err := NewChainedTokenCredential([]azcore.TokenCredential{credA, credB}, nil)
+  ```
+
+
 ## 0.11.0 (2021-09-08)
 ### Breaking Changes
 * Unexported `AzureCLICredentialOptions.TokenProvider` and its type,

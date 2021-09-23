@@ -30,7 +30,8 @@ func NewServiceClient(serviceURL string, cred azcore.Credential, options *Client
 	if isCosmosEndpoint(serviceURL) {
 		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
 	}
-	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, options.PerCallOptions...)
+	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, options.PerCallPolicies...)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, options.PerTryPolicies...)
 	con := generated.NewConnection(serviceURL, cred, conOptions)
 	return &ServiceClient{
 		client:  generated.NewTableClient(con),

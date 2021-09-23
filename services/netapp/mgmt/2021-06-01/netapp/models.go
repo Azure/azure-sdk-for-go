@@ -700,6 +700,24 @@ type AuthorizeRequest struct {
 	RemoteVolumeResourceID *string `json:"remoteVolumeResourceId,omitempty"`
 }
 
+// AzureEntityResource the resource model definition for an Azure Resource Manager resource with an etag.
+type AzureEntityResource struct {
+	// Etag - READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // Backup backup of a Volume
 type Backup struct {
 	autorest.Response `json:"-"`
@@ -1988,6 +2006,12 @@ type HourlySchedule struct {
 	UsedBytes *int64 `json:"usedBytes,omitempty"`
 }
 
+// LogSpecification log Definition of a single resource metric.
+type LogSpecification struct {
+	Name        *string `json:"name,omitempty"`
+	DisplayName *string `json:"displayName,omitempty"`
+}
+
 // MetricSpecification metric specification of operation.
 type MetricSpecification struct {
 	// Name - Name of metric specification.
@@ -2004,6 +2028,8 @@ type MetricSpecification struct {
 	SupportedTimeGrainTypes *[]string `json:"supportedTimeGrainTypes,omitempty"`
 	// InternalMetricName - The internal metric name.
 	InternalMetricName *string `json:"internalMetricName,omitempty"`
+	// EnableRegionalMdmAccount - Whether or not the service is using regional MDM accounts.
+	EnableRegionalMdmAccount *bool `json:"enableRegionalMdmAccount,omitempty"`
 	// SourceMdmAccount - The source MDM account.
 	SourceMdmAccount *string `json:"sourceMdmAccount,omitempty"`
 	// SourceMdmNamespace - The source MDM namespace.
@@ -2018,6 +2044,8 @@ type MetricSpecification struct {
 	Category *string `json:"category,omitempty"`
 	// ResourceIDDimensionNameOverride - Account Resource Id.
 	ResourceIDDimensionNameOverride *string `json:"resourceIdDimensionNameOverride,omitempty"`
+	// IsInternal - Whether the metric is internal.
+	IsInternal *bool `json:"isInternal,omitempty"`
 }
 
 // MonthlySchedule monthly Schedule properties
@@ -2443,6 +2471,23 @@ func (future *PoolsUpdateFuture) result(client PoolsClient) (cp CapacityPool, er
 	return
 }
 
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
+type ProxyResource struct {
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ProxyResource.
+func (pr ProxyResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // QuotaAvailabilityRequest quota availability request content.
 type QuotaAvailabilityRequest struct {
 	// Name - Name of the resource to verify.
@@ -2480,6 +2525,22 @@ type ReplicationStatus struct {
 	TotalProgress *string `json:"totalProgress,omitempty"`
 	// ErrorMessage - Displays error message if the replication is in an error state
 	ErrorMessage *string `json:"errorMessage,omitempty"`
+}
+
+// Resource common fields that are returned in the response for all Azure Resource Manager resources
+type Resource struct {
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Resource.
+func (r Resource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
 }
 
 // ResourceIdentity identity for the resource.
@@ -2538,6 +2599,7 @@ func (rs RestoreStatus) MarshalJSON() ([]byte, error) {
 type ServiceSpecification struct {
 	// MetricSpecifications - Metric specifications of operation.
 	MetricSpecifications *[]MetricSpecification `json:"metricSpecifications,omitempty"`
+	LogSpecifications    *[]LogSpecification    `json:"logSpecifications,omitempty"`
 }
 
 // Snapshot snapshot of a Volume
@@ -3216,6 +3278,113 @@ func (future *SnapshotsUpdateFuture) result(client SnapshotsClient) (s Snapshot,
 	return
 }
 
+// SubscriptionQuotaItem information regarding Subscription Quota Item.
+type SubscriptionQuotaItem struct {
+	autorest.Response `json:"-"`
+	// SubscriptionQuotaItemProperties - SubscriptionQuotaItem properties
+	*SubscriptionQuotaItemProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SubscriptionQuotaItem.
+func (sqi SubscriptionQuotaItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if sqi.SubscriptionQuotaItemProperties != nil {
+		objectMap["properties"] = sqi.SubscriptionQuotaItemProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SubscriptionQuotaItem struct.
+func (sqi *SubscriptionQuotaItem) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var subscriptionQuotaItemProperties SubscriptionQuotaItemProperties
+				err = json.Unmarshal(*v, &subscriptionQuotaItemProperties)
+				if err != nil {
+					return err
+				}
+				sqi.SubscriptionQuotaItemProperties = &subscriptionQuotaItemProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				sqi.SystemData = &systemData
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				sqi.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sqi.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sqi.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// SubscriptionQuotaItemList list of Subscription Quota Items
+type SubscriptionQuotaItemList struct {
+	autorest.Response `json:"-"`
+	// Value - A list of SubscriptionQuotaItems
+	Value *[]SubscriptionQuotaItem `json:"value,omitempty"`
+}
+
+// SubscriptionQuotaItemProperties subscriptionQuotaItem Properties
+type SubscriptionQuotaItemProperties struct {
+	// Name - READ-ONLY; Quota Item name
+	Name *string `json:"name,omitempty"`
+	// Current - READ-ONLY; The current quota value.
+	Current *int32 `json:"current,omitempty"`
+	// Default - READ-ONLY; The default quota value.
+	Default *int32 `json:"default,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SubscriptionQuotaItemProperties.
+func (sqip SubscriptionQuotaItemProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // SystemData metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// CreatedBy - The identity that created the resource.
@@ -3230,6 +3399,33 @@ type SystemData struct {
 	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
 	// LastModifiedAt - The timestamp of resource last modification (UTC)
 	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
+}
+
+// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
+type TrackedResource struct {
+	// Tags - Resource tags.
+	Tags map[string]*string `json:"tags"`
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for TrackedResource.
+func (tr TrackedResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if tr.Tags != nil {
+		objectMap["tags"] = tr.Tags
+	}
+	if tr.Location != nil {
+		objectMap["location"] = tr.Location
+	}
+	return json.Marshal(objectMap)
 }
 
 // Vault vault information
@@ -3782,9 +3978,15 @@ type VolumeProperties struct {
 	BaremetalTenantID *string `json:"baremetalTenantId,omitempty"`
 	// SubnetID - The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes
 	SubnetID *string `json:"subnetId,omitempty"`
+	// NetworkFeatures - Basic network, or Standard features available to the volume. Possible values include: 'NetworkFeaturesBasic', 'NetworkFeaturesStandard'
+	NetworkFeatures NetworkFeatures `json:"networkFeatures,omitempty"`
+	// NetworkSiblingSetID - READ-ONLY; Network Sibling Set ID for the the group of volumes sharing networking resources.
+	NetworkSiblingSetID *string `json:"networkSiblingSetId,omitempty"`
+	// StorageToNetworkProximity - READ-ONLY; Provides storage to network proximity information for the volume. Possible values include: 'VolumeStorageToNetworkProximityDefault', 'VolumeStorageToNetworkProximityT1', 'VolumeStorageToNetworkProximityT2'
+	StorageToNetworkProximity VolumeStorageToNetworkProximity `json:"storageToNetworkProximity,omitempty"`
 	// MountTargets - READ-ONLY; List of mount targets
 	MountTargets *[]MountTargetProperties `json:"mountTargets,omitempty"`
-	// VolumeType - What type of volume is this
+	// VolumeType - What type of volume is this. For destination volumes in Cross Region Replication, set type to DataProtection
 	VolumeType *string `json:"volumeType,omitempty"`
 	// DataProtection - DataProtection type volumes include an object containing details of the replication
 	DataProtection *VolumePropertiesDataProtection `json:"dataProtection,omitempty"`
@@ -3849,6 +4051,9 @@ func (vp VolumeProperties) MarshalJSON() ([]byte, error) {
 	}
 	if vp.SubnetID != nil {
 		objectMap["subnetId"] = vp.SubnetID
+	}
+	if vp.NetworkFeatures != "" {
+		objectMap["networkFeatures"] = vp.NetworkFeatures
 	}
 	if vp.VolumeType != nil {
 		objectMap["volumeType"] = vp.VolumeType

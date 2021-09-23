@@ -63,7 +63,7 @@ func (client IotHubClient) ManualFailover(ctx context.Context, iotHubName string
 
 	result, err = client.ManualFailoverSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devices.IotHubClient", "ManualFailover", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "devices.IotHubClient", "ManualFailover", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -97,6 +97,7 @@ func (client IotHubClient) ManualFailoverPreparer(ctx context.Context, iotHubNam
 // http.Response Body if it receives an error.
 func (client IotHubClient) ManualFailoverSender(req *http.Request) (future IotHubManualFailoverFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

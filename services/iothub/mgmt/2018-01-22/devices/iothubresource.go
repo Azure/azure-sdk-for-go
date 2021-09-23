@@ -195,7 +195,8 @@ func (client IotHubResourceClient) CreateEventHubConsumerGroupResponder(resp *ht
 
 // CreateOrUpdate create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve
 // the IoT hub metadata and security metadata, and then combine them with the modified values in a new body to update
-// the IoT hub.
+// the IoT hub. If certain properties are missing in the JSON, updating IoT Hub may cause these values to fallback to
+// default, which may lead to unexpected behavior.
 // Parameters:
 // resourceGroupName - the name of the resource group that contains the IoT hub.
 // resourceName - the name of the IoT hub.
@@ -251,7 +252,7 @@ func (client IotHubResourceClient) CreateOrUpdate(ctx context.Context, resourceG
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -289,6 +290,7 @@ func (client IotHubResourceClient) CreateOrUpdatePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) CreateOrUpdateSender(req *http.Request) (future IotHubResourceCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -335,7 +337,7 @@ func (client IotHubResourceClient) Delete(ctx context.Context, resourceGroupName
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -367,6 +369,7 @@ func (client IotHubResourceClient) DeletePreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) DeleteSender(req *http.Request) (future IotHubResourceDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -384,7 +387,7 @@ func (client IotHubResourceClient) DeleteResponder(resp *http.Response) (result 
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent, http.StatusNotFound),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -1883,7 +1886,7 @@ func (client IotHubResourceClient) Update(ctx context.Context, resourceGroupName
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "devices.IotHubResourceClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1917,6 +1920,7 @@ func (client IotHubResourceClient) UpdatePreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client IotHubResourceClient) UpdateSender(req *http.Request) (future IotHubResourceUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

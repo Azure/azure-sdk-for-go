@@ -78,42 +78,6 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	}
 }
 
-func TestInteractiveBrowserCredential_SetPort(t *testing.T) {
-	srv, close := mock.NewTLSServer(mock.WithHTTP2Enabled(true))
-	defer close()
-	tr := &http.Transport{}
-	if err := http2.ConfigureTransport(tr); err != nil {
-		t.Fatalf("Failed to configure http2 transport: %v", err)
-	}
-	tr.TLSClientConfig.InsecureSkipVerify = true
-	client := &http.Client{Transport: tr}
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := InteractiveBrowserCredentialOptions{}
-	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = client
-	options.Port = 8080
-	cred, err := NewInteractiveBrowserCredential(&options)
-	if err != nil {
-		t.Fatalf("Unable to create credential. Received: %v", err)
-	}
-	authCodeReceiver = func(ctx context.Context, authorityHost string, opts *InteractiveBrowserCredentialOptions, scopes []string) (*interactiveConfig, error) {
-		if opts.Port != 8080 {
-			t.Fatalf("Did not receive the correct port. Expected: %v, Received: %v", 8080, opts.Port)
-		}
-		return &interactiveConfig{
-			authCode:    "12345",
-			redirectURI: srv.URL(),
-		}, nil
-	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"https://storage.azure.com/.default"}})
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %v", err)
-	}
-	if tk.Token != "new_token" {
-		t.Fatal("Received unexpected token")
-	}
-}
-
 func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewTLSServer(mock.WithHTTP2Enabled(true))
 	defer close()
@@ -125,7 +89,6 @@ func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	client := &http.Client{Transport: tr}
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
 	options := InteractiveBrowserCredentialOptions{}
-	options.ClientSecret = wrongSecret
 	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = client
 	cred, err := NewInteractiveBrowserCredential(&options)

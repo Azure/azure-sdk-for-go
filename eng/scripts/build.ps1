@@ -20,22 +20,14 @@ function Process-Sdk () {
         Write-Host "##[command]Executing autorest.go in " $currentDirectory
         $autorestPath = "./" + $config
 
-        if (ShouldGenerate-AutorestConfig $autorestPath) {
-            Generate-AutorestConfig $autorestPath
-            $removeAutorestFile = $true
-        }
-
         $autorestVersion = "@autorest/go@4.0.0-preview.27"
         if ($outputFolder -eq '') {
             $outputFolder = $currentDirectory
         }
-        autorest --use=$autorestVersion --go --track2 --go-sdk-folder=$root --output-folder=$outputFolder --file-prefix="zz_generated_" --clear-output-folder=false $autorestPath
+        autorest --use=$autorestVersion --go --track2 --output-folder=$outputFolder --file-prefix="zz_generated_" --clear-output-folder=false $autorestPath
         if ($LASTEXITCODE) {
             Write-Host "##[error]Error running autorest.go"
             exit $LASTEXITCODE
-        }
-        if ($removeAutorestFile) {
-            Remove-Item $autorestPath
         }
     }
 

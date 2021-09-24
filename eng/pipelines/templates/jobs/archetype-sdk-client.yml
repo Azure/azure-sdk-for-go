@@ -1,12 +1,15 @@
 parameters:
-  - name:  ServiceDirectory
+  - name: ServiceDirectory
     type: string
     default: ''
-  - name:  RunTests
-    type: string
+  - name: RunTests
+    type: boolean
     default: false
-  - name:  RunLiveTests
-    type: string
+  - name: RunLiveTests
+    type: boolean
+    default: false
+  - name: NonShipping
+    type: boolean
     default: false
   - name: Clouds
     type: string
@@ -131,6 +134,7 @@ stages:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           GoWorkspace: $(GO_WORKSPACE_PATH)
           LintVersion: $(GoLintCLIVersion)
+          NonShipping: ${{ parameters.NonShipping }}
 
   # Run live tests for internal only, not public CI builds. This can be triggered manually for via an `/azp run` comment.
   - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:

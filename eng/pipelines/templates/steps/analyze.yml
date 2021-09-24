@@ -3,6 +3,8 @@ parameters:
   ServiceDirectory: ''
   GoWorkspace: ''
   LintVersion: ''
+  NonShipping: false
+
 
 steps:
 
@@ -56,7 +58,8 @@ steps:
 
   - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
-  - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-    parameters:
-      PackageName: 'sdk/${{parameters.ServiceDirectory}}'
-      ForRelease: false
+  - ${{if eq(parameters.NonShipping, 'false')}}:
+    - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+      parameters:
+        PackageName: 'sdk/${{parameters.ServiceDirectory}}'
+        ForRelease: false

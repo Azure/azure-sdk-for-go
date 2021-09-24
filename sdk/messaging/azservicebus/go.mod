@@ -22,3 +22,6 @@ require (
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	nhooyr.io/websocket v1.8.6
 )
+
+// remove after go-amqp releases https://github.com/Azure/go-amqp/pull/72
+replace github.com/Azure/go-amqp v0.15.0 => github.com/Azure/go-amqp v0.15.1-0.20210923181113-8f9a02b39d60

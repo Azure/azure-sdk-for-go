@@ -170,7 +170,123 @@ func TestReceiverSendAndReceiveManyTimes(t *testing.T) {
 	require.EqualValues(t, len(allMessages), 100)
 }
 
+func TestReceiverDeferAndReceiveDeferredMessages(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t)
+	defer cleanup()
+
+	sender, err := client.NewSender(queueName)
+	require.NoError(t, err)
+
+	ctx := context.TODO()
+
+	defer sender.Close(ctx)
+
+	err = sender.SendMessage(ctx, &Message{
+		Body: []byte("deferring a message"),
+	})
+	require.NoError(t, err)
+
+	receiver, err := client.NewReceiver(ReceiverWithQueue(queueName))
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(ctx, 1)
+	require.NoError(t, err)
+
+	var sequenceNumbers []int64
+
+	for _, m := range messages {
+		err = receiver.DeferMessage(ctx, m)
+		require.NoError(t, err)
+
+		sequenceNumbers = append(sequenceNumbers, *m.SequenceNumber)
+	}
+
+	deferredMessages, err := receiver.ReceiveDeferredMessages(ctx, sequenceNumbers)
+	require.NoError(t, err)
+
+	require.EqualValues(t, []string{"deferring a message"}, getSortedBodies(deferredMessages))
+
+	for _, m := range deferredMessages {
+		err = receiver.CompleteMessage(ctx, m)
+		require.NoError(t, err)
+	}
+}
+
+func TestReceiverPeek(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t)
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(queueName)
+	require.NoError(t, err)
+
+	ctx := context.TODO()
+
+	defer sender.Close(ctx)
+
+	batch, err := sender.NewMessageBatch(ctx)
+	require.NoError(t, err)
+
+	for i := 0; i < 3; i++ {
+		err = batch.Add(&Message{
+			Body: []byte(fmt.Sprintf("Message %d", i)),
+		})
+		require.NoError(t, err)
+	}
+
+	err = sender.SendMessage(ctx, batch)
+	require.NoError(t, err)
+
+	receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
+	require.NoError(t, err)
+
+	// wait for a message to show up
+	messages, err := receiver.ReceiveMessages(ctx, 1)
+	require.NoError(t, err)
+
+	// put them all back
+	for _, m := range messages {
+		require.NoError(t, receiver.AbandonMessage(ctx, m))
+	}
+
+	peekedMessages, err := receiver.PeekMessages(ctx, 2)
+	require.NoError(t, err)
+	require.EqualValues(t, 2, len(peekedMessages))
+
+	peekedMessages2, err := receiver.PeekMessages(ctx, 2)
+	require.NoError(t, err)
+	require.EqualValues(t, 1, len(peekedMessages2))
+
+	require.EqualValues(t, []string{
+		"Message 0", "Message 1", "Message 2",
+	}, getSortedBodies(append(peekedMessages, peekedMessages2...)))
+}
+
 func TestReceiverUnitTests(t *testing.T) {
+	receiver := &Receiver{}
+	require.NoError(t, ReceiverWithSubQueue(SubQueueDeadLetter)(receiver))
+	require.EqualValues(t, SubQueueDeadLetter, receiver.config.Entity.Subqueue)
+
+	receiver = &Receiver{}
+	require.NoError(t, ReceiverWithSubQueue(SubQueueTransfer)(receiver))
+	require.EqualValues(t, SubQueueTransfer, receiver.config.Entity.Subqueue)
+
+	receiver = &Receiver{}
+	require.NoError(t, ReceiverWithQueue("queue1")(receiver))
+	require.EqualValues(t, "queue1", receiver.config.Entity.Queue)
+
+	receiver = &Receiver{}
+	require.NoError(t, ReceiverWithSubscription("topic1", "subscription1")(receiver))
+	require.EqualValues(t, "topic1", receiver.config.Entity.Topic)
+	require.EqualValues(t, "subscription1", receiver.config.Entity.Subscription)
+
+	receiver = &Receiver{}
+	require.NoError(t, ReceiverWithReceiveMode(PeekLock)(receiver))
+	require.EqualValues(t, PeekLock, receiver.config.ReceiveMode)
+
+	receiver = &Receiver{}
+	require.NoError(t, ReceiverWithReceiveMode(ReceiveAndDelete)(receiver))
+	require.EqualValues(t, ReceiveAndDelete, receiver.config.ReceiveMode)
+
 	// If an error occurs and we have some messages accumulated in our internal
 	// buffer we will still return them to the user.
 	//

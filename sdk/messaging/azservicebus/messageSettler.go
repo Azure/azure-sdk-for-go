@@ -7,7 +7,6 @@ import (
 	"context"
 	"errors"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/go-amqp"
 )
@@ -17,6 +16,12 @@ var errReceiveAndDeleteReceiver = errors.New("messages that are received in rece
 type messageSettler struct {
 	links                  internal.AMQPLinks
 	onlyDoBackupSettlement bool
+}
+
+func (s *messageSettler) useManagementLink(m *ReceivedMessage, linkRevision uint64) bool {
+	return s.onlyDoBackupSettlement ||
+		m.deferred ||
+		m.linkRevision != linkRevision
 }
 
 // CompleteMessage completes a message, deleting it from the queue or subscription.
@@ -31,8 +36,7 @@ func (s *messageSettler) CompleteMessage(ctx context.Context, message *ReceivedM
 		return err
 	}
 
-	// complete
-	if s.onlyDoBackupSettlement || message.linkRevision != linkRevision {
+	if s.useManagementLink(message, linkRevision) {
 		return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), internal.Disposition{Status: internal.CompletedDisposition})
 	}
 
@@ -53,8 +57,7 @@ func (s *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedMe
 		return err
 	}
 
-	if s.onlyDoBackupSettlement || linkRevision != message.linkRevision {
-		// abandon
+	if s.useManagementLink(message, linkRevision) {
 		d := internal.Disposition{
 			Status: internal.AbandonedDisposition,
 		}
@@ -71,16 +74,20 @@ func (s *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMess
 		return errReceiveAndDeleteReceiver
 	}
 
-	// TODO: this looks totally silly, but the settlement methods are moving
-	// to 'receiver' in the next go-amqp rev _and_ we need to figure out how to do
-	// backup 'defer' settlement.
-	_, _, _, _, err := s.links.Get(ctx)
+	_, _, mgmt, linkRevision, err := s.links.Get(ctx)
 
 	if err != nil {
 		return err
 	}
 
-	return message.RawAMQPMessage.Modify(ctx, true, true, nil)
+	if s.useManagementLink(message, linkRevision) {
+		d := internal.Disposition{
+			Status: internal.DeferredDisposition,
+		}
+		return mgmt.SendDisposition(ctx, message.LockToken, d)
+	}
+
+	return message.RawAMQPMessage.Modify(ctx, false, true, nil)
 }
 
 type DeadLetterOptions struct {
@@ -134,18 +141,30 @@ func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *Receive
 		return err
 	}
 
-	if s.onlyDoBackupSettlement || linkRevision != message.linkRevision {
+	reason := ""
+
+	if deadLetterOptions.reason != nil {
+		reason = *deadLetterOptions.reason
+	}
+
+	description := ""
+
+	if deadLetterOptions.errorDescription != nil {
+		description = *deadLetterOptions.errorDescription
+	}
+
+	if s.useManagementLink(message, linkRevision) {
 		d := internal.Disposition{
 			Status:                internal.SuspendedDisposition,
-			DeadLetterDescription: to.StringPtr(err.Error()),
-			DeadLetterReason:      to.StringPtr("amqp:error"),
+			DeadLetterDescription: &description,
+			DeadLetterReason:      &reason,
 		}
 		return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), d)
 	}
 
 	info := map[string]interface{}{
-		"DeadLetterReason":           deadLetterOptions.reason,
-		"DeadLetterErrorDescription": deadLetterOptions.errorDescription,
+		"DeadLetterReason":           reason,
+		"DeadLetterErrorDescription": description,
 	}
 
 	if deadLetterOptions.propertiesToModify != nil {

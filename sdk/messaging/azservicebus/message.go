@@ -37,6 +37,8 @@ type (
 
 		// the 'revision' of the link we received on (ie, if it was recovered it won't match)
 		linkRevision uint64
+
+		deferred bool
 	}
 
 	// Message is a SendableMessage which can be sent using a Client.NewSender().

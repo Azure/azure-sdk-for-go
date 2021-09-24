@@ -30,6 +30,7 @@ const (
 	CompletedDisposition DispositionStatus = "completed"
 	AbandonedDisposition DispositionStatus = "abandoned"
 	SuspendedDisposition DispositionStatus = "suspended"
+	DeferredDisposition  DispositionStatus = "defered"
 )
 
 type (
@@ -60,6 +61,8 @@ const (
 type MgmtClient interface {
 	Close(ctx context.Context) error
 	SendDisposition(ctx context.Context, lockToken *amqp.UUID, state Disposition) error
+	ReceiveDeferred(ctx context.Context, mode ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error)
+	PeekMessages(ctx context.Context, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error)
 }
 
 func newMgmtClient(ctx context.Context, managementPath string, ns NamespaceForMgmtClient) (MgmtClient, error) {
@@ -197,7 +200,7 @@ func isAMQPTransientError(ctx context.Context, err error) bool {
 	return false
 }
 
-func (mc *mgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, sequenceNumbers ...int64) ([]*amqp.Message, error) {
+func (mc *mgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
 	ctx, span := startConsumerSpanFromContext(ctx, spanNameReceiveDeferred)
 	defer span.End()
 
@@ -285,7 +288,7 @@ func (mc *mgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, seq
 	return transformedMessages, nil
 }
 
-func (mc *mgmtClient) GetNextPage(ctx context.Context, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error) {
+func (mc *mgmtClient) PeekMessages(ctx context.Context, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error) {
 	ctx, span := startConsumerSpanFromContext(ctx, spanPeekFromSequenceNumber)
 	defer span.End()
 
@@ -312,7 +315,8 @@ func (mc *mgmtClient) GetNextPage(ctx context.Context, fromSequenceNumber int64,
 	}
 
 	if rsp.Code == 204 {
-		return nil, ErrNoMessages{}
+		// no messages available
+		return nil, nil
 	}
 
 	// Peeked messages come back in a relatively convoluted manner:

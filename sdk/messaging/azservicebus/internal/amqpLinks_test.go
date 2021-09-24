@@ -112,10 +112,20 @@ func TestAMQPLinks(t *testing.T) {
 	require.EqualValues(t, 1, *createLinkCallCount, "No create call needed since an instance was cached")
 
 	// closing multiple times is fine.
+	asAMQPLinks, ok := links.(*amqpLinks)
+	require.True(t, ok)
+
 	require.NoError(t, links.Close(context.Background(), false))
+	require.False(t, asAMQPLinks.closedPermanently)
+
 	require.NoError(t, links.Close(context.Background(), true))
+	require.True(t, asAMQPLinks.closedPermanently)
+
 	require.NoError(t, links.Close(context.Background(), true))
+	require.True(t, asAMQPLinks.closedPermanently)
+
 	require.NoError(t, links.Close(context.Background(), false))
+	require.True(t, asAMQPLinks.closedPermanently)
 
 	// and the individual links are closed as well
 	require.EqualValues(t, 1, fakeSender.closed)
@@ -129,7 +139,7 @@ func TestAMQPLinks(t *testing.T) {
 	require.Nil(t, mgmt)
 	require.EqualValues(t, 0, linkRevision)
 
-	_, ok := err.(NonRetriable)
+	_, ok = err.(NonRetriable)
 	require.True(t, ok)
 }
 

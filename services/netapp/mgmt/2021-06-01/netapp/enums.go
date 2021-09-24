@@ -204,6 +204,21 @@ func PossibleMirrorStateValues() []MirrorState {
 	return []MirrorState{MirrorStateBroken, MirrorStateMirrored, MirrorStateUninitialized}
 }
 
+// NetworkFeatures enumerates the values for network features.
+type NetworkFeatures string
+
+const (
+	// NetworkFeaturesBasic Basic network feature.
+	NetworkFeaturesBasic NetworkFeatures = "Basic"
+	// NetworkFeaturesStandard Standard network feature.
+	NetworkFeaturesStandard NetworkFeatures = "Standard"
+)
+
+// PossibleNetworkFeaturesValues returns an array of possible values for the NetworkFeatures const type.
+func PossibleNetworkFeaturesValues() []NetworkFeatures {
+	return []NetworkFeatures{NetworkFeaturesBasic, NetworkFeaturesStandard}
+}
+
 // QosType enumerates the values for qos type.
 type QosType string
 
@@ -283,4 +298,21 @@ const (
 // PossibleServiceLevelValues returns an array of possible values for the ServiceLevel const type.
 func PossibleServiceLevelValues() []ServiceLevel {
 	return []ServiceLevel{ServiceLevelPremium, ServiceLevelStandard, ServiceLevelStandardZRS, ServiceLevelUltra}
+}
+
+// VolumeStorageToNetworkProximity enumerates the values for volume storage to network proximity.
+type VolumeStorageToNetworkProximity string
+
+const (
+	// VolumeStorageToNetworkProximityDefault Basic storage to network connectivity.
+	VolumeStorageToNetworkProximityDefault VolumeStorageToNetworkProximity = "Default"
+	// VolumeStorageToNetworkProximityT1 Standard T1 storage to network connectivity.
+	VolumeStorageToNetworkProximityT1 VolumeStorageToNetworkProximity = "T1"
+	// VolumeStorageToNetworkProximityT2 Standard T2 storage to network connectivity.
+	VolumeStorageToNetworkProximityT2 VolumeStorageToNetworkProximity = "T2"
+)
+
+// PossibleVolumeStorageToNetworkProximityValues returns an array of possible values for the VolumeStorageToNetworkProximity const type.
+func PossibleVolumeStorageToNetworkProximityValues() []VolumeStorageToNetworkProximity {
+	return []VolumeStorageToNetworkProximity{VolumeStorageToNetworkProximityDefault, VolumeStorageToNetworkProximityT1, VolumeStorageToNetworkProximityT2}
 }

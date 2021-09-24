@@ -39,7 +39,7 @@ type InteractiveBrowserCredentialOptions struct {
 	Port int
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
-	AuthorityHost string
+	AuthorityHost AuthorityHost
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
 	HTTPClient policy.Transporter

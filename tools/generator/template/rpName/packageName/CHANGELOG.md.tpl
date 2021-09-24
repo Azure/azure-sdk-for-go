@@ -1,3 +1,3 @@
 # Release History
 
-## v0.1.0 (released)
+## 0.1.0 ({{releaseDate}})

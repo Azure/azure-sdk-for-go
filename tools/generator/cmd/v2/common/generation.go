@@ -42,6 +42,7 @@ type GenerateParam struct {
 	SpecficVersion      string
 	SpecficPackageTitle string
 	SpecRPName          string
+	ReleaseDate         string
 }
 
 func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]GenerateResult, []error) {
@@ -191,7 +192,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		}
 
 		log.Printf("Add changelog to file...")
-		changelogMd, err := AddChangelogToFile(changelog, version, packagePath)
+		changelogMd, err := AddChangelogToFile(changelog, version, packagePath, generateParam.ReleaseDate)
 		if err != nil {
 			return nil, err
 		}

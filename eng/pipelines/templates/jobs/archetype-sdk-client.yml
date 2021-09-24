@@ -101,16 +101,10 @@ stages:
 
       - template: ../steps/create-go-workspace.yml
 
-      - template: ../steps/set-scope.yml
-        parameters:
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          GoWorkspace: $(GO_WORKSPACE_PATH)
-
       - template: ../steps/build-test.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           GoWorkspace: $(GO_WORKSPACE_PATH)
-          Scope: $(SCOPE)
           Image: $(vm.image)
           GoVersion: $(go.version)
           RunTests: ${{ parameters.RunTests }}
@@ -132,16 +126,10 @@ stages:
 
       - template: ../steps/create-go-workspace.yml
 
-      - template: ../steps/set-scope.yml
-        parameters:
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          GoWorkspace: $(GO_WORKSPACE_PATH)
-
       - template: ../steps/analyze.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           GoWorkspace: $(GO_WORKSPACE_PATH)
-          Scope: $(SCOPE)
           LintVersion: $(GoLintCLIVersion)
 
   # Run live tests for internal only, not public CI builds. This can be triggered manually for via an `/azp run` comment.

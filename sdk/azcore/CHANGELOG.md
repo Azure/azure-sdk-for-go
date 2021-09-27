@@ -1,6 +1,10 @@
 # Release History
 
-## 0.19.1 (Unreleased)
+## 0.20.0 (Unreleased)
+
+### Breaking Changes
+* Removed `azcore.Credential` and `.NewAnonymousCredential()`
+  * `NewRPRegistrationPolicy` now requires an `azcore.TokenCredential`
 
 ### Features Added
 * Updating Documentation

@@ -232,7 +232,7 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 			// for simplicity, we'll just store whatever we got and return it later if nothing else goes bad.
 			fatalError = err
 
-			if err != context.Canceled && err != context.DeadlineExceeded {
+			if !isCancelled(err) {
 				// link is dead. Close our local state so it can be recreated again on the next
 				// receiveMessage and return whatever we have (or this error if that's the best we can do)
 				if err := r.amqpLinks.Close(ctx, false); err != nil {
@@ -294,10 +294,8 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 		for {
 			am, err := receiver.Receive(ctx)
 
-			if err != nil {
-				if err != context.Canceled && err != context.DeadlineExceeded {
-					fatalError = err
-				}
+			if isCancelled(err) {
+				fatalError = err
 				break
 			}
 
@@ -374,4 +372,8 @@ func createLinkOptions(mode ReceiveMode, entityPath string) []amqp.LinkOption {
 	}
 
 	return opts
+}
+
+func isCancelled(err error) bool {
+	return errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded)
 }

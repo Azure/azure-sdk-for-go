@@ -344,7 +344,7 @@ func isRetryableSubscribeError(err error) bool {
 		err == amqp.ErrLinkDetached ||
 		err == amqp.ErrSessionClosed
 
-	if isFatalLinkError || err == context.DeadlineExceeded || err == context.Canceled {
+	if isFatalLinkError || isCancelled(err) {
 		return false
 	}
 
@@ -355,7 +355,7 @@ func isRetryableSubscribeError(err error) bool {
 // was returned from links.Get().
 // NOTE: this function panics if you pass it a nil error.
 func isRetryableLinksError(err error) bool {
-	if err == context.DeadlineExceeded || err == context.Canceled {
+	if isCancelled(err) {
 		return false
 	}
 

@@ -48,11 +48,11 @@ func runBasicSendAndReceiveTest() {
 
 	config := appinsights.NewTelemetryConfiguration(aiKey)
 
-	config.MaxBatchInterval = time.Second * 5
+	config.MaxBatchInterval = 5 * time.Second
 	telemetryClient := appinsights.NewTelemetryClientFromConfig(config)
 
 	go func() {
-		ticker := time.NewTicker(time.Second * 5)
+		ticker := time.NewTicker(5 * time.Second)
 
 		for range ticker.C {
 			log.Printf("Received: %d, Sent: %d, Exceptions: %d", atomic.LoadInt32(&messagesReceived), atomic.LoadInt32(&messagesSent), atomic.LoadInt32(&exceptions))
@@ -85,7 +85,7 @@ func runBasicSendAndReceiveTest() {
 	cleanupQueue := createQueue(telemetryClient, cs, queueName)
 	defer cleanupQueue()
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Hour*24*5)
+	ctx, cancel := context.WithTimeout(context.Background(), 24*5*time.Hour)
 	defer cancel()
 
 	serviceBusClient, err := azservicebus.NewClient(azservicebus.WithConnectionString(cs))
@@ -160,7 +160,7 @@ func continuallySend(ctx context.Context, client *azservicebus.Client, queueName
 
 	defer sender.Close(ctx)
 
-	ticker := time.NewTicker(time.Millisecond * 100)
+	ticker := time.NewTicker(100 * time.Millisecond)
 	defer ticker.Stop()
 
 	for t := range ticker.C {

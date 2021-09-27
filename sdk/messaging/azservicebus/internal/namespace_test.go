@@ -107,7 +107,7 @@ func TestNamespaceNegotiateClaim(t *testing.T) {
 	var errorsLogged []error
 
 	// fire off a basic negotiate claim. The renewal duration is so long that it won't run - that's a separate test.
-	cancel, err := ns.negotiateClaimImpl(context.Background(), "my entity path", time.Hour*24, cbsNegotiateClaim, getAMQPClient, func(err error) {
+	cancel, err := ns.negotiateClaimImpl(context.Background(), "my entity path", 24*time.Hour, cbsNegotiateClaim, getAMQPClient, func(err error) {
 		errorsLogged = append(errorsLogged, err)
 	})
 	defer cancel()
@@ -160,7 +160,7 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 	defer cancel()
 
 	require.NoError(t, err)
-	time.Sleep(time.Second * 3) // make sure, even with variability, we get at least one renewal
+	time.Sleep(3 * time.Second) // make sure, even with variability, we get at least one renewal
 
 	<-notify
 

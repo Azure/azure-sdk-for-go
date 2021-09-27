@@ -64,7 +64,7 @@ func TestReceiverForceTimeoutWithTooFewMessages(t *testing.T) {
 	require.NoError(t, err)
 
 	// there's only one message, requesting more messages will time out.
-	messages, err := receiver.ReceiveMessages(context.Background(), 1+1, ReceiveWithMaxWaitTime(time.Second*10))
+	messages, err := receiver.ReceiveMessages(context.Background(), 1+1, ReceiveWithMaxWaitTime(10*time.Second))
 	require.NoError(t, err)
 
 	require.EqualValues(t,
@@ -124,7 +124,7 @@ func TestReceiveWithEarlyFirstMessageTimeout(t *testing.T) {
 
 	startTime := time.Now()
 	messages, err := receiver.ReceiveMessages(context.Background(), 1,
-		ReceiveWithMaxWaitTime(time.Minute*10), // this is never meant to be hit since the first message time is so short.
+		ReceiveWithMaxWaitTime(10*time.Minute), // this is never meant to be hit since the first message time is so short.
 		ReceiveWithMaxTimeAfterFirstMessage(time.Millisecond))
 
 	require.NoError(t, err)
@@ -156,7 +156,7 @@ func TestReceiverSendAndReceiveManyTimes(t *testing.T) {
 	var allMessages []*ReceivedMessage
 
 	for i := 0; i < 100; i++ {
-		messages, err := receiver.ReceiveMessages(context.Background(), 1, ReceiveWithMaxWaitTime(time.Second*10))
+		messages, err := receiver.ReceiveMessages(context.Background(), 1, ReceiveWithMaxWaitTime(10*time.Second))
 		require.NoError(t, err)
 		allMessages = append(allMessages, messages...)
 

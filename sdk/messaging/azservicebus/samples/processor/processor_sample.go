@@ -93,7 +93,7 @@ func main() {
 	}
 
 	log.Printf("Waiting for 30 seconds for any messages to arrive")
-	time.Sleep(time.Second * 30)
+	time.Sleep(30 * time.Second)
 
 	if err := processor.Close(context.TODO()); err != nil {
 		log.Fatalf("Failed to close processor: %s", err.Error())

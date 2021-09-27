@@ -59,8 +59,8 @@ func TestAMQPMessageToReceivedMessage(t *testing.T) {
 
 	t.Run("annotations", func(t *testing.T) {
 		lockedUntil := time.Now().Add(time.Hour)
-		enqueuedTime := time.Now().Add(time.Hour * 2)
-		scheduledEnqueueTime := time.Now().Add(time.Hour * 3)
+		enqueuedTime := time.Now().Add(2 * time.Hour)
+		scheduledEnqueueTime := time.Now().Add(3 * time.Hour)
 
 		amqpMessage := &amqp.Message{
 			Annotations: map[interface{}]interface{}{

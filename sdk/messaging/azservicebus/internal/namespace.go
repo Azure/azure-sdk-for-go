@@ -186,7 +186,7 @@ func NewNamespace(opts ...NamespaceOption) (*Namespace, error) {
 			MaxRetries: 5,
 			Backoff: backoff.Backoff{
 				Factor: 1,
-				Min:    time.Second * 5,
+				Min:    5 * time.Second,
 			},
 		},
 	}

@@ -19,7 +19,7 @@ func TestProcessorReceiveWithDefaults(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t)
 	defer cleanup()
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*2)
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
 
 	go func() {
@@ -81,7 +81,7 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t)
 	defer cleanup()
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*2)
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
 
 	const numMessages = 100

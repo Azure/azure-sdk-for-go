@@ -137,7 +137,7 @@ func newProcessor(ns internal.NamespaceWithNewAMQPLinks, options ...ProcessorOpt
 			}{
 				// TODO: allow these to be configured.
 				Times: 10,
-				Delay: time.Second * 5,
+				Delay: 5 * time.Second,
 			},
 		},
 

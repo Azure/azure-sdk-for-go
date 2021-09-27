@@ -26,8 +26,8 @@ type (
 	// SendableMessage are sendable using Sender.SendMessage.
 	// Message, MessageBatch implement this interface.
 	SendableMessage interface {
-		ToAMQPMessage() *amqp.Message
-		MessageType() string
+		toAMQPMessage() *amqp.Message
+		messageType() string
 	}
 )
 
@@ -80,7 +80,7 @@ func (s *Sender) NewMessageBatch(ctx context.Context, options ...MessageBatchOpt
 // Message can be a MessageBatch (created using `Sender.CreateMessageBatch`) or
 // a Message.
 func (s *Sender) SendMessage(ctx context.Context, message SendableMessage) error {
-	ctx, span := s.startProducerSpanFromContext(ctx, fmt.Sprintf(spanNameSendMessageFmt, message.MessageType()))
+	ctx, span := s.startProducerSpanFromContext(ctx, fmt.Sprintf(spanNameSendMessageFmt, message.messageType()))
 	defer span.End()
 
 	sender, _, _, _, err := s.links.Get(ctx)
@@ -89,7 +89,7 @@ func (s *Sender) SendMessage(ctx context.Context, message SendableMessage) error
 		return err
 	}
 
-	return sender.Send(ctx, message.ToAMQPMessage())
+	return sender.Send(ctx, message.toAMQPMessage())
 }
 
 // Close permanently closes the Sender.

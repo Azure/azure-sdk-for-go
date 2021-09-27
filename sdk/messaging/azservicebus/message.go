@@ -92,11 +92,11 @@ func (m *Message) GetKeyValues() map[string]interface{} {
 	return m.ApplicationProperties
 }
 
-func (m *Message) MessageType() string {
+func (m *Message) messageType() string {
 	return "Message"
 }
 
-func (m *Message) ToAMQPMessage() *amqp.Message {
+func (m *Message) toAMQPMessage() *amqp.Message {
 	amqpMsg := amqp.NewMessage(m.Body)
 
 	if m.TimeToLive != nil {

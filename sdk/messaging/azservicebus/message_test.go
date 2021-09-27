@@ -19,7 +19,7 @@ func TestMessageUnitTest(t *testing.T) {
 		message := &Message{}
 
 		// basic thing - it's totally fine to send a message nothing in it.
-		amqpMessage := message.ToAMQPMessage()
+		amqpMessage := message.toAMQPMessage()
 		require.Empty(t, amqpMessage.Annotations)
 		require.NotEmpty(t, amqpMessage.Properties.MessageID, "MessageID is (currently) automatically filled out if you don't specify one")
 
@@ -34,7 +34,7 @@ func TestMessageUnitTest(t *testing.T) {
 			ScheduledEnqueueTime:    &scheduledEnqueuedTime,
 		}
 
-		amqpMessage = message.ToAMQPMessage()
+		amqpMessage = message.toAMQPMessage()
 
 		require.EqualValues(t, "message id", amqpMessage.Properties.MessageID)
 		require.EqualValues(t, "session id", amqpMessage.Properties.GroupID)

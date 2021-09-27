@@ -115,27 +115,6 @@ func newSender(ns *internal.Namespace, queueOrTopic string) (*Sender, error) {
 	return sender, nil
 }
 
-// handleAMQPError is called internally when an event has failed to send so we
-// can parse the error to determine whether we should attempt to retry sending the event again.
-// func (s *Sender) handleAMQPError(ctx context.Context, err error) error {
-// 	var amqpError *amqp.Error
-// 	if errors.As(err, &amqpError) {
-// 		switch amqpError.Condition {
-// 		case errorServerBusy:
-// 			return s.retryRetryableAmqpError(ctx, amqpRetryDefaultTimes, amqpRetryBusyServerDelay)
-// 		case errorTimeout:
-// 			return s.retryRetryableAmqpError(ctx, amqpRetryDefaultTimes, amqpRetryDefaultDelay)
-// 		case errorOperationCancelled:
-// 			return s.retryRetryableAmqpError(ctx, amqpRetryDefaultTimes, amqpRetryDefaultDelay)
-// 		case errorContainerClose:
-// 			return s.retryRetryableAmqpError(ctx, amqpRetryDefaultTimes, amqpRetryDefaultDelay)
-// 		default:
-// 			return err
-// 		}
-// 	}
-// 	return s.retryRetryableAmqpError(ctx, amqpRetryDefaultTimes, amqpRetryDefaultDelay)
-// }
-
 func (s *Sender) startProducerSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
 	ctx, span := tab.StartSpan(ctx, operationName)
 	internal.ApplyComponentInfo(span)

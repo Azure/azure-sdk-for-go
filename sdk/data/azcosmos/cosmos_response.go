@@ -6,6 +6,8 @@ package azcosmos
 import (
 	"net/http"
 	"strconv"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // CosmosResponse is the base response type for all responses from the Azure Cosmos DB database service.
@@ -34,6 +36,6 @@ func (c *CosmosResponse) ActivityId() string {
 }
 
 // ETag contains the value from the ETag header.
-func (c *CosmosResponse) ETag() string {
-	return c.RawResponse.Header.Get(cosmosHeaderEtag)
+func (c *CosmosResponse) ETag() azcore.ETag {
+	return azcore.ETag(c.RawResponse.Header.Get(cosmosHeaderEtag))
 }

@@ -13,8 +13,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v3/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/devigned/tab"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"

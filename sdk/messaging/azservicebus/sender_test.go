@@ -8,8 +8,8 @@ import (
 	"sort"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
-	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/stretchr/testify/require"
 )
 

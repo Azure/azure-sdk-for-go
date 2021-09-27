@@ -7,9 +7,9 @@ import (
 	"context"
 	"errors"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/go-amqp"
-	"github.com/Azure/go-autorest/autorest/to"
 )
 
 var errReceiveAndDeleteReceiver = errors.New("messages that are received in receiveAndDelete mode are not settlable")

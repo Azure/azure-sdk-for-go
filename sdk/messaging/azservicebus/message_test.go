@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/go-amqp"
-	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 )

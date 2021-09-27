@@ -9,7 +9,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/go-amqp"
-	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/devigned/tab"
 )
 
@@ -63,8 +62,10 @@ func (s *Sender) NewMessageBatch(ctx context.Context, options ...MessageBatchOpt
 		return nil, err
 	}
 
+	maxMessageSize := int(sender.MaxMessageSize())
+
 	opts := &messageBatchOptions{
-		maxSizeInBytes: to.IntPtr(int(sender.MaxMessageSize())),
+		maxSizeInBytes: &maxMessageSize,
 	}
 
 	for _, opt := range options {

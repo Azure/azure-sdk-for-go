@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/Azure/azure-amqp-common-go/v3 v3.2.0
 	github.com/Azure/azure-sdk-for-go v51.1.0+incompatible
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.19.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/internal v0.7.0
 	github.com/Azure/go-amqp v0.15.0
 	github.com/Azure/go-autorest/autorest v0.11.18

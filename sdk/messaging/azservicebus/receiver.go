@@ -256,6 +256,9 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 		}
 
 		if len(messages) == 1 {
+			// once we receive a message we start a secondary
+			// timer - this one allows us to guarantee we don't hold
+			// onto messages too long.
 			go func() {
 				select {
 				case <-time.After(ropts.maxWaitTimeAfterFirstMessage):

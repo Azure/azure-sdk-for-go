@@ -34,7 +34,7 @@ type processorConfig struct {
 
 // Processor is a push-based receiver for Service Bus.
 type Processor struct {
-	*messageSettler
+	settler *messageSettler
 
 	mu        *sync.Mutex
 	amqpLinks internal.AMQPLinks
@@ -161,7 +161,7 @@ func newProcessor(ns internal.NamespaceWithNewAMQPLinks, options ...ProcessorOpt
 		linkOptions := createLinkOptions(processor.config.ReceiveMode, entityPath)
 		return createReceiverLink(ctx, session, linkOptions)
 	})
-	processor.messageSettler = &messageSettler{links: processor.amqpLinks}
+	processor.settler = &messageSettler{links: processor.amqpLinks}
 
 	processor.processorCtx, processor.cancelProcessor = context.WithCancel(context.Background())
 	processor.receiversCtx, processor.cancelReceivers = context.WithCancel(context.Background())
@@ -259,6 +259,31 @@ func (p *Processor) Close(ctx context.Context) error {
 	return utils.WaitForGroupOrContext(ctx, p.wg)
 }
 
+// CompleteMessage completes a message, deleting it from the queue or subscription.
+func (p *Processor) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
+	return p.settler.CompleteMessage(ctx, message)
+}
+
+// AbandonMessage will cause a message to be returned to the queue or subscription.
+// This will increment its delivery count, and potentially cause it to be dead lettered
+// depending on your queue or subscription's configuration.
+func (p *Processor) AbandonMessage(ctx context.Context, message *ReceivedMessage) error {
+	return p.settler.AbandonMessage(ctx, message)
+}
+
+// DeferMessage will cause a message to be deferred. Deferred messages
+// can be received using `Receiver.ReceiveDeferredMessages`.
+func (p *Processor) DeferMessage(ctx context.Context, message *ReceivedMessage) error {
+	return p.settler.DeferMessage(ctx, message)
+}
+
+// DeadLetterMessage settles a message by moving it to the dead letter queue for a
+// queue or subscription. To receive these messages create a receiver with `Client.NewProcessor()`
+// using the `ProcessorWithSubQueue()` option.
+func (p *Processor) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options ...DeadLetterOption) error {
+	return p.settler.DeadLetterMessage(ctx, message, options...)
+}
+
 func (p *Processor) subscribe(
 	ctx context.Context,
 	receiver internal.AMQPReceiver,
@@ -300,9 +325,9 @@ func (p *Processor) subscribe(
 				// NOTE: we ignore the passed in context. Since we're settling behind the scenes
 				// it's nice to wrap it up so users don't have to track it.
 				if err != nil {
-					settleErr = p.messageSettler.AbandonMessage(context.Background(), receivedMessage)
+					settleErr = p.settler.AbandonMessage(context.Background(), receivedMessage)
 				} else {
-					settleErr = p.messageSettler.CompleteMessage(context.Background(), receivedMessage)
+					settleErr = p.settler.CompleteMessage(context.Background(), receivedMessage)
 				}
 
 				if settleErr != nil {

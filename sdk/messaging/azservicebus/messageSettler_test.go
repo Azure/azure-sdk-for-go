@@ -56,7 +56,7 @@ func TestMessageSettlementUsingManagementLink(t *testing.T) {
 	require.NoError(t, err)
 
 	// toggle the super secret switch
-	receiver.messageSettler.onlyDoBackupSettlement = true
+	receiver.settler.onlyDoBackupSettlement = true
 
 	sender, err := client.NewSender(queueName)
 	require.NoError(t, err)

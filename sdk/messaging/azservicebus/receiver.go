@@ -41,7 +41,7 @@ const (
 // Receiver receives messages using pull based functions (ReceiveMessages).
 // For push-based receiving via callbacks look at the `Processor` type.
 type Receiver struct {
-	*messageSettler
+	settler *messageSettler
 
 	config struct {
 		ReceiveMode    ReceiveMode
@@ -146,7 +146,7 @@ func newReceiver(ns internal.NamespaceWithNewAMQPLinks, options ...ReceiverOptio
 
 	// 'nil' settler handles returning an error message for receiveAndDelete links.
 	if receiver.config.ReceiveMode == PeekLock {
-		receiver.messageSettler = &messageSettler{links: receiver.amqpLinks}
+		receiver.settler = &messageSettler{links: receiver.amqpLinks}
 	}
 
 	return receiver, nil
@@ -313,6 +313,31 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 // Close permanently closes the receiver.
 func (r *Receiver) Close(ctx context.Context) error {
 	return r.amqpLinks.Close(ctx, true)
+}
+
+// CompleteMessage completes a message, deleting it from the queue or subscription.
+func (r *Receiver) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
+	return r.settler.CompleteMessage(ctx, message)
+}
+
+// AbandonMessage will cause a message to be returned to the queue or subscription.
+// This will increment its delivery count, and potentially cause it to be dead lettered
+// depending on your queue or subscription's configuration.
+func (r *Receiver) AbandonMessage(ctx context.Context, message *ReceivedMessage) error {
+	return r.settler.AbandonMessage(ctx, message)
+}
+
+// DeferMessage will cause a message to be deferred. Deferred messages
+// can be received using `Receiver.ReceiveDeferredMessages`.
+func (r *Receiver) DeferMessage(ctx context.Context, message *ReceivedMessage) error {
+	return r.settler.DeferMessage(ctx, message)
+}
+
+// DeadLetterMessage settles a message by moving it to the dead letter queue for a
+// queue or subscription. To receive these messages create a receiver with `Client.NewReceiver()`
+// using the `ReceiverWithSubQueue()` option.
+func (r *Receiver) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options ...DeadLetterOption) error {
+	return r.settler.DeadLetterMessage(ctx, message, options...)
 }
 
 type entity struct {

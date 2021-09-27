@@ -21,7 +21,6 @@ import (
 	"github.com/Azure/go-amqp"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/devigned/tab"
-	"github.com/jpillora/backoff"
 	"nhooyr.io/websocket"
 )
 
@@ -182,13 +181,17 @@ func NamespaceWithTokenProvider(provider auth.TokenProvider) NamespaceOption {
 func NewNamespace(opts ...NamespaceOption) (*Namespace, error) {
 	ns := &Namespace{
 		Environment: azure.PublicCloud,
-		baseRetrier: &BackoffRetrier{
+		baseRetrier: NewBackoffRetrier(struct {
+			MaxRetries int
+			Factor     float64
+			Jitter     bool
+			Min        time.Duration
+			Max        time.Duration
+		}{
 			MaxRetries: 5,
-			Backoff: backoff.Backoff{
-				Factor: 1,
-				Min:    5 * time.Second,
-			},
-		},
+			Factor:     1,
+			Min:        5 * time.Second,
+		}),
 	}
 
 	for _, opt := range opts {

@@ -10,15 +10,6 @@ import (
 	"github.com/jpillora/backoff"
 )
 
-// TODO: we should discuss what a common policy would be.
-var DefaultRetryPolicy Retrier = &BackoffRetrier{
-	Backoff: backoff.Backoff{
-		Factor: 1,
-		Min:    5 * time.Second,
-	},
-	MaxRetries: 5,
-}
-
 // A retrier that allows you to do a basic for loop and get backoff
 // and retry limits. See `Try` for more details on how to use it.
 type Retrier interface {
@@ -48,21 +39,45 @@ type Retrier interface {
 // Encapsulates a backoff policy, which allows you to configure the amount of
 // time in between retries as well as the maximum retries allowed (via MaxRetries)
 // NOTE: this should be copied by the caller as it is stateful.
-type BackoffRetrier struct {
-	Backoff    backoff.Backoff
+type backoffRetrier struct {
+	backoff    backoff.Backoff
 	MaxRetries int
 
 	tries int
 }
 
+// NewBackoffRetrier creates a retrier that allows for configurable
+// min/max times, jitter and maximum retries.
+func NewBackoffRetrier(params struct {
+	// MaxRetries is the maximum number of tries (after the first attempt)
+	// that are allowed.
+	MaxRetries int
+	// Factor is the multiplying factor for each increment step
+	Factor float64
+	// Jitter eases contention by randomizing backoff steps
+	Jitter bool
+	// Min and Max are the minimum and maximum values of the counter
+	Min, Max time.Duration
+}) Retrier {
+	return &backoffRetrier{
+		backoff: backoff.Backoff{
+			Factor: params.Factor,
+			Jitter: params.Jitter,
+			Min:    params.Min,
+			Max:    params.Max,
+		},
+		MaxRetries: params.MaxRetries,
+	}
+}
+
 // Copies the backoff retrier since it's stateful.
-func (rp *BackoffRetrier) Copy() Retrier {
+func (rp *backoffRetrier) Copy() Retrier {
 	copy := *rp
 	return &copy
 }
 
 // Exhausted is true if all the retries have been used.
-func (rp *BackoffRetrier) Exhausted() bool {
+func (rp *backoffRetrier) Exhausted() bool {
 	return rp.tries > rp.MaxRetries
 }
 
@@ -79,7 +94,7 @@ func (rp *BackoffRetrier) Exhausted() bool {
 //       // no more retries needed
 //    }
 //
-func (rp *BackoffRetrier) Try(ctx context.Context) bool {
+func (rp *backoffRetrier) Try(ctx context.Context) bool {
 	defer func() { rp.tries++ }()
 
 	if rp.tries == 0 {
@@ -92,7 +107,7 @@ func (rp *BackoffRetrier) Try(ctx context.Context) bool {
 	}
 
 	select {
-	case <-time.After(rp.Backoff.Duration()):
+	case <-time.After(rp.backoff.Duration()):
 		return true
 	case <-ctx.Done():
 		return false

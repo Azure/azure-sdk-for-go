@@ -6,18 +6,22 @@ package internal
 import (
 	"context"
 	"testing"
+	"time"
 
-	"github.com/jpillora/backoff"
 	"github.com/stretchr/testify/require"
 )
 
 func TestRetrier(t *testing.T) {
-	retrier := BackoffRetrier{
+	retrier := NewBackoffRetrier(struct {
+		MaxRetries int
+		Factor     float64
+		Jitter     bool
+		Min        time.Duration
+		Max        time.Duration
+	}{
 		MaxRetries: 5,
-		Backoff: backoff.Backoff{
-			Factor: 0,
-		},
-	}
+		Factor:     0,
+	})
 
 	require := require.New(t)
 

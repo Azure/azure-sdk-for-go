@@ -1,5 +1,17 @@
 #Requires -Version 7.0
-param([string]$filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, [switch]$cleanGenerated, [switch]$format, [switch]$tidy, [string]$config = "autorest.md", [string]$outputFolder)
+param(
+    [string]$filter,
+    [switch]$clean,
+    [switch]$vet,
+    [switch]$generate,
+    [switch]$skipBuild,
+    [switch]$cleanGenerated,
+    [switch]$format,
+    [switch]$tidy,
+    [string]$config = "autorest.md",
+    [string]$goExtension = "@autorest/go@4.0.0-preview.27",
+    [string]$outputFolder
+)
 
 . (Join-Path $PSScriptRoot .. common scripts common.ps1)
 
@@ -20,11 +32,10 @@ function Process-Sdk () {
         Write-Host "##[command]Executing autorest.go in " $currentDirectory
         $autorestPath = "./" + $config
 
-        $autorestVersion = "@autorest/go@4.0.0-preview.27"
         if ($outputFolder -eq '') {
             $outputFolder = $currentDirectory
         }
-        autorest --use=$autorestVersion --go --track2 --output-folder=$outputFolder --file-prefix="zz_generated_" --clear-output-folder=false $autorestPath
+        autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --file-prefix="zz_generated_" --clear-output-folder=false $autorestPath
         if ($LASTEXITCODE) {
             Write-Host "##[error]Error running autorest.go"
             exit $LASTEXITCODE

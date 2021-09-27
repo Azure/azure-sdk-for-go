@@ -21,13 +21,14 @@ const (
 	headerAuxiliaryAuthorization = "x-ms-authorization-auxiliary"
 )
 
+// BearerTokenPolicy authorizes requests with bearer tokens acquired from a TokenCredential.
 type BearerTokenPolicy struct {
 	// mainResource is the resource to be retreived using the tenant specified in the credential
 	mainResource *expiringResource
 	// auxResources are additional resources that are required for cross-tenant applications
 	auxResources map[string]*expiringResource
 	// the following fields are read-only
-	creds   azcore.TokenCredential
+	cred    azcore.TokenCredential
 	options policy.TokenRequestOptions
 }
 
@@ -59,7 +60,7 @@ type acquiringResourceState struct {
 // thread/goroutine at a time ever calls this function
 func acquire(state interface{}) (newResource interface{}, newExpiration time.Time, err error) {
 	s := state.(acquiringResourceState)
-	tk, err := s.p.creds.GetToken(s.req.Raw().Context(), s.p.options)
+	tk, err := s.p.cred.GetToken(s.req.Raw().Context(), s.p.options)
 	if err != nil {
 		return nil, time.Time{}, err
 	}
@@ -129,9 +130,12 @@ func (er *expiringResource) GetResource(state interface{}) (interface{}, error) 
 	return resource, err // Return the resource this thread/goroutine can use
 }
 
-func NewBearerTokenPolicy(creds azcore.TokenCredential, opts AuthenticationOptions) *BearerTokenPolicy {
+// NewBearerTokenPolicy creates a policy object that authorizes requests with bearer tokens.
+// cred: an azcore.TokenCredential implementation such as a credential object from azidentity
+// opts: optional settings. Pass nil to accept default values; this is the same as passing a zero-value options.
+func NewBearerTokenPolicy(cred azcore.TokenCredential, opts AuthenticationOptions) *BearerTokenPolicy {
 	p := &BearerTokenPolicy{
-		creds:        creds,
+		cred:         cred,
 		options:      opts.TokenRequest,
 		mainResource: newExpiringResource(acquire),
 	}
@@ -145,6 +149,7 @@ func NewBearerTokenPolicy(creds azcore.TokenCredential, opts AuthenticationOptio
 	return p
 }
 
+// Do authorizes a request with a bearer token
 func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 	as := acquiringResourceState{
 		p:   *b,

@@ -384,7 +384,7 @@ func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, 
 	if err != nil {
 		return nil, err
 	}
-	return c.authenticateAuthCode(ctx, opts.TenantID, opts.ClientID, cfg.authCode, opts.ClientSecret, cfg.codeVerifier, cfg.redirectURI, scopes)
+	return c.authenticateAuthCode(ctx, opts.TenantID, opts.ClientID, cfg.authCode, "", cfg.codeVerifier, cfg.redirectURI, scopes)
 }
 
 // authenticateAuthCode requests an Access Token with the authorization code and returns the token or an error in case of authentication failure.

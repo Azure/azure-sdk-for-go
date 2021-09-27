@@ -25,6 +25,7 @@
   certData, err := os.ReadFile("/cert.pem")
   cred, err := NewClientCertificateCredential("tenant", "client-id", certData, nil)
   ```
+* Removed `InteractiveBrowserCredentialOptions.ClientSecret` and `.Port`
 
 ### Features Added
 * Added connection configuration options to `DefaultAzureCredentialOptions`

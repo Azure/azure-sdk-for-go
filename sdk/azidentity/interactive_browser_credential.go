@@ -19,24 +19,18 @@ import (
 	"github.com/pkg/browser"
 )
 
-// InteractiveBrowserCredentialOptions can be used when providing additional credential information, such as a client secret.
+// InteractiveBrowserCredentialOptions provides optional configuration.
 // Use these options to modify the default pipeline behavior if necessary.
 // All zero-value fields will be initialized with their default values. Please note, that both the TenantID or ClientID fields should
 // changed together if default values are not desired.
 type InteractiveBrowserCredentialOptions struct {
-	// The Azure Active Directory tenant (directory) ID of the service principal.
-	// The default value is "organizations". If this value is changed, then also change ClientID to the corresponding value.
+	// The Azure Active Directory tenant (directory) ID of the application. Defaults to "organizations".
 	TenantID string
-	// The client (application) ID of the service principal.
-	// The default value is the developer sign on ID for the corresponding "organizations" TenantID.
+	// The ID of the application the user will sign in to. When not set, users will sign in to an Azure development application.
 	ClientID string
-	// The client secret that was generated for the App Registration used to authenticate the client. Only applies for web apps.
-	ClientSecret string
-	// The redirect URL used to request the authorization code. Must be the same URL that is configured for the App Registration.
+	// RedirectURL will be supported in a future version but presently doesn't work: https://github.com/Azure/azure-sdk-for-go/issues/15632.
+	// Applications which have "http://localhost" registered as a redirect URL need not set this option.
 	RedirectURL string
-	// The localhost port for the local server that will be used to redirect back.
-	// By default, a random port number will be selected.
-	Port int
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost AuthorityHost
@@ -125,10 +119,7 @@ func interactiveBrowserLogin(ctx context.Context, authorityHost string, opts *In
 	if err != nil {
 		return nil, err
 	}
-	redirectURL := opts.RedirectURL
-	if redirectURL == "" {
-		redirectURL = rs.Start(state.String(), opts.Port)
-	}
+	redirectURL := rs.Start(state.String())
 	defer rs.Stop()
 	u, err := url.Parse(authorityHost)
 	if err != nil {

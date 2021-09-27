@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/devigned/tab"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
@@ -83,7 +83,7 @@ func ListTopicsWithTop(top int) ListTopicsOption {
 // NewTopicManager creates a new TopicManager for a Service Bus Namespace
 func (ns *Namespace) NewTopicManager() *TopicManager {
 	return &TopicManager{
-		entityManager: newEntityManager(ns.getHTTPSHostURI(), ns.TokenProvider),
+		entityManager: newEntityManager(ns.GetHTTPSHostURI(), ns.TokenProvider),
 	}
 }
 

@@ -15,7 +15,7 @@ are expected to fix those issues found in CI.
 | :---------------------------------------------------: | :-----: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [go](https://godoc.org)                               | Required |This is a Go project, and as such you should have Go installed on your machine. We use modules for package management, so we recommend at least using go1.11. However, you may also use go1.9.7+ or go1.10.3+. |
 | [git](https://git-scm.com)                            | Required |azure-service-bus-go uses Git as its source control management solution.                                                                                                            |
-| [az](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) | Optional | The Azure CLI is used for its ability to authenticate against Azure. Tests themselves only need a connection string and other metadata about the Service Bus namespace, but tooling to automatically setup the necessary infrastructure to run the tests may depend on the Azure CLI. |
+| [az](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest) | Optional | The Azure CLI is used for its ability to authenticate against Azure. Tests themselves only need a connection string and other metadata about the Service Bus namespace, but tooling to automatically setup the necessary infrastructure to run the tests may depend on the Azure CLI. |
 | [terraform](https://terraform.io)                     | Optional | `terraform` is used to help provision the Azure infrastructure needed to run our tests both in CI and on your local machine. If you have already provisioned a Service Bus Namespace, and created the necessary Service Bus Queues, you do not need terraform. |
 | [golint](https://godoc.org/golang.org/x/lint/golint)  | Optional |`golint` is a linter that finds basic stylistic mistakes in Go programs.                                                                                                            |
 | [gocyclo](https://github.com/fzipp/gocyclo)           | Optional |`gocyclo`  checks for programmatic complexity, to ensure code readability.                                                                                                          |
@@ -36,7 +36,7 @@ your GitHub account. Sign once and commit to any Microsoft Open Source Project.
 ## Running Tests
 
 1. Ensure that you have an App Registration (Service Principal) with a Key setup with access to your subscription.
-	- [Azure AAD Application Documenation](https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-create-service-principal-portal)
+	- [Azure AAD Application Documenation](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-create-service-principal-portal)
 	- [HashiCorp Azure Service Principal Documentation](https://www.terraform.io/docs/providers/azurerm/authenticating_via_service_principal.html) 
 1. Set the following environment variables:
 
@@ -83,5 +83,4 @@ For expanded capabilities, please describe what you'd like to see and whom you b
 ## Reference
 
 - [Clemens Vaster explains AMQP 1.0 - youtube.com](https://www.youtube.com/playlist?list=PLmE4bZU0qx-wAP02i0I7PJWvDWoCytEjD)
-- [Service Bus AMQP Protocol Guide - docs.microsoft.com](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-amqp-protocol-guide)
-- [.NET Service Bus Library - github.com](https://github.com/Azure/azure-service-bus-dotnet)
+- [Service Bus AMQP Protocol Guide - docs.microsoft.com](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-amqp-protocol-guide)

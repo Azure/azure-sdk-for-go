@@ -48,6 +48,11 @@ func init() {
 
 // SetupSuite prepares the test suite and provisions a standard Service Bus Namespace
 func (suite *BaseSuite) SetupSuite() {
+
+	if os.Getenv("AZURE_TENANT_ID") == "" {
+		suite.T().Skip()
+	}
+
 	setFromEnv := func(key string, target *string) {
 		v := os.Getenv(key)
 		if v == "" {

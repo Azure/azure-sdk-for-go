@@ -51,10 +51,7 @@ func (e errMessageTooLarge) MessageTooLarge() {}
 // Add adds a message to the batch if the message will not exceed the max size of the batch
 // If the message is too large, an error of type 'ErrMessageTooLarge' will be returned.
 func (mb *MessageBatch) Add(m *Message) error {
-	msg, err := m.toAMQPMessage()
-	if err != nil {
-		return err
-	}
+	msg := m.toAMQPMessage()
 
 	if msg.Properties.MessageID == nil || msg.Properties.MessageID == "" {
 		uid, err := uuid.NewV4()
@@ -82,11 +79,7 @@ func (mb *MessageBatch) Add(m *Message) error {
 	if len(mb.marshaledMessages) == 0 {
 		// first message, store it since we need to copy attributes from it
 		// when we send the overall batch message.
-		amqpMessage, err := m.toAMQPMessage()
-
-		if err != nil {
-			return err
-		}
+		amqpMessage := m.toAMQPMessage()
 
 		// we don't need to hold onto this since it'll get encoded
 		// into our marshaledMessages. We just want the metadata.
@@ -111,12 +104,16 @@ func (mb *MessageBatch) Len() int {
 
 // toAMQPMessage converts this batch into a sendable *amqp.Message
 // NOTE: not idempotent!
-func (mb *MessageBatch) toAMQPMessage() (*amqp.Message, error) {
+func (mb *MessageBatch) toAMQPMessage() *amqp.Message {
 	mb.batchEnvelope.Data = make([][]byte, len(mb.marshaledMessages))
 	mb.batchEnvelope.Format = batchMessageFormat
 
-	for idx, bytes := range mb.marshaledMessages {
-		mb.batchEnvelope.Data[idx] = bytes
-	}
-	return mb.batchEnvelope, nil
+	copy(mb.batchEnvelope.Data, mb.marshaledMessages)
+
+	return mb.batchEnvelope
+}
+
+// MessageType indicates the type of this message. Used for tracing.
+func (mb *MessageBatch) messageType() string {
+	return "Batch"
 }

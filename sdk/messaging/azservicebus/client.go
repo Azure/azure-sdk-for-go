@@ -9,13 +9,15 @@ import (
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
-	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/devigned/tab"
 )
 
 // Client provides methods to create Sender, Receiver and Processor
 // instances to send and receive messages from Service Bus.
 type Client struct {
+	config struct {
+		connectionString string
+	}
 	namespace *internal.Namespace
 	linksMu   *sync.Mutex
 	links     []interface {
@@ -30,8 +32,8 @@ type ClientOption func(client *Client) error
 // WithConnectionString configures a namespace with the information provided in a Service Bus connection string
 func WithConnectionString(connStr string) ClientOption {
 	return func(client *Client) error {
-		fn := internal.NamespaceWithConnectionString(connStr)
-		return fn(client.namespace)
+		client.config.connectionString = connStr
+		return nil
 	}
 }
 
@@ -42,9 +44,6 @@ func WithConnectionString(connStr string) ClientOption {
 // `AdministrationClient`.
 func NewClient(options ...ClientOption) (*Client, error) {
 	client := &Client{
-		namespace: &internal.Namespace{
-			Environment: azure.PublicCloud,
-		},
 		linksMu: &sync.Mutex{},
 	}
 
@@ -54,7 +53,9 @@ func NewClient(options ...ClientOption) (*Client, error) {
 		}
 	}
 
-	return client, nil
+	var err error
+	client.namespace, err = internal.NewNamespace(internal.NamespaceWithConnectionString(client.config.connectionString))
+	return client, err
 }
 
 // NewProcessor creates a Processor, which allows you to receive messages from ServiceBus.
@@ -122,7 +123,7 @@ func (client *Client) Close(ctx context.Context) error {
 	client.linksMu.Unlock()
 
 	if lastError != nil {
-		return fmt.Errorf("errors while closing links: %W", lastError)
+		return fmt.Errorf("errors while closing links: %w", lastError)
 	}
 	return nil
 }

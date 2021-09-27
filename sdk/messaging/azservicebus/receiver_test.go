@@ -5,233 +5,172 @@ package azservicebus
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"sort"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/uuid"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
-	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/stretchr/testify/require"
 )
 
-func TestReceiver(t *testing.T) {
-	cs := getConnectionString(t)
+func TestReceiverSendFiveReceiveFive(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t)
+	defer cleanup()
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*5)
-	defer cancel()
+	sender, err := serviceBusClient.NewSender(queueName)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
 
-	serviceBusClient, err := NewClient(WithConnectionString(cs))
+	for i := 0; i < 5; i++ {
+		err = sender.SendMessage(context.Background(), &Message{
+			Body: []byte(fmt.Sprintf("[%d]: send five, receive five", i)),
+		})
+		require.NoError(t, err)
+	}
+
+	receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
 	require.NoError(t, err)
 
-	t.Run("SendFiveReceiveFive", func(t *testing.T) {
-		queueName, cleanupQueue := createQueue(t, cs, nil)
-		defer cleanupQueue()
+	messages, err := receiver.ReceiveMessages(context.Background(), 5)
+	require.NoError(t, err)
 
-		sender, err := serviceBusClient.NewSender(queueName)
-		require.NoError(t, err)
-		defer sender.Close(ctx)
+	sort.Sort(receivedMessageSlice(messages))
 
-		for i := 0; i < 5; i++ {
-			err = sender.SendMessage(ctx, &Message{
-				Body: []byte(fmt.Sprintf("[%d]: send five, receive five", i)),
-			})
-			require.NoError(t, err)
-		}
+	require.EqualValues(t, 5, len(messages))
 
-		receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
-		require.NoError(t, err)
+	for i := 0; i < 5; i++ {
+		require.EqualValues(t,
+			fmt.Sprintf("[%d]: send five, receive five", i),
+			string(messages[i].Body))
 
-		messages, err := receiver.ReceiveMessages(ctx, 5)
-		require.NoError(t, err)
+		require.NoError(t, receiver.CompleteMessage(context.Background(), messages[i]))
+	}
+}
 
-		sort.Sort(receivedMessageSlice(messages))
+func TestReceiverForceTimeoutWithTooFewMessages(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t)
+	defer cleanup()
 
-		require.EqualValues(t, 5, len(messages))
+	sender, err := serviceBusClient.NewSender(queueName)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
 
-		for i := 0; i < 5; i++ {
-			require.EqualValues(t,
-				fmt.Sprintf("[%d]: send five, receive five", i),
-				string(messages[i].Body))
-
-			require.NoError(t, receiver.CompleteMessage(ctx, messages[i]))
-		}
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello"),
 	})
+	require.NoError(t, err)
 
-	t.Run("ForceTimeoutWithTooFewMessages", func(t *testing.T) {
-		queueName, cleanupQueue := createQueue(t, cs, nil)
-		defer cleanupQueue()
+	receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
+	require.NoError(t, err)
 
-		sender, err := serviceBusClient.NewSender(queueName)
-		require.NoError(t, err)
-		defer sender.Close(ctx)
+	// there's only one message, requesting more messages will time out.
+	messages, err := receiver.ReceiveMessages(context.Background(), 1+1, ReceiveWithMaxWaitTime(10*time.Second))
+	require.NoError(t, err)
 
-		for i := 0; i < 5; i++ {
-			err = sender.SendMessage(ctx, &Message{
-				Body: []byte(fmt.Sprintf("[%d]: force timeout waiting for messages", i)),
-			})
-			require.NoError(t, err)
-		}
+	require.EqualValues(t,
+		[]string{"hello"},
+		getSortedBodies(messages))
 
-		receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
-		require.NoError(t, err)
+	require.NoError(t, receiver.CompleteMessage(context.Background(), messages[0]))
+}
 
-		messages, err := receiver.ReceiveMessages(ctx, 5+1, ReceiveWithMaxWaitTime(time.Second*10))
-		require.NoError(t, err)
+func TestReceiverAbandon(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t)
+	defer cleanup()
 
-		sort.Sort(receivedMessageSlice(messages))
+	sender, err := serviceBusClient.NewSender(queueName)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
 
-		require.EqualValues(t, 5, len(messages))
-
-		for i := 0; i < 5; i++ {
-			require.EqualValues(t,
-				fmt.Sprintf("[%d]: force timeout waiting for messages", i),
-				string(messages[i].Body))
-
-			require.NoError(t, receiver.CompleteMessage(ctx, messages[i]))
-		}
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("send and abandon test"),
 	})
+	require.NoError(t, err)
 
-	t.Run("ReceiveAndAbandon", func(t *testing.T) {
-		queueName, cleanupQueue := createQueue(t, cs, nil)
-		defer cleanupQueue()
+	receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
+	require.NoError(t, err)
 
-		sender, err := serviceBusClient.NewSender(queueName)
-		require.NoError(t, err)
-		defer sender.Close(ctx)
+	messages, err := receiver.ReceiveMessages(context.Background(), 1)
 
-		err = sender.SendMessage(ctx, &Message{
-			Body: []byte("send and abandon test"),
+	require.NoError(t, err)
+	require.EqualValues(t, 1, len(messages))
+
+	require.NoError(t, receiver.AbandonMessage(context.Background(), messages[0]))
+
+	abandonedMessages, err := receiver.ReceiveMessages(context.Background(), 1)
+	require.NoError(t, err)
+	require.EqualValues(t, 1, len(abandonedMessages))
+
+	require.NoError(t, receiver.CompleteMessage(context.Background(), abandonedMessages[0]))
+}
+
+// Receive has two timeouts - an explicit one (passed in via ReceiveWithMaxTimeout)
+// and an implicit one that kicks in as soon as we receive our first message.
+func TestReceiveWithEarlyFirstMessageTimeout(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t)
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(queueName)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("send and abandon test"),
+	})
+	require.NoError(t, err)
+
+	receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
+	require.NoError(t, err)
+
+	startTime := time.Now()
+	messages, err := receiver.ReceiveMessages(context.Background(), 1,
+		ReceiveWithMaxWaitTime(10*time.Minute), // this is never meant to be hit since the first message time is so short.
+		ReceiveWithMaxTimeAfterFirstMessage(time.Millisecond))
+
+	require.NoError(t, err)
+	require.EqualValues(t, 1, len(messages))
+
+	// `time.Minute` to give some wiggle room for connection initialization
+	require.WithinDuration(t, startTime, time.Now(), time.Minute)
+}
+
+func TestReceiverSendAndReceiveManyTimes(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t)
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(queueName)
+	require.NoError(t, err)
+
+	defer sender.Close(context.Background())
+
+	for i := 0; i < 100; i++ {
+		err = sender.SendMessage(context.Background(), &Message{
+			Body: []byte(fmt.Sprintf("[%d]: many messages", i)),
 		})
 		require.NoError(t, err)
+	}
 
-		receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
+	receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
+	require.NoError(t, err)
+
+	var allMessages []*ReceivedMessage
+
+	for i := 0; i < 100; i++ {
+		messages, err := receiver.ReceiveMessages(context.Background(), 1, ReceiveWithMaxWaitTime(10*time.Second))
 		require.NoError(t, err)
+		allMessages = append(allMessages, messages...)
 
-		messages, err := receiver.ReceiveMessages(ctx, 1)
-
-		require.NoError(t, err)
-		require.EqualValues(t, 1, len(messages))
-
-		require.NoError(t, receiver.AbandonMessage(ctx, messages[0]))
-
-		abandonedMessages, err := receiver.ReceiveMessages(ctx, 1)
-		require.NoError(t, err)
-		require.EqualValues(t, 1, len(abandonedMessages))
-
-		require.NoError(t, receiver.CompleteMessage(ctx, abandonedMessages[0]))
-	})
-
-	// Receive has two timeouts - an explicit one (passed in via ReceiveWithMaxTimeout)
-	// and an implicit one that kicks in as soon as we receive our first message.
-	t.Run("ReceiveWithEarlyFirstMessageTimeout", func(t *testing.T) {
-		queueName, cleanupQueue := createQueue(t, cs, nil)
-		defer cleanupQueue()
-
-		sender, err := serviceBusClient.NewSender(queueName)
-		require.NoError(t, err)
-		defer sender.Close(ctx)
-
-		err = sender.SendMessage(ctx, &Message{
-			Body: []byte("send and abandon test"),
-		})
-		require.NoError(t, err)
-
-		receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
-		require.NoError(t, err)
-
-		startTime := time.Now()
-		messages, err := receiver.ReceiveMessages(ctx, 1,
-			ReceiveWithMaxWaitTime(time.Minute*10), // this is never meant to be hit since the first message time is so short.
-			ReceiveWithMaxTimeAfterFirstMessage(time.Millisecond))
-
-		require.NoError(t, err)
-		require.EqualValues(t, 1, len(messages))
-
-		// `time.Minute` to give some wiggle room for connection initialization
-		require.WithinDuration(t, startTime, time.Now(), time.Minute)
-	})
-
-	t.Run("SendAndReceiveManyTimes", func(t *testing.T) {
-		queueName, cleanupQueue := createQueue(t, cs, nil)
-		defer cleanupQueue()
-
-		sender, err := serviceBusClient.NewSender(queueName)
-		require.NoError(t, err)
-
-		defer sender.Close(ctx)
-
-		for i := 0; i < 100; i++ {
-			err = sender.SendMessage(ctx, &Message{
-				Body: []byte(fmt.Sprintf("[%d]: many messages", i)),
-			})
-			require.NoError(t, err)
+		for _, message := range messages {
+			require.NoError(t, receiver.CompleteMessage(context.Background(), message))
 		}
+	}
 
-		receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
-		require.NoError(t, err)
+	sort.Sort(receivedMessageSlice(allMessages))
 
-		var allMessages []*ReceivedMessage
-
-		for i := 0; i < 100; i++ {
-			messages, err := receiver.ReceiveMessages(ctx, 1, ReceiveWithMaxWaitTime(time.Second*10))
-			require.NoError(t, err)
-			allMessages = append(allMessages, messages...)
-
-			for _, message := range messages {
-				require.NoError(t, receiver.CompleteMessage(ctx, message))
-			}
-		}
-
-		sort.Sort(receivedMessageSlice(allMessages))
-
-		require.EqualValues(t, len(allMessages), 100)
-	})
+	require.EqualValues(t, len(allMessages), 100)
 }
 
 func TestReceiverUnitTests(t *testing.T) {
-	t.Run("ReceiverWillNotReopenAfterClose", func(t *testing.T) {
-		receiver, err := newReceiver(internal.NewFakeNamespace(), ReceiverWithQueue("queue"))
-		require.NoError(t, err)
-		require.NoError(t, receiver.Close(context.Background()))
-
-		messages, err := receiver.ReceiveMessages(context.Background(), 1)
-		require.Nil(t, messages)
-
-		_, ok := err.(errorinfo.NonRetriable)
-		require.True(t, ok, "ErrClosed is a errorinfo.NonRetriable")
-		require.ErrorIs(t, err, errClosed{"receiver"})
-	})
-
-	t.Run("CloseForwardsErrors", func(t *testing.T) {
-		ns := internal.NewFakeNamespace()
-		ns.NextReceiver = internal.NewFakeLegacyReceiver()
-
-		ns.NextReceiver.CloseImpl = func(ctx context.Context) error {
-			return errors.New("close failed")
-		}
-
-		receiver, err := newReceiver(ns, ReceiverWithSubscription("topic", "subscription"))
-		require.NoError(t, err)
-
-		go func() {
-			// just cancel out of the listen operation entirely.
-			registerEvent := <-ns.NextReceiver.ListenerRegisteredChan
-			registerEvent.Cancel()
-		}()
-
-		// initializes the internal receiver (it's lazy)
-		messages, err := receiver.ReceiveMessages(context.Background(), 1)
-		require.EqualError(t, err, context.Canceled.Error())
-		require.Empty(t, messages)
-
-		err = receiver.Close(context.Background())
-		require.EqualError(t, err, "close failed")
-	})
-
 	// If an error occurs and we have some messages accumulated in our internal
 	// buffer we will still return them to the user.
 	//
@@ -241,38 +180,29 @@ func TestReceiverUnitTests(t *testing.T) {
 	// the user can still settle messages using the management link as a backup.
 	//
 	// NOTE: (this is a design item that needs discussion. Just documenting the current behavior)
-	t.Run("MessagesAreStillReturnedOnErrors", func(t *testing.T) {
-		ns := internal.NewFakeNamespace()
-		ns.NextReceiver = internal.NewFakeLegacyReceiver()
+	// t.Run("MessagesAreStillReturnedOnErrors", func(t *testing.T) {
+	// 	ns := newFakeNamespace()
 
-		receiver, err := newReceiver(ns,
-			ReceiverWithReceiveMode(ReceiveAndDelete),
-			ReceiverWithSubscription("topic", "subscription"))
-		require.NoError(t, err)
+	// 	ns.Links.Receiver.NextReceiveCalls <- receiveCallResponse{
+	// 		message: (&ReceivedMessage{
+	// 			Message: Message{
+	// 				ID: "fakeID",
+	// 			},
+	// 			LockToken:      &amqp.UUID{},
+	// 			SequenceNumber: to.Int64Ptr(1),
+	// 		}).ToAMQPMessage(),
+	// 		err: nil,
+	// 	}
 
-		go func() {
-			// just cancel out of the listen operation entirely.
-			registerEvent := <-ns.NextReceiver.ListenerRegisteredChan
+	// 	receiver, err := newReceiver(ns,
+	// 		ReceiverWithReceiveMode(ReceiveAndDelete),
+	// 		ReceiverWithSubscription("topic", "subscription"))
+	// 	require.NoError(t, err)
 
-			// funnel some messages in
-			err := registerEvent.Handler.Handle(context.Background(), &internal.Message{
-				ID:        "fakeID",
-				LockToken: &uuid.UUID{},
-				SystemProperties: &internal.SystemProperties{
-					SequenceNumber: to.Int64Ptr(1),
-				},
-			})
-
-			require.NoError(t, err)
-
-			// now cancel the listening.
-			registerEvent.Cancel()
-		}()
-
-		messages, err := receiver.ReceiveMessages(context.Background(), 2)
-		require.EqualError(t, err, context.Canceled.Error())
-		require.EqualValues(t, 1, len(messages), "Messages are still returned if we're in ReceiveAndDelete mode")
-	})
+	// 	messages, err := receiver.ReceiveMessages(context.Background(), 2)
+	// 	require.EqualError(t, err, context.Canceled.Error())
+	// 	require.EqualValues(t, 1, len(messages), "Messages are still returned if we're in ReceiveAndDelete mode")
+	// })
 }
 
 type receivedMessageSlice []*ReceivedMessage

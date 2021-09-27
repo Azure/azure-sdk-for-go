@@ -12,11 +12,12 @@ import (
 	amqpCommon "github.com/Azure/azure-amqp-common-go/v3"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/Azure/go-amqp"
+	"github.com/devigned/tab"
 )
 
 type processorConfig struct {
-	FullEntityPath string
-	ReceiveMode    ReceiveMode
+	ReceiveMode ReceiveMode
 
 	Entity entity
 
@@ -33,10 +34,10 @@ type processorConfig struct {
 
 // Processor is a push-based receiver for Service Bus.
 type Processor struct {
-	// configuration data that is read-only after the Processor has been created
-	config processorConfig
+	settler *messageSettler
 
-	mu *sync.Mutex
+	mu        *sync.Mutex
+	amqpLinks internal.AMQPLinks
 
 	receiversCtx    context.Context
 	cancelReceivers func()
@@ -44,16 +45,10 @@ type Processor struct {
 	processorCtx    context.Context
 	cancelProcessor func()
 
-	activeReceiversWg *sync.WaitGroup
+	wg *sync.WaitGroup
 
-	// replaceable for unit tests
-	ns        legacyNamespace
-	subscribe func(
-		ctx context.Context,
-		receiver internal.LegacyReceiver,
-		shouldAutoComplete bool,
-		handleMessage func(message *ReceivedMessage) error,
-		notifyError func(err error)) bool
+	// configuration data that is read-only after the Processor has been created
+	config processorConfig
 }
 
 // ProcessorOption represents an option on the Processor.
@@ -130,11 +125,7 @@ func ProcessorWithMaxConcurrentCalls(maxConcurrentCalls int) ProcessorOption {
 	}
 }
 
-type legacyNamespace interface {
-	NewReceiver(ctx context.Context, entityPath string, opts ...internal.ReceiverOption) (internal.LegacyReceiver, error)
-}
-
-func newProcessor(ns legacyNamespace, options ...ProcessorOption) (*Processor, error) {
+func newProcessor(ns internal.NamespaceWithNewAMQPLinks, options ...ProcessorOption) (*Processor, error) {
 	processor := &Processor{
 		config: processorConfig{
 			ReceiveMode:        PeekLock,
@@ -146,15 +137,12 @@ func newProcessor(ns legacyNamespace, options ...ProcessorOption) (*Processor, e
 			}{
 				// TODO: allow these to be configured.
 				Times: 10,
-				Delay: time.Second * 5,
+				Delay: 5 * time.Second,
 			},
 		},
 
-		mu:                &sync.Mutex{},
-		activeReceiversWg: &sync.WaitGroup{},
-
-		ns:        ns,
-		subscribe: subscribe,
+		mu: &sync.Mutex{},
+		wg: &sync.WaitGroup{},
 	}
 
 	for _, opt := range options {
@@ -169,7 +157,11 @@ func newProcessor(ns legacyNamespace, options ...ProcessorOption) (*Processor, e
 		return nil, err
 	}
 
-	processor.config.FullEntityPath = entityPath
+	processor.amqpLinks = ns.NewAMQPLinks(entityPath, func(ctx context.Context, session internal.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
+		linkOptions := createLinkOptions(processor.config.ReceiveMode, entityPath)
+		return createReceiverLink(ctx, session, linkOptions)
+	})
+	processor.settler = &messageSettler{links: processor.amqpLinks}
 
 	processor.processorCtx, processor.cancelProcessor = context.WithCancel(context.Background())
 	processor.receiversCtx, processor.cancelReceivers = context.WithCancel(context.Background())
@@ -189,47 +181,64 @@ func newProcessor(ns legacyNamespace, options ...ProcessorOption) (*Processor, e
 // sent to your handleError function. The processor will retry and restart as needed -
 // no user intervention is required.
 func (p *Processor) Start(handleMessage func(message *ReceivedMessage) error, handleError func(err error)) error {
-	select {
-	case <-p.Done():
-		return errClosed{link: "processor"}
-	default:
-	}
-
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
-	p.activeReceiversWg.Add(1)
+	// TODO: stop multiple invocations!
+	/*
+		p.handleMessage = ()
+		p.handleError = func() {
+			tab.For(ctx).Debug()
+		}
+	*/
+
+	p.wg.Add(1)
+
 	go func(ctx context.Context) {
-		defer p.activeReceiversWg.Done()
+		defer func() {
+			p.wg.Done()
+			tab.For(ctx).Debug("Exiting forever loop in Processor")
+		}()
 
 		for {
 			retry, _ := amqpCommon.Retry(p.config.RetryOptions.Times, p.config.RetryOptions.Delay, func() (interface{}, error) {
-				receiver, err := p.ns.NewReceiver(ctx, p.config.FullEntityPath,
-					internal.ReceiverWithReceiveMode(internal.ReceiveMode(p.config.ReceiveMode)))
+				_, receiver, _, _, err := p.amqpLinks.Get(ctx)
 
 				if err != nil {
+					if !isRetryableLinksError(err) {
+						tab.For(ctx).Debug(fmt.Sprintf("Non retriable error occurred ('%s'), stopping the processor loop", err.Error()))
+						handleError(fmt.Errorf("Non-retryable error, stopping processor loop: %w", err))
+						return false, nil
+					}
+
 					// notify the user and then fall into doing a retry
-					handleError(err)
+					handleError(fmt.Errorf("failed getting links for subscribe, will retry: %w", err))
 					return true, amqpCommon.Retryable("")
 				}
-
-				defer receiver.Close(ctx)
 
 				if err := receiver.IssueCredit(uint32(p.config.MaxConcurrentCalls)); err != nil {
 					// notify the user but there's no reason to restart because this failure must be
 					// an internal error.
-					handleError(err)
-					return false, nil
+					handleError(fmt.Errorf("internal failure when issuing credit, will recreate links: %w", err))
+					return true, nil
 				}
 
 				// we retry infinitely, but do it in the pattern they specify via their retryOptions for each "round" of retries.
-				retry := p.subscribe(ctx, receiver, p.config.ShouldAutoComplete, handleMessage, handleError)
+				err = p.subscribe(ctx, receiver, handleMessage, handleError)
 
-				if retry {
-					return true, amqpCommon.Retryable("")
+				if err != nil {
+					if isRetryableSubscribeError(err) {
+						if err := p.amqpLinks.Close(ctx, false); err != nil {
+							tab.For(ctx).Debug(fmt.Sprintf("failed when closing links, will reopen: %s", err.Error()))
+						}
+
+						return true, amqpCommon.Retryable("")
+					}
+
+					return false, nil
 				}
 
-				return false, nil
+				return true, amqpCommon.Retryable("")
 			})
 
 			if !retry.(bool) {
@@ -241,129 +250,103 @@ func (p *Processor) Start(handleMessage func(message *ReceivedMessage) error, ha
 	return nil
 }
 
-// Done returns a channel that will be close()'d when the Processor
-// has been closed.
-func (p *Processor) Done() <-chan struct{} {
-	return p.processorCtx.Done()
-}
-
 // Close will wait for any pending callbacks to complete.
 func (p *Processor) Close(ctx context.Context) error {
-	select {
-	case <-p.Done():
-		return nil
-	default:
-	}
-
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
 	p.cancelReceivers()
-
-	err := utils.WaitForGroupOrContext(ctx, p.activeReceiversWg)
-
-	// now unlock anyone _external_ to the processor that's waiting for us to exit or close.
-	p.cancelProcessor()
-
-	return err
+	return utils.WaitForGroupOrContext(ctx, p.wg)
 }
-
-func subscribe(
-	ctx context.Context,
-	receiver internal.LegacyReceiver,
-	shouldAutoComplete bool,
-	handleMessage func(message *ReceivedMessage) error,
-	notifyError func(err error)) bool {
-
-	activeCallbacksWg := &sync.WaitGroup{}
-	notifyErrorAsync := wrapNotifyError(notifyError, activeCallbacksWg)
-
-	const shouldRetry = true
-
-	listenHandle := receiver.Listen(ctx, internal.HandlerFunc(func(ctx context.Context, legacyMessage *internal.Message) error {
-		// this shouldn't happen since we do a `select` above that prevents it.
-		// errors from their handler are sent to their error handler but do not terminate the
-		// subscription.
-		activeCallbacksWg.Add(1)
-		defer activeCallbacksWg.Done()
-
-		handleSingleMessage(handleMessage, notifyErrorAsync, shouldAutoComplete, receiver, legacyMessage)
-
-		// user callback completes and they get a new credit
-		if err := receiver.IssueCredit(1); err != nil {
-			notifyErrorAsync(err)
-		}
-
-		return nil
-	}))
-
-	select {
-	case <-ctx.Done():
-		notifyErrorAsync(ctx.Err())
-		activeCallbacksWg.Wait()
-		return !shouldRetry
-	case <-listenHandle.Done(): // TODO: eliminate this redundancy soon, and hopefully we only need to rely on ctx.Done() above.
-		notifyErrorAsync(listenHandle.Err())
-		activeCallbacksWg.Wait()
-
-		// we should retry since the listen handle can be closed if we did a .Recover() on the receiver.
-		return shouldRetry
-	}
-}
-
-func handleSingleMessage(handleMessage func(message *ReceivedMessage) error, notifyErrorAsync func(err error), shouldAutoComplete bool, receiver internal.LegacyReceiver, legacyMessage *internal.Message) {
-	err := handleMessage(convertToReceivedMessage(legacyMessage))
-
-	if err != nil {
-		notifyErrorAsync(err)
-	}
-
-	var settleErr error
-
-	if shouldAutoComplete {
-		// NOTE: we ignore the passed in context. Since we're settling behind the scenes
-		// it's nice to wrap it up so users don't have to track it.
-		if err != nil {
-			settleErr = receiver.AbandonMessage(context.Background(), legacyMessage)
-		} else {
-			settleErr = receiver.CompleteMessage(context.Background(), legacyMessage)
-		}
-
-		if settleErr != nil {
-			notifyErrorAsync(settleErr)
-		}
-	}
-}
-
-//
-// settlement methods
-// TODO: in other processor implementations this is implemented in the argument for the processMessage
-// callback. You need some sort of association or else you have to track message <-> receiver mappings.
-//
 
 // CompleteMessage completes a message, deleting it from the queue or subscription.
 func (p *Processor) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
-	return message.legacyMessage.Complete(ctx)
-}
-
-// DeadLetterMessage settles a message by moving it to the dead letter queue for a
-// queue or subscription.
-func (p *Processor) DeadLetterMessage(ctx context.Context, message *ReceivedMessage) error {
-	// TODO: expand to let them set the reason and description.
-	return message.legacyMessage.DeadLetter(ctx, nil)
+	return p.settler.CompleteMessage(ctx, message)
 }
 
 // AbandonMessage will cause a message to be returned to the queue or subscription.
 // This will increment its delivery count, and potentially cause it to be dead lettered
 // depending on your queue or subscription's configuration.
 func (p *Processor) AbandonMessage(ctx context.Context, message *ReceivedMessage) error {
-	return message.legacyMessage.Abandon(ctx)
+	return p.settler.AbandonMessage(ctx, message)
 }
 
-// DeferMessage will cause a message to be deferred.
-// Messages that are deferred by can be retrieved using `Receiver.ReceiveDeferredMessages()`.
+// DeferMessage will cause a message to be deferred. Deferred messages
+// can be received using `Receiver.ReceiveDeferredMessages`.
 func (p *Processor) DeferMessage(ctx context.Context, message *ReceivedMessage) error {
-	return message.legacyMessage.Defer(ctx)
+	return p.settler.DeferMessage(ctx, message)
+}
+
+// DeadLetterMessage settles a message by moving it to the dead letter queue for a
+// queue or subscription. To receive these messages create a receiver with `Client.NewProcessor()`
+// using the `ProcessorWithSubQueue()` option.
+func (p *Processor) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options ...DeadLetterOption) error {
+	return p.settler.DeadLetterMessage(ctx, message, options...)
+}
+
+func (p *Processor) subscribe(
+	ctx context.Context,
+	receiver internal.AMQPReceiver,
+	handleMessage func(message *ReceivedMessage) error,
+	notifyError func(err error)) error {
+
+	notifyErrorAsync := wrapNotifyError(notifyError, p.wg)
+
+	p.wg.Add(1)
+	defer p.wg.Done()
+
+	for {
+		amqpMessage, err := receiver.Receive(ctx)
+
+		if err != nil {
+			if !isRetryableSubscribeError(err) {
+				return err
+			}
+
+			// TODO: need to get a backoff policy in here.
+			continue
+		}
+
+		p.wg.Add(1)
+
+		go func() {
+			defer p.wg.Done()
+
+			receivedMessage := newReceivedMessage(ctx, amqpMessage)
+			err := handleMessage(receivedMessage)
+
+			if err != nil {
+				notifyErrorAsync(err)
+			}
+
+			var settleErr error
+
+			if p.config.ShouldAutoComplete {
+				// NOTE: we ignore the passed in context. Since we're settling behind the scenes
+				// it's nice to wrap it up so users don't have to track it.
+				if err != nil {
+					settleErr = p.settler.AbandonMessage(context.Background(), receivedMessage)
+				} else {
+					settleErr = p.settler.CompleteMessage(context.Background(), receivedMessage)
+				}
+
+				if settleErr != nil {
+					notifyErrorAsync(fmt.Errorf("failed settling message with ID '%s': %w", receivedMessage.ID, settleErr))
+				}
+			}
+
+			if err := receiver.IssueCredit(1); err != nil {
+				notifyErrorAsync(fmt.Errorf("failed issuing additional credit, processor will be restarted: %w", err))
+
+				// close the links here and cause the processor for this receiver to restart
+				if err := p.amqpLinks.Close(ctx, false); err != nil {
+					tab.For(ctx).Debug(fmt.Sprintf("Failed when closing links, but was restarting anyways: %s", err.Error()))
+				}
+			}
+
+			notifyErrorAsync(err)
+		}()
+	}
 }
 
 func wrapNotifyError(fn func(err error), wg *sync.WaitGroup) func(err error) {
@@ -377,5 +360,36 @@ func wrapNotifyError(fn func(err error), wg *sync.WaitGroup) func(err error) {
 			fn(err)
 			wg.Done()
 		}()
+	}
+}
+
+func isRetryableSubscribeError(err error) bool {
+	isFatalLinkError := err == amqp.ErrConnClosed ||
+		err == amqp.ErrLinkClosed ||
+		err == amqp.ErrLinkDetached ||
+		err == amqp.ErrSessionClosed
+
+	if isFatalLinkError || isCancelled(err) {
+		return false
+	}
+
+	return true
+}
+
+// isRetryableLinksError checks if an error is retryable if it
+// was returned from links.Get().
+// NOTE: this function panics if you pass it a nil error.
+func isRetryableLinksError(err error) bool {
+	if isCancelled(err) {
+		return false
+	}
+
+	switch err.(type) {
+	case interface{ NonRetriable() }:
+		// we're done, they've closed the links permanently (ie, we're not meant to
+		// recover from this)
+		return false
+	default:
+		return true
 	}
 }

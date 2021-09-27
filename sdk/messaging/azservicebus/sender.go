@@ -5,36 +5,35 @@ package azservicebus
 
 import (
 	"context"
-	"sync"
+	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/go-amqp"
-	"github.com/Azure/go-autorest/autorest/to"
+	"github.com/devigned/tab"
 )
 
-// SenderOption specifies an option that can configure a Sender.
-type SenderOption func(sender *Sender) error
+type (
+	// SenderOption specifies an option that can configure a Sender.
+	SenderOption func(sender *Sender) error
 
-// Sender is used to send messages as well as schedule them to be delivered at a later date.
-type Sender struct {
-	config struct {
+	// Sender is used to send messages as well as schedule them to be delivered at a later date.
+	Sender struct {
 		queueOrTopic string
+		links        internal.AMQPLinks
 	}
 
-	mu           *sync.Mutex
-	legacySender internal.LegacySender
+	// SendableMessage are sendable using Sender.SendMessage.
+	// Message, MessageBatch implement this interface.
+	SendableMessage interface {
+		toAMQPMessage() *amqp.Message
+		messageType() string
+	}
+)
 
-	linkState *linkState
-
-	// for testing
-	nsCreateLegacySender func(ctx context.Context, entityPath string) (internal.LegacySender, error)
-}
-
-// SendableMessage are sendable using Sender.SendMessage.
-// Message, MessageBatch implement this interface.
-type SendableMessage interface {
-	toAMQPMessage() (*amqp.Message, error)
-}
+// tracing
+const (
+	spanNameSendMessageFmt string = "sb.sender.SendMessage.%s"
+)
 
 type messageBatchOptions struct {
 	maxSizeInBytes *int
@@ -57,18 +56,16 @@ func MessageBatchWithMaxSize(maxSizeInBytes int) func(options *messageBatchOptio
 // messages. Sending a batch of messages is more efficient than sending the
 // messages one at a time.
 func (s *Sender) NewMessageBatch(ctx context.Context, options ...MessageBatchOption) (*MessageBatch, error) {
-	if s.linkState.Closed() {
-		return nil, s.linkState.Err()
-	}
-
-	legacySender, err := s.createAmqpSender(ctx)
+	sender, _, _, _, err := s.links.Get(ctx)
 
 	if err != nil {
 		return nil, err
 	}
 
+	maxMessageSize := int(sender.MaxMessageSize())
+
 	opts := &messageBatchOptions{
-		maxSizeInBytes: to.IntPtr(int(legacySender.MaxMessageSize())),
+		maxSizeInBytes: &maxMessageSize,
 	}
 
 	for _, opt := range options {
@@ -77,83 +74,54 @@ func (s *Sender) NewMessageBatch(ctx context.Context, options ...MessageBatchOpt
 		}
 	}
 
-	return newMessageBatch(*opts.maxSizeInBytes), nil
+	return &MessageBatch{maxBytes: *opts.maxSizeInBytes}, nil
 }
 
 // SendMessage sends a message to a queue or topic.
 // Message can be a MessageBatch (created using `Sender.CreateMessageBatch`) or
 // a Message.
 func (s *Sender) SendMessage(ctx context.Context, message SendableMessage) error {
-	if s.linkState.Closed() {
-		return s.linkState.Err()
-	}
+	ctx, span := s.startProducerSpanFromContext(ctx, fmt.Sprintf(spanNameSendMessageFmt, message.messageType()))
+	defer span.End()
 
-	legacySender, err := s.createAmqpSender(ctx)
-
-	if err != nil {
-		return err
-	}
-
-	amqpMessage, err := message.toAMQPMessage()
+	sender, _, _, _, err := s.links.Get(ctx)
 
 	if err != nil {
 		return err
 	}
 
-	return legacySender.SendAMQPMessage(ctx, amqpMessage)
+	return sender.Send(ctx, message.toAMQPMessage())
 }
 
 // Close permanently closes the Sender.
 func (s *Sender) Close(ctx context.Context) error {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	defer s.linkState.Close()
-
-	var err error
-
-	if s.legacySender != nil {
-		err = s.legacySender.Close(ctx)
-		s.legacySender = nil
-	}
-
-	return err
+	return s.links.Close(ctx, true)
 }
 
-func (sender *Sender) createAmqpSender(ctx context.Context) (internal.LegacySender, error) {
-	sender.mu.Lock()
-	defer sender.mu.Unlock()
+func (sender *Sender) createSenderLink(ctx context.Context, session internal.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
+	amqpSender, err := session.NewSender(
+		amqp.LinkSenderSettle(amqp.ModeMixed),
+		amqp.LinkReceiverSettle(amqp.ModeFirst),
+		amqp.LinkTargetAddress(sender.queueOrTopic))
 
-	if sender.legacySender != nil {
-		return sender.legacySender, nil
-	}
-
-	// TODO: allow passing in relevant options if needed
-	legacySender, err := sender.nsCreateLegacySender(ctx, sender.config.queueOrTopic)
-
-	if err != nil {
-		return nil, err
-	}
-
-	sender.legacySender = legacySender
-	return legacySender, nil
+	return amqpSender, nil, err
 }
 
-// ie: `*internal.Namespace`
-type legacySenderNamespace interface {
-	NewLegacySender(ctx context.Context, entityPath string) (internal.LegacySender, error)
-}
-
-func newSender(ns legacySenderNamespace, queueOrTopic string) (*Sender, error) {
+func newSender(ns *internal.Namespace, queueOrTopic string) (*Sender, error) {
 	sender := &Sender{
-		config: struct {
-			queueOrTopic string
-		}{
-			queueOrTopic: queueOrTopic,
-		},
-		mu:        &sync.Mutex{},
-		linkState: newLinkState(context.Background(), errClosed{link: "sender"}),
+		queueOrTopic: queueOrTopic,
 	}
 
-	sender.nsCreateLegacySender = ns.NewLegacySender
+	sender.links = ns.NewAMQPLinks(queueOrTopic, sender.createSenderLink)
 	return sender, nil
+}
+
+func (s *Sender) startProducerSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
+	internal.ApplyComponentInfo(span)
+	span.AddAttributes(
+		tab.StringAttribute("span.kind", "producer"),
+		tab.StringAttribute("message_bus.destination", s.links.Audience()),
+	)
+	return ctx, span
 }

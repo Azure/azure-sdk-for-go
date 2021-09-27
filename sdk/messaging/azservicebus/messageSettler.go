@@ -33,7 +33,7 @@ func (s *messageSettler) CompleteMessage(ctx context.Context, message *ReceivedM
 
 	// complete
 	if s.onlyDoBackupSettlement || message.linkRevision != linkRevision {
-		return mgmt.SendDisposition(ctx, message.LockToken, internal.Disposition{Status: internal.CompletedDisposition})
+		return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), internal.Disposition{Status: internal.CompletedDisposition})
 	}
 
 	return message.RawAMQPMessage.Accept(ctx)
@@ -58,7 +58,7 @@ func (s *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedMe
 		d := internal.Disposition{
 			Status: internal.AbandonedDisposition,
 		}
-		return mgmt.SendDisposition(ctx, message.LockToken, d)
+		return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), d)
 	}
 
 	return message.RawAMQPMessage.Modify(ctx, false, false, nil)
@@ -140,7 +140,7 @@ func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *Receive
 			DeadLetterDescription: to.StringPtr(err.Error()),
 			DeadLetterReason:      to.StringPtr("amqp:error"),
 		}
-		return mgmt.SendDisposition(ctx, message.LockToken, d)
+		return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), d)
 	}
 
 	info := map[string]interface{}{
@@ -160,4 +160,9 @@ func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *Receive
 	}
 
 	return message.RawAMQPMessage.Reject(ctx, &amqpErr)
+}
+
+func bytesToAMQPUUID(bytes [16]byte) *amqp.UUID {
+	uuid := amqp.UUID(bytes)
+	return &uuid
 }

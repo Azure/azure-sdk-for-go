@@ -19,7 +19,7 @@ type (
 	ReceivedMessage struct {
 		Message
 
-		LockToken              *amqp.UUID
+		LockToken              [16]byte
 		DeliveryCount          uint32
 		LockedUntil            *time.Time // `mapstructure:"x-opt-locked-until"`
 		SequenceNumber         *int64     // :"x-opt-sequence-number"`
@@ -288,7 +288,7 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 		lockToken, err := lockTokenFromMessageTag(amqpMsg)
 
 		if err == nil {
-			msg.LockToken = lockToken
+			msg.LockToken = *(*amqp.UUID)(lockToken)
 		} else {
 			tab.For(ctxForLogging).Info(fmt.Sprintf("msg.DeliveryTag could not be converted into a UUID: %s", err.Error()))
 		}
@@ -296,8 +296,7 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 
 	if token, ok := amqpMsg.DeliveryAnnotations[lockTokenDeliveryAnnotation]; ok {
 		if id, ok := token.(amqp.UUID); ok {
-			sid := amqp.UUID([16]byte(id))
-			msg.LockToken = &sid
+			msg.LockToken = [16]byte(id)
 		}
 	}
 

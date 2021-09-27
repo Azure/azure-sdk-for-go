@@ -146,7 +146,7 @@ func TestAMQPMessageToMessage(t *testing.T) {
 
 	expectedAMQPEncodedLockTokenGUID := [16]byte{187, 49, 89, 205, 253, 254, 205, 77, 162, 38, 172, 76, 45, 235, 91, 225}
 
-	require.EqualValues(t, *msg.LockToken, uuid.UUID(expectedAMQPEncodedLockTokenGUID), "locktoken")
+	require.EqualValues(t, msg.LockToken, uuid.UUID(expectedAMQPEncodedLockTokenGUID), "locktoken")
 
 	require.EqualValues(t, map[string]interface{}{
 		"test": "foo",

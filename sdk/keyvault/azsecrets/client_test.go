@@ -25,7 +25,7 @@ func TestMain(m *testing.M) {
 	// Initialize
 	if recording.GetRecordMode() == "record" {
 		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-		err := recording.AddUriSanitizer("https://fakekvurl.vault.azure.net", vaultUrl, nil)
+		err := recording.AddUriSanitizer("https://fakekvurl.vault.azure.net/", vaultUrl, nil)
 		if err != nil {
 			panic(err)
 		}
@@ -88,6 +88,7 @@ func TestListSecretVersionss(t *testing.T) {
 	require.NoError(t, err)
 	_, err = client.SetSecret(context.Background(), secret, value+"2", nil)
 	require.NoError(t, err)
+	defer cleanUpSecret(t, client, secret)
 
 	count := 0
 	pager := client.ListSecretVersions(secret, nil)
@@ -97,15 +98,6 @@ func TestListSecretVersionss(t *testing.T) {
 	}
 	require.GreaterOrEqual(t, count, 3)
 	require.NoError(t, pager.Err())
-
-	// clean up test
-	resp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
-	_, err = resp.PollUntilDone(context.Background(), delay())
-	require.NoError(t, err)
-
-	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
-	require.NoError(t, err)
 }
 
 func TestListSecrets(t *testing.T) {
@@ -124,6 +116,11 @@ func TestListSecrets(t *testing.T) {
 	_, err = client.SetSecret(context.Background(), "secret4", "value", nil)
 	require.NoError(t, err)
 
+	defer cleanUpSecret(t, client, "secret1")
+	defer cleanUpSecret(t, client, "secret2")
+	defer cleanUpSecret(t, client, "secret3")
+	defer cleanUpSecret(t, client, "secret4")
+
 	count := 0
 	pager := client.ListSecrets(nil)
 	for pager.NextPage(context.Background()) {
@@ -132,11 +129,6 @@ func TestListSecrets(t *testing.T) {
 	}
 	require.Equal(t, count, 4)
 	require.NoError(t, pager.Err())
-
-	cleanUpSecret(t, client, "secret1")
-	cleanUpSecret(t, client, "secret2")
-	cleanUpSecret(t, client, "secret3")
-	cleanUpSecret(t, client, "secret4")
 }
 
 func TestListDeletedSecrets(t *testing.T) {
@@ -155,14 +147,6 @@ func TestListDeletedSecrets(t *testing.T) {
 	value2, err := createRandomName(t, "value2")
 	require.NoError(t, err)
 
-	f := func() {
-		_, err := client.PurgeDeletedSecret(context.Background(), secret1, nil)
-		require.NoError(t, err)
-		_, err = client.PurgeDeletedSecret(context.Background(), secret2, nil)
-		require.NoError(t, err)
-	}
-	defer f()
-
 	// 1. Create 2 secrets
 	_, err = client.SetSecret(context.Background(), secret1, value1, nil)
 	require.NoError(t, err)
@@ -180,6 +164,14 @@ func TestListDeletedSecrets(t *testing.T) {
 	require.NoError(t, err)
 	_, err = resp.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
+
+	f := func() {
+		_, err := client.PurgeDeletedSecret(context.Background(), secret1, nil)
+		require.NoError(t, err)
+		_, err = client.PurgeDeletedSecret(context.Background(), secret2, nil)
+		require.NoError(t, err)
+	}
+	defer f()
 
 	// Make sure both secrets show up in deleted secrets
 	deletedSecrets := map[string]bool{
@@ -232,6 +224,9 @@ func TestDeleteSecret(t *testing.T) {
 
 	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
+
+	_, err = client.GetSecret(context.Background(), secret, nil)
+	require.Error(t, err)
 }
 
 func TestPurgeDeletedSecret(t *testing.T) {
@@ -279,10 +274,10 @@ func TestUpdateSecretProperties(t *testing.T) {
 	value, err := createRandomName(t, "value")
 	require.NoError(t, err)
 
-	defer cleanUpSecret(t, client, secret)
-
 	_, err = client.SetSecret(context.Background(), secret, value, nil)
 	require.NoError(t, err)
+
+	defer cleanUpSecret(t, client, secret)
 
 	getResp, err := client.GetSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
@@ -317,10 +312,10 @@ func TestBeginRecoverDeletedSecret(t *testing.T) {
 	value, err := createRandomName(t, "value")
 	require.NoError(t, err)
 
-	defer cleanUpSecret(t, client, secret)
-
 	_, err = client.SetSecret(context.Background(), secret, value, nil)
 	require.NoError(t, err)
+
+	defer cleanUpSecret(t, client, secret)
 
 	pollerResp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
@@ -356,6 +351,8 @@ func TestBackupSecret(t *testing.T) {
 
 	_, err = client.SetSecret(context.Background(), secret, value, nil)
 	require.NoError(t, err)
+
+	defer cleanUpSecret(t, client, secret)
 
 	backupResp, err := client.BackupSecret(context.Background(), secret, nil)
 	require.NoError(t, err)

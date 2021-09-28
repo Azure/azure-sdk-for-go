@@ -60,6 +60,9 @@ func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
 
 func createClient(t *testing.T) (*Client, error) {
 	vaultUrl := recording.GetEnvVariable(t, "AZURE_KEYVAULT_URL", "https://fakekvurl.vault.azure.net/")
+	if recording.GetRecordMode() == "playback" {
+		vaultUrl = "https://fakekvurl.vault.azure.net/"
+	}
 
 	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient(t)

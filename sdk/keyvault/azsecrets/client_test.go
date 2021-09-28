@@ -39,9 +39,18 @@ func TestMain(m *testing.M) {
 	os.Exit(exitVal)
 }
 
+func startTest(t *testing.T) func() {
+	err := recording.StartRecording(t, pathToPackage, nil)
+	require.NoError(t, err)
+	return func() {
+		err := recording.StopRecording(t, nil)
+		require.NoError(t, err)
+	}
+}
+
 func TestSetGetSecret(t *testing.T) {
-	recording.StartRecording(t, pathToPackage, nil)
-	defer recording.StopRecording(t, nil)
+	stop := startTest(t)
+	defer stop()
 
 	client, err := createClient(t)
 	require.NoError(t, err)
@@ -62,8 +71,8 @@ func TestSetGetSecret(t *testing.T) {
 }
 
 func TestListSecretVersionss(t *testing.T) {
-	recording.StartRecording(t, pathToPackage, nil)
-	defer recording.StopRecording(t, nil)
+	stop := startTest(t)
+	defer stop()
 
 	client, err := createClient(t)
 	require.NoError(t, err)
@@ -100,8 +109,8 @@ func TestListSecretVersionss(t *testing.T) {
 }
 
 func TestListSecrets(t *testing.T) {
-	recording.StartRecording(t, pathToPackage, nil)
-	defer recording.StopRecording(t, nil)
+	stop := startTest(t)
+	defer stop()
 
 	client, err := createClient(t)
 	require.NoError(t, err)
@@ -131,8 +140,8 @@ func TestListSecrets(t *testing.T) {
 }
 
 func TestListDeletedSecrets(t *testing.T) {
-	recording.StartRecording(t, pathToPackage, nil)
-	defer recording.StopRecording(t, nil)
+	stop := startTest(t)
+	defer stop()
 
 	client, err := createClient(t)
 	require.NoError(t, err)
@@ -198,8 +207,8 @@ func TestListDeletedSecrets(t *testing.T) {
 }
 
 func TestDeleteSecret(t *testing.T) {
-	recording.StartRecording(t, pathToPackage, nil)
-	defer recording.StopRecording(t, nil)
+	stop := startTest(t)
+	defer stop()
 
 	client, err := createClient(t)
 	require.NoError(t, err)
@@ -226,8 +235,8 @@ func TestDeleteSecret(t *testing.T) {
 }
 
 func TestPurgeDeletedSecret(t *testing.T) {
-	recording.StartRecording(t, pathToPackage, nil)
-	defer recording.StopRecording(t, nil)
+	stop := startTest(t)
+	defer stop()
 
 	client, err := createClient(t)
 	require.NoError(t, err)
@@ -259,8 +268,8 @@ func TestPurgeDeletedSecret(t *testing.T) {
 }
 
 func TestUpdateSecretProperties(t *testing.T) {
-	recording.StartRecording(t, pathToPackage, nil)
-	defer recording.StopRecording(t, nil)
+	stop := startTest(t)
+	defer stop()
 
 	client, err := createClient(t)
 	require.NoError(t, err)
@@ -297,8 +306,8 @@ func TestUpdateSecretProperties(t *testing.T) {
 }
 
 func TestBeginRecoverDeletedSecret(t *testing.T) {
-	recording.StartRecording(t, pathToPackage, nil)
-	defer recording.StopRecording(t, nil)
+	stop := startTest(t)
+	defer stop()
 
 	client, err := createClient(t)
 	require.NoError(t, err)
@@ -334,8 +343,8 @@ func TestBeginRecoverDeletedSecret(t *testing.T) {
 }
 
 func TestBackupSecret(t *testing.T) {
-	recording.StartRecording(t, pathToPackage, nil)
-	defer recording.StopRecording(t, nil)
+	stop := startTest(t)
+	defer stop()
 
 	client, err := createClient(t)
 	require.NoError(t, err)

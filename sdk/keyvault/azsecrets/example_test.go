@@ -92,7 +92,13 @@ func ExampleClient_BeginDeleteSecret() {
 	}
 
 	resp, err := client.BeginDeleteSecret(context.Background(), "secretToDelete", nil)
-	resp.PollUntilDone(context.Background(), 250*time.Millisecond)
+	if err != nil {
+		panic(err)
+	}
+	_, err = resp.PollUntilDone(context.Background(), 250*time.Millisecond)
+	if err != nil {
+		panic(err)
+	}
 
 	poller := resp.Poller
 	finalResp, err := poller.FinalResponse(context.Background())
@@ -197,7 +203,10 @@ func ExampleClient_PurgeDeletedSecret() {
 	if err != nil {
 		panic(err)
 	}
-	resp.PollUntilDone(context.Background(), 500*time.Millisecond)
+	_, err = resp.PollUntilDone(context.Background(), 250*time.Millisecond)
+	if err != nil {
+		panic(err)
+	}
 
 	_, err = client.PurgeDeletedSecret(context.Background(), "mySecretName", nil)
 	if err != nil {
@@ -221,5 +230,8 @@ func ExampleClient_BeginRecoverDeletedSecret() {
 	if err != nil {
 		panic(err)
 	}
-	resp.PollUntilDone(context.Background(), 500*time.Millisecond)
+	_, err = resp.PollUntilDone(context.Background(), 250*time.Millisecond)
+	if err != nil {
+		panic(err)
+	}
 }

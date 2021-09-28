@@ -9,6 +9,8 @@ package arm
 import (
 	"fmt"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
 const (
@@ -42,6 +44,8 @@ type ResourceIdentifier struct {
 	resourceType      ResourceType
 	name              string
 	isChild           bool
+
+	stringValue *string
 }
 
 func (id ResourceIdentifier) Parent() *ResourceIdentifier {
@@ -135,6 +139,7 @@ func (id *ResourceIdentifier) init(parent *ResourceIdentifier, resourceType Reso
 	id.name = name
 }
 
+// ParseResourceIdentifier parses a string to an instance of ResourceIdentifier
 func ParseResourceIdentifier(id string) (*ResourceIdentifier, error) {
 	if len(id) == 0 {
 		return nil, fmt.Errorf("invalid resource id: id cannot be empty")
@@ -200,6 +205,15 @@ func appendNext(parent *ResourceIdentifier, parts []string, id string) (*Resourc
 }
 
 func (id ResourceIdentifier) String() string {
+	if id.stringValue != nil {
+		return *id.stringValue
+	}
+
+	id.stringValue = to.StringPtr(id.toResourceString())
+	return *id.stringValue
+}
+
+func (id ResourceIdentifier) toResourceString() string {
 	if id.parent == nil {
 		return ""
 	}
@@ -235,6 +249,8 @@ type ResourceType struct {
 	namespace string
 	t         string
 	types     []string
+
+	stringValue string
 }
 
 func (t ResourceType) Namespace() string {
@@ -250,14 +266,15 @@ func (t ResourceType) LastType() string {
 }
 
 func (t ResourceType) String() string {
-	return fmt.Sprintf("%s/%s", t.namespace, t.t)
+	return t.stringValue
 }
 
 func NewResourceType(providerNamespace, name string) ResourceType {
 	return ResourceType{
-		namespace: providerNamespace,
-		t:         name,
-		types:     splitStringAndOmitEmpty(name, "/"),
+		namespace:   providerNamespace,
+		t:           name,
+		types:       splitStringAndOmitEmpty(name, "/"),
+		stringValue: fmt.Sprintf("%s/%s", providerNamespace, name),
 	}
 }
 
@@ -274,30 +291,25 @@ func ParseResourceType(resourceIdOrType string) (*ResourceType, error) {
 		return nil, fmt.Errorf("invalid resource id or type: %s", resourceIdOrType)
 	}
 
-	resourceType := &ResourceType{}
+	resourceType := ResourceType{}
 	// if the type is just subscriptions, it is a built-in type in the Microsoft.Resources namespace
 	if len(parts) == 1 {
 		// Simple resource type
-		resourceType.t = parts[0]
-		resourceType.namespace = builtInResourceNamespace
+		resourceType = NewResourceType(builtInResourceNamespace, parts[0])
+		return &resourceType, nil
 	} else if strings.Contains(parts[0], ".") {
 		// Handle resource types (Microsoft.Compute/virtualMachines, Microsoft.Network/virtualNetworks/subnets)
 		// Type
 		// it is a full type name
-		resourceType.namespace = parts[0]
-		//resourceType.Type = strings.Join("/", parts.Skip(1).Take(parts.Count - 1));
-		resourceType.t = strings.Join(parts[1:], "/")
+		resourceType = NewResourceType(parts[0], strings.Join(parts[1:], "/"))
+		return &resourceType, nil
 	} else {
 		// Check if ResourceIdentifier
 		id, err := ParseResourceIdentifier(resourceIdOrType)
 		if err != nil {
 			return nil, fmt.Errorf("invalid resource id: %s", resourceIdOrType)
 		}
-		resourceType.t = id.resourceType.t
-		resourceType.namespace = id.resourceType.namespace
+		resourceType = NewResourceType(id.resourceType.namespace, id.resourceType.t)
+		return &resourceType, nil
 	}
-
-	resourceType.types = splitStringAndOmitEmpty(resourceType.t, "/")
-
-	return resourceType, nil
 }

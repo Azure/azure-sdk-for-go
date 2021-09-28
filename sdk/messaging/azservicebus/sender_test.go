@@ -16,7 +16,7 @@ import (
 func TestSender(t *testing.T) {
 	cs := getConnectionString(t)
 
-	serviceBusClient, err := NewClient(WithConnectionString(cs))
+	serviceBusClient, err := NewClientWithConnectionString(cs)
 	require.NoError(t, err)
 
 	t.Run("testSendBatchOfTwo", func(t *testing.T) {

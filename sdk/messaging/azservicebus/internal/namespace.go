@@ -6,18 +6,18 @@ package internal
 import (
 	"context"
 	"crypto/tls"
+	"errors"
 	"fmt"
 	"runtime"
 	"strings"
 	"sync"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/aad"
 	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-amqp-common-go/v3/cbs"
 	"github.com/Azure/azure-amqp-common-go/v3/conn"
 	"github.com/Azure/azure-amqp-common-go/v3/rpc"
-	"github.com/Azure/azure-amqp-common-go/v3/sas"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/go-amqp"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/devigned/tab"
@@ -26,9 +26,6 @@ import (
 
 const (
 	rootUserAgent = "/golang-service-bus"
-
-	// default ServiceBus resource uri to authenticate with
-	serviceBusResourceURI = "https://servicebus.azure.net/"
 )
 
 type (
@@ -37,7 +34,7 @@ type (
 	Namespace struct {
 		Name          string
 		Suffix        string
-		TokenProvider auth.TokenProvider
+		TokenProvider *tokenProvider
 		Environment   azure.Environment
 		tlsConfig     *tls.Config
 		userAgent     string
@@ -89,7 +86,7 @@ func NamespaceWithConnectionString(connStr string) NamespaceOption {
 			ns.Suffix = parsed.Suffix
 		}
 
-		provider, err := sas.NewTokenProvider(sas.TokenProviderWithKey(parsed.KeyName, parsed.Key))
+		provider, err := newTokenProviderWithConnectionString(parsed.KeyName, parsed.Key)
 		if err != nil {
 			return err
 		}
@@ -123,35 +120,6 @@ func NamespaceWithWebSocket() NamespaceOption {
 	}
 }
 
-// NamespaceWithEnvironmentBinding configures a namespace using the environment details. It uses one of the following methods:
-//
-// 1. Client Credentials: attempt to authenticate with a Service Principal via "AZURE_TENANT_ID", "AZURE_CLIENT_ID" and
-//    "AZURE_CLIENT_SECRET"
-//
-// 2. Client Certificate: attempt to authenticate with a Service Principal via "AZURE_TENANT_ID", "AZURE_CLIENT_ID",
-//    "AZURE_CERTIFICATE_PATH" and "AZURE_CERTIFICATE_PASSWORD"
-//
-// 3. Managed Identity (MI): attempt to authenticate via the MI assigned to the Azure resource
-//
-//
-// The Azure Environment used can be specified using the name of the Azure Environment set in "AZURE_ENVIRONMENT" var.
-func NamespaceWithEnvironmentBinding(name string) NamespaceOption {
-	return func(ns *Namespace) error {
-		provider, err := aad.NewJWTProvider(
-			aad.JWTProviderWithEnvironmentVars(),
-			// TODO: fix bug upstream to use environment resourceURI
-			aad.JWTProviderWithResourceURI(ns.getResourceURI()),
-		)
-		if err != nil {
-			return err
-		}
-
-		ns.TokenProvider = provider
-		ns.Name = name
-		return nil
-	}
-}
-
 // NamespaceWithAzureEnvironment sets the namespace's Environment, Suffix and ResourceURI parameters according
 // to the Azure Environment defined in "github.com/Azure/go-autorest/autorest/azure" package.
 // This allows to configure the library to be used in the different Azure clouds.
@@ -169,10 +137,20 @@ func NamespaceWithAzureEnvironment(namespaceName, environmentName string) Namesp
 	}
 }
 
-// NamespaceWithTokenProvider sets the token provider on the namespace
-func NamespaceWithTokenProvider(provider auth.TokenProvider) NamespaceOption {
+// NamespacesWithTokenCredential sets the token provider on the namespace
+// fullyQualifiedNamespace is the Service Bus namespace name (ex: myservicebus.servicebus.windows.net)
+func NamespacesWithTokenCredential(fullyQualifiedNamespace string, tokenCredential azcore.TokenCredential) NamespaceOption {
 	return func(ns *Namespace) error {
-		ns.TokenProvider = provider
+		ns.TokenProvider = newTokenProviderWithTokenCredential(tokenCredential)
+
+		parts := strings.SplitN(fullyQualifiedNamespace, ".", 2)
+
+		if len(parts) != 2 {
+			return errors.New("fullyQualifiedNamespace is not properly formed. Should be similar to 'myservicebus.servicebus.windows.net'")
+		} else {
+			ns.Name, ns.Suffix = parts[0], parts[1]
+		}
+
 		return nil
 	}
 }
@@ -306,59 +284,71 @@ func (ns *Namespace) Recover(ctx context.Context) (*amqp.Client, error) {
 // negotiateClaim performs initial authentication and starts periodic refresh of credentials.
 // the returned func is to cancel() the refresh goroutine.
 func (ns *Namespace) NegotiateClaim(ctx context.Context, entityPath string) (func() <-chan struct{}, error) {
-	return ns.negotiateClaimImpl(ctx,
+	return ns.startNegotiateClaimRenewer(ctx,
 		entityPath,
-		15*time.Minute,
-		func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error {
-			// You're not allowed to have multiple $cbs links open in a single connect. The current
-			// cbs.NegotiateClaim implementation automatically creates and shuts down it's own
-			// link so we have to guard against that here (for now).
-			ns.negotiateClaimMu.Lock()
-			defer ns.negotiateClaimMu.Unlock()
-			return cbs.NegotiateClaim(ctx, audience, conn, provider)
-		},
+		cbs.NegotiateClaim,
 		ns.getAMQPClientImpl,
-		func(err error) {
-			tab.For(ctx).Debug(fmt.Sprintf("refreshing claims failed: %s", err.Error()))
-		})
+		nextClaimRefreshDuration)
 }
 
-func (ns *Namespace) negotiateClaimImpl(ctx context.Context,
+func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 	entityPath string,
-	renewalDuration time.Duration,
 	cbsNegotiateClaim func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error,
 	nsGetAMQPClientImpl func(ctx context.Context) (*amqp.Client, error),
-	logError func(err error),
-) (func() <-chan struct{}, error) {
+	nextClaimRefreshDurationFn func(expirationTime time.Time, currentTime time.Time) time.Duration) (func() <-chan struct{}, error) {
 	audience := ns.GetEntityAudience(entityPath)
 
-	refreshClaim := func() error {
-		amqpClient, err := nsGetAMQPClientImpl(ctx)
-
-		if err != nil {
-			logError(err)
-			return err
-		}
-
+	refreshClaim := func() (time.Time, error) {
 		retrier := ns.baseRetrier.Copy()
 
-		for retrier.Try(ctx) {
-			ctx, span := ns.startSpanFromContext(ctx, "sb.namespace.negotiateClaim")
-			err = cbsNegotiateClaim(ctx, audience, amqpClient, ns.TokenProvider)
+		var lastErr error
+		var expiration time.Time
 
-			if err == nil {
-				span.End()
+		for retrier.Try(ctx) {
+			expiration, lastErr = func() (time.Time, error) {
+				ctx, span := ns.startSpanFromContext(ctx, "sb.namespace.negotiateClaim")
+				defer span.End()
+
+				amqpClient, err := nsGetAMQPClientImpl(ctx)
+
+				if err != nil {
+					span.Logger().Error(err)
+					return time.Time{}, err
+				}
+
+				token, expiration, err := ns.TokenProvider.GetTokenAsTokenProvider(audience)
+
+				if err != nil {
+					span.Logger().Error(err)
+					return time.Time{}, err
+				}
+
+				// You're not allowed to have multiple $cbs links open in a single connection.
+				// The current cbs.NegotiateClaim implementation automatically creates and shuts
+				// down it's own link so we have to guard against that here.
+				ns.negotiateClaimMu.Lock()
+				err = cbsNegotiateClaim(ctx, audience, amqpClient, token)
+				ns.negotiateClaimMu.Unlock()
+
+				if err != nil {
+					span.Logger().Error(err)
+					return time.Time{}, err
+				}
+
+				return expiration, nil
+			}()
+
+			if lastErr == nil {
 				break
 			}
-
-			logError(err)
-			span.End()
 		}
 
-		return err
+		return expiration, lastErr
 	}
 
-	if err := refreshClaim(); err != nil {
+	expiresOn, err := refreshClaim()
+
+	if err != nil {
 		return nil, err
 	}
 
@@ -370,8 +360,12 @@ func (ns *Namespace) negotiateClaimImpl(ctx context.Context,
 			select {
 			case <-refreshCtx.Done():
 				return
-			case <-time.After(renewalDuration):
-				_ = refreshClaim() // logging will report the error for now
+			case <-time.After(nextClaimRefreshDurationFn(expiresOn, time.Now())):
+				tmpExpiresOn, err := refreshClaim() // logging will report the error for now
+
+				if err == nil {
+					expiresOn = tmpExpiresOn
+				}
 			}
 		}
 	}()
@@ -442,16 +436,35 @@ func (ns *Namespace) getUserAgent() string {
 	return userAgent
 }
 
-func (ns *Namespace) getResourceURI() string {
-	if ns.Environment.ResourceIdentifiers.ServiceBus == "" {
-		return serviceBusResourceURI
-	}
-	return ns.Environment.ResourceIdentifiers.ServiceBus
-}
-
 func (ns *Namespace) resolveSuffix() string {
 	if ns.Suffix != "" {
 		return ns.Suffix
 	}
 	return azure.PublicCloud.ServiceBusEndpointSuffix
+}
+
+// nextClaimRefreshDuration figures out the proper interval for the next authorization
+// refresh.
+//
+// It applies a few real world adjustments:
+// - We assume the expiration time is 10 minutes ahead of when it actually is, to adjust for clock drift.
+// - We don't let the refresh interval fall below 2 minutes
+// - We don't let the refresh interval go above 49 days
+//
+// This logic is from here:
+// https://github.com/Azure/azure-sdk-for-net/blob/bfd3109d0f9afa763131731d78a31e39c81101b3/sdk/servicebus/Azure.Messaging.ServiceBus/src/Amqp/AmqpConnectionScope.cs#L998
+func nextClaimRefreshDuration(expirationTime time.Time, currentTime time.Time) time.Duration {
+	const min = 2 * time.Minute
+	const max = 49 * 24 * time.Hour
+	const clockDrift = 10 * time.Minute
+
+	var refreshDuration = expirationTime.Sub(currentTime) - clockDrift
+
+	if refreshDuration < min {
+		return min
+	} else if refreshDuration > max {
+		return max
+	}
+
+	return refreshDuration
 }

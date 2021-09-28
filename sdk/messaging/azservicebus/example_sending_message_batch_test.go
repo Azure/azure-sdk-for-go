@@ -32,9 +32,7 @@ func ExampleSender_NewMessageBatch() {
 		return
 	}
 
-	client, err := azservicebus.NewClient(
-		azservicebus.WithConnectionString(connectionString),
-	)
+	client, err := azservicebus.NewClientWithConnectionString(connectionString)
 	panicOnError("Failed to create client", err)
 
 	sender, err := client.NewSender(queueName)

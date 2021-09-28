@@ -88,7 +88,7 @@ func runBasicSendAndReceiveTest() {
 	ctx, cancel := context.WithTimeout(context.Background(), 24*5*time.Hour)
 	defer cancel()
 
-	serviceBusClient, err := azservicebus.NewClient(azservicebus.WithConnectionString(cs))
+	serviceBusClient, err := azservicebus.NewClientWithConnectionString(cs)
 	if err != nil {
 		trackException(telemetryClient, "Failed to create service bus client", err)
 		return

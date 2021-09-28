@@ -6,6 +6,7 @@ package internal
 import (
 	"context"
 	"crypto/tls"
+	"errors"
 	"fmt"
 	"runtime"
 	"strings"
@@ -137,14 +138,15 @@ func NamespaceWithAzureEnvironment(namespaceName, environmentName string) Namesp
 }
 
 // NamespacesWithTokenCredential sets the token provider on the namespace
-func NamespacesWithTokenCredential(namespaceName string, tokenCredential azcore.TokenCredential) NamespaceOption {
+// fullyQualifiedNamespace is the Service Bus namespace name (ex: myservicebus.servicebus.windows.net)
+func NamespacesWithTokenCredential(fullyQualifiedNamespace string, tokenCredential azcore.TokenCredential) NamespaceOption {
 	return func(ns *Namespace) error {
 		ns.TokenProvider = newTokenProviderWithTokenCredential(tokenCredential)
 
-		parts := strings.SplitN(namespaceName, ".", 2)
+		parts := strings.SplitN(fullyQualifiedNamespace, ".", 2)
 
 		if len(parts) != 2 {
-			ns.Name = parts[0]
+			return errors.New("fullyQualifiedNamespace is not properly formed. Should be similar to 'myservicebus.servicebus.windows.net'")
 		} else {
 			ns.Name, ns.Suffix = parts[0], parts[1]
 		}

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,45 +12,48 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RecordSetsClient contains the methods for the RecordSets group.
 // Don't use this type directly, use NewRecordSetsClient() instead.
 type RecordSetsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewRecordSetsClient creates a new instance of RecordSetsClient with the specified values.
-func NewRecordSetsClient(con *armcore.Connection, subscriptionID string) *RecordSetsClient {
-	return &RecordSetsClient{con: con, subscriptionID: subscriptionID}
+func NewRecordSetsClient(con *arm.Connection, subscriptionID string) *RecordSetsClient {
+	return &RecordSetsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates or updates a record set within a Private DNS zone.
 // If the operation fails it returns the *CloudError error type.
-func (client *RecordSetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, parameters RecordSet, options *RecordSetsCreateOrUpdateOptions) (RecordSetResponse, error) {
+func (client *RecordSetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, parameters RecordSet, options *RecordSetsCreateOrUpdateOptions) (RecordSetsCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateZoneName, recordType, relativeRecordSetName, parameters, options)
 	if err != nil {
-		return RecordSetResponse{}, err
+		return RecordSetsCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RecordSetResponse{}, err
+		return RecordSetsCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return RecordSetResponse{}, client.createOrUpdateHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
+		return RecordSetsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *RecordSetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, parameters RecordSet, options *RecordSetsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *RecordSetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, parameters RecordSet, options *RecordSetsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}/{relativeRecordSetName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -71,65 +75,64 @@ func (client *RecordSetsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header.Set("If-Match", *options.IfMatch)
 	}
 	if options != nil && options.IfNoneMatch != nil {
-		req.Header.Set("If-None-Match", *options.IfNoneMatch)
+		req.Raw().Header.Set("If-None-Match", *options.IfNoneMatch)
 	}
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RecordSetsClient) createOrUpdateHandleResponse(resp *azcore.Response) (RecordSetResponse, error) {
-	var val *RecordSet
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RecordSetResponse{}, err
+func (client *RecordSetsClient) createOrUpdateHandleResponse(resp *http.Response) (RecordSetsCreateOrUpdateResponse, error) {
+	result := RecordSetsCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSet); err != nil {
+		return RecordSetsCreateOrUpdateResponse{}, err
 	}
-	return RecordSetResponse{RawResponse: resp.Response, RecordSet: val}, nil
+	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *RecordSetsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecordSetsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Deletes a record set from a Private DNS zone. This operation cannot be undone.
 // If the operation fails it returns the *CloudError error type.
-func (client *RecordSetsClient) Delete(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, options *RecordSetsDeleteOptions) (*http.Response, error) {
+func (client *RecordSetsClient) Delete(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, options *RecordSetsDeleteOptions) (RecordSetsDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateZoneName, recordType, relativeRecordSetName, options)
 	if err != nil {
-		return nil, err
+		return RecordSetsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return RecordSetsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
+		return RecordSetsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return resp.Response, nil
+	return RecordSetsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RecordSetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, options *RecordSetsDeleteOptions) (*azcore.Request, error) {
+func (client *RecordSetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, options *RecordSetsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}/{relativeRecordSetName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -151,53 +154,52 @@ func (client *RecordSetsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header.Set("If-Match", *options.IfMatch)
 	}
-	req.Header.Set("Accept", "application/json")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *RecordSetsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecordSetsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets a record set.
 // If the operation fails it returns the *CloudError error type.
-func (client *RecordSetsClient) Get(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, options *RecordSetsGetOptions) (RecordSetResponse, error) {
+func (client *RecordSetsClient) Get(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, options *RecordSetsGetOptions) (RecordSetsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateZoneName, recordType, relativeRecordSetName, options)
 	if err != nil {
-		return RecordSetResponse{}, err
+		return RecordSetsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RecordSetResponse{}, err
+		return RecordSetsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return RecordSetResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return RecordSetsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RecordSetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, options *RecordSetsGetOptions) (*azcore.Request, error) {
+func (client *RecordSetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, options *RecordSetsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}/{relativeRecordSetName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -219,59 +221,55 @@ func (client *RecordSetsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RecordSetsClient) getHandleResponse(resp *azcore.Response) (RecordSetResponse, error) {
-	var val *RecordSet
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RecordSetResponse{}, err
+func (client *RecordSetsClient) getHandleResponse(resp *http.Response) (RecordSetsGetResponse, error) {
+	result := RecordSetsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSet); err != nil {
+		return RecordSetsGetResponse{}, err
 	}
-	return RecordSetResponse{RawResponse: resp.Response, RecordSet: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *RecordSetsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecordSetsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Lists all record sets in a Private DNS zone.
 // If the operation fails it returns the *CloudError error type.
-func (client *RecordSetsClient) List(resourceGroupName string, privateZoneName string, options *RecordSetsListOptions) RecordSetListResultPager {
-	return &recordSetListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *RecordSetsClient) List(resourceGroupName string, privateZoneName string, options *RecordSetsListOptions) *RecordSetsListPager {
+	return &RecordSetsListPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, privateZoneName, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp RecordSetListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.RecordSetListResult.NextLink)
+		advancer: func(ctx context.Context, resp RecordSetsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecordSetListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *RecordSetsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, options *RecordSetsListOptions) (*azcore.Request, error) {
+func (client *RecordSetsClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, options *RecordSetsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/ALL"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -285,12 +283,11 @@ func (client *RecordSetsClient) listCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -298,52 +295,49 @@ func (client *RecordSetsClient) listCreateRequest(ctx context.Context, resourceG
 		reqQP.Set("$recordsetnamesuffix", *options.Recordsetnamesuffix)
 	}
 	reqQP.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RecordSetsClient) listHandleResponse(resp *azcore.Response) (RecordSetListResultResponse, error) {
-	var val *RecordSetListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RecordSetListResultResponse{}, err
+func (client *RecordSetsClient) listHandleResponse(resp *http.Response) (RecordSetsListResponse, error) {
+	result := RecordSetsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSetListResult); err != nil {
+		return RecordSetsListResponse{}, err
 	}
-	return RecordSetListResultResponse{RawResponse: resp.Response, RecordSetListResult: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *RecordSetsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecordSetsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByType - Lists the record sets of a specified type in a Private DNS zone.
 // If the operation fails it returns the *CloudError error type.
-func (client *RecordSetsClient) ListByType(resourceGroupName string, privateZoneName string, recordType RecordType, options *RecordSetsListByTypeOptions) RecordSetListResultPager {
-	return &recordSetListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *RecordSetsClient) ListByType(resourceGroupName string, privateZoneName string, recordType RecordType, options *RecordSetsListByTypeOptions) *RecordSetsListByTypePager {
+	return &RecordSetsListByTypePager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByTypeCreateRequest(ctx, resourceGroupName, privateZoneName, recordType, options)
 		},
-		responder: client.listByTypeHandleResponse,
-		errorer:   client.listByTypeHandleError,
-		advancer: func(ctx context.Context, resp RecordSetListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.RecordSetListResult.NextLink)
+		advancer: func(ctx context.Context, resp RecordSetsListByTypeResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.RecordSetListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listByTypeCreateRequest creates the ListByType request.
-func (client *RecordSetsClient) listByTypeCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, options *RecordSetsListByTypeOptions) (*azcore.Request, error) {
+func (client *RecordSetsClient) listByTypeCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, options *RecordSetsListByTypeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -361,12 +355,11 @@ func (client *RecordSetsClient) listByTypeCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
@@ -374,52 +367,52 @@ func (client *RecordSetsClient) listByTypeCreateRequest(ctx context.Context, res
 		reqQP.Set("$recordsetnamesuffix", *options.Recordsetnamesuffix)
 	}
 	reqQP.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByTypeHandleResponse handles the ListByType response.
-func (client *RecordSetsClient) listByTypeHandleResponse(resp *azcore.Response) (RecordSetListResultResponse, error) {
-	var val *RecordSetListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RecordSetListResultResponse{}, err
+func (client *RecordSetsClient) listByTypeHandleResponse(resp *http.Response) (RecordSetsListByTypeResponse, error) {
+	result := RecordSetsListByTypeResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSetListResult); err != nil {
+		return RecordSetsListByTypeResponse{}, err
 	}
-	return RecordSetListResultResponse{RawResponse: resp.Response, RecordSetListResult: val}, nil
+	return result, nil
 }
 
 // listByTypeHandleError handles the ListByType error response.
-func (client *RecordSetsClient) listByTypeHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecordSetsClient) listByTypeHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Update - Updates a record set within a Private DNS zone.
 // If the operation fails it returns the *CloudError error type.
-func (client *RecordSetsClient) Update(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, parameters RecordSet, options *RecordSetsUpdateOptions) (RecordSetResponse, error) {
+func (client *RecordSetsClient) Update(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, parameters RecordSet, options *RecordSetsUpdateOptions) (RecordSetsUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, privateZoneName, recordType, relativeRecordSetName, parameters, options)
 	if err != nil {
-		return RecordSetResponse{}, err
+		return RecordSetsUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RecordSetResponse{}, err
+		return RecordSetsUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return RecordSetResponse{}, client.updateHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return RecordSetsUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *RecordSetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, parameters RecordSet, options *RecordSetsUpdateOptions) (*azcore.Request, error) {
+func (client *RecordSetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, privateZoneName string, recordType RecordType, relativeRecordSetName string, parameters RecordSet, options *RecordSetsUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/privateDnsZones/{privateZoneName}/{recordType}/{relativeRecordSetName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -441,39 +434,38 @@ func (client *RecordSetsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-06-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header.Set("If-Match", *options.IfMatch)
 	}
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *RecordSetsClient) updateHandleResponse(resp *azcore.Response) (RecordSetResponse, error) {
-	var val *RecordSet
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RecordSetResponse{}, err
+func (client *RecordSetsClient) updateHandleResponse(resp *http.Response) (RecordSetsUpdateResponse, error) {
+	result := RecordSetsUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSet); err != nil {
+		return RecordSetsUpdateResponse{}, err
 	}
-	return RecordSetResponse{RawResponse: resp.Response, RecordSet: val}, nil
+	return result, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *RecordSetsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RecordSetsClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

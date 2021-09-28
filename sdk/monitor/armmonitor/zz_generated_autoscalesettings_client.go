@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,8 +12,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
@@ -21,34 +23,35 @@ import (
 // AutoscaleSettingsClient contains the methods for the AutoscaleSettings group.
 // Don't use this type directly, use NewAutoscaleSettingsClient() instead.
 type AutoscaleSettingsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewAutoscaleSettingsClient creates a new instance of AutoscaleSettingsClient with the specified values.
-func NewAutoscaleSettingsClient(con *armcore.Connection, subscriptionID string) *AutoscaleSettingsClient {
-	return &AutoscaleSettingsClient{con: con, subscriptionID: subscriptionID}
+func NewAutoscaleSettingsClient(con *arm.Connection, subscriptionID string) *AutoscaleSettingsClient {
+	return &AutoscaleSettingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates or updates an autoscale setting.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *AutoscaleSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, autoscaleSettingName string, parameters AutoscaleSettingResource, options *AutoscaleSettingsCreateOrUpdateOptions) (AutoscaleSettingResourceResponse, error) {
+func (client *AutoscaleSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, autoscaleSettingName string, parameters AutoscaleSettingResource, options *AutoscaleSettingsCreateOrUpdateOptions) (AutoscaleSettingsCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, autoscaleSettingName, parameters, options)
 	if err != nil {
-		return AutoscaleSettingResourceResponse{}, err
+		return AutoscaleSettingsCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AutoscaleSettingResourceResponse{}, err
+		return AutoscaleSettingsCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
-		return AutoscaleSettingResourceResponse{}, client.createOrUpdateHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
+		return AutoscaleSettingsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AutoscaleSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, autoscaleSettingName string, parameters AutoscaleSettingResource, options *AutoscaleSettingsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *AutoscaleSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, autoscaleSettingName string, parameters AutoscaleSettingResource, options *AutoscaleSettingsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/autoscalesettings/{autoscaleSettingName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -62,59 +65,58 @@ func (client *AutoscaleSettingsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AutoscaleSettingsClient) createOrUpdateHandleResponse(resp *azcore.Response) (AutoscaleSettingResourceResponse, error) {
-	var val *AutoscaleSettingResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AutoscaleSettingResourceResponse{}, err
+func (client *AutoscaleSettingsClient) createOrUpdateHandleResponse(resp *http.Response) (AutoscaleSettingsCreateOrUpdateResponse, error) {
+	result := AutoscaleSettingsCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AutoscaleSettingResource); err != nil {
+		return AutoscaleSettingsCreateOrUpdateResponse{}, err
 	}
-	return AutoscaleSettingResourceResponse{RawResponse: resp.Response, AutoscaleSettingResource: val}, nil
+	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AutoscaleSettingsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AutoscaleSettingsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Deletes and autoscale setting
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *AutoscaleSettingsClient) Delete(ctx context.Context, resourceGroupName string, autoscaleSettingName string, options *AutoscaleSettingsDeleteOptions) (*http.Response, error) {
+func (client *AutoscaleSettingsClient) Delete(ctx context.Context, resourceGroupName string, autoscaleSettingName string, options *AutoscaleSettingsDeleteOptions) (AutoscaleSettingsDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, autoscaleSettingName, options)
 	if err != nil {
-		return nil, err
+		return AutoscaleSettingsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return nil, err
+		return AutoscaleSettingsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
-		return nil, client.deleteHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
+		return AutoscaleSettingsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return resp.Response, nil
+	return AutoscaleSettingsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AutoscaleSettingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, autoscaleSettingName string, options *AutoscaleSettingsDeleteOptions) (*azcore.Request, error) {
+func (client *AutoscaleSettingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, autoscaleSettingName string, options *AutoscaleSettingsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/autoscalesettings/{autoscaleSettingName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -128,50 +130,49 @@ func (client *AutoscaleSettingsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *AutoscaleSettingsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AutoscaleSettingsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets an autoscale setting
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *AutoscaleSettingsClient) Get(ctx context.Context, resourceGroupName string, autoscaleSettingName string, options *AutoscaleSettingsGetOptions) (AutoscaleSettingResourceResponse, error) {
+func (client *AutoscaleSettingsClient) Get(ctx context.Context, resourceGroupName string, autoscaleSettingName string, options *AutoscaleSettingsGetOptions) (AutoscaleSettingsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, autoscaleSettingName, options)
 	if err != nil {
-		return AutoscaleSettingResourceResponse{}, err
+		return AutoscaleSettingsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AutoscaleSettingResourceResponse{}, err
+		return AutoscaleSettingsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return AutoscaleSettingResourceResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return AutoscaleSettingsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AutoscaleSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, autoscaleSettingName string, options *AutoscaleSettingsGetOptions) (*azcore.Request, error) {
+func (client *AutoscaleSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, autoscaleSettingName string, options *AutoscaleSettingsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/autoscalesettings/{autoscaleSettingName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -185,59 +186,55 @@ func (client *AutoscaleSettingsClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AutoscaleSettingsClient) getHandleResponse(resp *azcore.Response) (AutoscaleSettingResourceResponse, error) {
-	var val *AutoscaleSettingResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AutoscaleSettingResourceResponse{}, err
+func (client *AutoscaleSettingsClient) getHandleResponse(resp *http.Response) (AutoscaleSettingsGetResponse, error) {
+	result := AutoscaleSettingsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AutoscaleSettingResource); err != nil {
+		return AutoscaleSettingsGetResponse{}, err
 	}
-	return AutoscaleSettingResourceResponse{RawResponse: resp.Response, AutoscaleSettingResource: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *AutoscaleSettingsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AutoscaleSettingsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByResourceGroup - Lists the autoscale settings for a resource group
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *AutoscaleSettingsClient) ListByResourceGroup(resourceGroupName string, options *AutoscaleSettingsListByResourceGroupOptions) AutoscaleSettingResourceCollectionPager {
-	return &autoscaleSettingResourceCollectionPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *AutoscaleSettingsClient) ListByResourceGroup(resourceGroupName string, options *AutoscaleSettingsListByResourceGroupOptions) *AutoscaleSettingsListByResourceGroupPager {
+	return &AutoscaleSettingsListByResourceGroupPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listByResourceGroupHandleResponse,
-		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp AutoscaleSettingResourceCollectionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.AutoscaleSettingResourceCollection.NextLink)
+		advancer: func(ctx context.Context, resp AutoscaleSettingsListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AutoscaleSettingResourceCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AutoscaleSettingsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AutoscaleSettingsListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *AutoscaleSettingsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AutoscaleSettingsListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/autoscalesettings"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -247,117 +244,112 @@ func (client *AutoscaleSettingsClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AutoscaleSettingsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (AutoscaleSettingResourceCollectionResponse, error) {
-	var val *AutoscaleSettingResourceCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AutoscaleSettingResourceCollectionResponse{}, err
+func (client *AutoscaleSettingsClient) listByResourceGroupHandleResponse(resp *http.Response) (AutoscaleSettingsListByResourceGroupResponse, error) {
+	result := AutoscaleSettingsListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AutoscaleSettingResourceCollection); err != nil {
+		return AutoscaleSettingsListByResourceGroupResponse{}, err
 	}
-	return AutoscaleSettingResourceCollectionResponse{RawResponse: resp.Response, AutoscaleSettingResourceCollection: val}, nil
+	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *AutoscaleSettingsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AutoscaleSettingsClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListBySubscription - Lists the autoscale settings for a subscription
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *AutoscaleSettingsClient) ListBySubscription(options *AutoscaleSettingsListBySubscriptionOptions) AutoscaleSettingResourceCollectionPager {
-	return &autoscaleSettingResourceCollectionPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *AutoscaleSettingsClient) ListBySubscription(options *AutoscaleSettingsListBySubscriptionOptions) *AutoscaleSettingsListBySubscriptionPager {
+	return &AutoscaleSettingsListBySubscriptionPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		responder: client.listBySubscriptionHandleResponse,
-		errorer:   client.listBySubscriptionHandleError,
-		advancer: func(ctx context.Context, resp AutoscaleSettingResourceCollectionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.AutoscaleSettingResourceCollection.NextLink)
+		advancer: func(ctx context.Context, resp AutoscaleSettingsListBySubscriptionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AutoscaleSettingResourceCollection.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AutoscaleSettingsClient) listBySubscriptionCreateRequest(ctx context.Context, options *AutoscaleSettingsListBySubscriptionOptions) (*azcore.Request, error) {
+func (client *AutoscaleSettingsClient) listBySubscriptionCreateRequest(ctx context.Context, options *AutoscaleSettingsListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/autoscalesettings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *AutoscaleSettingsClient) listBySubscriptionHandleResponse(resp *azcore.Response) (AutoscaleSettingResourceCollectionResponse, error) {
-	var val *AutoscaleSettingResourceCollection
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AutoscaleSettingResourceCollectionResponse{}, err
+func (client *AutoscaleSettingsClient) listBySubscriptionHandleResponse(resp *http.Response) (AutoscaleSettingsListBySubscriptionResponse, error) {
+	result := AutoscaleSettingsListBySubscriptionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AutoscaleSettingResourceCollection); err != nil {
+		return AutoscaleSettingsListBySubscriptionResponse{}, err
 	}
-	return AutoscaleSettingResourceCollectionResponse{RawResponse: resp.Response, AutoscaleSettingResourceCollection: val}, nil
+	return result, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *AutoscaleSettingsClient) listBySubscriptionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AutoscaleSettingsClient) listBySubscriptionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Update - Updates an existing AutoscaleSettingsResource. To update other fields use the CreateOrUpdate method.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *AutoscaleSettingsClient) Update(ctx context.Context, resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource AutoscaleSettingResourcePatch, options *AutoscaleSettingsUpdateOptions) (AutoscaleSettingResourceResponse, error) {
+func (client *AutoscaleSettingsClient) Update(ctx context.Context, resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource AutoscaleSettingResourcePatch, options *AutoscaleSettingsUpdateOptions) (AutoscaleSettingsUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, autoscaleSettingName, autoscaleSettingResource, options)
 	if err != nil {
-		return AutoscaleSettingResourceResponse{}, err
+		return AutoscaleSettingsUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return AutoscaleSettingResourceResponse{}, err
+		return AutoscaleSettingsUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return AutoscaleSettingResourceResponse{}, client.updateHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return AutoscaleSettingsUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AutoscaleSettingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource AutoscaleSettingResourcePatch, options *AutoscaleSettingsUpdateOptions) (*azcore.Request, error) {
+func (client *AutoscaleSettingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource AutoscaleSettingResourcePatch, options *AutoscaleSettingsUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/autoscalesettings/{autoscaleSettingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -371,36 +363,35 @@ func (client *AutoscaleSettingsClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter autoscaleSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{autoscaleSettingName}", url.PathEscape(autoscaleSettingName))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2015-04-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(autoscaleSettingResource)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, autoscaleSettingResource)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AutoscaleSettingsClient) updateHandleResponse(resp *azcore.Response) (AutoscaleSettingResourceResponse, error) {
-	var val *AutoscaleSettingResource
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return AutoscaleSettingResourceResponse{}, err
+func (client *AutoscaleSettingsClient) updateHandleResponse(resp *http.Response) (AutoscaleSettingsUpdateResponse, error) {
+	result := AutoscaleSettingsUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AutoscaleSettingResource); err != nil {
+		return AutoscaleSettingsUpdateResponse{}, err
 	}
-	return AutoscaleSettingResourceResponse{RawResponse: resp.Response, AutoscaleSettingResource: val}, nil
+	return result, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *AutoscaleSettingsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AutoscaleSettingsClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

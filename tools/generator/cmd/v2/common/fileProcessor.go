@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/tools/generator/autorest/model"
 	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
@@ -20,16 +21,15 @@ import (
 
 const (
 	sdk_generated_file_prefix         = "zz_generated_"
-	autorest_md_swagger_url_prefix    = "- https://github.com/Azure/azure-rest-api-specs/blob/"
+	autorest_md_file_suffix           = "readme.md"
 	autorest_md_module_version_prefix = "module-version: "
 	swagger_md_module_name_prefix     = "module-name: "
 )
 
 var (
-	v2BeginRegex                   = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\((track2|v2)\\)")
-	v2EndRegex                     = regexp.MustCompile("^\\s*```\\s*$")
-	autorestMdSwaggerURLBeginRegex = regexp.MustCompile(`https://github.com/.+/azure-rest-api-specs/`)
-	newClientMethodNameRegex       = regexp.MustCompile("^New.+Client$")
+	v2BeginRegex             = regexp.MustCompile("^```\\s*yaml\\s*\\$\\(go\\)\\s*&&\\s*\\$\\((track2|v2)\\)")
+	v2EndRegex               = regexp.MustCompile("^\\s*```\\s*$")
+	newClientMethodNameRegex = regexp.MustCompile("^New.+Client$")
 )
 
 // reads from readme.go.md, parses the `track2` section to get module and package name
@@ -106,27 +106,34 @@ func CleanSDKGeneratedFiles(path string) error {
 	return nil
 }
 
-// replace all commit id in autorest.md files
-func ReplaceCommitID(path string, commitID string) error {
-	log.Printf("Replacing commit id in autorest.md ...")
+// replace repo commit with local path in autorest.md files
+func ChangeConfigWithLocalPath(path, specPath, specRPName string) error {
+	log.Printf("Replacing repo commit with local path in autorest.md ...")
 	b, err := ioutil.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	specPath, err = filepath.Abs(specPath)
 	if err != nil {
 		return err
 	}
 
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
-		if strings.HasPrefix(line, autorest_md_swagger_url_prefix) {
-			lines[i] = line[:len(autorest_md_swagger_url_prefix)] + commitID + line[len(autorest_md_swagger_url_prefix)+len(commitID):]
+		if strings.Contains(line, autorest_md_file_suffix) {
+			lines[i] = fmt.Sprintf("- %s", filepath.Join(specPath, "specification", specRPName, "resource-manager", "readme.md"))
+			lines[i+1] = fmt.Sprintf("- %s", filepath.Join(specPath, "specification", specRPName, "resource-manager", "readme.go.md"))
+			break
 		}
 	}
 
 	return ioutil.WriteFile(path, []byte(strings.Join(lines, "\n")), 0644)
 }
 
-// replace repo url according to `https://github.com/.+/azure-rest-api-specs/` pattern in autorest.md files
-func ReplaceRepoURL(path string, repoUrl string) error {
-	log.Printf("Replacing repo url in autorest.md ...")
+// replace repo URL and commit id in autorest.md files
+func ChangeConfigWithCommitID(path, repoURL, commitID, specRPName string) error {
+	log.Printf("Replacing repo URL and commit id in autorest.md ...")
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
@@ -134,8 +141,10 @@ func ReplaceRepoURL(path string, repoUrl string) error {
 
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
-		if pos := autorestMdSwaggerURLBeginRegex.FindStringIndex(line); pos != nil {
-			lines[i] = line[:pos[0]] + repoUrl + "/" + line[pos[1]:]
+		if strings.Contains(line, autorest_md_file_suffix) {
+			lines[i] = fmt.Sprintf("- %s/blob/%s/specification/%s/resource-manager/readme.md", repoURL, commitID, specRPName)
+			lines[i+1] = fmt.Sprintf("- %s/blob/%s/specification/%s/resource-manager/readme.go.md", repoURL, commitID, specRPName)
+			break
 		}
 	}
 
@@ -171,7 +180,7 @@ func ReplaceVersion(packageRootPath string, newVersion string) error {
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.HasPrefix(line, autorest_md_module_version_prefix) {
-			lines[i] = line[:len(autorest_md_module_version_prefix)] + newVersion + "\n"
+			lines[i] = line[:len(autorest_md_module_version_prefix)] + newVersion
 			break
 		}
 	}
@@ -211,7 +220,7 @@ func CalculateNewVersion(changelog *model.Changelog, packageRootPath string) (*s
 }
 
 // add new changelog md to changelog file
-func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, packageRootPath string) (string, error) {
+func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, packageRootPath, releaseDate string) (string, error) {
 	path := filepath.Join(packageRootPath, common.ChangelogFilename)
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -220,7 +229,10 @@ func AddChangelogToFile(changelog *model.Changelog, version *semver.Version, pac
 	oldChangelog := string(b)
 	insertPos := strings.Index(oldChangelog, "##")
 	additionalChangelog := changelog.ToCompactMarkdown()
-	newChangelog := oldChangelog[:insertPos] + "## v" + version.String() + " (released)\n" + additionalChangelog + "\n\n" + oldChangelog[insertPos:]
+	if releaseDate == "" {
+		releaseDate = time.Now().Format("2006-01-02")
+	}
+	newChangelog := oldChangelog[:insertPos] + "## " + version.String() + " (" + releaseDate + ")\n" + additionalChangelog + "\n\n" + oldChangelog[insertPos:]
 	err = ioutil.WriteFile(path, []byte(newChangelog), 0644)
 	if err != nil {
 		return "", err
@@ -233,9 +245,18 @@ func ReplaceNewClientMethodPlaceholder(packageRootPath string, exports exports.C
 	path := filepath.Join(packageRootPath, "README.md")
 	var clientName string
 	for k, v := range exports.Funcs {
-		if newClientMethodNameRegex.MatchString(k) && *v.Params == "*armcore.Connection, string" {
+		if newClientMethodNameRegex.MatchString(k) && *v.Params == "*arm.Connection, string" {
 			clientName = k
 			break
+		}
+	}
+
+	if clientName == "" {
+		for k, v := range exports.Funcs {
+			if newClientMethodNameRegex.MatchString(k) && *v.Params == "*arm.Connection" {
+				clientName = k
+				break
+			}
 		}
 	}
 	if clientName == "" {
@@ -247,6 +268,12 @@ func ReplaceNewClientMethodPlaceholder(packageRootPath string, exports exports.C
 		return fmt.Errorf("cannot read from file '%s': %+v", path, err)
 	}
 
-	content := strings.ReplaceAll(string(b), "{{NewClientMethod}}", clientName)
+	var content string
+	if *(exports.Funcs[clientName].Params) == "*arm.Connection" {
+		content = strings.ReplaceAll(string(b), "{{NewClientMethod}}", fmt.Sprintf("%s(con)", clientName))
+	} else {
+		content = strings.ReplaceAll(string(b), "{{NewClientMethod}}", fmt.Sprintf("%s(con, \"<subscription ID>\")", clientName))
+	}
+
 	return ioutil.WriteFile(path, []byte(content), 0644)
 }

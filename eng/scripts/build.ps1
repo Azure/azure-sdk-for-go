@@ -90,9 +90,9 @@ try
         Pop-Location
     }
 
-    if ($sdks.Count -eq 0 -and $filter -and (Test-Path -Path (Join-Path $RepoRoot "sdk" $filter $config)))
+    if ($sdks.Count -eq 0 -and $filter -and (Test-Path -Path (Join-Path $RepoRoot "sdk" $filter)))
     {
-        Write-Host "Cannot find go module under $filter, try to generate in $(Join-Path $RepoRoot "sdk" $filter)"
+        Write-Host "Cannot find go module under $filter, try to build in $(Join-Path $RepoRoot "sdk" $filter)"
         Push-Location (Join-Path $RepoRoot "sdk" $filter)
         Process-Sdk
         Pop-Location

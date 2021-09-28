@@ -58,12 +58,13 @@ namespaceName: name of namespace to be released, default value is arm+rp-name
 }
 
 type Flags struct {
-	VersionNumber string
-	SwaggerRepo   string
-	PackageTitle  string
-	SDKRepo       string
-	SpecRPName    string
-	ReleaseDate   string
+	VersionNumber    string
+	SwaggerRepo      string
+	PackageTitle     string
+	SDKRepo          string
+	SpecRPName       string
+	ReleaseDate      string
+	SkipCreateBranch bool
 }
 
 func BindFlags(flagSet *pflag.FlagSet) {
@@ -73,16 +74,18 @@ func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("spec-repo", "https://github.com/Azure/azure-rest-api-specs", "Specifies the swagger repo URL for generation")
 	flagSet.String("spec-rp-name", "", "Specifies the swagger spec RP name, default is RP name")
 	flagSet.String("release-date", "", "Specifies the release date in changelog")
+	flagSet.Bool("skip-create-branch", false, "Skip create release branch after generation")
 }
 
 func ParseFlags(flagSet *pflag.FlagSet) Flags {
 	return Flags{
-		VersionNumber: flags.GetString(flagSet, "version-number"),
-		PackageTitle:  flags.GetString(flagSet, "package-title"),
-		SDKRepo:       flags.GetString(flagSet, "sdk-repo"),
-		SwaggerRepo:   flags.GetString(flagSet, "spec-repo"),
-		SpecRPName:    flags.GetString(flagSet, "spec-rp-name"),
-		ReleaseDate:   flags.GetString(flagSet, "release-date"),
+		VersionNumber:    flags.GetString(flagSet, "version-number"),
+		PackageTitle:     flags.GetString(flagSet, "package-title"),
+		SDKRepo:          flags.GetString(flagSet, "sdk-repo"),
+		SwaggerRepo:      flags.GetString(flagSet, "spec-repo"),
+		SpecRPName:       flags.GetString(flagSet, "spec-rp-name"),
+		ReleaseDate:      flags.GetString(flagSet, "release-date"),
+		SkipCreateBranch: flags.GetBool(flagSet, "skip-create-branch"),
 	}
 }
 
@@ -157,16 +160,18 @@ func (c *commandContext) execute(sdkRepoParam, specRepoParam string) error {
 	// print generation result
 	log.Printf("Generation result: %s", result)
 
-	log.Printf("Create new branch for release")
-	releaseBranchName := fmt.Sprintf(releaseBranchNamePattern, c.rpName, c.namespaceName, result.Version, time.Now().Unix())
-	if err := sdkRepo.CreateReleaseBranch(releaseBranchName); err != nil {
-		return fmt.Errorf("failed to create release branch: %+v", err)
-	}
+	if !c.flags.SkipCreateBranch {
+		log.Printf("Create new branch for release")
+		releaseBranchName := fmt.Sprintf(releaseBranchNamePattern, c.rpName, c.namespaceName, result.Version, time.Now().Unix())
+		if err := sdkRepo.CreateReleaseBranch(releaseBranchName); err != nil {
+			return fmt.Errorf("failed to create release branch: %+v", err)
+		}
 
-	log.Printf("Include the packages that is about to release in this release and do release commit...")
-	// append a time in long to avoid collision of branch names
-	if err := sdkRepo.AddReleaseCommit(c.rpName, c.namespaceName, generateCtx.SpecCommitHash, result.Version); err != nil {
-		return fmt.Errorf("failed to add release package or do release commit: %+v", err)
+		log.Printf("Include the packages that is about to release in this release and do release commit...")
+		// append a time in long to avoid collision of branch names
+		if err := sdkRepo.AddReleaseCommit(c.rpName, c.namespaceName, generateCtx.SpecCommitHash, result.Version); err != nil {
+			return fmt.Errorf("failed to add release package or do release commit: %+v", err)
+		}
 	}
 
 	return nil

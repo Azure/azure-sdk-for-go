@@ -29,7 +29,7 @@ function Get-GoModuleVersionInfo($modPath)
 
 function Get-GoModuleProperties($goModPath)
 {
-    if ($goModPath -match "(?<modPath>sdk[\\/](?:(?<modGroup>[^\\/]+)[\\/])?(?<modName>[^\\/]+$))")
+    if ($goModPath -match "(?<modPath>sdk[\\/](resourcemanager[\\/])?(?:(?<modGroup>[^\\/]+)[\\/])?(?<modName>[^\\/]+$))")
     {
       $modPath = $matches["modPath"] -replace "\\", "/"
       $modName = $matches["modName"] # We may need to start readong this from the go.mod file if the path and mod config start to differ

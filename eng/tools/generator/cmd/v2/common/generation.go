@@ -80,7 +80,7 @@ func (ctx GenerateContext) GenerateForAutomation(readme, repo string) ([]Generat
 }
 
 func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateParam) (*GenerateResult, error) {
-	packagePath := filepath.Join(ctx.SDKPath, "sdk", generateParam.RPName, generateParam.NamespaceName)
+	packagePath := filepath.Join(ctx.SDKPath, "sdk", "resourcemanager", generateParam.RPName, generateParam.NamespaceName)
 	changelogPath := filepath.Join(packagePath, common.ChangelogFilename)
 
 	onBoard := false
@@ -96,7 +96,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		log.Printf("Use template to generate new rp folder and basic package files...")
 		if err = template.GeneratePackageByTemplate(generateParam.RPName, generateParam.NamespaceName, template.Flags{
 			SDKRoot:      ctx.SDKPath,
-			TemplatePath: "tools/generator/template/rpName/packageName",
+			TemplatePath: "eng/tools/generator/template/rpName/packageName",
 			PackageTitle: generateParam.SpecficPackageTitle,
 			Commit:       ctx.SpecCommitHash,
 		}); err != nil {
@@ -106,7 +106,7 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		log.Printf("Package '%s' existed, do update process", packagePath)
 
 		log.Printf("Get ori exports for changelog generation...")
-		if err := (*ctx.SDKRepo).Add(fmt.Sprintf("sdk/%s/%s", generateParam.RPName, generateParam.NamespaceName)); err != nil {
+		if err := (*ctx.SDKRepo).Add(fmt.Sprintf("sdk/resourcemanager/%s/%s", generateParam.RPName, generateParam.NamespaceName)); err != nil {
 			return nil, err
 		}
 		if err := (*ctx.SDKRepo).Stash(); err != nil {

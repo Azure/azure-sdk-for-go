@@ -1,10 +1,10 @@
 # Azure {{PackageTitle}} Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/{{rpName}}/{{packageName}})](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/{{rpName}}/{{packageName}})
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/{{rpName}}/{{packageName}})](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/{{rpName}}/{{packageName}})
 
 The `{{packageName}}` module provides operations for working with Azure {{PackageTitle}}.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/{{rpName}}/{{packageName}})
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/{{rpName}}/{{packageName}})
 
 # Getting started
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure {{PackageTitle}} module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/{{rpName}}/{{packageName}}
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/{{rpName}}/{{packageName}}
 ```
 
 ## Authorization

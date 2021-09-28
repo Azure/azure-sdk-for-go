@@ -27,7 +27,7 @@ type Client struct {
 
 type clientConfig struct {
 	connectionString string
-	tokenCredential  azcore.TokenCredential
+	credential       azcore.TokenCredential
 	// the Service Bus namespace name (ex: myservicebus.servicebus.windows.net)
 	fullyQualifiedNamespace string
 }
@@ -39,10 +39,10 @@ type ClientOption func(client *Client) error
 // NewClient creates a new Client for a Service Bus namespace, using a TokenCredential.
 // A Client allows you create receivers (for queues or subscriptions) and senders (for queues and topics).
 // fullyQualifiedNamespace is the Service Bus namespace name (ex: myservicebus.servicebus.windows.net)
-// tokenCredential is one of the credentials in the `github.com/Azure/azure-sdk-for-go/sdk/azidentity` package.
-func NewClient(fullyQualifiedNamespace string, tokenCredential azcore.TokenCredential, options ...ClientOption) (*Client, error) {
+// credential is one of the credentials in the `github.com/Azure/azure-sdk-for-go/sdk/azidentity` package.
+func NewClient(fullyQualifiedNamespace string, credential azcore.TokenCredential, options ...ClientOption) (*Client, error) {
 	return newClientImpl(clientConfig{
-		tokenCredential:         tokenCredential,
+		credential:              credential,
 		fullyQualifiedNamespace: fullyQualifiedNamespace,
 	}, options...)
 }
@@ -73,10 +73,10 @@ func newClientImpl(config clientConfig, options ...ClientOption) (*Client, error
 
 	if client.config.connectionString != "" {
 		nsOptions = append(nsOptions, internal.NamespaceWithConnectionString(client.config.connectionString))
-	} else if client.config.tokenCredential != nil {
+	} else if client.config.credential != nil {
 		option := internal.NamespacesWithTokenCredential(
 			client.config.fullyQualifiedNamespace,
-			client.config.tokenCredential)
+			client.config.credential)
 
 		nsOptions = append(nsOptions, option)
 	} else {

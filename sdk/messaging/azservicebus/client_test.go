@@ -60,12 +60,12 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.NoError(t, err)
 
 		require.NoError(t, err)
-		require.EqualValues(t, fakeTokenCredential, client.config.tokenCredential)
+		require.EqualValues(t, fakeTokenCredential, client.config.credential)
 		require.EqualValues(t, "fake.something", client.config.fullyQualifiedNamespace)
 
 		client, err = NewClient("mysb.windows.servicebus.net", fakeTokenCredential)
 		require.NoError(t, err)
-		require.EqualValues(t, fakeTokenCredential, client.config.tokenCredential)
+		require.EqualValues(t, fakeTokenCredential, client.config.credential)
 		require.EqualValues(t, "mysb.windows.servicebus.net", client.config.fullyQualifiedNamespace)
 
 		// (really all part of the same functionality)

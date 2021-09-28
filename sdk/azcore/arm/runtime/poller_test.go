@@ -92,7 +92,7 @@ func TestNewPollerAsync(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !closed() {
-		t.Fatal("initail response body wasn't closed")
+		t.Fatal("initial response body wasn't closed")
 	}
 	if pt := pollers.PollerType(poller); pt != reflect.TypeOf(&async.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
@@ -128,7 +128,7 @@ func TestNewPollerBody(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !closed() {
-		t.Fatal("initail response body wasn't closed")
+		t.Fatal("initial response body wasn't closed")
 	}
 	if pt := pollers.PollerType(poller); pt != reflect.TypeOf(&body.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
@@ -165,7 +165,7 @@ func TestNewPollerLoc(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !closed() {
-		t.Fatal("initail response body wasn't closed")
+		t.Fatal("initial response body wasn't closed")
 	}
 	if pt := pollers.PollerType(poller); pt != reflect.TypeOf(&loc.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
@@ -204,7 +204,7 @@ func TestNewPollerInitialRetryAfter(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !closed() {
-		t.Fatal("initail response body wasn't closed")
+		t.Fatal("initial response body wasn't closed")
 	}
 	if pt := pollers.PollerType(poller); pt != reflect.TypeOf(&async.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
@@ -233,7 +233,7 @@ func TestNewPollerCanceled(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !closed() {
-		t.Fatal("initail response body wasn't closed")
+		t.Fatal("initial response body wasn't closed")
 	}
 	if pt := pollers.PollerType(poller); pt != reflect.TypeOf(&async.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
@@ -262,7 +262,7 @@ func TestNewPollerFailedWithError(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !closed() {
-		t.Fatal("initail response body wasn't closed")
+		t.Fatal("initial response body wasn't closed")
 	}
 	if pt := pollers.PollerType(poller); pt != reflect.TypeOf(&async.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
@@ -290,7 +290,7 @@ func TestNewPollerSuccessNoContent(t *testing.T) {
 		t.Fatal(err)
 	}
 	if !closed() {
-		t.Fatal("initail response body wasn't closed")
+		t.Fatal("initial response body wasn't closed")
 	}
 	if pt := pollers.PollerType(poller); pt != reflect.TypeOf(&body.Poller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())
@@ -324,7 +324,7 @@ func TestNewPollerFail202NoHeaders(t *testing.T) {
 		t.Fatal("unexpected nil error")
 	}
 	if !closed() {
-		t.Fatal("initail response body wasn't closed")
+		t.Fatal("initial response body wasn't closed")
 	}
 	if poller != nil {
 		t.Fatal("expected nil poller")

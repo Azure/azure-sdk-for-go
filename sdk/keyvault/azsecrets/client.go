@@ -25,8 +25,8 @@ type Client struct {
 
 // ClientOptions are the configurable options on a Client.
 type ClientOptions struct {
-	// HTTPClient sets the transport for making HTTP requests.
-	HTTPClient policy.Transporter
+	// Transporter sets the transport for making HTTP requests.
+	Transporter policy.Transporter
 
 	// Retry configures the built-in retry policy behavior.
 	Retry policy.RetryOptions
@@ -52,7 +52,7 @@ func (c *ClientOptions) toConnectionOptions() *internal.ConnectionOptions {
 	}
 
 	return &internal.ConnectionOptions{
-		HTTPClient:       c.HTTPClient,
+		HTTPClient:       c.Transporter,
 		Retry:            c.Retry,
 		Telemetry:        c.Telemetry,
 		Logging:          c.Logging,
@@ -554,6 +554,7 @@ func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSe
 }
 
 // RestoreSecretBackup restores a backed up secret, and all its versions, to a vault. This operation requires the secrets/restore permission.
+// The backup parameter is a blob of the secret to restore, this can be received from the Client.BackupSecret function.
 func (c *Client) RestoreSecretBackup(ctx context.Context, backup []byte, options *RestoreSecretBackupOptions) (RestoreSecretBackupResponse, error) {
 	if options == nil {
 		options = &RestoreSecretBackupOptions{}

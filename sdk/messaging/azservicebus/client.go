@@ -5,9 +5,11 @@ package azservicebus
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"sync"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/devigned/tab"
 )
@@ -15,9 +17,7 @@ import (
 // Client provides methods to create Sender, Receiver and Processor
 // instances to send and receive messages from Service Bus.
 type Client struct {
-	config struct {
-		connectionString string
-	}
+	config    clientConfig
 	namespace *internal.Namespace
 	linksMu   *sync.Mutex
 	links     []interface {
@@ -25,26 +25,41 @@ type Client struct {
 	}
 }
 
+type clientConfig struct {
+	connectionString string
+	tokenCredential  azcore.TokenCredential
+	// the Service Bus namespace name (ex: myservicebus.servicebus.windows.net)
+	fullyQualifiedNamespace string
+}
+
 // ClientOption is the type for an option that can configure Client.
 // For an example option, see `WithConnectionString`
 type ClientOption func(client *Client) error
 
-// WithConnectionString configures a namespace with the information provided in a Service Bus connection string
-func WithConnectionString(connStr string) ClientOption {
-	return func(client *Client) error {
-		client.config.connectionString = connStr
-		return nil
-	}
+// NewClient creates a new Client for a Service Bus namespace, using a TokenCredential.
+// A Client allows you create receivers (for queues or subscriptions) and senders (for queues and topics).
+// fullyQualifiedNamespace is the Service Bus namespace name (ex: myservicebus.servicebus.windows.net)
+// tokenCredential is one of the credentials in the `github.com/Azure/azure-sdk-for-go/sdk/azidentity` package.
+func NewClient(fullyQualifiedNamespace string, tokenCredential azcore.TokenCredential, options ...ClientOption) (*Client, error) {
+	return newClientImpl(clientConfig{
+		tokenCredential:         tokenCredential,
+		fullyQualifiedNamespace: fullyQualifiedNamespace,
+	}, options...)
 }
 
-// NewClient creates a new Client.
-// Client allows you create receivers (for queues or subscriptions) and
-// senders (for queues and topics).
-// For creating/deleting/updating queues, topics and subscriptions look at
-// `AdministrationClient`.
-func NewClient(options ...ClientOption) (*Client, error) {
+// NewClient creates a new Client for a Service Bus namespace, using a TokenCredential.
+// A Client allows you create receivers (for queues or subscriptions) and senders (for queues and topics).
+// connectionString is a Service Bus connection string for the namespace or for an entity.
+func NewClientWithConnectionString(connectionString string, options ...ClientOption) (*Client, error) {
+	return newClientImpl(clientConfig{
+		connectionString: connectionString,
+	}, options...)
+}
+
+func newClientImpl(config clientConfig, options ...ClientOption) (*Client, error) {
 	client := &Client{
 		linksMu: &sync.Mutex{},
+		config:  config,
 	}
 
 	for _, opt := range options {
@@ -54,7 +69,21 @@ func NewClient(options ...ClientOption) (*Client, error) {
 	}
 
 	var err error
-	client.namespace, err = internal.NewNamespace(internal.NamespaceWithConnectionString(client.config.connectionString))
+	var nsOptions []internal.NamespaceOption
+
+	if client.config.connectionString != "" {
+		nsOptions = append(nsOptions, internal.NamespaceWithConnectionString(client.config.connectionString))
+	} else if client.config.tokenCredential != nil {
+		option := internal.NamespacesWithTokenCredential(
+			client.config.fullyQualifiedNamespace,
+			client.config.tokenCredential)
+
+		nsOptions = append(nsOptions, option)
+	} else {
+		return nil, errors.New("credentials not specified - use `WithTokenCredential` or `WithConnectionString` to pass in credentials")
+	}
+
+	client.namespace, err = internal.NewNamespace(nsOptions...)
 	return client, err
 }
 

@@ -343,15 +343,15 @@ type PatchTrackedResource struct {
 
 // MarshalJSON implements the json.Marshaller interface for type PatchTrackedResource.
 func (p PatchTrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := p.marshalInternal()
+	objectMap := make(map[string]interface{})
+	p.marshalInternal(objectMap)
 	return json.Marshal(objectMap)
 }
 
-func (p PatchTrackedResource) marshalInternal() map[string]interface{} {
-	objectMap := p.Resource.marshalInternal()
+func (p PatchTrackedResource) marshalInternal(objectMap map[string]interface{}) {
+	p.Resource.marshalInternal(objectMap)
 	populate(objectMap, "location", p.Location)
 	populate(objectMap, "tags", p.Tags)
-	return objectMap
 }
 
 // PatchVault - Patch Resource information, as returned by the resource provider.
@@ -369,7 +369,8 @@ type PatchVault struct {
 
 // MarshalJSON implements the json.Marshaller interface for type PatchVault.
 func (p PatchVault) MarshalJSON() ([]byte, error) {
-	objectMap := p.PatchTrackedResource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	p.PatchTrackedResource.marshalInternal(objectMap)
 	populate(objectMap, "identity", p.Identity)
 	populate(objectMap, "properties", p.Properties)
 	populate(objectMap, "sku", p.SKU)
@@ -603,17 +604,16 @@ type Resource struct {
 
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := r.marshalInternal()
+	objectMap := make(map[string]interface{})
+	r.marshalInternal(objectMap)
 	return json.Marshal(objectMap)
 }
 
-func (r Resource) marshalInternal() map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "etag", r.Etag)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "type", r.Type)
-	return objectMap
 }
 
 // ResourceCertificateAndAADDetails - Certificate details representing the Vault credentials for AAD.
@@ -640,7 +640,8 @@ type ResourceCertificateAndAADDetails struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ResourceCertificateAndAADDetails.
 func (r ResourceCertificateAndAADDetails) MarshalJSON() ([]byte, error) {
-	objectMap := r.ResourceCertificateDetails.marshalInternal("AzureActiveDirectory")
+	objectMap := make(map[string]interface{})
+	r.ResourceCertificateDetails.marshalInternal(objectMap, "AzureActiveDirectory")
 	populate(objectMap, "aadAuthority", r.AADAuthority)
 	populate(objectMap, "aadTenantId", r.AADTenantID)
 	populate(objectMap, "azureManagementEndpointAudience", r.AzureManagementEndpointAudience)
@@ -682,7 +683,10 @@ func (r *ResourceCertificateAndAADDetails) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return r.ResourceCertificateDetails.unmarshalInternal(rawMsg)
+	if err := r.ResourceCertificateDetails.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // ResourceCertificateAndAcsDetails - Certificate details representing the Vault credentials for ACS.
@@ -700,7 +704,8 @@ type ResourceCertificateAndAcsDetails struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ResourceCertificateAndAcsDetails.
 func (r ResourceCertificateAndAcsDetails) MarshalJSON() ([]byte, error) {
-	objectMap := r.ResourceCertificateDetails.marshalInternal("AccessControlService")
+	objectMap := make(map[string]interface{})
+	r.ResourceCertificateDetails.marshalInternal(objectMap, "AccessControlService")
 	populate(objectMap, "globalAcsHostName", r.GlobalAcsHostName)
 	populate(objectMap, "globalAcsNamespace", r.GlobalAcsNamespace)
 	populate(objectMap, "globalAcsRPRealm", r.GlobalAcsRPRealm)
@@ -730,7 +735,10 @@ func (r *ResourceCertificateAndAcsDetails) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return r.ResourceCertificateDetails.unmarshalInternal(rawMsg)
+	if err := r.ResourceCertificateDetails.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // ResourceCertificateDetailsClassification provides polymorphic access to related types.
@@ -786,8 +794,7 @@ func (r *ResourceCertificateDetails) UnmarshalJSON(data []byte) error {
 	return r.unmarshalInternal(rawMsg)
 }
 
-func (r ResourceCertificateDetails) marshalInternal(discValue string) map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (r ResourceCertificateDetails) marshalInternal(objectMap map[string]interface{}, discValue string) {
 	r.AuthType = &discValue
 	objectMap["authType"] = r.AuthType
 	populateByteArray(objectMap, "certificate", r.Certificate, runtime.Base64StdFormat)
@@ -798,7 +805,6 @@ func (r ResourceCertificateDetails) marshalInternal(discValue string) map[string
 	populate(objectMap, "thumbprint", r.Thumbprint)
 	populate(objectMap, "validFrom", (*timeRFC3339)(r.ValidFrom))
 	populate(objectMap, "validTo", (*timeRFC3339)(r.ValidTo))
-	return objectMap
 }
 
 func (r *ResourceCertificateDetails) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -946,15 +952,15 @@ type TrackedResource struct {
 
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
-	objectMap := t.marshalInternal()
+	objectMap := make(map[string]interface{})
+	t.marshalInternal(objectMap)
 	return json.Marshal(objectMap)
 }
 
-func (t TrackedResource) marshalInternal() map[string]interface{} {
-	objectMap := t.Resource.marshalInternal()
+func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
+	t.Resource.marshalInternal(objectMap)
 	populate(objectMap, "location", t.Location)
 	populate(objectMap, "tags", t.Tags)
-	return objectMap
 }
 
 // UpgradeDetails - Details for upgrading vault.
@@ -1084,7 +1090,8 @@ type Vault struct {
 
 // MarshalJSON implements the json.Marshaller interface for type Vault.
 func (v Vault) MarshalJSON() ([]byte, error) {
-	objectMap := v.TrackedResource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	v.TrackedResource.marshalInternal(objectMap)
 	populate(objectMap, "identity", v.Identity)
 	populate(objectMap, "properties", v.Properties)
 	populate(objectMap, "sku", v.SKU)
@@ -1185,7 +1192,8 @@ type VaultExtendedInfoResource struct {
 
 // MarshalJSON implements the json.Marshaller interface for type VaultExtendedInfoResource.
 func (v VaultExtendedInfoResource) MarshalJSON() ([]byte, error) {
-	objectMap := v.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	v.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", v.Properties)
 	return json.Marshal(objectMap)
 }

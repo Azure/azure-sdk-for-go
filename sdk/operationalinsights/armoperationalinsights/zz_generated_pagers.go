@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,31 +10,31 @@ package armoperationalinsights
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"reflect"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-type ClustersListByResourceGroupPager interface {
-	azcore.Pager
-	// PageResponse returns the current ClustersListByResourceGroupResponse.
-	PageResponse() ClustersListByResourceGroupResponse
-}
-
-type clustersListByResourceGroupPager struct {
+// ClustersListByResourceGroupPager provides operations for iterating over paged responses.
+type ClustersListByResourceGroupPager struct {
 	client    *ClustersClient
 	current   ClustersListByResourceGroupResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, ClustersListByResourceGroupResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ClustersListByResourceGroupResponse) (*policy.Request, error)
 }
 
-func (p *clustersListByResourceGroupPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *ClustersListByResourceGroupPager) Err() error {
 	return p.err
 }
 
-func (p *clustersListByResourceGroupPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ClustersListByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.ClusterListResult.NextLink == nil || len(*p.current.ClusterListResult.NextLink) == 0 {
@@ -47,12 +48,12 @@ func (p *clustersListByResourceGroupPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByResourceGroupHandleError(resp)
 		return false
 	}
@@ -65,30 +66,29 @@ func (p *clustersListByResourceGroupPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *clustersListByResourceGroupPager) PageResponse() ClustersListByResourceGroupResponse {
+// PageResponse returns the current ClustersListByResourceGroupResponse page.
+func (p *ClustersListByResourceGroupPager) PageResponse() ClustersListByResourceGroupResponse {
 	return p.current
 }
 
-type ClustersListPager interface {
-	azcore.Pager
-	// PageResponse returns the current ClustersListResponse.
-	PageResponse() ClustersListResponse
-}
-
-type clustersListPager struct {
+// ClustersListPager provides operations for iterating over paged responses.
+type ClustersListPager struct {
 	client    *ClustersClient
 	current   ClustersListResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, ClustersListResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, ClustersListResponse) (*policy.Request, error)
 }
 
-func (p *clustersListPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *ClustersListPager) Err() error {
 	return p.err
 }
 
-func (p *clustersListPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *ClustersListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.ClusterListResult.NextLink == nil || len(*p.current.ClusterListResult.NextLink) == 0 {
@@ -102,12 +102,12 @@ func (p *clustersListPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listHandleError(resp)
 		return false
 	}
@@ -120,30 +120,29 @@ func (p *clustersListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *clustersListPager) PageResponse() ClustersListResponse {
+// PageResponse returns the current ClustersListResponse page.
+func (p *ClustersListPager) PageResponse() ClustersListResponse {
 	return p.current
 }
 
-type DataSourcesListByWorkspacePager interface {
-	azcore.Pager
-	// PageResponse returns the current DataSourcesListByWorkspaceResponse.
-	PageResponse() DataSourcesListByWorkspaceResponse
-}
-
-type dataSourcesListByWorkspacePager struct {
+// DataSourcesListByWorkspacePager provides operations for iterating over paged responses.
+type DataSourcesListByWorkspacePager struct {
 	client    *DataSourcesClient
 	current   DataSourcesListByWorkspaceResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, DataSourcesListByWorkspaceResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, DataSourcesListByWorkspaceResponse) (*policy.Request, error)
 }
 
-func (p *dataSourcesListByWorkspacePager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *DataSourcesListByWorkspacePager) Err() error {
 	return p.err
 }
 
-func (p *dataSourcesListByWorkspacePager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *DataSourcesListByWorkspacePager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.DataSourceListResult.NextLink == nil || len(*p.current.DataSourceListResult.NextLink) == 0 {
@@ -157,12 +156,12 @@ func (p *dataSourcesListByWorkspacePager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByWorkspaceHandleError(resp)
 		return false
 	}
@@ -175,30 +174,29 @@ func (p *dataSourcesListByWorkspacePager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *dataSourcesListByWorkspacePager) PageResponse() DataSourcesListByWorkspaceResponse {
+// PageResponse returns the current DataSourcesListByWorkspaceResponse page.
+func (p *DataSourcesListByWorkspacePager) PageResponse() DataSourcesListByWorkspaceResponse {
 	return p.current
 }
 
-type OperationsListPager interface {
-	azcore.Pager
-	// PageResponse returns the current OperationsListResponse.
-	PageResponse() OperationsListResponse
-}
-
-type operationsListPager struct {
+// OperationsListPager provides operations for iterating over paged responses.
+type OperationsListPager struct {
 	client    *OperationsClient
 	current   OperationsListResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, OperationsListResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, OperationsListResponse) (*policy.Request, error)
 }
 
-func (p *operationsListPager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *OperationsListPager) Err() error {
 	return p.err
 }
 
-func (p *operationsListPager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *OperationsListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
 		if p.current.OperationListResult.NextLink == nil || len(*p.current.OperationListResult.NextLink) == 0 {
@@ -212,12 +210,12 @@ func (p *operationsListPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listHandleError(resp)
 		return false
 	}
@@ -230,33 +228,32 @@ func (p *operationsListPager) NextPage(ctx context.Context) bool {
 	return true
 }
 
-func (p *operationsListPager) PageResponse() OperationsListResponse {
+// PageResponse returns the current OperationsListResponse page.
+func (p *OperationsListPager) PageResponse() OperationsListResponse {
 	return p.current
 }
 
-type StorageInsightConfigsListByWorkspacePager interface {
-	azcore.Pager
-	// PageResponse returns the current StorageInsightConfigsListByWorkspaceResponse.
-	PageResponse() StorageInsightConfigsListByWorkspaceResponse
-}
-
-type storageInsightConfigsListByWorkspacePager struct {
+// StorageInsightConfigsListByWorkspacePager provides operations for iterating over paged responses.
+type StorageInsightConfigsListByWorkspacePager struct {
 	client    *StorageInsightConfigsClient
 	current   StorageInsightConfigsListByWorkspaceResponse
 	err       error
-	requester func(context.Context) (*azcore.Request, error)
-	advancer  func(context.Context, StorageInsightConfigsListByWorkspaceResponse) (*azcore.Request, error)
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, StorageInsightConfigsListByWorkspaceResponse) (*policy.Request, error)
 }
 
-func (p *storageInsightConfigsListByWorkspacePager) Err() error {
+// Err returns the last error encountered while paging.
+func (p *StorageInsightConfigsListByWorkspacePager) Err() error {
 	return p.err
 }
 
-func (p *storageInsightConfigsListByWorkspacePager) NextPage(ctx context.Context) bool {
-	var req *azcore.Request
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *StorageInsightConfigsListByWorkspacePager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
 	var err error
 	if !reflect.ValueOf(p.current).IsZero() {
-		if p.current.StorageInsightListResult.OdataNextLink == nil || len(*p.current.StorageInsightListResult.OdataNextLink) == 0 {
+		if p.current.StorageInsightListResult.ODataNextLink == nil || len(*p.current.StorageInsightListResult.ODataNextLink) == 0 {
 			return false
 		}
 		req, err = p.advancer(ctx, p.current)
@@ -267,12 +264,12 @@ func (p *storageInsightConfigsListByWorkspacePager) NextPage(ctx context.Context
 		p.err = err
 		return false
 	}
-	resp, err := p.client.con.Pipeline().Do(req)
+	resp, err := p.client.pl.Do(req)
 	if err != nil {
 		p.err = err
 		return false
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		p.err = p.client.listByWorkspaceHandleError(resp)
 		return false
 	}
@@ -285,6 +282,7 @@ func (p *storageInsightConfigsListByWorkspacePager) NextPage(ctx context.Context
 	return true
 }
 
-func (p *storageInsightConfigsListByWorkspacePager) PageResponse() StorageInsightConfigsListByWorkspaceResponse {
+// PageResponse returns the current StorageInsightConfigsListByWorkspaceResponse page.
+func (p *StorageInsightConfigsListByWorkspacePager) PageResponse() StorageInsightConfigsListByWorkspaceResponse {
 	return p.current
 }

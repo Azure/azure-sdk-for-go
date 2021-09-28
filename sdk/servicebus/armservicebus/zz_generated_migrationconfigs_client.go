@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // MigrationConfigsClient contains the methods for the MigrationConfigs group.
 // Don't use this type directly, use NewMigrationConfigsClient() instead.
 type MigrationConfigsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewMigrationConfigsClient creates a new instance of MigrationConfigsClient with the specified values.
-func NewMigrationConfigsClient(con *armcore.Connection, subscriptionID string) *MigrationConfigsClient {
-	return &MigrationConfigsClient{con: con, subscriptionID: subscriptionID}
+func NewMigrationConfigsClient(con *arm.Connection, subscriptionID string) *MigrationConfigsClient {
+	return &MigrationConfigsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CompleteMigration - This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any entities created after
@@ -40,18 +44,18 @@ func (client *MigrationConfigsClient) CompleteMigration(ctx context.Context, res
 	if err != nil {
 		return MigrationConfigsCompleteMigrationResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return MigrationConfigsCompleteMigrationResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return MigrationConfigsCompleteMigrationResponse{}, client.completeMigrationHandleError(resp)
 	}
-	return MigrationConfigsCompleteMigrationResponse{RawResponse: resp.Response}, nil
+	return MigrationConfigsCompleteMigrationResponse{RawResponse: resp}, nil
 }
 
 // completeMigrationCreateRequest creates the CompleteMigration request.
-func (client *MigrationConfigsClient) completeMigrationCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, configName MigrationConfigurationName, options *MigrationConfigsCompleteMigrationOptions) (*azcore.Request, error) {
+func (client *MigrationConfigsClient) completeMigrationCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, configName MigrationConfigurationName, options *MigrationConfigsCompleteMigrationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}/upgrade"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -69,29 +73,28 @@ func (client *MigrationConfigsClient) completeMigrationCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // completeMigrationHandleError handles the CompleteMigration error response.
-func (client *MigrationConfigsClient) completeMigrationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MigrationConfigsClient) completeMigrationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginCreateAndStartMigration - Creates Migration configuration and starts migration of entities from Standard to Premium namespace
@@ -102,65 +105,37 @@ func (client *MigrationConfigsClient) BeginCreateAndStartMigration(ctx context.C
 		return MigrationConfigsCreateAndStartMigrationPollerResponse{}, err
 	}
 	result := MigrationConfigsCreateAndStartMigrationPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("MigrationConfigsClient.CreateAndStartMigration", "", resp, client.con.Pipeline(), client.createAndStartMigrationHandleError)
-	if err != nil {
-		return MigrationConfigsCreateAndStartMigrationPollerResponse{}, err
-	}
-	poller := &migrationConfigsCreateAndStartMigrationPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MigrationConfigsCreateAndStartMigrationResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateAndStartMigration creates a new MigrationConfigsCreateAndStartMigrationPoller from the specified resume token.
-// token - The value must come from a previous call to MigrationConfigsCreateAndStartMigrationPoller.ResumeToken().
-func (client *MigrationConfigsClient) ResumeCreateAndStartMigration(ctx context.Context, token string) (MigrationConfigsCreateAndStartMigrationPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("MigrationConfigsClient.CreateAndStartMigration", token, client.con.Pipeline(), client.createAndStartMigrationHandleError)
-	if err != nil {
-		return MigrationConfigsCreateAndStartMigrationPollerResponse{}, err
-	}
-	poller := &migrationConfigsCreateAndStartMigrationPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return MigrationConfigsCreateAndStartMigrationPollerResponse{}, err
-	}
-	result := MigrationConfigsCreateAndStartMigrationPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (MigrationConfigsCreateAndStartMigrationResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("MigrationConfigsClient.CreateAndStartMigration", "", resp, client.pl, client.createAndStartMigrationHandleError)
+	if err != nil {
+		return MigrationConfigsCreateAndStartMigrationPollerResponse{}, err
+	}
+	result.Poller = &MigrationConfigsCreateAndStartMigrationPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateAndStartMigration - Creates Migration configuration and starts migration of entities from Standard to Premium namespace
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *MigrationConfigsClient) createAndStartMigration(ctx context.Context, resourceGroupName string, namespaceName string, configName MigrationConfigurationName, parameters MigrationConfigProperties, options *MigrationConfigsBeginCreateAndStartMigrationOptions) (*azcore.Response, error) {
+func (client *MigrationConfigsClient) createAndStartMigration(ctx context.Context, resourceGroupName string, namespaceName string, configName MigrationConfigurationName, parameters MigrationConfigProperties, options *MigrationConfigsBeginCreateAndStartMigrationOptions) (*http.Response, error) {
 	req, err := client.createAndStartMigrationCreateRequest(ctx, resourceGroupName, namespaceName, configName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, client.createAndStartMigrationHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createAndStartMigrationCreateRequest creates the CreateAndStartMigration request.
-func (client *MigrationConfigsClient) createAndStartMigrationCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, configName MigrationConfigurationName, parameters MigrationConfigProperties, options *MigrationConfigsBeginCreateAndStartMigrationOptions) (*azcore.Request, error) {
+func (client *MigrationConfigsClient) createAndStartMigrationCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, configName MigrationConfigurationName, parameters MigrationConfigProperties, options *MigrationConfigsBeginCreateAndStartMigrationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -178,29 +153,28 @@ func (client *MigrationConfigsClient) createAndStartMigrationCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createAndStartMigrationHandleError handles the CreateAndStartMigration error response.
-func (client *MigrationConfigsClient) createAndStartMigrationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MigrationConfigsClient) createAndStartMigrationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Deletes a MigrationConfiguration
@@ -210,18 +184,18 @@ func (client *MigrationConfigsClient) Delete(ctx context.Context, resourceGroupN
 	if err != nil {
 		return MigrationConfigsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return MigrationConfigsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return MigrationConfigsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return MigrationConfigsDeleteResponse{RawResponse: resp.Response}, nil
+	return MigrationConfigsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *MigrationConfigsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, configName MigrationConfigurationName, options *MigrationConfigsDeleteOptions) (*azcore.Request, error) {
+func (client *MigrationConfigsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, configName MigrationConfigurationName, options *MigrationConfigsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -239,29 +213,28 @@ func (client *MigrationConfigsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *MigrationConfigsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MigrationConfigsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Retrieves Migration Config
@@ -271,18 +244,18 @@ func (client *MigrationConfigsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return MigrationConfigsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return MigrationConfigsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return MigrationConfigsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *MigrationConfigsClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, configName MigrationConfigurationName, options *MigrationConfigsGetOptions) (*azcore.Request, error) {
+func (client *MigrationConfigsClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, configName MigrationConfigurationName, options *MigrationConfigsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -300,56 +273,55 @@ func (client *MigrationConfigsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *MigrationConfigsClient) getHandleResponse(resp *azcore.Response) (MigrationConfigsGetResponse, error) {
-	result := MigrationConfigsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.MigrationConfigProperties); err != nil {
+func (client *MigrationConfigsClient) getHandleResponse(resp *http.Response) (MigrationConfigsGetResponse, error) {
+	result := MigrationConfigsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationConfigProperties); err != nil {
 		return MigrationConfigsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *MigrationConfigsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MigrationConfigsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Gets all migrationConfigurations
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *MigrationConfigsClient) List(resourceGroupName string, namespaceName string, options *MigrationConfigsListOptions) MigrationConfigsListPager {
-	return &migrationConfigsListPager{
+func (client *MigrationConfigsClient) List(resourceGroupName string, namespaceName string, options *MigrationConfigsListOptions) *MigrationConfigsListPager {
+	return &MigrationConfigsListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, namespaceName, options)
 		},
-		advancer: func(ctx context.Context, resp MigrationConfigsListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.MigrationConfigListResult.NextLink)
+		advancer: func(ctx context.Context, resp MigrationConfigsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.MigrationConfigListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *MigrationConfigsClient) listCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *MigrationConfigsListOptions) (*azcore.Request, error) {
+func (client *MigrationConfigsClient) listCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *MigrationConfigsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -363,38 +335,37 @@ func (client *MigrationConfigsClient) listCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *MigrationConfigsClient) listHandleResponse(resp *azcore.Response) (MigrationConfigsListResponse, error) {
-	result := MigrationConfigsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.MigrationConfigListResult); err != nil {
+func (client *MigrationConfigsClient) listHandleResponse(resp *http.Response) (MigrationConfigsListResponse, error) {
+	result := MigrationConfigsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationConfigListResult); err != nil {
 		return MigrationConfigsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *MigrationConfigsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MigrationConfigsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Revert - This operation reverts Migration
@@ -404,18 +375,18 @@ func (client *MigrationConfigsClient) Revert(ctx context.Context, resourceGroupN
 	if err != nil {
 		return MigrationConfigsRevertResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return MigrationConfigsRevertResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return MigrationConfigsRevertResponse{}, client.revertHandleError(resp)
 	}
-	return MigrationConfigsRevertResponse{RawResponse: resp.Response}, nil
+	return MigrationConfigsRevertResponse{RawResponse: resp}, nil
 }
 
 // revertCreateRequest creates the Revert request.
-func (client *MigrationConfigsClient) revertCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, configName MigrationConfigurationName, options *MigrationConfigsRevertOptions) (*azcore.Request, error) {
+func (client *MigrationConfigsClient) revertCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, configName MigrationConfigurationName, options *MigrationConfigsRevertOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/migrationConfigurations/{configName}/revert"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -433,27 +404,26 @@ func (client *MigrationConfigsClient) revertCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // revertHandleError handles the Revert error response.
-func (client *MigrationConfigsClient) revertHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *MigrationConfigsClient) revertHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // APIManagementServiceClient contains the methods for the APIManagementService group.
 // Don't use this type directly, use NewAPIManagementServiceClient() instead.
 type APIManagementServiceClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewAPIManagementServiceClient creates a new instance of APIManagementServiceClient with the specified values.
-func NewAPIManagementServiceClient(con *armcore.Connection, subscriptionID string) *APIManagementServiceClient {
-	return &APIManagementServiceClient{con: con, subscriptionID: subscriptionID}
+func NewAPIManagementServiceClient(con *arm.Connection, subscriptionID string) *APIManagementServiceClient {
+	return &APIManagementServiceClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginApplyNetworkConfigurationUpdates - Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
@@ -39,65 +43,37 @@ func (client *APIManagementServiceClient) BeginApplyNetworkConfigurationUpdates(
 		return APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse{}, err
 	}
 	result := APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("APIManagementServiceClient.ApplyNetworkConfigurationUpdates", "location", resp, client.con.Pipeline(), client.applyNetworkConfigurationUpdatesHandleError)
-	if err != nil {
-		return APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse{}, err
-	}
-	poller := &apiManagementServiceApplyNetworkConfigurationUpdatesPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (APIManagementServiceApplyNetworkConfigurationUpdatesResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeApplyNetworkConfigurationUpdates creates a new APIManagementServiceApplyNetworkConfigurationUpdatesPoller from the specified resume token.
-// token - The value must come from a previous call to APIManagementServiceApplyNetworkConfigurationUpdatesPoller.ResumeToken().
-func (client *APIManagementServiceClient) ResumeApplyNetworkConfigurationUpdates(ctx context.Context, token string) (APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("APIManagementServiceClient.ApplyNetworkConfigurationUpdates", token, client.con.Pipeline(), client.applyNetworkConfigurationUpdatesHandleError)
-	if err != nil {
-		return APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse{}, err
-	}
-	poller := &apiManagementServiceApplyNetworkConfigurationUpdatesPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse{}, err
-	}
-	result := APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (APIManagementServiceApplyNetworkConfigurationUpdatesResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("APIManagementServiceClient.ApplyNetworkConfigurationUpdates", "location", resp, client.pl, client.applyNetworkConfigurationUpdatesHandleError)
+	if err != nil {
+		return APIManagementServiceApplyNetworkConfigurationUpdatesPollerResponse{}, err
+	}
+	result.Poller = &APIManagementServiceApplyNetworkConfigurationUpdatesPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // ApplyNetworkConfigurationUpdates - Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *APIManagementServiceClient) applyNetworkConfigurationUpdates(ctx context.Context, resourceGroupName string, serviceName string, options *APIManagementServiceBeginApplyNetworkConfigurationUpdatesOptions) (*azcore.Response, error) {
+func (client *APIManagementServiceClient) applyNetworkConfigurationUpdates(ctx context.Context, resourceGroupName string, serviceName string, options *APIManagementServiceBeginApplyNetworkConfigurationUpdatesOptions) (*http.Response, error) {
 	req, err := client.applyNetworkConfigurationUpdatesCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.applyNetworkConfigurationUpdatesHandleError(resp)
 	}
 	return resp, nil
 }
 
 // applyNetworkConfigurationUpdatesCreateRequest creates the ApplyNetworkConfigurationUpdates request.
-func (client *APIManagementServiceClient) applyNetworkConfigurationUpdatesCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *APIManagementServiceBeginApplyNetworkConfigurationUpdatesOptions) (*azcore.Request, error) {
+func (client *APIManagementServiceClient) applyNetworkConfigurationUpdatesCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *APIManagementServiceBeginApplyNetworkConfigurationUpdatesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/applynetworkconfigurationupdates"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -111,32 +87,31 @@ func (client *APIManagementServiceClient) applyNetworkConfigurationUpdatesCreate
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	if options != nil && options.Parameters != nil {
-		return req, req.MarshalAsJSON(*options.Parameters)
+		return req, runtime.MarshalAsJSON(req, *options.Parameters)
 	}
 	return req, nil
 }
 
 // applyNetworkConfigurationUpdatesHandleError handles the ApplyNetworkConfigurationUpdates error response.
-func (client *APIManagementServiceClient) applyNetworkConfigurationUpdatesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIManagementServiceClient) applyNetworkConfigurationUpdatesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginBackup - Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation and could take several
@@ -148,42 +123,14 @@ func (client *APIManagementServiceClient) BeginBackup(ctx context.Context, resou
 		return APIManagementServiceBackupPollerResponse{}, err
 	}
 	result := APIManagementServiceBackupPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("APIManagementServiceClient.Backup", "location", resp, client.con.Pipeline(), client.backupHandleError)
-	if err != nil {
-		return APIManagementServiceBackupPollerResponse{}, err
-	}
-	poller := &apiManagementServiceBackupPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (APIManagementServiceBackupResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeBackup creates a new APIManagementServiceBackupPoller from the specified resume token.
-// token - The value must come from a previous call to APIManagementServiceBackupPoller.ResumeToken().
-func (client *APIManagementServiceClient) ResumeBackup(ctx context.Context, token string) (APIManagementServiceBackupPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("APIManagementServiceClient.Backup", token, client.con.Pipeline(), client.backupHandleError)
-	if err != nil {
-		return APIManagementServiceBackupPollerResponse{}, err
-	}
-	poller := &apiManagementServiceBackupPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return APIManagementServiceBackupPollerResponse{}, err
-	}
-	result := APIManagementServiceBackupPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (APIManagementServiceBackupResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("APIManagementServiceClient.Backup", "location", resp, client.pl, client.backupHandleError)
+	if err != nil {
+		return APIManagementServiceBackupPollerResponse{}, err
+	}
+	result.Poller = &APIManagementServiceBackupPoller{
+		pt: pt,
 	}
 	return result, nil
 }
@@ -191,23 +138,23 @@ func (client *APIManagementServiceClient) ResumeBackup(ctx context.Context, toke
 // Backup - Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation and could take several minutes
 // to complete.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *APIManagementServiceClient) backup(ctx context.Context, resourceGroupName string, serviceName string, parameters APIManagementServiceBackupRestoreParameters, options *APIManagementServiceBeginBackupOptions) (*azcore.Response, error) {
+func (client *APIManagementServiceClient) backup(ctx context.Context, resourceGroupName string, serviceName string, parameters APIManagementServiceBackupRestoreParameters, options *APIManagementServiceBeginBackupOptions) (*http.Response, error) {
 	req, err := client.backupCreateRequest(ctx, resourceGroupName, serviceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.backupHandleError(resp)
 	}
 	return resp, nil
 }
 
 // backupCreateRequest creates the Backup request.
-func (client *APIManagementServiceClient) backupCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, parameters APIManagementServiceBackupRestoreParameters, options *APIManagementServiceBeginBackupOptions) (*azcore.Request, error) {
+func (client *APIManagementServiceClient) backupCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, parameters APIManagementServiceBackupRestoreParameters, options *APIManagementServiceBeginBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/backup"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -221,29 +168,28 @@ func (client *APIManagementServiceClient) backupCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // backupHandleError handles the Backup error response.
-func (client *APIManagementServiceClient) backupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIManagementServiceClient) backupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // CheckNameAvailability - Checks availability and correctness of a name for an API Management service.
@@ -253,55 +199,54 @@ func (client *APIManagementServiceClient) CheckNameAvailability(ctx context.Cont
 	if err != nil {
 		return APIManagementServiceCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return APIManagementServiceCheckNameAvailabilityResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return APIManagementServiceCheckNameAvailabilityResponse{}, client.checkNameAvailabilityHandleError(resp)
 	}
 	return client.checkNameAvailabilityHandleResponse(resp)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *APIManagementServiceClient) checkNameAvailabilityCreateRequest(ctx context.Context, parameters APIManagementServiceCheckNameAvailabilityParameters, options *APIManagementServiceCheckNameAvailabilityOptions) (*azcore.Request, error) {
+func (client *APIManagementServiceClient) checkNameAvailabilityCreateRequest(ctx context.Context, parameters APIManagementServiceCheckNameAvailabilityParameters, options *APIManagementServiceCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/checkNameAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *APIManagementServiceClient) checkNameAvailabilityHandleResponse(resp *azcore.Response) (APIManagementServiceCheckNameAvailabilityResponse, error) {
-	result := APIManagementServiceCheckNameAvailabilityResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.APIManagementServiceNameAvailabilityResult); err != nil {
+func (client *APIManagementServiceClient) checkNameAvailabilityHandleResponse(resp *http.Response) (APIManagementServiceCheckNameAvailabilityResponse, error) {
+	result := APIManagementServiceCheckNameAvailabilityResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.APIManagementServiceNameAvailabilityResult); err != nil {
 		return APIManagementServiceCheckNameAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
 // checkNameAvailabilityHandleError handles the CheckNameAvailability error response.
-func (client *APIManagementServiceClient) checkNameAvailabilityHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIManagementServiceClient) checkNameAvailabilityHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginCreateOrUpdate - Creates or updates an API Management service. This is long running operation and could take several minutes to complete.
@@ -312,65 +257,37 @@ func (client *APIManagementServiceClient) BeginCreateOrUpdate(ctx context.Contex
 		return APIManagementServiceCreateOrUpdatePollerResponse{}, err
 	}
 	result := APIManagementServiceCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("APIManagementServiceClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return APIManagementServiceCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &apiManagementServiceCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (APIManagementServiceCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new APIManagementServiceCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to APIManagementServiceCreateOrUpdatePoller.ResumeToken().
-func (client *APIManagementServiceClient) ResumeCreateOrUpdate(ctx context.Context, token string) (APIManagementServiceCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("APIManagementServiceClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return APIManagementServiceCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &apiManagementServiceCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return APIManagementServiceCreateOrUpdatePollerResponse{}, err
-	}
-	result := APIManagementServiceCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (APIManagementServiceCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("APIManagementServiceClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return APIManagementServiceCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &APIManagementServiceCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates an API Management service. This is long running operation and could take several minutes to complete.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *APIManagementServiceClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters APIManagementServiceResource, options *APIManagementServiceBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *APIManagementServiceClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, parameters APIManagementServiceResource, options *APIManagementServiceBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *APIManagementServiceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, parameters APIManagementServiceResource, options *APIManagementServiceBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *APIManagementServiceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, parameters APIManagementServiceResource, options *APIManagementServiceBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -384,29 +301,28 @@ func (client *APIManagementServiceClient) createOrUpdateCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *APIManagementServiceClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIManagementServiceClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDelete - Deletes an existing API Management service.
@@ -417,65 +333,37 @@ func (client *APIManagementServiceClient) BeginDelete(ctx context.Context, resou
 		return APIManagementServiceDeletePollerResponse{}, err
 	}
 	result := APIManagementServiceDeletePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("APIManagementServiceClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return APIManagementServiceDeletePollerResponse{}, err
-	}
-	poller := &apiManagementServiceDeletePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (APIManagementServiceDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new APIManagementServiceDeletePoller from the specified resume token.
-// token - The value must come from a previous call to APIManagementServiceDeletePoller.ResumeToken().
-func (client *APIManagementServiceClient) ResumeDelete(ctx context.Context, token string) (APIManagementServiceDeletePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("APIManagementServiceClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return APIManagementServiceDeletePollerResponse{}, err
-	}
-	poller := &apiManagementServiceDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return APIManagementServiceDeletePollerResponse{}, err
-	}
-	result := APIManagementServiceDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (APIManagementServiceDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("APIManagementServiceClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return APIManagementServiceDeletePollerResponse{}, err
+	}
+	result.Poller = &APIManagementServiceDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes an existing API Management service.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *APIManagementServiceClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, options *APIManagementServiceBeginDeleteOptions) (*azcore.Response, error) {
+func (client *APIManagementServiceClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, options *APIManagementServiceBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *APIManagementServiceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *APIManagementServiceBeginDeleteOptions) (*azcore.Request, error) {
+func (client *APIManagementServiceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *APIManagementServiceBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -489,29 +377,28 @@ func (client *APIManagementServiceClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *APIManagementServiceClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIManagementServiceClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets an API Management service resource description.
@@ -521,18 +408,18 @@ func (client *APIManagementServiceClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return APIManagementServiceGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return APIManagementServiceGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return APIManagementServiceGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *APIManagementServiceClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *APIManagementServiceGetOptions) (*azcore.Request, error) {
+func (client *APIManagementServiceClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *APIManagementServiceGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -546,38 +433,37 @@ func (client *APIManagementServiceClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *APIManagementServiceClient) getHandleResponse(resp *azcore.Response) (APIManagementServiceGetResponse, error) {
-	result := APIManagementServiceGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.APIManagementServiceResource); err != nil {
+func (client *APIManagementServiceClient) getHandleResponse(resp *http.Response) (APIManagementServiceGetResponse, error) {
+	result := APIManagementServiceGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.APIManagementServiceResource); err != nil {
 		return APIManagementServiceGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *APIManagementServiceClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIManagementServiceClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetDomainOwnershipIdentifier - Get the custom domain ownership identifier for an API Management service.
@@ -587,55 +473,54 @@ func (client *APIManagementServiceClient) GetDomainOwnershipIdentifier(ctx conte
 	if err != nil {
 		return APIManagementServiceGetDomainOwnershipIdentifierResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return APIManagementServiceGetDomainOwnershipIdentifierResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return APIManagementServiceGetDomainOwnershipIdentifierResponse{}, client.getDomainOwnershipIdentifierHandleError(resp)
 	}
 	return client.getDomainOwnershipIdentifierHandleResponse(resp)
 }
 
 // getDomainOwnershipIdentifierCreateRequest creates the GetDomainOwnershipIdentifier request.
-func (client *APIManagementServiceClient) getDomainOwnershipIdentifierCreateRequest(ctx context.Context, options *APIManagementServiceGetDomainOwnershipIdentifierOptions) (*azcore.Request, error) {
+func (client *APIManagementServiceClient) getDomainOwnershipIdentifierCreateRequest(ctx context.Context, options *APIManagementServiceGetDomainOwnershipIdentifierOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/getDomainOwnershipIdentifier"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getDomainOwnershipIdentifierHandleResponse handles the GetDomainOwnershipIdentifier response.
-func (client *APIManagementServiceClient) getDomainOwnershipIdentifierHandleResponse(resp *azcore.Response) (APIManagementServiceGetDomainOwnershipIdentifierResponse, error) {
-	result := APIManagementServiceGetDomainOwnershipIdentifierResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.APIManagementServiceGetDomainOwnershipIdentifierResult); err != nil {
+func (client *APIManagementServiceClient) getDomainOwnershipIdentifierHandleResponse(resp *http.Response) (APIManagementServiceGetDomainOwnershipIdentifierResponse, error) {
+	result := APIManagementServiceGetDomainOwnershipIdentifierResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.APIManagementServiceGetDomainOwnershipIdentifierResult); err != nil {
 		return APIManagementServiceGetDomainOwnershipIdentifierResponse{}, err
 	}
 	return result, nil
 }
 
 // getDomainOwnershipIdentifierHandleError handles the GetDomainOwnershipIdentifier error response.
-func (client *APIManagementServiceClient) getDomainOwnershipIdentifierHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIManagementServiceClient) getDomainOwnershipIdentifierHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetSsoToken - Gets the Single-Sign-On token for the API Management Service which is valid for 5 Minutes.
@@ -645,18 +530,18 @@ func (client *APIManagementServiceClient) GetSsoToken(ctx context.Context, resou
 	if err != nil {
 		return APIManagementServiceGetSsoTokenResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return APIManagementServiceGetSsoTokenResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return APIManagementServiceGetSsoTokenResponse{}, client.getSsoTokenHandleError(resp)
 	}
 	return client.getSsoTokenHandleResponse(resp)
 }
 
 // getSsoTokenCreateRequest creates the GetSsoToken request.
-func (client *APIManagementServiceClient) getSsoTokenCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *APIManagementServiceGetSsoTokenOptions) (*azcore.Request, error) {
+func (client *APIManagementServiceClient) getSsoTokenCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *APIManagementServiceGetSsoTokenOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/getssotoken"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -670,111 +555,109 @@ func (client *APIManagementServiceClient) getSsoTokenCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getSsoTokenHandleResponse handles the GetSsoToken response.
-func (client *APIManagementServiceClient) getSsoTokenHandleResponse(resp *azcore.Response) (APIManagementServiceGetSsoTokenResponse, error) {
-	result := APIManagementServiceGetSsoTokenResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.APIManagementServiceGetSsoTokenResult); err != nil {
+func (client *APIManagementServiceClient) getSsoTokenHandleResponse(resp *http.Response) (APIManagementServiceGetSsoTokenResponse, error) {
+	result := APIManagementServiceGetSsoTokenResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.APIManagementServiceGetSsoTokenResult); err != nil {
 		return APIManagementServiceGetSsoTokenResponse{}, err
 	}
 	return result, nil
 }
 
 // getSsoTokenHandleError handles the GetSsoToken error response.
-func (client *APIManagementServiceClient) getSsoTokenHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIManagementServiceClient) getSsoTokenHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Lists all API Management services within an Azure subscription.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *APIManagementServiceClient) List(options *APIManagementServiceListOptions) APIManagementServiceListPager {
-	return &apiManagementServiceListPager{
+func (client *APIManagementServiceClient) List(options *APIManagementServiceListOptions) *APIManagementServiceListPager {
+	return &APIManagementServiceListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp APIManagementServiceListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.APIManagementServiceListResult.NextLink)
+		advancer: func(ctx context.Context, resp APIManagementServiceListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.APIManagementServiceListResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *APIManagementServiceClient) listCreateRequest(ctx context.Context, options *APIManagementServiceListOptions) (*azcore.Request, error) {
+func (client *APIManagementServiceClient) listCreateRequest(ctx context.Context, options *APIManagementServiceListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/service"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *APIManagementServiceClient) listHandleResponse(resp *azcore.Response) (APIManagementServiceListResponse, error) {
-	result := APIManagementServiceListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.APIManagementServiceListResult); err != nil {
+func (client *APIManagementServiceClient) listHandleResponse(resp *http.Response) (APIManagementServiceListResponse, error) {
+	result := APIManagementServiceListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.APIManagementServiceListResult); err != nil {
 		return APIManagementServiceListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *APIManagementServiceClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIManagementServiceClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByResourceGroup - List all API Management services within a resource group.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *APIManagementServiceClient) ListByResourceGroup(resourceGroupName string, options *APIManagementServiceListByResourceGroupOptions) APIManagementServiceListByResourceGroupPager {
-	return &apiManagementServiceListByResourceGroupPager{
+func (client *APIManagementServiceClient) ListByResourceGroup(resourceGroupName string, options *APIManagementServiceListByResourceGroupOptions) *APIManagementServiceListByResourceGroupPager {
+	return &APIManagementServiceListByResourceGroupPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp APIManagementServiceListByResourceGroupResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.APIManagementServiceListResult.NextLink)
+		advancer: func(ctx context.Context, resp APIManagementServiceListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.APIManagementServiceListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *APIManagementServiceClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *APIManagementServiceListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *APIManagementServiceClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *APIManagementServiceListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -784,38 +667,37 @@ func (client *APIManagementServiceClient) listByResourceGroupCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *APIManagementServiceClient) listByResourceGroupHandleResponse(resp *azcore.Response) (APIManagementServiceListByResourceGroupResponse, error) {
-	result := APIManagementServiceListByResourceGroupResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.APIManagementServiceListResult); err != nil {
+func (client *APIManagementServiceClient) listByResourceGroupHandleResponse(resp *http.Response) (APIManagementServiceListByResourceGroupResponse, error) {
+	result := APIManagementServiceListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.APIManagementServiceListResult); err != nil {
 		return APIManagementServiceListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *APIManagementServiceClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIManagementServiceClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginRestore - Restores a backup of an API Management service created using the ApiManagementService_Backup operation on the current service. This is
@@ -828,42 +710,14 @@ func (client *APIManagementServiceClient) BeginRestore(ctx context.Context, reso
 		return APIManagementServiceRestorePollerResponse{}, err
 	}
 	result := APIManagementServiceRestorePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("APIManagementServiceClient.Restore", "location", resp, client.con.Pipeline(), client.restoreHandleError)
-	if err != nil {
-		return APIManagementServiceRestorePollerResponse{}, err
-	}
-	poller := &apiManagementServiceRestorePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (APIManagementServiceRestoreResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeRestore creates a new APIManagementServiceRestorePoller from the specified resume token.
-// token - The value must come from a previous call to APIManagementServiceRestorePoller.ResumeToken().
-func (client *APIManagementServiceClient) ResumeRestore(ctx context.Context, token string) (APIManagementServiceRestorePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("APIManagementServiceClient.Restore", token, client.con.Pipeline(), client.restoreHandleError)
-	if err != nil {
-		return APIManagementServiceRestorePollerResponse{}, err
-	}
-	poller := &apiManagementServiceRestorePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return APIManagementServiceRestorePollerResponse{}, err
-	}
-	result := APIManagementServiceRestorePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (APIManagementServiceRestoreResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("APIManagementServiceClient.Restore", "location", resp, client.pl, client.restoreHandleError)
+	if err != nil {
+		return APIManagementServiceRestorePollerResponse{}, err
+	}
+	result.Poller = &APIManagementServiceRestorePoller{
+		pt: pt,
 	}
 	return result, nil
 }
@@ -872,23 +726,23 @@ func (client *APIManagementServiceClient) ResumeRestore(ctx context.Context, tok
 // running operation and could take several minutes to
 // complete.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *APIManagementServiceClient) restore(ctx context.Context, resourceGroupName string, serviceName string, parameters APIManagementServiceBackupRestoreParameters, options *APIManagementServiceBeginRestoreOptions) (*azcore.Response, error) {
+func (client *APIManagementServiceClient) restore(ctx context.Context, resourceGroupName string, serviceName string, parameters APIManagementServiceBackupRestoreParameters, options *APIManagementServiceBeginRestoreOptions) (*http.Response, error) {
 	req, err := client.restoreCreateRequest(ctx, resourceGroupName, serviceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.restoreHandleError(resp)
 	}
 	return resp, nil
 }
 
 // restoreCreateRequest creates the Restore request.
-func (client *APIManagementServiceClient) restoreCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, parameters APIManagementServiceBackupRestoreParameters, options *APIManagementServiceBeginRestoreOptions) (*azcore.Request, error) {
+func (client *APIManagementServiceClient) restoreCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, parameters APIManagementServiceBackupRestoreParameters, options *APIManagementServiceBeginRestoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/restore"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -902,29 +756,28 @@ func (client *APIManagementServiceClient) restoreCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // restoreHandleError handles the Restore error response.
-func (client *APIManagementServiceClient) restoreHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIManagementServiceClient) restoreHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginUpdate - Updates an existing API Management service.
@@ -935,65 +788,37 @@ func (client *APIManagementServiceClient) BeginUpdate(ctx context.Context, resou
 		return APIManagementServiceUpdatePollerResponse{}, err
 	}
 	result := APIManagementServiceUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("APIManagementServiceClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return APIManagementServiceUpdatePollerResponse{}, err
-	}
-	poller := &apiManagementServiceUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (APIManagementServiceUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdate creates a new APIManagementServiceUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to APIManagementServiceUpdatePoller.ResumeToken().
-func (client *APIManagementServiceClient) ResumeUpdate(ctx context.Context, token string) (APIManagementServiceUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("APIManagementServiceClient.Update", token, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return APIManagementServiceUpdatePollerResponse{}, err
-	}
-	poller := &apiManagementServiceUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return APIManagementServiceUpdatePollerResponse{}, err
-	}
-	result := APIManagementServiceUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (APIManagementServiceUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("APIManagementServiceClient.Update", "", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return APIManagementServiceUpdatePollerResponse{}, err
+	}
+	result.Poller = &APIManagementServiceUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates an existing API Management service.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *APIManagementServiceClient) update(ctx context.Context, resourceGroupName string, serviceName string, parameters APIManagementServiceUpdateParameters, options *APIManagementServiceBeginUpdateOptions) (*azcore.Response, error) {
+func (client *APIManagementServiceClient) update(ctx context.Context, resourceGroupName string, serviceName string, parameters APIManagementServiceUpdateParameters, options *APIManagementServiceBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *APIManagementServiceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, parameters APIManagementServiceUpdateParameters, options *APIManagementServiceBeginUpdateOptions) (*azcore.Request, error) {
+func (client *APIManagementServiceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, parameters APIManagementServiceUpdateParameters, options *APIManagementServiceBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1007,27 +832,26 @@ func (client *APIManagementServiceClient) updateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleError handles the Update error response.
-func (client *APIManagementServiceClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *APIManagementServiceClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

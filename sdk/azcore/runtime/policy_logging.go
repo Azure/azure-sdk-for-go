@@ -24,7 +24,7 @@ type logPolicy struct {
 	options policy.LogOptions
 }
 
-// NewLogPolicy creates a RequestLogPolicy object configured using the specified options.
+// NewLogPolicy creates a request/response logging policy object configured using the specified options.
 // Pass nil to accept the default values; this is the same as passing a zero-value options.
 func NewLogPolicy(o *policy.LogOptions) policy.Policy {
 	if o == nil {

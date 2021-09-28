@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,25 +12,28 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DomainsClient contains the methods for the Domains group.
 // Don't use this type directly, use NewDomainsClient() instead.
 type DomainsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewDomainsClient creates a new instance of DomainsClient with the specified values.
-func NewDomainsClient(con *armcore.Connection, subscriptionID string) *DomainsClient {
-	return &DomainsClient{con: con, subscriptionID: subscriptionID}
+func NewDomainsClient(con *arm.Connection, subscriptionID string) *DomainsClient {
+	return &DomainsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CheckAvailability - Description for Check if a domain is available for registration.
@@ -39,55 +43,54 @@ func (client *DomainsClient) CheckAvailability(ctx context.Context, identifier N
 	if err != nil {
 		return DomainsCheckAvailabilityResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DomainsCheckAvailabilityResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DomainsCheckAvailabilityResponse{}, client.checkAvailabilityHandleError(resp)
 	}
 	return client.checkAvailabilityHandleResponse(resp)
 }
 
 // checkAvailabilityCreateRequest creates the CheckAvailability request.
-func (client *DomainsClient) checkAvailabilityCreateRequest(ctx context.Context, identifier NameIdentifier, options *DomainsCheckAvailabilityOptions) (*azcore.Request, error) {
+func (client *DomainsClient) checkAvailabilityCreateRequest(ctx context.Context, identifier NameIdentifier, options *DomainsCheckAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/checkDomainAvailability"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(identifier)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, identifier)
 }
 
 // checkAvailabilityHandleResponse handles the CheckAvailability response.
-func (client *DomainsClient) checkAvailabilityHandleResponse(resp *azcore.Response) (DomainsCheckAvailabilityResponse, error) {
-	result := DomainsCheckAvailabilityResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DomainAvailabilityCheckResult); err != nil {
+func (client *DomainsClient) checkAvailabilityHandleResponse(resp *http.Response) (DomainsCheckAvailabilityResponse, error) {
+	result := DomainsCheckAvailabilityResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DomainAvailabilityCheckResult); err != nil {
 		return DomainsCheckAvailabilityResponse{}, err
 	}
 	return result, nil
 }
 
 // checkAvailabilityHandleError handles the CheckAvailability error response.
-func (client *DomainsClient) checkAvailabilityHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DomainsClient) checkAvailabilityHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginCreateOrUpdate - Description for Creates or updates a domain.
@@ -98,65 +101,37 @@ func (client *DomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 		return DomainsCreateOrUpdatePollerResponse{}, err
 	}
 	result := DomainsCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DomainsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return DomainsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &domainsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DomainsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new DomainsCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to DomainsCreateOrUpdatePoller.ResumeToken().
-func (client *DomainsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DomainsCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DomainsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return DomainsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &domainsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return DomainsCreateOrUpdatePollerResponse{}, err
-	}
-	result := DomainsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DomainsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DomainsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return DomainsCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &DomainsCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Description for Creates or updates a domain.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) createOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domain Domain, options *DomainsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *DomainsClient) createOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domain Domain, options *DomainsBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, domainName, domain, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, domainName string, domain Domain, options *DomainsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, domainName string, domain Domain, options *DomainsBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -170,29 +145,28 @@ func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(domain)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, domain)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DomainsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DomainsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // CreateOrUpdateOwnershipIdentifier - Description for Creates an ownership identifier for a domain or updates identifier details for an existing identifier
@@ -202,18 +176,18 @@ func (client *DomainsClient) CreateOrUpdateOwnershipIdentifier(ctx context.Conte
 	if err != nil {
 		return DomainsCreateOrUpdateOwnershipIdentifierResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DomainsCreateOrUpdateOwnershipIdentifierResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DomainsCreateOrUpdateOwnershipIdentifierResponse{}, client.createOrUpdateOwnershipIdentifierHandleError(resp)
 	}
 	return client.createOrUpdateOwnershipIdentifierHandleResponse(resp)
 }
 
 // createOrUpdateOwnershipIdentifierCreateRequest creates the CreateOrUpdateOwnershipIdentifier request.
-func (client *DomainsClient) createOrUpdateOwnershipIdentifierCreateRequest(ctx context.Context, resourceGroupName string, domainName string, name string, domainOwnershipIdentifier DomainOwnershipIdentifier, options *DomainsCreateOrUpdateOwnershipIdentifierOptions) (*azcore.Request, error) {
+func (client *DomainsClient) createOrUpdateOwnershipIdentifierCreateRequest(ctx context.Context, resourceGroupName string, domainName string, name string, domainOwnershipIdentifier DomainOwnershipIdentifier, options *DomainsCreateOrUpdateOwnershipIdentifierOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -231,38 +205,37 @@ func (client *DomainsClient) createOrUpdateOwnershipIdentifierCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(domainOwnershipIdentifier)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, domainOwnershipIdentifier)
 }
 
 // createOrUpdateOwnershipIdentifierHandleResponse handles the CreateOrUpdateOwnershipIdentifier response.
-func (client *DomainsClient) createOrUpdateOwnershipIdentifierHandleResponse(resp *azcore.Response) (DomainsCreateOrUpdateOwnershipIdentifierResponse, error) {
-	result := DomainsCreateOrUpdateOwnershipIdentifierResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DomainOwnershipIdentifier); err != nil {
+func (client *DomainsClient) createOrUpdateOwnershipIdentifierHandleResponse(resp *http.Response) (DomainsCreateOrUpdateOwnershipIdentifierResponse, error) {
+	result := DomainsCreateOrUpdateOwnershipIdentifierResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DomainOwnershipIdentifier); err != nil {
 		return DomainsCreateOrUpdateOwnershipIdentifierResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateOwnershipIdentifierHandleError handles the CreateOrUpdateOwnershipIdentifier error response.
-func (client *DomainsClient) createOrUpdateOwnershipIdentifierHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DomainsClient) createOrUpdateOwnershipIdentifierHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Description for Delete a domain.
@@ -272,18 +245,18 @@ func (client *DomainsClient) Delete(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return DomainsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DomainsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DomainsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return DomainsDeleteResponse{RawResponse: resp.Response}, nil
+	return DomainsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, domainName string, options *DomainsDeleteOptions) (*azcore.Request, error) {
+func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, domainName string, options *DomainsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -297,32 +270,31 @@ func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.ForceHardDeleteDomain != nil {
 		reqQP.Set("forceHardDeleteDomain", strconv.FormatBool(*options.ForceHardDeleteDomain))
 	}
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *DomainsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DomainsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // DeleteOwnershipIdentifier - Description for Delete ownership identifier for domain
@@ -332,18 +304,18 @@ func (client *DomainsClient) DeleteOwnershipIdentifier(ctx context.Context, reso
 	if err != nil {
 		return DomainsDeleteOwnershipIdentifierResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DomainsDeleteOwnershipIdentifierResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return DomainsDeleteOwnershipIdentifierResponse{}, client.deleteOwnershipIdentifierHandleError(resp)
 	}
-	return DomainsDeleteOwnershipIdentifierResponse{RawResponse: resp.Response}, nil
+	return DomainsDeleteOwnershipIdentifierResponse{RawResponse: resp}, nil
 }
 
 // deleteOwnershipIdentifierCreateRequest creates the DeleteOwnershipIdentifier request.
-func (client *DomainsClient) deleteOwnershipIdentifierCreateRequest(ctx context.Context, resourceGroupName string, domainName string, name string, options *DomainsDeleteOwnershipIdentifierOptions) (*azcore.Request, error) {
+func (client *DomainsClient) deleteOwnershipIdentifierCreateRequest(ctx context.Context, resourceGroupName string, domainName string, name string, options *DomainsDeleteOwnershipIdentifierOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -361,29 +333,28 @@ func (client *DomainsClient) deleteOwnershipIdentifierCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteOwnershipIdentifierHandleError handles the DeleteOwnershipIdentifier error response.
-func (client *DomainsClient) deleteOwnershipIdentifierHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DomainsClient) deleteOwnershipIdentifierHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Description for Get a domain.
@@ -393,18 +364,18 @@ func (client *DomainsClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return DomainsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DomainsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DomainsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, domainName string, options *DomainsGetOptions) (*azcore.Request, error) {
+func (client *DomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, domainName string, options *DomainsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -418,38 +389,37 @@ func (client *DomainsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DomainsClient) getHandleResponse(resp *azcore.Response) (DomainsGetResponse, error) {
-	result := DomainsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Domain); err != nil {
+func (client *DomainsClient) getHandleResponse(resp *http.Response) (DomainsGetResponse, error) {
+	result := DomainsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Domain); err != nil {
 		return DomainsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *DomainsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DomainsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetControlCenterSsoRequest - Description for Generate a single sign-on request for the domain management portal.
@@ -459,55 +429,54 @@ func (client *DomainsClient) GetControlCenterSsoRequest(ctx context.Context, opt
 	if err != nil {
 		return DomainsGetControlCenterSsoRequestResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DomainsGetControlCenterSsoRequestResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DomainsGetControlCenterSsoRequestResponse{}, client.getControlCenterSsoRequestHandleError(resp)
 	}
 	return client.getControlCenterSsoRequestHandleResponse(resp)
 }
 
 // getControlCenterSsoRequestCreateRequest creates the GetControlCenterSsoRequest request.
-func (client *DomainsClient) getControlCenterSsoRequestCreateRequest(ctx context.Context, options *DomainsGetControlCenterSsoRequestOptions) (*azcore.Request, error) {
+func (client *DomainsClient) getControlCenterSsoRequestCreateRequest(ctx context.Context, options *DomainsGetControlCenterSsoRequestOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/generateSsoRequest"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getControlCenterSsoRequestHandleResponse handles the GetControlCenterSsoRequest response.
-func (client *DomainsClient) getControlCenterSsoRequestHandleResponse(resp *azcore.Response) (DomainsGetControlCenterSsoRequestResponse, error) {
-	result := DomainsGetControlCenterSsoRequestResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DomainControlCenterSsoRequest); err != nil {
+func (client *DomainsClient) getControlCenterSsoRequestHandleResponse(resp *http.Response) (DomainsGetControlCenterSsoRequestResponse, error) {
+	result := DomainsGetControlCenterSsoRequestResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DomainControlCenterSsoRequest); err != nil {
 		return DomainsGetControlCenterSsoRequestResponse{}, err
 	}
 	return result, nil
 }
 
 // getControlCenterSsoRequestHandleError handles the GetControlCenterSsoRequest error response.
-func (client *DomainsClient) getControlCenterSsoRequestHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DomainsClient) getControlCenterSsoRequestHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetOwnershipIdentifier - Description for Get ownership identifier for domain
@@ -517,18 +486,18 @@ func (client *DomainsClient) GetOwnershipIdentifier(ctx context.Context, resourc
 	if err != nil {
 		return DomainsGetOwnershipIdentifierResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DomainsGetOwnershipIdentifierResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DomainsGetOwnershipIdentifierResponse{}, client.getOwnershipIdentifierHandleError(resp)
 	}
 	return client.getOwnershipIdentifierHandleResponse(resp)
 }
 
 // getOwnershipIdentifierCreateRequest creates the GetOwnershipIdentifier request.
-func (client *DomainsClient) getOwnershipIdentifierCreateRequest(ctx context.Context, resourceGroupName string, domainName string, name string, options *DomainsGetOwnershipIdentifierOptions) (*azcore.Request, error) {
+func (client *DomainsClient) getOwnershipIdentifierCreateRequest(ctx context.Context, resourceGroupName string, domainName string, name string, options *DomainsGetOwnershipIdentifierOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -546,111 +515,109 @@ func (client *DomainsClient) getOwnershipIdentifierCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getOwnershipIdentifierHandleResponse handles the GetOwnershipIdentifier response.
-func (client *DomainsClient) getOwnershipIdentifierHandleResponse(resp *azcore.Response) (DomainsGetOwnershipIdentifierResponse, error) {
-	result := DomainsGetOwnershipIdentifierResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DomainOwnershipIdentifier); err != nil {
+func (client *DomainsClient) getOwnershipIdentifierHandleResponse(resp *http.Response) (DomainsGetOwnershipIdentifierResponse, error) {
+	result := DomainsGetOwnershipIdentifierResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DomainOwnershipIdentifier); err != nil {
 		return DomainsGetOwnershipIdentifierResponse{}, err
 	}
 	return result, nil
 }
 
 // getOwnershipIdentifierHandleError handles the GetOwnershipIdentifier error response.
-func (client *DomainsClient) getOwnershipIdentifierHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DomainsClient) getOwnershipIdentifierHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Description for Get all domains in a subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) List(options *DomainsListOptions) DomainsListPager {
-	return &domainsListPager{
+func (client *DomainsClient) List(options *DomainsListOptions) *DomainsListPager {
+	return &DomainsListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp DomainsListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DomainCollection.NextLink)
+		advancer: func(ctx context.Context, resp DomainsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DomainCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *DomainsClient) listCreateRequest(ctx context.Context, options *DomainsListOptions) (*azcore.Request, error) {
+func (client *DomainsClient) listCreateRequest(ctx context.Context, options *DomainsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DomainsClient) listHandleResponse(resp *azcore.Response) (DomainsListResponse, error) {
-	result := DomainsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DomainCollection); err != nil {
+func (client *DomainsClient) listHandleResponse(resp *http.Response) (DomainsListResponse, error) {
+	result := DomainsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DomainCollection); err != nil {
 		return DomainsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *DomainsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DomainsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByResourceGroup - Description for Get all domains in a resource group.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) ListByResourceGroup(resourceGroupName string, options *DomainsListByResourceGroupOptions) DomainsListByResourceGroupPager {
-	return &domainsListByResourceGroupPager{
+func (client *DomainsClient) ListByResourceGroup(resourceGroupName string, options *DomainsListByResourceGroupOptions) *DomainsListByResourceGroupPager {
+	return &DomainsListByResourceGroupPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp DomainsListByResourceGroupResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DomainCollection.NextLink)
+		advancer: func(ctx context.Context, resp DomainsListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DomainCollection.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *DomainsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DomainsListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *DomainsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DomainsListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -660,56 +627,55 @@ func (client *DomainsClient) listByResourceGroupCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DomainsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (DomainsListByResourceGroupResponse, error) {
-	result := DomainsListByResourceGroupResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DomainCollection); err != nil {
+func (client *DomainsClient) listByResourceGroupHandleResponse(resp *http.Response) (DomainsListByResourceGroupResponse, error) {
+	result := DomainsListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DomainCollection); err != nil {
 		return DomainsListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *DomainsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DomainsClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListOwnershipIdentifiers - Description for Lists domain ownership identifiers.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) ListOwnershipIdentifiers(resourceGroupName string, domainName string, options *DomainsListOwnershipIdentifiersOptions) DomainsListOwnershipIdentifiersPager {
-	return &domainsListOwnershipIdentifiersPager{
+func (client *DomainsClient) ListOwnershipIdentifiers(resourceGroupName string, domainName string, options *DomainsListOwnershipIdentifiersOptions) *DomainsListOwnershipIdentifiersPager {
+	return &DomainsListOwnershipIdentifiersPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listOwnershipIdentifiersCreateRequest(ctx, resourceGroupName, domainName, options)
 		},
-		advancer: func(ctx context.Context, resp DomainsListOwnershipIdentifiersResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DomainOwnershipIdentifierCollection.NextLink)
+		advancer: func(ctx context.Context, resp DomainsListOwnershipIdentifiersResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DomainOwnershipIdentifierCollection.NextLink)
 		},
 	}
 }
 
 // listOwnershipIdentifiersCreateRequest creates the ListOwnershipIdentifiers request.
-func (client *DomainsClient) listOwnershipIdentifiersCreateRequest(ctx context.Context, resourceGroupName string, domainName string, options *DomainsListOwnershipIdentifiersOptions) (*azcore.Request, error) {
+func (client *DomainsClient) listOwnershipIdentifiersCreateRequest(ctx context.Context, resourceGroupName string, domainName string, options *DomainsListOwnershipIdentifiersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -723,93 +689,91 @@ func (client *DomainsClient) listOwnershipIdentifiersCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listOwnershipIdentifiersHandleResponse handles the ListOwnershipIdentifiers response.
-func (client *DomainsClient) listOwnershipIdentifiersHandleResponse(resp *azcore.Response) (DomainsListOwnershipIdentifiersResponse, error) {
-	result := DomainsListOwnershipIdentifiersResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DomainOwnershipIdentifierCollection); err != nil {
+func (client *DomainsClient) listOwnershipIdentifiersHandleResponse(resp *http.Response) (DomainsListOwnershipIdentifiersResponse, error) {
+	result := DomainsListOwnershipIdentifiersResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DomainOwnershipIdentifierCollection); err != nil {
 		return DomainsListOwnershipIdentifiersResponse{}, err
 	}
 	return result, nil
 }
 
 // listOwnershipIdentifiersHandleError handles the ListOwnershipIdentifiers error response.
-func (client *DomainsClient) listOwnershipIdentifiersHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DomainsClient) listOwnershipIdentifiersHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListRecommendations - Description for Get domain name recommendations based on keywords.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *DomainsClient) ListRecommendations(parameters DomainRecommendationSearchParameters, options *DomainsListRecommendationsOptions) DomainsListRecommendationsPager {
-	return &domainsListRecommendationsPager{
+func (client *DomainsClient) ListRecommendations(parameters DomainRecommendationSearchParameters, options *DomainsListRecommendationsOptions) *DomainsListRecommendationsPager {
+	return &DomainsListRecommendationsPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listRecommendationsCreateRequest(ctx, parameters, options)
 		},
-		advancer: func(ctx context.Context, resp DomainsListRecommendationsResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.NameIdentifierCollection.NextLink)
+		advancer: func(ctx context.Context, resp DomainsListRecommendationsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.NameIdentifierCollection.NextLink)
 		},
 	}
 }
 
 // listRecommendationsCreateRequest creates the ListRecommendations request.
-func (client *DomainsClient) listRecommendationsCreateRequest(ctx context.Context, parameters DomainRecommendationSearchParameters, options *DomainsListRecommendationsOptions) (*azcore.Request, error) {
+func (client *DomainsClient) listRecommendationsCreateRequest(ctx context.Context, parameters DomainRecommendationSearchParameters, options *DomainsListRecommendationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/listDomainRecommendations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // listRecommendationsHandleResponse handles the ListRecommendations response.
-func (client *DomainsClient) listRecommendationsHandleResponse(resp *azcore.Response) (DomainsListRecommendationsResponse, error) {
-	result := DomainsListRecommendationsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.NameIdentifierCollection); err != nil {
+func (client *DomainsClient) listRecommendationsHandleResponse(resp *http.Response) (DomainsListRecommendationsResponse, error) {
+	result := DomainsListRecommendationsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NameIdentifierCollection); err != nil {
 		return DomainsListRecommendationsResponse{}, err
 	}
 	return result, nil
 }
 
 // listRecommendationsHandleError handles the ListRecommendations error response.
-func (client *DomainsClient) listRecommendationsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DomainsClient) listRecommendationsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Renew - Description for Renew a domain.
@@ -819,18 +783,18 @@ func (client *DomainsClient) Renew(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return DomainsRenewResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DomainsRenewResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return DomainsRenewResponse{}, client.renewHandleError(resp)
 	}
-	return DomainsRenewResponse{RawResponse: resp.Response}, nil
+	return DomainsRenewResponse{RawResponse: resp}, nil
 }
 
 // renewCreateRequest creates the Renew request.
-func (client *DomainsClient) renewCreateRequest(ctx context.Context, resourceGroupName string, domainName string, options *DomainsRenewOptions) (*azcore.Request, error) {
+func (client *DomainsClient) renewCreateRequest(ctx context.Context, resourceGroupName string, domainName string, options *DomainsRenewOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/renew"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -844,29 +808,28 @@ func (client *DomainsClient) renewCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // renewHandleError handles the Renew error response.
-func (client *DomainsClient) renewHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DomainsClient) renewHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Update - Description for Creates or updates a domain.
@@ -876,18 +839,18 @@ func (client *DomainsClient) Update(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return DomainsUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DomainsUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return DomainsUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, domainName string, domain DomainPatchResource, options *DomainsUpdateOptions) (*azcore.Request, error) {
+func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, domainName string, domain DomainPatchResource, options *DomainsUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -901,38 +864,37 @@ func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(domain)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, domain)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DomainsClient) updateHandleResponse(resp *azcore.Response) (DomainsUpdateResponse, error) {
-	result := DomainsUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.Domain); err != nil {
+func (client *DomainsClient) updateHandleResponse(resp *http.Response) (DomainsUpdateResponse, error) {
+	result := DomainsUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Domain); err != nil {
 		return DomainsUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *DomainsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DomainsClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // UpdateOwnershipIdentifier - Description for Creates an ownership identifier for a domain or updates identifier details for an existing identifier
@@ -942,18 +904,18 @@ func (client *DomainsClient) UpdateOwnershipIdentifier(ctx context.Context, reso
 	if err != nil {
 		return DomainsUpdateOwnershipIdentifierResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return DomainsUpdateOwnershipIdentifierResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return DomainsUpdateOwnershipIdentifierResponse{}, client.updateOwnershipIdentifierHandleError(resp)
 	}
 	return client.updateOwnershipIdentifierHandleResponse(resp)
 }
 
 // updateOwnershipIdentifierCreateRequest creates the UpdateOwnershipIdentifier request.
-func (client *DomainsClient) updateOwnershipIdentifierCreateRequest(ctx context.Context, resourceGroupName string, domainName string, name string, domainOwnershipIdentifier DomainOwnershipIdentifier, options *DomainsUpdateOwnershipIdentifierOptions) (*azcore.Request, error) {
+func (client *DomainsClient) updateOwnershipIdentifierCreateRequest(ctx context.Context, resourceGroupName string, domainName string, name string, domainOwnershipIdentifier DomainOwnershipIdentifier, options *DomainsUpdateOwnershipIdentifierOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -971,36 +933,35 @@ func (client *DomainsClient) updateOwnershipIdentifierCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(domainOwnershipIdentifier)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, domainOwnershipIdentifier)
 }
 
 // updateOwnershipIdentifierHandleResponse handles the UpdateOwnershipIdentifier response.
-func (client *DomainsClient) updateOwnershipIdentifierHandleResponse(resp *azcore.Response) (DomainsUpdateOwnershipIdentifierResponse, error) {
-	result := DomainsUpdateOwnershipIdentifierResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.DomainOwnershipIdentifier); err != nil {
+func (client *DomainsClient) updateOwnershipIdentifierHandleResponse(resp *http.Response) (DomainsUpdateOwnershipIdentifierResponse, error) {
+	result := DomainsUpdateOwnershipIdentifierResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DomainOwnershipIdentifier); err != nil {
 		return DomainsUpdateOwnershipIdentifierResponse{}, err
 	}
 	return result, nil
 }
 
 // updateOwnershipIdentifierHandleError handles the UpdateOwnershipIdentifier error response.
-func (client *DomainsClient) updateOwnershipIdentifierHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DomainsClient) updateOwnershipIdentifierHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

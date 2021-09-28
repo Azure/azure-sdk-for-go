@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,6 +12,8 @@ import (
 	"context"
 	"net/http"
 	"time"
+
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // FirewallRulesCreateOrUpdateResponse contains the response from method FirewallRules.CreateOrUpdate.
@@ -57,14 +60,40 @@ type FirewallRulesListResult struct {
 
 // LinkedServerCreatePollerResponse contains the response from method LinkedServer.Create.
 type LinkedServerCreatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (LinkedServerCreateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller LinkedServerCreatePoller
+	Poller *LinkedServerCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l LinkedServerCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LinkedServerCreateResponse, error) {
+	respType := LinkedServerCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RedisLinkedServerWithProperties)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a LinkedServerCreatePollerResponse from the provided client and resume token.
+func (l *LinkedServerCreatePollerResponse) Resume(ctx context.Context, client *LinkedServerClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("LinkedServerClient.Create", token, client.pl, client.createHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &LinkedServerCreatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // LinkedServerCreateResponse contains the response from method LinkedServer.Create.
@@ -195,14 +224,40 @@ type PrivateEndpointConnectionsListResult struct {
 
 // PrivateEndpointConnectionsPutPollerResponse contains the response from method PrivateEndpointConnections.Put.
 type PrivateEndpointConnectionsPutPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionsPutResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller PrivateEndpointConnectionsPutPoller
+	Poller *PrivateEndpointConnectionsPutPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l PrivateEndpointConnectionsPutPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsPutResponse, error) {
+	respType := PrivateEndpointConnectionsPutResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.PrivateEndpointConnection)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a PrivateEndpointConnectionsPutPollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionsPutPollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Put", token, client.pl, client.putHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &PrivateEndpointConnectionsPutPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // PrivateEndpointConnectionsPutResponse contains the response from method PrivateEndpointConnections.Put.
@@ -237,14 +292,40 @@ type RedisCheckNameAvailabilityResponse struct {
 
 // RedisCreatePollerResponse contains the response from method Redis.Create.
 type RedisCreatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (RedisCreateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller RedisCreatePoller
+	Poller *RedisCreatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l RedisCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RedisCreateResponse, error) {
+	respType := RedisCreateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RedisResource)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a RedisCreatePollerResponse from the provided client and resume token.
+func (l *RedisCreatePollerResponse) Resume(ctx context.Context, client *RedisClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RedisClient.Create", token, client.pl, client.createHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &RedisCreatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // RedisCreateResponse contains the response from method Redis.Create.
@@ -261,14 +342,40 @@ type RedisCreateResult struct {
 
 // RedisDeletePollerResponse contains the response from method Redis.Delete.
 type RedisDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (RedisDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller RedisDeletePoller
+	Poller *RedisDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l RedisDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RedisDeleteResponse, error) {
+	respType := RedisDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a RedisDeletePollerResponse from the provided client and resume token.
+func (l *RedisDeletePollerResponse) Resume(ctx context.Context, client *RedisClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RedisClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &RedisDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // RedisDeleteResponse contains the response from method Redis.Delete.
@@ -279,14 +386,40 @@ type RedisDeleteResponse struct {
 
 // RedisExportDataPollerResponse contains the response from method Redis.ExportData.
 type RedisExportDataPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (RedisExportDataResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller RedisExportDataPoller
+	Poller *RedisExportDataPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l RedisExportDataPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RedisExportDataResponse, error) {
+	respType := RedisExportDataResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a RedisExportDataPollerResponse from the provided client and resume token.
+func (l *RedisExportDataPollerResponse) Resume(ctx context.Context, client *RedisClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RedisClient.ExportData", token, client.pl, client.exportDataHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &RedisExportDataPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // RedisExportDataResponse contains the response from method Redis.ExportData.
@@ -321,14 +454,40 @@ type RedisGetResult struct {
 
 // RedisImportDataPollerResponse contains the response from method Redis.ImportData.
 type RedisImportDataPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (RedisImportDataResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller RedisImportDataPoller
+	Poller *RedisImportDataPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l RedisImportDataPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (RedisImportDataResponse, error) {
+	respType := RedisImportDataResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a RedisImportDataPollerResponse from the provided client and resume token.
+func (l *RedisImportDataPollerResponse) Resume(ctx context.Context, client *RedisClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("RedisClient.ImportData", token, client.pl, client.importDataHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &RedisImportDataPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // RedisImportDataResponse contains the response from method Redis.ImportData.

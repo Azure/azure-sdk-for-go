@@ -83,7 +83,7 @@ func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {
@@ -100,7 +100,7 @@ func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
 	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
 	if err != nil {
@@ -148,7 +148,7 @@ func TestClientSecretCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
 	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {

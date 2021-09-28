@@ -18,6 +18,7 @@ type BackupsClientAPI = original.BackupsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PoolsClientAPI = original.PoolsClientAPI
 type ResourceClientAPI = original.ResourceClientAPI
+type ResourceQuotaLimitsClientAPI = original.ResourceQuotaLimitsClientAPI
 type SnapshotPoliciesClientAPI = original.SnapshotPoliciesClientAPI
 type SnapshotsClientAPI = original.SnapshotsClientAPI
 type VaultsClientAPI = original.VaultsClientAPI

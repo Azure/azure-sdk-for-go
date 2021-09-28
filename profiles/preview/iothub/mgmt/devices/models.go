@@ -12,7 +12,7 @@ package devices
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2020-03-01/devices"
+	original "github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2021-03-31/devices"
 )
 
 const (
@@ -22,73 +22,81 @@ const (
 type AccessRights = original.AccessRights
 
 const (
-	DeviceConnect                                        AccessRights = original.DeviceConnect
-	RegistryRead                                         AccessRights = original.RegistryRead
-	RegistryReadDeviceConnect                            AccessRights = original.RegistryReadDeviceConnect
-	RegistryReadRegistryWrite                            AccessRights = original.RegistryReadRegistryWrite
-	RegistryReadRegistryWriteDeviceConnect               AccessRights = original.RegistryReadRegistryWriteDeviceConnect
-	RegistryReadRegistryWriteServiceConnect              AccessRights = original.RegistryReadRegistryWriteServiceConnect
-	RegistryReadRegistryWriteServiceConnectDeviceConnect AccessRights = original.RegistryReadRegistryWriteServiceConnectDeviceConnect
-	RegistryReadServiceConnect                           AccessRights = original.RegistryReadServiceConnect
-	RegistryReadServiceConnectDeviceConnect              AccessRights = original.RegistryReadServiceConnectDeviceConnect
-	RegistryWrite                                        AccessRights = original.RegistryWrite
-	RegistryWriteDeviceConnect                           AccessRights = original.RegistryWriteDeviceConnect
-	RegistryWriteServiceConnect                          AccessRights = original.RegistryWriteServiceConnect
-	RegistryWriteServiceConnectDeviceConnect             AccessRights = original.RegistryWriteServiceConnectDeviceConnect
-	ServiceConnect                                       AccessRights = original.ServiceConnect
-	ServiceConnectDeviceConnect                          AccessRights = original.ServiceConnectDeviceConnect
+	AccessRightsDeviceConnect                                        AccessRights = original.AccessRightsDeviceConnect
+	AccessRightsRegistryRead                                         AccessRights = original.AccessRightsRegistryRead
+	AccessRightsRegistryReadDeviceConnect                            AccessRights = original.AccessRightsRegistryReadDeviceConnect
+	AccessRightsRegistryReadRegistryWrite                            AccessRights = original.AccessRightsRegistryReadRegistryWrite
+	AccessRightsRegistryReadRegistryWriteDeviceConnect               AccessRights = original.AccessRightsRegistryReadRegistryWriteDeviceConnect
+	AccessRightsRegistryReadRegistryWriteServiceConnect              AccessRights = original.AccessRightsRegistryReadRegistryWriteServiceConnect
+	AccessRightsRegistryReadRegistryWriteServiceConnectDeviceConnect AccessRights = original.AccessRightsRegistryReadRegistryWriteServiceConnectDeviceConnect
+	AccessRightsRegistryReadServiceConnect                           AccessRights = original.AccessRightsRegistryReadServiceConnect
+	AccessRightsRegistryReadServiceConnectDeviceConnect              AccessRights = original.AccessRightsRegistryReadServiceConnectDeviceConnect
+	AccessRightsRegistryWrite                                        AccessRights = original.AccessRightsRegistryWrite
+	AccessRightsRegistryWriteDeviceConnect                           AccessRights = original.AccessRightsRegistryWriteDeviceConnect
+	AccessRightsRegistryWriteServiceConnect                          AccessRights = original.AccessRightsRegistryWriteServiceConnect
+	AccessRightsRegistryWriteServiceConnectDeviceConnect             AccessRights = original.AccessRightsRegistryWriteServiceConnectDeviceConnect
+	AccessRightsServiceConnect                                       AccessRights = original.AccessRightsServiceConnect
+	AccessRightsServiceConnectDeviceConnect                          AccessRights = original.AccessRightsServiceConnectDeviceConnect
 )
 
 type AuthenticationType = original.AuthenticationType
 
 const (
-	IdentityBased AuthenticationType = original.IdentityBased
-	KeyBased      AuthenticationType = original.KeyBased
+	AuthenticationTypeIdentityBased AuthenticationType = original.AuthenticationTypeIdentityBased
+	AuthenticationTypeKeyBased      AuthenticationType = original.AuthenticationTypeKeyBased
 )
 
 type Capabilities = original.Capabilities
 
 const (
-	DeviceManagement Capabilities = original.DeviceManagement
-	None             Capabilities = original.None
+	CapabilitiesDeviceManagement Capabilities = original.CapabilitiesDeviceManagement
+	CapabilitiesNone             Capabilities = original.CapabilitiesNone
+)
+
+type DefaultAction = original.DefaultAction
+
+const (
+	DefaultActionAllow DefaultAction = original.DefaultActionAllow
+	DefaultActionDeny  DefaultAction = original.DefaultActionDeny
 )
 
 type Encoding = original.Encoding
 
 const (
-	Avro        Encoding = original.Avro
-	AvroDeflate Encoding = original.AvroDeflate
-	JSON        Encoding = original.JSON
+	EncodingAvro        Encoding = original.EncodingAvro
+	EncodingAvroDeflate Encoding = original.EncodingAvroDeflate
+	EncodingJSON        Encoding = original.EncodingJSON
 )
 
 type EndpointHealthStatus = original.EndpointHealthStatus
 
 const (
-	Dead      EndpointHealthStatus = original.Dead
-	Healthy   EndpointHealthStatus = original.Healthy
-	Unhealthy EndpointHealthStatus = original.Unhealthy
-	Unknown   EndpointHealthStatus = original.Unknown
+	EndpointHealthStatusDead      EndpointHealthStatus = original.EndpointHealthStatusDead
+	EndpointHealthStatusDegraded  EndpointHealthStatus = original.EndpointHealthStatusDegraded
+	EndpointHealthStatusHealthy   EndpointHealthStatus = original.EndpointHealthStatusHealthy
+	EndpointHealthStatusUnhealthy EndpointHealthStatus = original.EndpointHealthStatusUnhealthy
+	EndpointHealthStatusUnknown   EndpointHealthStatus = original.EndpointHealthStatusUnknown
 )
 
 type IPFilterActionType = original.IPFilterActionType
 
 const (
-	Accept IPFilterActionType = original.Accept
-	Reject IPFilterActionType = original.Reject
+	IPFilterActionTypeAccept IPFilterActionType = original.IPFilterActionTypeAccept
+	IPFilterActionTypeReject IPFilterActionType = original.IPFilterActionTypeReject
 )
 
 type IotHubNameUnavailabilityReason = original.IotHubNameUnavailabilityReason
 
 const (
-	AlreadyExists IotHubNameUnavailabilityReason = original.AlreadyExists
-	Invalid       IotHubNameUnavailabilityReason = original.Invalid
+	IotHubNameUnavailabilityReasonAlreadyExists IotHubNameUnavailabilityReason = original.IotHubNameUnavailabilityReasonAlreadyExists
+	IotHubNameUnavailabilityReasonInvalid       IotHubNameUnavailabilityReason = original.IotHubNameUnavailabilityReasonInvalid
 )
 
 type IotHubReplicaRoleType = original.IotHubReplicaRoleType
 
 const (
-	Primary   IotHubReplicaRoleType = original.Primary
-	Secondary IotHubReplicaRoleType = original.Secondary
+	IotHubReplicaRoleTypePrimary   IotHubReplicaRoleType = original.IotHubReplicaRoleTypePrimary
+	IotHubReplicaRoleTypeSecondary IotHubReplicaRoleType = original.IotHubReplicaRoleTypeSecondary
 )
 
 type IotHubScaleType = original.IotHubScaleType
@@ -102,21 +110,21 @@ const (
 type IotHubSku = original.IotHubSku
 
 const (
-	B1 IotHubSku = original.B1
-	B2 IotHubSku = original.B2
-	B3 IotHubSku = original.B3
-	F1 IotHubSku = original.F1
-	S1 IotHubSku = original.S1
-	S2 IotHubSku = original.S2
-	S3 IotHubSku = original.S3
+	IotHubSkuB1 IotHubSku = original.IotHubSkuB1
+	IotHubSkuB2 IotHubSku = original.IotHubSkuB2
+	IotHubSkuB3 IotHubSku = original.IotHubSkuB3
+	IotHubSkuF1 IotHubSku = original.IotHubSkuF1
+	IotHubSkuS1 IotHubSku = original.IotHubSkuS1
+	IotHubSkuS2 IotHubSku = original.IotHubSkuS2
+	IotHubSkuS3 IotHubSku = original.IotHubSkuS3
 )
 
 type IotHubSkuTier = original.IotHubSkuTier
 
 const (
-	Basic    IotHubSkuTier = original.Basic
-	Free     IotHubSkuTier = original.Free
-	Standard IotHubSkuTier = original.Standard
+	IotHubSkuTierBasic    IotHubSkuTier = original.IotHubSkuTierBasic
+	IotHubSkuTierFree     IotHubSkuTier = original.IotHubSkuTierFree
+	IotHubSkuTierStandard IotHubSkuTier = original.IotHubSkuTierStandard
 )
 
 type JobStatus = original.JobStatus
@@ -145,47 +153,65 @@ const (
 	JobTypeWriteDeviceProperties     JobType = original.JobTypeWriteDeviceProperties
 )
 
+type NetworkRuleIPAction = original.NetworkRuleIPAction
+
+const (
+	NetworkRuleIPActionAllow NetworkRuleIPAction = original.NetworkRuleIPActionAllow
+)
+
 type PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatus
 
 const (
-	Approved     PrivateLinkServiceConnectionStatus = original.Approved
-	Disconnected PrivateLinkServiceConnectionStatus = original.Disconnected
-	Pending      PrivateLinkServiceConnectionStatus = original.Pending
-	Rejected     PrivateLinkServiceConnectionStatus = original.Rejected
+	PrivateLinkServiceConnectionStatusApproved     PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusApproved
+	PrivateLinkServiceConnectionStatusDisconnected PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusDisconnected
+	PrivateLinkServiceConnectionStatusPending      PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusPending
+	PrivateLinkServiceConnectionStatusRejected     PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusRejected
 )
 
 type PublicNetworkAccess = original.PublicNetworkAccess
 
 const (
-	Disabled PublicNetworkAccess = original.Disabled
-	Enabled  PublicNetworkAccess = original.Enabled
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
+)
+
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	ResourceIdentityTypeNone                       ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned             ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
+	ResourceIdentityTypeSystemAssignedUserAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssignedUserAssigned
+	ResourceIdentityTypeUserAssigned               ResourceIdentityType = original.ResourceIdentityTypeUserAssigned
 )
 
 type RouteErrorSeverity = original.RouteErrorSeverity
 
 const (
-	Error   RouteErrorSeverity = original.Error
-	Warning RouteErrorSeverity = original.Warning
+	RouteErrorSeverityError   RouteErrorSeverity = original.RouteErrorSeverityError
+	RouteErrorSeverityWarning RouteErrorSeverity = original.RouteErrorSeverityWarning
 )
 
 type RoutingSource = original.RoutingSource
 
 const (
-	RoutingSourceDeviceJobLifecycleEvents RoutingSource = original.RoutingSourceDeviceJobLifecycleEvents
-	RoutingSourceDeviceLifecycleEvents    RoutingSource = original.RoutingSourceDeviceLifecycleEvents
-	RoutingSourceDeviceMessages           RoutingSource = original.RoutingSourceDeviceMessages
-	RoutingSourceInvalid                  RoutingSource = original.RoutingSourceInvalid
-	RoutingSourceTwinChangeEvents         RoutingSource = original.RoutingSourceTwinChangeEvents
+	RoutingSourceDeviceConnectionStateEvents RoutingSource = original.RoutingSourceDeviceConnectionStateEvents
+	RoutingSourceDeviceJobLifecycleEvents    RoutingSource = original.RoutingSourceDeviceJobLifecycleEvents
+	RoutingSourceDeviceLifecycleEvents       RoutingSource = original.RoutingSourceDeviceLifecycleEvents
+	RoutingSourceDeviceMessages              RoutingSource = original.RoutingSourceDeviceMessages
+	RoutingSourceInvalid                     RoutingSource = original.RoutingSourceInvalid
+	RoutingSourceTwinChangeEvents            RoutingSource = original.RoutingSourceTwinChangeEvents
 )
 
 type TestResultStatus = original.TestResultStatus
 
 const (
-	False     TestResultStatus = original.False
-	True      TestResultStatus = original.True
-	Undefined TestResultStatus = original.Undefined
+	TestResultStatusFalse     TestResultStatus = original.TestResultStatusFalse
+	TestResultStatusTrue      TestResultStatus = original.TestResultStatusTrue
+	TestResultStatusUndefined TestResultStatus = original.TestResultStatusUndefined
 )
 
+type ArmIdentity = original.ArmIdentity
+type ArmUserIdentity = original.ArmUserIdentity
 type BaseClient = original.BaseClient
 type CertificateBodyDescription = original.CertificateBodyDescription
 type CertificateDescription = original.CertificateDescription
@@ -202,7 +228,9 @@ type EndpointHealthDataListResultIterator = original.EndpointHealthDataListResul
 type EndpointHealthDataListResultPage = original.EndpointHealthDataListResultPage
 type EnrichmentProperties = original.EnrichmentProperties
 type ErrorDetails = original.ErrorDetails
+type EventHubConsumerGroupBodyDescription = original.EventHubConsumerGroupBodyDescription
 type EventHubConsumerGroupInfo = original.EventHubConsumerGroupInfo
+type EventHubConsumerGroupName = original.EventHubConsumerGroupName
 type EventHubConsumerGroupsListResult = original.EventHubConsumerGroupsListResult
 type EventHubConsumerGroupsListResultIterator = original.EventHubConsumerGroupsListResultIterator
 type EventHubConsumerGroupsListResultPage = original.EventHubConsumerGroupsListResultPage
@@ -243,9 +271,12 @@ type JobResponseListResult = original.JobResponseListResult
 type JobResponseListResultIterator = original.JobResponseListResultIterator
 type JobResponseListResultPage = original.JobResponseListResultPage
 type ListPrivateEndpointConnection = original.ListPrivateEndpointConnection
+type ManagedIdentity = original.ManagedIdentity
 type MatchedRoute = original.MatchedRoute
 type MessagingEndpointProperties = original.MessagingEndpointProperties
 type Name = original.Name
+type NetworkRuleSetIPRule = original.NetworkRuleSetIPRule
+type NetworkRuleSetProperties = original.NetworkRuleSetProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationInputs = original.OperationInputs
@@ -398,6 +429,9 @@ func PossibleAuthenticationTypeValues() []AuthenticationType {
 func PossibleCapabilitiesValues() []Capabilities {
 	return original.PossibleCapabilitiesValues()
 }
+func PossibleDefaultActionValues() []DefaultAction {
+	return original.PossibleDefaultActionValues()
+}
 func PossibleEncodingValues() []Encoding {
 	return original.PossibleEncodingValues()
 }
@@ -428,11 +462,17 @@ func PossibleJobStatusValues() []JobStatus {
 func PossibleJobTypeValues() []JobType {
 	return original.PossibleJobTypeValues()
 }
+func PossibleNetworkRuleIPActionValues() []NetworkRuleIPAction {
+	return original.PossibleNetworkRuleIPActionValues()
+}
 func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConnectionStatus {
 	return original.PossiblePrivateLinkServiceConnectionStatusValues()
 }
 func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	return original.PossiblePublicNetworkAccessValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
 }
 func PossibleRouteErrorSeverityValues() []RouteErrorSeverity {
 	return original.PossibleRouteErrorSeverityValues()

@@ -88,21 +88,23 @@ func (r *fakeRetrier) Try(ctx context.Context) bool {
 
 type fakeTokenCredential struct {
 	azcore.Credential
-	expiresOn time.Duration
+	expires time.Time
 }
 
 func (ftc *fakeTokenCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	return &azcore.AccessToken{
-		ExpiresOn: time.Now().Add(ftc.expiresOn),
+		ExpiresOn: ftc.expires,
 	}, nil
 }
 
 func TestNamespaceNegotiateClaim(t *testing.T) {
 	retrier := &fakeRetrier{}
 
+	expires := time.Now().Add(24 * time.Hour)
+
 	ns := &Namespace{
 		baseRetrier:   retrier,
-		TokenProvider: newTokenProviderWithTokenCredential(&fakeTokenCredential{expiresOn: time.Hour * 24}),
+		TokenProvider: newTokenProviderWithTokenCredential(&fakeTokenCredential{expires: expires}),
 	}
 
 	cbsNegotiateClaimCalled := 0
@@ -124,7 +126,15 @@ func TestNamespaceNegotiateClaim(t *testing.T) {
 		context.Background(),
 		"my entity path",
 		cbsNegotiateClaim,
-		getAMQPClient)
+		getAMQPClient,
+		func(expirationTimeParam, currentTime time.Time) time.Duration {
+			require.EqualValues(t, expires, expirationTimeParam)
+			// wiggle room, but just want to check that they're passing me the time.Now() value (silly)
+			require.GreaterOrEqual(t, time.Minute, time.Now().Sub(currentTime))
+
+			// we're going to cancel out pretty much immediately
+			return 24 * time.Hour
+		})
 	defer cancel()
 
 	require.NoError(t, err)
@@ -139,9 +149,11 @@ func TestNamespaceNegotiateClaim(t *testing.T) {
 func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 	retrier := &fakeRetrier{}
 
+	expires := time.Now().Add(24 * time.Hour)
+
 	ns := &Namespace{
 		baseRetrier:   retrier,
-		TokenProvider: newTokenProviderWithTokenCredential(&fakeTokenCredential{expiresOn: time.Millisecond}),
+		TokenProvider: newTokenProviderWithTokenCredential(&fakeTokenCredential{expires: expires}),
 	}
 
 	cbsNegotiateClaimCalled := 0
@@ -167,12 +179,17 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 	}
 
 	var errorsLogged []error
+	nextRefreshDurationChecks := 0
 
 	// fire off a basic negotiate claim. The renewal duration is so long that it won't run - that's a separate test.
 	cancel, err := ns.startNegotiateClaimRenewer(
 		context.Background(),
 		"my entity path",
-		cbsNegotiateClaim, getAMQPClient)
+		cbsNegotiateClaim, getAMQPClient, func(expirationTimeParam, currentTime time.Time) time.Duration {
+			require.EqualValues(t, expires, expirationTimeParam)
+			nextRefreshDurationChecks++
+			return 0
+		})
 	defer cancel()
 
 	require.NoError(t, err)
@@ -184,6 +201,7 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 
 	require.EqualValues(t, 3, retrier.copyCalled)
 	require.EqualValues(t, 3, retrier.tryCalled)
+	require.EqualValues(t, 2, nextRefreshDurationChecks)
 
 	require.EqualValues(t, 2, cbsNegotiateClaimCalled)
 	require.Empty(t, errorsLogged)
@@ -194,7 +212,7 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {
 	ns := &Namespace{
 		baseRetrier:   noRetryRetrier.Copy(),
-		TokenProvider: newTokenProviderWithTokenCredential(&fakeTokenCredential{expiresOn: time.Millisecond}),
+		TokenProvider: newTokenProviderWithTokenCredential(&fakeTokenCredential{expires: time.Now()}),
 	}
 
 	cancel, err := ns.startNegotiateClaimRenewer(
@@ -204,6 +222,9 @@ func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {
 			return errors.New("NegotiateClaim amqp.Client failed")
 		}, func(ctx context.Context) (*amqp.Client, error) {
 			return nil, errors.New("Getting *amqp.Client failed")
+		}, func(expirationTime, currentTime time.Time) time.Duration {
+			// refresh immediately since we're in a unit test.
+			return 0
 		})
 
 	require.EqualError(t, err, "Getting *amqp.Client failed")
@@ -213,7 +234,7 @@ func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {
 func TestNamespaceNegotiateClaimFails(t *testing.T) {
 	ns := &Namespace{
 		baseRetrier:   noRetryRetrier.Copy(),
-		TokenProvider: newTokenProviderWithTokenCredential(&fakeTokenCredential{expiresOn: time.Millisecond}),
+		TokenProvider: newTokenProviderWithTokenCredential(&fakeTokenCredential{expires: time.Now()}),
 	}
 
 	cancel, err := ns.startNegotiateClaimRenewer(
@@ -223,10 +244,29 @@ func TestNamespaceNegotiateClaimFails(t *testing.T) {
 			return errors.New("NegotiateClaim amqp.Client failed")
 		}, func(ctx context.Context) (*amqp.Client, error) {
 			return &amqp.Client{}, nil
+		}, func(expirationTime, currentTime time.Time) time.Duration {
+			// not even used.
+			return 0
 		})
 
 	require.EqualError(t, err, "NegotiateClaim amqp.Client failed")
 	require.Nil(t, cancel)
+}
+
+func TestNamespaceNextClaimRefreshDuration(t *testing.T) {
+	now := time.Now()
+
+	clockDrift := 10 * time.Minute
+	lessThanMin := now.Add(119 * time.Second).Add(clockDrift)
+	greaterThanMax := now.Add(49*24*time.Hour + time.Second).Add(clockDrift)
+
+	require.EqualValues(t, 2*time.Minute, nextClaimRefreshDuration(lessThanMin, now),
+		"Just under the min refresh time, so we get the min instead")
+
+	require.EqualValues(t, 49*24*time.Hour, nextClaimRefreshDuration(greaterThanMax, now),
+		"Just over the max refresh time, so we just get the max instead")
+
+	require.EqualValues(t, 3*time.Minute, nextClaimRefreshDuration(now.Add(3*time.Minute+clockDrift), now))
 }
 
 // TearDownSuite destroys created resources during the run of the suite

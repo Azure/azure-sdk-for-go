@@ -93,8 +93,7 @@ func (tpa *tokenProvider) getAZCoreToken() (*auth.Token, time.Time, error) {
 	}
 
 	return authToken,
-		// 2 minutes wiggle room to avoid possible early expiration
-		accessToken.ExpiresOn.Add(-time.Minute * 2),
+		accessToken.ExpiresOn,
 		nil
 }
 

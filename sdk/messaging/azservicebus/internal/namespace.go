@@ -287,13 +287,15 @@ func (ns *Namespace) NegotiateClaim(ctx context.Context, entityPath string) (fun
 	return ns.startNegotiateClaimRenewer(ctx,
 		entityPath,
 		cbs.NegotiateClaim,
-		ns.getAMQPClientImpl)
+		ns.getAMQPClientImpl,
+		nextClaimRefreshDuration)
 }
 
 func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 	entityPath string,
 	cbsNegotiateClaim func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error,
-	nsGetAMQPClientImpl func(ctx context.Context) (*amqp.Client, error)) (func() <-chan struct{}, error) {
+	nsGetAMQPClientImpl func(ctx context.Context) (*amqp.Client, error),
+	nextClaimRefreshDurationFn func(expirationTime time.Time, currentTime time.Time) time.Duration) (func() <-chan struct{}, error) {
 	audience := ns.GetEntityAudience(entityPath)
 
 	refreshClaim := func() (time.Time, error) {
@@ -350,8 +352,6 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 		return nil, err
 	}
 
-	renewalDuration := time.Until(expiresOn)
-
 	// start the periodic refresh of credentials
 	refreshCtx, cancel := context.WithCancel(context.Background())
 
@@ -360,14 +360,12 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 			select {
 			case <-refreshCtx.Done():
 				return
-			case <-time.After(renewalDuration):
-				expiresOn, err = refreshClaim() // logging will report the error for now
+			case <-time.After(nextClaimRefreshDurationFn(expiresOn, time.Now())):
+				tmpExpiresOn, err := refreshClaim() // logging will report the error for now
 
-				if err != nil {
-					expiresOn = time.Now().Add(time.Minute) // check again in a minute
+				if err == nil {
+					expiresOn = tmpExpiresOn
 				}
-
-				renewalDuration = time.Until(expiresOn)
 			}
 		}
 	}()
@@ -443,4 +441,30 @@ func (ns *Namespace) resolveSuffix() string {
 		return ns.Suffix
 	}
 	return azure.PublicCloud.ServiceBusEndpointSuffix
+}
+
+// nextClaimRefreshDuration figures out the proper interval for the next authorization
+// refresh.
+//
+// It applies a few real world adjustments:
+// - We assume the expiration time is 10 minutes ahead of when it actually is, to adjust for clock drift.
+// - We don't let the refresh interval fall below 2 minutes
+// - We don't let the refresh interval go above 49 days
+//
+// This logic is from here:
+// https://github.com/Azure/azure-sdk-for-net/blob/bfd3109d0f9afa763131731d78a31e39c81101b3/sdk/servicebus/Azure.Messaging.ServiceBus/src/Amqp/AmqpConnectionScope.cs#L998
+func nextClaimRefreshDuration(expirationTime time.Time, currentTime time.Time) time.Duration {
+	const min = 2 * time.Minute
+	const max = 49 * 24 * time.Hour
+	const clockDrift = 10 * time.Minute
+
+	var refreshDuration = expirationTime.Sub(currentTime) - clockDrift
+
+	if refreshDuration < min {
+		return min
+	} else if refreshDuration > max {
+		return max
+	} else {
+		return refreshDuration
+	}
 }

@@ -130,7 +130,7 @@ func TestNamespaceNegotiateClaim(t *testing.T) {
 		func(expirationTimeParam, currentTime time.Time) time.Duration {
 			require.EqualValues(t, expires, expirationTimeParam)
 			// wiggle room, but just want to check that they're passing me the time.Now() value (silly)
-			require.GreaterOrEqual(t, time.Minute, time.Now().Sub(currentTime))
+			require.GreaterOrEqual(t, time.Minute, time.Since(currentTime))
 
 			// we're going to cancel out pretty much immediately
 			return 24 * time.Hour

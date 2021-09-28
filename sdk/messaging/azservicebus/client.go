@@ -41,6 +41,14 @@ type ClientOption func(client *Client) error
 // fullyQualifiedNamespace is the Service Bus namespace name (ex: myservicebus.servicebus.windows.net)
 // credential is one of the credentials in the `github.com/Azure/azure-sdk-for-go/sdk/azidentity` package.
 func NewClient(fullyQualifiedNamespace string, credential azcore.TokenCredential, options ...ClientOption) (*Client, error) {
+	if fullyQualifiedNamespace == "" {
+		return nil, errors.New("fullyQualifiedNamespace must not be empty")
+	}
+
+	if credential == nil {
+		return nil, errors.New("credential was nil")
+	}
+
 	return newClientImpl(clientConfig{
 		credential:              credential,
 		fullyQualifiedNamespace: fullyQualifiedNamespace,
@@ -51,6 +59,10 @@ func NewClient(fullyQualifiedNamespace string, credential azcore.TokenCredential
 // A Client allows you create receivers (for queues or subscriptions) and senders (for queues and topics).
 // connectionString is a Service Bus connection string for the namespace or for an entity.
 func NewClientWithConnectionString(connectionString string, options ...ClientOption) (*Client, error) {
+	if connectionString == "" {
+		return nil, errors.New("connectionString must not be empty")
+	}
+
 	return newClientImpl(clientConfig{
 		connectionString: connectionString,
 	}, options...)
@@ -79,8 +91,6 @@ func newClientImpl(config clientConfig, options ...ClientOption) (*Client, error
 			client.config.credential)
 
 		nsOptions = append(nsOptions, option)
-	} else {
-		return nil, errors.New("credentials not specified - use `WithTokenCredential` or `WithConnectionString` to pass in credentials")
 	}
 
 	client.namespace, err = internal.NewNamespace(nsOptions...)

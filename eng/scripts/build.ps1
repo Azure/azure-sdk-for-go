@@ -35,7 +35,7 @@ function Process-Sdk ()
     {
         Write-Host "##[command]Executing autorest.go in " $currentDirectory
         $autorestPath = "./" + $config
-
+        
         if ($outputFolder -eq '')
         {
             $outputFolder = $currentDirectory
@@ -90,9 +90,9 @@ try
         Pop-Location
     }
 
-    if ($sdks.Count -eq 0 -and $filter)
+    if ($sdks.Count -eq 0 -and $filter -and (Test-Path -Path (Join-Path $RepoRoot "sdk" $filter $config)))
     {
-        Write-Host "Cannot find go module under $filter, considered to be an onboard RP package"
+        Write-Host "Cannot find go module under $filter, try to generate in $(Join-Path $RepoRoot "sdk" $filter)"
         Push-Location (Join-Path $RepoRoot "sdk" $filter)
         Process-Sdk
         Pop-Location

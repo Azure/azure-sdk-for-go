@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -158,7 +159,8 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 		}
 		// if there is an error, check for an AADAuthenticationFailedError in order to check the status for token retrieval
 		// if the error is not an AADAuthenticationFailedError, then fail here since something unexpected occurred
-		if authRespErr := (*AADAuthenticationFailedError)(nil); errors.As(err, &authRespErr) && authRespErr.Message == "authorization_pending" {
+		var authFailed *AuthenticationFailedError
+		if errors.As(err, &authFailed) && strings.Contains(authFailed.msg, "authorization_pending") {
 			// wait for the interval specified from the initial device code endpoint and then poll for the token again
 			time.Sleep(time.Duration(dc.Interval) * time.Second)
 		} else {

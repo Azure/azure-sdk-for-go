@@ -9,116 +9,142 @@ package arm
 import (
 	"fmt"
 	"strings"
-
-	"github.com/gofrs/uuid"
-	"github.com/pkg/errors"
 )
 
 const (
 	providersKey             = "providers"
 	subscriptionsKey         = "subscriptions"
 	resourceGroupsLowerKey   = "resourcegroups"
+	locationsKey             = "locations"
 	builtInResourceNamespace = "Microsoft.Resources"
-
-	SubscriptionResourceType  = "Microsoft.Resources/subscriptions"
-	ResourceGroupResourceType = "Microsoft.Resources/resourceGroups"
-	TenantResourceType        = "Microsoft.Resources/tenants"
-	ProvidersResourceType     = "Microsoft.Resources/providers"
 )
 
 var (
 	RootResourceIdentifier = &ResourceIdentifier{
-		Parent:       nil,
-		ResourceType: TenantResourceType,
-		Name:         "",
+		parent:       nil,
+		resourceType: TenantResourceType,
+		name:         "",
 	}
+
+	SubscriptionResourceType  = NewResourceType("Microsoft.Resources", "subscriptions")
+	ResourceGroupResourceType = NewResourceType("Microsoft.Resources", "resourceGroups")
+	TenantResourceType        = NewResourceType("Microsoft.Resources", "tenants")
+	ProvidersResourceType     = NewResourceType("Microsoft.Resources", "providers")
 )
 
 // ResourceIdentifier represents a resource ID
 type ResourceIdentifier struct {
-	Parent            *ResourceIdentifier
-	SubscriptionId    string
-	Provider          string
-	ResourceGroupName string
-	ResourceType      string
-	Name              string
-	IsChild           bool
+	parent            *ResourceIdentifier
+	subscriptionId    string
+	provider          string
+	resourceGroupName string
+	location          string
+	resourceType      ResourceType
+	name              string
+	isChild           bool
+}
+
+func (id ResourceIdentifier) Parent() *ResourceIdentifier {
+	return id.parent
+}
+
+func (id ResourceIdentifier) SubscriptionId() string {
+	return id.subscriptionId
+}
+
+func (id ResourceIdentifier) Provider() string {
+	return id.provider
+}
+
+func (id ResourceIdentifier) ResourceGroupName() string {
+	return id.resourceGroupName
+}
+
+func (id ResourceIdentifier) Location() string {
+	return id.location
+}
+
+func (id ResourceIdentifier) ResourceType() ResourceType {
+	return id.resourceType
+}
+
+func (id ResourceIdentifier) Name() string {
+	return id.name
 }
 
 func newResourceIdentifier(parent *ResourceIdentifier, resourceTypeName string, resourceName string) *ResourceIdentifier {
 	id := &ResourceIdentifier{}
-	_ = id.init(parent, chooseResourceType(resourceTypeName, parent), resourceName, true)
+	id.init(parent, chooseResourceType(resourceTypeName, parent), resourceName, true)
+	return id
+}
+
+func newResourceIdentifierWithResourceType(parent *ResourceIdentifier, resourceType ResourceType, resourceName string) *ResourceIdentifier {
+	id := &ResourceIdentifier{}
+	id.init(parent, resourceType, resourceName, true)
 	return id
 }
 
 func newResourceIdentifierWithProvider(parent *ResourceIdentifier, providerNamespace, resourceTypeName, resourceName string) *ResourceIdentifier {
 	id := &ResourceIdentifier{}
-	_ = id.init(parent, fmt.Sprintf("%s/%s", providerNamespace, resourceTypeName), resourceName, false)
+	id.init(parent, NewResourceType(providerNamespace, resourceTypeName), resourceName, false)
 	return id
 }
 
-func chooseResourceType(resourceTypeName string, parent *ResourceIdentifier) string {
+func chooseResourceType(resourceTypeName string, parent *ResourceIdentifier) ResourceType {
 	switch strings.ToLower(resourceTypeName) {
 	case resourceGroupsLowerKey:
 		return ResourceGroupResourceType
 	case subscriptionsKey:
 		return SubscriptionResourceType
 	default:
-		return fmt.Sprintf("%s/%s", parent.ResourceType, resourceTypeName)
+		return NewResourceTypeFromParent(parent.resourceType, resourceTypeName)
 	}
 }
 
-func (id *ResourceIdentifier) init(parent *ResourceIdentifier, resourceType string, name string, isChild bool) error {
+func (id *ResourceIdentifier) init(parent *ResourceIdentifier, resourceType ResourceType, name string, isChild bool) {
 	if parent != nil {
-		id.Provider = parent.Provider
-		id.SubscriptionId = parent.SubscriptionId
-		id.ResourceGroupName = parent.ResourceGroupName
+		id.provider = parent.provider
+		id.subscriptionId = parent.subscriptionId
+		id.resourceGroupName = parent.resourceGroupName
+		id.location = parent.location
 	}
 
-	if resourceType == SubscriptionResourceType {
-		_, err := uuid.FromString(name)
-		if err != nil {
-			return err
-		}
-		id.SubscriptionId = name
+	if resourceType.String() == SubscriptionResourceType.String() {
+		id.subscriptionId = name
 	}
 
-	if resourceType == ResourceGroupResourceType {
-		id.ResourceGroupName = name
+	if resourceType.LastType() == locationsKey {
+		id.location = name
 	}
 
-	if resourceType == ProvidersResourceType {
-		id.Provider = name
+	if resourceType.String() == ResourceGroupResourceType.String() {
+		id.resourceGroupName = name
+	}
+
+	if resourceType.String() == ProvidersResourceType.String() {
+		id.provider = name
 	}
 
 	if parent == nil {
-		id.Parent = RootResourceIdentifier
+		id.parent = RootResourceIdentifier
 	} else {
-		id.Parent = parent
+		id.parent = parent
 	}
-	id.IsChild = isChild
-	id.ResourceType = resourceType
-	id.Name = name
-
-	return nil
+	id.isChild = isChild
+	id.resourceType = resourceType
+	id.name = name
 }
 
 func ParseResourceIdentifier(id string) (*ResourceIdentifier, error) {
 	if len(id) == 0 {
-		return nil, errors.New("id cannot be empty")
+		return nil, fmt.Errorf("invalid resource id: id cannot be empty")
 	}
 
 	if !strings.HasPrefix(id, "/") {
-		return nil, fmt.Errorf("resource id '%s' must start with '/'", id)
+		return nil, fmt.Errorf("invalid resource id: resource id '%s' must start with '/'", id)
 	}
 
-	parts := make([]string, 0)
-	for _, part := range strings.Split(id, "/") {
-		if len(part) == 0 {
-			continue
-		}
-		parts = append(parts, part)
-	}
+	parts := splitStringAndOmitEmpty(id, "/")
 
 	if len(parts) < 2 {
 		return nil, fmt.Errorf("invalid resource id: %s", id)
@@ -146,20 +172,132 @@ func appendNext(parent *ResourceIdentifier, parts []string, id string) (*Resourc
 		}
 
 		// resourceGroup must contain either child or provider resource type
-		if parent.ResourceType == ResourceGroupResourceType {
+		if parent.resourceType.String() == ResourceGroupResourceType.String() {
 			return nil, fmt.Errorf("invalid resource id: %s", id)
 		}
 
 		return newResourceIdentifier(parent, parts[0], ""), nil
 	}
 
+	if lowerFirstPart == providersKey && (len(parts) == 2 || strings.ToLower(parts[2]) == providersKey) {
+		//provider resource can only be on a tenant or a subscription parent
+		if parent.resourceType.String() != SubscriptionResourceType.String() && parent.resourceType.String() != TenantResourceType.String() {
+			return nil, fmt.Errorf("invalid resource id: %s", id)
+		}
+
+		return appendNext(newResourceIdentifierWithResourceType(parent, ProvidersResourceType, parts[1]), parts[2:], id)
+	}
+
 	if len(parts) > 3 && strings.ToLower(parts[0]) == providersKey {
 		return appendNext(newResourceIdentifierWithProvider(parent, parts[1], parts[2], parts[3]), parts[4:], id)
 	}
 
-	if len(parts) > 1 && strings.ToLower(parts[0]) == providersKey {
+	if len(parts) > 1 && strings.ToLower(parts[0]) != providersKey {
 		return appendNext(newResourceIdentifier(parent, parts[0], parts[1]), parts[2:], id)
 	}
 
 	return nil, fmt.Errorf("invalid resource id: %s", id)
+}
+
+func (id ResourceIdentifier) String() string {
+	if id.parent == nil {
+		return ""
+	}
+
+	builder := strings.Builder{}
+	builder.WriteString(id.parent.String())
+
+	if id.isChild {
+		builder.WriteString(fmt.Sprintf("/%s", id.resourceType.LastType()))
+		if len(id.name) > 0 {
+			builder.WriteString(fmt.Sprintf("/%s", id.name))
+		}
+	} else {
+		builder.WriteString(fmt.Sprintf("/providers/%s/%s/%s", id.resourceType.namespace, id.resourceType.t, id.name))
+	}
+
+	return builder.String()
+}
+
+func splitStringAndOmitEmpty(v, sep string) []string {
+	r := make([]string, 0)
+	for _, s := range strings.Split(v, sep) {
+		if len(s) == 0 {
+			continue
+		}
+		r = append(r, s)
+	}
+
+	return r
+}
+
+type ResourceType struct {
+	namespace string
+	t         string
+	types     []string
+}
+
+func (t ResourceType) Namespace() string {
+	return t.namespace
+}
+
+func (t ResourceType) Type() string {
+	return t.t
+}
+
+func (t ResourceType) LastType() string {
+	return t.types[len(t.types)-1]
+}
+
+func (t ResourceType) String() string {
+	return fmt.Sprintf("%s/%s", t.namespace, t.t)
+}
+
+func NewResourceType(providerNamespace, name string) ResourceType {
+	return ResourceType{
+		namespace: providerNamespace,
+		t:         name,
+		types:     splitStringAndOmitEmpty(name, "/"),
+	}
+}
+
+func NewResourceTypeFromParent(parent ResourceType, childType string) ResourceType {
+	return NewResourceType(parent.namespace, fmt.Sprintf("%s/%s", parent.t, childType))
+}
+
+func ParseResourceType(resourceIdOrType string) (*ResourceType, error) {
+	// split the path into segments
+	parts := splitStringAndOmitEmpty(resourceIdOrType, "/")
+
+	// There must be at least a namespace and type name
+	if len(parts) < 1 {
+		return nil, fmt.Errorf("invalid resource id or type: %s", resourceIdOrType)
+	}
+
+	resourceType := &ResourceType{}
+	// if the type is just subscriptions, it is a built-in type in the Microsoft.Resources namespace
+	if len(parts) == 1 {
+		// Simple resource type
+		resourceType.t = parts[0]
+		resourceType.namespace = builtInResourceNamespace
+	} else if strings.Contains(parts[0], ".") {
+		// Handle resource types (Microsoft.Compute/virtualMachines, Microsoft.Network/virtualNetworks/subnets)
+		// Type
+		// it is a full type name
+		resourceType.namespace = parts[0]
+		//resourceType.Type = strings.Join("/", parts.Skip(1).Take(parts.Count - 1));
+		resourceType.t = strings.Join(parts[1:], "/")
+	} else {
+		// Check if ResourceIdentifier
+		id, err := ParseResourceIdentifier(resourceIdOrType)
+		if err != nil {
+			return nil, fmt.Errorf("invalid resource id: %s", resourceIdOrType)
+		}
+		resourceType.t = id.resourceType.t
+		resourceType.namespace = id.resourceType.namespace
+	}
+
+	resourceType.types = splitStringAndOmitEmpty(resourceType.t, "/")
+
+	return resourceType, nil
 }

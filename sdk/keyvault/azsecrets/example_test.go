@@ -197,14 +197,13 @@ func ExampleClient_PurgeDeletedSecret() {
 	if err != nil {
 		panic(err)
 	}
-	resp.PollUntilDone(context.Background(), 500 * time.Millisecond)
+	resp.PollUntilDone(context.Background(), 500*time.Millisecond)
 
 	_, err = client.PurgeDeletedSecret(context.Background(), "mySecretName", nil)
 	if err != nil {
 		panic(err)
 	}
 }
-
 
 func ExampleClient_BeginRecoverDeletedSecret() {
 	vaultURL := os.Getenv("AZURE_KEYVAULT_URL")
@@ -222,5 +221,5 @@ func ExampleClient_BeginRecoverDeletedSecret() {
 	if err != nil {
 		panic(err)
 	}
-	resp.PollUntilDone(context.Background(), 500 * time.Millisecond)
+	resp.PollUntilDone(context.Background(), 500*time.Millisecond)
 }

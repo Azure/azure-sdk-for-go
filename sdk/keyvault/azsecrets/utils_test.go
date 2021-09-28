@@ -67,7 +67,7 @@ func createClient(t *testing.T) (*Client, error) {
 
 	options := &ClientOptions{
 		PerCallPolicies: []policy.Policy{p},
-		Transporter:      client,
+		Transporter:     client,
 	}
 	_ = options
 

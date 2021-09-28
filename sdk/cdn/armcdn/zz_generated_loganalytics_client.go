@@ -140,14 +140,14 @@ func (client *LogAnalyticsClient) getLogAnalyticsMetricsCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	for _, qv := range metrics {
-		reqQP.Add("metrics", qv)
+		reqQP.Add("metrics", string(qv))
 	}
 	reqQP.Set("dateTimeBegin", dateTimeBegin.Format(time.RFC3339Nano))
 	reqQP.Set("dateTimeEnd", dateTimeEnd.Format(time.RFC3339Nano))
 	reqQP.Set("granularity", string(granularity))
 	if options != nil && options.GroupBy != nil {
 		for _, qv := range options.GroupBy {
-			reqQP.Add("groupBy", qv)
+			reqQP.Add("groupBy", string(qv))
 		}
 	}
 	if options != nil && options.Continents != nil {
@@ -232,10 +232,10 @@ func (client *LogAnalyticsClient) getLogAnalyticsRankingsCreateRequest(ctx conte
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	for _, qv := range rankings {
-		reqQP.Add("rankings", qv)
+		reqQP.Add("rankings", string(qv))
 	}
 	for _, qv := range metrics {
-		reqQP.Add("metrics", qv)
+		reqQP.Add("metrics", string(qv))
 	}
 	reqQP.Set("maxRanking", strconv.FormatInt(int64(maxRanking), 10))
 	reqQP.Set("dateTimeBegin", dateTimeBegin.Format(time.RFC3339Nano))
@@ -376,24 +376,24 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsMetricsCreateRequest(ctx con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	for _, qv := range metrics {
-		reqQP.Add("metrics", qv)
+		reqQP.Add("metrics", string(qv))
 	}
 	reqQP.Set("dateTimeBegin", dateTimeBegin.Format(time.RFC3339Nano))
 	reqQP.Set("dateTimeEnd", dateTimeEnd.Format(time.RFC3339Nano))
 	reqQP.Set("granularity", string(granularity))
 	if options != nil && options.Actions != nil {
 		for _, qv := range options.Actions {
-			reqQP.Add("actions", qv)
+			reqQP.Add("actions", string(qv))
 		}
 	}
 	if options != nil && options.GroupBy != nil {
 		for _, qv := range options.GroupBy {
-			reqQP.Add("groupBy", qv)
+			reqQP.Add("groupBy", string(qv))
 		}
 	}
 	if options != nil && options.RuleTypes != nil {
 		for _, qv := range options.RuleTypes {
-			reqQP.Add("ruleTypes", qv)
+			reqQP.Add("ruleTypes", string(qv))
 		}
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
@@ -462,22 +462,22 @@ func (client *LogAnalyticsClient) getWafLogAnalyticsRankingsCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-09-01")
 	for _, qv := range metrics {
-		reqQP.Add("metrics", qv)
+		reqQP.Add("metrics", string(qv))
 	}
 	reqQP.Set("dateTimeBegin", dateTimeBegin.Format(time.RFC3339Nano))
 	reqQP.Set("dateTimeEnd", dateTimeEnd.Format(time.RFC3339Nano))
 	reqQP.Set("maxRanking", strconv.FormatInt(int64(maxRanking), 10))
 	for _, qv := range rankings {
-		reqQP.Add("rankings", qv)
+		reqQP.Add("rankings", string(qv))
 	}
 	if options != nil && options.Actions != nil {
 		for _, qv := range options.Actions {
-			reqQP.Add("actions", qv)
+			reqQP.Add("actions", string(qv))
 		}
 	}
 	if options != nil && options.RuleTypes != nil {
 		for _, qv := range options.RuleTypes {
-			reqQP.Add("ruleTypes", qv)
+			reqQP.Add("ruleTypes", string(qv))
 		}
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()

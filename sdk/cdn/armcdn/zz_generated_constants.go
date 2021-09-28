@@ -195,6 +195,42 @@ func (c CacheBehavior) ToPtr() *CacheBehavior {
 	return &c
 }
 
+type CacheExpirationActionParametersODataType string
+
+const (
+	CacheExpirationActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleCacheExpirationActionParameters CacheExpirationActionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleCacheExpirationActionParameters"
+)
+
+// PossibleCacheExpirationActionParametersODataTypeValues returns the possible values for the CacheExpirationActionParametersODataType const type.
+func PossibleCacheExpirationActionParametersODataTypeValues() []CacheExpirationActionParametersODataType {
+	return []CacheExpirationActionParametersODataType{
+		CacheExpirationActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleCacheExpirationActionParameters,
+	}
+}
+
+// ToPtr returns a *CacheExpirationActionParametersODataType pointing to the current value.
+func (c CacheExpirationActionParametersODataType) ToPtr() *CacheExpirationActionParametersODataType {
+	return &c
+}
+
+type CacheKeyQueryStringActionParametersODataType string
+
+const (
+	CacheKeyQueryStringActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleCacheKeyQueryStringBehaviorActionParameters CacheKeyQueryStringActionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleCacheKeyQueryStringBehaviorActionParameters"
+)
+
+// PossibleCacheKeyQueryStringActionParametersODataTypeValues returns the possible values for the CacheKeyQueryStringActionParametersODataType const type.
+func PossibleCacheKeyQueryStringActionParametersODataTypeValues() []CacheKeyQueryStringActionParametersODataType {
+	return []CacheKeyQueryStringActionParametersODataType{
+		CacheKeyQueryStringActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleCacheKeyQueryStringBehaviorActionParameters,
+	}
+}
+
+// ToPtr returns a *CacheKeyQueryStringActionParametersODataType pointing to the current value.
+func (c CacheKeyQueryStringActionParametersODataType) ToPtr() *CacheKeyQueryStringActionParametersODataType {
+	return &c
+}
+
 // CacheType - The level at which the content needs to be cached.
 type CacheType string
 
@@ -211,6 +247,24 @@ func PossibleCacheTypeValues() []CacheType {
 
 // ToPtr returns a *CacheType pointing to the current value.
 func (c CacheType) ToPtr() *CacheType {
+	return &c
+}
+
+type CdnCertificateSourceParametersODataType string
+
+const (
+	CdnCertificateSourceParametersODataTypeMicrosoftAzureCdnModelsCdnCertificateSourceParameters CdnCertificateSourceParametersODataType = "#Microsoft.Azure.Cdn.Models.CdnCertificateSourceParameters"
+)
+
+// PossibleCdnCertificateSourceParametersODataTypeValues returns the possible values for the CdnCertificateSourceParametersODataType const type.
+func PossibleCdnCertificateSourceParametersODataTypeValues() []CdnCertificateSourceParametersODataType {
+	return []CdnCertificateSourceParametersODataType{
+		CdnCertificateSourceParametersODataTypeMicrosoftAzureCdnModelsCdnCertificateSourceParameters,
+	}
+}
+
+// ToPtr returns a *CdnCertificateSourceParametersODataType pointing to the current value.
+func (c CdnCertificateSourceParametersODataType) ToPtr() *CdnCertificateSourceParametersODataType {
 	return &c
 }
 
@@ -253,6 +307,24 @@ func PossibleCertificateTypeValues() []CertificateType {
 
 // ToPtr returns a *CertificateType pointing to the current value.
 func (c CertificateType) ToPtr() *CertificateType {
+	return &c
+}
+
+type CookiesMatchConditionParametersODataType string
+
+const (
+	CookiesMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleCookiesConditionParameters CookiesMatchConditionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleCookiesConditionParameters"
+)
+
+// PossibleCookiesMatchConditionParametersODataTypeValues returns the possible values for the CookiesMatchConditionParametersODataType const type.
+func PossibleCookiesMatchConditionParametersODataTypeValues() []CookiesMatchConditionParametersODataType {
+	return []CookiesMatchConditionParametersODataType{
+		CookiesMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleCookiesConditionParameters,
+	}
+}
+
+// ToPtr returns a *CookiesMatchConditionParametersODataType pointing to the current value.
+func (c CookiesMatchConditionParametersODataType) ToPtr() *CookiesMatchConditionParametersODataType {
 	return &c
 }
 
@@ -645,6 +717,24 @@ func (c HTTPSRedirect) ToPtr() *HTTPSRedirect {
 	return &c
 }
 
+type HTTPVersionMatchConditionParametersODataType string
+
+const (
+	HTTPVersionMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleHTTPVersionConditionParameters HTTPVersionMatchConditionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleHttpVersionConditionParameters"
+)
+
+// PossibleHTTPVersionMatchConditionParametersODataTypeValues returns the possible values for the HTTPVersionMatchConditionParametersODataType const type.
+func PossibleHTTPVersionMatchConditionParametersODataTypeValues() []HTTPVersionMatchConditionParametersODataType {
+	return []HTTPVersionMatchConditionParametersODataType{
+		HTTPVersionMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleHTTPVersionConditionParameters,
+	}
+}
+
+// ToPtr returns a *HTTPVersionMatchConditionParametersODataType pointing to the current value.
+func (c HTTPVersionMatchConditionParametersODataType) ToPtr() *HTTPVersionMatchConditionParametersODataType {
+	return &c
+}
+
 // HTTPVersionOperator - Describes operator to be matched
 type HTTPVersionOperator string
 
@@ -684,6 +774,24 @@ func PossibleHeaderActionValues() []HeaderAction {
 
 // ToPtr returns a *HeaderAction pointing to the current value.
 func (c HeaderAction) ToPtr() *HeaderAction {
+	return &c
+}
+
+type HeaderActionParametersODataType string
+
+const (
+	HeaderActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleHeaderActionParameters HeaderActionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleHeaderActionParameters"
+)
+
+// PossibleHeaderActionParametersODataTypeValues returns the possible values for the HeaderActionParametersODataType const type.
+func PossibleHeaderActionParametersODataTypeValues() []HeaderActionParametersODataType {
+	return []HeaderActionParametersODataType{
+		HeaderActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleHeaderActionParameters,
+	}
+}
+
+// ToPtr returns a *HeaderActionParametersODataType pointing to the current value.
+func (c HeaderActionParametersODataType) ToPtr() *HeaderActionParametersODataType {
 	return &c
 }
 
@@ -755,6 +863,24 @@ func (c IsDeviceMatchConditionParametersMatchValuesItem) ToPtr() *IsDeviceMatchC
 	return &c
 }
 
+type IsDeviceMatchConditionParametersODataType string
+
+const (
+	IsDeviceMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleIsDeviceConditionParameters IsDeviceMatchConditionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleIsDeviceConditionParameters"
+)
+
+// PossibleIsDeviceMatchConditionParametersODataTypeValues returns the possible values for the IsDeviceMatchConditionParametersODataType const type.
+func PossibleIsDeviceMatchConditionParametersODataTypeValues() []IsDeviceMatchConditionParametersODataType {
+	return []IsDeviceMatchConditionParametersODataType{
+		IsDeviceMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleIsDeviceConditionParameters,
+	}
+}
+
+// ToPtr returns a *IsDeviceMatchConditionParametersODataType pointing to the current value.
+func (c IsDeviceMatchConditionParametersODataType) ToPtr() *IsDeviceMatchConditionParametersODataType {
+	return &c
+}
+
 // IsDeviceOperator - Describes operator to be matched
 type IsDeviceOperator string
 
@@ -771,6 +897,42 @@ func PossibleIsDeviceOperatorValues() []IsDeviceOperator {
 
 // ToPtr returns a *IsDeviceOperator pointing to the current value.
 func (c IsDeviceOperator) ToPtr() *IsDeviceOperator {
+	return &c
+}
+
+type KeyVaultCertificateSourceParametersODataType string
+
+const (
+	KeyVaultCertificateSourceParametersODataTypeMicrosoftAzureCdnModelsKeyVaultCertificateSourceParameters KeyVaultCertificateSourceParametersODataType = "#Microsoft.Azure.Cdn.Models.KeyVaultCertificateSourceParameters"
+)
+
+// PossibleKeyVaultCertificateSourceParametersODataTypeValues returns the possible values for the KeyVaultCertificateSourceParametersODataType const type.
+func PossibleKeyVaultCertificateSourceParametersODataTypeValues() []KeyVaultCertificateSourceParametersODataType {
+	return []KeyVaultCertificateSourceParametersODataType{
+		KeyVaultCertificateSourceParametersODataTypeMicrosoftAzureCdnModelsKeyVaultCertificateSourceParameters,
+	}
+}
+
+// ToPtr returns a *KeyVaultCertificateSourceParametersODataType pointing to the current value.
+func (c KeyVaultCertificateSourceParametersODataType) ToPtr() *KeyVaultCertificateSourceParametersODataType {
+	return &c
+}
+
+type KeyVaultSigningKeyParametersODataType string
+
+const (
+	KeyVaultSigningKeyParametersODataTypeMicrosoftAzureCdnModelsKeyVaultSigningKeyParameters KeyVaultSigningKeyParametersODataType = "#Microsoft.Azure.Cdn.Models.KeyVaultSigningKeyParameters"
+)
+
+// PossibleKeyVaultSigningKeyParametersODataTypeValues returns the possible values for the KeyVaultSigningKeyParametersODataType const type.
+func PossibleKeyVaultSigningKeyParametersODataTypeValues() []KeyVaultSigningKeyParametersODataType {
+	return []KeyVaultSigningKeyParametersODataType{
+		KeyVaultSigningKeyParametersODataTypeMicrosoftAzureCdnModelsKeyVaultSigningKeyParameters,
+	}
+}
+
+// ToPtr returns a *KeyVaultSigningKeyParametersODataType pointing to the current value.
+func (c KeyVaultSigningKeyParametersODataType) ToPtr() *KeyVaultSigningKeyParametersODataType {
 	return &c
 }
 
@@ -1152,6 +1314,24 @@ func (c OptimizationType) ToPtr() *OptimizationType {
 	return &c
 }
 
+type OriginGroupOverrideActionParametersODataType string
+
+const (
+	OriginGroupOverrideActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleOriginGroupOverrideActionParameters OriginGroupOverrideActionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleOriginGroupOverrideActionParameters"
+)
+
+// PossibleOriginGroupOverrideActionParametersODataTypeValues returns the possible values for the OriginGroupOverrideActionParametersODataType const type.
+func PossibleOriginGroupOverrideActionParametersODataTypeValues() []OriginGroupOverrideActionParametersODataType {
+	return []OriginGroupOverrideActionParametersODataType{
+		OriginGroupOverrideActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleOriginGroupOverrideActionParameters,
+	}
+}
+
+// ToPtr returns a *OriginGroupOverrideActionParametersODataType pointing to the current value.
+func (c OriginGroupOverrideActionParametersODataType) ToPtr() *OriginGroupOverrideActionParametersODataType {
+	return &c
+}
+
 // OriginGroupResourceState - Resource status of the origin group.
 type OriginGroupResourceState string
 
@@ -1317,6 +1497,24 @@ func PossiblePolicySettingsDefaultCustomBlockResponseStatusCodeValues() []Policy
 
 // ToPtr returns a *PolicySettingsDefaultCustomBlockResponseStatusCode pointing to the current value.
 func (c PolicySettingsDefaultCustomBlockResponseStatusCode) ToPtr() *PolicySettingsDefaultCustomBlockResponseStatusCode {
+	return &c
+}
+
+type PostArgsMatchConditionParametersODataType string
+
+const (
+	PostArgsMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRulePostArgsConditionParameters PostArgsMatchConditionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRulePostArgsConditionParameters"
+)
+
+// PossiblePostArgsMatchConditionParametersODataTypeValues returns the possible values for the PostArgsMatchConditionParametersODataType const type.
+func PossiblePostArgsMatchConditionParametersODataTypeValues() []PostArgsMatchConditionParametersODataType {
+	return []PostArgsMatchConditionParametersODataType{
+		PostArgsMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRulePostArgsConditionParameters,
+	}
+}
+
+// ToPtr returns a *PostArgsMatchConditionParametersODataType pointing to the current value.
+func (c PostArgsMatchConditionParametersODataType) ToPtr() *PostArgsMatchConditionParametersODataType {
 	return &c
 }
 
@@ -1528,6 +1726,24 @@ func (c QueryStringCachingBehavior) ToPtr() *QueryStringCachingBehavior {
 	return &c
 }
 
+type QueryStringMatchConditionParametersODataType string
+
+const (
+	QueryStringMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleQueryStringConditionParameters QueryStringMatchConditionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleQueryStringConditionParameters"
+)
+
+// PossibleQueryStringMatchConditionParametersODataTypeValues returns the possible values for the QueryStringMatchConditionParametersODataType const type.
+func PossibleQueryStringMatchConditionParametersODataTypeValues() []QueryStringMatchConditionParametersODataType {
+	return []QueryStringMatchConditionParametersODataType{
+		QueryStringMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleQueryStringConditionParameters,
+	}
+}
+
+// ToPtr returns a *QueryStringMatchConditionParametersODataType pointing to the current value.
+func (c QueryStringMatchConditionParametersODataType) ToPtr() *QueryStringMatchConditionParametersODataType {
+	return &c
+}
+
 // QueryStringOperator - Describes operator to be matched
 type QueryStringOperator string
 
@@ -1590,6 +1806,24 @@ func (c RedirectType) ToPtr() *RedirectType {
 	return &c
 }
 
+type RemoteAddressMatchConditionParametersODataType string
+
+const (
+	RemoteAddressMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRemoteAddressConditionParameters RemoteAddressMatchConditionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleRemoteAddressConditionParameters"
+)
+
+// PossibleRemoteAddressMatchConditionParametersODataTypeValues returns the possible values for the RemoteAddressMatchConditionParametersODataType const type.
+func PossibleRemoteAddressMatchConditionParametersODataTypeValues() []RemoteAddressMatchConditionParametersODataType {
+	return []RemoteAddressMatchConditionParametersODataType{
+		RemoteAddressMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRemoteAddressConditionParameters,
+	}
+}
+
+// ToPtr returns a *RemoteAddressMatchConditionParametersODataType pointing to the current value.
+func (c RemoteAddressMatchConditionParametersODataType) ToPtr() *RemoteAddressMatchConditionParametersODataType {
+	return &c
+}
+
 // RemoteAddressOperator - Describes operator to be matched
 type RemoteAddressOperator string
 
@@ -1610,6 +1844,24 @@ func PossibleRemoteAddressOperatorValues() []RemoteAddressOperator {
 
 // ToPtr returns a *RemoteAddressOperator pointing to the current value.
 func (c RemoteAddressOperator) ToPtr() *RemoteAddressOperator {
+	return &c
+}
+
+type RequestBodyMatchConditionParametersODataType string
+
+const (
+	RequestBodyMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRequestBodyConditionParameters RequestBodyMatchConditionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleRequestBodyConditionParameters"
+)
+
+// PossibleRequestBodyMatchConditionParametersODataTypeValues returns the possible values for the RequestBodyMatchConditionParametersODataType const type.
+func PossibleRequestBodyMatchConditionParametersODataTypeValues() []RequestBodyMatchConditionParametersODataType {
+	return []RequestBodyMatchConditionParametersODataType{
+		RequestBodyMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRequestBodyConditionParameters,
+	}
+}
+
+// ToPtr returns a *RequestBodyMatchConditionParametersODataType pointing to the current value.
+func (c RequestBodyMatchConditionParametersODataType) ToPtr() *RequestBodyMatchConditionParametersODataType {
 	return &c
 }
 
@@ -1647,6 +1899,24 @@ func PossibleRequestBodyOperatorValues() []RequestBodyOperator {
 
 // ToPtr returns a *RequestBodyOperator pointing to the current value.
 func (c RequestBodyOperator) ToPtr() *RequestBodyOperator {
+	return &c
+}
+
+type RequestHeaderMatchConditionParametersODataType string
+
+const (
+	RequestHeaderMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRequestHeaderConditionParameters RequestHeaderMatchConditionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleRequestHeaderConditionParameters"
+)
+
+// PossibleRequestHeaderMatchConditionParametersODataTypeValues returns the possible values for the RequestHeaderMatchConditionParametersODataType const type.
+func PossibleRequestHeaderMatchConditionParametersODataTypeValues() []RequestHeaderMatchConditionParametersODataType {
+	return []RequestHeaderMatchConditionParametersODataType{
+		RequestHeaderMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRequestHeaderConditionParameters,
+	}
+}
+
+// ToPtr returns a *RequestHeaderMatchConditionParametersODataType pointing to the current value.
+func (c RequestHeaderMatchConditionParametersODataType) ToPtr() *RequestHeaderMatchConditionParametersODataType {
 	return &c
 }
 
@@ -1717,6 +1987,24 @@ func (c RequestMethodMatchConditionParametersMatchValuesItem) ToPtr() *RequestMe
 	return &c
 }
 
+type RequestMethodMatchConditionParametersODataType string
+
+const (
+	RequestMethodMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRequestMethodConditionParameters RequestMethodMatchConditionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleRequestMethodConditionParameters"
+)
+
+// PossibleRequestMethodMatchConditionParametersODataTypeValues returns the possible values for the RequestMethodMatchConditionParametersODataType const type.
+func PossibleRequestMethodMatchConditionParametersODataTypeValues() []RequestMethodMatchConditionParametersODataType {
+	return []RequestMethodMatchConditionParametersODataType{
+		RequestMethodMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRequestMethodConditionParameters,
+	}
+}
+
+// ToPtr returns a *RequestMethodMatchConditionParametersODataType pointing to the current value.
+func (c RequestMethodMatchConditionParametersODataType) ToPtr() *RequestMethodMatchConditionParametersODataType {
+	return &c
+}
+
 // RequestMethodOperator - Describes operator to be matched
 type RequestMethodOperator string
 
@@ -1753,6 +2041,61 @@ func PossibleRequestSchemeMatchConditionParametersMatchValuesItemValues() []Requ
 
 // ToPtr returns a *RequestSchemeMatchConditionParametersMatchValuesItem pointing to the current value.
 func (c RequestSchemeMatchConditionParametersMatchValuesItem) ToPtr() *RequestSchemeMatchConditionParametersMatchValuesItem {
+	return &c
+}
+
+type RequestSchemeMatchConditionParametersODataType string
+
+const (
+	RequestSchemeMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRequestSchemeConditionParameters RequestSchemeMatchConditionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleRequestSchemeConditionParameters"
+)
+
+// PossibleRequestSchemeMatchConditionParametersODataTypeValues returns the possible values for the RequestSchemeMatchConditionParametersODataType const type.
+func PossibleRequestSchemeMatchConditionParametersODataTypeValues() []RequestSchemeMatchConditionParametersODataType {
+	return []RequestSchemeMatchConditionParametersODataType{
+		RequestSchemeMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRequestSchemeConditionParameters,
+	}
+}
+
+// ToPtr returns a *RequestSchemeMatchConditionParametersODataType pointing to the current value.
+func (c RequestSchemeMatchConditionParametersODataType) ToPtr() *RequestSchemeMatchConditionParametersODataType {
+	return &c
+}
+
+// RequestSchemeMatchConditionParametersOperator - Describes operator to be matched
+type RequestSchemeMatchConditionParametersOperator string
+
+const (
+	RequestSchemeMatchConditionParametersOperatorEqual RequestSchemeMatchConditionParametersOperator = "Equal"
+)
+
+// PossibleRequestSchemeMatchConditionParametersOperatorValues returns the possible values for the RequestSchemeMatchConditionParametersOperator const type.
+func PossibleRequestSchemeMatchConditionParametersOperatorValues() []RequestSchemeMatchConditionParametersOperator {
+	return []RequestSchemeMatchConditionParametersOperator{
+		RequestSchemeMatchConditionParametersOperatorEqual,
+	}
+}
+
+// ToPtr returns a *RequestSchemeMatchConditionParametersOperator pointing to the current value.
+func (c RequestSchemeMatchConditionParametersOperator) ToPtr() *RequestSchemeMatchConditionParametersOperator {
+	return &c
+}
+
+type RequestURIMatchConditionParametersODataType string
+
+const (
+	RequestURIMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRequestURIConditionParameters RequestURIMatchConditionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleRequestUriConditionParameters"
+)
+
+// PossibleRequestURIMatchConditionParametersODataTypeValues returns the possible values for the RequestURIMatchConditionParametersODataType const type.
+func PossibleRequestURIMatchConditionParametersODataTypeValues() []RequestURIMatchConditionParametersODataType {
+	return []RequestURIMatchConditionParametersODataType{
+		RequestURIMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleRequestURIConditionParameters,
+	}
+}
+
+// ToPtr returns a *RequestURIMatchConditionParametersODataType pointing to the current value.
+func (c RequestURIMatchConditionParametersODataType) ToPtr() *RequestURIMatchConditionParametersODataType {
 	return &c
 }
 
@@ -2005,6 +2348,24 @@ func (c TransformType) ToPtr() *TransformType {
 	return &c
 }
 
+type URLFileExtensionMatchConditionParametersODataType string
+
+const (
+	URLFileExtensionMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLFileExtensionMatchConditionParameters URLFileExtensionMatchConditionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlFileExtensionMatchConditionParameters"
+)
+
+// PossibleURLFileExtensionMatchConditionParametersODataTypeValues returns the possible values for the URLFileExtensionMatchConditionParametersODataType const type.
+func PossibleURLFileExtensionMatchConditionParametersODataTypeValues() []URLFileExtensionMatchConditionParametersODataType {
+	return []URLFileExtensionMatchConditionParametersODataType{
+		URLFileExtensionMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLFileExtensionMatchConditionParameters,
+	}
+}
+
+// ToPtr returns a *URLFileExtensionMatchConditionParametersODataType pointing to the current value.
+func (c URLFileExtensionMatchConditionParametersODataType) ToPtr() *URLFileExtensionMatchConditionParametersODataType {
+	return &c
+}
+
 // URLFileExtensionOperator - Describes operator to be matched
 type URLFileExtensionOperator string
 
@@ -2039,6 +2400,24 @@ func PossibleURLFileExtensionOperatorValues() []URLFileExtensionOperator {
 
 // ToPtr returns a *URLFileExtensionOperator pointing to the current value.
 func (c URLFileExtensionOperator) ToPtr() *URLFileExtensionOperator {
+	return &c
+}
+
+type URLFileNameMatchConditionParametersODataType string
+
+const (
+	URLFileNameMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLFilenameConditionParameters URLFileNameMatchConditionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlFilenameConditionParameters"
+)
+
+// PossibleURLFileNameMatchConditionParametersODataTypeValues returns the possible values for the URLFileNameMatchConditionParametersODataType const type.
+func PossibleURLFileNameMatchConditionParametersODataTypeValues() []URLFileNameMatchConditionParametersODataType {
+	return []URLFileNameMatchConditionParametersODataType{
+		URLFileNameMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLFilenameConditionParameters,
+	}
+}
+
+// ToPtr returns a *URLFileNameMatchConditionParametersODataType pointing to the current value.
+func (c URLFileNameMatchConditionParametersODataType) ToPtr() *URLFileNameMatchConditionParametersODataType {
 	return &c
 }
 
@@ -2079,6 +2458,24 @@ func (c URLFileNameOperator) ToPtr() *URLFileNameOperator {
 	return &c
 }
 
+type URLPathMatchConditionParametersODataType string
+
+const (
+	URLPathMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLPathMatchConditionParameters URLPathMatchConditionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlPathMatchConditionParameters"
+)
+
+// PossibleURLPathMatchConditionParametersODataTypeValues returns the possible values for the URLPathMatchConditionParametersODataType const type.
+func PossibleURLPathMatchConditionParametersODataTypeValues() []URLPathMatchConditionParametersODataType {
+	return []URLPathMatchConditionParametersODataType{
+		URLPathMatchConditionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLPathMatchConditionParameters,
+	}
+}
+
+// ToPtr returns a *URLPathMatchConditionParametersODataType pointing to the current value.
+func (c URLPathMatchConditionParametersODataType) ToPtr() *URLPathMatchConditionParametersODataType {
+	return &c
+}
+
 // URLPathOperator - Describes operator to be matched
 type URLPathOperator string
 
@@ -2115,6 +2512,60 @@ func PossibleURLPathOperatorValues() []URLPathOperator {
 
 // ToPtr returns a *URLPathOperator pointing to the current value.
 func (c URLPathOperator) ToPtr() *URLPathOperator {
+	return &c
+}
+
+type URLRedirectActionParametersODataType string
+
+const (
+	URLRedirectActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLRedirectActionParameters URLRedirectActionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlRedirectActionParameters"
+)
+
+// PossibleURLRedirectActionParametersODataTypeValues returns the possible values for the URLRedirectActionParametersODataType const type.
+func PossibleURLRedirectActionParametersODataTypeValues() []URLRedirectActionParametersODataType {
+	return []URLRedirectActionParametersODataType{
+		URLRedirectActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLRedirectActionParameters,
+	}
+}
+
+// ToPtr returns a *URLRedirectActionParametersODataType pointing to the current value.
+func (c URLRedirectActionParametersODataType) ToPtr() *URLRedirectActionParametersODataType {
+	return &c
+}
+
+type URLRewriteActionParametersODataType string
+
+const (
+	URLRewriteActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLRewriteActionParameters URLRewriteActionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlRewriteActionParameters"
+)
+
+// PossibleURLRewriteActionParametersODataTypeValues returns the possible values for the URLRewriteActionParametersODataType const type.
+func PossibleURLRewriteActionParametersODataTypeValues() []URLRewriteActionParametersODataType {
+	return []URLRewriteActionParametersODataType{
+		URLRewriteActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLRewriteActionParameters,
+	}
+}
+
+// ToPtr returns a *URLRewriteActionParametersODataType pointing to the current value.
+func (c URLRewriteActionParametersODataType) ToPtr() *URLRewriteActionParametersODataType {
+	return &c
+}
+
+type URLSigningActionParametersODataType string
+
+const (
+	URLSigningActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLSigningActionParameters URLSigningActionParametersODataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlSigningActionParameters"
+)
+
+// PossibleURLSigningActionParametersODataTypeValues returns the possible values for the URLSigningActionParametersODataType const type.
+func PossibleURLSigningActionParametersODataTypeValues() []URLSigningActionParametersODataType {
+	return []URLSigningActionParametersODataType{
+		URLSigningActionParametersODataTypeMicrosoftAzureCdnModelsDeliveryRuleURLSigningActionParameters,
+	}
+}
+
+// ToPtr returns a *URLSigningActionParametersODataType pointing to the current value.
+func (c URLSigningActionParametersODataType) ToPtr() *URLSigningActionParametersODataType {
 	return &c
 }
 
@@ -2262,6 +2713,24 @@ func PossibleWafMetricsResponseGranularityValues() []WafMetricsResponseGranulari
 
 // ToPtr returns a *WafMetricsResponseGranularity pointing to the current value.
 func (c WafMetricsResponseGranularity) ToPtr() *WafMetricsResponseGranularity {
+	return &c
+}
+
+type WafMetricsResponseSeriesItemUnit string
+
+const (
+	WafMetricsResponseSeriesItemUnitCount WafMetricsResponseSeriesItemUnit = "count"
+)
+
+// PossibleWafMetricsResponseSeriesItemUnitValues returns the possible values for the WafMetricsResponseSeriesItemUnit const type.
+func PossibleWafMetricsResponseSeriesItemUnitValues() []WafMetricsResponseSeriesItemUnit {
+	return []WafMetricsResponseSeriesItemUnit{
+		WafMetricsResponseSeriesItemUnitCount,
+	}
+}
+
+// ToPtr returns a *WafMetricsResponseSeriesItemUnit pointing to the current value.
+func (c WafMetricsResponseSeriesItemUnit) ToPtr() *WafMetricsResponseSeriesItemUnit {
 	return &c
 }
 

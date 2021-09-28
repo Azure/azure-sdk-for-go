@@ -68,16 +68,16 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.EqualValues(t, fakeTokenCredential, client.config.credential)
 		require.EqualValues(t, "mysb.windows.servicebus.net", client.config.fullyQualifiedNamespace)
 
-		client, err = NewClientWithConnectionString("")
+		_, err = NewClientWithConnectionString("")
 		require.EqualError(t, err, "connectionString must not be empty")
 
-		client, err = NewClient("", fakeTokenCredential)
+		_, err = NewClient("", fakeTokenCredential)
 		require.EqualError(t, err, "fullyQualifiedNamespace must not be empty")
 
-		client, err = NewClient("mysb", fakeTokenCredential)
+		_, err = NewClient("mysb", fakeTokenCredential)
 		require.EqualError(t, err, "fullyQualifiedNamespace is not properly formed. Should be similar to 'myservicebus.servicebus.windows.net'")
 
-		client, err = NewClient("fake.something", nil)
+		_, err = NewClient("fake.something", nil)
 		require.EqualError(t, err, "credential was nil")
 
 		// (really all part of the same functionality)

@@ -8,7 +8,7 @@ trigger:
       - release/*
   paths:
     include:
-    - sdk/{{rpName}}/{{packageName}}/
+    - sdk/resourcemanager/{{rpName}}/{{packageName}}/
 
 pr:
   branches:
@@ -19,9 +19,9 @@ pr:
       - release/*
   paths:
     include:
-    - sdk/{{rpName}}/{{packageName}}/
+    - sdk/resourcemanager/{{rpName}}/{{packageName}}/
 
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: '{{rpName}}/{{packageName}}'
+    ServiceDirectory: 'resourcemanager/{{rpName}}/{{packageName}}'

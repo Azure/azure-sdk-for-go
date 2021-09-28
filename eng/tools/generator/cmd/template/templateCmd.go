@@ -109,7 +109,7 @@ func GeneratePackageByTemplate(rpName, packageName string, flags Flags) error {
 			return err
 		}
 
-		dirPath := filepath.Join(root, "sdk", rpName, packageName)
+		dirPath := filepath.Join(root, "sdk", "resourcemanager", rpName, packageName)
 		if err := os.MkdirAll(dirPath, os.ModePerm); err != nil {
 			return fmt.Errorf("cannot create directory '%s': %+v", dirPath, err)
 		}

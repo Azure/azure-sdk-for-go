@@ -74,12 +74,12 @@ func ReadV2ModuleNameToGetNamespace(path string) (map[string][]string, error) {
 		for _, line := range section {
 			if strings.HasPrefix(line, swagger_md_module_name_prefix) {
 				modules := strings.Split(strings.TrimSpace(line[len(swagger_md_module_name_prefix):]), "/")
-				if len(modules) != 3 {
+				if len(modules) != 4 {
 					return nil, fmt.Errorf("cannot parse module name from `track2` section")
 				}
-				namespaceName := strings.TrimSuffix(strings.TrimSuffix(modules[2], "\n"), "\r")
-				log.Printf("RP: %s Package: %s", modules[1], namespaceName)
-				result[modules[1]] = append(result[modules[1]], namespaceName)
+				namespaceName := strings.TrimSuffix(strings.TrimSuffix(modules[3], "\n"), "\r")
+				log.Printf("RP: %s Package: %s", modules[2], namespaceName)
+				result[modules[2]] = append(result[modules[2]], namespaceName)
 			}
 		}
 	}

@@ -464,7 +464,7 @@ func nextClaimRefreshDuration(expirationTime time.Time, currentTime time.Time) t
 		return min
 	} else if refreshDuration > max {
 		return max
-	} else {
-		return refreshDuration
 	}
+
+	return refreshDuration
 }

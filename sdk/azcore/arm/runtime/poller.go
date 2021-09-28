@@ -23,6 +23,7 @@ import (
 // NewPoller creates a Poller based on the provided initial response.
 // pollerID - a unique identifier for an LRO.  it's usually the client.Method string.
 func NewPoller(pollerID string, finalState string, resp *http.Response, pl pipeline.Pipeline, eu func(*http.Response) error) (*pollers.Poller, error) {
+	defer resp.Body.Close()
 	// this is a back-stop in case the swagger is incorrect (i.e. missing one or more status codes for success).
 	// ideally the codegen should return an error if the initial response failed and not even create a poller.
 	if !pollers.StatusCodeValid(resp) {

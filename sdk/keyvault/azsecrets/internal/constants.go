@@ -7,7 +7,7 @@
 package internal
 
 const (
-	module = "internal"
+	module  = "internal"
 	version = "v0.1.0"
 )
 
@@ -16,12 +16,12 @@ type ActionType string
 
 const (
 	ActionTypeEmailContacts ActionType = "EmailContacts"
-	ActionTypeAutoRenew ActionType = "AutoRenew"
+	ActionTypeAutoRenew     ActionType = "AutoRenew"
 )
 
 // PossibleActionTypeValues returns the possible values for the ActionType const type.
 func PossibleActionTypeValues() []ActionType {
-	return []ActionType{	
+	return []ActionType{
 		ActionTypeEmailContacts,
 		ActionTypeAutoRenew,
 	}
@@ -98,7 +98,7 @@ const (
 
 // PossibleDataActionValues returns the possible values for the DataAction const type.
 func PossibleDataActionValues() []DataAction {
-	return []DataAction{	
+	return []DataAction{
 		DataActionBackupHsmKeys,
 		DataActionCreateHsmKey,
 		DataActionDecryptHsmKey,
@@ -143,39 +143,39 @@ type DeletionRecoveryLevel string
 
 const (
 	// DeletionRecoveryLevelCustomizedRecoverable - Denotes a vault state in which deletion is recoverable without the possibility for immediate and permanent
-// deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90).This level guarantees the recoverability of the deleted entity during the retention interval
-// and while the subscription is still available.
+	// deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90).This level guarantees the recoverability of the deleted entity during the retention interval
+	// and while the subscription is still available.
 	DeletionRecoveryLevelCustomizedRecoverable DeletionRecoveryLevel = "CustomizedRecoverable"
 	// DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion is recoverable, immediate
-// and permanent deletion (i.e. purge) is not permitted, and in which the subscription itself cannot be permanently canceled when 7<= SoftDeleteRetentionInDays
-// < 90. This level guarantees the recoverability of the deleted entity during the retention interval, and also reflects the fact that the subscription
-// itself cannot be cancelled.
+	// and permanent deletion (i.e. purge) is not permitted, and in which the subscription itself cannot be permanently canceled when 7<= SoftDeleteRetentionInDays
+	// < 90. This level guarantees the recoverability of the deleted entity during the retention interval, and also reflects the fact that the subscription
+	// itself cannot be cancelled.
 	DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription DeletionRecoveryLevel = "CustomizedRecoverable+ProtectedSubscription"
 	// DeletionRecoveryLevelCustomizedRecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which also permits immediate and permanent
-// deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90). This level guarantees the recoverability of the deleted entity during the retention interval,
-// unless a Purge operation is requested, or the subscription is cancelled.
+	// deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90). This level guarantees the recoverability of the deleted entity during the retention interval,
+	// unless a Purge operation is requested, or the subscription is cancelled.
 	DeletionRecoveryLevelCustomizedRecoverablePurgeable DeletionRecoveryLevel = "CustomizedRecoverable+Purgeable"
 	// DeletionRecoveryLevelPurgeable - Denotes a vault state in which deletion is an irreversible operation, without the possibility for recovery. This level
-// corresponds to no protection being available against a Delete operation; the data is irretrievably lost upon accepting a Delete operation at the entity
-// level or higher (vault, resource group, subscription etc.)
+	// corresponds to no protection being available against a Delete operation; the data is irretrievably lost upon accepting a Delete operation at the entity
+	// level or higher (vault, resource group, subscription etc.)
 	DeletionRecoveryLevelPurgeable DeletionRecoveryLevel = "Purgeable"
 	// DeletionRecoveryLevelRecoverable - Denotes a vault state in which deletion is recoverable without the possibility for immediate and permanent deletion
-// (i.e. purge). This level guarantees the recoverability of the deleted entity during the retention interval(90 days) and while the subscription is still
-// available. System wil permanently delete it after 90 days, if not recovered
+	// (i.e. purge). This level guarantees the recoverability of the deleted entity during the retention interval(90 days) and while the subscription is still
+	// available. System wil permanently delete it after 90 days, if not recovered
 	DeletionRecoveryLevelRecoverable DeletionRecoveryLevel = "Recoverable"
 	// DeletionRecoveryLevelRecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion is recoverable within retention interval
-// (90 days), immediate and permanent deletion (i.e. purge) is not permitted, and in which the subscription itself cannot be permanently canceled. System
-// wil permanently delete it after 90 days, if not recovered
+	// (90 days), immediate and permanent deletion (i.e. purge) is not permitted, and in which the subscription itself cannot be permanently canceled. System
+	// wil permanently delete it after 90 days, if not recovered
 	DeletionRecoveryLevelRecoverableProtectedSubscription DeletionRecoveryLevel = "Recoverable+ProtectedSubscription"
 	// DeletionRecoveryLevelRecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which also permits immediate and permanent deletion
-// (i.e. purge). This level guarantees the recoverability of the deleted entity during the retention interval (90 days), unless a Purge operation is requested,
-// or the subscription is cancelled. System wil permanently delete it after 90 days, if not recovered
+	// (i.e. purge). This level guarantees the recoverability of the deleted entity during the retention interval (90 days), unless a Purge operation is requested,
+	// or the subscription is cancelled. System wil permanently delete it after 90 days, if not recovered
 	DeletionRecoveryLevelRecoverablePurgeable DeletionRecoveryLevel = "Recoverable+Purgeable"
 )
 
 // PossibleDeletionRecoveryLevelValues returns the possible values for the DeletionRecoveryLevel const type.
 func PossibleDeletionRecoveryLevelValues() []DeletionRecoveryLevel {
-	return []DeletionRecoveryLevel{	
+	return []DeletionRecoveryLevel{
 		DeletionRecoveryLevelCustomizedRecoverable,
 		DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription,
 		DeletionRecoveryLevelCustomizedRecoverablePurgeable,
@@ -207,7 +207,7 @@ const (
 
 // PossibleJSONWebKeyCurveNameValues returns the possible values for the JSONWebKeyCurveName const type.
 func PossibleJSONWebKeyCurveNameValues() []JSONWebKeyCurveName {
-	return []JSONWebKeyCurveName{	
+	return []JSONWebKeyCurveName{
 		JSONWebKeyCurveNameP256,
 		JSONWebKeyCurveNameP256K,
 		JSONWebKeyCurveNameP384,
@@ -224,26 +224,26 @@ func (c JSONWebKeyCurveName) ToPtr() *JSONWebKeyCurveName {
 type JSONWebKeyEncryptionAlgorithm string
 
 const (
-	JSONWebKeyEncryptionAlgorithmA128CBC JSONWebKeyEncryptionAlgorithm = "A128CBC"
+	JSONWebKeyEncryptionAlgorithmA128CBC    JSONWebKeyEncryptionAlgorithm = "A128CBC"
 	JSONWebKeyEncryptionAlgorithmA128CBCPAD JSONWebKeyEncryptionAlgorithm = "A128CBCPAD"
-	JSONWebKeyEncryptionAlgorithmA128GCM JSONWebKeyEncryptionAlgorithm = "A128GCM"
-	JSONWebKeyEncryptionAlgorithmA128KW JSONWebKeyEncryptionAlgorithm = "A128KW"
-	JSONWebKeyEncryptionAlgorithmA192CBC JSONWebKeyEncryptionAlgorithm = "A192CBC"
+	JSONWebKeyEncryptionAlgorithmA128GCM    JSONWebKeyEncryptionAlgorithm = "A128GCM"
+	JSONWebKeyEncryptionAlgorithmA128KW     JSONWebKeyEncryptionAlgorithm = "A128KW"
+	JSONWebKeyEncryptionAlgorithmA192CBC    JSONWebKeyEncryptionAlgorithm = "A192CBC"
 	JSONWebKeyEncryptionAlgorithmA192CBCPAD JSONWebKeyEncryptionAlgorithm = "A192CBCPAD"
-	JSONWebKeyEncryptionAlgorithmA192GCM JSONWebKeyEncryptionAlgorithm = "A192GCM"
-	JSONWebKeyEncryptionAlgorithmA192KW JSONWebKeyEncryptionAlgorithm = "A192KW"
-	JSONWebKeyEncryptionAlgorithmA256CBC JSONWebKeyEncryptionAlgorithm = "A256CBC"
+	JSONWebKeyEncryptionAlgorithmA192GCM    JSONWebKeyEncryptionAlgorithm = "A192GCM"
+	JSONWebKeyEncryptionAlgorithmA192KW     JSONWebKeyEncryptionAlgorithm = "A192KW"
+	JSONWebKeyEncryptionAlgorithmA256CBC    JSONWebKeyEncryptionAlgorithm = "A256CBC"
 	JSONWebKeyEncryptionAlgorithmA256CBCPAD JSONWebKeyEncryptionAlgorithm = "A256CBCPAD"
-	JSONWebKeyEncryptionAlgorithmA256GCM JSONWebKeyEncryptionAlgorithm = "A256GCM"
-	JSONWebKeyEncryptionAlgorithmA256KW JSONWebKeyEncryptionAlgorithm = "A256KW"
-	JSONWebKeyEncryptionAlgorithmRSA15 JSONWebKeyEncryptionAlgorithm = "RSA1_5"
-	JSONWebKeyEncryptionAlgorithmRSAOAEP JSONWebKeyEncryptionAlgorithm = "RSA-OAEP"
+	JSONWebKeyEncryptionAlgorithmA256GCM    JSONWebKeyEncryptionAlgorithm = "A256GCM"
+	JSONWebKeyEncryptionAlgorithmA256KW     JSONWebKeyEncryptionAlgorithm = "A256KW"
+	JSONWebKeyEncryptionAlgorithmRSA15      JSONWebKeyEncryptionAlgorithm = "RSA1_5"
+	JSONWebKeyEncryptionAlgorithmRSAOAEP    JSONWebKeyEncryptionAlgorithm = "RSA-OAEP"
 	JSONWebKeyEncryptionAlgorithmRSAOAEP256 JSONWebKeyEncryptionAlgorithm = "RSA-OAEP-256"
 )
 
 // PossibleJSONWebKeyEncryptionAlgorithmValues returns the possible values for the JSONWebKeyEncryptionAlgorithm const type.
 func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorithm {
-	return []JSONWebKeyEncryptionAlgorithm{	
+	return []JSONWebKeyEncryptionAlgorithm{
 		JSONWebKeyEncryptionAlgorithmA128CBC,
 		JSONWebKeyEncryptionAlgorithmA128CBCPAD,
 		JSONWebKeyEncryptionAlgorithmA128GCM,
@@ -271,18 +271,18 @@ func (c JSONWebKeyEncryptionAlgorithm) ToPtr() *JSONWebKeyEncryptionAlgorithm {
 type JSONWebKeyOperation string
 
 const (
-	JSONWebKeyOperationDecrypt JSONWebKeyOperation = "decrypt"
-	JSONWebKeyOperationEncrypt JSONWebKeyOperation = "encrypt"
-	JSONWebKeyOperationImport JSONWebKeyOperation = "import"
-	JSONWebKeyOperationSign JSONWebKeyOperation = "sign"
+	JSONWebKeyOperationDecrypt   JSONWebKeyOperation = "decrypt"
+	JSONWebKeyOperationEncrypt   JSONWebKeyOperation = "encrypt"
+	JSONWebKeyOperationImport    JSONWebKeyOperation = "import"
+	JSONWebKeyOperationSign      JSONWebKeyOperation = "sign"
 	JSONWebKeyOperationUnwrapKey JSONWebKeyOperation = "unwrapKey"
-	JSONWebKeyOperationVerify JSONWebKeyOperation = "verify"
-	JSONWebKeyOperationWrapKey JSONWebKeyOperation = "wrapKey"
+	JSONWebKeyOperationVerify    JSONWebKeyOperation = "verify"
+	JSONWebKeyOperationWrapKey   JSONWebKeyOperation = "wrapKey"
 )
 
 // PossibleJSONWebKeyOperationValues returns the possible values for the JSONWebKeyOperation const type.
 func PossibleJSONWebKeyOperationValues() []JSONWebKeyOperation {
-	return []JSONWebKeyOperation{	
+	return []JSONWebKeyOperation{
 		JSONWebKeyOperationDecrypt,
 		JSONWebKeyOperationEncrypt,
 		JSONWebKeyOperationImport,
@@ -328,7 +328,7 @@ const (
 
 // PossibleJSONWebKeySignatureAlgorithmValues returns the possible values for the JSONWebKeySignatureAlgorithm const type.
 func PossibleJSONWebKeySignatureAlgorithmValues() []JSONWebKeySignatureAlgorithm {
-	return []JSONWebKeySignatureAlgorithm{	
+	return []JSONWebKeySignatureAlgorithm{
 		JSONWebKeySignatureAlgorithmES256,
 		JSONWebKeySignatureAlgorithmES256K,
 		JSONWebKeySignatureAlgorithmES384,
@@ -368,7 +368,7 @@ const (
 
 // PossibleJSONWebKeyTypeValues returns the possible values for the JSONWebKeyType const type.
 func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
-	return []JSONWebKeyType{	
+	return []JSONWebKeyType{
 		JSONWebKeyTypeEC,
 		JSONWebKeyTypeECHSM,
 		JSONWebKeyTypeOct,
@@ -386,20 +386,20 @@ func (c JSONWebKeyType) ToPtr() *JSONWebKeyType {
 type KeyUsageType string
 
 const (
-	KeyUsageTypeCRLSign KeyUsageType = "cRLSign"
+	KeyUsageTypeCRLSign          KeyUsageType = "cRLSign"
 	KeyUsageTypeDataEncipherment KeyUsageType = "dataEncipherment"
-	KeyUsageTypeDecipherOnly KeyUsageType = "decipherOnly"
+	KeyUsageTypeDecipherOnly     KeyUsageType = "decipherOnly"
 	KeyUsageTypeDigitalSignature KeyUsageType = "digitalSignature"
-	KeyUsageTypeEncipherOnly KeyUsageType = "encipherOnly"
-	KeyUsageTypeKeyAgreement KeyUsageType = "keyAgreement"
-	KeyUsageTypeKeyCertSign KeyUsageType = "keyCertSign"
-	KeyUsageTypeKeyEncipherment KeyUsageType = "keyEncipherment"
-	KeyUsageTypeNonRepudiation KeyUsageType = "nonRepudiation"
+	KeyUsageTypeEncipherOnly     KeyUsageType = "encipherOnly"
+	KeyUsageTypeKeyAgreement     KeyUsageType = "keyAgreement"
+	KeyUsageTypeKeyCertSign      KeyUsageType = "keyCertSign"
+	KeyUsageTypeKeyEncipherment  KeyUsageType = "keyEncipherment"
+	KeyUsageTypeNonRepudiation   KeyUsageType = "nonRepudiation"
 )
 
 // PossibleKeyUsageTypeValues returns the possible values for the KeyUsageType const type.
 func PossibleKeyUsageTypeValues() []KeyUsageType {
-	return []KeyUsageType{	
+	return []KeyUsageType{
 		KeyUsageTypeCRLSign,
 		KeyUsageTypeDataEncipherment,
 		KeyUsageTypeDecipherOnly,
@@ -421,14 +421,14 @@ func (c KeyUsageType) ToPtr() *KeyUsageType {
 type OperationStatus string
 
 const (
-	OperationStatusSuccess OperationStatus = "Success"
+	OperationStatusSuccess    OperationStatus = "Success"
 	OperationStatusInProgress OperationStatus = "InProgress"
-	OperationStatusFailed OperationStatus = "Failed"
+	OperationStatusFailed     OperationStatus = "Failed"
 )
 
 // PossibleOperationStatusValues returns the possible values for the OperationStatus const type.
 func PossibleOperationStatusValues() []OperationStatus {
-	return []OperationStatus{	
+	return []OperationStatus{
 		OperationStatusSuccess,
 		OperationStatusInProgress,
 		OperationStatusFailed,
@@ -449,7 +449,7 @@ const (
 
 // PossibleRoleDefinitionTypeValues returns the possible values for the RoleDefinitionType const type.
 func PossibleRoleDefinitionTypeValues() []RoleDefinitionType {
-	return []RoleDefinitionType{	
+	return []RoleDefinitionType{
 		RoleDefinitionTypeMicrosoftAuthorizationRoleDefinitions,
 	}
 }
@@ -471,7 +471,7 @@ const (
 
 // PossibleRoleScopeValues returns the possible values for the RoleScope const type.
 func PossibleRoleScopeValues() []RoleScope {
-	return []RoleScope{	
+	return []RoleScope{
 		RoleScopeGlobal,
 		RoleScopeKeys,
 	}
@@ -494,7 +494,7 @@ const (
 
 // PossibleRoleTypeValues returns the possible values for the RoleType const type.
 func PossibleRoleTypeValues() []RoleType {
-	return []RoleType{	
+	return []RoleType{
 		RoleTypeBuiltInRole,
 		RoleTypeCustomRole,
 	}
@@ -515,7 +515,7 @@ const (
 
 // PossibleSasTokenTypeValues returns the possible values for the SasTokenType const type.
 func PossibleSasTokenTypeValues() []SasTokenType {
-	return []SasTokenType{	
+	return []SasTokenType{
 		SasTokenTypeAccount,
 		SasTokenTypeService,
 	}
@@ -525,4 +525,3 @@ func PossibleSasTokenTypeValues() []SasTokenType {
 func (c SasTokenType) ToPtr() *SasTokenType {
 	return &c
 }
-

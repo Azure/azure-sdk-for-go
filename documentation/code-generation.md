@@ -43,7 +43,7 @@ All services, all API versions.
 
 This repo contains a tool to generate the SDK, which depends on the golang tags from the readme files in the Azure REST API specs repo. The tool assumes you have an [Azure REST API specs](https://github.com/Azure/azure-rest-api-specs) clone, and [golint](https://github.com/golang/lint) is installed.
 
-1. `cd tools/generator`
+1. `cd eng/tools/generator`
 
 1. `go install`
 

@@ -680,6 +680,114 @@ type ConnectorsListResult struct {
 	ConnectorSettingList
 }
 
+// CustomAssessmentAutomationsCreateResponse contains the response from method CustomAssessmentAutomations.Create.
+type CustomAssessmentAutomationsCreateResponse struct {
+	CustomAssessmentAutomationsCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomAssessmentAutomationsCreateResult contains the result from method CustomAssessmentAutomations.Create.
+type CustomAssessmentAutomationsCreateResult struct {
+	CustomAssessmentAutomation
+}
+
+// CustomAssessmentAutomationsDeleteResponse contains the response from method CustomAssessmentAutomations.Delete.
+type CustomAssessmentAutomationsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomAssessmentAutomationsGetResponse contains the response from method CustomAssessmentAutomations.Get.
+type CustomAssessmentAutomationsGetResponse struct {
+	CustomAssessmentAutomationsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomAssessmentAutomationsGetResult contains the result from method CustomAssessmentAutomations.Get.
+type CustomAssessmentAutomationsGetResult struct {
+	CustomAssessmentAutomation
+}
+
+// CustomAssessmentAutomationsListByResourceGroupResponse contains the response from method CustomAssessmentAutomations.ListByResourceGroup.
+type CustomAssessmentAutomationsListByResourceGroupResponse struct {
+	CustomAssessmentAutomationsListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomAssessmentAutomationsListByResourceGroupResult contains the result from method CustomAssessmentAutomations.ListByResourceGroup.
+type CustomAssessmentAutomationsListByResourceGroupResult struct {
+	CustomAssessmentAutomationsListResult
+}
+
+// CustomAssessmentAutomationsListBySubscriptionResponse contains the response from method CustomAssessmentAutomations.ListBySubscription.
+type CustomAssessmentAutomationsListBySubscriptionResponse struct {
+	CustomAssessmentAutomationsListBySubscriptionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomAssessmentAutomationsListBySubscriptionResult contains the result from method CustomAssessmentAutomations.ListBySubscription.
+type CustomAssessmentAutomationsListBySubscriptionResult struct {
+	CustomAssessmentAutomationsListResult
+}
+
+// CustomEntityStoreAssignmentsCreateResponse contains the response from method CustomEntityStoreAssignments.Create.
+type CustomEntityStoreAssignmentsCreateResponse struct {
+	CustomEntityStoreAssignmentsCreateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomEntityStoreAssignmentsCreateResult contains the result from method CustomEntityStoreAssignments.Create.
+type CustomEntityStoreAssignmentsCreateResult struct {
+	CustomEntityStoreAssignment
+}
+
+// CustomEntityStoreAssignmentsDeleteResponse contains the response from method CustomEntityStoreAssignments.Delete.
+type CustomEntityStoreAssignmentsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomEntityStoreAssignmentsGetResponse contains the response from method CustomEntityStoreAssignments.Get.
+type CustomEntityStoreAssignmentsGetResponse struct {
+	CustomEntityStoreAssignmentsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomEntityStoreAssignmentsGetResult contains the result from method CustomEntityStoreAssignments.Get.
+type CustomEntityStoreAssignmentsGetResult struct {
+	CustomEntityStoreAssignment
+}
+
+// CustomEntityStoreAssignmentsListByResourceGroupResponse contains the response from method CustomEntityStoreAssignments.ListByResourceGroup.
+type CustomEntityStoreAssignmentsListByResourceGroupResponse struct {
+	CustomEntityStoreAssignmentsListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomEntityStoreAssignmentsListByResourceGroupResult contains the result from method CustomEntityStoreAssignments.ListByResourceGroup.
+type CustomEntityStoreAssignmentsListByResourceGroupResult struct {
+	CustomEntityStoreAssignmentsListResult
+}
+
+// CustomEntityStoreAssignmentsListBySubscriptionResponse contains the response from method CustomEntityStoreAssignments.ListBySubscription.
+type CustomEntityStoreAssignmentsListBySubscriptionResponse struct {
+	CustomEntityStoreAssignmentsListBySubscriptionResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CustomEntityStoreAssignmentsListBySubscriptionResult contains the result from method CustomEntityStoreAssignments.ListBySubscription.
+type CustomEntityStoreAssignmentsListBySubscriptionResult struct {
+	CustomEntityStoreAssignmentsListResult
+}
+
 // DeviceSecurityGroupsCreateOrUpdateResponse contains the response from method DeviceSecurityGroups.CreateOrUpdate.
 type DeviceSecurityGroupsCreateOrUpdateResponse struct {
 	DeviceSecurityGroupsCreateOrUpdateResult

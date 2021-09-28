@@ -36,7 +36,7 @@ func NewSettingsClient(con *arm.Connection, subscriptionID string) *SettingsClie
 
 // Get - Settings of different configurations in security center
 // If the operation fails it returns the *CloudError error type.
-func (client *SettingsClient) Get(ctx context.Context, settingName Enum71, options *SettingsGetOptions) (SettingsGetResponse, error) {
+func (client *SettingsClient) Get(ctx context.Context, settingName Enum77, options *SettingsGetOptions) (SettingsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, settingName, options)
 	if err != nil {
 		return SettingsGetResponse{}, err
@@ -52,7 +52,7 @@ func (client *SettingsClient) Get(ctx context.Context, settingName Enum71, optio
 }
 
 // getCreateRequest creates the Get request.
-func (client *SettingsClient) getCreateRequest(ctx context.Context, settingName Enum71, options *SettingsGetOptions) (*policy.Request, error) {
+func (client *SettingsClient) getCreateRequest(ctx context.Context, settingName Enum77, options *SettingsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/settings/{settingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -151,7 +151,7 @@ func (client *SettingsClient) listHandleError(resp *http.Response) error {
 
 // Update - updating settings about different configurations in security center
 // If the operation fails it returns the *CloudError error type.
-func (client *SettingsClient) Update(ctx context.Context, settingName Enum71, setting SettingClassification, options *SettingsUpdateOptions) (SettingsUpdateResponse, error) {
+func (client *SettingsClient) Update(ctx context.Context, settingName Enum77, setting SettingClassification, options *SettingsUpdateOptions) (SettingsUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, settingName, setting, options)
 	if err != nil {
 		return SettingsUpdateResponse{}, err
@@ -167,7 +167,7 @@ func (client *SettingsClient) Update(ctx context.Context, settingName Enum71, se
 }
 
 // updateCreateRequest creates the Update request.
-func (client *SettingsClient) updateCreateRequest(ctx context.Context, settingName Enum71, setting SettingClassification, options *SettingsUpdateOptions) (*policy.Request, error) {
+func (client *SettingsClient) updateCreateRequest(ctx context.Context, settingName Enum77, setting SettingClassification, options *SettingsUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/settings/{settingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

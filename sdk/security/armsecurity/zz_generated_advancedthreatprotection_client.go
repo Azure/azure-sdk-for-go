@@ -35,8 +35,8 @@ func NewAdvancedThreatProtectionClient(con *arm.Connection) *AdvancedThreatProte
 
 // Create - Creates or updates the Advanced Threat Protection settings on a specified resource.
 // If the operation fails it returns the *CloudError error type.
-func (client *AdvancedThreatProtectionClient) Create(ctx context.Context, resourceID string, advancedThreatProtectionSetting AdvancedThreatProtectionSetting, options *AdvancedThreatProtectionCreateOptions) (AdvancedThreatProtectionCreateResponse, error) {
-	req, err := client.createCreateRequest(ctx, resourceID, advancedThreatProtectionSetting, options)
+func (client *AdvancedThreatProtectionClient) Create(ctx context.Context, resourceID string, settingName Enum4, advancedThreatProtectionSetting AdvancedThreatProtectionSetting, options *AdvancedThreatProtectionCreateOptions) (AdvancedThreatProtectionCreateResponse, error) {
+	req, err := client.createCreateRequest(ctx, resourceID, settingName, advancedThreatProtectionSetting, options)
 	if err != nil {
 		return AdvancedThreatProtectionCreateResponse{}, err
 	}
@@ -51,13 +51,16 @@ func (client *AdvancedThreatProtectionClient) Create(ctx context.Context, resour
 }
 
 // createCreateRequest creates the Create request.
-func (client *AdvancedThreatProtectionClient) createCreateRequest(ctx context.Context, resourceID string, advancedThreatProtectionSetting AdvancedThreatProtectionSetting, options *AdvancedThreatProtectionCreateOptions) (*policy.Request, error) {
+func (client *AdvancedThreatProtectionClient) createCreateRequest(ctx context.Context, resourceID string, settingName Enum4, advancedThreatProtectionSetting AdvancedThreatProtectionSetting, options *AdvancedThreatProtectionCreateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/advancedThreatProtectionSettings/{settingName}"
 	if resourceID == "" {
 		return nil, errors.New("parameter resourceID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
-	urlPath = strings.ReplaceAll(urlPath, "{settingName}", url.PathEscape("current"))
+	if settingName == "" {
+		return nil, errors.New("parameter settingName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{settingName}", url.PathEscape(string(settingName)))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
@@ -93,8 +96,8 @@ func (client *AdvancedThreatProtectionClient) createHandleError(resp *http.Respo
 
 // Get - Gets the Advanced Threat Protection settings for the specified resource.
 // If the operation fails it returns the *CloudError error type.
-func (client *AdvancedThreatProtectionClient) Get(ctx context.Context, resourceID string, options *AdvancedThreatProtectionGetOptions) (AdvancedThreatProtectionGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceID, options)
+func (client *AdvancedThreatProtectionClient) Get(ctx context.Context, resourceID string, settingName Enum4, options *AdvancedThreatProtectionGetOptions) (AdvancedThreatProtectionGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceID, settingName, options)
 	if err != nil {
 		return AdvancedThreatProtectionGetResponse{}, err
 	}
@@ -109,13 +112,16 @@ func (client *AdvancedThreatProtectionClient) Get(ctx context.Context, resourceI
 }
 
 // getCreateRequest creates the Get request.
-func (client *AdvancedThreatProtectionClient) getCreateRequest(ctx context.Context, resourceID string, options *AdvancedThreatProtectionGetOptions) (*policy.Request, error) {
+func (client *AdvancedThreatProtectionClient) getCreateRequest(ctx context.Context, resourceID string, settingName Enum4, options *AdvancedThreatProtectionGetOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/providers/Microsoft.Security/advancedThreatProtectionSettings/{settingName}"
 	if resourceID == "" {
 		return nil, errors.New("parameter resourceID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
-	urlPath = strings.ReplaceAll(urlPath, "{settingName}", url.PathEscape("current"))
+	if settingName == "" {
+		return nil, errors.New("parameter settingName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{settingName}", url.PathEscape(string(settingName)))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err

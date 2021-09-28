@@ -35,7 +35,7 @@ func NewInformationProtectionPoliciesClient(con *arm.Connection) *InformationPro
 
 // CreateOrUpdate - Details of the information protection policy.
 // If the operation fails it returns the *CloudError error type.
-func (client *InformationProtectionPoliciesClient) CreateOrUpdate(ctx context.Context, scope string, informationProtectionPolicyName Enum15, informationProtectionPolicy InformationProtectionPolicy, options *InformationProtectionPoliciesCreateOrUpdateOptions) (InformationProtectionPoliciesCreateOrUpdateResponse, error) {
+func (client *InformationProtectionPoliciesClient) CreateOrUpdate(ctx context.Context, scope string, informationProtectionPolicyName Enum18, informationProtectionPolicy InformationProtectionPolicy, options *InformationProtectionPoliciesCreateOrUpdateOptions) (InformationProtectionPoliciesCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, scope, informationProtectionPolicyName, informationProtectionPolicy, options)
 	if err != nil {
 		return InformationProtectionPoliciesCreateOrUpdateResponse{}, err
@@ -51,7 +51,7 @@ func (client *InformationProtectionPoliciesClient) CreateOrUpdate(ctx context.Co
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *InformationProtectionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName Enum15, informationProtectionPolicy InformationProtectionPolicy, options *InformationProtectionPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *InformationProtectionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName Enum18, informationProtectionPolicy InformationProtectionPolicy, options *InformationProtectionPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
@@ -96,7 +96,7 @@ func (client *InformationProtectionPoliciesClient) createOrUpdateHandleError(res
 
 // Get - Details of the information protection policy.
 // If the operation fails it returns the *CloudError error type.
-func (client *InformationProtectionPoliciesClient) Get(ctx context.Context, scope string, informationProtectionPolicyName Enum15, options *InformationProtectionPoliciesGetOptions) (InformationProtectionPoliciesGetResponse, error) {
+func (client *InformationProtectionPoliciesClient) Get(ctx context.Context, scope string, informationProtectionPolicyName Enum18, options *InformationProtectionPoliciesGetOptions) (InformationProtectionPoliciesGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, informationProtectionPolicyName, options)
 	if err != nil {
 		return InformationProtectionPoliciesGetResponse{}, err
@@ -112,7 +112,7 @@ func (client *InformationProtectionPoliciesClient) Get(ctx context.Context, scop
 }
 
 // getCreateRequest creates the Get request.
-func (client *InformationProtectionPoliciesClient) getCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName Enum15, options *InformationProtectionPoliciesGetOptions) (*policy.Request, error) {
+func (client *InformationProtectionPoliciesClient) getCreateRequest(ctx context.Context, scope string, informationProtectionPolicyName Enum18, options *InformationProtectionPoliciesGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}"
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")

@@ -128,26 +128,6 @@ func (c AdditionalWorkspaceType) ToPtr() *AdditionalWorkspaceType {
 	return &c
 }
 
-// AlertKind - The kind of alert simulation.
-type AlertKind string
-
-const (
-	// AlertKindBundles - Simulate alerts according to bundles
-	AlertKindBundles AlertKind = "Bundles"
-)
-
-// PossibleAlertKindValues returns the possible values for the AlertKind const type.
-func PossibleAlertKindValues() []AlertKind {
-	return []AlertKind{
-		AlertKindBundles,
-	}
-}
-
-// ToPtr returns a *AlertKind pointing to the current value.
-func (c AlertKind) ToPtr() *AlertKind {
-	return &c
-}
-
 // AlertNotifications - Whether to send security alerts notifications to the security contact
 type AlertNotifications string
 
@@ -674,73 +654,145 @@ func (c EnforcementSupport) ToPtr() *EnforcementSupport {
 	return &c
 }
 
-type Enum13 string
+type Enum16 string
 
 const (
-	Enum13Activate Enum13 = "Activate"
-	Enum13Close    Enum13 = "Close"
-	Enum13Dismiss  Enum13 = "Dismiss"
-	Enum13Resolve  Enum13 = "Resolve"
-	Enum13Start    Enum13 = "Start"
+	Enum16Activate Enum16 = "Activate"
+	Enum16Close    Enum16 = "Close"
+	Enum16Dismiss  Enum16 = "Dismiss"
+	Enum16Resolve  Enum16 = "Resolve"
+	Enum16Start    Enum16 = "Start"
 )
 
-// PossibleEnum13Values returns the possible values for the Enum13 const type.
-func PossibleEnum13Values() []Enum13 {
-	return []Enum13{
-		Enum13Activate,
-		Enum13Close,
-		Enum13Dismiss,
-		Enum13Resolve,
-		Enum13Start,
+// PossibleEnum16Values returns the possible values for the Enum16 const type.
+func PossibleEnum16Values() []Enum16 {
+	return []Enum16{
+		Enum16Activate,
+		Enum16Close,
+		Enum16Dismiss,
+		Enum16Resolve,
+		Enum16Start,
 	}
 }
 
-// ToPtr returns a *Enum13 pointing to the current value.
-func (c Enum13) ToPtr() *Enum13 {
+// ToPtr returns a *Enum16 pointing to the current value.
+func (c Enum16) ToPtr() *Enum16 {
 	return &c
 }
 
-type Enum15 string
+type Enum18 string
 
 const (
-	Enum15Custom    Enum15 = "custom"
-	Enum15Effective Enum15 = "effective"
+	Enum18Custom    Enum18 = "custom"
+	Enum18Effective Enum18 = "effective"
 )
 
-// PossibleEnum15Values returns the possible values for the Enum15 const type.
-func PossibleEnum15Values() []Enum15 {
-	return []Enum15{
-		Enum15Custom,
-		Enum15Effective,
+// PossibleEnum18Values returns the possible values for the Enum18 const type.
+func PossibleEnum18Values() []Enum18 {
+	return []Enum18{
+		Enum18Custom,
+		Enum18Effective,
 	}
 }
 
-// ToPtr returns a *Enum15 pointing to the current value.
-func (c Enum15) ToPtr() *Enum15 {
+// ToPtr returns a *Enum18 pointing to the current value.
+func (c Enum18) ToPtr() *Enum18 {
 	return &c
 }
 
-type Enum71 string
+type Enum31 string
 
 const (
-	Enum71MCAS                           Enum71 = "MCAS"
-	Enum71Sentinel                       Enum71 = "Sentinel"
-	Enum71WDATP                          Enum71 = "WDATP"
-	Enum71WDATPEXCLUDELINUXPUBLICPREVIEW Enum71 = "WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW"
+	Enum31Default Enum31 = "default"
 )
 
-// PossibleEnum71Values returns the possible values for the Enum71 const type.
-func PossibleEnum71Values() []Enum71 {
-	return []Enum71{
-		Enum71MCAS,
-		Enum71Sentinel,
-		Enum71WDATP,
-		Enum71WDATPEXCLUDELINUXPUBLICPREVIEW,
+// PossibleEnum31Values returns the possible values for the Enum31 const type.
+func PossibleEnum31Values() []Enum31 {
+	return []Enum31{
+		Enum31Default,
 	}
 }
 
-// ToPtr returns a *Enum71 pointing to the current value.
-func (c Enum71) ToPtr() *Enum71 {
+// ToPtr returns a *Enum31 pointing to the current value.
+func (c Enum31) ToPtr() *Enum31 {
+	return &c
+}
+
+type Enum4 string
+
+const (
+	Enum4Current Enum4 = "current"
+)
+
+// PossibleEnum4Values returns the possible values for the Enum4 const type.
+func PossibleEnum4Values() []Enum4 {
+	return []Enum4{
+		Enum4Current,
+	}
+}
+
+// ToPtr returns a *Enum4 pointing to the current value.
+func (c Enum4) ToPtr() *Enum4 {
+	return &c
+}
+
+type Enum51 string
+
+const (
+	Enum51Enforce Enum51 = "enforce"
+)
+
+// PossibleEnum51Values returns the possible values for the Enum51 const type.
+func PossibleEnum51Values() []Enum51 {
+	return []Enum51{
+		Enum51Enforce,
+	}
+}
+
+// ToPtr returns a *Enum51 pointing to the current value.
+func (c Enum51) ToPtr() *Enum51 {
+	return &c
+}
+
+type Enum56 string
+
+const (
+	Enum56Initiate Enum56 = "initiate"
+)
+
+// PossibleEnum56Values returns the possible values for the Enum56 const type.
+func PossibleEnum56Values() []Enum56 {
+	return []Enum56{
+		Enum56Initiate,
+	}
+}
+
+// ToPtr returns a *Enum56 pointing to the current value.
+func (c Enum56) ToPtr() *Enum56 {
+	return &c
+}
+
+type Enum77 string
+
+const (
+	Enum77MCAS                           Enum77 = "MCAS"
+	Enum77Sentinel                       Enum77 = "Sentinel"
+	Enum77WDATP                          Enum77 = "WDATP"
+	Enum77WDATPEXCLUDELINUXPUBLICPREVIEW Enum77 = "WDATP_EXCLUDE_LINUX_PUBLIC_PREVIEW"
+)
+
+// PossibleEnum77Values returns the possible values for the Enum77 const type.
+func PossibleEnum77Values() []Enum77 {
+	return []Enum77{
+		Enum77MCAS,
+		Enum77Sentinel,
+		Enum77WDATP,
+		Enum77WDATPEXCLUDELINUXPUBLICPREVIEW,
+	}
+}
+
+// ToPtr returns a *Enum77 pointing to the current value.
+func (c Enum77) ToPtr() *Enum77 {
 	return &c
 }
 
@@ -1013,6 +1065,26 @@ func PossibleIntentValues() []Intent {
 
 // ToPtr returns a *Intent pointing to the current value.
 func (c Intent) ToPtr() *Intent {
+	return &c
+}
+
+// Kind - The kind of alert simulation.
+type Kind string
+
+const (
+	// KindBundles - Simulate alerts according to bundles
+	KindBundles Kind = "Bundles"
+)
+
+// PossibleKindValues returns the possible values for the Kind const type.
+func PossibleKindValues() []Kind {
+	return []Kind{
+		KindBundles,
+	}
+}
+
+// ToPtr returns a *Kind pointing to the current value.
+func (c Kind) ToPtr() *Kind {
 	return &c
 }
 
@@ -1710,6 +1782,29 @@ func (c Severity) ToPtr() *Severity {
 	return &c
 }
 
+// SeverityEnum - The severity to relate to the assessments generated by this assessment automation.
+type SeverityEnum string
+
+const (
+	SeverityEnumHigh   SeverityEnum = "High"
+	SeverityEnumLow    SeverityEnum = "Low"
+	SeverityEnumMedium SeverityEnum = "Medium"
+)
+
+// PossibleSeverityEnumValues returns the possible values for the SeverityEnum const type.
+func PossibleSeverityEnumValues() []SeverityEnum {
+	return []SeverityEnum{
+		SeverityEnumHigh,
+		SeverityEnumLow,
+		SeverityEnumMedium,
+	}
+}
+
+// ToPtr returns a *SeverityEnum pointing to the current value.
+func (c SeverityEnum) ToPtr() *SeverityEnum {
+	return &c
+}
+
 // Source - The platform where the assessed resource resides
 type Source string
 
@@ -1859,6 +1954,25 @@ func PossibleSubAssessmentStatusCodeValues() []SubAssessmentStatusCode {
 
 // ToPtr returns a *SubAssessmentStatusCode pointing to the current value.
 func (c SubAssessmentStatusCode) ToPtr() *SubAssessmentStatusCode {
+	return &c
+}
+
+// SupportedCloudEnum - Relevant cloud for the custom assessment automation.
+type SupportedCloudEnum string
+
+const (
+	SupportedCloudEnumAWS SupportedCloudEnum = "AWS"
+)
+
+// PossibleSupportedCloudEnumValues returns the possible values for the SupportedCloudEnum const type.
+func PossibleSupportedCloudEnumValues() []SupportedCloudEnum {
+	return []SupportedCloudEnum{
+		SupportedCloudEnumAWS,
+	}
+}
+
+// ToPtr returns a *SupportedCloudEnum pointing to the current value.
+func (c SupportedCloudEnum) ToPtr() *SupportedCloudEnum {
 	return &c
 }
 

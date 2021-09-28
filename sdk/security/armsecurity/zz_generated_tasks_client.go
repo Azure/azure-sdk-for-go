@@ -354,7 +354,7 @@ func (client *TasksClient) listByResourceGroupHandleError(resp *http.Response) e
 
 // UpdateResourceGroupLevelTaskState - Recommended tasks that will help improve the security of the subscription proactively
 // If the operation fails it returns the *CloudError error type.
-func (client *TasksClient) UpdateResourceGroupLevelTaskState(ctx context.Context, resourceGroupName string, taskName string, taskUpdateActionType Enum13, options *TasksUpdateResourceGroupLevelTaskStateOptions) (TasksUpdateResourceGroupLevelTaskStateResponse, error) {
+func (client *TasksClient) UpdateResourceGroupLevelTaskState(ctx context.Context, resourceGroupName string, taskName string, taskUpdateActionType Enum16, options *TasksUpdateResourceGroupLevelTaskStateOptions) (TasksUpdateResourceGroupLevelTaskStateResponse, error) {
 	req, err := client.updateResourceGroupLevelTaskStateCreateRequest(ctx, resourceGroupName, taskName, taskUpdateActionType, options)
 	if err != nil {
 		return TasksUpdateResourceGroupLevelTaskStateResponse{}, err
@@ -370,7 +370,7 @@ func (client *TasksClient) UpdateResourceGroupLevelTaskState(ctx context.Context
 }
 
 // updateResourceGroupLevelTaskStateCreateRequest creates the UpdateResourceGroupLevelTaskState request.
-func (client *TasksClient) updateResourceGroupLevelTaskStateCreateRequest(ctx context.Context, resourceGroupName string, taskName string, taskUpdateActionType Enum13, options *TasksUpdateResourceGroupLevelTaskStateOptions) (*policy.Request, error) {
+func (client *TasksClient) updateResourceGroupLevelTaskStateCreateRequest(ctx context.Context, resourceGroupName string, taskName string, taskUpdateActionType Enum16, options *TasksUpdateResourceGroupLevelTaskStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}/{taskUpdateActionType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -418,7 +418,7 @@ func (client *TasksClient) updateResourceGroupLevelTaskStateHandleError(resp *ht
 
 // UpdateSubscriptionLevelTaskState - Recommended tasks that will help improve the security of the subscription proactively
 // If the operation fails it returns the *CloudError error type.
-func (client *TasksClient) UpdateSubscriptionLevelTaskState(ctx context.Context, taskName string, taskUpdateActionType Enum13, options *TasksUpdateSubscriptionLevelTaskStateOptions) (TasksUpdateSubscriptionLevelTaskStateResponse, error) {
+func (client *TasksClient) UpdateSubscriptionLevelTaskState(ctx context.Context, taskName string, taskUpdateActionType Enum16, options *TasksUpdateSubscriptionLevelTaskStateOptions) (TasksUpdateSubscriptionLevelTaskStateResponse, error) {
 	req, err := client.updateSubscriptionLevelTaskStateCreateRequest(ctx, taskName, taskUpdateActionType, options)
 	if err != nil {
 		return TasksUpdateSubscriptionLevelTaskStateResponse{}, err
@@ -434,7 +434,7 @@ func (client *TasksClient) UpdateSubscriptionLevelTaskState(ctx context.Context,
 }
 
 // updateSubscriptionLevelTaskStateCreateRequest creates the UpdateSubscriptionLevelTaskState request.
-func (client *TasksClient) updateSubscriptionLevelTaskStateCreateRequest(ctx context.Context, taskName string, taskUpdateActionType Enum13, options *TasksUpdateSubscriptionLevelTaskStateOptions) (*policy.Request, error) {
+func (client *TasksClient) updateSubscriptionLevelTaskStateCreateRequest(ctx context.Context, taskName string, taskUpdateActionType Enum16, options *TasksUpdateSubscriptionLevelTaskStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}/{taskUpdateActionType}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

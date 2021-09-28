@@ -935,6 +935,222 @@ func (p *ConnectorsListPager) PageResponse() ConnectorsListResponse {
 	return p.current
 }
 
+// CustomAssessmentAutomationsListByResourceGroupPager provides operations for iterating over paged responses.
+type CustomAssessmentAutomationsListByResourceGroupPager struct {
+	client    *CustomAssessmentAutomationsClient
+	current   CustomAssessmentAutomationsListByResourceGroupResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, CustomAssessmentAutomationsListByResourceGroupResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *CustomAssessmentAutomationsListByResourceGroupPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *CustomAssessmentAutomationsListByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.CustomAssessmentAutomationsListResult.NextLink == nil || len(*p.current.CustomAssessmentAutomationsListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listByResourceGroupHandleError(resp)
+		return false
+	}
+	result, err := p.client.listByResourceGroupHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current CustomAssessmentAutomationsListByResourceGroupResponse page.
+func (p *CustomAssessmentAutomationsListByResourceGroupPager) PageResponse() CustomAssessmentAutomationsListByResourceGroupResponse {
+	return p.current
+}
+
+// CustomAssessmentAutomationsListBySubscriptionPager provides operations for iterating over paged responses.
+type CustomAssessmentAutomationsListBySubscriptionPager struct {
+	client    *CustomAssessmentAutomationsClient
+	current   CustomAssessmentAutomationsListBySubscriptionResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, CustomAssessmentAutomationsListBySubscriptionResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *CustomAssessmentAutomationsListBySubscriptionPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *CustomAssessmentAutomationsListBySubscriptionPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.CustomAssessmentAutomationsListResult.NextLink == nil || len(*p.current.CustomAssessmentAutomationsListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listBySubscriptionHandleError(resp)
+		return false
+	}
+	result, err := p.client.listBySubscriptionHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current CustomAssessmentAutomationsListBySubscriptionResponse page.
+func (p *CustomAssessmentAutomationsListBySubscriptionPager) PageResponse() CustomAssessmentAutomationsListBySubscriptionResponse {
+	return p.current
+}
+
+// CustomEntityStoreAssignmentsListByResourceGroupPager provides operations for iterating over paged responses.
+type CustomEntityStoreAssignmentsListByResourceGroupPager struct {
+	client    *CustomEntityStoreAssignmentsClient
+	current   CustomEntityStoreAssignmentsListByResourceGroupResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, CustomEntityStoreAssignmentsListByResourceGroupResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *CustomEntityStoreAssignmentsListByResourceGroupPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *CustomEntityStoreAssignmentsListByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.CustomEntityStoreAssignmentsListResult.NextLink == nil || len(*p.current.CustomEntityStoreAssignmentsListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listByResourceGroupHandleError(resp)
+		return false
+	}
+	result, err := p.client.listByResourceGroupHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current CustomEntityStoreAssignmentsListByResourceGroupResponse page.
+func (p *CustomEntityStoreAssignmentsListByResourceGroupPager) PageResponse() CustomEntityStoreAssignmentsListByResourceGroupResponse {
+	return p.current
+}
+
+// CustomEntityStoreAssignmentsListBySubscriptionPager provides operations for iterating over paged responses.
+type CustomEntityStoreAssignmentsListBySubscriptionPager struct {
+	client    *CustomEntityStoreAssignmentsClient
+	current   CustomEntityStoreAssignmentsListBySubscriptionResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, CustomEntityStoreAssignmentsListBySubscriptionResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *CustomEntityStoreAssignmentsListBySubscriptionPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *CustomEntityStoreAssignmentsListBySubscriptionPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.CustomEntityStoreAssignmentsListResult.NextLink == nil || len(*p.current.CustomEntityStoreAssignmentsListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listBySubscriptionHandleError(resp)
+		return false
+	}
+	result, err := p.client.listBySubscriptionHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current CustomEntityStoreAssignmentsListBySubscriptionResponse page.
+func (p *CustomEntityStoreAssignmentsListBySubscriptionPager) PageResponse() CustomEntityStoreAssignmentsListBySubscriptionResponse {
+	return p.current
+}
+
 // DeviceSecurityGroupsListPager provides operations for iterating over paged responses.
 type DeviceSecurityGroupsListPager struct {
 	client    *DeviceSecurityGroupsClient

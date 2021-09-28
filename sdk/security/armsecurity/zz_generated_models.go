@@ -22,6 +22,41 @@ type AADConnectivityStateDummy struct {
 	ConnectivityState *AADConnectivityState `json:"connectivityState,omitempty"`
 }
 
+// MarshalJSON implements the json.Marshaller interface for type AADConnectivityStateDummy.
+func (a AADConnectivityStateDummy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	a.marshalInternal(objectMap)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AADConnectivityStateDummy.
+func (a *AADConnectivityStateDummy) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	return a.unmarshalInternal(rawMsg)
+}
+
+func (a AADConnectivityStateDummy) marshalInternal(objectMap map[string]interface{}) {
+	populate(objectMap, "connectivityState", a.ConnectivityState)
+}
+
+func (a *AADConnectivityStateDummy) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "connectivityState":
+			err = unpopulate(val, &a.ConnectivityState)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // AADExternalSecuritySolution - Represents an AAD identity protection solution which sends logs to an OMS workspace.
 type AADExternalSecuritySolution struct {
 	ExternalSecuritySolution
@@ -31,7 +66,8 @@ type AADExternalSecuritySolution struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AADExternalSecuritySolution.
 func (a AADExternalSecuritySolution) MarshalJSON() ([]byte, error) {
-	objectMap := a.ExternalSecuritySolution.marshalInternal(AAD)
+	objectMap := make(map[string]interface{})
+	a.ExternalSecuritySolution.marshalInternal(objectMap)
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
@@ -53,7 +89,10 @@ func (a *AADExternalSecuritySolution) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.ExternalSecuritySolution.unmarshalInternal(rawMsg)
+	if err := a.ExternalSecuritySolution.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AADSolutionProperties - The external security solution properties for AAD solutions
@@ -69,7 +108,8 @@ type ActiveConnectionsNotInAllowedRange struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ActiveConnectionsNotInAllowedRange.
 func (a ActiveConnectionsNotInAllowedRange) MarshalJSON() ([]byte, error) {
-	objectMap := a.TimeWindowCustomAlertRule.marshalInternal("ActiveConnectionsNotInAllowedRange")
+	objectMap := make(map[string]interface{})
+	a.TimeWindowCustomAlertRule.marshalInternal(objectMap, "ActiveConnectionsNotInAllowedRange")
 	return json.Marshal(objectMap)
 }
 
@@ -82,7 +122,9 @@ type AdaptiveApplicationControlGroup struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AdaptiveApplicationControlGroup.
 func (a AdaptiveApplicationControlGroup) MarshalJSON() ([]byte, error) {
-	objectMap := a.Location.marshalInternal()
+	objectMap := make(map[string]interface{})
+	a.Resource.marshalInternal(objectMap)
+	a.Location.marshalInternal(objectMap)
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
@@ -104,7 +146,13 @@ func (a *AdaptiveApplicationControlGroup) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.Location.unmarshalInternal(rawMsg)
+	if err := a.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	if err := a.Location.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AdaptiveApplicationControlGroupData - Represents a machines group and set of rules to be allowed running on a machine
@@ -197,7 +245,8 @@ type AdaptiveNetworkHardening struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AdaptiveNetworkHardening.
 func (a AdaptiveNetworkHardening) MarshalJSON() ([]byte, error) {
-	objectMap := a.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	a.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
@@ -219,7 +268,10 @@ func (a *AdaptiveNetworkHardening) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.Resource.unmarshalInternal(rawMsg)
+	if err := a.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 type AdaptiveNetworkHardeningEnforceRequest struct {
@@ -347,11 +399,9 @@ func (a *AdditionalData) UnmarshalJSON(data []byte) error {
 	return a.unmarshalInternal(rawMsg)
 }
 
-func (a AdditionalData) marshalInternal(discValue AssessedResourceType) map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (a AdditionalData) marshalInternal(objectMap map[string]interface{}, discValue AssessedResourceType) {
 	a.AssessedResourceType = &discValue
 	objectMap["assessedResourceType"] = a.AssessedResourceType
-	return objectMap
 }
 
 func (a *AdditionalData) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -415,7 +465,8 @@ type AdvancedThreatProtectionSetting struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AdvancedThreatProtectionSetting.
 func (a AdvancedThreatProtectionSetting) MarshalJSON() ([]byte, error) {
-	objectMap := a.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	a.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
@@ -437,7 +488,10 @@ func (a *AdvancedThreatProtectionSetting) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.Resource.unmarshalInternal(rawMsg)
+	if err := a.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // Alert - Security alert
@@ -449,7 +503,8 @@ type Alert struct {
 
 // MarshalJSON implements the json.Marshaller interface for type Alert.
 func (a Alert) MarshalJSON() ([]byte, error) {
-	objectMap := a.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	a.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
@@ -471,7 +526,10 @@ func (a *Alert) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.Resource.unmarshalInternal(rawMsg)
+	if err := a.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AlertEntity - Changing set of properties depending on the entity type.
@@ -748,7 +806,8 @@ type AlertSimulatorBundlesRequestProperties struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AlertSimulatorBundlesRequestProperties.
 func (a AlertSimulatorBundlesRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := a.AlertSimulatorRequestProperties.marshalInternal(AlertKindBundles)
+	objectMap := make(map[string]interface{})
+	a.AlertSimulatorRequestProperties.marshalInternal(objectMap, KindBundles)
 	populate(objectMap, "bundles", a.Bundles)
 	return json.Marshal(objectMap)
 }
@@ -770,7 +829,10 @@ func (a *AlertSimulatorBundlesRequestProperties) UnmarshalJSON(data []byte) erro
 			return err
 		}
 	}
-	return a.AlertSimulatorRequestProperties.unmarshalInternal(rawMsg)
+	if err := a.AlertSimulatorRequestProperties.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AlertSimulatorRequestBody - Alert Simulator request body.
@@ -818,7 +880,7 @@ type AlertSimulatorRequestPropertiesClassification interface {
 // AlertSimulatorRequestProperties - Describes properties of an alert simulation request
 type AlertSimulatorRequestProperties struct {
 	// REQUIRED; The kind of alert simulation.
-	Kind *AlertKind `json:"kind,omitempty"`
+	Kind *Kind `json:"kind,omitempty"`
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]interface{}
@@ -838,8 +900,7 @@ func (a *AlertSimulatorRequestProperties) UnmarshalJSON(data []byte) error {
 	return a.unmarshalInternal(rawMsg)
 }
 
-func (a AlertSimulatorRequestProperties) marshalInternal(discValue AlertKind) map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (a AlertSimulatorRequestProperties) marshalInternal(objectMap map[string]interface{}, discValue Kind) {
 	a.Kind = &discValue
 	objectMap["kind"] = a.Kind
 	if a.AdditionalProperties != nil {
@@ -847,7 +908,6 @@ func (a AlertSimulatorRequestProperties) marshalInternal(discValue AlertKind) ma
 			objectMap[key] = val
 		}
 	}
-	return objectMap
 }
 
 func (a *AlertSimulatorRequestProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -890,7 +950,8 @@ type AlertSyncSettings struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AlertSyncSettings.
 func (a AlertSyncSettings) MarshalJSON() ([]byte, error) {
-	objectMap := a.Setting.marshalInternal(SettingKindAlertSyncSettings)
+	objectMap := make(map[string]interface{})
+	a.Setting.marshalInternal(objectMap, SettingKindAlertSyncSettings)
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
@@ -912,7 +973,10 @@ func (a *AlertSyncSettings) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.Setting.unmarshalInternal(rawMsg)
+	if err := a.Setting.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AlertsBeginSimulateOptions contains the optional parameters for the Alerts.BeginSimulate method.
@@ -959,7 +1023,8 @@ type AlertsSuppressionRule struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AlertsSuppressionRule.
 func (a AlertsSuppressionRule) MarshalJSON() ([]byte, error) {
-	objectMap := a.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	a.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
@@ -981,7 +1046,10 @@ func (a *AlertsSuppressionRule) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.Resource.unmarshalInternal(rawMsg)
+	if err := a.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AlertsSuppressionRuleProperties - describes AlertsSuppressionRule properties
@@ -1173,7 +1241,9 @@ type AllowedConnectionsResource struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AllowedConnectionsResource.
 func (a AllowedConnectionsResource) MarshalJSON() ([]byte, error) {
-	objectMap := a.Location.marshalInternal()
+	objectMap := make(map[string]interface{})
+	a.Resource.marshalInternal(objectMap)
+	a.Location.marshalInternal(objectMap)
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
@@ -1195,7 +1265,13 @@ func (a *AllowedConnectionsResource) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.Location.unmarshalInternal(rawMsg)
+	if err := a.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	if err := a.Location.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AllowedConnectionsResourceProperties - Describes the allowed traffic between Azure resources
@@ -1262,7 +1338,8 @@ func (a *AllowlistCustomAlertRule) GetAllowlistCustomAlertRule() *AllowlistCusto
 
 // MarshalJSON implements the json.Marshaller interface for type AllowlistCustomAlertRule.
 func (a AllowlistCustomAlertRule) MarshalJSON() ([]byte, error) {
-	objectMap := a.marshalInternal("AllowlistCustomAlertRule")
+	objectMap := make(map[string]interface{})
+	a.marshalInternal(objectMap, "AllowlistCustomAlertRule")
 	return json.Marshal(objectMap)
 }
 
@@ -1275,10 +1352,9 @@ func (a *AllowlistCustomAlertRule) UnmarshalJSON(data []byte) error {
 	return a.unmarshalInternal(rawMsg)
 }
 
-func (a AllowlistCustomAlertRule) marshalInternal(discValue string) map[string]interface{} {
-	objectMap := a.ListCustomAlertRule.marshalInternal(discValue)
+func (a AllowlistCustomAlertRule) marshalInternal(objectMap map[string]interface{}, discValue string) {
+	a.ListCustomAlertRule.marshalInternal(objectMap, discValue)
 	populate(objectMap, "allowlistValues", a.AllowlistValues)
-	return objectMap
 }
 
 func (a *AllowlistCustomAlertRule) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -1293,7 +1369,10 @@ func (a *AllowlistCustomAlertRule) unmarshalInternal(rawMsg map[string]json.RawM
 			return err
 		}
 	}
-	return a.ListCustomAlertRule.unmarshalInternal(rawMsg)
+	if err := a.ListCustomAlertRule.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AmqpC2DMessagesNotInAllowedRange - Number of cloud to device messages (AMQP protocol) is not in allowed range.
@@ -1303,7 +1382,8 @@ type AmqpC2DMessagesNotInAllowedRange struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AmqpC2DMessagesNotInAllowedRange.
 func (a AmqpC2DMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
-	objectMap := a.TimeWindowCustomAlertRule.marshalInternal("AmqpC2DMessagesNotInAllowedRange")
+	objectMap := make(map[string]interface{})
+	a.TimeWindowCustomAlertRule.marshalInternal(objectMap, "AmqpC2DMessagesNotInAllowedRange")
 	return json.Marshal(objectMap)
 }
 
@@ -1314,7 +1394,8 @@ type AmqpC2DRejectedMessagesNotInAllowedRange struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AmqpC2DRejectedMessagesNotInAllowedRange.
 func (a AmqpC2DRejectedMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
-	objectMap := a.TimeWindowCustomAlertRule.marshalInternal("AmqpC2DRejectedMessagesNotInAllowedRange")
+	objectMap := make(map[string]interface{})
+	a.TimeWindowCustomAlertRule.marshalInternal(objectMap, "AmqpC2DRejectedMessagesNotInAllowedRange")
 	return json.Marshal(objectMap)
 }
 
@@ -1325,7 +1406,8 @@ type AmqpD2CMessagesNotInAllowedRange struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AmqpD2CMessagesNotInAllowedRange.
 func (a AmqpD2CMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
-	objectMap := a.TimeWindowCustomAlertRule.marshalInternal("AmqpD2CMessagesNotInAllowedRange")
+	objectMap := make(map[string]interface{})
+	a.TimeWindowCustomAlertRule.marshalInternal(objectMap, "AmqpD2CMessagesNotInAllowedRange")
 	return json.Marshal(objectMap)
 }
 
@@ -1338,7 +1420,8 @@ type AscLocation struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AscLocation.
 func (a AscLocation) MarshalJSON() ([]byte, error) {
-	objectMap := a.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	a.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
@@ -1360,7 +1443,10 @@ func (a *AscLocation) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.Resource.unmarshalInternal(rawMsg)
+	if err := a.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AscLocationList - List of locations where ASC saves your data
@@ -1400,7 +1486,8 @@ type AssessmentStatus struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AssessmentStatus.
 func (a AssessmentStatus) MarshalJSON() ([]byte, error) {
-	objectMap := a.marshalInternal()
+	objectMap := make(map[string]interface{})
+	a.marshalInternal(objectMap)
 	return json.Marshal(objectMap)
 }
 
@@ -1413,12 +1500,10 @@ func (a *AssessmentStatus) UnmarshalJSON(data []byte) error {
 	return a.unmarshalInternal(rawMsg)
 }
 
-func (a AssessmentStatus) marshalInternal() map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (a AssessmentStatus) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "cause", a.Cause)
 	populate(objectMap, "code", a.Code)
 	populate(objectMap, "description", a.Description)
-	return objectMap
 }
 
 func (a *AssessmentStatus) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -1454,7 +1539,8 @@ type AssessmentStatusResponse struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AssessmentStatusResponse.
 func (a AssessmentStatusResponse) MarshalJSON() ([]byte, error) {
-	objectMap := a.AssessmentStatus.marshalInternal()
+	objectMap := make(map[string]interface{})
+	a.AssessmentStatus.marshalInternal(objectMap)
 	populate(objectMap, "firstEvaluationDate", (*timeRFC3339)(a.FirstEvaluationDate))
 	populate(objectMap, "statusChangeDate", (*timeRFC3339)(a.StatusChangeDate))
 	return json.Marshal(objectMap)
@@ -1484,7 +1570,10 @@ func (a *AssessmentStatusResponse) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.AssessmentStatus.unmarshalInternal(rawMsg)
+	if err := a.AssessmentStatus.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AssessmentsCreateOrUpdateOptions contains the optional parameters for the Assessments.CreateOrUpdate method.
@@ -1547,7 +1636,8 @@ type AtaExternalSecuritySolution struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AtaExternalSecuritySolution.
 func (a AtaExternalSecuritySolution) MarshalJSON() ([]byte, error) {
-	objectMap := a.ExternalSecuritySolution.marshalInternal(ATA)
+	objectMap := make(map[string]interface{})
+	a.ExternalSecuritySolution.marshalInternal(objectMap)
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
@@ -1569,7 +1659,10 @@ func (a *AtaExternalSecuritySolution) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.ExternalSecuritySolution.unmarshalInternal(rawMsg)
+	if err := a.ExternalSecuritySolution.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AtaSolutionProperties - The external security solution properties for ATA solutions
@@ -1580,7 +1673,8 @@ type AtaSolutionProperties struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AtaSolutionProperties.
 func (a AtaSolutionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := a.ExternalSecuritySolutionProperties.marshalInternal()
+	objectMap := make(map[string]interface{})
+	a.ExternalSecuritySolutionProperties.marshalInternal(objectMap)
 	populate(objectMap, "lastEventReceived", a.LastEventReceived)
 	return json.Marshal(objectMap)
 }
@@ -1602,7 +1696,10 @@ func (a *AtaSolutionProperties) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.ExternalSecuritySolutionProperties.unmarshalInternal(rawMsg)
+	if err := a.ExternalSecuritySolutionProperties.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AuthenticationDetailsPropertiesClassification provides polymorphic access to related types.
@@ -1641,13 +1738,11 @@ func (a *AuthenticationDetailsProperties) UnmarshalJSON(data []byte) error {
 	return a.unmarshalInternal(rawMsg)
 }
 
-func (a AuthenticationDetailsProperties) marshalInternal(discValue AuthenticationType) map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (a AuthenticationDetailsProperties) marshalInternal(objectMap map[string]interface{}, discValue AuthenticationType) {
 	populate(objectMap, "authenticationProvisioningState", a.AuthenticationProvisioningState)
 	a.AuthenticationType = &discValue
 	objectMap["authenticationType"] = a.AuthenticationType
 	populate(objectMap, "grantedPermissions", a.GrantedPermissions)
-	return objectMap
 }
 
 func (a *AuthenticationDetailsProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -1680,7 +1775,8 @@ type AutoProvisioningSetting struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AutoProvisioningSetting.
 func (a AutoProvisioningSetting) MarshalJSON() ([]byte, error) {
-	objectMap := a.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	a.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
@@ -1702,7 +1798,10 @@ func (a *AutoProvisioningSetting) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.Resource.unmarshalInternal(rawMsg)
+	if err := a.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AutoProvisioningSettingList - List of all the auto provisioning settings response
@@ -1752,7 +1851,8 @@ type Automation struct {
 
 // MarshalJSON implements the json.Marshaller interface for type Automation.
 func (a Automation) MarshalJSON() ([]byte, error) {
-	objectMap := a.TrackedResource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	a.TrackedResource.marshalInternal(objectMap)
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
@@ -1774,7 +1874,10 @@ func (a *Automation) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.TrackedResource.unmarshalInternal(rawMsg)
+	if err := a.TrackedResource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AutomationActionClassification provides polymorphic access to related types.
@@ -1804,11 +1907,9 @@ func (a *AutomationAction) UnmarshalJSON(data []byte) error {
 	return a.unmarshalInternal(rawMsg)
 }
 
-func (a AutomationAction) marshalInternal(discValue ActionType) map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (a AutomationAction) marshalInternal(objectMap map[string]interface{}, discValue ActionType) {
 	a.ActionType = &discValue
 	objectMap["actionType"] = a.ActionType
-	return objectMap
 }
 
 func (a *AutomationAction) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -1842,7 +1943,8 @@ type AutomationActionEventHub struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AutomationActionEventHub.
 func (a AutomationActionEventHub) MarshalJSON() ([]byte, error) {
-	objectMap := a.AutomationAction.marshalInternal(ActionTypeEventHub)
+	objectMap := make(map[string]interface{})
+	a.AutomationAction.marshalInternal(objectMap, ActionTypeEventHub)
 	populate(objectMap, "connectionString", a.ConnectionString)
 	populate(objectMap, "eventHubResourceId", a.EventHubResourceID)
 	populate(objectMap, "sasPolicyName", a.SasPolicyName)
@@ -1872,7 +1974,10 @@ func (a *AutomationActionEventHub) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.AutomationAction.unmarshalInternal(rawMsg)
+	if err := a.AutomationAction.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AutomationActionLogicApp - The logic app action that should be triggered. To learn more about Security Center's Workflow Automation capabilities, visit
@@ -1888,7 +1993,8 @@ type AutomationActionLogicApp struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AutomationActionLogicApp.
 func (a AutomationActionLogicApp) MarshalJSON() ([]byte, error) {
-	objectMap := a.AutomationAction.marshalInternal(ActionTypeLogicApp)
+	objectMap := make(map[string]interface{})
+	a.AutomationAction.marshalInternal(objectMap, ActionTypeLogicApp)
 	populate(objectMap, "logicAppResourceId", a.LogicAppResourceID)
 	populate(objectMap, "uri", a.URI)
 	return json.Marshal(objectMap)
@@ -1914,7 +2020,10 @@ func (a *AutomationActionLogicApp) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.AutomationAction.unmarshalInternal(rawMsg)
+	if err := a.AutomationAction.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AutomationActionWorkspace - The Log Analytics Workspace to which event data will be exported. Security alerts data will reside in the 'SecurityAlert'
@@ -1930,7 +2039,8 @@ type AutomationActionWorkspace struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AutomationActionWorkspace.
 func (a AutomationActionWorkspace) MarshalJSON() ([]byte, error) {
-	objectMap := a.AutomationAction.marshalInternal(ActionTypeWorkspace)
+	objectMap := make(map[string]interface{})
+	a.AutomationAction.marshalInternal(objectMap, ActionTypeWorkspace)
 	populate(objectMap, "workspaceResourceId", a.WorkspaceResourceID)
 	return json.Marshal(objectMap)
 }
@@ -1952,7 +2062,10 @@ func (a *AutomationActionWorkspace) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.AutomationAction.unmarshalInternal(rawMsg)
+	if err := a.AutomationAction.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AutomationList - List of security automations response.
@@ -2151,7 +2264,8 @@ type AwAssumeRoleAuthenticationDetailsProperties struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AwAssumeRoleAuthenticationDetailsProperties.
 func (a AwAssumeRoleAuthenticationDetailsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := a.AuthenticationDetailsProperties.marshalInternal(AuthenticationTypeAwsAssumeRole)
+	objectMap := make(map[string]interface{})
+	a.AuthenticationDetailsProperties.marshalInternal(objectMap, AuthenticationTypeAwsAssumeRole)
 	populate(objectMap, "accountId", a.AccountID)
 	populate(objectMap, "awsAssumeRoleArn", a.AwsAssumeRoleArn)
 	populate(objectMap, "awsExternalId", a.AwsExternalID)
@@ -2181,7 +2295,10 @@ func (a *AwAssumeRoleAuthenticationDetailsProperties) UnmarshalJSON(data []byte)
 			return err
 		}
 	}
-	return a.AuthenticationDetailsProperties.unmarshalInternal(rawMsg)
+	if err := a.AuthenticationDetailsProperties.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AwsCredsAuthenticationDetailsProperties - AWS cloud account connector based credentials, the credentials is composed of access key ID and secret key,
@@ -2201,7 +2318,8 @@ type AwsCredsAuthenticationDetailsProperties struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AwsCredsAuthenticationDetailsProperties.
 func (a AwsCredsAuthenticationDetailsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := a.AuthenticationDetailsProperties.marshalInternal(AuthenticationTypeAwsCreds)
+	objectMap := make(map[string]interface{})
+	a.AuthenticationDetailsProperties.marshalInternal(objectMap, AuthenticationTypeAwsCreds)
 	populate(objectMap, "accountId", a.AccountID)
 	populate(objectMap, "awsAccessKeyId", a.AwsAccessKeyID)
 	populate(objectMap, "awsSecretAccessKey", a.AwsSecretAccessKey)
@@ -2231,41 +2349,10 @@ func (a *AwsCredsAuthenticationDetailsProperties) UnmarshalJSON(data []byte) err
 			return err
 		}
 	}
-	return a.AuthenticationDetailsProperties.unmarshalInternal(rawMsg)
-}
-
-// AzureResourceDetails - Details of the Azure resource that was assessed
-type AzureResourceDetails struct {
-	ResourceDetails
-	// READ-ONLY; Azure resource Id of the assessed resource
-	ID *string `json:"id,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AzureResourceDetails.
-func (a AzureResourceDetails) MarshalJSON() ([]byte, error) {
-	objectMap := a.ResourceDetails.marshalInternal(SourceAzure)
-	populate(objectMap, "id", a.ID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AzureResourceDetails.
-func (a *AzureResourceDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
+	if err := a.AuthenticationDetailsProperties.unmarshalInternal(rawMsg); err != nil {
 		return err
 	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return a.ResourceDetails.unmarshalInternal(rawMsg)
+	return nil
 }
 
 // AzureResourceIdentifier - Azure resource identifier.
@@ -2277,7 +2364,8 @@ type AzureResourceIdentifier struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AzureResourceIdentifier.
 func (a AzureResourceIdentifier) MarshalJSON() ([]byte, error) {
-	objectMap := a.ResourceIdentifier.marshalInternal(ResourceIdentifierTypeAzureResource)
+	objectMap := make(map[string]interface{})
+	a.ResourceIdentifier.marshalInternal(objectMap, ResourceIdentifierTypeAzureResource)
 	populate(objectMap, "azureResourceId", a.AzureResourceID)
 	return json.Marshal(objectMap)
 }
@@ -2299,7 +2387,10 @@ func (a *AzureResourceIdentifier) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return a.ResourceIdentifier.unmarshalInternal(rawMsg)
+	if err := a.ResourceIdentifier.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // AzureResourceLink - Describes an Azure resource with kind
@@ -2316,7 +2407,8 @@ type AzureTrackedResourceLocation struct {
 
 // MarshalJSON implements the json.Marshaller interface for type AzureTrackedResourceLocation.
 func (a AzureTrackedResourceLocation) MarshalJSON() ([]byte, error) {
-	objectMap := a.marshalInternal()
+	objectMap := make(map[string]interface{})
+	a.marshalInternal(objectMap)
 	return json.Marshal(objectMap)
 }
 
@@ -2329,10 +2421,8 @@ func (a *AzureTrackedResourceLocation) UnmarshalJSON(data []byte) error {
 	return a.unmarshalInternal(rawMsg)
 }
 
-func (a AzureTrackedResourceLocation) marshalInternal() map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (a AzureTrackedResourceLocation) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "location", a.Location)
-	return objectMap
 }
 
 func (a *AzureTrackedResourceLocation) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -2450,7 +2540,8 @@ type CefExternalSecuritySolution struct {
 
 // MarshalJSON implements the json.Marshaller interface for type CefExternalSecuritySolution.
 func (c CefExternalSecuritySolution) MarshalJSON() ([]byte, error) {
-	objectMap := c.ExternalSecuritySolution.marshalInternal(CEF)
+	objectMap := make(map[string]interface{})
+	c.ExternalSecuritySolution.marshalInternal(objectMap)
 	populate(objectMap, "properties", c.Properties)
 	return json.Marshal(objectMap)
 }
@@ -2472,7 +2563,10 @@ func (c *CefExternalSecuritySolution) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return c.ExternalSecuritySolution.unmarshalInternal(rawMsg)
+	if err := c.ExternalSecuritySolution.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // CefSolutionProperties - The external security solution properties for CEF solutions
@@ -2485,7 +2579,8 @@ type CefSolutionProperties struct {
 
 // MarshalJSON implements the json.Marshaller interface for type CefSolutionProperties.
 func (c CefSolutionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := c.ExternalSecuritySolutionProperties.marshalInternal()
+	objectMap := make(map[string]interface{})
+	c.ExternalSecuritySolutionProperties.marshalInternal(objectMap)
 	populate(objectMap, "agent", c.Agent)
 	populate(objectMap, "hostname", c.Hostname)
 	populate(objectMap, "lastEventReceived", c.LastEventReceived)
@@ -2515,7 +2610,10 @@ func (c *CefSolutionProperties) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return c.ExternalSecuritySolutionProperties.unmarshalInternal(rawMsg)
+	if err := c.ExternalSecuritySolutionProperties.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // CloudError - Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows the OData error
@@ -2571,7 +2669,8 @@ type Compliance struct {
 
 // MarshalJSON implements the json.Marshaller interface for type Compliance.
 func (c Compliance) MarshalJSON() ([]byte, error) {
-	objectMap := c.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	c.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", c.Properties)
 	return json.Marshal(objectMap)
 }
@@ -2593,7 +2692,10 @@ func (c *Compliance) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return c.Resource.unmarshalInternal(rawMsg)
+	if err := c.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // ComplianceList - List of Compliance objects response
@@ -2673,7 +2775,8 @@ type ComplianceResult struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ComplianceResult.
 func (c ComplianceResult) MarshalJSON() ([]byte, error) {
-	objectMap := c.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	c.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", c.Properties)
 	return json.Marshal(objectMap)
 }
@@ -2695,7 +2798,10 @@ func (c *ComplianceResult) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return c.Resource.unmarshalInternal(rawMsg)
+	if err := c.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // ComplianceResultList - List of compliance results response
@@ -2796,7 +2902,8 @@ type ConnectionFromIPNotAllowed struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ConnectionFromIPNotAllowed.
 func (c ConnectionFromIPNotAllowed) MarshalJSON() ([]byte, error) {
-	objectMap := c.AllowlistCustomAlertRule.marshalInternal("ConnectionFromIpNotAllowed")
+	objectMap := make(map[string]interface{})
+	c.AllowlistCustomAlertRule.marshalInternal(objectMap, "ConnectionFromIpNotAllowed")
 	return json.Marshal(objectMap)
 }
 
@@ -2820,7 +2927,8 @@ type ConnectionToIPNotAllowed struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ConnectionToIPNotAllowed.
 func (c ConnectionToIPNotAllowed) MarshalJSON() ([]byte, error) {
-	objectMap := c.AllowlistCustomAlertRule.marshalInternal("ConnectionToIpNotAllowed")
+	objectMap := make(map[string]interface{})
+	c.AllowlistCustomAlertRule.marshalInternal(objectMap, "ConnectionToIpNotAllowed")
 	return json.Marshal(objectMap)
 }
 
@@ -2833,7 +2941,8 @@ type ConnectorSetting struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ConnectorSetting.
 func (c ConnectorSetting) MarshalJSON() ([]byte, error) {
-	objectMap := c.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	c.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", c.Properties)
 	return json.Marshal(objectMap)
 }
@@ -2855,7 +2964,10 @@ func (c *ConnectorSetting) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return c.Resource.unmarshalInternal(rawMsg)
+	if err := c.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // ConnectorSettingList - For a subscription, list of all cloud account connectors and their settings
@@ -2965,7 +3077,8 @@ type ContainerRegistryVulnerabilityProperties struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ContainerRegistryVulnerabilityProperties.
 func (c ContainerRegistryVulnerabilityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := c.AdditionalData.marshalInternal(AssessedResourceTypeContainerRegistryVulnerability)
+	objectMap := make(map[string]interface{})
+	c.AdditionalData.marshalInternal(objectMap, AssessedResourceTypeContainerRegistryVulnerability)
 	populate(objectMap, "cve", c.Cve)
 	populate(objectMap, "cvss", c.Cvss)
 	populate(objectMap, "imageDigest", c.ImageDigest)
@@ -3017,7 +3130,10 @@ func (c *ContainerRegistryVulnerabilityProperties) UnmarshalJSON(data []byte) er
 			return err
 		}
 	}
-	return c.AdditionalData.unmarshalInternal(rawMsg)
+	if err := c.AdditionalData.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // CustomAlertRuleClassification provides polymorphic access to related types.
@@ -3062,6 +3178,14 @@ func (c *CustomAlertRule) UnmarshalJSON(data []byte) error {
 	return c.unmarshalInternal(rawMsg)
 }
 
+func (c CustomAlertRule) marshalInternal(objectMap map[string]interface{}, discValue string) {
+	populate(objectMap, "description", c.Description)
+	populate(objectMap, "displayName", c.DisplayName)
+	populate(objectMap, "isEnabled", c.IsEnabled)
+	c.RuleType = &discValue
+	objectMap["ruleType"] = c.RuleType
+}
+
 func (c *CustomAlertRule) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
@@ -3086,6 +3210,205 @@ func (c *CustomAlertRule) unmarshalInternal(rawMsg map[string]json.RawMessage) e
 	return nil
 }
 
+// CustomAssessmentAutomation - Custom Assessment Automation
+type CustomAssessmentAutomation struct {
+	Resource
+	// describes Custom Assessment Automation properties.
+	Properties *CustomAssessmentAutomationProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CustomAssessmentAutomation.
+func (c CustomAssessmentAutomation) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	c.Resource.marshalInternal(objectMap)
+	populate(objectMap, "properties", c.Properties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CustomAssessmentAutomation.
+func (c *CustomAssessmentAutomation) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, &c.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := c.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
+// CustomAssessmentAutomationProperties - describes the Custom Assessment Automation properties
+type CustomAssessmentAutomationProperties struct {
+	// GZip encoded KQL query representing the assessment automation results required.
+	CompressedQuery *string `json:"compressedQuery,omitempty"`
+
+	// The description to relate to the assessments generated by this assessment automation.
+	Description *string `json:"description,omitempty"`
+
+	// The remediation description to relate to the assessments generated by this assessment automation.
+	RemediationDescription *string `json:"remediationDescription,omitempty"`
+
+	// The severity to relate to the assessments generated by this assessment automation.
+	Severity *SeverityEnum `json:"severity,omitempty"`
+
+	// Relevant cloud for the custom assessment automation.
+	SupportedCloud *SupportedCloudEnum `json:"supportedCloud,omitempty"`
+}
+
+// CustomAssessmentAutomationsCreateOptions contains the optional parameters for the CustomAssessmentAutomations.Create method.
+type CustomAssessmentAutomationsCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomAssessmentAutomationsDeleteOptions contains the optional parameters for the CustomAssessmentAutomations.Delete method.
+type CustomAssessmentAutomationsDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomAssessmentAutomationsGetOptions contains the optional parameters for the CustomAssessmentAutomations.Get method.
+type CustomAssessmentAutomationsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomAssessmentAutomationsListByResourceGroupOptions contains the optional parameters for the CustomAssessmentAutomations.ListByResourceGroup method.
+type CustomAssessmentAutomationsListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomAssessmentAutomationsListBySubscriptionOptions contains the optional parameters for the CustomAssessmentAutomations.ListBySubscription method.
+type CustomAssessmentAutomationsListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomAssessmentAutomationsListResult - A list of Custom Assessment Automations
+type CustomAssessmentAutomationsListResult struct {
+	// The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// READ-ONLY; Collection of Custom Assessment Automations
+	Value []*CustomAssessmentAutomation `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CustomAssessmentAutomationsListResult.
+func (c CustomAssessmentAutomationsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", c.NextLink)
+	populate(objectMap, "value", c.Value)
+	return json.Marshal(objectMap)
+}
+
+// CustomEntityStoreAssignment - Custom entity store assignment
+type CustomEntityStoreAssignment struct {
+	Resource
+	// describes custom entity store assignment properties.
+	Properties *CustomEntityStoreAssignmentProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CustomEntityStoreAssignment.
+func (c CustomEntityStoreAssignment) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	c.Resource.marshalInternal(objectMap)
+	populate(objectMap, "properties", c.Properties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CustomEntityStoreAssignment.
+func (c *CustomEntityStoreAssignment) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, &c.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := c.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
+}
+
+// CustomEntityStoreAssignmentProperties - describes the custom entity store assignment properties
+type CustomEntityStoreAssignmentProperties struct {
+	// The link to entity store database.
+	EntityStoreDatabaseLink *string `json:"entityStoreDatabaseLink,omitempty"`
+
+	// The principal assigned with entity store. Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId]
+	Principal *string `json:"principal,omitempty"`
+}
+
+// CustomEntityStoreAssignmentRequest - describes the custom entity store assignment request
+type CustomEntityStoreAssignmentRequest struct {
+	// describes properties of custom entity store assignment request
+	Properties *CustomEntityStoreAssignmentRequestProperties `json:"properties,omitempty"`
+}
+
+// CustomEntityStoreAssignmentRequestProperties - describes properties of custom entity store assignment request
+type CustomEntityStoreAssignmentRequestProperties struct {
+	// The principal assigned with entity store. If not provided, will use caller principal. Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId]
+	Principal *string `json:"principal,omitempty"`
+}
+
+// CustomEntityStoreAssignmentsCreateOptions contains the optional parameters for the CustomEntityStoreAssignments.Create method.
+type CustomEntityStoreAssignmentsCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomEntityStoreAssignmentsDeleteOptions contains the optional parameters for the CustomEntityStoreAssignments.Delete method.
+type CustomEntityStoreAssignmentsDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomEntityStoreAssignmentsGetOptions contains the optional parameters for the CustomEntityStoreAssignments.Get method.
+type CustomEntityStoreAssignmentsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomEntityStoreAssignmentsListByResourceGroupOptions contains the optional parameters for the CustomEntityStoreAssignments.ListByResourceGroup method.
+type CustomEntityStoreAssignmentsListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomEntityStoreAssignmentsListBySubscriptionOptions contains the optional parameters for the CustomEntityStoreAssignments.ListBySubscription method.
+type CustomEntityStoreAssignmentsListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CustomEntityStoreAssignmentsListResult - A list of custom entity store assignments
+type CustomEntityStoreAssignmentsListResult struct {
+	// The link used to get the next page of operations.
+	NextLink *string `json:"nextLink,omitempty"`
+
+	// READ-ONLY; Collection of custom entity store assignments
+	Value []*CustomEntityStoreAssignment `json:"value,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CustomEntityStoreAssignmentsListResult.
+func (c CustomEntityStoreAssignmentsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", c.NextLink)
+	populate(objectMap, "value", c.Value)
+	return json.Marshal(objectMap)
+}
+
 // DataExportSettingProperties - The data export setting properties
 type DataExportSettingProperties struct {
 	// REQUIRED; Is the data export setting enabled
@@ -3101,7 +3424,8 @@ type DataExportSettings struct {
 
 // MarshalJSON implements the json.Marshaller interface for type DataExportSettings.
 func (d DataExportSettings) MarshalJSON() ([]byte, error) {
-	objectMap := d.Setting.marshalInternal(SettingKindDataExportSettings)
+	objectMap := make(map[string]interface{})
+	d.Setting.marshalInternal(objectMap, SettingKindDataExportSettings)
 	populate(objectMap, "properties", d.Properties)
 	return json.Marshal(objectMap)
 }
@@ -3123,7 +3447,10 @@ func (d *DataExportSettings) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return d.Setting.unmarshalInternal(rawMsg)
+	if err := d.Setting.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // DenylistCustomAlertRule - A custom alert rule that checks if a value (depends on the custom alert type) is denied.
@@ -3135,7 +3462,8 @@ type DenylistCustomAlertRule struct {
 
 // MarshalJSON implements the json.Marshaller interface for type DenylistCustomAlertRule.
 func (d DenylistCustomAlertRule) MarshalJSON() ([]byte, error) {
-	objectMap := d.ListCustomAlertRule.marshalInternal("DenylistCustomAlertRule")
+	objectMap := make(map[string]interface{})
+	d.ListCustomAlertRule.marshalInternal(objectMap, "DenylistCustomAlertRule")
 	populate(objectMap, "denylistValues", d.DenylistValues)
 	return json.Marshal(objectMap)
 }
@@ -3157,7 +3485,10 @@ func (d *DenylistCustomAlertRule) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return d.ListCustomAlertRule.unmarshalInternal(rawMsg)
+	if err := d.ListCustomAlertRule.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // DeviceSecurityGroup - The device security group resource
@@ -3169,7 +3500,8 @@ type DeviceSecurityGroup struct {
 
 // MarshalJSON implements the json.Marshaller interface for type DeviceSecurityGroup.
 func (d DeviceSecurityGroup) MarshalJSON() ([]byte, error) {
-	objectMap := d.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	d.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", d.Properties)
 	return json.Marshal(objectMap)
 }
@@ -3191,7 +3523,10 @@ func (d *DeviceSecurityGroup) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return d.Resource.unmarshalInternal(rawMsg)
+	if err := d.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // DeviceSecurityGroupList - List of device security groups
@@ -3292,7 +3627,8 @@ type DirectMethodInvokesNotInAllowedRange struct {
 
 // MarshalJSON implements the json.Marshaller interface for type DirectMethodInvokesNotInAllowedRange.
 func (d DirectMethodInvokesNotInAllowedRange) MarshalJSON() ([]byte, error) {
-	objectMap := d.TimeWindowCustomAlertRule.marshalInternal("DirectMethodInvokesNotInAllowedRange")
+	objectMap := make(map[string]interface{})
+	d.TimeWindowCustomAlertRule.marshalInternal(objectMap, "DirectMethodInvokesNotInAllowedRange")
 	return json.Marshal(objectMap)
 }
 
@@ -3305,7 +3641,9 @@ type DiscoveredSecuritySolution struct {
 
 // MarshalJSON implements the json.Marshaller interface for type DiscoveredSecuritySolution.
 func (d DiscoveredSecuritySolution) MarshalJSON() ([]byte, error) {
-	objectMap := d.Location.marshalInternal()
+	objectMap := make(map[string]interface{})
+	d.Resource.marshalInternal(objectMap)
+	d.Location.marshalInternal(objectMap)
 	populate(objectMap, "properties", d.Properties)
 	return json.Marshal(objectMap)
 }
@@ -3327,7 +3665,13 @@ func (d *DiscoveredSecuritySolution) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return d.Location.unmarshalInternal(rawMsg)
+	if err := d.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	if err := d.Location.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 type DiscoveredSecuritySolutionList struct {
@@ -3382,7 +3726,8 @@ type ETag struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ETag.
 func (e ETag) MarshalJSON() ([]byte, error) {
-	objectMap := e.marshalInternal()
+	objectMap := make(map[string]interface{})
+	e.marshalInternal(objectMap)
 	return json.Marshal(objectMap)
 }
 
@@ -3395,10 +3740,8 @@ func (e *ETag) UnmarshalJSON(data []byte) error {
 	return e.unmarshalInternal(rawMsg)
 }
 
-func (e ETag) marshalInternal() map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (e ETag) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "etag", e.Etag)
-	return objectMap
 }
 
 func (e *ETag) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -3452,17 +3795,28 @@ type ExternalSecuritySolution struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ExternalSecuritySolution.
 func (e ExternalSecuritySolution) MarshalJSON() ([]byte, error) {
-	objectMap := e.marshalInternal()
+	objectMap := make(map[string]interface{})
+	e.marshalInternal(objectMap)
 	return json.Marshal(objectMap)
 }
 
-func (e ExternalSecuritySolution) marshalInternal() map[string]interface{} {
-	objectMap := e.Location.marshalInternal()
-	return objectMap
+func (e ExternalSecuritySolution) marshalInternal(objectMap map[string]interface{}) {
+	e.Resource.marshalInternal(objectMap)
+	e.ExternalSecuritySolutionKindDummy.marshalInternal(objectMap)
+	e.Location.marshalInternal(objectMap)
 }
 
 func (e *ExternalSecuritySolution) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	return e.Location.unmarshalInternal(rawMsg)
+	if err := e.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	if err := e.ExternalSecuritySolutionKindDummy.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	if err := e.Location.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // ExternalSecuritySolutionKindDummy - Describes an Azure resource with kind
@@ -3473,7 +3827,8 @@ type ExternalSecuritySolutionKindDummy struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ExternalSecuritySolutionKindDummy.
 func (e ExternalSecuritySolutionKindDummy) MarshalJSON() ([]byte, error) {
-	objectMap := e.marshalInternal()
+	objectMap := make(map[string]interface{})
+	e.marshalInternal(objectMap)
 	return json.Marshal(objectMap)
 }
 
@@ -3486,10 +3841,8 @@ func (e *ExternalSecuritySolutionKindDummy) UnmarshalJSON(data []byte) error {
 	return e.unmarshalInternal(rawMsg)
 }
 
-func (e ExternalSecuritySolutionKindDummy) marshalInternal() map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (e ExternalSecuritySolutionKindDummy) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "kind", e.Kind)
-	return objectMap
 }
 
 func (e *ExternalSecuritySolutionKindDummy) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -3535,7 +3888,8 @@ type ExternalSecuritySolutionProperties struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ExternalSecuritySolutionProperties.
 func (e ExternalSecuritySolutionProperties) MarshalJSON() ([]byte, error) {
-	objectMap := e.marshalInternal()
+	objectMap := make(map[string]interface{})
+	e.marshalInternal(objectMap)
 	return json.Marshal(objectMap)
 }
 
@@ -3548,8 +3902,7 @@ func (e *ExternalSecuritySolutionProperties) UnmarshalJSON(data []byte) error {
 	return e.unmarshalInternal(rawMsg)
 }
 
-func (e ExternalSecuritySolutionProperties) marshalInternal() map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (e ExternalSecuritySolutionProperties) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "deviceType", e.DeviceType)
 	populate(objectMap, "deviceVendor", e.DeviceVendor)
 	populate(objectMap, "workspace", e.Workspace)
@@ -3558,7 +3911,6 @@ func (e ExternalSecuritySolutionProperties) marshalInternal() map[string]interfa
 			objectMap[key] = val
 		}
 	}
-	return objectMap
 }
 
 func (e *ExternalSecuritySolutionProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -3614,7 +3966,8 @@ type FailedLocalLoginsNotInAllowedRange struct {
 
 // MarshalJSON implements the json.Marshaller interface for type FailedLocalLoginsNotInAllowedRange.
 func (f FailedLocalLoginsNotInAllowedRange) MarshalJSON() ([]byte, error) {
-	objectMap := f.TimeWindowCustomAlertRule.marshalInternal("FailedLocalLoginsNotInAllowedRange")
+	objectMap := make(map[string]interface{})
+	f.TimeWindowCustomAlertRule.marshalInternal(objectMap, "FailedLocalLoginsNotInAllowedRange")
 	return json.Marshal(objectMap)
 }
 
@@ -3625,7 +3978,8 @@ type FileUploadsNotInAllowedRange struct {
 
 // MarshalJSON implements the json.Marshaller interface for type FileUploadsNotInAllowedRange.
 func (f FileUploadsNotInAllowedRange) MarshalJSON() ([]byte, error) {
-	objectMap := f.TimeWindowCustomAlertRule.marshalInternal("FileUploadsNotInAllowedRange")
+	objectMap := make(map[string]interface{})
+	f.TimeWindowCustomAlertRule.marshalInternal(objectMap, "FileUploadsNotInAllowedRange")
 	return json.Marshal(objectMap)
 }
 
@@ -3669,7 +4023,8 @@ type GcpCredentialsDetailsProperties struct {
 
 // MarshalJSON implements the json.Marshaller interface for type GcpCredentialsDetailsProperties.
 func (g GcpCredentialsDetailsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := g.AuthenticationDetailsProperties.marshalInternal(AuthenticationTypeGcpCredentials)
+	objectMap := make(map[string]interface{})
+	g.AuthenticationDetailsProperties.marshalInternal(objectMap, AuthenticationTypeGcpCredentials)
 	populate(objectMap, "authProviderX509CertUrl", g.AuthProviderX509CertURL)
 	populate(objectMap, "authUri", g.AuthURI)
 	populate(objectMap, "clientEmail", g.ClientEmail)
@@ -3731,7 +4086,10 @@ func (g *GcpCredentialsDetailsProperties) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return g.AuthenticationDetailsProperties.unmarshalInternal(rawMsg)
+	if err := g.AuthenticationDetailsProperties.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // HTTPC2DMessagesNotInAllowedRange - Number of cloud to device messages (HTTP protocol) is not in allowed range.
@@ -3741,7 +4099,8 @@ type HTTPC2DMessagesNotInAllowedRange struct {
 
 // MarshalJSON implements the json.Marshaller interface for type HTTPC2DMessagesNotInAllowedRange.
 func (h HTTPC2DMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
-	objectMap := h.TimeWindowCustomAlertRule.marshalInternal("HttpC2DMessagesNotInAllowedRange")
+	objectMap := make(map[string]interface{})
+	h.TimeWindowCustomAlertRule.marshalInternal(objectMap, "HttpC2DMessagesNotInAllowedRange")
 	return json.Marshal(objectMap)
 }
 
@@ -3752,7 +4111,8 @@ type HTTPC2DRejectedMessagesNotInAllowedRange struct {
 
 // MarshalJSON implements the json.Marshaller interface for type HTTPC2DRejectedMessagesNotInAllowedRange.
 func (h HTTPC2DRejectedMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
-	objectMap := h.TimeWindowCustomAlertRule.marshalInternal("HttpC2DRejectedMessagesNotInAllowedRange")
+	objectMap := make(map[string]interface{})
+	h.TimeWindowCustomAlertRule.marshalInternal(objectMap, "HttpC2DRejectedMessagesNotInAllowedRange")
 	return json.Marshal(objectMap)
 }
 
@@ -3763,7 +4123,8 @@ type HTTPD2CMessagesNotInAllowedRange struct {
 
 // MarshalJSON implements the json.Marshaller interface for type HTTPD2CMessagesNotInAllowedRange.
 func (h HTTPD2CMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
-	objectMap := h.TimeWindowCustomAlertRule.marshalInternal("HttpD2CMessagesNotInAllowedRange")
+	objectMap := make(map[string]interface{})
+	h.TimeWindowCustomAlertRule.marshalInternal(objectMap, "HttpD2CMessagesNotInAllowedRange")
 	return json.Marshal(objectMap)
 }
 
@@ -3827,7 +4188,8 @@ type InformationProtectionPolicy struct {
 
 // MarshalJSON implements the json.Marshaller interface for type InformationProtectionPolicy.
 func (i InformationProtectionPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := i.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	i.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", i.Properties)
 	return json.Marshal(objectMap)
 }
@@ -3849,7 +4211,10 @@ func (i *InformationProtectionPolicy) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return i.Resource.unmarshalInternal(rawMsg)
+	if err := i.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // InformationProtectionPolicyList - Information protection policies response.
@@ -3980,7 +4345,8 @@ type IngestionSetting struct {
 
 // MarshalJSON implements the json.Marshaller interface for type IngestionSetting.
 func (i IngestionSetting) MarshalJSON() ([]byte, error) {
-	objectMap := i.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	i.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", i.Properties)
 	return json.Marshal(objectMap)
 }
@@ -4002,7 +4368,10 @@ func (i *IngestionSetting) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return i.Resource.unmarshalInternal(rawMsg)
+	if err := i.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // IngestionSettingList - List of ingestion settings
@@ -4068,7 +4437,9 @@ type IoTSecurityAggregatedAlert struct {
 
 // MarshalJSON implements the json.Marshaller interface for type IoTSecurityAggregatedAlert.
 func (i IoTSecurityAggregatedAlert) MarshalJSON() ([]byte, error) {
-	objectMap := i.TagsResource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	i.Resource.marshalInternal(objectMap)
+	i.TagsResource.marshalInternal(objectMap)
 	populate(objectMap, "properties", i.Properties)
 	return json.Marshal(objectMap)
 }
@@ -4090,7 +4461,13 @@ func (i *IoTSecurityAggregatedAlert) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return i.TagsResource.unmarshalInternal(rawMsg)
+	if err := i.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	if err := i.TagsResource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // IoTSecurityAggregatedAlertList - List of IoT Security solution aggregated alert data.
@@ -4250,7 +4627,9 @@ type IoTSecurityAggregatedRecommendation struct {
 
 // MarshalJSON implements the json.Marshaller interface for type IoTSecurityAggregatedRecommendation.
 func (i IoTSecurityAggregatedRecommendation) MarshalJSON() ([]byte, error) {
-	objectMap := i.TagsResource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	i.Resource.marshalInternal(objectMap)
+	i.TagsResource.marshalInternal(objectMap)
 	populate(objectMap, "properties", i.Properties)
 	return json.Marshal(objectMap)
 }
@@ -4272,7 +4651,13 @@ func (i *IoTSecurityAggregatedRecommendation) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return i.TagsResource.unmarshalInternal(rawMsg)
+	if err := i.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	if err := i.TagsResource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // IoTSecurityAggregatedRecommendationList - List of IoT Security solution aggregated recommendations.
@@ -4367,7 +4752,8 @@ type IoTSecuritySolutionAnalyticsModel struct {
 
 // MarshalJSON implements the json.Marshaller interface for type IoTSecuritySolutionAnalyticsModel.
 func (i IoTSecuritySolutionAnalyticsModel) MarshalJSON() ([]byte, error) {
-	objectMap := i.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	i.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", i.Properties)
 	return json.Marshal(objectMap)
 }
@@ -4389,7 +4775,10 @@ func (i *IoTSecuritySolutionAnalyticsModel) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return i.Resource.unmarshalInternal(rawMsg)
+	if err := i.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // IoTSecuritySolutionAnalyticsModelList - List of Security analytics of your IoT Security solution
@@ -4499,7 +4888,9 @@ type IoTSecuritySolutionModel struct {
 
 // MarshalJSON implements the json.Marshaller interface for type IoTSecuritySolutionModel.
 func (i IoTSecuritySolutionModel) MarshalJSON() ([]byte, error) {
-	objectMap := i.TagsResource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	i.Resource.marshalInternal(objectMap)
+	i.TagsResource.marshalInternal(objectMap)
 	populate(objectMap, "location", i.Location)
 	populate(objectMap, "properties", i.Properties)
 	populate(objectMap, "systemData", i.SystemData)
@@ -4529,7 +4920,13 @@ func (i *IoTSecuritySolutionModel) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return i.TagsResource.unmarshalInternal(rawMsg)
+	if err := i.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	if err := i.TagsResource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // IoTSecuritySolutionProperties - Security Solution setting data
@@ -4741,7 +5138,7 @@ type JitNetworkAccessPoliciesListOptions struct {
 }
 
 type JitNetworkAccessPolicy struct {
-	Kind
+	KindAutoGenerated
 	Location
 	Resource
 	// REQUIRED
@@ -4750,7 +5147,10 @@ type JitNetworkAccessPolicy struct {
 
 // MarshalJSON implements the json.Marshaller interface for type JitNetworkAccessPolicy.
 func (j JitNetworkAccessPolicy) MarshalJSON() ([]byte, error) {
-	objectMap := j.Location.marshalInternal()
+	objectMap := make(map[string]interface{})
+	j.Resource.marshalInternal(objectMap)
+	j.KindAutoGenerated.marshalInternal(objectMap)
+	j.Location.marshalInternal(objectMap)
 	populate(objectMap, "properties", j.Properties)
 	return json.Marshal(objectMap)
 }
@@ -4772,7 +5172,16 @@ func (j *JitNetworkAccessPolicy) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return j.Location.unmarshalInternal(rawMsg)
+	if err := j.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	if err := j.KindAutoGenerated.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	if err := j.Location.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 type JitNetworkAccessPolicyInitiatePort struct {
@@ -5068,20 +5477,21 @@ func (j JitNetworkAccessRequestVirtualMachine) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// Kind - Describes an Azure resource with kind
-type Kind struct {
+// KindAutoGenerated - Describes an Azure resource with kind
+type KindAutoGenerated struct {
 	// Kind of the resource
 	Kind *string `json:"kind,omitempty"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type Kind.
-func (k Kind) MarshalJSON() ([]byte, error) {
-	objectMap := k.marshalInternal()
+// MarshalJSON implements the json.Marshaller interface for type KindAutoGenerated.
+func (k KindAutoGenerated) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	k.marshalInternal(objectMap)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type Kind.
-func (k *Kind) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type KindAutoGenerated.
+func (k *KindAutoGenerated) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return err
@@ -5089,13 +5499,11 @@ func (k *Kind) UnmarshalJSON(data []byte) error {
 	return k.unmarshalInternal(rawMsg)
 }
 
-func (k Kind) marshalInternal() map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (k KindAutoGenerated) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "kind", k.Kind)
-	return objectMap
 }
 
-func (k *Kind) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
+func (k *KindAutoGenerated) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
@@ -5140,10 +5548,9 @@ func (l *ListCustomAlertRule) UnmarshalJSON(data []byte) error {
 	return l.unmarshalInternal(rawMsg)
 }
 
-func (l ListCustomAlertRule) marshalInternal(discValue string) map[string]interface{} {
-	objectMap := l.CustomAlertRule.marshalInternal(discValue)
+func (l ListCustomAlertRule) marshalInternal(objectMap map[string]interface{}, discValue string) {
+	l.CustomAlertRule.marshalInternal(objectMap, discValue)
 	populate(objectMap, "valueType", l.ValueType)
-	return objectMap
 }
 
 func (l *ListCustomAlertRule) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -5158,7 +5565,10 @@ func (l *ListCustomAlertRule) unmarshalInternal(rawMsg map[string]json.RawMessag
 			return err
 		}
 	}
-	return l.CustomAlertRule.unmarshalInternal(rawMsg)
+	if err := l.CustomAlertRule.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // LocalUserNotAllowed - Login by a local user that isn't allowed. Allow list consists of login names to allow.
@@ -5168,7 +5578,8 @@ type LocalUserNotAllowed struct {
 
 // MarshalJSON implements the json.Marshaller interface for type LocalUserNotAllowed.
 func (l LocalUserNotAllowed) MarshalJSON() ([]byte, error) {
-	objectMap := l.AllowlistCustomAlertRule.marshalInternal("LocalUserNotAllowed")
+	objectMap := make(map[string]interface{})
+	l.AllowlistCustomAlertRule.marshalInternal(objectMap, "LocalUserNotAllowed")
 	return json.Marshal(objectMap)
 }
 
@@ -5180,7 +5591,8 @@ type Location struct {
 
 // MarshalJSON implements the json.Marshaller interface for type Location.
 func (l Location) MarshalJSON() ([]byte, error) {
-	objectMap := l.marshalInternal()
+	objectMap := make(map[string]interface{})
+	l.marshalInternal(objectMap)
 	return json.Marshal(objectMap)
 }
 
@@ -5193,10 +5605,8 @@ func (l *Location) UnmarshalJSON(data []byte) error {
 	return l.unmarshalInternal(rawMsg)
 }
 
-func (l Location) marshalInternal() map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (l Location) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "location", l.Location)
-	return objectMap
 }
 
 func (l *Location) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -5242,7 +5652,8 @@ type LogAnalyticsIdentifier struct {
 
 // MarshalJSON implements the json.Marshaller interface for type LogAnalyticsIdentifier.
 func (l LogAnalyticsIdentifier) MarshalJSON() ([]byte, error) {
-	objectMap := l.ResourceIdentifier.marshalInternal(ResourceIdentifierTypeLogAnalytics)
+	objectMap := make(map[string]interface{})
+	l.ResourceIdentifier.marshalInternal(objectMap, ResourceIdentifierTypeLogAnalytics)
 	populate(objectMap, "agentId", l.AgentID)
 	populate(objectMap, "workspaceId", l.WorkspaceID)
 	populate(objectMap, "workspaceResourceGroup", l.WorkspaceResourceGroup)
@@ -5276,7 +5687,10 @@ func (l *LogAnalyticsIdentifier) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return l.ResourceIdentifier.unmarshalInternal(rawMsg)
+	if err := l.ResourceIdentifier.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // MqttC2DMessagesNotInAllowedRange - Number of cloud to device messages (MQTT protocol) is not in allowed range.
@@ -5286,7 +5700,8 @@ type MqttC2DMessagesNotInAllowedRange struct {
 
 // MarshalJSON implements the json.Marshaller interface for type MqttC2DMessagesNotInAllowedRange.
 func (m MqttC2DMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
-	objectMap := m.TimeWindowCustomAlertRule.marshalInternal("MqttC2DMessagesNotInAllowedRange")
+	objectMap := make(map[string]interface{})
+	m.TimeWindowCustomAlertRule.marshalInternal(objectMap, "MqttC2DMessagesNotInAllowedRange")
 	return json.Marshal(objectMap)
 }
 
@@ -5297,7 +5712,8 @@ type MqttC2DRejectedMessagesNotInAllowedRange struct {
 
 // MarshalJSON implements the json.Marshaller interface for type MqttC2DRejectedMessagesNotInAllowedRange.
 func (m MqttC2DRejectedMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
-	objectMap := m.TimeWindowCustomAlertRule.marshalInternal("MqttC2DRejectedMessagesNotInAllowedRange")
+	objectMap := make(map[string]interface{})
+	m.TimeWindowCustomAlertRule.marshalInternal(objectMap, "MqttC2DRejectedMessagesNotInAllowedRange")
 	return json.Marshal(objectMap)
 }
 
@@ -5308,126 +5724,9 @@ type MqttD2CMessagesNotInAllowedRange struct {
 
 // MarshalJSON implements the json.Marshaller interface for type MqttD2CMessagesNotInAllowedRange.
 func (m MqttD2CMessagesNotInAllowedRange) MarshalJSON() ([]byte, error) {
-	objectMap := m.TimeWindowCustomAlertRule.marshalInternal("MqttD2CMessagesNotInAllowedRange")
+	objectMap := make(map[string]interface{})
+	m.TimeWindowCustomAlertRule.marshalInternal(objectMap, "MqttD2CMessagesNotInAllowedRange")
 	return json.Marshal(objectMap)
-}
-
-// OnPremiseResourceDetailsClassification provides polymorphic access to related types.
-// Call the interface's GetOnPremiseResourceDetails() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *OnPremiseResourceDetails, *OnPremiseSqlResourceDetails
-type OnPremiseResourceDetailsClassification interface {
-	ResourceDetailsClassification
-	// GetOnPremiseResourceDetails returns the OnPremiseResourceDetails content of the underlying type.
-	GetOnPremiseResourceDetails() *OnPremiseResourceDetails
-}
-
-// OnPremiseResourceDetails - Details of the On Premise resource that was assessed
-type OnPremiseResourceDetails struct {
-	ResourceDetails
-	// REQUIRED; The name of the machine
-	MachineName *string `json:"machineName,omitempty"`
-
-	// REQUIRED; The oms agent Id installed on the machine
-	SourceComputerID *string `json:"sourceComputerId,omitempty"`
-
-	// REQUIRED; The unique Id of the machine
-	Vmuuid *string `json:"vmuuid,omitempty"`
-
-	// REQUIRED; Azure resource Id of the workspace the machine is attached to
-	WorkspaceID *string `json:"workspaceId,omitempty"`
-}
-
-// GetOnPremiseResourceDetails implements the OnPremiseResourceDetailsClassification interface for type OnPremiseResourceDetails.
-func (o *OnPremiseResourceDetails) GetOnPremiseResourceDetails() *OnPremiseResourceDetails { return o }
-
-// MarshalJSON implements the json.Marshaller interface for type OnPremiseResourceDetails.
-func (o OnPremiseResourceDetails) MarshalJSON() ([]byte, error) {
-	objectMap := o.marshalInternal(SourceOnPremise)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OnPremiseResourceDetails.
-func (o *OnPremiseResourceDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return o.unmarshalInternal(rawMsg)
-}
-
-func (o OnPremiseResourceDetails) marshalInternal(discValue Source) map[string]interface{} {
-	objectMap := o.ResourceDetails.marshalInternal(discValue)
-	populate(objectMap, "machineName", o.MachineName)
-	populate(objectMap, "sourceComputerId", o.SourceComputerID)
-	populate(objectMap, "vmuuid", o.Vmuuid)
-	populate(objectMap, "workspaceId", o.WorkspaceID)
-	return objectMap
-}
-
-func (o *OnPremiseResourceDetails) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "machineName":
-			err = unpopulate(val, &o.MachineName)
-			delete(rawMsg, key)
-		case "sourceComputerId":
-			err = unpopulate(val, &o.SourceComputerID)
-			delete(rawMsg, key)
-		case "vmuuid":
-			err = unpopulate(val, &o.Vmuuid)
-			delete(rawMsg, key)
-		case "workspaceId":
-			err = unpopulate(val, &o.WorkspaceID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return o.ResourceDetails.unmarshalInternal(rawMsg)
-}
-
-// OnPremiseSQLResourceDetails - Details of the On Premise Sql resource that was assessed
-type OnPremiseSQLResourceDetails struct {
-	OnPremiseResourceDetails
-	// REQUIRED; The Sql database name installed on the machine
-	DatabaseName *string `json:"databaseName,omitempty"`
-
-	// REQUIRED; The Sql server name installed on the machine
-	ServerName *string `json:"serverName,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type OnPremiseSQLResourceDetails.
-func (o OnPremiseSQLResourceDetails) MarshalJSON() ([]byte, error) {
-	objectMap := o.OnPremiseResourceDetails.marshalInternal(SourceOnPremiseSQL)
-	populate(objectMap, "databaseName", o.DatabaseName)
-	populate(objectMap, "serverName", o.ServerName)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type OnPremiseSQLResourceDetails.
-func (o *OnPremiseSQLResourceDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "databaseName":
-			err = unpopulate(val, &o.DatabaseName)
-			delete(rawMsg, key)
-		case "serverName":
-			err = unpopulate(val, &o.ServerName)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return o.OnPremiseResourceDetails.unmarshalInternal(rawMsg)
 }
 
 // Operation - Possible operation in the REST API of Microsoft.Security
@@ -5531,7 +5830,8 @@ type Pricing struct {
 
 // MarshalJSON implements the json.Marshaller interface for type Pricing.
 func (p Pricing) MarshalJSON() ([]byte, error) {
-	objectMap := p.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	p.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", p.Properties)
 	return json.Marshal(objectMap)
 }
@@ -5553,7 +5853,10 @@ func (p *Pricing) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return p.Resource.unmarshalInternal(rawMsg)
+	if err := p.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // PricingList - List of pricing configurations response.
@@ -5602,7 +5905,8 @@ type ProcessNotAllowed struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ProcessNotAllowed.
 func (p ProcessNotAllowed) MarshalJSON() ([]byte, error) {
-	objectMap := p.AllowlistCustomAlertRule.marshalInternal("ProcessNotAllowed")
+	objectMap := make(map[string]interface{})
+	p.AllowlistCustomAlertRule.marshalInternal(objectMap, "ProcessNotAllowed")
 	return json.Marshal(objectMap)
 }
 
@@ -5675,7 +5979,8 @@ type QueuePurgesNotInAllowedRange struct {
 
 // MarshalJSON implements the json.Marshaller interface for type QueuePurgesNotInAllowedRange.
 func (q QueuePurgesNotInAllowedRange) MarshalJSON() ([]byte, error) {
-	objectMap := q.TimeWindowCustomAlertRule.marshalInternal("QueuePurgesNotInAllowedRange")
+	objectMap := make(map[string]interface{})
+	q.TimeWindowCustomAlertRule.marshalInternal(objectMap, "QueuePurgesNotInAllowedRange")
 	return json.Marshal(objectMap)
 }
 
@@ -5700,7 +6005,8 @@ type RegulatoryComplianceAssessment struct {
 
 // MarshalJSON implements the json.Marshaller interface for type RegulatoryComplianceAssessment.
 func (r RegulatoryComplianceAssessment) MarshalJSON() ([]byte, error) {
-	objectMap := r.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	r.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", r.Properties)
 	return json.Marshal(objectMap)
 }
@@ -5722,7 +6028,10 @@ func (r *RegulatoryComplianceAssessment) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return r.Resource.unmarshalInternal(rawMsg)
+	if err := r.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // RegulatoryComplianceAssessmentList - List of regulatory compliance assessment response
@@ -5789,7 +6098,8 @@ type RegulatoryComplianceControl struct {
 
 // MarshalJSON implements the json.Marshaller interface for type RegulatoryComplianceControl.
 func (r RegulatoryComplianceControl) MarshalJSON() ([]byte, error) {
-	objectMap := r.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	r.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", r.Properties)
 	return json.Marshal(objectMap)
 }
@@ -5811,7 +6121,10 @@ func (r *RegulatoryComplianceControl) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return r.Resource.unmarshalInternal(rawMsg)
+	if err := r.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // RegulatoryComplianceControlList - List of regulatory compliance controls response
@@ -5869,7 +6182,8 @@ type RegulatoryComplianceStandard struct {
 
 // MarshalJSON implements the json.Marshaller interface for type RegulatoryComplianceStandard.
 func (r RegulatoryComplianceStandard) MarshalJSON() ([]byte, error) {
-	objectMap := r.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	r.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", r.Properties)
 	return json.Marshal(objectMap)
 }
@@ -5891,7 +6205,10 @@ func (r *RegulatoryComplianceStandard) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return r.Resource.unmarshalInternal(rawMsg)
+	if err := r.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // RegulatoryComplianceStandardList - List of regulatory compliance standards response
@@ -5979,7 +6296,8 @@ type Resource struct {
 
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := r.marshalInternal()
+	objectMap := make(map[string]interface{})
+	r.marshalInternal(objectMap)
 	return json.Marshal(objectMap)
 }
 
@@ -5992,12 +6310,10 @@ func (r *Resource) UnmarshalJSON(data []byte) error {
 	return r.unmarshalInternal(rawMsg)
 }
 
-func (r Resource) marshalInternal() map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (r Resource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "type", r.Type)
-	return objectMap
 }
 
 func (r *Resource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -6024,7 +6340,7 @@ func (r *Resource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 // ResourceDetailsClassification provides polymorphic access to related types.
 // Call the interface's GetResourceDetails() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AzureResourceDetails, *OnPremiseResourceDetails, *OnPremiseSqlResourceDetails, *ResourceDetails
+// - *ResourceDetails
 type ResourceDetailsClassification interface {
 	// GetResourceDetails returns the ResourceDetails content of the underlying type.
 	GetResourceDetails() *ResourceDetails
@@ -6038,37 +6354,6 @@ type ResourceDetails struct {
 
 // GetResourceDetails implements the ResourceDetailsClassification interface for type ResourceDetails.
 func (r *ResourceDetails) GetResourceDetails() *ResourceDetails { return r }
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ResourceDetails.
-func (r *ResourceDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return r.unmarshalInternal(rawMsg)
-}
-
-func (r ResourceDetails) marshalInternal(discValue Source) map[string]interface{} {
-	objectMap := make(map[string]interface{})
-	r.Source = &discValue
-	objectMap["source"] = r.Source
-	return objectMap
-}
-
-func (r *ResourceDetails) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "source":
-			err = unpopulate(val, &r.Source)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
 
 // ResourceIdentifierClassification provides polymorphic access to related types.
 // Call the interface's GetResourceIdentifier() method to access the common type.
@@ -6098,11 +6383,9 @@ func (r *ResourceIdentifier) UnmarshalJSON(data []byte) error {
 	return r.unmarshalInternal(rawMsg)
 }
 
-func (r ResourceIdentifier) marshalInternal(discValue ResourceIdentifierType) map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (r ResourceIdentifier) marshalInternal(objectMap map[string]interface{}, discValue ResourceIdentifierType) {
 	r.Type = &discValue
 	objectMap["type"] = r.Type
-	return objectMap
 }
 
 func (r *ResourceIdentifier) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -6159,7 +6442,8 @@ type RuleResults struct {
 
 // MarshalJSON implements the json.Marshaller interface for type RuleResults.
 func (r RuleResults) MarshalJSON() ([]byte, error) {
-	objectMap := r.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	r.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", r.Properties)
 	return json.Marshal(objectMap)
 }
@@ -6181,7 +6465,10 @@ func (r *RuleResults) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return r.Resource.unmarshalInternal(rawMsg)
+	if err := r.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // RuleResultsInput - Rule results input.
@@ -6256,7 +6543,8 @@ type SQLServerVulnerabilityProperties struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SQLServerVulnerabilityProperties.
 func (s SQLServerVulnerabilityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := s.AdditionalData.marshalInternal(AssessedResourceTypeSQLServerVulnerability)
+	objectMap := make(map[string]interface{})
+	s.AdditionalData.marshalInternal(objectMap, AssessedResourceTypeSQLServerVulnerability)
 	populate(objectMap, "query", s.Query)
 	populate(objectMap, "type", s.Type)
 	return json.Marshal(objectMap)
@@ -6282,7 +6570,10 @@ func (s *SQLServerVulnerabilityProperties) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.AdditionalData.unmarshalInternal(rawMsg)
+	if err := s.AdditionalData.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // SQLVulnerabilityAssessmentBaselineRulesAddOptions contains the optional parameters for the SQLVulnerabilityAssessmentBaselineRules.Add method.
@@ -6342,7 +6633,8 @@ type Scan struct {
 
 // MarshalJSON implements the json.Marshaller interface for type Scan.
 func (s Scan) MarshalJSON() ([]byte, error) {
-	objectMap := s.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -6364,7 +6656,10 @@ func (s *Scan) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.Resource.unmarshalInternal(rawMsg)
+	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // ScanProperties - A vulnerability assessment scan record properties.
@@ -6504,7 +6799,8 @@ type ScanResult struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ScanResult.
 func (s ScanResult) MarshalJSON() ([]byte, error) {
-	objectMap := s.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -6526,7 +6822,10 @@ func (s *ScanResult) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.Resource.unmarshalInternal(rawMsg)
+	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // ScanResultProperties - A vulnerability assessment scan result properties for a single rule.
@@ -6664,7 +6963,8 @@ type SecureScoreControlDefinitionItem struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecureScoreControlDefinitionItem.
 func (s SecureScoreControlDefinitionItem) MarshalJSON() ([]byte, error) {
-	objectMap := s.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -6686,7 +6986,10 @@ func (s *SecureScoreControlDefinitionItem) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.Resource.unmarshalInternal(rawMsg)
+	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // SecureScoreControlDefinitionItemProperties - Security Control Definition Properties.
@@ -6760,7 +7063,8 @@ type SecureScoreControlDetails struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecureScoreControlDetails.
 func (s SecureScoreControlDetails) MarshalJSON() ([]byte, error) {
-	objectMap := s.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -6782,7 +7086,10 @@ func (s *SecureScoreControlDetails) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.Resource.unmarshalInternal(rawMsg)
+	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // SecureScoreControlList - List of security controls
@@ -6860,7 +7167,8 @@ type SecureScoreItem struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecureScoreItem.
 func (s SecureScoreItem) MarshalJSON() ([]byte, error) {
-	objectMap := s.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -6882,7 +7190,10 @@ func (s *SecureScoreItem) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.Resource.unmarshalInternal(rawMsg)
+	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // SecureScoreItemProperties - Describes properties of a calculated secure score.
@@ -6933,7 +7244,8 @@ type SecurityAssessment struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecurityAssessment.
 func (s SecurityAssessment) MarshalJSON() ([]byte, error) {
-	objectMap := s.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -6955,7 +7267,10 @@ func (s *SecurityAssessment) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.Resource.unmarshalInternal(rawMsg)
+	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // SecurityAssessmentList - Page of a security assessments list
@@ -6984,7 +7299,8 @@ type SecurityAssessmentMetadata struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentMetadata.
 func (s SecurityAssessmentMetadata) MarshalJSON() ([]byte, error) {
-	objectMap := s.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -7006,7 +7322,10 @@ func (s *SecurityAssessmentMetadata) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.Resource.unmarshalInternal(rawMsg)
+	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // SecurityAssessmentMetadataPartnerData - Describes the partner that created the assessment
@@ -7058,12 +7377,12 @@ type SecurityAssessmentMetadataProperties struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentMetadataProperties.
 func (s SecurityAssessmentMetadataProperties) MarshalJSON() ([]byte, error) {
-	objectMap := s.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.marshalInternal(objectMap)
 	return json.Marshal(objectMap)
 }
 
-func (s SecurityAssessmentMetadataProperties) marshalInternal() map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (s SecurityAssessmentMetadataProperties) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "assessmentType", s.AssessmentType)
 	populate(objectMap, "categories", s.Categories)
 	populate(objectMap, "description", s.Description)
@@ -7076,7 +7395,6 @@ func (s SecurityAssessmentMetadataProperties) marshalInternal() map[string]inter
 	populate(objectMap, "severity", s.Severity)
 	populate(objectMap, "threats", s.Threats)
 	populate(objectMap, "userImpact", s.UserImpact)
-	return objectMap
 }
 
 // SecurityAssessmentMetadataPropertiesResponse - Describes properties of an assessment metadata response.
@@ -7090,7 +7408,8 @@ type SecurityAssessmentMetadataPropertiesResponse struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentMetadataPropertiesResponse.
 func (s SecurityAssessmentMetadataPropertiesResponse) MarshalJSON() ([]byte, error) {
-	objectMap := s.SecurityAssessmentMetadataProperties.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.SecurityAssessmentMetadataProperties.marshalInternal(objectMap)
 	populate(objectMap, "plannedDeprecationDate", s.PlannedDeprecationDate)
 	populate(objectMap, "publishDates", s.PublishDates)
 	populate(objectMap, "tactics", s.Tactics)
@@ -7113,7 +7432,8 @@ type SecurityAssessmentMetadataResponse struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentMetadataResponse.
 func (s SecurityAssessmentMetadataResponse) MarshalJSON() ([]byte, error) {
-	objectMap := s.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -7135,7 +7455,10 @@ func (s *SecurityAssessmentMetadataResponse) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.Resource.unmarshalInternal(rawMsg)
+	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // SecurityAssessmentMetadataResponseList - List of security assessment metadata
@@ -7173,7 +7496,8 @@ type SecurityAssessmentProperties struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentProperties.
 func (s SecurityAssessmentProperties) MarshalJSON() ([]byte, error) {
-	objectMap := s.SecurityAssessmentPropertiesBase.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.SecurityAssessmentPropertiesBase.marshalInternal(objectMap)
 	populate(objectMap, "status", s.Status)
 	return json.Marshal(objectMap)
 }
@@ -7195,7 +7519,10 @@ func (s *SecurityAssessmentProperties) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.SecurityAssessmentPropertiesBase.unmarshalInternal(rawMsg)
+	if err := s.SecurityAssessmentPropertiesBase.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // SecurityAssessmentPropertiesBase - Describes properties of an assessment.
@@ -7221,7 +7548,8 @@ type SecurityAssessmentPropertiesBase struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentPropertiesBase.
 func (s SecurityAssessmentPropertiesBase) MarshalJSON() ([]byte, error) {
-	objectMap := s.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.marshalInternal(objectMap)
 	return json.Marshal(objectMap)
 }
 
@@ -7234,15 +7562,13 @@ func (s *SecurityAssessmentPropertiesBase) UnmarshalJSON(data []byte) error {
 	return s.unmarshalInternal(rawMsg)
 }
 
-func (s SecurityAssessmentPropertiesBase) marshalInternal() map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (s SecurityAssessmentPropertiesBase) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "additionalData", s.AdditionalData)
 	populate(objectMap, "displayName", s.DisplayName)
 	populate(objectMap, "links", s.Links)
 	populate(objectMap, "metadata", s.Metadata)
 	populate(objectMap, "partnersData", s.PartnersData)
 	populate(objectMap, "resourceDetails", s.ResourceDetails)
-	return objectMap
 }
 
 func (s *SecurityAssessmentPropertiesBase) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -7284,7 +7610,8 @@ type SecurityAssessmentPropertiesResponse struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentPropertiesResponse.
 func (s SecurityAssessmentPropertiesResponse) MarshalJSON() ([]byte, error) {
-	objectMap := s.SecurityAssessmentPropertiesBase.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.SecurityAssessmentPropertiesBase.marshalInternal(objectMap)
 	populate(objectMap, "status", s.Status)
 	return json.Marshal(objectMap)
 }
@@ -7306,7 +7633,10 @@ func (s *SecurityAssessmentPropertiesResponse) UnmarshalJSON(data []byte) error 
 			return err
 		}
 	}
-	return s.SecurityAssessmentPropertiesBase.unmarshalInternal(rawMsg)
+	if err := s.SecurityAssessmentPropertiesBase.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // SecurityAssessmentResponse - Security assessment on a resource - response format
@@ -7318,7 +7648,8 @@ type SecurityAssessmentResponse struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecurityAssessmentResponse.
 func (s SecurityAssessmentResponse) MarshalJSON() ([]byte, error) {
-	objectMap := s.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -7340,7 +7671,10 @@ func (s *SecurityAssessmentResponse) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.Resource.unmarshalInternal(rawMsg)
+	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // SecurityContact - Contact details for security issues
@@ -7352,7 +7686,8 @@ type SecurityContact struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecurityContact.
 func (s SecurityContact) MarshalJSON() ([]byte, error) {
-	objectMap := s.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -7374,7 +7709,10 @@ func (s *SecurityContact) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.Resource.unmarshalInternal(rawMsg)
+	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // SecurityContactList - List of security contacts response
@@ -7442,7 +7780,9 @@ type SecuritySolution struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecuritySolution.
 func (s SecuritySolution) MarshalJSON() ([]byte, error) {
-	objectMap := s.Location.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.Resource.marshalInternal(objectMap)
+	s.Location.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -7464,7 +7804,13 @@ func (s *SecuritySolution) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.Location.unmarshalInternal(rawMsg)
+	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	if err := s.Location.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 type SecuritySolutionList struct {
@@ -7515,7 +7861,9 @@ type SecuritySolutionsReferenceData struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecuritySolutionsReferenceData.
 func (s SecuritySolutionsReferenceData) MarshalJSON() ([]byte, error) {
-	objectMap := s.Location.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.Resource.marshalInternal(objectMap)
+	s.Location.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -7537,7 +7885,13 @@ func (s *SecuritySolutionsReferenceData) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.Location.unmarshalInternal(rawMsg)
+	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	if err := s.Location.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 type SecuritySolutionsReferenceDataList struct {
@@ -7593,7 +7947,8 @@ type SecuritySubAssessment struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecuritySubAssessment.
 func (s SecuritySubAssessment) MarshalJSON() ([]byte, error) {
-	objectMap := s.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -7615,7 +7970,10 @@ func (s *SecuritySubAssessment) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.Resource.unmarshalInternal(rawMsg)
+	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // SecuritySubAssessmentList - List of security sub-assessments
@@ -7742,7 +8100,8 @@ type SecurityTask struct {
 
 // MarshalJSON implements the json.Marshaller interface for type SecurityTask.
 func (s SecurityTask) MarshalJSON() ([]byte, error) {
-	objectMap := s.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -7764,7 +8123,10 @@ func (s *SecurityTask) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.Resource.unmarshalInternal(rawMsg)
+	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // SecurityTaskList - List of security task recommendations
@@ -7927,7 +8289,8 @@ type ServerVulnerabilityAssessment struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ServerVulnerabilityAssessment.
 func (s ServerVulnerabilityAssessment) MarshalJSON() ([]byte, error) {
-	objectMap := s.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -7949,7 +8312,10 @@ func (s *ServerVulnerabilityAssessment) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.Resource.unmarshalInternal(rawMsg)
+	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // ServerVulnerabilityAssessmentBeginDeleteOptions contains the optional parameters for the ServerVulnerabilityAssessment.BeginDelete method.
@@ -8018,7 +8384,8 @@ type ServerVulnerabilityProperties struct {
 
 // MarshalJSON implements the json.Marshaller interface for type ServerVulnerabilityProperties.
 func (s ServerVulnerabilityProperties) MarshalJSON() ([]byte, error) {
-	objectMap := s.AdditionalData.marshalInternal("ServerVulnerabilityAssessment")
+	objectMap := make(map[string]interface{})
+	s.AdditionalData.marshalInternal(objectMap, "ServerVulnerabilityAssessment")
 	populate(objectMap, "cve", s.Cve)
 	populate(objectMap, "cvss", s.Cvss)
 	populate(objectMap, "patchable", s.Patchable)
@@ -8066,7 +8433,10 @@ func (s *ServerVulnerabilityProperties) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.AdditionalData.unmarshalInternal(rawMsg)
+	if err := s.AdditionalData.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // ServicePrincipalProperties - Details of the service principal.
@@ -8106,11 +8476,10 @@ func (s *Setting) UnmarshalJSON(data []byte) error {
 	return s.unmarshalInternal(rawMsg)
 }
 
-func (s Setting) marshalInternal(discValue SettingKind) map[string]interface{} {
-	objectMap := s.Resource.marshalInternal()
+func (s Setting) marshalInternal(objectMap map[string]interface{}, discValue SettingKind) {
+	s.Resource.marshalInternal(objectMap)
 	s.Kind = &discValue
 	objectMap["kind"] = s.Kind
-	return objectMap
 }
 
 func (s *Setting) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -8125,7 +8494,10 @@ func (s *Setting) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 			return err
 		}
 	}
-	return s.Resource.unmarshalInternal(rawMsg)
+	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // SettingsGetOptions contains the optional parameters for the Settings.Get method.
@@ -8192,7 +8564,8 @@ type Software struct {
 
 // MarshalJSON implements the json.Marshaller interface for type Software.
 func (s Software) MarshalJSON() ([]byte, error) {
-	objectMap := s.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	s.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -8214,7 +8587,10 @@ func (s *Software) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return s.Resource.unmarshalInternal(rawMsg)
+	if err := s.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // SoftwareInventoriesGetOptions contains the optional parameters for the SoftwareInventories.Get method.
@@ -8400,7 +8776,8 @@ type Tags struct {
 
 // MarshalJSON implements the json.Marshaller interface for type Tags.
 func (t Tags) MarshalJSON() ([]byte, error) {
-	objectMap := t.marshalInternal()
+	objectMap := make(map[string]interface{})
+	t.marshalInternal(objectMap)
 	return json.Marshal(objectMap)
 }
 
@@ -8413,10 +8790,8 @@ func (t *Tags) UnmarshalJSON(data []byte) error {
 	return t.unmarshalInternal(rawMsg)
 }
 
-func (t Tags) marshalInternal() map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (t Tags) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "tags", t.Tags)
-	return objectMap
 }
 
 func (t *Tags) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -8442,7 +8817,8 @@ type TagsResource struct {
 
 // MarshalJSON implements the json.Marshaller interface for type TagsResource.
 func (t TagsResource) MarshalJSON() ([]byte, error) {
-	objectMap := t.marshalInternal()
+	objectMap := make(map[string]interface{})
+	t.marshalInternal(objectMap)
 	return json.Marshal(objectMap)
 }
 
@@ -8455,10 +8831,8 @@ func (t *TagsResource) UnmarshalJSON(data []byte) error {
 	return t.unmarshalInternal(rawMsg)
 }
 
-func (t TagsResource) marshalInternal() map[string]interface{} {
-	objectMap := make(map[string]interface{})
+func (t TagsResource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "tags", t.Tags)
-	return objectMap
 }
 
 func (t *TagsResource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -8550,11 +8924,10 @@ func (t *ThresholdCustomAlertRule) UnmarshalJSON(data []byte) error {
 	return t.unmarshalInternal(rawMsg)
 }
 
-func (t ThresholdCustomAlertRule) marshalInternal(discValue string) map[string]interface{} {
-	objectMap := t.CustomAlertRule.marshalInternal(discValue)
+func (t ThresholdCustomAlertRule) marshalInternal(objectMap map[string]interface{}, discValue string) {
+	t.CustomAlertRule.marshalInternal(objectMap, discValue)
 	populate(objectMap, "maxThreshold", t.MaxThreshold)
 	populate(objectMap, "minThreshold", t.MinThreshold)
-	return objectMap
 }
 
 func (t *ThresholdCustomAlertRule) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -8572,7 +8945,10 @@ func (t *ThresholdCustomAlertRule) unmarshalInternal(rawMsg map[string]json.RawM
 			return err
 		}
 	}
-	return t.CustomAlertRule.unmarshalInternal(rawMsg)
+	if err := t.CustomAlertRule.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // TimeWindowCustomAlertRuleClassification provides polymorphic access to related types.
@@ -8604,7 +8980,8 @@ func (t *TimeWindowCustomAlertRule) GetTimeWindowCustomAlertRule() *TimeWindowCu
 
 // MarshalJSON implements the json.Marshaller interface for type TimeWindowCustomAlertRule.
 func (t TimeWindowCustomAlertRule) MarshalJSON() ([]byte, error) {
-	objectMap := t.marshalInternal("TimeWindowCustomAlertRule")
+	objectMap := make(map[string]interface{})
+	t.marshalInternal(objectMap, "TimeWindowCustomAlertRule")
 	return json.Marshal(objectMap)
 }
 
@@ -8617,10 +8994,9 @@ func (t *TimeWindowCustomAlertRule) UnmarshalJSON(data []byte) error {
 	return t.unmarshalInternal(rawMsg)
 }
 
-func (t TimeWindowCustomAlertRule) marshalInternal(discValue string) map[string]interface{} {
-	objectMap := t.ThresholdCustomAlertRule.marshalInternal(discValue)
+func (t TimeWindowCustomAlertRule) marshalInternal(objectMap map[string]interface{}, discValue string) {
+	t.ThresholdCustomAlertRule.marshalInternal(objectMap, discValue)
 	populate(objectMap, "timeWindowSize", t.TimeWindowSize)
-	return objectMap
 }
 
 func (t *TimeWindowCustomAlertRule) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -8635,7 +9011,10 @@ func (t *TimeWindowCustomAlertRule) unmarshalInternal(rawMsg map[string]json.Raw
 			return err
 		}
 	}
-	return t.ThresholdCustomAlertRule.unmarshalInternal(rawMsg)
+	if err := t.ThresholdCustomAlertRule.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // TopologyGetOptions contains the optional parameters for the Topology.Get method.
@@ -8678,7 +9057,9 @@ type TopologyResource struct {
 
 // MarshalJSON implements the json.Marshaller interface for type TopologyResource.
 func (t TopologyResource) MarshalJSON() ([]byte, error) {
-	objectMap := t.Location.marshalInternal()
+	objectMap := make(map[string]interface{})
+	t.Resource.marshalInternal(objectMap)
+	t.Location.marshalInternal(objectMap)
 	populate(objectMap, "properties", t.Properties)
 	return json.Marshal(objectMap)
 }
@@ -8700,7 +9081,13 @@ func (t *TopologyResource) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return t.Location.unmarshalInternal(rawMsg)
+	if err := t.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	if err := t.Location.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 type TopologyResourceProperties struct {
@@ -8798,18 +9185,36 @@ type TopologySingleResourceParent struct {
 type TrackedResource struct {
 	AzureTrackedResourceLocation
 	ETag
-	Kind
+	KindAutoGenerated
 	Resource
 	Tags
 }
 
-func (t TrackedResource) marshalInternal() map[string]interface{} {
-	objectMap := t.Tags.marshalInternal()
-	return objectMap
+func (t TrackedResource) marshalInternal(objectMap map[string]interface{}) {
+	t.Resource.marshalInternal(objectMap)
+	t.AzureTrackedResourceLocation.marshalInternal(objectMap)
+	t.KindAutoGenerated.marshalInternal(objectMap)
+	t.ETag.marshalInternal(objectMap)
+	t.Tags.marshalInternal(objectMap)
 }
 
 func (t *TrackedResource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	return t.Tags.unmarshalInternal(rawMsg)
+	if err := t.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	if err := t.AzureTrackedResourceLocation.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	if err := t.KindAutoGenerated.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	if err := t.ETag.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	if err := t.Tags.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // TwinUpdatesNotInAllowedRange - Number of twin updates is not in allowed range.
@@ -8819,7 +9224,8 @@ type TwinUpdatesNotInAllowedRange struct {
 
 // MarshalJSON implements the json.Marshaller interface for type TwinUpdatesNotInAllowedRange.
 func (t TwinUpdatesNotInAllowedRange) MarshalJSON() ([]byte, error) {
-	objectMap := t.TimeWindowCustomAlertRule.marshalInternal("TwinUpdatesNotInAllowedRange")
+	objectMap := make(map[string]interface{})
+	t.TimeWindowCustomAlertRule.marshalInternal(objectMap, "TwinUpdatesNotInAllowedRange")
 	return json.Marshal(objectMap)
 }
 
@@ -8830,7 +9236,8 @@ type UnauthorizedOperationsNotInAllowedRange struct {
 
 // MarshalJSON implements the json.Marshaller interface for type UnauthorizedOperationsNotInAllowedRange.
 func (u UnauthorizedOperationsNotInAllowedRange) MarshalJSON() ([]byte, error) {
-	objectMap := u.TimeWindowCustomAlertRule.marshalInternal("UnauthorizedOperationsNotInAllowedRange")
+	objectMap := make(map[string]interface{})
+	u.TimeWindowCustomAlertRule.marshalInternal(objectMap, "UnauthorizedOperationsNotInAllowedRange")
 	return json.Marshal(objectMap)
 }
 
@@ -8859,9 +9266,33 @@ type UpdateIotSecuritySolutionData struct {
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateIotSecuritySolutionData.
 func (u UpdateIotSecuritySolutionData) MarshalJSON() ([]byte, error) {
-	objectMap := u.TagsResource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	u.TagsResource.marshalInternal(objectMap)
 	populate(objectMap, "properties", u.Properties)
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type UpdateIotSecuritySolutionData.
+func (u *UpdateIotSecuritySolutionData) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, &u.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	if err := u.TagsResource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // UserDefinedResourcesProperties - Properties of the IoT Security solution's user defined resources.
@@ -8968,7 +9399,8 @@ type WorkspaceSetting struct {
 
 // MarshalJSON implements the json.Marshaller interface for type WorkspaceSetting.
 func (w WorkspaceSetting) MarshalJSON() ([]byte, error) {
-	objectMap := w.Resource.marshalInternal()
+	objectMap := make(map[string]interface{})
+	w.Resource.marshalInternal(objectMap)
 	populate(objectMap, "properties", w.Properties)
 	return json.Marshal(objectMap)
 }
@@ -8990,7 +9422,10 @@ func (w *WorkspaceSetting) UnmarshalJSON(data []byte) error {
 			return err
 		}
 	}
-	return w.Resource.unmarshalInternal(rawMsg)
+	if err := w.Resource.unmarshalInternal(rawMsg); err != nil {
+		return err
+	}
+	return nil
 }
 
 // WorkspaceSettingList - List of workspace settings response

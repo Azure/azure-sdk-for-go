@@ -533,13 +533,13 @@ type RecoveryServicesCheckNameAvailabilityOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecoveryServicesClientGetOperationResultOptions contains the optional parameters for the RecoveryServicesClient.GetOperationResult method.
-type RecoveryServicesClientGetOperationResultOptions struct {
+// RecoveryServicesGetOperationResultOptions contains the optional parameters for the RecoveryServices.GetOperationResult method.
+type RecoveryServicesGetOperationResultOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecoveryServicesClientGetOperationStatusOptions contains the optional parameters for the RecoveryServicesClient.GetOperationStatus method.
-type RecoveryServicesClientGetOperationStatusOptions struct {
+// RecoveryServicesGetOperationStatusOptions contains the optional parameters for the RecoveryServices.GetOperationStatus method.
+type RecoveryServicesGetOperationStatusOptions struct {
 	// placeholder for future optional parameters
 }
 

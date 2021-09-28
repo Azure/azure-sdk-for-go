@@ -64,27 +64,27 @@ type RecoveryServicesCheckNameAvailabilityResult struct {
 	CheckNameAvailabilityResult
 }
 
-// RecoveryServicesClientGetOperationResultResponse contains the response from method RecoveryServicesClient.GetOperationResult.
-type RecoveryServicesClientGetOperationResultResponse struct {
-	RecoveryServicesClientGetOperationResultResult
+// RecoveryServicesGetOperationResultResponse contains the response from method RecoveryServices.GetOperationResult.
+type RecoveryServicesGetOperationResultResponse struct {
+	RecoveryServicesGetOperationResultResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecoveryServicesClientGetOperationResultResult contains the result from method RecoveryServicesClient.GetOperationResult.
-type RecoveryServicesClientGetOperationResultResult struct {
+// RecoveryServicesGetOperationResultResult contains the result from method RecoveryServices.GetOperationResult.
+type RecoveryServicesGetOperationResultResult struct {
 	Vault
 }
 
-// RecoveryServicesClientGetOperationStatusResponse contains the response from method RecoveryServicesClient.GetOperationStatus.
-type RecoveryServicesClientGetOperationStatusResponse struct {
-	RecoveryServicesClientGetOperationStatusResult
+// RecoveryServicesGetOperationStatusResponse contains the response from method RecoveryServices.GetOperationStatus.
+type RecoveryServicesGetOperationStatusResponse struct {
+	RecoveryServicesGetOperationStatusResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// RecoveryServicesClientGetOperationStatusResult contains the result from method RecoveryServicesClient.GetOperationStatus.
-type RecoveryServicesClientGetOperationStatusResult struct {
+// RecoveryServicesGetOperationStatusResult contains the result from method RecoveryServices.GetOperationStatus.
+type RecoveryServicesGetOperationStatusResult struct {
 	OperationResource
 }
 

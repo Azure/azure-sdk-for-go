@@ -146,7 +146,7 @@ var (
 		"123456":                                                     nil,
 		"!@#$%^&*/":                                                  nil,
 		"/subscriptions/":                                            nil,
-		"/0c2f6471-1bf0-4dda-aec3-cb9272f09575/myRg/": nil,
+		"/0c2f6471-1bf0-4dda-aec3-cb9272f09575/myRg/":                                   nil,
 		"/providers/Company.MyProvider/myResources/myResourceName/providers/incomplete": nil,
 	}
 )

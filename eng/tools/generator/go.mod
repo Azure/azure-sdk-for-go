@@ -5,7 +5,6 @@ go 1.13
 require (
 	github.com/Azure/azure-sdk-for-go v54.2.1+incompatible
 	github.com/Azure/azure-sdk-for-go/eng/tools/internal v0.1.0
-	github.com/Azure/azure-sdk-for-go/tools/generator v0.0.0-20210923150129-4f444f0422b4
 	github.com/Masterminds/semver v1.5.0
 	github.com/ahmetb/go-linq/v3 v3.2.0
 	github.com/go-git/go-git/v5 v5.4.2

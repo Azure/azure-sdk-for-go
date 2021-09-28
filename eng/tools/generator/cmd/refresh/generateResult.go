@@ -3,7 +3,7 @@
 
 package refresh
 
-import "github.com/Azure/azure-sdk-for-go/tools/generator/autorest"
+import "github.com/Azure/azure-sdk-for-go/eng/tools/generator/autorest"
 
 type GenerateResult struct {
 	Readme     string

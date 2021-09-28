@@ -10,7 +10,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/Azure/azure-sdk-for-go/tools/generator/common"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/common"
 	"github.com/Masterminds/semver"
 )
 

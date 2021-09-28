@@ -55,7 +55,7 @@ func Command() *cobra.Command {
 // BindFlags binds the flags to this command
 func BindFlags(flagSet *pflag.FlagSet) {
 	flagSet.String("go-sdk-folder", ".", "Specifies the path of root of azure-sdk-for-go")
-	flagSet.String("template-path", "tools/generator/template/rpName/packageName", "Specifies the path of the template")
+	flagSet.String("template-path", "eng/tools/generator/template/rpName/packageName", "Specifies the path of the template")
 	flagSet.String("package-title", "", "Specifies the title of this package")
 	flagSet.String("commit", "", "Specifies the commit hash of azure-rest-api-specs")
 	flagSet.String("release-date", "", "Specifies the release date in changelog")

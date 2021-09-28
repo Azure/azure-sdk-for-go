@@ -3,7 +3,7 @@ $packagePattern = "go.mod"
 $LanguageDisplayName = "go"
 
 # get version from specific files (*constants.go, *version.go)
-function Get-GoModuleVersionInfo ($modPath)
+function Get-GoModuleVersionInfo($modPath)
 {
   $VERSION_LINE_REGEX = ".+\s*=\s*`".*v(?<version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
 
@@ -79,16 +79,12 @@ function Get-go-PackageInfoFromPackageFile($pkg, $workingDirectory)
     return $resultObj
 }
 
-function Get-AllPackageInfoFromRepo ($serviceDirectory, $pkgDirectory)
+function Get-AllPackageInfoFromRepo($serviceDirectory)
 {
   $allPackageProps = @()
   $searchPath = Join-Path $RepoRoot "sdk"
   if ($serviceDirectory) {
     $searchPath = Join-Path $searchPath $serviceDirectory
-  }
-
-  if ($pkgDirectory) {
-    $searchPath = Join-Path $searchPath $pkgDirectory
   }
 
   $pkgFiles = Get-ChildItem -Path $searchPath -Include "go.mod" -Recurse
@@ -114,13 +110,8 @@ function SetPackageVersion ($PackageName, $Version, $ReleaseDate, $PackageProper
     $PackageProperties = Get-PkgProperties -PackageName $PackageName
   }
 
-  # Update version in version file.
-  $versionFileContent = Get-Content -Path $PackageProperties.VersionFile -Raw
-  $newVersionFileContent = $versionFileContent -replace $PackageProperties.Version, $Version
-  $newVersionFileContent | Set-Content -Path $PackageProperties.VersionFile -NoNewline
-
-  # Update content in change log
-  & "${EngCommonScriptsDir}/Update-ChangeLog.ps1" -Version $Version `
-      -ChangelogPath $PackageProperties.ChangeLogPath -Unreleased $False `
-      -ReplaceLatestEntryTitle $True -ReleaseDate $ReleaseDate
+  & "${EngScriptsDir}/Update-ModuleVersion.ps1" `
+    -ModulePath $PackageProperties.Name `
+    -NewVersionString $Version `
+    -ReleaseDate $ReleaseDate
 }

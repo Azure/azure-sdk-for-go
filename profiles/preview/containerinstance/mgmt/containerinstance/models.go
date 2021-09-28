@@ -12,7 +12,7 @@ package containerinstance
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2021-03-01/containerinstance"
+	original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2021-07-01/containerinstance"
 )
 
 const (
@@ -126,9 +126,9 @@ type ContainerGroupIdentityUserAssignedIdentitiesValue = original.ContainerGroup
 type ContainerGroupListResult = original.ContainerGroupListResult
 type ContainerGroupListResultIterator = original.ContainerGroupListResultIterator
 type ContainerGroupListResultPage = original.ContainerGroupListResultPage
-type ContainerGroupNetworkProfile = original.ContainerGroupNetworkProfile
 type ContainerGroupProperties = original.ContainerGroupProperties
 type ContainerGroupPropertiesInstanceView = original.ContainerGroupPropertiesInstanceView
+type ContainerGroupSubnetID = original.ContainerGroupSubnetID
 type ContainerGroupsClient = original.ContainerGroupsClient
 type ContainerGroupsCreateOrUpdateFuture = original.ContainerGroupsCreateOrUpdateFuture
 type ContainerGroupsDeleteFuture = original.ContainerGroupsDeleteFuture
@@ -147,12 +147,13 @@ type EnvironmentVariable = original.EnvironmentVariable
 type Event = original.Event
 type GitRepoVolume = original.GitRepoVolume
 type GpuResource = original.GpuResource
-type HTTPHeaders = original.HTTPHeaders
+type HTTPHeader = original.HTTPHeader
 type IPAddress = original.IPAddress
 type ImageRegistryCredential = original.ImageRegistryCredential
 type InitContainerDefinition = original.InitContainerDefinition
 type InitContainerPropertiesDefinition = original.InitContainerPropertiesDefinition
 type InitContainerPropertiesDefinitionInstanceView = original.InitContainerPropertiesDefinitionInstanceView
+type ListString = original.ListString
 type LocationClient = original.LocationClient
 type LogAnalytics = original.LogAnalytics
 type Logs = original.Logs

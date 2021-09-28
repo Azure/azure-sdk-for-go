@@ -79,16 +79,10 @@ jobs:
 
       - template: ../steps/create-go-workspace.yml
 
-      - template: ../steps/set-scope.yml
-        parameters:
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          GoWorkspace: $(GO_WORKSPACE_PATH)
-
       - template: ../steps/build-test.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           GoWorkspace: $(GO_WORKSPACE_PATH)
-          Scope: $(SCOPE)
           Image: $(OSVmImage)
           GoVersion: $(GoVersion)
           RunTests: true

@@ -3,12 +3,14 @@
 
 package azcosmos
 
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+
 // CosmosContainerProperties represents the properties of a container.
 type CosmosContainerProperties struct {
 	// Id contains the unique id of the container.
 	Id string `json:"id"`
 	// ETag contains the entity etag of the container.
-	ETag string `json:"_etag,omitempty"`
+	ETag azcore.ETag `json:"_etag,omitempty"`
 	// SelfLink contains the self-link of the container.
 	SelfLink string `json:"_self,omitempty"`
 	// ResourceId contains the resource id of the container.

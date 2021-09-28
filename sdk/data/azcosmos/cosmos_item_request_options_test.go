@@ -5,6 +5,8 @@ package azcosmos
 
 import (
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 func TestItemRequestOptionsToHeaders(t *testing.T) {
@@ -14,6 +16,8 @@ func TestItemRequestOptionsToHeaders(t *testing.T) {
 	options.ConsistencyLevel = ConsistencyLevelSession.ToPtr()
 	options.SessionToken = "sessionToken"
 	options.IndexingDirective = IndexingDirectiveInclude.ToPtr()
+	etagValue := azcore.ETag("someEtag")
+	options.IfMatchEtag = &etagValue
 	header := options.toHeaders()
 	if header == nil {
 		t.Error("toHeaders should return non-nil")
@@ -34,5 +38,8 @@ func TestItemRequestOptionsToHeaders(t *testing.T) {
 	}
 	if headers[cosmosHeaderSessionToken] != "sessionToken" {
 		t.Errorf("SessionToken should be sessionToken but got %v", headers[cosmosHeaderSessionToken])
+	}
+	if headers[headerIfMatch] != string(*options.IfMatchEtag) {
+		t.Errorf("IfMatchEtag should be someEtag but got %v", headers[headerIfMatch])
 	}
 }

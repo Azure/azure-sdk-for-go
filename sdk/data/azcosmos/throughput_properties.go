@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
@@ -18,7 +19,7 @@ const (
 
 // ThroughputProperties describes the throughput configuration of a resource.
 type ThroughputProperties struct {
-	ETag         string
+	ETag         azcore.ETag
 	LastModified *UnixTime
 
 	version         string

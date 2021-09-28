@@ -33,7 +33,7 @@ type (
 	Namespace struct {
 		Name          string
 		Suffix        string
-		TokenProvider *TokenProvider
+		TokenProvider *tokenProvider
 		Environment   azure.Environment
 		tlsConfig     *tls.Config
 		userAgent     string

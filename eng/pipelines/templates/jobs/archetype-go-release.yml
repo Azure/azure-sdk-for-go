@@ -12,7 +12,7 @@ stages:
       jobs:
         - deployment: TagRepository
           displayName: "Create release tag"
-          condition: ne(succeeded(), variables['Skip.TagRepository'], 'true')
+          condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
           environment: github
 
           pool:

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -7,7 +8,10 @@
 
 package armpostgresqlflexibleservers
 
-const telemetryInfo = "azsdk-go-armpostgresqlflexibleservers/v0.1.0"
+const (
+	module  = "armpostgresqlflexibleservers"
+	version = "v0.2.0"
+)
 
 // ConfigurationDataType - Data type of the configuration.
 type ConfigurationDataType string
@@ -102,6 +106,31 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 
 // ToPtr returns a *CreatedByType pointing to the current value.
 func (c CreatedByType) ToPtr() *CreatedByType {
+	return &c
+}
+
+// FailoverMode - Failover mode.
+type FailoverMode string
+
+const (
+	FailoverModeForcedFailover    FailoverMode = "ForcedFailover"
+	FailoverModeForcedSwitchover  FailoverMode = "ForcedSwitchover"
+	FailoverModePlannedFailover   FailoverMode = "PlannedFailover"
+	FailoverModePlannedSwitchover FailoverMode = "PlannedSwitchover"
+)
+
+// PossibleFailoverModeValues returns the possible values for the FailoverMode const type.
+func PossibleFailoverModeValues() []FailoverMode {
+	return []FailoverMode{
+		FailoverModeForcedFailover,
+		FailoverModeForcedSwitchover,
+		FailoverModePlannedFailover,
+		FailoverModePlannedSwitchover,
+	}
+}
+
+// ToPtr returns a *FailoverMode pointing to the current value.
+func (c FailoverMode) ToPtr() *FailoverMode {
 	return &c
 }
 

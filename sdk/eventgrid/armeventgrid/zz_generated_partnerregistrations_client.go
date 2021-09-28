@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,24 +11,27 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PartnerRegistrationsClient contains the methods for the PartnerRegistrations group.
 // Don't use this type directly, use NewPartnerRegistrationsClient() instead.
 type PartnerRegistrationsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewPartnerRegistrationsClient creates a new instance of PartnerRegistrationsClient with the specified values.
-func NewPartnerRegistrationsClient(con *armcore.Connection, subscriptionID string) *PartnerRegistrationsClient {
-	return &PartnerRegistrationsClient{con: con, subscriptionID: subscriptionID}
+func NewPartnerRegistrationsClient(con *arm.Connection, subscriptionID string) *PartnerRegistrationsClient {
+	return &PartnerRegistrationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates a new partner registration with the specified parameters.
@@ -37,18 +41,18 @@ func (client *PartnerRegistrationsClient) CreateOrUpdate(ctx context.Context, re
 	if err != nil {
 		return PartnerRegistrationsCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PartnerRegistrationsCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return PartnerRegistrationsCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *PartnerRegistrationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, partnerRegistrationName string, partnerRegistrationInfo PartnerRegistration, options *PartnerRegistrationsCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *PartnerRegistrationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, partnerRegistrationName string, partnerRegistrationInfo PartnerRegistration, options *PartnerRegistrationsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -62,37 +66,36 @@ func (client *PartnerRegistrationsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, errors.New("parameter partnerRegistrationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerRegistrationName}", url.PathEscape(partnerRegistrationName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(partnerRegistrationInfo)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, partnerRegistrationInfo)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *PartnerRegistrationsClient) createOrUpdateHandleResponse(resp *azcore.Response) (PartnerRegistrationsCreateOrUpdateResponse, error) {
-	result := PartnerRegistrationsCreateOrUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PartnerRegistration); err != nil {
+func (client *PartnerRegistrationsClient) createOrUpdateHandleResponse(resp *http.Response) (PartnerRegistrationsCreateOrUpdateResponse, error) {
+	result := PartnerRegistrationsCreateOrUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerRegistration); err != nil {
 		return PartnerRegistrationsCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *PartnerRegistrationsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PartnerRegistrationsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Delete - Deletes a partner registration with the specified parameters.
@@ -102,18 +105,18 @@ func (client *PartnerRegistrationsClient) Delete(ctx context.Context, resourceGr
 	if err != nil {
 		return PartnerRegistrationsDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PartnerRegistrationsDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return PartnerRegistrationsDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return PartnerRegistrationsDeleteResponse{RawResponse: resp.Response}, nil
+	return PartnerRegistrationsDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PartnerRegistrationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, partnerRegistrationName string, options *PartnerRegistrationsDeleteOptions) (*azcore.Request, error) {
+func (client *PartnerRegistrationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, partnerRegistrationName string, options *PartnerRegistrationsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -127,27 +130,26 @@ func (client *PartnerRegistrationsClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter partnerRegistrationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerRegistrationName}", url.PathEscape(partnerRegistrationName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *PartnerRegistrationsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PartnerRegistrationsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets a partner registration with the specified parameters.
@@ -157,18 +159,18 @@ func (client *PartnerRegistrationsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return PartnerRegistrationsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PartnerRegistrationsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PartnerRegistrationsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *PartnerRegistrationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, partnerRegistrationName string, options *PartnerRegistrationsGetOptions) (*azcore.Request, error) {
+func (client *PartnerRegistrationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, partnerRegistrationName string, options *PartnerRegistrationsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -182,55 +184,54 @@ func (client *PartnerRegistrationsClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter partnerRegistrationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerRegistrationName}", url.PathEscape(partnerRegistrationName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PartnerRegistrationsClient) getHandleResponse(resp *azcore.Response) (PartnerRegistrationsGetResponse, error) {
-	result := PartnerRegistrationsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PartnerRegistration); err != nil {
+func (client *PartnerRegistrationsClient) getHandleResponse(resp *http.Response) (PartnerRegistrationsGetResponse, error) {
+	result := PartnerRegistrationsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerRegistration); err != nil {
 		return PartnerRegistrationsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *PartnerRegistrationsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PartnerRegistrationsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByResourceGroup - List all the partner registrations under a resource group.
 // If the operation fails it returns a generic error.
-func (client *PartnerRegistrationsClient) ListByResourceGroup(resourceGroupName string, options *PartnerRegistrationsListByResourceGroupOptions) PartnerRegistrationsListByResourceGroupPager {
-	return &partnerRegistrationsListByResourceGroupPager{
+func (client *PartnerRegistrationsClient) ListByResourceGroup(resourceGroupName string, options *PartnerRegistrationsListByResourceGroupOptions) *PartnerRegistrationsListByResourceGroupPager {
+	return &PartnerRegistrationsListByResourceGroupPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp PartnerRegistrationsListByResourceGroupResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.PartnerRegistrationsListResult.NextLink)
+		advancer: func(ctx context.Context, resp PartnerRegistrationsListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.PartnerRegistrationsListResult.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *PartnerRegistrationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PartnerRegistrationsListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *PartnerRegistrationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PartnerRegistrationsListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -240,12 +241,11 @@ func (client *PartnerRegistrationsClient) listByResourceGroupCreateRequest(ctx c
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
@@ -253,59 +253,58 @@ func (client *PartnerRegistrationsClient) listByResourceGroupCreateRequest(ctx c
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *PartnerRegistrationsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (PartnerRegistrationsListByResourceGroupResponse, error) {
-	result := PartnerRegistrationsListByResourceGroupResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PartnerRegistrationsListResult); err != nil {
+func (client *PartnerRegistrationsClient) listByResourceGroupHandleResponse(resp *http.Response) (PartnerRegistrationsListByResourceGroupResponse, error) {
+	result := PartnerRegistrationsListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerRegistrationsListResult); err != nil {
 		return PartnerRegistrationsListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *PartnerRegistrationsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PartnerRegistrationsClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListBySubscription - List all the partner registrations under an Azure subscription.
 // If the operation fails it returns a generic error.
-func (client *PartnerRegistrationsClient) ListBySubscription(options *PartnerRegistrationsListBySubscriptionOptions) PartnerRegistrationsListBySubscriptionPager {
-	return &partnerRegistrationsListBySubscriptionPager{
+func (client *PartnerRegistrationsClient) ListBySubscription(options *PartnerRegistrationsListBySubscriptionOptions) *PartnerRegistrationsListBySubscriptionPager {
+	return &PartnerRegistrationsListBySubscriptionPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySubscriptionCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp PartnerRegistrationsListBySubscriptionResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.PartnerRegistrationsListResult.NextLink)
+		advancer: func(ctx context.Context, resp PartnerRegistrationsListBySubscriptionResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.PartnerRegistrationsListResult.NextLink)
 		},
 	}
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *PartnerRegistrationsClient) listBySubscriptionCreateRequest(ctx context.Context, options *PartnerRegistrationsListBySubscriptionOptions) (*azcore.Request, error) {
+func (client *PartnerRegistrationsClient) listBySubscriptionCreateRequest(ctx context.Context, options *PartnerRegistrationsListBySubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/partnerRegistrations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
@@ -313,30 +312,30 @@ func (client *PartnerRegistrationsClient) listBySubscriptionCreateRequest(ctx co
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *PartnerRegistrationsClient) listBySubscriptionHandleResponse(resp *azcore.Response) (PartnerRegistrationsListBySubscriptionResponse, error) {
-	result := PartnerRegistrationsListBySubscriptionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PartnerRegistrationsListResult); err != nil {
+func (client *PartnerRegistrationsClient) listBySubscriptionHandleResponse(resp *http.Response) (PartnerRegistrationsListBySubscriptionResponse, error) {
+	result := PartnerRegistrationsListBySubscriptionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerRegistrationsListResult); err != nil {
 		return PartnerRegistrationsListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
 // listBySubscriptionHandleError handles the ListBySubscription error response.
-func (client *PartnerRegistrationsClient) listBySubscriptionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PartnerRegistrationsClient) listBySubscriptionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Update - Updates a partner registration with the specified parameters.
@@ -346,18 +345,18 @@ func (client *PartnerRegistrationsClient) Update(ctx context.Context, resourceGr
 	if err != nil {
 		return PartnerRegistrationsUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PartnerRegistrationsUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return PartnerRegistrationsUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *PartnerRegistrationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, partnerRegistrationName string, partnerRegistrationUpdateParameters PartnerRegistrationUpdateParameters, options *PartnerRegistrationsUpdateOptions) (*azcore.Request, error) {
+func (client *PartnerRegistrationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, partnerRegistrationName string, partnerRegistrationUpdateParameters PartnerRegistrationUpdateParameters, options *PartnerRegistrationsUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -371,35 +370,34 @@ func (client *PartnerRegistrationsClient) updateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter partnerRegistrationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{partnerRegistrationName}", url.PathEscape(partnerRegistrationName))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(partnerRegistrationUpdateParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, partnerRegistrationUpdateParameters)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PartnerRegistrationsClient) updateHandleResponse(resp *azcore.Response) (PartnerRegistrationsUpdateResponse, error) {
-	result := PartnerRegistrationsUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PartnerRegistration); err != nil {
+func (client *PartnerRegistrationsClient) updateHandleResponse(resp *http.Response) (PartnerRegistrationsUpdateResponse, error) {
+	result := PartnerRegistrationsUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerRegistration); err != nil {
 		return PartnerRegistrationsUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *PartnerRegistrationsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PartnerRegistrationsClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

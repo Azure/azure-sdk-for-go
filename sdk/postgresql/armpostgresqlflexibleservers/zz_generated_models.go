@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,9 +10,10 @@ package armpostgresqlflexibleservers
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // Backup properties of a server
@@ -633,7 +635,7 @@ func (r Resource) marshalInternal() map[string]interface{} {
 // RestartParameter - Represents server restart parameters.
 type RestartParameter struct {
 	// Failover mode.
-	FailoverMode *string `json:"failoverMode,omitempty"`
+	FailoverMode *FailoverMode `json:"failoverMode,omitempty"`
 
 	// Indicates whether to restart the server with failover.
 	RestartWithFailover *bool `json:"restartWithFailover,omitempty"`

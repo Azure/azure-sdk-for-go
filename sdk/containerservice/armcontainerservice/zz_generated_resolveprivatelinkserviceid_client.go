@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,23 +12,26 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ResolvePrivateLinkServiceIDClient contains the methods for the ResolvePrivateLinkServiceID group.
 // Don't use this type directly, use NewResolvePrivateLinkServiceIDClient() instead.
 type ResolvePrivateLinkServiceIDClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewResolvePrivateLinkServiceIDClient creates a new instance of ResolvePrivateLinkServiceIDClient with the specified values.
-func NewResolvePrivateLinkServiceIDClient(con *armcore.Connection, subscriptionID string) *ResolvePrivateLinkServiceIDClient {
-	return &ResolvePrivateLinkServiceIDClient{con: con, subscriptionID: subscriptionID}
+func NewResolvePrivateLinkServiceIDClient(con *arm.Connection, subscriptionID string) *ResolvePrivateLinkServiceIDClient {
+	return &ResolvePrivateLinkServiceIDClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // POST - Gets the private link service ID for the specified managed cluster.
@@ -37,18 +41,18 @@ func (client *ResolvePrivateLinkServiceIDClient) POST(ctx context.Context, resou
 	if err != nil {
 		return ResolvePrivateLinkServiceIDPOSTResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return ResolvePrivateLinkServiceIDPOSTResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return ResolvePrivateLinkServiceIDPOSTResponse{}, client.postHandleError(resp)
 	}
 	return client.postHandleResponse(resp)
 }
 
 // postCreateRequest creates the POST request.
-func (client *ResolvePrivateLinkServiceIDClient) postCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters PrivateLinkResource, options *ResolvePrivateLinkServiceIDPOSTOptions) (*azcore.Request, error) {
+func (client *ResolvePrivateLinkServiceIDClient) postCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters PrivateLinkResource, options *ResolvePrivateLinkServiceIDPOSTOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/resolvePrivateLinkServiceId"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -62,36 +66,35 @@ func (client *ResolvePrivateLinkServiceIDClient) postCreateRequest(ctx context.C
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-07-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // postHandleResponse handles the POST response.
-func (client *ResolvePrivateLinkServiceIDClient) postHandleResponse(resp *azcore.Response) (ResolvePrivateLinkServiceIDPOSTResponse, error) {
-	result := ResolvePrivateLinkServiceIDPOSTResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PrivateLinkResource); err != nil {
+func (client *ResolvePrivateLinkServiceIDClient) postHandleResponse(resp *http.Response) (ResolvePrivateLinkServiceIDPOSTResponse, error) {
+	result := ResolvePrivateLinkServiceIDPOSTResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
 		return ResolvePrivateLinkServiceIDPOSTResponse{}, err
 	}
 	return result, nil
 }
 
 // postHandleError handles the POST error response.
-func (client *ResolvePrivateLinkServiceIDClient) postHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *ResolvePrivateLinkServiceIDClient) postHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

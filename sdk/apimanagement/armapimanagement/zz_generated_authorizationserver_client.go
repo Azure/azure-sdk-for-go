@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AuthorizationServerClient contains the methods for the AuthorizationServer group.
 // Don't use this type directly, use NewAuthorizationServerClient() instead.
 type AuthorizationServerClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewAuthorizationServerClient creates a new instance of AuthorizationServerClient with the specified values.
-func NewAuthorizationServerClient(con *armcore.Connection, subscriptionID string) *AuthorizationServerClient {
-	return &AuthorizationServerClient{con: con, subscriptionID: subscriptionID}
+func NewAuthorizationServerClient(con *arm.Connection, subscriptionID string) *AuthorizationServerClient {
+	return &AuthorizationServerClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // CreateOrUpdate - Creates new authorization server or updates an existing authorization server.
@@ -38,18 +42,18 @@ func (client *AuthorizationServerClient) CreateOrUpdate(ctx context.Context, res
 	if err != nil {
 		return AuthorizationServerCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AuthorizationServerCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return AuthorizationServerCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AuthorizationServerClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authsid string, parameters AuthorizationServerContract, options *AuthorizationServerCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *AuthorizationServerClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authsid string, parameters AuthorizationServerContract, options *AuthorizationServerCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -67,44 +71,43 @@ func (client *AuthorizationServerClient) createOrUpdateCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header.Set("If-Match", *options.IfMatch)
 	}
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AuthorizationServerClient) createOrUpdateHandleResponse(resp *azcore.Response) (AuthorizationServerCreateOrUpdateResponse, error) {
-	result := AuthorizationServerCreateOrUpdateResponse{RawResponse: resp.Response}
+func (client *AuthorizationServerClient) createOrUpdateHandleResponse(resp *http.Response) (AuthorizationServerCreateOrUpdateResponse, error) {
+	result := AuthorizationServerCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.AuthorizationServerContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationServerContract); err != nil {
 		return AuthorizationServerCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AuthorizationServerClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AuthorizationServerClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Deletes specific authorization server instance.
@@ -114,18 +117,18 @@ func (client *AuthorizationServerClient) Delete(ctx context.Context, resourceGro
 	if err != nil {
 		return AuthorizationServerDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AuthorizationServerDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return AuthorizationServerDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return AuthorizationServerDeleteResponse{RawResponse: resp.Response}, nil
+	return AuthorizationServerDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AuthorizationServerClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authsid string, ifMatch string, options *AuthorizationServerDeleteOptions) (*azcore.Request, error) {
+func (client *AuthorizationServerClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authsid string, ifMatch string, options *AuthorizationServerDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -143,30 +146,29 @@ func (client *AuthorizationServerClient) deleteCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("If-Match", ifMatch)
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("If-Match", ifMatch)
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *AuthorizationServerClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AuthorizationServerClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets the details of the authorization server specified by its identifier.
@@ -176,18 +178,18 @@ func (client *AuthorizationServerClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return AuthorizationServerGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AuthorizationServerGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AuthorizationServerGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AuthorizationServerClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authsid string, options *AuthorizationServerGetOptions) (*azcore.Request, error) {
+func (client *AuthorizationServerClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authsid string, options *AuthorizationServerGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -205,41 +207,40 @@ func (client *AuthorizationServerClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AuthorizationServerClient) getHandleResponse(resp *azcore.Response) (AuthorizationServerGetResponse, error) {
-	result := AuthorizationServerGetResponse{RawResponse: resp.Response}
+func (client *AuthorizationServerClient) getHandleResponse(resp *http.Response) (AuthorizationServerGetResponse, error) {
+	result := AuthorizationServerGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.AuthorizationServerContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationServerContract); err != nil {
 		return AuthorizationServerGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *AuthorizationServerClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AuthorizationServerClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetEntityTag - Gets the entity state (Etag) version of the authorizationServer specified by its identifier.
@@ -249,7 +250,7 @@ func (client *AuthorizationServerClient) GetEntityTag(ctx context.Context, resou
 	if err != nil {
 		return AuthorizationServerGetEntityTagResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AuthorizationServerGetEntityTagResponse{}, err
 	}
@@ -257,7 +258,7 @@ func (client *AuthorizationServerClient) GetEntityTag(ctx context.Context, resou
 }
 
 // getEntityTagCreateRequest creates the GetEntityTag request.
-func (client *AuthorizationServerClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authsid string, options *AuthorizationServerGetEntityTagOptions) (*azcore.Request, error) {
+func (client *AuthorizationServerClient) getEntityTagCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authsid string, options *AuthorizationServerGetEntityTagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -275,21 +276,20 @@ func (client *AuthorizationServerClient) getEntityTagCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getEntityTagHandleResponse handles the GetEntityTag response.
-func (client *AuthorizationServerClient) getEntityTagHandleResponse(resp *azcore.Response) (AuthorizationServerGetEntityTagResponse, error) {
-	result := AuthorizationServerGetEntityTagResponse{RawResponse: resp.Response}
+func (client *AuthorizationServerClient) getEntityTagHandleResponse(resp *http.Response) (AuthorizationServerGetEntityTagResponse, error) {
+	result := AuthorizationServerGetEntityTagResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -301,20 +301,20 @@ func (client *AuthorizationServerClient) getEntityTagHandleResponse(resp *azcore
 
 // ListByService - Lists a collection of authorization servers defined within a service instance.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *AuthorizationServerClient) ListByService(resourceGroupName string, serviceName string, options *AuthorizationServerListByServiceOptions) AuthorizationServerListByServicePager {
-	return &authorizationServerListByServicePager{
+func (client *AuthorizationServerClient) ListByService(resourceGroupName string, serviceName string, options *AuthorizationServerListByServiceOptions) *AuthorizationServerListByServicePager {
+	return &AuthorizationServerListByServicePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp AuthorizationServerListByServiceResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.AuthorizationServerCollection.NextLink)
+		advancer: func(ctx context.Context, resp AuthorizationServerListByServiceResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AuthorizationServerCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *AuthorizationServerClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *AuthorizationServerListByServiceOptions) (*azcore.Request, error) {
+func (client *AuthorizationServerClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *AuthorizationServerListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -328,12 +328,11 @@ func (client *AuthorizationServerClient) listByServiceCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -343,32 +342,32 @@ func (client *AuthorizationServerClient) listByServiceCreateRequest(ctx context.
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *AuthorizationServerClient) listByServiceHandleResponse(resp *azcore.Response) (AuthorizationServerListByServiceResponse, error) {
-	result := AuthorizationServerListByServiceResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AuthorizationServerCollection); err != nil {
+func (client *AuthorizationServerClient) listByServiceHandleResponse(resp *http.Response) (AuthorizationServerListByServiceResponse, error) {
+	result := AuthorizationServerListByServiceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationServerCollection); err != nil {
 		return AuthorizationServerListByServiceResponse{}, err
 	}
 	return result, nil
 }
 
 // listByServiceHandleError handles the ListByService error response.
-func (client *AuthorizationServerClient) listByServiceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AuthorizationServerClient) listByServiceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListSecrets - Gets the client secret details of the authorization server.
@@ -378,18 +377,18 @@ func (client *AuthorizationServerClient) ListSecrets(ctx context.Context, resour
 	if err != nil {
 		return AuthorizationServerListSecretsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AuthorizationServerListSecretsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AuthorizationServerListSecretsResponse{}, client.listSecretsHandleError(resp)
 	}
 	return client.listSecretsHandleResponse(resp)
 }
 
 // listSecretsCreateRequest creates the ListSecrets request.
-func (client *AuthorizationServerClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authsid string, options *AuthorizationServerListSecretsOptions) (*azcore.Request, error) {
+func (client *AuthorizationServerClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authsid string, options *AuthorizationServerListSecretsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}/listSecrets"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -407,41 +406,40 @@ func (client *AuthorizationServerClient) listSecretsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listSecretsHandleResponse handles the ListSecrets response.
-func (client *AuthorizationServerClient) listSecretsHandleResponse(resp *azcore.Response) (AuthorizationServerListSecretsResponse, error) {
-	result := AuthorizationServerListSecretsResponse{RawResponse: resp.Response}
+func (client *AuthorizationServerClient) listSecretsHandleResponse(resp *http.Response) (AuthorizationServerListSecretsResponse, error) {
+	result := AuthorizationServerListSecretsResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.AuthorizationServerSecretsContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationServerSecretsContract); err != nil {
 		return AuthorizationServerListSecretsResponse{}, err
 	}
 	return result, nil
 }
 
 // listSecretsHandleError handles the ListSecrets error response.
-func (client *AuthorizationServerClient) listSecretsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AuthorizationServerClient) listSecretsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Update - Updates the details of the authorization server specified by its identifier.
@@ -451,18 +449,18 @@ func (client *AuthorizationServerClient) Update(ctx context.Context, resourceGro
 	if err != nil {
 		return AuthorizationServerUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AuthorizationServerUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AuthorizationServerUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AuthorizationServerClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authsid string, ifMatch string, parameters AuthorizationServerUpdateContract, options *AuthorizationServerUpdateOptions) (*azcore.Request, error) {
+func (client *AuthorizationServerClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, authsid string, ifMatch string, parameters AuthorizationServerUpdateContract, options *AuthorizationServerUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationServers/{authsid}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -480,40 +478,39 @@ func (client *AuthorizationServerClient) updateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("If-Match", ifMatch)
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("If-Match", ifMatch)
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AuthorizationServerClient) updateHandleResponse(resp *azcore.Response) (AuthorizationServerUpdateResponse, error) {
-	result := AuthorizationServerUpdateResponse{RawResponse: resp.Response}
+func (client *AuthorizationServerClient) updateHandleResponse(resp *http.Response) (AuthorizationServerUpdateResponse, error) {
+	result := AuthorizationServerUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.AuthorizationServerContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationServerContract); err != nil {
 		return AuthorizationServerUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *AuthorizationServerClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AuthorizationServerClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

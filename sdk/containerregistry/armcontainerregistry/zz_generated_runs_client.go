@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,94 +12,69 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RunsClient contains the methods for the Runs group.
 // Don't use this type directly, use NewRunsClient() instead.
 type RunsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewRunsClient creates a new instance of RunsClient with the specified values.
-func NewRunsClient(con *armcore.Connection, subscriptionID string) *RunsClient {
-	return &RunsClient{con: con, subscriptionID: subscriptionID}
+func NewRunsClient(con *arm.Connection, subscriptionID string) *RunsClient {
+	return &RunsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCancel - Cancel an existing run.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *RunsClient) BeginCancel(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsBeginCancelOptions) (HTTPPollerResponse, error) {
+func (client *RunsClient) BeginCancel(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsBeginCancelOptions) (RunsCancelPollerResponse, error) {
 	resp, err := client.cancel(ctx, resourceGroupName, registryName, runID, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return RunsCancelPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("RunsClient.Cancel", "", resp, client.con.Pipeline(), client.cancelHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCancel creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *RunsClient) ResumeCancel(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("RunsClient.Cancel", token, client.con.Pipeline(), client.cancelHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := RunsCancelPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("RunsClient.Cancel", "", resp, client.pl, client.cancelHandleError)
+	if err != nil {
+		return RunsCancelPollerResponse{}, err
+	}
+	result.Poller = &RunsCancelPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Cancel - Cancel an existing run.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *RunsClient) cancel(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsBeginCancelOptions) (*azcore.Response, error) {
+func (client *RunsClient) cancel(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsBeginCancelOptions) (*http.Response, error) {
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, registryName, runID, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.cancelHandleError(resp)
 	}
 	return resp, nil
 }
 
 // cancelCreateRequest creates the Cancel request.
-func (client *RunsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsBeginCancelOptions) (*azcore.Request, error) {
+func (client *RunsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}/cancel"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -116,50 +92,49 @@ func (client *RunsClient) cancelCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter runID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runId}", url.PathEscape(runID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // cancelHandleError handles the Cancel error response.
-func (client *RunsClient) cancelHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RunsClient) cancelHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets the detailed information for a given run.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *RunsClient) Get(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsGetOptions) (RunResponse, error) {
+func (client *RunsClient) Get(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsGetOptions) (RunsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, registryName, runID, options)
 	if err != nil {
-		return RunResponse{}, err
+		return RunsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RunResponse{}, err
+		return RunsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return RunResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return RunsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *RunsClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsGetOptions) (*azcore.Request, error) {
+func (client *RunsClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -177,59 +152,58 @@ func (client *RunsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, errors.New("parameter runID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runId}", url.PathEscape(runID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RunsClient) getHandleResponse(resp *azcore.Response) (RunResponse, error) {
-	var val *Run
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RunResponse{}, err
+func (client *RunsClient) getHandleResponse(resp *http.Response) (RunsGetResponse, error) {
+	result := RunsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Run); err != nil {
+		return RunsGetResponse{}, err
 	}
-	return RunResponse{RawResponse: resp.Response, Run: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *RunsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RunsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetLogSasURL - Gets a link to download the run logs.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *RunsClient) GetLogSasURL(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsGetLogSasURLOptions) (RunGetLogResultResponse, error) {
+func (client *RunsClient) GetLogSasURL(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsGetLogSasURLOptions) (RunsGetLogSasURLResponse, error) {
 	req, err := client.getLogSasURLCreateRequest(ctx, resourceGroupName, registryName, runID, options)
 	if err != nil {
-		return RunGetLogResultResponse{}, err
+		return RunsGetLogSasURLResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return RunGetLogResultResponse{}, err
+		return RunsGetLogSasURLResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return RunGetLogResultResponse{}, client.getLogSasURLHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return RunsGetLogSasURLResponse{}, client.getLogSasURLHandleError(resp)
 	}
 	return client.getLogSasURLHandleResponse(resp)
 }
 
 // getLogSasURLCreateRequest creates the GetLogSasURL request.
-func (client *RunsClient) getLogSasURLCreateRequest(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsGetLogSasURLOptions) (*azcore.Request, error) {
+func (client *RunsClient) getLogSasURLCreateRequest(ctx context.Context, resourceGroupName string, registryName string, runID string, options *RunsGetLogSasURLOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}/listLogSasUrl"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -247,59 +221,55 @@ func (client *RunsClient) getLogSasURLCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter runID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runId}", url.PathEscape(runID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getLogSasURLHandleResponse handles the GetLogSasURL response.
-func (client *RunsClient) getLogSasURLHandleResponse(resp *azcore.Response) (RunGetLogResultResponse, error) {
-	var val *RunGetLogResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RunGetLogResultResponse{}, err
+func (client *RunsClient) getLogSasURLHandleResponse(resp *http.Response) (RunsGetLogSasURLResponse, error) {
+	result := RunsGetLogSasURLResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RunGetLogResult); err != nil {
+		return RunsGetLogSasURLResponse{}, err
 	}
-	return RunGetLogResultResponse{RawResponse: resp.Response, RunGetLogResult: val}, nil
+	return result, nil
 }
 
 // getLogSasURLHandleError handles the GetLogSasURL error response.
-func (client *RunsClient) getLogSasURLHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RunsClient) getLogSasURLHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Gets all the runs for a registry.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *RunsClient) List(resourceGroupName string, registryName string, options *RunsListOptions) RunListResultPager {
-	return &runListResultPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *RunsClient) List(resourceGroupName string, registryName string, options *RunsListOptions) *RunsListPager {
+	return &RunsListPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, registryName, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp RunListResultResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.RunListResult.NextLink)
+		advancer: func(ctx context.Context, resp RunsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.RunListResult.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *RunsClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *RunsListOptions) (*azcore.Request, error) {
+func (client *RunsClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *RunsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/runs"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -313,12 +283,11 @@ func (client *RunsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
@@ -326,100 +295,72 @@ func (client *RunsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RunsClient) listHandleResponse(resp *azcore.Response) (RunListResultResponse, error) {
-	var val *RunListResult
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return RunListResultResponse{}, err
-	}
-	return RunListResultResponse{RawResponse: resp.Response, RunListResult: val}, nil
-}
-
-// listHandleError handles the List error response.
-func (client *RunsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
-	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
-	}
-	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
-	}
-	return azcore.NewResponseError(&errType, resp.Response)
-}
-
-// BeginUpdate - Patch the run properties.
-// If the operation fails it returns the *ErrorResponse error type.
-func (client *RunsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, runID string, runUpdateParameters RunUpdateParameters, options *RunsBeginUpdateOptions) (RunPollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, registryName, runID, runUpdateParameters, options)
-	if err != nil {
-		return RunPollerResponse{}, err
-	}
-	result := RunPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("RunsClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return RunPollerResponse{}, err
-	}
-	poller := &runPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RunResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+func (client *RunsClient) listHandleResponse(resp *http.Response) (RunsListResponse, error) {
+	result := RunsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RunListResult); err != nil {
+		return RunsListResponse{}, err
 	}
 	return result, nil
 }
 
-// ResumeUpdate creates a new RunPoller from the specified resume token.
-// token - The value must come from a previous call to RunPoller.ResumeToken().
-func (client *RunsClient) ResumeUpdate(ctx context.Context, token string) (RunPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("RunsClient.Update", token, client.con.Pipeline(), client.updateHandleError)
+// listHandleError handles the List error response.
+func (client *RunsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return RunPollerResponse{}, err
+		return runtime.NewResponseError(err, resp)
 	}
-	poller := &runPoller{
-		pt: pt,
+	errType := ErrorResponse{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	resp, err := poller.Poll(ctx)
+	return runtime.NewResponseError(&errType, resp)
+}
+
+// BeginUpdate - Patch the run properties.
+// If the operation fails it returns the *ErrorResponse error type.
+func (client *RunsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, runID string, runUpdateParameters RunUpdateParameters, options *RunsBeginUpdateOptions) (RunsUpdatePollerResponse, error) {
+	resp, err := client.update(ctx, resourceGroupName, registryName, runID, runUpdateParameters, options)
 	if err != nil {
-		return RunPollerResponse{}, err
+		return RunsUpdatePollerResponse{}, err
 	}
-	result := RunPollerResponse{
+	result := RunsUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (RunResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("RunsClient.Update", "", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return RunsUpdatePollerResponse{}, err
+	}
+	result.Poller = &RunsUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Patch the run properties.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *RunsClient) update(ctx context.Context, resourceGroupName string, registryName string, runID string, runUpdateParameters RunUpdateParameters, options *RunsBeginUpdateOptions) (*azcore.Response, error) {
+func (client *RunsClient) update(ctx context.Context, resourceGroupName string, registryName string, runID string, runUpdateParameters RunUpdateParameters, options *RunsBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, runID, runUpdateParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *RunsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, runID string, runUpdateParameters RunUpdateParameters, options *RunsBeginUpdateOptions) (*azcore.Request, error) {
+func (client *RunsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, runID string, runUpdateParameters RunUpdateParameters, options *RunsBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/runs/{runId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -437,27 +378,26 @@ func (client *RunsClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter runID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runId}", url.PathEscape(runID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2019-06-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(runUpdateParameters)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, runUpdateParameters)
 }
 
 // updateHandleError handles the Update error response.
-func (client *RunsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RunsClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

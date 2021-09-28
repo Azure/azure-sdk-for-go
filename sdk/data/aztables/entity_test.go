@@ -103,3 +103,108 @@ func TestEdmMarshalling(t *testing.T) {
 		})
 	}
 }
+func TestEntityQuotes(t *testing.T) {
+	for _, service := range services {
+		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
+			client, delete := initClientTest(t, service, true)
+			defer delete()
+
+			pk, err := createRandomName(t, "partition")
+			require.NoError(t, err)
+
+			edmEntity := EDMEntity{
+				Entity: Entity{
+					PartitionKey: pk,
+					RowKey:       fmt.Sprint(1),
+				},
+				Properties: map[string]interface{}{
+					"SingleQuote":           "''",
+					"DoubleQuote":           "\"\"",
+					"JustSpaces":            "    ",
+					"LeadingSpaces":         "   abc",
+					"TrailingSpaces":        "abc     ",
+					"LeadingTrailingSpaces": "    abc    ",
+				},
+			}
+
+			marshalled, err := json.Marshal(edmEntity)
+			require.Nil(t, err)
+			_, err = client.AddEntity(ctx, marshalled, nil)
+			require.Nil(t, err)
+
+			resp, err := client.GetEntity(ctx, edmEntity.PartitionKey, edmEntity.RowKey, nil)
+			require.Nil(t, err)
+			var receivedEntity EDMEntity
+			err = json.Unmarshal(resp.Value, &receivedEntity)
+			require.Nil(t, err)
+
+			require.Equal(t, edmEntity.PartitionKey, receivedEntity.PartitionKey)
+			require.Equal(t, edmEntity.RowKey, receivedEntity.RowKey)
+			require.Equal(t, edmEntity.Properties["SingleQuote"], receivedEntity.Properties["SingleQuote"])
+			require.Equal(t, edmEntity.Properties["DoubleQuote"], receivedEntity.Properties["DoubleQuote"])
+			require.Equal(t, edmEntity.Properties["JustSpaces"], receivedEntity.Properties["JustSpaces"])
+			require.Equal(t, edmEntity.Properties["LeadingSpaces"], receivedEntity.Properties["LeadingSpaces"])
+			require.Equal(t, edmEntity.Properties["TrailingSpaces"], receivedEntity.Properties["TrailingSpaces"])
+			require.Equal(t, edmEntity.Properties["LeadingTrailingSpaces"], receivedEntity.Properties["LeadingTrailingSpaces"])
+
+			// Unmarshal to raw json
+			var received2 map[string]json.RawMessage
+			err = json.Unmarshal(resp.Value, &received2)
+			require.Nil(t, err)
+
+			// Unmarshal to plain map
+			var received3 map[string]interface{}
+			err = json.Unmarshal(resp.Value, &received3)
+			require.Nil(t, err)
+		})
+	}
+}
+
+func TestEntityUnicode(t *testing.T) {
+	for _, service := range services {
+		t.Run(fmt.Sprintf("%v_%v", t.Name(), service), func(t *testing.T) {
+			client, delete := initClientTest(t, service, true)
+			defer delete()
+
+			pk, err := createRandomName(t, "partition")
+			require.NoError(t, err)
+
+			edmEntity := EDMEntity{
+				Entity: Entity{
+					PartitionKey: pk,
+					RowKey:       fmt.Sprint(1),
+				},
+				Properties: map[string]interface{}{
+					"Unicode": "ꀕ",
+					"ꀕ":       "Unicode",
+				},
+			}
+
+			marshalled, err := json.Marshal(edmEntity)
+			require.Nil(t, err)
+			_, err = client.AddEntity(ctx, marshalled, nil)
+			require.Nil(t, err)
+
+			resp, err := client.GetEntity(ctx, edmEntity.PartitionKey, edmEntity.RowKey, nil)
+			require.Nil(t, err)
+			var receivedEntity EDMEntity
+			err = json.Unmarshal(resp.Value, &receivedEntity)
+			require.Nil(t, err)
+
+			require.Equal(t, edmEntity.PartitionKey, receivedEntity.PartitionKey)
+			require.Equal(t, edmEntity.RowKey, receivedEntity.RowKey)
+			require.Equal(t, edmEntity.Properties["Unicode"], receivedEntity.Properties["Unicode"])
+			require.Equal(t, edmEntity.Properties["ꀕ"], receivedEntity.Properties["ꀕ"])
+
+			// Unmarshal to raw json
+			var received2 map[string]json.RawMessage
+			err = json.Unmarshal(resp.Value, &received2)
+			require.Nil(t, err)
+
+			// Unmarshal to plain map
+			var received3 map[string]interface{}
+			err = json.Unmarshal(resp.Value, &received3)
+			require.Nil(t, err)
+		})
+	}
+}

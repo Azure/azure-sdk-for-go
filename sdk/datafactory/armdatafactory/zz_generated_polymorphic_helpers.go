@@ -602,10 +602,6 @@ func unmarshalCredentialClassification(rawMsg json.RawMessage) (CredentialClassi
 	}
 	var b CredentialClassification
 	switch m["type"] {
-	case "ManagedIdentity":
-		b = &ManagedIdentityCredential{}
-	case "ServicePrincipal":
-		b = &ServicePrincipalCredential{}
 	default:
 		b = &Credential{}
 	}

@@ -276,6 +276,25 @@ func (c CosmosDbServicePrincipalCredentialType) ToPtr() *CosmosDbServicePrincipa
 	return &c
 }
 
+// CredentialReferenceType - Credential reference type.
+type CredentialReferenceType string
+
+const (
+	CredentialReferenceTypeCredentialReference CredentialReferenceType = "CredentialReference"
+)
+
+// PossibleCredentialReferenceTypeValues returns the possible values for the CredentialReferenceType const type.
+func PossibleCredentialReferenceTypeValues() []CredentialReferenceType {
+	return []CredentialReferenceType{
+		CredentialReferenceTypeCredentialReference,
+	}
+}
+
+// ToPtr returns a *CredentialReferenceType pointing to the current value.
+func (c CredentialReferenceType) ToPtr() *CredentialReferenceType {
+	return &c
+}
+
 // DataFlowComputeType - Compute type of the cluster which will execute data flow job.
 type DataFlowComputeType string
 
@@ -322,6 +341,25 @@ func (c DataFlowDebugCommandType) ToPtr() *DataFlowDebugCommandType {
 	return &c
 }
 
+// DataFlowReferenceType - Data flow reference type.
+type DataFlowReferenceType string
+
+const (
+	DataFlowReferenceTypeDataFlowReference DataFlowReferenceType = "DataFlowReference"
+)
+
+// PossibleDataFlowReferenceTypeValues returns the possible values for the DataFlowReferenceType const type.
+func PossibleDataFlowReferenceTypeValues() []DataFlowReferenceType {
+	return []DataFlowReferenceType{
+		DataFlowReferenceTypeDataFlowReference,
+	}
+}
+
+// ToPtr returns a *DataFlowReferenceType pointing to the current value.
+func (c DataFlowReferenceType) ToPtr() *DataFlowReferenceType {
+	return &c
+}
+
 // DatasetCompressionLevel - All available compression levels.
 type DatasetCompressionLevel string
 
@@ -340,6 +378,25 @@ func PossibleDatasetCompressionLevelValues() []DatasetCompressionLevel {
 
 // ToPtr returns a *DatasetCompressionLevel pointing to the current value.
 func (c DatasetCompressionLevel) ToPtr() *DatasetCompressionLevel {
+	return &c
+}
+
+// DatasetReferenceType - Dataset reference type.
+type DatasetReferenceType string
+
+const (
+	DatasetReferenceTypeDatasetReference DatasetReferenceType = "DatasetReference"
+)
+
+// PossibleDatasetReferenceTypeValues returns the possible values for the DatasetReferenceType const type.
+func PossibleDatasetReferenceTypeValues() []DatasetReferenceType {
+	return []DatasetReferenceType{
+		DatasetReferenceTypeDatasetReference,
+	}
+}
+
+// ToPtr returns a *DatasetReferenceType pointing to the current value.
+func (c DatasetReferenceType) ToPtr() *DatasetReferenceType {
 	return &c
 }
 
@@ -534,6 +591,25 @@ func PossibleEventSubscriptionStatusValues() []EventSubscriptionStatus {
 
 // ToPtr returns a *EventSubscriptionStatus pointing to the current value.
 func (c EventSubscriptionStatus) ToPtr() *EventSubscriptionStatus {
+	return &c
+}
+
+// ExpressionType - Expression type.
+type ExpressionType string
+
+const (
+	ExpressionTypeExpression ExpressionType = "Expression"
+)
+
+// PossibleExpressionTypeValues returns the possible values for the ExpressionType const type.
+func PossibleExpressionTypeValues() []ExpressionType {
+	return []ExpressionType{
+		ExpressionTypeExpression,
+	}
+}
+
+// ToPtr returns a *ExpressionType pointing to the current value.
+func (c ExpressionType) ToPtr() *ExpressionType {
 	return &c
 }
 
@@ -971,6 +1047,25 @@ func (c IntegrationRuntimeLicenseType) ToPtr() *IntegrationRuntimeLicenseType {
 	return &c
 }
 
+// IntegrationRuntimeReferenceType - Type of integration runtime.
+type IntegrationRuntimeReferenceType string
+
+const (
+	IntegrationRuntimeReferenceTypeIntegrationRuntimeReference IntegrationRuntimeReferenceType = "IntegrationRuntimeReference"
+)
+
+// PossibleIntegrationRuntimeReferenceTypeValues returns the possible values for the IntegrationRuntimeReferenceType const type.
+func PossibleIntegrationRuntimeReferenceTypeValues() []IntegrationRuntimeReferenceType {
+	return []IntegrationRuntimeReferenceType{
+		IntegrationRuntimeReferenceTypeIntegrationRuntimeReference,
+	}
+}
+
+// ToPtr returns a *IntegrationRuntimeReferenceType pointing to the current value.
+func (c IntegrationRuntimeReferenceType) ToPtr() *IntegrationRuntimeReferenceType {
+	return &c
+}
+
 // IntegrationRuntimeSsisCatalogPricingTier - The pricing tier for the catalog database. The valid values could be found in https://azure.microsoft.com/en-us/pricing/details/sql-database/
 type IntegrationRuntimeSsisCatalogPricingTier string
 
@@ -1119,6 +1214,25 @@ func (c JSONWriteFilePattern) ToPtr() *JSONWriteFilePattern {
 	return &c
 }
 
+// LinkedServiceReferenceType - Linked service reference type.
+type LinkedServiceReferenceType string
+
+const (
+	LinkedServiceReferenceTypeLinkedServiceReference LinkedServiceReferenceType = "LinkedServiceReference"
+)
+
+// PossibleLinkedServiceReferenceTypeValues returns the possible values for the LinkedServiceReferenceType const type.
+func PossibleLinkedServiceReferenceTypeValues() []LinkedServiceReferenceType {
+	return []LinkedServiceReferenceType{
+		LinkedServiceReferenceTypeLinkedServiceReference,
+	}
+}
+
+// ToPtr returns a *LinkedServiceReferenceType pointing to the current value.
+func (c LinkedServiceReferenceType) ToPtr() *LinkedServiceReferenceType {
+	return &c
+}
+
 // ManagedIntegrationRuntimeNodeStatus - The managed integration runtime node status.
 type ManagedIntegrationRuntimeNodeStatus string
 
@@ -1141,6 +1255,25 @@ func PossibleManagedIntegrationRuntimeNodeStatusValues() []ManagedIntegrationRun
 
 // ToPtr returns a *ManagedIntegrationRuntimeNodeStatus pointing to the current value.
 func (c ManagedIntegrationRuntimeNodeStatus) ToPtr() *ManagedIntegrationRuntimeNodeStatus {
+	return &c
+}
+
+// ManagedVirtualNetworkReferenceType - Managed Virtual Network reference type.
+type ManagedVirtualNetworkReferenceType string
+
+const (
+	ManagedVirtualNetworkReferenceTypeManagedVirtualNetworkReference ManagedVirtualNetworkReferenceType = "ManagedVirtualNetworkReference"
+)
+
+// PossibleManagedVirtualNetworkReferenceTypeValues returns the possible values for the ManagedVirtualNetworkReferenceType const type.
+func PossibleManagedVirtualNetworkReferenceTypeValues() []ManagedVirtualNetworkReferenceType {
+	return []ManagedVirtualNetworkReferenceType{
+		ManagedVirtualNetworkReferenceTypeManagedVirtualNetworkReference,
+	}
+}
+
+// ToPtr returns a *ManagedVirtualNetworkReferenceType pointing to the current value.
+func (c ManagedVirtualNetworkReferenceType) ToPtr() *ManagedVirtualNetworkReferenceType {
 	return &c
 }
 
@@ -1334,6 +1467,25 @@ func PossiblePhoenixAuthenticationTypeValues() []PhoenixAuthenticationType {
 
 // ToPtr returns a *PhoenixAuthenticationType pointing to the current value.
 func (c PhoenixAuthenticationType) ToPtr() *PhoenixAuthenticationType {
+	return &c
+}
+
+// PipelineReferenceType - Pipeline reference type.
+type PipelineReferenceType string
+
+const (
+	PipelineReferenceTypePipelineReference PipelineReferenceType = "PipelineReference"
+)
+
+// PossiblePipelineReferenceTypeValues returns the possible values for the PipelineReferenceType const type.
+func PossiblePipelineReferenceTypeValues() []PipelineReferenceType {
+	return []PipelineReferenceType{
+		PipelineReferenceTypePipelineReference,
+	}
+}
+
+// ToPtr returns a *PipelineReferenceType pointing to the current value.
+func (c PipelineReferenceType) ToPtr() *PipelineReferenceType {
 	return &c
 }
 
@@ -1586,8 +1738,9 @@ func (c RunQueryOrderByField) ToPtr() *RunQueryOrderByField {
 type SQLAlwaysEncryptedAkvAuthType string
 
 const (
-	SQLAlwaysEncryptedAkvAuthTypeManagedIdentity  SQLAlwaysEncryptedAkvAuthType = "ManagedIdentity"
-	SQLAlwaysEncryptedAkvAuthTypeServicePrincipal SQLAlwaysEncryptedAkvAuthType = "ServicePrincipal"
+	SQLAlwaysEncryptedAkvAuthTypeManagedIdentity             SQLAlwaysEncryptedAkvAuthType = "ManagedIdentity"
+	SQLAlwaysEncryptedAkvAuthTypeServicePrincipal            SQLAlwaysEncryptedAkvAuthType = "ServicePrincipal"
+	SQLAlwaysEncryptedAkvAuthTypeUserAssignedManagedIdentity SQLAlwaysEncryptedAkvAuthType = "UserAssignedManagedIdentity"
 )
 
 // PossibleSQLAlwaysEncryptedAkvAuthTypeValues returns the possible values for the SQLAlwaysEncryptedAkvAuthType const type.
@@ -1595,6 +1748,7 @@ func PossibleSQLAlwaysEncryptedAkvAuthTypeValues() []SQLAlwaysEncryptedAkvAuthTy
 	return []SQLAlwaysEncryptedAkvAuthType{
 		SQLAlwaysEncryptedAkvAuthTypeManagedIdentity,
 		SQLAlwaysEncryptedAkvAuthTypeServicePrincipal,
+		SQLAlwaysEncryptedAkvAuthTypeUserAssignedManagedIdentity,
 	}
 }
 
@@ -2135,6 +2289,25 @@ func PossibleTeradataPartitionOptionValues() []TeradataPartitionOption {
 
 // ToPtr returns a *TeradataPartitionOption pointing to the current value.
 func (c TeradataPartitionOption) ToPtr() *TeradataPartitionOption {
+	return &c
+}
+
+// TriggerReferenceType - Trigger reference type.
+type TriggerReferenceType string
+
+const (
+	TriggerReferenceTypeTriggerReference TriggerReferenceType = "TriggerReference"
+)
+
+// PossibleTriggerReferenceTypeValues returns the possible values for the TriggerReferenceType const type.
+func PossibleTriggerReferenceTypeValues() []TriggerReferenceType {
+	return []TriggerReferenceType{
+		TriggerReferenceTypeTriggerReference,
+	}
+}
+
+// ToPtr returns a *TriggerReferenceType pointing to the current value.
+func (c TriggerReferenceType) ToPtr() *TriggerReferenceType {
 	return &c
 }
 

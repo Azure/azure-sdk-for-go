@@ -1,8 +1,8 @@
-# Azure Keyvault Module for Go
+# Azure Key Vault Module for Go
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault)
 
-The `armkeyvault` module provides operations for working with Azure Keyvault.
+The `armkeyvault` module provides operations for working with Azure Key Vault.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/keyvault/armkeyvault)
 
@@ -17,7 +17,7 @@ The `armkeyvault` module provides operations for working with Azure Keyvault.
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Keyvault module:
+Install the Azure Key Vault module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault
@@ -25,7 +25,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvaul
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Keyvault.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Key Vault.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 For more information on authentication, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
 
-## Connecting to Azure Keyvault
+## Connecting to Azure Key Vault
 
 Once you have a credential, create a connection to the desired ARM endpoint. The `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` package provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
 
@@ -45,7 +45,7 @@ For more information on ARM connections, please see the documentation for `azcor
 
 ## Clients
 
-Azure Keyvault modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `arm.Connection`.
+Azure Key Vault modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `arm.Connection`.
 
 ```go
 client := armkeyvault.NewKeysClient(con, "<subscription ID>")
@@ -54,7 +54,7 @@ client := armkeyvault.NewKeysClient(con, "<subscription ID>")
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Keyvault` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Key Vault` label.
 
 # Contributing
 

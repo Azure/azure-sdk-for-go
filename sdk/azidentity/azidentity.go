@@ -13,20 +13,27 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
+
+// AuthorityHost is the base URL for Azure Active Directory
+type AuthorityHost string
 
 const (
 	// AzureChina is a global constant to use in order to access the Azure China cloud.
-	AzureChina = "https://login.chinacloudapi.cn/"
+	AzureChina AuthorityHost = "https://login.chinacloudapi.cn/"
 	// AzureGermany is a global constant to use in order to access the Azure Germany cloud.
-	AzureGermany = "https://login.microsoftonline.de/"
+	AzureGermany AuthorityHost = "https://login.microsoftonline.de/"
 	// AzureGovernment is a global constant to use in order to access the Azure Government cloud.
-	AzureGovernment = "https://login.microsoftonline.us/"
+	AzureGovernment AuthorityHost = "https://login.microsoftonline.us/"
 	// AzurePublicCloud is a global constant to use in order to access the Azure public cloud.
-	AzurePublicCloud = "https://login.microsoftonline.com/"
-	// defaultSuffix is a suffix the signals that a string is in scope format
-	defaultSuffix = "/.default"
+	AzurePublicCloud AuthorityHost = "https://login.microsoftonline.com"
 )
+
+// defaultSuffix is the default AADv2 scope
+const defaultSuffix = "/.default"
 
 const (
 	headerXmsDate                = "x-ms-date"
@@ -52,29 +59,11 @@ type tokenResponse struct {
 	refreshToken string
 }
 
-// AADAuthenticationFailedError is used to unmarshal error responses received from Azure Active Directory.
-type AADAuthenticationFailedError struct {
-	Message       string `json:"error"`
-	Description   string `json:"error_description"`
-	Timestamp     string `json:"timestamp"`
-	TraceID       string `json:"trace_id"`
-	CorrelationID string `json:"correlation_id"`
-	URL           string `json:"error_uri"`
-	Response      *azcore.Response
-}
-
-func (e *AADAuthenticationFailedError) Error() string {
-	msg := e.Message
-	if len(e.Description) > 0 {
-		msg += " " + e.Description
-	}
-	return msg
-}
-
 // AuthenticationFailedError is returned when the authentication request has failed.
 type AuthenticationFailedError struct {
 	inner error
 	msg   string
+	resp  *http.Response
 }
 
 // Unwrap method on AuthenticationFailedError provides access to the inner error if available.
@@ -88,25 +77,16 @@ func (e *AuthenticationFailedError) NonRetriable() {
 }
 
 func (e *AuthenticationFailedError) Error() string {
-	if e.inner == nil {
-		return e.msg
-	} else if e.msg == "" {
-		return e.inner.Error()
-	}
-	return e.msg + " details: " + e.inner.Error()
+	return e.msg
 }
 
-var _ azcore.NonRetriableError = (*AuthenticationFailedError)(nil)
-
-func newAADAuthenticationFailedError(resp *azcore.Response) error {
-	authFailed := &AADAuthenticationFailedError{Response: resp}
-	err := resp.UnmarshalAsJSON(authFailed)
-	if err != nil {
-		authFailed.Message = resp.Status
-		authFailed.Description = "Failed to unmarshal response: " + err.Error()
-	}
-	return authFailed
+// RawResponse returns the HTTP response motivating the error, if available
+func (e *AuthenticationFailedError) RawResponse() *http.Response {
+	return e.resp
 }
+
+var _ azcore.HTTPResponse = (*AuthenticationFailedError)(nil)
+var _ errorinfo.NonRetriable = (*AuthenticationFailedError)(nil)
 
 // CredentialUnavailableError is the error type returned when the conditions required to
 // create a credential do not exist or are unavailable.
@@ -126,58 +106,60 @@ func (e *CredentialUnavailableError) NonRetriable() {
 	// marker method
 }
 
-var _ azcore.NonRetriableError = (*CredentialUnavailableError)(nil)
+var _ errorinfo.NonRetriable = (*CredentialUnavailableError)(nil)
 
 // pipelineOptions are used to configure how requests are made to Azure Active Directory.
 type pipelineOptions struct {
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
-	HTTPClient azcore.Transport
+	HTTPClient policy.Transporter
 
 	// Retry configures the built-in retry policy behavior
-	Retry azcore.RetryOptions
+	Retry policy.RetryOptions
 
 	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry azcore.TelemetryOptions
+	Telemetry policy.TelemetryOptions
 
 	// Logging configures the built-in logging policy behavior.
-	Logging azcore.LogOptions
+	Logging policy.LogOptions
 }
 
 // setAuthorityHost initializes the authority host for credentials.
-func setAuthorityHost(authorityHost string) (string, error) {
-	if authorityHost == "" {
-		authorityHost = AzurePublicCloud
-		// NOTE: we only allow overriding the authority host if no host was specified
+func setAuthorityHost(authorityHost AuthorityHost) (string, error) {
+	host := string(authorityHost)
+	if host == "" {
+		host = string(AzurePublicCloud)
 		if envAuthorityHost := os.Getenv("AZURE_AUTHORITY_HOST"); envAuthorityHost != "" {
-			authorityHost = envAuthorityHost
+			host = envAuthorityHost
 		}
 	}
-	u, err := url.Parse(authorityHost)
+	u, err := url.Parse(host)
 	if err != nil {
 		return "", err
 	}
 	if u.Scheme != "https" {
 		return "", errors.New("cannot use an authority host without https")
 	}
-	return authorityHost, nil
+	return host, nil
 }
 
 // newDefaultPipeline creates a pipeline using the specified pipeline options.
-func newDefaultPipeline(o pipelineOptions) azcore.Pipeline {
-	return azcore.NewPipeline(
-		o.HTTPClient,
-		azcore.NewTelemetryPolicy(&o.Telemetry),
-		azcore.NewRetryPolicy(&o.Retry),
-		azcore.NewLogPolicy(&o.Logging))
+func newDefaultPipeline(o pipelineOptions) runtime.Pipeline {
+	policies := []policy.Policy{}
+	if !o.Telemetry.Disabled {
+		policies = append(policies, runtime.NewTelemetryPolicy(component, version, &o.Telemetry))
+	}
+	policies = append(policies, runtime.NewRetryPolicy(&o.Retry))
+	policies = append(policies, runtime.NewLogPolicy(&o.Logging))
+	return runtime.NewPipeline(o.HTTPClient, policies...)
 }
 
 // newDefaultMSIPipeline creates a pipeline using the specified pipeline options needed
 // for a Managed Identity, such as a MSI specific retry policy.
-func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
+func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) runtime.Pipeline {
 	var statusCodes []int
 	// retry policy for MSI is not end-user configurable
-	retryOpts := azcore.RetryOptions{
+	retryOpts := policy.RetryOptions{
 		MaxRetries:    5,
 		MaxRetryDelay: 1 * time.Minute,
 		RetryDelay:    2 * time.Second,
@@ -200,16 +182,13 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) azcore.Pipeline {
 			http.StatusNotExtended,                    // 510
 			http.StatusNetworkAuthenticationRequired), // 511
 	}
-	if o.Telemetry.Value == "" {
-		o.Telemetry.Value = UserAgent
-	} else {
-		o.Telemetry.Value += " " + UserAgent
+	policies := []policy.Policy{}
+	if !o.Telemetry.Disabled {
+		policies = append(policies, runtime.NewTelemetryPolicy(component, version, &o.Telemetry))
 	}
-	return azcore.NewPipeline(
-		o.HTTPClient,
-		azcore.NewTelemetryPolicy(&o.Telemetry),
-		azcore.NewRetryPolicy(&retryOpts),
-		azcore.NewLogPolicy(&o.Logging))
+	policies = append(policies, runtime.NewRetryPolicy(&retryOpts))
+	policies = append(policies, runtime.NewLogPolicy(&o.Logging))
+	return runtime.NewPipeline(o.HTTPClient, policies...)
 }
 
 // validTenantID return true is it receives a valid tenantID, returns false otherwise

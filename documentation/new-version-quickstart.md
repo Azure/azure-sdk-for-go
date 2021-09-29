@@ -82,13 +82,12 @@ As an example, to install the Azure Compute module, you would run :
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute
 ```
+
 We also recommend installing other packages for authentication and core functionalities :
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/armcore
 go get github.com/Azure/azure-sdk-for-go/sdk/azcore
 go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
-go get github.com/Azure/azure-sdk-for-go/sdk/to
 ```
 
 Authentication
@@ -108,18 +107,18 @@ For more details on how authentication works in `azidentity`, please see the doc
 Connecting to Azure 
 -------------------
 
-Once you have a credential, create a connection to the desired ARM endpoint.  The `armcore` module provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
+Once you have a credential, create a connection to the desired ARM endpoint.  The `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` package provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
 
 ```go
-con := armcore.NewDefaultConnection(cred, nil)
+con := arm.NewDefaultConnection(cred, nil)
 ```
 
-For more information on ARM connections, please see the documentation for `armcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore).
+For more information on ARM connections, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
 
 Creating a Resource Management Client
 -------------------------------------
 
-Once you have a connection to ARM, you will need to decide what service to use and create a client to connect to that service. In this section, we will use `Compute` as our target service. The Compute modules consist of one or more clients. A client groups a set of related APIs, providing access to its functionality within the specified subscription. You will need to create one or more clients to access the APIs you require using your `armcore.Connection`.
+Once you have a connection to ARM, you will need to decide what service to use and create a client to connect to that service. In this section, we will use `Compute` as our target service. The Compute modules consist of one or more clients. A client groups a set of related APIs, providing access to its functionality within the specified subscription. You will need to create one or more clients to access the APIs you require using your `arm.Connection`.
 
 To show an example, we will create a client to manage Virtual Machines. The code to achieve this task would be:
 
@@ -156,34 +155,36 @@ Example: Creating a Resource Group
 
 ***Import the packages***
 ```go
-import {
-    "github.com/Azure/azure-sdk-for-go/sdk/armcore"
+import (
+    "contexts"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
     "github.com/Azure/azure-sdk-for-go/sdk/resources/armresources"
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-    "github.com/Azure/azure-sdk-for-go/sdk/to"
-}
+)
 ```
 
 ***Define some global variables***
 ```go
 var (
-	ctx               = context.Background()
-	subscriptionId    = os.Getenv("AZURE_SUBSCRIPTION_ID")
-	location          = "westus2"
-	resourceGroupName = "resourceGroupName"
+    ctx                 = context.Background()
+    subscriptionId      = os.Getenv("AZURE_SUBSCRIPTION_ID")
+    location            = "westus2"
+    resourceGroupName   = "resourceGroupName"
+    interval            = 5 * time.Second
 )
 ```
 
 ***Write a function to create a resource group***
 ```go
-func createResourceGroup(ctx context.Context, connection *armcore.Connection) (armresources.ResourceGroupResponse, error) {
+func createResourceGroup(ctx context.Context, connection *arm.Connection) (armresources.ResourceGroupResponse, error) {
 	rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
 
 	param := armresources.ResourceGroup{
 		Location: to.StringPtr(location),
 	}
 
-	return rgClient.CreateOrUpdate(context.Backgroud(), resourceGroupName, param, nil)
+	return rgClient.CreateOrUpdate(context.Background(), resourceGroupName, param, nil)
 }
 ```
 
@@ -194,7 +195,7 @@ func main() {
     if err != nil {
         log.Fatalf("authentication failure: %+v", err)
     }
-    conn := armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{
+    conn := arm.NewDefaultConnection(cred, &arm.ConnectionOptions{
         Logging: azcore.LogOptions{
             IncludeBody: true,
         },
@@ -204,7 +205,7 @@ func main() {
     if err != nil {
         log.Fatalf("cannot create resource group: %+v", err)
     }
-    log.Printf("Resource Group %s created", *resourceGroup.ID)
+    log.Printf("Resource Group %s created", *resourceGroup.ResourceGroup.ID)
 }
 ```
 
@@ -216,7 +217,7 @@ Example: Managing Resource Groups
 ***Update a resource group***
 
 ```go
-func updateResourceGroup(ctx context.Context, connection *armcore.Connection) (armresources.ResourceGroupResponse, error) {
+func updateResourceGroup(ctx context.Context, connection *arm.Connection) (armresources.ResourceGroupResponse, error) {
     rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
     
     update := armresources.ResourceGroupPatchable{
@@ -231,7 +232,7 @@ func updateResourceGroup(ctx context.Context, connection *armcore.Connection) (a
 ***List all resource groups***
 
 ```go
-func listResourceGroups(ctx context.Context, connection *armcore.Connection) ([]*armresources.ResourceGroup, error) {
+func listResourceGroups(ctx context.Context, connection *arm.Connection) ([]*armresources.ResourceGroup, error) {
     rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
     
     pager := rgClient.List(nil)
@@ -250,7 +251,7 @@ func listResourceGroups(ctx context.Context, connection *armcore.Connection) ([]
 ***Delete a resource group***
 
 ```go
-func deleteResourceGroup(ctx context.Context, connection *armcore.Connection) error {
+func deleteResourceGroup(ctx context.Context, connection *arm.Connection) error {
     rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
     
     poller, err := rgClient.BeginDelete(ctx, resourceGroupName, nil)
@@ -271,7 +272,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("authentication failure: %+v", err)
 	}
-	conn := armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{
+	conn := arm.NewDefaultConnection(cred, &arm.ConnectionOptions{
 		Logging: azcore.LogOptions{
 			IncludeBody: true,
 		},
@@ -282,13 +283,13 @@ func main() {
     if err != nil {
         log.Fatalf("cannot create resource group: %+v", err)
     }
-    log.Printf("Resource Group %s created", *resourceGroup.ID)
+    log.Printf("Resource Group %s created", *resourceGroup.ResourceGroup.ID)
 
 	updatedRG, err := updateResourceGroup(ctx, conn)
 	if err != nil {
         log.Fatalf("cannot update resource group: %+v", err)
 	}
-	log.Printf("Resource Group %s updated", *updatedRG.ID)
+	log.Printf("Resource Group %s updated", *updatedRG.ResourceGroup.ID)
 
 	rgList, err := listResourceGroups(ctx, conn)
 	if err != nil {
@@ -311,20 +312,21 @@ Due to the complexity of this scenario, please [click here](https://aka.ms/azsdk
 
 Long Running Operations
 -----------------------
-In the samples above, you might notice that some operations has a ``Begin`` prefix (for example, ``BeginDelete``). This indicates the operation is a Long-Running Operation (In short, LRO). For resource managment libraries, this kind of operation is quite common since certain resource operations may take a while to finish. When you need to use those LROs, you will need to use a poller and keep polling for the result until it is done. To illustrate this pattern, here is an example
+In the samples above, you might notice that some operations have a ``Begin`` prefix (for example, ``BeginDelete``). This indicates the operation is a Long-Running Operation (LRO). For resource management libraries, this kind of operation is quite common since certain resource operations may take a while to finish. When you need to use those LROs, you will need to use a poller and keep polling for the result until it is done. To illustrate this pattern, here is an example
 
 ```go
 poller, err := client.BeginCreate(context.Background(), "resource_identifier", "additonal_parameter")
 if err != nil {
 	// handle error...
 }
-resp, err = poller.PollUntilDone(context.Background(), 5*time.Second)
+resp, err = poller.PollUntilDone(context.Background(), 5 * time.Second)
 if err != nil {
 	// handle error...
 }
 fmt.Printf("LRO done")
 // dealing with `resp`
 ```
+
 Note that you will need to pass a polling interval to ```PollUntilDone``` and tell the poller how often it should try to get the status. This number is usually small but it's best to consult the [Azure service documentation](https://docs.microsoft.com/azure/?product=featured) on best practices and recommdend intervals for your specific use cases.
 
 For more advanced usage of LRO and design guidelines of LRO, please visit [this documentation here](https://azure.github.io/azure-sdk/golang_introduction.html#methods-invoking-long-running-operations)
@@ -363,4 +365,4 @@ our CLA.
 
 This project has adopted the Microsoft Open Source Code of Conduct. For
 more information see the Code of Conduct FAQ or contact
-<opencode@microsoft.com> with any additional questions or comments.
+[opencode@microsoft.com](mailto:opencode@microsoft.com) with any questions or comments.

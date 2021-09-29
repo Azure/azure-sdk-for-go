@@ -7,22 +7,28 @@
 
 # Catch all for non-code project files and unowned files | folders
 *                        @rickwinter @jhendrixMSFT
-/sdk/                    @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft @chamons
+/sdk/                    @rickwinter @chlowell @richardpark-msft @seankane-msft
 
 # Samples
-/samples/                @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft @chamons
+/samples/                @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
 
 # PRLabel: %Azure.Core
-/sdk/azcore/             @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft @chamons
+/sdk/azcore/             @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
 
 # PRLabel: %Azure.Identity
-/sdk/azidentity/         @rickwinter @jhendrixMSFT
+/sdk/azidentity/         @rickwinter @chlowell
+
+# PRLabel: %Internal
+/sdk/internal/           @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
 
 # PRLabel: %KeyVault
 /sdk/keyvault/           @rickwinter @jhendrixMSFT
 
 # PRLabel: %Storage
 /sdk/storage/            @rickwinter @jhendrixMSFT
+
+# PRLabel: %Cosmos
+/sdk/data/azcosmos/        @ealsur @ausfeldt 
 
 # PRLabel: %EngSys
 /sdk/template/           @benbp @Azure/azure-sdk-eng
@@ -38,7 +44,7 @@
 # SDK (track1 and track1.5)
 #############
 
-/profiles/ @ArcturusZhang @lirenhe
-/services/ @ArcturusZhang @lirenhe
-/storage/ @jhendrixMSFT
-/version/ @ArcturusZhang @lirenhe
+/profiles/               @ArcturusZhang @lirenhe
+/services/               @ArcturusZhang @lirenhe
+/storage/                @jhendrixMSFT
+/version/                @ArcturusZhang @lirenhe

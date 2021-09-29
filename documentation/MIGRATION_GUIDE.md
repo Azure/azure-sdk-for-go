@@ -2,7 +2,7 @@
 
 This document is intended for users that are familiar with an older version of the Azure SDK For Go for management modules (`services/**/mgmt/**`) and wish to migrate their application to the next version of Azure resource management libraries (`sdk/**/arm**`)
 
-**For users new to the Azure SDK For Go for resource management modules, please see the [README for 'sdk/armcore`](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/armcore) and the README for every individual package.**
+**For users new to the Azure SDK For Go for resource management modules, please see the [README for 'sdk/azcore`](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azcore) and the README for every individual package.**
 
 ## Table of contents
 
@@ -40,13 +40,13 @@ To the show the code snippets for the change:
 authorizer, err := adal.NewServicePrincipalToken(oAuthToken, "<ClientId>", "<ClientSecret>", endpoint)
 client := resources.NewGroupsClient("<SubscriptionId>")
 client.Authorizer = authorizer
-```        
+```
 
 **Equivalent in new version (`sdk/**/arm**`)**
 
 ```go
 credential, err := azidentity.NewClientSecretCredential("<TenantId>", "<ClientId>", "<ClientSecret>", nil)
-connection := armcore.NewDefaultConnection(credential, nil)
+connection := arm.NewDefaultConnection(credential, nil)
 client := armresources.NewResourceGroupsClient(connection, "<SubscriptionId>")
 ```
 
@@ -54,7 +54,7 @@ For detailed information on the benefits of using the new authentication classes
 
 ### Error Handling
 
-There are some minor changes in the error handling. 
+There are some minor changes in the error handling.
 
 - When there is an error in the SDK request, in the old version (`services/**/mgmt/**`), the return value will all be non-nil, and you can get the raw HTTP response from the response value. In the new version (`sdk/**/arm**`), the first return value will be empty and you need to cast the error to `HTTPResponse` interface to get the raw HTTP response. When the request is successful and there is no error returned, you will need to get the raw HTTP response in `RawResponse` property of the first return value.
 
@@ -174,13 +174,13 @@ Because of adopting Azure Core which is a shared library across all Azure SDKs, 
 
 In old version (`services/**/mgmt/**`), we use the `(autorest.Client).Sender`, `(autorest.Client).RequestInspector` and `(autorest.Client).ResponseInspector` properties in `github.com/Azure/go-autorest/autorest` module to provide customized interceptor for the HTTP traffic.
 
-In new version (`sdk/**/arm**`), we use `(armcore.ConnectionOptions).PerCallPolicies` and `(armcore.ConnectionOptions).PerRetryPolicies` in `github.com/Azure/azure-sdk-for-go/sdk/armcore` module instead to inject customized policy to the pipeline.
+In new version (`sdk/**/arm**`), we use `(arm.ConnectionOptions).PerCallPolicies` and `(arm.ConnectionOptions).PerRetryPolicies` in `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` package instead to inject customized policy to the pipeline.
 
 ### Custom HTTP Client
 
-Similar to the customized policy, there are changes regarding how the custom HTTP client is configured as well. You can now use the `(armcore.ConnectionOptions).HTTPClient` option in `github.com/Azure/azure-sdk-for-go/sdk/armcore` module to use your own implementation of HTTP client and plug in what they need into the configuration.
+Similar to the customized policy, there are changes regarding how the custom HTTP client is configured as well. You can now use the `(arm.ConnectionOptions).HTTPClient` option in `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` package to use your own implementation of HTTP client and plug in what they need into the configuration.
 
-**In old version (`services/**/mgmt/**`)** 
+**In old version (`services/**/mgmt/**`)**
 ```go
 httpClient := NewYourOwnHTTPClient{}
 client := resources.NewGroupsClient("<SubscriptionId>")
@@ -191,7 +191,7 @@ client.Sender = &httpClient
 
 ```go
 httpClient := NewYourOwnHTTPClient{}
-connection := armcore.NewConnection(credential, &armcore.ConnectionOptions{
+connection := arm.NewConnection(credential, &arm.ConnectionOptions{
     HTTPClient: &httpClient,
 })
 client := armresources.NewResourceGroupsClient(connection, "<SubscriptionId>")

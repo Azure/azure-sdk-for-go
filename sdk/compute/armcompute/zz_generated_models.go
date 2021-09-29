@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,9 +10,10 @@ package armcompute
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // APIEntityReference - The API entity reference.
@@ -69,6 +71,9 @@ type AccessURI struct {
 
 // AdditionalCapabilities - Enables or disables a capability on the virtual machine or virtual machine scale set.
 type AdditionalCapabilities struct {
+	// The flag that enables or disables hibernation capability on the VM.
+	HibernationEnabled *bool `json:"hibernationEnabled,omitempty"`
+
 	// The flag that enables or disables a capability to have one or more managed data disks with UltraSSDLRS storage account type on the VM or VMSS. Managed
 	// disks with storage account type UltraSSDLRS can
 	// be added to a virtual machine or virtual machine scale set only if this property is enabled.
@@ -92,6 +97,19 @@ type AdditionalUnattendContent struct {
 
 	// Specifies the name of the setting to which the content applies. Possible values are: FirstLogonCommands and AutoLogon.
 	SettingName *SettingNames `json:"settingName,omitempty"`
+}
+
+// ApplicationProfile - Contains the list of gallery applications that should be made available to the VM/VMSS
+type ApplicationProfile struct {
+	// Specifies the gallery applications that should be made available to the VM/VMSS
+	GalleryApplications []*VMGalleryApplication `json:"galleryApplications,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ApplicationProfile.
+func (a ApplicationProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "galleryApplications", a.GalleryApplications)
+	return json.Marshal(objectMap)
 }
 
 // AutomaticOSUpgradePolicy - The configuration parameters used for performing automatic OS upgrade.
@@ -382,6 +400,345 @@ type BootDiagnosticsInstanceView struct {
 	// READ-ONLY; The boot diagnostics status information for the VM.
 	// NOTE: It will be set only if there are errors encountered in enabling boot diagnostics.
 	Status *InstanceViewStatus `json:"status,omitempty" azure:"ro"`
+}
+
+// CapacityReservation - Specifies information about the capacity reservation.
+type CapacityReservation struct {
+	Resource
+	// REQUIRED; SKU of the resource for which capacity needs be reserved. The SKU name and capacity is required to be set. Currently VM Skus with the capability
+	// called 'CapacityReservationSupported' set to true are
+	// supported. Refer to List Microsoft.Compute SKUs in a region (https://docs.microsoft.com/rest/api/compute/resourceskus/list) for supported values.
+	SKU *SKU `json:"sku,omitempty"`
+
+	// Properties of the Capacity reservation.
+	Properties *CapacityReservationProperties `json:"properties,omitempty"`
+
+	// Availability Zone to use for this capacity reservation. The zone has to be single value and also should be part for the list of zones specified during
+	// the capacity reservation group creation. The zone
+	// can be assigned only during creation. If not provided, the reservation supports only non-zonal deployments. If provided, enforces VM/VMSS using this
+	// capacity reservation to be in same zone.
+	Zones []*string `json:"zones,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CapacityReservation.
+func (c CapacityReservation) MarshalJSON() ([]byte, error) {
+	objectMap := c.Resource.marshalInternal()
+	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "sku", c.SKU)
+	populate(objectMap, "zones", c.Zones)
+	return json.Marshal(objectMap)
+}
+
+// CapacityReservationGroup - Specifies information about the capacity reservation group that the capacity reservations should be assigned to.
+// Currently, a capacity reservation can only be added to a capacity reservation group at creation time. An existing capacity reservation cannot be added
+// or moved to another capacity reservation group.
+type CapacityReservationGroup struct {
+	Resource
+	// capacity reservation group Properties.
+	Properties *CapacityReservationGroupProperties `json:"properties,omitempty"`
+
+	// Availability Zones to use for this capacity reservation group. The zones can be assigned only during creation. If not provided, the group supports only
+	// regional resources in the region. If provided,
+	// enforces each capacity reservation in the group to be in one of the zones.
+	Zones []*string `json:"zones,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CapacityReservationGroup.
+func (c CapacityReservationGroup) MarshalJSON() ([]byte, error) {
+	objectMap := c.Resource.marshalInternal()
+	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "zones", c.Zones)
+	return json.Marshal(objectMap)
+}
+
+type CapacityReservationGroupInstanceView struct {
+	// READ-ONLY; List of instance view of the capacity reservations under the capacity reservation group.
+	CapacityReservations []*CapacityReservationInstanceViewWithName `json:"capacityReservations,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CapacityReservationGroupInstanceView.
+func (c CapacityReservationGroupInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "capacityReservations", c.CapacityReservations)
+	return json.Marshal(objectMap)
+}
+
+// CapacityReservationGroupListResult - The List capacity reservation group with resource group response.
+type CapacityReservationGroupListResult struct {
+	// REQUIRED; The list of capacity reservation groups
+	Value []*CapacityReservationGroup `json:"value,omitempty"`
+
+	// The URI to fetch the next page of capacity reservation groups. Call ListNext() with this URI to fetch the next page of capacity reservation groups.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CapacityReservationGroupListResult.
+func (c CapacityReservationGroupListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", c.NextLink)
+	populate(objectMap, "value", c.Value)
+	return json.Marshal(objectMap)
+}
+
+// CapacityReservationGroupProperties - capacity reservation group Properties.
+type CapacityReservationGroupProperties struct {
+	// READ-ONLY; A list of all capacity reservation resource ids that belong to capacity reservation group.
+	CapacityReservations []*SubResourceReadOnly `json:"capacityReservations,omitempty" azure:"ro"`
+
+	// READ-ONLY; The capacity reservation group instance view which has the list of instance views for all the capacity reservations that belong to the capacity
+	// reservation group.
+	InstanceView *CapacityReservationGroupInstanceView `json:"instanceView,omitempty" azure:"ro"`
+
+	// READ-ONLY; A list of references to all virtual machines associated to the capacity reservation group.
+	VirtualMachinesAssociated []*SubResourceReadOnly `json:"virtualMachinesAssociated,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CapacityReservationGroupProperties.
+func (c CapacityReservationGroupProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "capacityReservations", c.CapacityReservations)
+	populate(objectMap, "instanceView", c.InstanceView)
+	populate(objectMap, "virtualMachinesAssociated", c.VirtualMachinesAssociated)
+	return json.Marshal(objectMap)
+}
+
+// CapacityReservationGroupUpdate - Specifies information about the capacity reservation group. Only tags can be updated.
+type CapacityReservationGroupUpdate struct {
+	UpdateResource
+	// capacity reservation group Properties.
+	Properties *CapacityReservationGroupProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CapacityReservationGroupUpdate.
+func (c CapacityReservationGroupUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := c.UpdateResource.marshalInternal()
+	populate(objectMap, "properties", c.Properties)
+	return json.Marshal(objectMap)
+}
+
+// CapacityReservationGroupsCreateOrUpdateOptions contains the optional parameters for the CapacityReservationGroups.CreateOrUpdate method.
+type CapacityReservationGroupsCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CapacityReservationGroupsDeleteOptions contains the optional parameters for the CapacityReservationGroups.Delete method.
+type CapacityReservationGroupsDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CapacityReservationGroupsGetOptions contains the optional parameters for the CapacityReservationGroups.Get method.
+type CapacityReservationGroupsGetOptions struct {
+	// The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance views of the capacity reservations under the capacity
+	// reservation group which is a snapshot of the runtime properties of a capacity reservation that is managed by the platform and can change outside of control
+	// plane operations.
+	Expand *CapacityReservationGroupInstanceViewTypes
+}
+
+// CapacityReservationGroupsListByResourceGroupOptions contains the optional parameters for the CapacityReservationGroups.ListByResourceGroup method.
+type CapacityReservationGroupsListByResourceGroupOptions struct {
+	// The expand expression to apply on the operation. Based on the expand param(s) specified we return Virtual Machine or ScaleSet VM Instance or both resource
+	// Ids which are associated to capacity reservation group in the response.
+	Expand *ExpandTypesForGetCapacityReservationGroups
+}
+
+// CapacityReservationGroupsListBySubscriptionOptions contains the optional parameters for the CapacityReservationGroups.ListBySubscription method.
+type CapacityReservationGroupsListBySubscriptionOptions struct {
+	// The expand expression to apply on the operation. Based on the expand param(s) specified we return Virtual Machine or ScaleSet VM Instance or both resource
+	// Ids which are associated to capacity reservation group in the response.
+	Expand *ExpandTypesForGetCapacityReservationGroups
+}
+
+// CapacityReservationGroupsUpdateOptions contains the optional parameters for the CapacityReservationGroups.Update method.
+type CapacityReservationGroupsUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CapacityReservationInstanceView - The instance view of a capacity reservation that provides as snapshot of the runtime properties of the capacity reservation
+// that is managed by the platform and can change outside of control plane
+// operations.
+type CapacityReservationInstanceView struct {
+	// The resource status information.
+	Statuses []*InstanceViewStatus `json:"statuses,omitempty"`
+
+	// Unutilized capacity of the capacity reservation.
+	UtilizationInfo *CapacityReservationUtilization `json:"utilizationInfo,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CapacityReservationInstanceView.
+func (c CapacityReservationInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := c.marshalInternal()
+	return json.Marshal(objectMap)
+}
+
+func (c CapacityReservationInstanceView) marshalInternal() map[string]interface{} {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "statuses", c.Statuses)
+	populate(objectMap, "utilizationInfo", c.UtilizationInfo)
+	return objectMap
+}
+
+// CapacityReservationInstanceViewWithName - The instance view of a capacity reservation that includes the name of the capacity reservation. It is used
+// for the response to the instance view of a capacity reservation group.
+type CapacityReservationInstanceViewWithName struct {
+	CapacityReservationInstanceView
+	// READ-ONLY; The name of the capacity reservation.
+	Name *string `json:"name,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CapacityReservationInstanceViewWithName.
+func (c CapacityReservationInstanceViewWithName) MarshalJSON() ([]byte, error) {
+	objectMap := c.CapacityReservationInstanceView.marshalInternal()
+	populate(objectMap, "name", c.Name)
+	return json.Marshal(objectMap)
+}
+
+// CapacityReservationListResult - The list capacity reservation operation response.
+type CapacityReservationListResult struct {
+	// REQUIRED; The list of capacity reservations
+	Value []*CapacityReservation `json:"value,omitempty"`
+
+	// The URI to fetch the next page of capacity reservations. Call ListNext() with this URI to fetch the next page of capacity reservations.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CapacityReservationListResult.
+func (c CapacityReservationListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "nextLink", c.NextLink)
+	populate(objectMap, "value", c.Value)
+	return json.Marshal(objectMap)
+}
+
+// CapacityReservationProfile - The parameters of a capacity reservation Profile.
+type CapacityReservationProfile struct {
+	// Specifies the capacity reservation group resource id that should be used for allocating the virtual machine or scaleset vm instances provided enough
+	// capacity has been reserved. Please refer to
+	// https://aka.ms/CapacityReservation for more details.
+	CapacityReservationGroup *SubResource `json:"capacityReservationGroup,omitempty"`
+}
+
+// CapacityReservationProperties - Properties of the Capacity reservation.
+type CapacityReservationProperties struct {
+	// READ-ONLY; The Capacity reservation instance view.
+	InstanceView *CapacityReservationInstanceView `json:"instanceView,omitempty" azure:"ro"`
+
+	// READ-ONLY; The provisioning state, which only appears in the response.
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; The date time when the capacity reservation was last updated.
+	ProvisioningTime *time.Time `json:"provisioningTime,omitempty" azure:"ro"`
+
+	// READ-ONLY; A unique id generated and assigned to the capacity reservation by the platform which does not change throughout the lifetime of the resource.
+	ReservationID *string `json:"reservationId,omitempty" azure:"ro"`
+
+	// READ-ONLY; A list of all virtual machine resource ids that are associated with the capacity reservation.
+	VirtualMachinesAssociated []*SubResourceReadOnly `json:"virtualMachinesAssociated,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CapacityReservationProperties.
+func (c CapacityReservationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "instanceView", c.InstanceView)
+	populate(objectMap, "provisioningState", c.ProvisioningState)
+	populate(objectMap, "provisioningTime", (*timeRFC3339)(c.ProvisioningTime))
+	populate(objectMap, "reservationId", c.ReservationID)
+	populate(objectMap, "virtualMachinesAssociated", c.VirtualMachinesAssociated)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CapacityReservationProperties.
+func (c *CapacityReservationProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "instanceView":
+			err = unpopulate(val, &c.InstanceView)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, &c.ProvisioningState)
+			delete(rawMsg, key)
+		case "provisioningTime":
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			c.ProvisioningTime = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "reservationId":
+			err = unpopulate(val, &c.ReservationID)
+			delete(rawMsg, key)
+		case "virtualMachinesAssociated":
+			err = unpopulate(val, &c.VirtualMachinesAssociated)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// CapacityReservationUpdate - Specifies information about the capacity reservation. Only tags and sku.capacity can be updated.
+type CapacityReservationUpdate struct {
+	UpdateResource
+	// Properties of the Capacity reservation.
+	Properties *CapacityReservationProperties `json:"properties,omitempty"`
+
+	// SKU of the resource for which capacity needs be reserved. The SKU name and capacity is required to be set. Currently VM Skus with the capability called
+	// 'CapacityReservationSupported' set to true are
+	// supported. Refer to List Microsoft.Compute SKUs in a region (https://docs.microsoft.com/rest/api/compute/resourceskus/list) for supported values.
+	SKU *SKU `json:"sku,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CapacityReservationUpdate.
+func (c CapacityReservationUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := c.UpdateResource.marshalInternal()
+	populate(objectMap, "properties", c.Properties)
+	populate(objectMap, "sku", c.SKU)
+	return json.Marshal(objectMap)
+}
+
+// CapacityReservationUtilization - Represents the capacity reservation utilization in terms of resources allocated.
+type CapacityReservationUtilization struct {
+	// READ-ONLY; A list of all virtual machines resource ids allocated against the capacity reservation.
+	VirtualMachinesAllocated []*SubResourceReadOnly `json:"virtualMachinesAllocated,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CapacityReservationUtilization.
+func (c CapacityReservationUtilization) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "virtualMachinesAllocated", c.VirtualMachinesAllocated)
+	return json.Marshal(objectMap)
+}
+
+// CapacityReservationsBeginCreateOrUpdateOptions contains the optional parameters for the CapacityReservations.BeginCreateOrUpdate method.
+type CapacityReservationsBeginCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CapacityReservationsBeginDeleteOptions contains the optional parameters for the CapacityReservations.BeginDelete method.
+type CapacityReservationsBeginDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CapacityReservationsBeginUpdateOptions contains the optional parameters for the CapacityReservations.BeginUpdate method.
+type CapacityReservationsBeginUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CapacityReservationsGetOptions contains the optional parameters for the CapacityReservations.Get method.
+type CapacityReservationsGetOptions struct {
+	// The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime properties of the capacity reservation that is managed
+	// by the platform and can change outside of control plane operations.
+	Expand *CapacityReservationInstanceViewTypes
+}
+
+// CapacityReservationsListByCapacityReservationGroupOptions contains the optional parameters for the CapacityReservations.ListByCapacityReservationGroup
+// method.
+type CapacityReservationsListByCapacityReservationGroupOptions struct {
+	// placeholder for future optional parameters
 }
 
 // CloudError - An error response from the Compute service.
@@ -2054,6 +2411,16 @@ type DiskRestorePoint struct {
 	Properties *DiskRestorePointProperties `json:"properties,omitempty"`
 }
 
+// DiskRestorePointBeginGrantAccessOptions contains the optional parameters for the DiskRestorePoint.BeginGrantAccess method.
+type DiskRestorePointBeginGrantAccessOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiskRestorePointBeginRevokeAccessOptions contains the optional parameters for the DiskRestorePoint.BeginRevokeAccess method.
+type DiskRestorePointBeginRevokeAccessOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DiskRestorePointGetOptions contains the optional parameters for the DiskRestorePoint.Get method.
 type DiskRestorePointGetOptions struct {
 	// placeholder for future optional parameters
@@ -2802,6 +3169,9 @@ type GalleryArtifactPublishingProfileBase struct {
 	// This property is updatable.
 	ReplicaCount *int32 `json:"replicaCount,omitempty"`
 
+	// Optional parameter which specifies the mode to be used for replication. This property is not updatable.
+	ReplicationMode *ReplicationMode `json:"replicationMode,omitempty"`
+
 	// Specifies the storage account type to be used to store the image. This property is not updatable.
 	StorageAccountType *StorageAccountType `json:"storageAccountType,omitempty"`
 
@@ -2833,6 +3203,7 @@ func (g GalleryArtifactPublishingProfileBase) marshalInternal() map[string]inter
 	populate(objectMap, "excludeFromLatest", g.ExcludeFromLatest)
 	populate(objectMap, "publishedDate", (*timeRFC3339)(g.PublishedDate))
 	populate(objectMap, "replicaCount", g.ReplicaCount)
+	populate(objectMap, "replicationMode", g.ReplicationMode)
 	populate(objectMap, "storageAccountType", g.StorageAccountType)
 	populate(objectMap, "targetRegions", g.TargetRegions)
 	return objectMap
@@ -2857,6 +3228,9 @@ func (g *GalleryArtifactPublishingProfileBase) unmarshalInternal(rawMsg map[stri
 			delete(rawMsg, key)
 		case "replicaCount":
 			err = unpopulate(val, &g.ReplicaCount)
+			delete(rawMsg, key)
+		case "replicationMode":
+			err = unpopulate(val, &g.ReplicationMode)
 			delete(rawMsg, key)
 		case "storageAccountType":
 			err = unpopulate(val, &g.StorageAccountType)
@@ -3279,6 +3653,9 @@ type GalleryProperties struct {
 	// Profile for gallery sharing to subscription or tenant
 	SharingProfile *SharingProfile `json:"sharingProfile,omitempty"`
 
+	// Contains information about the soft deletion policy of the gallery.
+	SoftDeletePolicy *SoftDeletePolicy `json:"softDeletePolicy,omitempty"`
+
 	// READ-ONLY; The provisioning state, which only appears in the response.
 	ProvisioningState *GalleryPropertiesProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
 }
@@ -3323,6 +3700,11 @@ type HardwareProfile struct {
 	// virtual machines [https://docs.microsoft.com/azure/virtual-machines/sizes].
 	// The available VM sizes depend on region and availability set.
 	VMSize *VirtualMachineSizeTypes `json:"vmSize,omitempty"`
+
+	// Specifies the properties for customizing the size of the virtual machine. Minimum api-version: 2021-07-01.
+	// This feature is still in preview mode and is not supported for VirtualMachineScaleSet.
+	// Please follow the instructions in VM Customization [https://aka.ms/vmcustomization] for more details.
+	VMSizeProperties *VMSizeProperties `json:"vmSizeProperties,omitempty"`
 }
 
 // Image - The source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual machine. If SourceImage is
@@ -3467,6 +3849,9 @@ type ImageReference struct {
 	// The image SKU.
 	SKU *string `json:"sku,omitempty"`
 
+	// Specified the shared gallery image unique id for vm deployment. This can be fetched from shared gallery image GET call.
+	SharedGalleryImageID *string `json:"sharedGalleryImageId,omitempty"`
+
 	// Specifies the version of the platform image or marketplace image used to create the virtual machine. The allowed formats are Major.Minor.Build or 'latest'.
 	// Major, Minor, and Build are decimal numbers.
 	// Specify 'latest' to use the latest version of an image available at deploy time. Even if you use 'latest', the VM image will not automatically update
@@ -3487,6 +3872,7 @@ func (i ImageReference) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "offer", i.Offer)
 	populate(objectMap, "publisher", i.Publisher)
 	populate(objectMap, "sku", i.SKU)
+	populate(objectMap, "sharedGalleryImageId", i.SharedGalleryImageID)
 	populate(objectMap, "version", i.Version)
 	return json.Marshal(objectMap)
 }
@@ -4383,7 +4769,10 @@ type OSProfile struct {
 	// to false.
 	RequireGuestProvisionSignal *bool `json:"requireGuestProvisionSignal,omitempty"`
 
-	// Specifies set of certificates that should be installed onto the virtual machine.
+	// Specifies set of certificates that should be installed onto the virtual machine. To install certificates on a virtual machine it is recommended to use
+	// the Azure Key Vault virtual machine extension for
+	// Linux [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux] or the Azure Key Vault virtual machine extension for Windows
+	// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows].
 	Secrets []*VaultSecretGroup `json:"secrets,omitempty"`
 
 	// Specifies Windows operating system settings on the virtual machine.
@@ -4828,27 +5217,13 @@ type ProxyResource struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ProxyResource.
-func (p ProxyResource) MarshalJSON() ([]byte, error) {
-	objectMap := p.marshalInternal()
-	return json.Marshal(objectMap)
-}
-
-func (p ProxyResource) marshalInternal() map[string]interface{} {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "type", p.Type)
-	return objectMap
-}
-
 // PublicIPAddressSKU - Describes the public IP Sku
 type PublicIPAddressSKU struct {
-	// REQUIRED; Specify public IP sku name
-	PublicIPAddressSKUName *PublicIPAddressSKUName `json:"publicIPAddressSkuName,omitempty"`
+	// Specify public IP sku name
+	Name *PublicIPAddressSKUName `json:"name,omitempty"`
 
 	// Specify public IP sku tier
-	PublicIPAddressSKUTier *PublicIPAddressSKUTier `json:"publicIPAddressSkuTier,omitempty"`
+	Tier *PublicIPAddressSKUTier `json:"tier,omitempty"`
 }
 
 // PurchasePlan - Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
@@ -5153,9 +5528,16 @@ type ResourceSKUCosts struct {
 	Quantity *int64 `json:"quantity,omitempty" azure:"ro"`
 }
 
+// ResourceSKULocationInfo - Describes an available Compute SKU Location Information.
 type ResourceSKULocationInfo struct {
+	// READ-ONLY; The names of extended locations.
+	ExtendedLocations []*string `json:"extendedLocations,omitempty" azure:"ro"`
+
 	// READ-ONLY; Location of the SKU
 	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the extended location.
+	Type *ExtendedLocationType `json:"type,omitempty" azure:"ro"`
 
 	// READ-ONLY; Details of capabilities available to a SKU in specific zones.
 	ZoneDetails []*ResourceSKUZoneDetails `json:"zoneDetails,omitempty" azure:"ro"`
@@ -5167,12 +5549,15 @@ type ResourceSKULocationInfo struct {
 // MarshalJSON implements the json.Marshaller interface for type ResourceSKULocationInfo.
 func (r ResourceSKULocationInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "extendedLocations", r.ExtendedLocations)
 	populate(objectMap, "location", r.Location)
+	populate(objectMap, "type", r.Type)
 	populate(objectMap, "zoneDetails", r.ZoneDetails)
 	populate(objectMap, "zones", r.Zones)
 	return json.Marshal(objectMap)
 }
 
+// ResourceSKURestrictionInfo - Describes an available Compute SKU Restriction Information.
 type ResourceSKURestrictionInfo struct {
 	// READ-ONLY; Locations where the SKU is restricted
 	Locations []*string `json:"locations,omitempty" azure:"ro"`
@@ -5235,6 +5620,8 @@ func (r ResourceSKUZoneDetails) MarshalJSON() ([]byte, error) {
 type ResourceSKUsListOptions struct {
 	// The filter to apply on the operation. Only **location** filter is supported currently.
 	Filter *string
+	// To Include Extended Locations information or not in the response.
+	IncludeExtendedLocations *string
 }
 
 // ResourceSKUsResult - The List Resource Skus operation response.
@@ -5274,31 +5661,8 @@ func (r ResourceURIList) MarshalJSON() ([]byte, error) {
 // RestorePoint - Restore Point details.
 type RestorePoint struct {
 	ProxyResource
-	// List of disk resource ids that the customer wishes to exclude from the restore point. If no disks are specified, all disks will be included.
-	ExcludeDisks []*APIEntityReference `json:"excludeDisks,omitempty"`
-
-	// READ-ONLY; Gets the consistency mode for the restore point. Please refer to https://aka.ms/RestorePoints for more details.
-	ConsistencyMode *ConsistencyModeTypes `json:"consistencyMode,omitempty" azure:"ro"`
-
-	// READ-ONLY; Gets the provisioning details set by the server during Create restore point operation.
-	ProvisioningDetails *RestorePointProvisioningDetails `json:"provisioningDetails,omitempty" azure:"ro"`
-
-	// READ-ONLY; Gets the provisioning state of the restore point.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
-
-	// READ-ONLY; Gets the details of the VM captured at the time of the restore point creation.
-	SourceMetadata *RestorePointSourceMetadata `json:"sourceMetadata,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RestorePoint.
-func (r RestorePoint) MarshalJSON() ([]byte, error) {
-	objectMap := r.ProxyResource.marshalInternal()
-	populate(objectMap, "consistencyMode", r.ConsistencyMode)
-	populate(objectMap, "excludeDisks", r.ExcludeDisks)
-	populate(objectMap, "provisioningDetails", r.ProvisioningDetails)
-	populate(objectMap, "provisioningState", r.ProvisioningState)
-	populate(objectMap, "sourceMetadata", r.SourceMetadata)
-	return json.Marshal(objectMap)
+	// The restore point properties.
+	Properties *RestorePointProperties `json:"properties,omitempty"`
 }
 
 // RestorePointCollection - Create or update Restore Point collection parameters.
@@ -5411,6 +5775,35 @@ type RestorePointCollectionsUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// RestorePointProperties - The restore point properties.
+type RestorePointProperties struct {
+	// List of disk resource ids that the customer wishes to exclude from the restore point. If no disks are specified, all disks will be included.
+	ExcludeDisks []*APIEntityReference `json:"excludeDisks,omitempty"`
+
+	// READ-ONLY; Gets the consistency mode for the restore point. Please refer to https://aka.ms/RestorePoints for more details.
+	ConsistencyMode *ConsistencyModeTypes `json:"consistencyMode,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the provisioning details set by the server during Create restore point operation.
+	ProvisioningDetails *RestorePointProvisioningDetails `json:"provisioningDetails,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the provisioning state of the restore point.
+	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+
+	// READ-ONLY; Gets the details of the VM captured at the time of the restore point creation.
+	SourceMetadata *RestorePointSourceMetadata `json:"sourceMetadata,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RestorePointProperties.
+func (r RestorePointProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "consistencyMode", r.ConsistencyMode)
+	populate(objectMap, "excludeDisks", r.ExcludeDisks)
+	populate(objectMap, "provisioningDetails", r.ProvisioningDetails)
+	populate(objectMap, "provisioningState", r.ProvisioningState)
+	populate(objectMap, "sourceMetadata", r.SourceMetadata)
+	return json.Marshal(objectMap)
+}
+
 // RestorePointProvisioningDetails - Restore Point Provisioning details.
 type RestorePointProvisioningDetails struct {
 	// Gets the creation time of the restore point.
@@ -5479,6 +5872,9 @@ type RestorePointSourceMetadata struct {
 
 	// Gets the license type, which is for bring your own license scenario.
 	LicenseType *string `json:"licenseType,omitempty"`
+
+	// Location of the VM from which the restore point was created.
+	Location *string `json:"location,omitempty"`
 
 	// Gets the OS profile.
 	OSProfile *OSProfile `json:"osProfile,omitempty"`
@@ -6102,6 +6498,10 @@ type SSHPublicKeysUpdateOptions struct {
 
 // ScaleInPolicy - Describes a scale-in policy for a virtual machine scale set.
 type ScaleInPolicy struct {
+	// This property allows you to specify if virtual machines chosen for removal have to be force deleted when a virtual machine scale set is being scaled-in.(Feature
+	// in Preview)
+	ForceDeletion *bool `json:"forceDeletion,omitempty"`
+
 	// The rules to be followed when scaling-in a virtual machine scale set.
 	// Possible values are:
 	// Default When a virtual machine scale set is scaled in, the scale set will first be balanced across zones if it is a zonal scale set. Then, it will be
@@ -6119,6 +6519,7 @@ type ScaleInPolicy struct {
 // MarshalJSON implements the json.Marshaller interface for type ScaleInPolicy.
 func (s ScaleInPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "forceDeletion", s.ForceDeletion)
 	populate(objectMap, "rules", s.Rules)
 	return json.Marshal(objectMap)
 }
@@ -6138,7 +6539,7 @@ type SecurityProfile struct {
 
 	// Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings.
 	// Default: UefiSettings will not be enabled unless this property is set as TrustedLaunch.
-	SecurityType *string `json:"securityType,omitempty"`
+	SecurityType *SecurityTypes `json:"securityType,omitempty"`
 
 	// Specifies the security settings like secure boot and vTPM used while creating the virtual machine.
 	// Minimum api-version: 2020-12-01
@@ -6745,10 +7146,28 @@ type SnapshotsListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// SoftDeletePolicy - Contains information about the soft deletion policy of the gallery.
+type SoftDeletePolicy struct {
+	// Enables soft-deletion for resources in this gallery, allowing them to be recovered within retention time.
+	IsSoftDeleteEnabled *bool `json:"isSoftDeleteEnabled,omitempty"`
+}
+
 // SourceVault - The vault id is an Azure Resource Manager Resource id in the form /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}
 type SourceVault struct {
 	// Resource Id
 	ID *string `json:"id,omitempty"`
+}
+
+// SpotRestorePolicy - Specifies the Spot-Try-Restore properties for the virtual machine scale set.
+// With this property customer can enable or disable automatic restore of the evicted Spot VMSS VM instances opportunistically based on capacity availability
+// and pricing constraint.
+type SpotRestorePolicy struct {
+	// Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried to be restored opportunistically based on capacity availability
+	// and pricing constraints
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Timeout value expressed as an ISO 8601 time duration after which the platform will not try to restore the VMSS SPOT instances
+	RestoreTimeout *string `json:"restoreTimeout,omitempty"`
 }
 
 type StatusCodeCount struct {
@@ -7102,11 +7521,43 @@ type UserAssignedIdentitiesValue struct {
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
 }
 
+// VMGalleryApplication - Specifies the required information to reference a compute gallery application version
+type VMGalleryApplication struct {
+	// REQUIRED; Specifies the GalleryApplicationVersion resource id on the form of
+	// /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{application}/versions/{version}
+	PackageReferenceID *string `json:"packageReferenceId,omitempty"`
+
+	// Optional, Specifies the uri to an azure blob that will replace the default configuration for the package if provided
+	ConfigurationReference *string `json:"configurationReference,omitempty"`
+
+	// Optional, Specifies the order in which the packages have to be installed
+	Order *int32 `json:"order,omitempty"`
+
+	// Optional, Specifies a passthrough value for more generic context.
+	Tags *string `json:"tags,omitempty"`
+}
+
 type VMScaleSetConvertToSinglePlacementGroupInput struct {
 	// Id of the placement group in which you want future virtual machine instances to be placed. To query placement group Id, please use Virtual Machine Scale
 	// Set VMs - Get API. If not provided, the
 	// platform will choose one with maximum number of virtual machine instances.
 	ActivePlacementGroupID *string `json:"activePlacementGroupId,omitempty"`
+}
+
+// VMSizeProperties - Specifies VM Size Property settings on the virtual machine.
+type VMSizeProperties struct {
+	// Specifies the number of vCPUs available for the VM.
+	// When this property is not specified in the request body the default behavior is to set it to the value of vCPUs available for that VM size exposed in
+	// api response of List all available virtual machine
+	// sizes in a region [https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list] .
+	VCPUsAvailable *int32 `json:"vCPUsAvailable,omitempty"`
+
+	// Specifies the vCPU to physical core ratio.
+	// When this property is not specified in the request body the default behavior is set to the value of vCPUsPerCore for the VM Size exposed in api response
+	// of List all available virtual machine sizes in
+	// a region [https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list]
+	// Setting this property to 1 also means that hyper-threading is disabled.
+	VCPUsPerCore *int32 `json:"vCPUsPerCore,omitempty"`
 }
 
 // VaultCertificate - Describes a single certificate reference in a Key Vault, and where the certificate should reside on the VM.
@@ -7127,6 +7578,9 @@ type VaultCertificate struct {
 	// "dataType":"pfx",
 	// "password":""
 	// }
+	// To install certificates on a virtual machine it is recommended to use the Azure Key Vault virtual machine extension for Linux
+	// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux] or the Azure Key Vault virtual machine extension for Windows
+	// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows].
 	CertificateURL *string `json:"certificateUrl,omitempty"`
 }
 
@@ -7469,6 +7923,10 @@ type VirtualMachineExtensionProperties struct {
 	// Json formatted public settings for the extension.
 	Settings map[string]interface{} `json:"settings,omitempty"`
 
+	// Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed
+	// regardless of this value). The default is false.
+	SuppressFailures *bool `json:"suppressFailures,omitempty"`
+
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string `json:"type,omitempty"`
 
@@ -7514,6 +7972,10 @@ type VirtualMachineExtensionUpdateProperties struct {
 
 	// Json formatted public settings for the extension.
 	Settings map[string]interface{} `json:"settings,omitempty"`
+
+	// Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed
+	// regardless of this value). The default is false.
+	SuppressFailures *bool `json:"suppressFailures,omitempty"`
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string `json:"type,omitempty"`
@@ -7753,14 +8215,14 @@ type VirtualMachineImagesListSKUsOptions struct {
 
 // VirtualMachineInstallPatchesParameters - Input for InstallPatches as directly received by the API
 type VirtualMachineInstallPatchesParameters struct {
-	// REQUIRED; Specifies the maximum amount of time that the operation will run. It must be an ISO 8601-compliant duration string such as PT4H (4 hours)
-	MaximumDuration *string `json:"maximumDuration,omitempty"`
-
 	// REQUIRED; Defines when it is acceptable to reboot a VM during a software update operation.
 	RebootSetting *VMGuestPatchRebootSetting `json:"rebootSetting,omitempty"`
 
 	// Input for InstallPatches on a Linux VM, as directly received by the API
 	LinuxParameters *LinuxParameters `json:"linuxParameters,omitempty"`
+
+	// Specifies the maximum amount of time that the operation will run. It must be an ISO 8601-compliant duration string such as PT4H (4 hours)
+	MaximumDuration *string `json:"maximumDuration,omitempty"`
 
 	// Input for InstallPatches on a Windows VM, as directly received by the API
 	WindowsParameters *WindowsParameters `json:"windowsParameters,omitempty"`
@@ -8117,6 +8579,9 @@ type VirtualMachineProperties struct {
 	// Specifies additional capabilities enabled or disabled on the virtual machine.
 	AdditionalCapabilities *AdditionalCapabilities `json:"additionalCapabilities,omitempty"`
 
+	// Specifies the gallery applications that should be made available to the VM/VMSS
+	ApplicationProfile *ApplicationProfile `json:"applicationProfile,omitempty"`
+
 	// Specifies information about the availability set that the virtual machine should be assigned to. Virtual machines specified in the same availability
 	// set are allocated to different nodes to maximize
 	// availability. For more information about availability sets, see Availability sets overview [https://docs.microsoft.com/azure/virtual-machines/availability-set-overview].
@@ -8130,6 +8595,10 @@ type VirtualMachineProperties struct {
 	// Specifies the billing related details of a Azure Spot virtual machine.
 	// Minimum api-version: 2019-03-01.
 	BillingProfile *BillingProfile `json:"billingProfile,omitempty"`
+
+	// Specifies information about the capacity reservation that is used to allocate virtual machine.
+	// Minimum api-version: 2021-04-01.
+	CapacityReservation *CapacityReservationProfile `json:"capacityReservation,omitempty"`
 
 	// Specifies the boot diagnostic settings state.
 	// Minimum api-version: 2015-06-15.
@@ -8696,6 +9165,10 @@ type VirtualMachineScaleSetExtensionProperties struct {
 	// Json formatted public settings for the extension.
 	Settings map[string]interface{} `json:"settings,omitempty"`
 
+	// Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed
+	// regardless of this value). The default is false.
+	SuppressFailures *bool `json:"suppressFailures,omitempty"`
+
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
 	Type *string `json:"type,omitempty"`
 
@@ -8717,6 +9190,7 @@ func (v VirtualMachineScaleSetExtensionProperties) MarshalJSON() ([]byte, error)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "publisher", v.Publisher)
 	populate(objectMap, "settings", v.Settings)
+	populate(objectMap, "suppressFailures", v.SuppressFailures)
 	populate(objectMap, "type", v.Type)
 	populate(objectMap, "typeHandlerVersion", v.TypeHandlerVersion)
 	return json.Marshal(objectMap)
@@ -9195,7 +9669,11 @@ type VirtualMachineScaleSetOSProfile struct {
 	// For a list of supported Linux distributions, see Linux on Azure-Endorsed Distributions [https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros].
 	LinuxConfiguration *LinuxConfiguration `json:"linuxConfiguration,omitempty"`
 
-	// Specifies set of certificates that should be installed onto the virtual machines in the scale set.
+	// Specifies set of certificates that should be installed onto the virtual machines in the scale set. To install certificates on a virtual machine it is
+	// recommended to use the Azure Key Vault virtual
+	// machine extension for Linux [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux] or the Azure Key Vault virtual machine extension
+	// for Windows
+	// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows].
 	Secrets []*VaultSecretGroup `json:"secrets,omitempty"`
 
 	// Specifies Windows operating system settings on the virtual machine.
@@ -9247,7 +9725,7 @@ type VirtualMachineScaleSetProperties struct {
 	// Minimum api-version: 2018-04-01.
 	ProximityPlacementGroup *SubResource `json:"proximityPlacementGroup,omitempty"`
 
-	// Specifies the scale-in policy that decides which virtual machines are chosen for removal when a Virtual Machine Scale Set is scaled-in.
+	// Specifies the policies applied when scaling in Virtual Machines in the Virtual Machine Scale Set.
 	ScaleInPolicy *ScaleInPolicy `json:"scaleInPolicy,omitempty"`
 
 	// When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified
@@ -9255,13 +9733,18 @@ type VirtualMachineScaleSetProperties struct {
 	// is false, it may not be modified to true.
 	SinglePlacementGroup *bool `json:"singlePlacementGroup,omitempty"`
 
+	// Specifies the Spot Restore properties for the virtual machine scale set.
+	SpotRestorePolicy *SpotRestorePolicy `json:"spotRestorePolicy,omitempty"`
+
 	// The upgrade policy.
 	UpgradePolicy *UpgradePolicy `json:"upgradePolicy,omitempty"`
 
 	// The virtual machine profile.
 	VirtualMachineProfile *VirtualMachineScaleSetVMProfile `json:"virtualMachineProfile,omitempty"`
 
-	// Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage.
+	// Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage. zoneBalance property can only be set if the zones
+	// property of the scale set contains more than
+	// one zone. If there are no zones or only one zone specified, then zoneBalance property should not be set.
 	ZoneBalance *bool `json:"zoneBalance,omitempty"`
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
@@ -9668,7 +10151,7 @@ type VirtualMachineScaleSetUpdateProperties struct {
 	// Minimum api-version: 2018-04-01.
 	ProximityPlacementGroup *SubResource `json:"proximityPlacementGroup,omitempty"`
 
-	// Specifies the scale-in policy that decides which virtual machines are chosen for removal when a Virtual Machine Scale Set is scaled-in.
+	// Specifies the policies applied when scaling in Virtual Machines in the Virtual Machine Scale Set.
 	ScaleInPolicy *ScaleInPolicy `json:"scaleInPolicy,omitempty"`
 
 	// When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified
@@ -10021,9 +10504,16 @@ func (v VirtualMachineScaleSetVMNetworkProfileConfiguration) MarshalJSON() ([]by
 
 // VirtualMachineScaleSetVMProfile - Describes a virtual machine scale set virtual machine profile.
 type VirtualMachineScaleSetVMProfile struct {
+	// Specifies the gallery applications that should be made available to the VM/VMSS
+	ApplicationProfile *ApplicationProfile `json:"applicationProfile,omitempty"`
+
 	// Specifies the billing related details of a Azure Spot VMSS.
 	// Minimum api-version: 2019-03-01.
 	BillingProfile *BillingProfile `json:"billingProfile,omitempty"`
+
+	// Specifies the capacity reservation related details of a scale set.
+	// Minimum api-version: 2021-04-01.
+	CapacityReservation *CapacityReservationProfile `json:"capacityReservation,omitempty"`
 
 	// Specifies the boot diagnostic settings state.
 	// Minimum api-version: 2015-06-15.
@@ -10623,7 +11113,8 @@ type VirtualMachinesBeginCreateOrUpdateOptions struct {
 
 // VirtualMachinesBeginDeallocateOptions contains the optional parameters for the VirtualMachines.BeginDeallocate method.
 type VirtualMachinesBeginDeallocateOptions struct {
-	// placeholder for future optional parameters
+	// Optional parameter to hibernate a virtual machine. (Feature in Preview)
+	Hibernate *bool
 }
 
 // VirtualMachinesBeginDeleteOptions contains the optional parameters for the VirtualMachines.BeginDelete method.
@@ -10760,6 +11251,9 @@ type WinRMListener struct {
 	// "dataType":"pfx",
 	// "password":""
 	// }
+	// To install certificates on a virtual machine it is recommended to use the Azure Key Vault virtual machine extension for Linux
+	// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux] or the Azure Key Vault virtual machine extension for Windows
+	// [https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows].
 	CertificateURL *string `json:"certificateUrl,omitempty"`
 
 	// Specifies the protocol of WinRM listener.

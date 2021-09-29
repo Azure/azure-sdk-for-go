@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -8,7 +9,7 @@
 
 package netappapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-04-01/netapp/netappapi"
+import original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-06-01/netapp/netappapi"
 
 type AccountBackupsClientAPI = original.AccountBackupsClientAPI
 type AccountsClientAPI = original.AccountsClientAPI
@@ -17,6 +18,7 @@ type BackupsClientAPI = original.BackupsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
 type PoolsClientAPI = original.PoolsClientAPI
 type ResourceClientAPI = original.ResourceClientAPI
+type ResourceQuotaLimitsClientAPI = original.ResourceQuotaLimitsClientAPI
 type SnapshotPoliciesClientAPI = original.SnapshotPoliciesClientAPI
 type SnapshotsClientAPI = original.SnapshotsClientAPI
 type VaultsClientAPI = original.VaultsClientAPI

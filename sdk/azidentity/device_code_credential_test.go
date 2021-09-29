@@ -11,7 +11,8 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -48,10 +49,10 @@ func TestDeviceCodeCredential_CreateAuthRequestSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpectedly received an error: %v", err)
 	}
-	if req.Request.Header.Get(headerContentType) != headerURLEncoded {
+	if req.Raw().Header.Get(headerContentType) != headerURLEncoded {
 		t.Fatalf("Unexpected value for Content-Type header")
 	}
-	body, err := ioutil.ReadAll(req.Request.Body)
+	body, err := ioutil.ReadAll(req.Raw().Body)
 	if err != nil {
 		t.Fatalf("Unable to read request body")
 	}
@@ -72,10 +73,10 @@ func TestDeviceCodeCredential_CreateAuthRequestSuccess(t *testing.T) {
 	if reqQueryParams[qpScope][0] != deviceCodeScopes {
 		t.Fatalf("Unexpected scope in scope header")
 	}
-	if req.Request.URL.Host != defaultTestAuthorityHost {
+	if req.Raw().URL.Host != defaultTestAuthorityHost {
 		t.Fatalf("Unexpected default authority host")
 	}
-	if req.Request.URL.Scheme != "https" {
+	if req.Raw().URL.Scheme != "https" {
 		t.Fatalf("Wrong request scheme")
 	}
 }
@@ -91,10 +92,10 @@ func TestDeviceCodeCredential_CreateAuthRequestCustomClientID(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpectedly received an error: %v", err)
 	}
-	if req.Request.Header.Get(headerContentType) != headerURLEncoded {
+	if req.Raw().Header.Get(headerContentType) != headerURLEncoded {
 		t.Fatalf("Unexpected value for Content-Type header")
 	}
-	body, err := ioutil.ReadAll(req.Request.Body)
+	body, err := ioutil.ReadAll(req.Raw().Body)
 	if err != nil {
 		t.Fatalf("Unable to read request body")
 	}
@@ -115,13 +116,13 @@ func TestDeviceCodeCredential_CreateAuthRequestCustomClientID(t *testing.T) {
 	if reqQueryParams[qpScope][0] != deviceCodeScopes {
 		t.Fatalf("Unexpected scope in scope header")
 	}
-	if req.Request.URL.Host != defaultTestAuthorityHost {
+	if req.Raw().URL.Host != defaultTestAuthorityHost {
 		t.Fatalf("Unexpected default authority host")
 	}
-	if req.Request.URL.Scheme != "https" {
+	if req.Raw().URL.Scheme != "https" {
 		t.Fatalf("Wrong request scheme")
 	}
-	if req.Request.URL.Path != "/organizations/oauth2/v2.0/token" {
+	if req.Raw().URL.Path != "/organizations/oauth2/v2.0/token" {
 		t.Fatalf("Did not set the right path when passing in an empty tenant ID")
 	}
 }
@@ -138,10 +139,10 @@ func TestDeviceCodeCredential_RequestNewDeviceCodeCustomTenantIDClientID(t *test
 	if err != nil {
 		t.Fatalf("Unexpectedly received an error: %v", err)
 	}
-	if req.Request.Header.Get(headerContentType) != headerURLEncoded {
+	if req.Raw().Header.Get(headerContentType) != headerURLEncoded {
 		t.Fatalf("Unexpected value for Content-Type header")
 	}
-	body, err := ioutil.ReadAll(req.Request.Body)
+	body, err := ioutil.ReadAll(req.Raw().Body)
 	if err != nil {
 		t.Fatalf("Unable to read request body")
 	}
@@ -156,13 +157,13 @@ func TestDeviceCodeCredential_RequestNewDeviceCodeCustomTenantIDClientID(t *test
 	if reqQueryParams[qpScope][0] != deviceCodeScopes {
 		t.Fatalf("Unexpected scope in scope header")
 	}
-	if req.Request.URL.Host != defaultTestAuthorityHost {
+	if req.Raw().URL.Host != defaultTestAuthorityHost {
 		t.Fatalf("Unexpected default authority host")
 	}
-	if req.Request.URL.Scheme != "https" {
+	if req.Raw().URL.Scheme != "https" {
 		t.Fatalf("Wrong request scheme")
 	}
-	if req.Request.URL.Path != "/expected-tenant/oauth2/v2.0/devicecode" {
+	if req.Raw().URL.Path != "/expected-tenant/oauth2/v2.0/devicecode" {
 		t.Fatalf("Did not set the right path when passing in an empty tenant ID")
 	}
 }
@@ -174,13 +175,13 @@ func TestDeviceCodeCredential_GetTokenSuccess(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	options := DeviceCodeCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	tk, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{deviceCodeScopes}})
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{deviceCodeScopes}})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
@@ -197,12 +198,12 @@ func TestDeviceCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{deviceCodeScopes}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{deviceCodeScopes}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
@@ -219,13 +220,13 @@ func TestDeviceCodeCredential_GetTokenAuthorizationPending(t *testing.T) {
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.UserPrompt = func(DeviceCodeMessage) {}
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{deviceCodeScopes}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{deviceCodeScopes}})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received %v", err)
 	}
@@ -241,13 +242,13 @@ func TestDeviceCodeCredential_GetTokenExpiredToken(t *testing.T) {
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.UserPrompt = func(DeviceCodeMessage) {}
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{deviceCodeScopes}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{deviceCodeScopes}})
 	if err == nil {
 		t.Fatalf("Expected an error but received none")
 	}
@@ -261,19 +262,22 @@ func TestDeviceCodeCredential_GetTokenWithRefreshTokenFailure(t *testing.T) {
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
 	cred.refreshToken = "refresh_token"
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{deviceCodeScopes}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{deviceCodeScopes}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
-	var aadErr *AADAuthenticationFailedError
-	if !errors.As(err, &aadErr) {
-		t.Fatalf("Did not receive an AADAuthenticationFailedError but was expecting one")
+	var authFailed *AuthenticationFailedError
+	if !errors.As(err, &authFailed) {
+		t.Fatalf("Expected AuthenticationFailedError, got %T", err)
+	}
+	if authFailed.RawResponse() == nil {
+		t.Fatalf("Expected error to include a response")
 	}
 }
 
@@ -285,14 +289,14 @@ func TestDeviceCodeCredential_GetTokenWithRefreshTokenSuccess(t *testing.T) {
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.UserPrompt = func(DeviceCodeMessage) {}
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
 	cred.refreshToken = "refresh_token"
-	tk, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{deviceCodeScopes}})
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{deviceCodeScopes}})
 	if err != nil {
 		t.Fatalf("Received an unexpected error: %s", err.Error())
 	}
@@ -311,14 +315,14 @@ func TestBearerPolicy_DeviceCodeCredential(t *testing.T) {
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.UserPrompt = func(DeviceCodeMessage) {}
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
 	pipeline := defaultTestPipeline(srv, cred, deviceCodeScopes)
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}

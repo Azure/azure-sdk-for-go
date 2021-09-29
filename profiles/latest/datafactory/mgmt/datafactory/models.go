@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -16,6 +17,14 @@ import (
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
+)
+
+type AmazonRdsForOraclePartitionOption = original.AmazonRdsForOraclePartitionOption
+
+const (
+	AmazonRdsForOraclePartitionOptionDynamicRange              AmazonRdsForOraclePartitionOption = original.AmazonRdsForOraclePartitionOptionDynamicRange
+	AmazonRdsForOraclePartitionOptionNone                      AmazonRdsForOraclePartitionOption = original.AmazonRdsForOraclePartitionOptionNone
+	AmazonRdsForOraclePartitionOptionPhysicalPartitionsOfTable AmazonRdsForOraclePartitionOption = original.AmazonRdsForOraclePartitionOptionPhysicalPartitionsOfTable
 )
 
 type AuthenticationType = original.AuthenticationType
@@ -588,8 +597,9 @@ const (
 type SQLAlwaysEncryptedAkvAuthType = original.SQLAlwaysEncryptedAkvAuthType
 
 const (
-	SQLAlwaysEncryptedAkvAuthTypeManagedIdentity  SQLAlwaysEncryptedAkvAuthType = original.SQLAlwaysEncryptedAkvAuthTypeManagedIdentity
-	SQLAlwaysEncryptedAkvAuthTypeServicePrincipal SQLAlwaysEncryptedAkvAuthType = original.SQLAlwaysEncryptedAkvAuthTypeServicePrincipal
+	SQLAlwaysEncryptedAkvAuthTypeManagedIdentity             SQLAlwaysEncryptedAkvAuthType = original.SQLAlwaysEncryptedAkvAuthTypeManagedIdentity
+	SQLAlwaysEncryptedAkvAuthTypeServicePrincipal            SQLAlwaysEncryptedAkvAuthType = original.SQLAlwaysEncryptedAkvAuthTypeServicePrincipal
+	SQLAlwaysEncryptedAkvAuthTypeUserAssignedManagedIdentity SQLAlwaysEncryptedAkvAuthType = original.SQLAlwaysEncryptedAkvAuthTypeUserAssignedManagedIdentity
 )
 
 type SQLDWWriteBehaviorEnum = original.SQLDWWriteBehaviorEnum
@@ -826,6 +836,7 @@ const (
 	TypeBasicActivityTypeExecuteDataFlow          TypeBasicActivity = original.TypeBasicActivityTypeExecuteDataFlow
 	TypeBasicActivityTypeExecutePipeline          TypeBasicActivity = original.TypeBasicActivityTypeExecutePipeline
 	TypeBasicActivityTypeExecuteSSISPackage       TypeBasicActivity = original.TypeBasicActivityTypeExecuteSSISPackage
+	TypeBasicActivityTypeExecuteWranglingDataflow TypeBasicActivity = original.TypeBasicActivityTypeExecuteWranglingDataflow
 	TypeBasicActivityTypeExecution                TypeBasicActivity = original.TypeBasicActivityTypeExecution
 	TypeBasicActivityTypeFilter                   TypeBasicActivity = original.TypeBasicActivityTypeFilter
 	TypeBasicActivityTypeForEach                  TypeBasicActivity = original.TypeBasicActivityTypeForEach
@@ -905,6 +916,8 @@ type TypeBasicCopySource = original.TypeBasicCopySource
 
 const (
 	TypeBasicCopySourceTypeAmazonMWSSource                TypeBasicCopySource = original.TypeBasicCopySourceTypeAmazonMWSSource
+	TypeBasicCopySourceTypeAmazonRdsForOracleSource       TypeBasicCopySource = original.TypeBasicCopySourceTypeAmazonRdsForOracleSource
+	TypeBasicCopySourceTypeAmazonRdsForSQLServerSource    TypeBasicCopySource = original.TypeBasicCopySourceTypeAmazonRdsForSQLServerSource
 	TypeBasicCopySourceTypeAmazonRedshiftSource           TypeBasicCopySource = original.TypeBasicCopySourceTypeAmazonRedshiftSource
 	TypeBasicCopySourceTypeAvroSource                     TypeBasicCopySource = original.TypeBasicCopySourceTypeAvroSource
 	TypeBasicCopySourceTypeAzureBlobFSSource              TypeBasicCopySource = original.TypeBasicCopySourceTypeAzureBlobFSSource
@@ -1028,14 +1041,17 @@ const (
 type TypeBasicDataFlow = original.TypeBasicDataFlow
 
 const (
-	TypeBasicDataFlowTypeDataFlow        TypeBasicDataFlow = original.TypeBasicDataFlowTypeDataFlow
-	TypeBasicDataFlowTypeMappingDataFlow TypeBasicDataFlow = original.TypeBasicDataFlowTypeMappingDataFlow
+	TypeBasicDataFlowTypeDataFlow          TypeBasicDataFlow = original.TypeBasicDataFlowTypeDataFlow
+	TypeBasicDataFlowTypeMappingDataFlow   TypeBasicDataFlow = original.TypeBasicDataFlowTypeMappingDataFlow
+	TypeBasicDataFlowTypeWranglingDataFlow TypeBasicDataFlow = original.TypeBasicDataFlowTypeWranglingDataFlow
 )
 
 type TypeBasicDataset = original.TypeBasicDataset
 
 const (
 	TypeBasicDatasetTypeAmazonMWSObject                 TypeBasicDataset = original.TypeBasicDatasetTypeAmazonMWSObject
+	TypeBasicDatasetTypeAmazonRdsForOracleTable         TypeBasicDataset = original.TypeBasicDatasetTypeAmazonRdsForOracleTable
+	TypeBasicDatasetTypeAmazonRdsForSQLServerTable      TypeBasicDataset = original.TypeBasicDatasetTypeAmazonRdsForSQLServerTable
 	TypeBasicDatasetTypeAmazonRedshiftTable             TypeBasicDataset = original.TypeBasicDatasetTypeAmazonRedshiftTable
 	TypeBasicDatasetTypeAmazonS3Object                  TypeBasicDataset = original.TypeBasicDatasetTypeAmazonS3Object
 	TypeBasicDatasetTypeAvro                            TypeBasicDataset = original.TypeBasicDatasetTypeAvro
@@ -1247,6 +1263,8 @@ type TypeBasicLinkedService = original.TypeBasicLinkedService
 
 const (
 	TypeBasicLinkedServiceTypeAmazonMWS                TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAmazonMWS
+	TypeBasicLinkedServiceTypeAmazonRdsForOracle       TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAmazonRdsForOracle
+	TypeBasicLinkedServiceTypeAmazonRdsForSQLServer    TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAmazonRdsForSQLServer
 	TypeBasicLinkedServiceTypeAmazonRedshift           TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAmazonRedshift
 	TypeBasicLinkedServiceTypeAmazonS3                 TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAmazonS3
 	TypeBasicLinkedServiceTypeAmazonS3Compatible       TypeBasicLinkedService = original.TypeBasicLinkedServiceTypeAmazonS3Compatible
@@ -1440,6 +1458,17 @@ type AmazonMWSLinkedService = original.AmazonMWSLinkedService
 type AmazonMWSLinkedServiceTypeProperties = original.AmazonMWSLinkedServiceTypeProperties
 type AmazonMWSObjectDataset = original.AmazonMWSObjectDataset
 type AmazonMWSSource = original.AmazonMWSSource
+type AmazonRdsForLinkedServiceTypeProperties = original.AmazonRdsForLinkedServiceTypeProperties
+type AmazonRdsForOracleLinkedService = original.AmazonRdsForOracleLinkedService
+type AmazonRdsForOraclePartitionSettings = original.AmazonRdsForOraclePartitionSettings
+type AmazonRdsForOracleSource = original.AmazonRdsForOracleSource
+type AmazonRdsForOracleTableDataset = original.AmazonRdsForOracleTableDataset
+type AmazonRdsForOracleTableDatasetTypeProperties = original.AmazonRdsForOracleTableDatasetTypeProperties
+type AmazonRdsForSQLServerLinkedService = original.AmazonRdsForSQLServerLinkedService
+type AmazonRdsForSQLServerLinkedServiceTypeProperties = original.AmazonRdsForSQLServerLinkedServiceTypeProperties
+type AmazonRdsForSQLServerSource = original.AmazonRdsForSQLServerSource
+type AmazonRdsForSQLServerTableDataset = original.AmazonRdsForSQLServerTableDataset
+type AmazonRdsForSQLServerTableDatasetTypeProperties = original.AmazonRdsForSQLServerTableDatasetTypeProperties
 type AmazonRedshiftLinkedService = original.AmazonRedshiftLinkedService
 type AmazonRedshiftLinkedServiceTypeProperties = original.AmazonRedshiftLinkedServiceTypeProperties
 type AmazonRedshiftSource = original.AmazonRedshiftSource
@@ -1797,8 +1826,10 @@ type ExecuteDataFlowActivityTypeProperties = original.ExecuteDataFlowActivityTyp
 type ExecuteDataFlowActivityTypePropertiesCompute = original.ExecuteDataFlowActivityTypePropertiesCompute
 type ExecutePipelineActivity = original.ExecutePipelineActivity
 type ExecutePipelineActivityTypeProperties = original.ExecutePipelineActivityTypeProperties
+type ExecutePowerQueryActivityTypeProperties = original.ExecutePowerQueryActivityTypeProperties
 type ExecuteSSISPackageActivity = original.ExecuteSSISPackageActivity
 type ExecuteSSISPackageActivityTypeProperties = original.ExecuteSSISPackageActivityTypeProperties
+type ExecuteWranglingDataflowActivity = original.ExecuteWranglingDataflowActivity
 type ExecutionActivity = original.ExecutionActivity
 type ExportSettings = original.ExportSettings
 type ExposureControlBatchRequest = original.ExposureControlBatchRequest
@@ -1923,6 +1954,7 @@ type IntegrationRuntimeAuthKeys = original.IntegrationRuntimeAuthKeys
 type IntegrationRuntimeComputeProperties = original.IntegrationRuntimeComputeProperties
 type IntegrationRuntimeConnectionInfo = original.IntegrationRuntimeConnectionInfo
 type IntegrationRuntimeCustomSetupScriptProperties = original.IntegrationRuntimeCustomSetupScriptProperties
+type IntegrationRuntimeCustomerVirtualNetwork = original.IntegrationRuntimeCustomerVirtualNetwork
 type IntegrationRuntimeDataFlowProperties = original.IntegrationRuntimeDataFlowProperties
 type IntegrationRuntimeDataProxyProperties = original.IntegrationRuntimeDataProxyProperties
 type IntegrationRuntimeDebugResource = original.IntegrationRuntimeDebugResource
@@ -1935,6 +1967,10 @@ type IntegrationRuntimeNodeMonitoringData = original.IntegrationRuntimeNodeMonit
 type IntegrationRuntimeNodesClient = original.IntegrationRuntimeNodesClient
 type IntegrationRuntimeObjectMetadataClient = original.IntegrationRuntimeObjectMetadataClient
 type IntegrationRuntimeObjectMetadataRefreshFuture = original.IntegrationRuntimeObjectMetadataRefreshFuture
+type IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint = original.IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint
+type IntegrationRuntimeOutboundNetworkDependenciesEndpoint = original.IntegrationRuntimeOutboundNetworkDependenciesEndpoint
+type IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails = original.IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails
+type IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse = original.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse
 type IntegrationRuntimeReference = original.IntegrationRuntimeReference
 type IntegrationRuntimeRegenerateKeyParameters = original.IntegrationRuntimeRegenerateKeyParameters
 type IntegrationRuntimeResource = original.IntegrationRuntimeResource
@@ -2136,6 +2172,9 @@ type PostgreSQLLinkedServiceTypeProperties = original.PostgreSQLLinkedServiceTyp
 type PostgreSQLSource = original.PostgreSQLSource
 type PostgreSQLTableDataset = original.PostgreSQLTableDataset
 type PostgreSQLTableDatasetTypeProperties = original.PostgreSQLTableDatasetTypeProperties
+type PowerQuerySink = original.PowerQuerySink
+type PowerQuerySource = original.PowerQuerySource
+type PowerQueryTypeProperties = original.PowerQueryTypeProperties
 type PrestoDatasetTypeProperties = original.PrestoDatasetTypeProperties
 type PrestoLinkedService = original.PrestoLinkedService
 type PrestoLinkedServiceTypeProperties = original.PrestoLinkedServiceTypeProperties
@@ -2401,6 +2440,7 @@ type WebLinkedServiceTypeProperties = original.WebLinkedServiceTypeProperties
 type WebSource = original.WebSource
 type WebTableDataset = original.WebTableDataset
 type WebTableDatasetTypeProperties = original.WebTableDatasetTypeProperties
+type WranglingDataFlow = original.WranglingDataFlow
 type XMLDataset = original.XMLDataset
 type XMLDatasetTypeProperties = original.XMLDatasetTypeProperties
 type XMLReadSettings = original.XMLReadSettings
@@ -2612,6 +2652,9 @@ func NewTriggersClientWithBaseURI(baseURI string, subscriptionID string) Trigger
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAmazonRdsForOraclePartitionOptionValues() []AmazonRdsForOraclePartitionOption {
+	return original.PossibleAmazonRdsForOraclePartitionOptionValues()
 }
 func PossibleAuthenticationTypeValues() []AuthenticationType {
 	return original.PossibleAuthenticationTypeValues()

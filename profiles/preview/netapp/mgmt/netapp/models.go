@@ -1,3 +1,4 @@
+//go:build go1.9
 // +build go1.9
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -11,7 +12,7 @@ package netapp
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-04-01/netapp"
+	original "github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-06-01/netapp"
 )
 
 const (
@@ -26,6 +27,13 @@ const (
 	ActiveDirectoryStatusError    ActiveDirectoryStatus = original.ActiveDirectoryStatusError
 	ActiveDirectoryStatusInUse    ActiveDirectoryStatus = original.ActiveDirectoryStatusInUse
 	ActiveDirectoryStatusUpdating ActiveDirectoryStatus = original.ActiveDirectoryStatusUpdating
+)
+
+type AvsDataStore = original.AvsDataStore
+
+const (
+	AvsDataStoreDisabled AvsDataStore = original.AvsDataStoreDisabled
+	AvsDataStoreEnabled  AvsDataStore = original.AvsDataStoreEnabled
 )
 
 type BackupType = original.BackupType
@@ -69,6 +77,13 @@ const (
 	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
+type EncryptionType = original.EncryptionType
+
+const (
+	EncryptionTypeDouble EncryptionType = original.EncryptionTypeDouble
+	EncryptionTypeSingle EncryptionType = original.EncryptionTypeSingle
+)
+
 type EndpointType = original.EndpointType
 
 const (
@@ -83,12 +98,25 @@ const (
 	InAvailabilityReasonTypeInvalid       InAvailabilityReasonType = original.InAvailabilityReasonTypeInvalid
 )
 
+type MetricAggregationType = original.MetricAggregationType
+
+const (
+	MetricAggregationTypeAverage MetricAggregationType = original.MetricAggregationTypeAverage
+)
+
 type MirrorState = original.MirrorState
 
 const (
 	MirrorStateBroken        MirrorState = original.MirrorStateBroken
 	MirrorStateMirrored      MirrorState = original.MirrorStateMirrored
 	MirrorStateUninitialized MirrorState = original.MirrorStateUninitialized
+)
+
+type NetworkFeatures = original.NetworkFeatures
+
+const (
+	NetworkFeaturesBasic    NetworkFeatures = original.NetworkFeaturesBasic
+	NetworkFeaturesStandard NetworkFeatures = original.NetworkFeaturesStandard
 )
 
 type QosType = original.QosType
@@ -123,9 +151,18 @@ const (
 type ServiceLevel = original.ServiceLevel
 
 const (
-	ServiceLevelPremium  ServiceLevel = original.ServiceLevelPremium
-	ServiceLevelStandard ServiceLevel = original.ServiceLevelStandard
-	ServiceLevelUltra    ServiceLevel = original.ServiceLevelUltra
+	ServiceLevelPremium     ServiceLevel = original.ServiceLevelPremium
+	ServiceLevelStandard    ServiceLevel = original.ServiceLevelStandard
+	ServiceLevelStandardZRS ServiceLevel = original.ServiceLevelStandardZRS
+	ServiceLevelUltra       ServiceLevel = original.ServiceLevelUltra
+)
+
+type VolumeStorageToNetworkProximity = original.VolumeStorageToNetworkProximity
+
+const (
+	VolumeStorageToNetworkProximityDefault VolumeStorageToNetworkProximity = original.VolumeStorageToNetworkProximityDefault
+	VolumeStorageToNetworkProximityT1      VolumeStorageToNetworkProximity = original.VolumeStorageToNetworkProximityT1
+	VolumeStorageToNetworkProximityT2      VolumeStorageToNetworkProximity = original.VolumeStorageToNetworkProximityT2
 )
 
 type Account = original.Account
@@ -143,6 +180,7 @@ type AccountsDeleteFuture = original.AccountsDeleteFuture
 type AccountsUpdateFuture = original.AccountsUpdateFuture
 type ActiveDirectory = original.ActiveDirectory
 type AuthorizeRequest = original.AuthorizeRequest
+type AzureEntityResource = original.AzureEntityResource
 type Backup = original.Backup
 type BackupPatch = original.BackupPatch
 type BackupPoliciesClient = original.BackupPoliciesClient
@@ -176,6 +214,7 @@ type Dimension = original.Dimension
 type ExportPolicyRule = original.ExportPolicyRule
 type FilePathAvailabilityRequest = original.FilePathAvailabilityRequest
 type HourlySchedule = original.HourlySchedule
+type LogSpecification = original.LogSpecification
 type MetricSpecification = original.MetricSpecification
 type MonthlySchedule = original.MonthlySchedule
 type MountTarget = original.MountTarget
@@ -192,12 +231,15 @@ type PoolsClient = original.PoolsClient
 type PoolsCreateOrUpdateFuture = original.PoolsCreateOrUpdateFuture
 type PoolsDeleteFuture = original.PoolsDeleteFuture
 type PoolsUpdateFuture = original.PoolsUpdateFuture
+type ProxyResource = original.ProxyResource
 type QuotaAvailabilityRequest = original.QuotaAvailabilityRequest
 type ReplicationObject = original.ReplicationObject
 type ReplicationStatus = original.ReplicationStatus
+type Resource = original.Resource
 type ResourceClient = original.ResourceClient
 type ResourceIdentity = original.ResourceIdentity
 type ResourceNameAvailabilityRequest = original.ResourceNameAvailabilityRequest
+type ResourceQuotaLimitsClient = original.ResourceQuotaLimitsClient
 type RestoreStatus = original.RestoreStatus
 type ServiceSpecification = original.ServiceSpecification
 type Snapshot = original.Snapshot
@@ -216,7 +258,11 @@ type SnapshotsCreateFuture = original.SnapshotsCreateFuture
 type SnapshotsDeleteFuture = original.SnapshotsDeleteFuture
 type SnapshotsList = original.SnapshotsList
 type SnapshotsUpdateFuture = original.SnapshotsUpdateFuture
+type SubscriptionQuotaItem = original.SubscriptionQuotaItem
+type SubscriptionQuotaItemList = original.SubscriptionQuotaItemList
+type SubscriptionQuotaItemProperties = original.SubscriptionQuotaItemProperties
 type SystemData = original.SystemData
+type TrackedResource = original.TrackedResource
 type Vault = original.Vault
 type VaultList = original.VaultList
 type VaultProperties = original.VaultProperties
@@ -306,6 +352,12 @@ func NewResourceClient(subscriptionID string) ResourceClient {
 func NewResourceClientWithBaseURI(baseURI string, subscriptionID string) ResourceClient {
 	return original.NewResourceClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewResourceQuotaLimitsClient(subscriptionID string) ResourceQuotaLimitsClient {
+	return original.NewResourceQuotaLimitsClient(subscriptionID)
+}
+func NewResourceQuotaLimitsClientWithBaseURI(baseURI string, subscriptionID string) ResourceQuotaLimitsClient {
+	return original.NewResourceQuotaLimitsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewSnapshotPoliciesClient(subscriptionID string) SnapshotPoliciesClient {
 	return original.NewSnapshotPoliciesClient(subscriptionID)
 }
@@ -342,6 +394,9 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 func PossibleActiveDirectoryStatusValues() []ActiveDirectoryStatus {
 	return original.PossibleActiveDirectoryStatusValues()
 }
+func PossibleAvsDataStoreValues() []AvsDataStore {
+	return original.PossibleAvsDataStoreValues()
+}
 func PossibleBackupTypeValues() []BackupType {
 	return original.PossibleBackupTypeValues()
 }
@@ -357,14 +412,23 @@ func PossibleChownModeValues() []ChownMode {
 func PossibleCreatedByTypeValues() []CreatedByType {
 	return original.PossibleCreatedByTypeValues()
 }
+func PossibleEncryptionTypeValues() []EncryptionType {
+	return original.PossibleEncryptionTypeValues()
+}
 func PossibleEndpointTypeValues() []EndpointType {
 	return original.PossibleEndpointTypeValues()
 }
 func PossibleInAvailabilityReasonTypeValues() []InAvailabilityReasonType {
 	return original.PossibleInAvailabilityReasonTypeValues()
 }
+func PossibleMetricAggregationTypeValues() []MetricAggregationType {
+	return original.PossibleMetricAggregationTypeValues()
+}
 func PossibleMirrorStateValues() []MirrorState {
 	return original.PossibleMirrorStateValues()
+}
+func PossibleNetworkFeaturesValues() []NetworkFeatures {
+	return original.PossibleNetworkFeaturesValues()
 }
 func PossibleQosTypeValues() []QosType {
 	return original.PossibleQosTypeValues()
@@ -380,6 +444,9 @@ func PossibleSecurityStyleValues() []SecurityStyle {
 }
 func PossibleServiceLevelValues() []ServiceLevel {
 	return original.PossibleServiceLevelValues()
+}
+func PossibleVolumeStorageToNetworkProximityValues() []VolumeStorageToNetworkProximity {
+	return original.PossibleVolumeStorageToNetworkProximityValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,41 +12,44 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RegionsClient contains the methods for the Regions group.
 // Don't use this type directly, use NewRegionsClient() instead.
 type RegionsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewRegionsClient creates a new instance of RegionsClient with the specified values.
-func NewRegionsClient(con *armcore.Connection, subscriptionID string) *RegionsClient {
-	return &RegionsClient{con: con, subscriptionID: subscriptionID}
+func NewRegionsClient(con *arm.Connection, subscriptionID string) *RegionsClient {
+	return &RegionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // ListBySKU - Gets the available Regions for a given sku
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *RegionsClient) ListBySKU(sku string, options *RegionsListBySKUOptions) RegionsListBySKUPager {
-	return &regionsListBySKUPager{
+func (client *RegionsClient) ListBySKU(sku string, options *RegionsListBySKUOptions) *RegionsListBySKUPager {
+	return &RegionsListBySKUPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listBySKUCreateRequest(ctx, sku, options)
 		},
-		advancer: func(ctx context.Context, resp RegionsListBySKUResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.PremiumMessagingRegionsListResult.NextLink)
+		advancer: func(ctx context.Context, resp RegionsListBySKUResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.PremiumMessagingRegionsListResult.NextLink)
 		},
 	}
 }
 
 // listBySKUCreateRequest creates the ListBySKU request.
-func (client *RegionsClient) listBySKUCreateRequest(ctx context.Context, sku string, options *RegionsListBySKUOptions) (*azcore.Request, error) {
+func (client *RegionsClient) listBySKUCreateRequest(ctx context.Context, sku string, options *RegionsListBySKUOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ServiceBus/sku/{sku}/regions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -55,36 +59,35 @@ func (client *RegionsClient) listBySKUCreateRequest(ctx context.Context, sku str
 		return nil, errors.New("parameter sku cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sku}", url.PathEscape(sku))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2018-01-01-preview")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listBySKUHandleResponse handles the ListBySKU response.
-func (client *RegionsClient) listBySKUHandleResponse(resp *azcore.Response) (RegionsListBySKUResponse, error) {
-	result := RegionsListBySKUResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PremiumMessagingRegionsListResult); err != nil {
+func (client *RegionsClient) listBySKUHandleResponse(resp *http.Response) (RegionsListBySKUResponse, error) {
+	result := RegionsListBySKUResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PremiumMessagingRegionsListResult); err != nil {
 		return RegionsListBySKUResponse{}, err
 	}
 	return result, nil
 }
 
 // listBySKUHandleError handles the ListBySKU error response.
-func (client *RegionsClient) listBySKUHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *RegionsClient) listBySKUHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

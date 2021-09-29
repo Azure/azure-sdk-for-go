@@ -1,24 +1,45 @@
 parameters:
-  ServiceDirectory: ''
-  GoWorkspace: ''
-  Scope: 'sdk/...'
-  Image: ''
-  GoVersion: ''
-  RunTests: false
+  - name:  ServiceDirectory
+    type: string
+    default: ''
+  - name:  GoWorkspace
+    type: string
+    default: ''
+  - name:  Image
+    type: string
+    default: ''
+  - name:  GoVersion
+    type: string
+    default: ''
+  - name:  RunTests
+    type: boolean
+    default: false
+  - name: EnvVars
+    type: object
+    default: {}
 
 steps:
-
-  - pwsh: ./eng/scripts/build.ps1
-    displayName: 'Build'
-    workingDirectory: '${{parameters.GoWorkspace}}'
+  - task: Powershell@2
+    displayName: Build
     env:
       GO111MODULE: 'on'
+    inputs:
+      targetType: filePath
+      pwsh: true
+      filePath: eng/scripts/build.ps1
+      arguments: -filter '${{ parameters.ServiceDirectory }}'
+      workingDirectory: '${{ parameters.GoWorkspace }}'
 
-  - pwsh: ./eng/scripts/build.ps1 -vet -skipBuild
-    displayName: 'Vet'
-    workingDirectory: '${{parameters.GoWorkspace}}'
+  - task: Powershell@2
+    displayName: Vet
     env:
       GO111MODULE: 'on'
+    inputs:
+      targetType: filePath
+      pwsh: true
+      filePath: eng/scripts/build.ps1
+      arguments: -vet -skipBuild -filter '${{ parameters.ServiceDirectory }}'
+      workingDirectory: '${{ parameters.GoWorkspace }}'
 
   - ${{ if eq(parameters.RunTests, 'true') }}:
     - pwsh: |
@@ -30,8 +51,10 @@ steps:
       displayName: "Install Coverage and Junit Dependencies"
       workingDirectory: '${{parameters.GoWorkspace}}'
 
+    - template: /eng/common/testproxy/test-proxy-docker.yml
+
     - pwsh: |
-        $testDirs = (./eng/scripts/get_test_dirs.ps1 -serviceDir $(SCOPE))
+        $testDirs = ./eng/scripts/get_test_dirs.ps1 '${{ parameters.ServiceDirectory }}'
         foreach ($td in $testDirs) {
           pushd $td
           Write-Host "##[command]Executing 'go test -run "^Test" -v -coverprofile coverage.txt .' in $td"
@@ -48,16 +71,20 @@ steps:
       workingDirectory: '${{parameters.GoWorkspace}}'
       env:
         GO111MODULE: 'on'
+        PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
+        ${{ insert }}: ${{ parameters.EnvVars }}
 
     - pwsh: ../eng/scripts/create_coverage.ps1 ${{parameters.ServiceDirectory}}
       displayName: 'Generate Coverage XML'
       workingDirectory: '${{parameters.GoWorkspace}}sdk'
+      env:
+        GO111MODULE: 'off'
 
     - task: PublishTestResults@2
       condition: succeededOrFailed()
       inputs:
         testRunner: JUnit
-        testResultsFiles: '${{parameters.GoWorkspace}}sdk/**/report.xml'
+        testResultsFiles: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/**/report.xml'
         testRunTitle: 'Go ${{ parameters.GoVersion }} on ${{ parameters.Image }}'
         failTaskOnFailedTests: true
 
@@ -65,6 +92,6 @@ steps:
       condition: succeededOrFailed()
       inputs:
         codeCoverageTool: Cobertura
-        summaryFileLocation: '${{parameters.GoWorkspace}}sdk/coverage.xml'
-        additionalCodeCoverageFiles: '${{parameters.GoWorkspace}}sdk/coverage.html'
+        summaryFileLocation: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/coverage.xml'
+        additionalCodeCoverageFiles: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/coverage.html'
         failIfCoverageEmpty: true

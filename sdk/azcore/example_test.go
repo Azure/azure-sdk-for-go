@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright 2017 Microsoft Corporation. All rights reserved.
 // Use of this source code is governed by an MIT
@@ -9,55 +10,26 @@ package azcore_test
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-func ExamplePipeline_Do() {
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, "https://github.com/robots.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	pipeline := azcore.NewPipeline(nil)
-	resp, err := pipeline.Do(req)
-	if err != nil {
-		log.Fatal(err)
-	}
-	robots, err := ioutil.ReadAll(resp.Body)
-	resp.Body.Close()
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("%s", robots)
-}
-
-func ExampleRequest_SetBody() {
-	req, err := azcore.NewRequest(context.Background(), http.MethodPut, "https://contoso.com/some/endpoint")
-	if err != nil {
-		log.Fatal(err)
-	}
-	body := strings.NewReader("this is seekable content to be uploaded")
-	err = req.SetBody(azcore.NopCloser(body), "text/plain")
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
 // false positive by linter
-func ExampleLogger_SetClassifications() { //nolint:govet
+func ExampleSetClassifications() { //nolint:govet
 	// only log HTTP requests and responses
-	azcore.SetClassifications(azcore.LogRequest, azcore.LogResponse)
+	log.SetClassifications(log.Request, log.Response)
 }
 
 // false positive by linter
-func ExampleLogger_SetListener() { //nolint:govet
+func ExampleSetListener() { //nolint:govet
 	// a simple logger that writes to stdout
-	azcore.SetListener(func(cls azcore.LogClassification, msg string) {
+	log.SetListener(func(cls log.Classification, msg string) {
 		fmt.Printf("%s: %s\n", cls, msg)
 	})
 }
@@ -90,4 +62,26 @@ func ExampleNullValue() {
 	fmt.Println(string(b))
 	// Output:
 	// {"count":null}
+}
+
+func ExampleHTTPResponse() {
+	pipeline := runtime.NewPipeline(http.DefaultClient)
+	req, err := runtime.NewRequest(context.Background(), "POST", "https://fakecontainerregisty.azurecr.io/acr/v1/nonexisteng/_tags")
+	if err != nil {
+		panic(err)
+	}
+	resp, err := pipeline.Do(req)
+	var httpErr azcore.HTTPResponse
+	if errors.As(err, &httpErr) {
+		// Handle Error
+		if httpErr.RawResponse().StatusCode == http.StatusNotFound {
+			fmt.Printf("Repository could not be found: %v", httpErr.RawResponse())
+		} else if httpErr.RawResponse().StatusCode == http.StatusForbidden {
+			fmt.Printf("You do not have permission to access this repository: %v", httpErr.RawResponse())
+		} else {
+			// ...
+		}
+	}
+	// Do something with response
+	fmt.Println(ioutil.ReadAll(resp.Body))
 }

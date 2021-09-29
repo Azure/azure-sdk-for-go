@@ -93,7 +93,7 @@ func (g *GetSecretOptions) toGenerated() *internal.KeyVaultClientGetSecretOption
 
 // GetSecretResponse is the response object for the Client.GetSecret operation
 type GetSecretResponse struct {
-	SecretBundle
+	Bundle
 
 	// RawResponse contains the underlying HTTP response
 	RawResponse *http.Response
@@ -102,7 +102,7 @@ type GetSecretResponse struct {
 func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) *GetSecretResponse {
 	return &GetSecretResponse{
 		RawResponse: i.RawResponse,
-		SecretBundle: SecretBundle{
+		Bundle: Bundle{
 			Attributes:  secretAttributesFromGenerated(i.Attributes),
 			ContentType: i.ContentType,
 			ID:          i.ID,
@@ -130,7 +130,7 @@ type SetSecretOptions struct {
 	ContentType *string `json:"contentType,omitempty"`
 
 	// The secret management attributes.
-	SecretAttributes *SecretAttributes `json:"attributes,omitempty"`
+	SecretAttributes *Attributes `json:"attributes,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
@@ -149,7 +149,7 @@ type SetSecretResponse struct {
 	RawResponse *http.Response
 
 	// The secret management attributes.
-	Attributes *SecretAttributes `json:"attributes,omitempty"`
+	Attributes *Attributes `json:"attributes,omitempty"`
 
 	// The secret id.
 	ID *string `json:"id,omitempty"`
@@ -212,14 +212,14 @@ func deleteSecretResponseFromGenerated(i *internal.KeyVaultClientDeleteSecretRes
 	}
 	return &DeleteSecretResponse{
 		DeletedSecretBundle: DeletedSecretBundle{
-			SecretBundle: SecretBundle{
+			Bundle: Bundle{
 				ContentType: i.ContentType,
 				ID:          i.ID,
 				Tags:        convertPtrMap(i.Tags),
 				Value:       i.Value,
 				Kid:         i.Kid,
 				Managed:     i.Managed,
-				Attributes: &SecretAttributes{
+				Attributes: &Attributes{
 					Enabled:         i.Attributes.Enabled,
 					Expires:         i.Attributes.Expires,
 					NotBefore:       i.Attributes.NotBefore,
@@ -368,7 +368,7 @@ func (g *GetDeletedSecretOptions) toGenerated() *internal.KeyVaultClientGetDelet
 
 // GetDeletedSecretResponse contains the response struct for the Client.GetDeletedSecret operation.
 type GetDeletedSecretResponse struct {
-	SecretBundle
+	Bundle
 	// The url of the recovery object, used to identify and recover the deleted secret.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
@@ -389,7 +389,7 @@ func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSe
 		RecoveryID:         i.RecoveryID,
 		DeletedDate:        i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		SecretBundle:       secretBundleFromGenerated(i.SecretBundle),
+		Bundle:       secretBundleFromGenerated(i.SecretBundle),
 	}
 }
 
@@ -415,7 +415,7 @@ func (u UpdateSecretPropertiesOptions) toGenerated() *internal.KeyVaultClientUpd
 
 // UpdateSecretPropertiesResponse contains the underlying response object for the UpdateSecretProperties method
 type UpdateSecretPropertiesResponse struct {
-	SecretBundle
+	Bundle
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
@@ -423,7 +423,7 @@ type UpdateSecretPropertiesResponse struct {
 func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdateSecretResponse) UpdateSecretPropertiesResponse {
 	return UpdateSecretPropertiesResponse{
 		RawResponse: i.RawResponse,
-		SecretBundle: SecretBundle{
+		Bundle: Bundle{
 			Attributes:  secretAttributesFromGenerated(i.Attributes),
 			ContentType: i.ContentType,
 			ID:          i.ID,
@@ -436,19 +436,19 @@ func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdate
 }
 
 // SecretUpdateParameters - The secret update parameters.
-type SecretProperties struct {
+type Properties struct {
 	// Type of the secret value such as a password.
 	ContentType *string `json:"contentType,omitempty"`
 
 	// The secret management attributes.
-	SecretAttributes *SecretAttributes `json:"attributes,omitempty"`
+	SecretAttributes *Attributes `json:"attributes,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // convert the publicly exposed version to the generated version
-func (s SecretProperties) toGenerated() internal.SecretUpdateParameters {
+func (s Properties) toGenerated() internal.SecretUpdateParameters {
 	var secAttribs *internal.SecretAttributes
 	if s.SecretAttributes != nil {
 		secAttribs = s.SecretAttributes.toGenerated()
@@ -463,7 +463,7 @@ func (s SecretProperties) toGenerated() internal.SecretUpdateParameters {
 // UpdateSecretProperties updates the attributes associated with a specified secret in a given key vault. The update
 // operation changes specified attributes of an existing stored secret, attributes that are not specified in the
 // request are left unchanged. The value of a secret itself cannot be changed. This operation requires the secrets/set permission.
-func (c *Client) UpdateSecretProperties(ctx context.Context, secretName string, parameters SecretProperties, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
+func (c *Client) UpdateSecretProperties(ctx context.Context, secretName string, parameters Properties, options *UpdateSecretPropertiesOptions) (UpdateSecretPropertiesResponse, error) {
 	if options == nil {
 		options = &UpdateSecretPropertiesOptions{}
 	}
@@ -526,7 +526,7 @@ func (r RestoreSecretBackupOptions) toGenerated() *internal.KeyVaultClientRestor
 
 // RestoreSecretBackupResponse contains the response object for the Client.RestoreSecretBackup operation.
 type RestoreSecretBackupResponse struct {
-	SecretBundle
+	Bundle
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
@@ -535,14 +535,14 @@ type RestoreSecretBackupResponse struct {
 func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSecretResponse) RestoreSecretBackupResponse {
 	return RestoreSecretBackupResponse{
 		RawResponse: i.RawResponse,
-		SecretBundle: SecretBundle{
+		Bundle: Bundle{
 			ContentType: i.ContentType,
 			ID:          i.ID,
 			Tags:        convertPtrMap(i.Tags),
 			Value:       i.Value,
 			Kid:         i.Kid,
 			Managed:     i.Managed,
-			Attributes: &SecretAttributes{
+			Attributes: &Attributes{
 				Enabled:   i.Attributes.Enabled,
 				Expires:   i.Attributes.Expires,
 				NotBefore: i.Attributes.NotBefore,
@@ -671,16 +671,16 @@ func (b BeginRecoverDeletedSecretOptions) toGenerated() *internal.KeyVaultClient
 
 // RecoverDeletedSecretResponse is the response object for the Client.RecoverDeletedSecret operation.
 type RecoverDeletedSecretResponse struct {
-	SecretBundle
+	Bundle
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
 // change recover deleted secret reponse to the generated version.
 func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverDeletedSecretResponse) RecoverDeletedSecretResponse {
-	var a *SecretAttributes
+	var a *Attributes
 	if i.Attributes != nil {
-		a = &SecretAttributes{
+		a = &Attributes{
 			Enabled:   i.Attributes.Enabled,
 			Expires:   i.Attributes.Expires,
 			NotBefore: i.Attributes.NotBefore,
@@ -692,7 +692,7 @@ func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverD
 	}
 	return RecoverDeletedSecretResponse{
 		RawResponse: i.RawResponse,
-		SecretBundle: SecretBundle{
+		Bundle: Bundle{
 			Attributes:  a,
 			ContentType: i.ContentType,
 			ID:          i.ID,
@@ -890,12 +890,12 @@ type ListSecretVersionsPage struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
-	Secrets []*SecretItem `json:"value,omitempty" azure:"ro"`
+	Secrets []*Item `json:"value,omitempty" azure:"ro"`
 }
 
 // create ListSecretsPage from generated pager
 func listSecretVersionsPageFromGenerated(i internal.KeyVaultClientGetSecretVersionsResponse) ListSecretVersionsPage {
-	var secrets []*SecretItem
+	var secrets []*Item
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}
@@ -982,12 +982,12 @@ type ListSecretsPage struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
-	Secrets []*SecretItem `json:"value,omitempty" azure:"ro"`
+	Secrets []*Item `json:"value,omitempty" azure:"ro"`
 }
 
 // create a ListSecretsPage from a generated code response
 func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretsResponse) ListSecretsPage {
-	var secrets []*SecretItem
+	var secrets []*Item
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}

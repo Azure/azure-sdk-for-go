@@ -14,7 +14,7 @@ import (
 
 // DeletedSecretBundle - A Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
 type DeletedSecretBundle struct {
-	SecretBundle
+	Bundle
 	// The url of the recovery object, used to identify and recover the deleted secret.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
@@ -25,10 +25,10 @@ type DeletedSecretBundle struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-// SecretBundle - A secret consisting of a value, id and its attributes.
-type SecretBundle struct {
+// Bundle - A secret consisting of a value, id and its attributes.
+type Bundle struct {
 	// The secret management attributes.
-	Attributes *SecretAttributes `json:"attributes,omitempty"`
+	Attributes *Attributes `json:"attributes,omitempty"`
 
 	// The content type of the secret.
 	ContentType *string `json:"contentType,omitempty"`
@@ -49,8 +49,8 @@ type SecretBundle struct {
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
-func secretBundleFromGenerated(i internal.SecretBundle) SecretBundle {
-	return SecretBundle{
+func secretBundleFromGenerated(i internal.SecretBundle) Bundle {
+	return Bundle{
 		Attributes:  secretAttributesFromGenerated(i.Attributes),
 		ContentType: i.ContentType,
 		ID:          i.ID,
@@ -61,8 +61,8 @@ func secretBundleFromGenerated(i internal.SecretBundle) SecretBundle {
 	}
 }
 
-// SecretAttributes - The secret management attributes.
-type SecretAttributes struct {
+// Attributes - The secret management attributes.
+type Attributes struct {
 	// Determines whether the object is enabled.
 	Enabled *bool `json:"enabled,omitempty"`
 
@@ -87,7 +87,7 @@ type SecretAttributes struct {
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 }
 
-func (s SecretAttributes) toGenerated() *internal.SecretAttributes {
+func (s Attributes) toGenerated() *internal.SecretAttributes {
 	return &internal.SecretAttributes{
 		RecoverableDays: s.RecoverableDays,
 		RecoveryLevel:   s.RecoveryLevel.toGenerated().ToPtr(),
@@ -102,11 +102,11 @@ func (s SecretAttributes) toGenerated() *internal.SecretAttributes {
 }
 
 // create a SecretAttributes object from an internal.SecretAttributes object
-func secretAttributesFromGenerated(i *internal.SecretAttributes) *SecretAttributes {
+func secretAttributesFromGenerated(i *internal.SecretAttributes) *Attributes {
 	if i == nil {
 		return nil
 	}
-	return &SecretAttributes{
+	return &Attributes{
 		RecoverableDays: i.RecoverableDays,
 		RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.RecoveryLevel).ToPtr(),
 		Enabled:   i.Enabled,
@@ -117,10 +117,10 @@ func secretAttributesFromGenerated(i *internal.SecretAttributes) *SecretAttribut
 	}
 }
 
-// SecretItem - The secret item containing secret metadata.
-type SecretItem struct {
+// Item - The secret item containing secret metadata.
+type Item struct {
 	// The secret management attributes.
-	Attributes *SecretAttributes `json:"attributes,omitempty"`
+	Attributes *Attributes `json:"attributes,omitempty"`
 
 	// Type of the secret value such as a password.
 	ContentType *string `json:"contentType,omitempty"`
@@ -136,12 +136,12 @@ type SecretItem struct {
 }
 
 // create a SecretItem from the internal.SecretItem model
-func secretItemFromGenerated(i *internal.SecretItem) *SecretItem {
+func secretItemFromGenerated(i *internal.SecretItem) *Item {
 	if i == nil {
 		return nil
 	}
 
-	return &SecretItem{
+	return &Item{
 		Attributes:  secretAttributesFromGenerated(i.Attributes),
 		ContentType: i.ContentType,
 		ID:          i.ID,
@@ -152,7 +152,7 @@ func secretItemFromGenerated(i *internal.SecretItem) *SecretItem {
 
 // DeletedSecretItem - The deleted secret item containing metadata about the deleted secret.
 type DeletedSecretItem struct {
-	SecretItem
+	Item
 	// The url of the recovery object, used to identify and recover the deleted secret.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
@@ -172,7 +172,7 @@ func deletedSecretItemFromGenerated(i *internal.DeletedSecretItem) *DeletedSecre
 		RecoveryID:         i.RecoveryID,
 		DeletedDate:        i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		SecretItem:         *secretItemFromGenerated(&i.SecretItem),
+		Item:         *secretItemFromGenerated(&i.SecretItem),
 	}
 }
 

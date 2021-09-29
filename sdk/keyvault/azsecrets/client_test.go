@@ -283,7 +283,7 @@ func TestUpdateSecretProperties(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, *getResp.Value, value)
 
-	params := SecretProperties{
+	params := Properties{
 		ContentType: to.StringPtr("password"),
 		Tags: map[string]string{
 			"Tag1": "TagVal1",

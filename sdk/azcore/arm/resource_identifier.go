@@ -104,7 +104,7 @@ func chooseResourceType(resourceTypeName string, parent *ResourceIdentifier) Res
 	case subscriptionsKey:
 		return SubscriptionResourceType
 	default:
-		return NewResourceTypeFromParent(parent.resourceType, resourceTypeName)
+		return parent.resourceType.AppendChild(resourceTypeName)
 	}
 }
 
@@ -281,9 +281,9 @@ func NewResourceType(providerNamespace, typeName string) ResourceType {
 	}
 }
 
-// NewResourceTypeFromParent initiate an instance from a ResourceType as parent and the childType.
-func NewResourceTypeFromParent(parent ResourceType, childType string) ResourceType {
-	return NewResourceType(parent.namespace, fmt.Sprintf("%s/%s", parent.typeName, childType))
+// AppendChild initiate an instance using the receiver ResourceType as parent and append childType to it.
+func (t ResourceType) AppendChild(childType string) ResourceType {
+	return NewResourceType(t.Namespace(), fmt.Sprintf("%s/%s", t.Type(), childType))
 }
 
 // ParseResourceType parses the ResourceType from a resource type string (e.g. Microsoft.Network/virtualNetworks/subsets)

@@ -338,6 +338,10 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers []int64) ([]*ReceivedMessage, error) {
 	_, _, mgmt, _, err := r.amqpLinks.Get(ctx)
 
+	if err != nil {
+		return nil, err
+	}
+
 	amqpMessages, err := mgmt.ReceiveDeferred(ctx, r.config.ReceiveMode, sequenceNumbers)
 
 	if err != nil {

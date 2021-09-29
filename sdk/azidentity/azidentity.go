@@ -59,29 +59,11 @@ type tokenResponse struct {
 	refreshToken string
 }
 
-// AADAuthenticationFailedError is used to unmarshal error responses received from Azure Active Directory.
-type AADAuthenticationFailedError struct {
-	Message       string `json:"error"`
-	Description   string `json:"error_description"`
-	Timestamp     string `json:"timestamp"`
-	TraceID       string `json:"trace_id"`
-	CorrelationID string `json:"correlation_id"`
-	URL           string `json:"error_uri"`
-	Response      *http.Response
-}
-
-func (e *AADAuthenticationFailedError) Error() string {
-	msg := e.Message
-	if len(e.Description) > 0 {
-		msg += " " + e.Description
-	}
-	return msg
-}
-
 // AuthenticationFailedError is returned when the authentication request has failed.
 type AuthenticationFailedError struct {
 	inner error
 	msg   string
+	resp  *http.Response
 }
 
 // Unwrap method on AuthenticationFailedError provides access to the inner error if available.
@@ -95,25 +77,16 @@ func (e *AuthenticationFailedError) NonRetriable() {
 }
 
 func (e *AuthenticationFailedError) Error() string {
-	if e.inner == nil {
-		return e.msg
-	} else if e.msg == "" {
-		return e.inner.Error()
-	}
-	return e.msg + " details: " + e.inner.Error()
+	return e.msg
 }
 
+// RawResponse returns the HTTP response motivating the error, if available
+func (e *AuthenticationFailedError) RawResponse() *http.Response {
+	return e.resp
+}
+
+var _ azcore.HTTPResponse = (*AuthenticationFailedError)(nil)
 var _ errorinfo.NonRetriable = (*AuthenticationFailedError)(nil)
-
-func newAADAuthenticationFailedError(resp *http.Response) error {
-	authFailed := &AADAuthenticationFailedError{Response: resp}
-	err := runtime.UnmarshalAsJSON(resp, authFailed)
-	if err != nil {
-		authFailed.Message = resp.Status
-		authFailed.Description = "Failed to unmarshal response: " + err.Error()
-	}
-	return authFailed
-}
 
 // CredentialUnavailableError is the error type returned when the conditions required to
 // create a credential do not exist or are unavailable.

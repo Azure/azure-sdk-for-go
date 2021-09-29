@@ -272,9 +272,12 @@ func TestDeviceCodeCredential_GetTokenWithRefreshTokenFailure(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
-	var aadErr *AADAuthenticationFailedError
-	if !errors.As(err, &aadErr) {
-		t.Fatalf("Did not receive an AADAuthenticationFailedError but was expecting one")
+	var authFailed *AuthenticationFailedError
+	if !errors.As(err, &authFailed) {
+		t.Fatalf("Expected AuthenticationFailedError, got %T", err)
+	}
+	if authFailed.RawResponse() == nil {
+		t.Fatalf("Expected error to include a response")
 	}
 }
 

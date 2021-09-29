@@ -235,7 +235,7 @@ Azure Active Directory
 This module uses the classification based logging implementation in azcore. To turn on logging set `AZURE_SDK_GO_LOGGING` to `all`. If you only want to include logs for `azidentity`, you must create you own logger and set the log classification as `LogCredential`.
 Credentials log basic information only, including `GetToken` success or failure and errors. These log entries do not contain authentication secrets but may contain sensitive information.
 
-To obtain more detailed logging, including request/response bodies and header values, make sure to leave the logger as default or enable the `LogRequest` and/or `LogResponse` classificatons. A logger that only includes credential logs can be like the following:
+To obtain more detailed logging, including request/response bodies and header values, make sure to leave the logger as default or enable the `LogRequest` and/or `LogResponse` classifications. A logger that only includes credential logs can be like the following:
 
 ```go
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"

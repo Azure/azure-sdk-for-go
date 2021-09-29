@@ -60,17 +60,8 @@ type ProcessorOption func(processor *Processor) error
 // ProcessorWithSubQueue allows you to open the sub queue (ie: dead letter queues, transfer dead letter queues)
 // for a queue or subscription.
 func ProcessorWithSubQueue(subQueue SubQueue) ProcessorOption {
-	return func(receiver *Processor) error {
-		switch subQueue {
-		case SubQueueDeadLetter:
-		case SubQueueTransfer:
-		case "":
-			receiver.config.Entity.Subqueue = subQueue
-		default:
-			return fmt.Errorf("unknown SubQueue %s", subQueue)
-		}
-
-		return nil
+	return func(p *Processor) error {
+		return p.config.Entity.SetSubQueue(subQueue)
 	}
 }
 

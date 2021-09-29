@@ -222,7 +222,9 @@ func (l *amqpLinks) closeWithoutLocking(ctx context.Context, permanent bool) err
 	}
 
 	defer func() {
-		l.closedPermanently = true
+		if permanent {
+			l.closedPermanently = true
+		}
 	}()
 
 	var messages []string

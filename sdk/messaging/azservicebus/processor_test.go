@@ -142,6 +142,34 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 	require.NoError(t, processor.Close(ctx))
 }
 
+func TestProcessorUnitTests(t *testing.T) {
+	p := &Processor{}
+	require.NoError(t, ProcessorWithSubQueue(SubQueueDeadLetter)(p))
+	require.EqualValues(t, SubQueueDeadLetter, p.config.Entity.subqueue)
+
+	p = &Processor{}
+	require.NoError(t, ProcessorWithSubQueue(SubQueueTransfer)(p))
+	require.EqualValues(t, SubQueueTransfer, p.config.Entity.subqueue)
+
+	p = &Processor{}
+	require.NoError(t, ProcessorWithQueue("queue1")(p))
+	require.EqualValues(t, "queue1", p.config.Entity.Queue)
+
+	p = &Processor{}
+	require.NoError(t, ProcessorWithSubscription("topic1", "subscription1")(p))
+	require.EqualValues(t, "topic1", p.config.Entity.Topic)
+	require.EqualValues(t, "subscription1", p.config.Entity.Subscription)
+
+	p = &Processor{}
+	require.NoError(t, ProcessorWithReceiveMode(PeekLock)(p))
+	require.EqualValues(t, PeekLock, p.config.ReceiveMode)
+
+	p = &Processor{}
+	require.NoError(t, ProcessorWithReceiveMode(ReceiveAndDelete)(p))
+	require.EqualValues(t, ReceiveAndDelete, p.config.ReceiveMode)
+
+}
+
 // func TestProcessorUnitTests(t *testing.T) {
 // 	t.Run("Processor", func(t *testing.T) {
 // 		t.Run("StartAndClose", func(t *testing.T) {

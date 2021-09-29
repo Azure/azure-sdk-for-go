@@ -5,11 +5,14 @@ package azservicebus
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"sort"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
@@ -170,39 +173,168 @@ func TestReceiverSendAndReceiveManyTimes(t *testing.T) {
 	require.EqualValues(t, len(allMessages), 100)
 }
 
-func TestReceiverUnitTests(t *testing.T) {
-	// If an error occurs and we have some messages accumulated in our internal
-	// buffer we will still return them to the user.
-	//
-	// In ReceiveAndDelete _not_ returning these would mean they would be lost - our
-	// receiver has the only copy of the message.
-	// In PeekLock there is still a chance (if not using sessions, for instance) where
-	// the user can still settle messages using the management link as a backup.
-	//
-	// NOTE: (this is a design item that needs discussion. Just documenting the current behavior)
-	// t.Run("MessagesAreStillReturnedOnErrors", func(t *testing.T) {
-	// 	ns := newFakeNamespace()
+func TestReceiverDeferAndReceiveDeferredMessages(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t)
+	defer cleanup()
 
-	// 	ns.Links.Receiver.NextReceiveCalls <- receiveCallResponse{
-	// 		message: (&ReceivedMessage{
-	// 			Message: Message{
-	// 				ID: "fakeID",
-	// 			},
-	// 			LockToken:      &amqp.UUID{},
-	// 			SequenceNumber: to.Int64Ptr(1),
-	// 		}).ToAMQPMessage(),
-	// 		err: nil,
-	// 	}
+	sender, err := client.NewSender(queueName)
+	require.NoError(t, err)
 
-	// 	receiver, err := newReceiver(ns,
-	// 		ReceiverWithReceiveMode(ReceiveAndDelete),
-	// 		ReceiverWithSubscription("topic", "subscription"))
-	// 	require.NoError(t, err)
+	ctx := context.TODO()
 
-	// 	messages, err := receiver.ReceiveMessages(context.Background(), 2)
-	// 	require.EqualError(t, err, context.Canceled.Error())
-	// 	require.EqualValues(t, 1, len(messages), "Messages are still returned if we're in ReceiveAndDelete mode")
-	// })
+	defer sender.Close(ctx)
+
+	err = sender.SendMessage(ctx, &Message{
+		Body: []byte("deferring a message"),
+	})
+	require.NoError(t, err)
+
+	receiver, err := client.NewReceiver(ReceiverWithQueue(queueName))
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(ctx, 1)
+	require.NoError(t, err)
+
+	var sequenceNumbers []int64
+
+	for _, m := range messages {
+		err = receiver.DeferMessage(ctx, m)
+		require.NoError(t, err)
+
+		sequenceNumbers = append(sequenceNumbers, *m.SequenceNumber)
+	}
+
+	deferredMessages, err := receiver.ReceiveDeferredMessages(ctx, sequenceNumbers)
+	require.NoError(t, err)
+
+	require.EqualValues(t, []string{"deferring a message"}, getSortedBodies(deferredMessages))
+	require.True(t, deferredMessages[0].deferred, "internal flag indicating it was from a deferred receiver method is set")
+
+	for _, m := range deferredMessages {
+		err = receiver.CompleteMessage(ctx, m)
+		require.NoError(t, err)
+	}
+}
+
+func TestReceiverPeek(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t)
+	defer cleanup()
+
+	sender, err := serviceBusClient.NewSender(queueName)
+	require.NoError(t, err)
+
+	ctx := context.TODO()
+
+	defer sender.Close(ctx)
+
+	batch, err := sender.NewMessageBatch(ctx)
+	require.NoError(t, err)
+
+	for i := 0; i < 3; i++ {
+		err = batch.Add(&Message{
+			Body: []byte(fmt.Sprintf("Message %d", i)),
+		})
+		require.NoError(t, err)
+	}
+
+	err = sender.SendMessage(ctx, batch)
+	require.NoError(t, err)
+
+	receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
+	require.NoError(t, err)
+
+	// wait for a message to show up
+	messages, err := receiver.ReceiveMessages(ctx, 1)
+	require.NoError(t, err)
+
+	// put them all back
+	for _, m := range messages {
+		require.NoError(t, receiver.AbandonMessage(ctx, m))
+	}
+
+	peekedMessages, err := receiver.PeekMessages(ctx, 2)
+	require.NoError(t, err)
+	require.EqualValues(t, 2, len(peekedMessages))
+
+	peekedMessages2, err := receiver.PeekMessages(ctx, 2)
+	require.NoError(t, err)
+	require.EqualValues(t, 1, len(peekedMessages2))
+
+	// peek by seequence using one of our previous messages to prove
+	// that we can peek at any arbitrary point in the messages
+	require.EqualValues(t, []string{
+		"Message 0", "Message 1", "Message 2",
+	}, getSortedBodies(append(peekedMessages, peekedMessages2...)))
+
+	repeekedMessages, err := receiver.PeekMessages(ctx, 1, PeekFromSequenceNumber(*peekedMessages2[0].SequenceNumber))
+	require.NoError(t, err)
+	require.EqualValues(t, 1, len(repeekedMessages))
+
+	require.EqualValues(t, []string{
+		string(peekedMessages2[0].Body),
+	}, getSortedBodies(repeekedMessages))
+
+	// and peek again (note it won't reset so there'll be "nothing")
+	noMessagesExpected, err := receiver.PeekMessages(ctx, 1)
+	require.NoError(t, err)
+	require.Empty(t, noMessagesExpected)
+}
+
+func TestReceiverOptions(t *testing.T) {
+	receiver := &Receiver{}
+	require.NoError(t, ReceiverWithSubQueue(SubQueueDeadLetter)(receiver))
+	require.EqualValues(t, SubQueueDeadLetter, receiver.config.Entity.subqueue)
+
+	receiver = &Receiver{}
+	require.NoError(t, ReceiverWithSubQueue(SubQueueTransfer)(receiver))
+	require.EqualValues(t, SubQueueTransfer, receiver.config.Entity.subqueue)
+
+	receiver = &Receiver{}
+	require.NoError(t, ReceiverWithQueue("queue1")(receiver))
+	require.EqualValues(t, "queue1", receiver.config.Entity.Queue)
+
+	receiver = &Receiver{}
+	require.NoError(t, ReceiverWithSubscription("topic1", "subscription1")(receiver))
+	require.EqualValues(t, "topic1", receiver.config.Entity.Topic)
+	require.EqualValues(t, "subscription1", receiver.config.Entity.Subscription)
+
+	receiver = &Receiver{}
+	require.NoError(t, ReceiverWithReceiveMode(PeekLock)(receiver))
+	require.EqualValues(t, PeekLock, receiver.config.ReceiveMode)
+
+	receiver = &Receiver{}
+	require.NoError(t, ReceiverWithReceiveMode(ReceiveAndDelete)(receiver))
+	require.EqualValues(t, ReceiveAndDelete, receiver.config.ReceiveMode)
+}
+
+type badMgmtClient struct {
+	internal.MgmtClient
+}
+
+func (b badMgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
+	return nil, errors.New("receive deferred messages failed")
+}
+
+func TestReceiverDeferUnitTests(t *testing.T) {
+	r := &Receiver{
+		amqpLinks: internal.FakeAMQPLinks{
+			Err: errors.New("links are dead"),
+		},
+	}
+
+	messages, err := r.ReceiveDeferredMessages(context.Background(), []int64{1})
+	require.EqualError(t, err, "links are dead")
+	require.Nil(t, messages)
+
+	r = &Receiver{
+		amqpLinks: internal.FakeAMQPLinks{
+			Mgmt: &badMgmtClient{},
+		},
+	}
+
+	messages, err = r.ReceiveDeferredMessages(context.Background(), []int64{1})
+	require.EqualError(t, err, "receive deferred messages failed")
+	require.Nil(t, messages)
 }
 
 type receivedMessageSlice []*ReceivedMessage

@@ -29,13 +29,13 @@ const (
 
 // SubQueue allows you to target a subqueue of a queue or subscription.
 // Ex: the dead letter queue (SubQueueDeadLetter).
-type SubQueue string
+type SubQueue int
 
 const (
 	// SubQueueDeadLetter targets the dead letter queue for a queue or subscription.
-	SubQueueDeadLetter = "deadLetter"
+	SubQueueDeadLetter SubQueue = 1
 	// SubQueueTransfer targets the transfer dead letter queue for a queue or subscription.
-	SubQueueTransfer = "transferDeadLetter"
+	SubQueueTransfer SubQueue = 2
 )
 
 // Receiver receives messages using pull based functions (ReceiveMessages).
@@ -54,7 +54,8 @@ type Receiver struct {
 		}
 	}
 
-	amqpLinks internal.AMQPLinks
+	lastPeekedSequenceNumber int64
+	amqpLinks                internal.AMQPLinks
 }
 
 const defaultLinkRxBuffer = 2048
@@ -68,17 +69,8 @@ type ReceiverOption func(receiver *Receiver) error
 // ReceiverWithSubQueue allows you to open the sub queue (ie: dead letter queues, transfer dead letter queues)
 // for a queue or subscription.
 func ReceiverWithSubQueue(subQueue SubQueue) ReceiverOption {
-	return func(receiver *Receiver) error {
-		switch subQueue {
-		case SubQueueDeadLetter:
-		case SubQueueTransfer:
-		case "":
-			receiver.config.Entity.Subqueue = subQueue
-		default:
-			return fmt.Errorf("unknown SubQueue %s", subQueue)
-		}
-
-		return nil
+	return func(r *Receiver) error {
+		return r.config.Entity.SetSubQueue(subQueue)
 	}
 }
 
@@ -125,6 +117,7 @@ func newReceiver(ns internal.NamespaceWithNewAMQPLinks, options ...ReceiverOptio
 		}{
 			ReceiveMode: PeekLock,
 		},
+		lastPeekedSequenceNumber: 0,
 	}
 
 	for _, opt := range options {
@@ -189,6 +182,13 @@ func ReceiveWithMaxTimeAfterFirstMessage(max time.Duration) ReceiveOption {
 // 2. An implicit timeout (default: 1 second) that starts after the first
 //    message has been received. This time can be adjusted with `ReceiveWithMaxTimeAfterFirstMessage`
 func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options ...ReceiveOption) ([]*ReceivedMessage, error) {
+	// There are three phases for this function:
+	// Phase 1. <receive, respecting user cancellation>
+	// Phase 2. <check error and exit if fatal>
+	//    NOTE: We don't exit here so we don't end up buffering messages internally that the
+	//    user isn't actually waiting for anymore. So we make sure that #3 runs if the
+	//    link is still valid.
+	// Phase 3. <drain the link and leave it in a good state>
 	ropts := &ReceiveOptions{
 		maxWaitTime:                  time.Minute,
 		maxWaitTimeAfterFirstMessage: time.Second,
@@ -212,6 +212,7 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 
 	var messages []*ReceivedMessage
 
+	userCtx := ctx
 	ctx, cancel := context.WithTimeout(ctx, ropts.maxWaitTime)
 	defer cancel()
 
@@ -219,17 +220,15 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 	// messages (otherwise, the user won't even know to look at the return value).
 	var fatalError error
 
+	// Phase 1 - <receive, respecting user cancellation>
 	// receive until we get our first interruption:
 	// - context is cancelled because the user cancelled it
 	// - context is cancelled because one of our timeouts hit
 	// - we get all the messages we asked for
 	for {
-		// TODO: should we do retries here? Or should we just surface the error close to immediately?
 		amqpMessage, err := receiver.Receive(ctx)
 
 		if err != nil {
-			// at the moment all errors from Receive() are fatal (if they're not context cancellation errors)
-			// for simplicity, we'll just store whatever we got and return it later if nothing else goes bad.
 			fatalError = err
 
 			if !isCancelled(err) {
@@ -270,8 +269,41 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 		}
 	}
 
+	// Phase 2 - if the error is fatal (ie, link is dead) it's okay to just bail out since
+	// there's nothing to drain.
+	// For any other non-fatal errors we'll continue on to the drain phase, so we ensure
+	// no messages are sitting around without anyone to receive them.
+	if fatalError != nil {
+		if isCancelled(fatalError) {
+			select {
+			case <-userCtx.Done():
+				// user cancelled, finalError contains their cancellation error.
+				// if we end up getting no messages we'll end up returning it.
+				break
+			default:
+				// our normal timeout fired, no actual error
+				fatalError = nil
+			}
+		} else {
+			// link is dead. Close our local state so it can be recreated again on the next
+			// receiveMessage and return whatever we have (or this error if that's the best we can do)
+			if err := r.amqpLinks.Close(ctx, false); err != nil {
+				tab.For(ctx).Debug(fmt.Sprintf("failed when closing local links (not fatal): %s", err.Error()))
+			}
+
+			if len(messages) == 0 {
+				return nil, fatalError
+			} else {
+				// if they got _some_ messages we don't consider that fatal.
+				return messages, nil
+			}
+		}
+	}
+
+	// Phase 3. <drain the link and leave it in a good state>
+	// Check if there are any outstanding messsages/credits. If there are we want to drain
+	// so we can flush the link.
 	if len(messages) < maxMessages {
-		// there are still credits on the link. drain and receive whatever is left, if possible.
 		ctx, cancel = context.WithCancel(context.Background())
 
 		// this drain phase is pretty critical - we don't allow it to be interrupted otherwise the link is
@@ -304,10 +336,132 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 	}
 
 	if len(messages) > 0 {
+		// if we were able to receive some messages then we're okay to just say this
+		// operation worked and basically 'erase' the error.
+		// This should be okay since messages can still be settled (they'll go against
+		// the management link) and the link has been recovered so the next receive should
+		// work as well.
 		return messages, nil
 	} else {
 		return nil, fatalError
 	}
+}
+
+// ReceiveDeferredMessages receives messages that were deferred using `Receiver.DeferMessage`.
+func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers []int64) ([]*ReceivedMessage, error) {
+	_, _, mgmt, _, err := r.amqpLinks.Get(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	amqpMessages, err := mgmt.ReceiveDeferred(ctx, r.config.ReceiveMode, sequenceNumbers)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var receivedMessages []*ReceivedMessage
+
+	for _, amqpMsg := range amqpMessages {
+		receivedMsg := newReceivedMessage(ctx, amqpMsg)
+		receivedMsg.deferred = true
+
+		receivedMessages = append(receivedMessages, receivedMsg)
+	}
+
+	return receivedMessages, nil
+}
+
+type peekOptions struct {
+	fromSequenceNumber *int64
+}
+
+type PeekOption func(p *peekOptions) error
+
+// PeekFromSequenceNumber sets the sequence number to start peeking
+// messages.
+func PeekFromSequenceNumber(sequenceNumber int64) PeekOption {
+	return func(p *peekOptions) error {
+		p.fromSequenceNumber = &sequenceNumber
+		return nil
+	}
+}
+
+// PeekMessages will peek messages without locking or deleting messages.
+// Messages that are peeked do not have lock tokens, so settlement methods
+// like CompleteMessage, AbandonMessage, DeferMessage or DeadLetterMessage
+// will not work with them.
+func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, options ...PeekOption) ([]*ReceivedMessage, error) {
+
+	peekOptions := &peekOptions{}
+
+	for _, opt := range options {
+		if err := opt(peekOptions); err != nil {
+			return nil, err
+		}
+	}
+
+	_, _, mgmt, _, err := r.amqpLinks.Get(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var sequenceNumber = r.lastPeekedSequenceNumber + 1
+
+	if peekOptions.fromSequenceNumber != nil {
+		sequenceNumber = *peekOptions.fromSequenceNumber
+	}
+
+	messages, err := mgmt.PeekMessages(ctx, sequenceNumber, int32(maxMessageCount))
+
+	if err != nil {
+		return nil, err
+	}
+
+	receivedMessages := make([]*ReceivedMessage, len(messages))
+
+	for i := 0; i < len(messages); i++ {
+		receivedMessages[i] = newReceivedMessage(ctx, messages[i])
+	}
+
+	if len(receivedMessages) > 0 && peekOptions.fromSequenceNumber == nil {
+		// only update this if they're doing the implicit iteration as part of the receiver.
+		r.lastPeekedSequenceNumber = *receivedMessages[len(receivedMessages)-1].SequenceNumber
+	}
+
+	return receivedMessages, nil
+}
+
+// receiveDeferredMessage receives a single message that was deferred using `Receiver.DeferMessage`.
+func (r *Receiver) receiveDeferredMessage(ctx context.Context, sequenceNumber int64) (*ReceivedMessage, error) {
+	messages, err := r.ReceiveDeferredMessages(ctx, []int64{sequenceNumber})
+
+	if err != nil {
+		return nil, err
+	}
+
+	if len(messages) == 0 {
+		return nil, nil
+	}
+
+	return messages[0], nil
+}
+
+// receiveMessage receives a single message.
+func (r *Receiver) receiveMessage(ctx context.Context, options ...ReceiveOption) (*ReceivedMessage, error) {
+	messages, err := r.ReceiveMessages(ctx, 1, options...)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if len(messages) == 0 {
+		return nil, nil
+	}
+
+	return messages[0], nil
 }
 
 // Close permanently closes the receiver.
@@ -341,7 +495,7 @@ func (r *Receiver) DeadLetterMessage(ctx context.Context, message *ReceivedMessa
 }
 
 type entity struct {
-	Subqueue     SubQueue
+	subqueue     SubQueue
 	Queue        string
 	Topic        string
 	Subscription string
@@ -358,13 +512,23 @@ func (e *entity) String() (string, error) {
 		return "", errors.New("a queue or subscription was not specified")
 	}
 
-	if e.Subqueue == SubQueueDeadLetter {
+	if e.subqueue == SubQueueDeadLetter {
 		entityPath += "/$DeadLetterQueue"
-	} else if e.Subqueue == SubQueueTransfer {
+	} else if e.subqueue == SubQueueTransfer {
 		entityPath += "/$Transfer/$DeadLetterQueue"
 	}
 
 	return entityPath, nil
+}
+
+func (e *entity) SetSubQueue(subQueue SubQueue) error {
+	if subQueue == SubQueueDeadLetter || subQueue == SubQueueTransfer {
+		e.subqueue = subQueue
+	} else {
+		return fmt.Errorf("unknown SubQueue %d", subQueue)
+	}
+
+	return nil
 }
 
 func createReceiverLink(ctx context.Context, session internal.AMQPSession, linkOptions []amqp.LinkOption) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
@@ -400,5 +564,11 @@ func createLinkOptions(mode ReceiveMode, entityPath string) []amqp.LinkOption {
 }
 
 func isCancelled(err error) bool {
-	return errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded)
+	if errors.Is(err, context.Canceled) ||
+		errors.Is(err, context.DeadlineExceeded) ||
+		err.Error() == "context canceled" { // go-amqp is returning this when I cancel
+		return true
+	}
+
+	return false
 }

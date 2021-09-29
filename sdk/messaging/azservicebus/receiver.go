@@ -69,14 +69,8 @@ type ReceiverOption func(receiver *Receiver) error
 // ReceiverWithSubQueue allows you to open the sub queue (ie: dead letter queues, transfer dead letter queues)
 // for a queue or subscription.
 func ReceiverWithSubQueue(subQueue SubQueue) ReceiverOption {
-	return func(receiver *Receiver) error {
-		if subQueue == SubQueueDeadLetter || subQueue == SubQueueTransfer {
-			receiver.config.Entity.Subqueue = subQueue
-		} else {
-			return fmt.Errorf("unknown SubQueue %d", subQueue)
-		}
-
-		return nil
+	return func(r *Receiver) error {
+		return r.config.Entity.SetSubQueue(subQueue)
 	}
 }
 
@@ -482,7 +476,7 @@ func (r *Receiver) DeadLetterMessage(ctx context.Context, message *ReceivedMessa
 }
 
 type entity struct {
-	Subqueue     SubQueue
+	subqueue     SubQueue
 	Queue        string
 	Topic        string
 	Subscription string
@@ -499,13 +493,23 @@ func (e *entity) String() (string, error) {
 		return "", errors.New("a queue or subscription was not specified")
 	}
 
-	if e.Subqueue == SubQueueDeadLetter {
+	if e.subqueue == SubQueueDeadLetter {
 		entityPath += "/$DeadLetterQueue"
-	} else if e.Subqueue == SubQueueTransfer {
+	} else if e.subqueue == SubQueueTransfer {
 		entityPath += "/$Transfer/$DeadLetterQueue"
 	}
 
 	return entityPath, nil
+}
+
+func (e *entity) SetSubQueue(subQueue SubQueue) error {
+	if subQueue == SubQueueDeadLetter || subQueue == SubQueueTransfer {
+		e.subqueue = subQueue
+	} else {
+		return fmt.Errorf("unknown SubQueue %d", subQueue)
+	}
+
+	return nil
 }
 
 func createReceiverLink(ctx context.Context, session internal.AMQPSession, linkOptions []amqp.LinkOption) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {

@@ -283,11 +283,11 @@ func TestReceiverPeek(t *testing.T) {
 func TestReceiverOptions(t *testing.T) {
 	receiver := &Receiver{}
 	require.NoError(t, ReceiverWithSubQueue(SubQueueDeadLetter)(receiver))
-	require.EqualValues(t, SubQueueDeadLetter, receiver.config.Entity.Subqueue)
+	require.EqualValues(t, SubQueueDeadLetter, receiver.config.Entity.subqueue)
 
 	receiver = &Receiver{}
 	require.NoError(t, ReceiverWithSubQueue(SubQueueTransfer)(receiver))
-	require.EqualValues(t, SubQueueTransfer, receiver.config.Entity.Subqueue)
+	require.EqualValues(t, SubQueueTransfer, receiver.config.Entity.subqueue)
 
 	receiver = &Receiver{}
 	require.NoError(t, ReceiverWithQueue("queue1")(receiver))

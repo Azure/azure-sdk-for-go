@@ -145,11 +145,11 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 func TestProcessorUnitTests(t *testing.T) {
 	p := &Processor{}
 	require.NoError(t, ProcessorWithSubQueue(SubQueueDeadLetter)(p))
-	require.EqualValues(t, SubQueueDeadLetter, p.config.Entity.Subqueue)
+	require.EqualValues(t, SubQueueDeadLetter, p.config.Entity.subqueue)
 
 	p = &Processor{}
 	require.NoError(t, ProcessorWithSubQueue(SubQueueTransfer)(p))
-	require.EqualValues(t, SubQueueTransfer, p.config.Entity.Subqueue)
+	require.EqualValues(t, SubQueueTransfer, p.config.Entity.subqueue)
 
 	p = &Processor{}
 	require.NoError(t, ProcessorWithQueue("queue1")(p))

@@ -61,13 +61,7 @@ type ProcessorOption func(processor *Processor) error
 // for a queue or subscription.
 func ProcessorWithSubQueue(subQueue SubQueue) ProcessorOption {
 	return func(p *Processor) error {
-		if subQueue == SubQueueDeadLetter || subQueue == SubQueueTransfer {
-			p.config.Entity.Subqueue = subQueue
-		} else {
-			return fmt.Errorf("unknown SubQueue %d", subQueue)
-		}
-
-		return nil
+		return p.config.Entity.SetSubQueue(subQueue)
 	}
 }
 

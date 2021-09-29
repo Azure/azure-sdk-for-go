@@ -16,6 +16,18 @@ import (
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
+// OperationsGetOperationResultResponse contains the response from method Operations.GetOperationResult.
+type OperationsGetOperationResultResponse struct {
+	OperationsGetOperationResultResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationsGetOperationResultResult contains the result from method Operations.GetOperationResult.
+type OperationsGetOperationResultResult struct {
+	Vault
+}
+
 // OperationsListResponse contains the response from method Operations.List.
 type OperationsListResponse struct {
 	OperationsListResult
@@ -26,6 +38,18 @@ type OperationsListResponse struct {
 // OperationsListResult contains the result from method Operations.List.
 type OperationsListResult struct {
 	ClientDiscoveryResponse
+}
+
+// OperationsOperationStatusGetResponse contains the response from method Operations.OperationStatusGet.
+type OperationsOperationStatusGetResponse struct {
+	OperationsOperationStatusGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// OperationsOperationStatusGetResult contains the result from method Operations.OperationStatusGet.
+type OperationsOperationStatusGetResult struct {
+	OperationResource
 }
 
 // PrivateLinkResourcesGetResponse contains the response from method PrivateLinkResources.Get.
@@ -62,30 +86,6 @@ type RecoveryServicesCheckNameAvailabilityResponse struct {
 // RecoveryServicesCheckNameAvailabilityResult contains the result from method RecoveryServices.CheckNameAvailability.
 type RecoveryServicesCheckNameAvailabilityResult struct {
 	CheckNameAvailabilityResult
-}
-
-// RecoveryServicesGetOperationResultResponse contains the response from method RecoveryServices.GetOperationResult.
-type RecoveryServicesGetOperationResultResponse struct {
-	RecoveryServicesGetOperationResultResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecoveryServicesGetOperationResultResult contains the result from method RecoveryServices.GetOperationResult.
-type RecoveryServicesGetOperationResultResult struct {
-	Vault
-}
-
-// RecoveryServicesGetOperationStatusResponse contains the response from method RecoveryServices.GetOperationStatus.
-type RecoveryServicesGetOperationStatusResponse struct {
-	RecoveryServicesGetOperationStatusResult
-	// RawResponse contains the underlying HTTP response.
-	RawResponse *http.Response
-}
-
-// RecoveryServicesGetOperationStatusResult contains the result from method RecoveryServices.GetOperationStatus.
-type RecoveryServicesGetOperationStatusResult struct {
-	OperationResource
 }
 
 // RegisteredIdentitiesDeleteResponse contains the response from method RegisteredIdentities.Delete.

@@ -11,9 +11,9 @@ directive:
 - from: vaults.json
   where: '$.paths["/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/operationStatus/{operationId}"].get'
   transform: >
-    $["operationId"] = "RecoveryServices_GetOperationStatus"
+    $["operationId"] = "Operations_OperationStatus_Get"
 - from: vaults.json
   where: '$.paths["/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/operationResults/{operationId}"].get'
   transform: >
-    $["operationId"] = "RecoveryServices_GetOperationResult"
+    $["operationId"] = "Operations_GetOperationResult"
 ```

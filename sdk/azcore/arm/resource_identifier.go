@@ -215,7 +215,7 @@ func (id ResourceIdentifier) String() string {
 
 func (id ResourceIdentifier) resourceString() string {
 	if id.parent == nil {
-		return "/"
+		return ""
 	}
 
 	builder := strings.Builder{}

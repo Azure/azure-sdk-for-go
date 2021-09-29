@@ -1,5 +1,8 @@
 # Release History
 
+## 0.3.1 (2021-09-29)
+Updated with the latest track 2 code generator.
+
 ## 0.3.0 (2021-09-03)
 Updated with the latest track 2 code generator.
 

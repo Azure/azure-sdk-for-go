@@ -182,6 +182,13 @@ func ReceiveWithMaxTimeAfterFirstMessage(max time.Duration) ReceiveOption {
 // 2. An implicit timeout (default: 1 second) that starts after the first
 //    message has been received. This time can be adjusted with `ReceiveWithMaxTimeAfterFirstMessage`
 func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options ...ReceiveOption) ([]*ReceivedMessage, error) {
+	// There are three phases for this function:
+	// Phase 1. <receive, respecting user cancellation>
+	// Phase 2. <check error and exit if fatal>
+	//    NOTE: We don't exit here so we don't end up buffering messages internally that the
+	//    user isn't actually waiting for anymore. So we make sure that #3 runs if the
+	//    link is still valid.
+	// Phase 3. <drain the link and leave it in a good state>
 	ropts := &ReceiveOptions{
 		maxWaitTime:                  time.Minute,
 		maxWaitTimeAfterFirstMessage: time.Second,
@@ -213,6 +220,7 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 	// messages (otherwise, the user won't even know to look at the return value).
 	var fatalError error
 
+	// Phase 1 - <receive, respecting user cancellation>
 	// receive until we get our first interruption:
 	// - context is cancelled because the user cancelled it
 	// - context is cancelled because one of our timeouts hit
@@ -261,14 +269,19 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 		}
 	}
 
+	// Phase 2 - if the error is fatal (ie, link is dead) it's okay to just bail out since
+	// there's nothing to drain.
+	// For any other non-fatal errors we'll continue on to the drain phase, so we ensure
+	// no messages are sitting around without anyone to receive them.
 	if fatalError != nil {
 		if isCancelled(fatalError) {
 			select {
 			case <-userCtx.Done():
-				// if _we_ cancelled the context it'll just because the normal timeouts
-				// fired, which isn't an error. So we only care if the user did it.
+				// user cancelled, finalError contains their cancellation error.
+				// if we end up getting no messages we'll end up returning it.
 				break
 			default:
+				// our normal timeout fired, no actual error
 				fatalError = nil
 			}
 		} else {
@@ -287,6 +300,7 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 		}
 	}
 
+	// Phase 3. <drain the link and leave it in a good state>
 	// Check if there are any outstanding messsages/credits. If there are we want to drain
 	// so we can flush the link.
 	if len(messages) < maxMessages {
@@ -322,6 +336,11 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 	}
 
 	if len(messages) > 0 {
+		// if we were able to receive some messages then we're okay to just say this
+		// operation worked and basically 'erase' the error.
+		// This should be okay since messages can still be settled (they'll go against
+		// the management link) and the link has been recovered so the next receive should
+		// work as well.
 		return messages, nil
 	} else {
 		return nil, fatalError

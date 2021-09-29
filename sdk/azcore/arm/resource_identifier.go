@@ -9,8 +9,6 @@ package arm
 import (
 	"fmt"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
 const (
@@ -22,19 +20,24 @@ const (
 )
 
 var (
+	// RootResourceIdentifier defines a ResourceIdentifier of a tenant as a root level parent of all other ResourceIdentifier
 	RootResourceIdentifier = &ResourceIdentifier{
 		parent:       nil,
 		resourceType: TenantResourceType,
 		name:         "",
 	}
 
+	// SubscriptionResourceType is the ResourceType of a subscription
 	SubscriptionResourceType  = NewResourceType("Microsoft.Resources", "subscriptions")
+	// ResourceGroupResourceType is the ResourceType of a resource group
 	ResourceGroupResourceType = NewResourceType("Microsoft.Resources", "resourceGroups")
+	// TenantResourceType is the ResourceType of a tenant
 	TenantResourceType        = NewResourceType("Microsoft.Resources", "tenants")
-	ProvidersResourceType     = NewResourceType("Microsoft.Resources", "providers")
+	// ProviderResourceType is the ResourceType of a provider
+	ProviderResourceType = NewResourceType("Microsoft.Resources", "providers")
 )
 
-// ResourceIdentifier represents a resource ID
+// ResourceIdentifier represents a resource ID such as `/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg`
 type ResourceIdentifier struct {
 	parent            *ResourceIdentifier
 	subscriptionId    string
@@ -45,7 +48,7 @@ type ResourceIdentifier struct {
 	name              string
 	isChild           bool
 
-	stringValue *string
+	stringValue string
 }
 
 func (id ResourceIdentifier) Parent() *ResourceIdentifier {
@@ -125,7 +128,7 @@ func (id *ResourceIdentifier) init(parent *ResourceIdentifier, resourceType Reso
 		id.resourceGroupName = name
 	}
 
-	if resourceType.String() == ProvidersResourceType.String() {
+	if resourceType.String() == ProviderResourceType.String() {
 		id.provider = name
 	}
 
@@ -155,8 +158,7 @@ func ParseResourceIdentifier(id string) (*ResourceIdentifier, error) {
 		return nil, fmt.Errorf("invalid resource id: %s", id)
 	}
 
-	firstToLower := strings.ToLower(parts[0])
-	if firstToLower != subscriptionsKey && firstToLower != providersKey {
+	if !strings.EqualFold(parts[0], subscriptionsKey) && !strings.EqualFold(parts[0], providersKey) {
 		return nil, fmt.Errorf("invalid resource id: %s", id)
 	}
 
@@ -168,11 +170,9 @@ func appendNext(parent *ResourceIdentifier, parts []string, id string) (*Resourc
 		return parent, nil
 	}
 
-	lowerFirstPart := strings.ToLower(parts[0])
-
 	if len(parts) == 1 {
 		// subscriptions and resourceGroups are not valid ids without their names
-		if lowerFirstPart == subscriptionsKey || lowerFirstPart == resourceGroupsLowerKey {
+		if strings.EqualFold(parts[0], subscriptionsKey) || strings.EqualFold(parts[0], resourceGroupsLowerKey) {
 			return nil, fmt.Errorf("invalid resource id: %s", id)
 		}
 
@@ -184,20 +184,20 @@ func appendNext(parent *ResourceIdentifier, parts []string, id string) (*Resourc
 		return newResourceIdentifier(parent, parts[0], ""), nil
 	}
 
-	if lowerFirstPart == providersKey && (len(parts) == 2 || strings.ToLower(parts[2]) == providersKey) {
+	if strings.EqualFold(parts[0], providersKey) && (len(parts) == 2 || strings.EqualFold(parts[2], providersKey)) {
 		//provider resource can only be on a tenant or a subscription parent
 		if parent.resourceType.String() != SubscriptionResourceType.String() && parent.resourceType.String() != TenantResourceType.String() {
 			return nil, fmt.Errorf("invalid resource id: %s", id)
 		}
 
-		return appendNext(newResourceIdentifierWithResourceType(parent, ProvidersResourceType, parts[1]), parts[2:], id)
+		return appendNext(newResourceIdentifierWithResourceType(parent, ProviderResourceType, parts[1]), parts[2:], id)
 	}
 
-	if len(parts) > 3 && strings.ToLower(parts[0]) == providersKey {
+	if len(parts) > 3 && strings.EqualFold(parts[0], providersKey) {
 		return appendNext(newResourceIdentifierWithProvider(parent, parts[1], parts[2], parts[3]), parts[4:], id)
 	}
 
-	if len(parts) > 1 && strings.ToLower(parts[0]) != providersKey {
+	if len(parts) > 1 && !strings.EqualFold(parts[0], providersKey) {
 		return appendNext(newResourceIdentifier(parent, parts[0], parts[1]), parts[2:], id)
 	}
 
@@ -205,17 +205,17 @@ func appendNext(parent *ResourceIdentifier, parts []string, id string) (*Resourc
 }
 
 func (id ResourceIdentifier) String() string {
-	if id.stringValue != nil {
-		return *id.stringValue
+	if len(id.stringValue) > 0 {
+		return id.stringValue
 	}
 
-	id.stringValue = to.StringPtr(id.toResourceString())
-	return *id.stringValue
+	id.stringValue = id.resourceString()
+	return id.stringValue
 }
 
-func (id ResourceIdentifier) toResourceString() string {
+func (id ResourceIdentifier) resourceString() string {
 	if id.parent == nil {
-		return ""
+		return "/"
 	}
 
 	builder := strings.Builder{}
@@ -227,7 +227,7 @@ func (id ResourceIdentifier) toResourceString() string {
 			builder.WriteString(fmt.Sprintf("/%s", id.name))
 		}
 	} else {
-		builder.WriteString(fmt.Sprintf("/providers/%s/%s/%s", id.resourceType.namespace, id.resourceType.t, id.name))
+		builder.WriteString(fmt.Sprintf("/providers/%s/%s/%s", id.resourceType.namespace, id.resourceType.typeName, id.name))
 	}
 
 	return builder.String()
@@ -245,9 +245,10 @@ func splitStringAndOmitEmpty(v, sep string) []string {
 	return r
 }
 
+// ResourceType represents an Azure resource type, e.g. "Microsoft.Network/virtualNetworks/subnets"
 type ResourceType struct {
 	namespace string
-	t         string
+	typeName  string
 	types     []string
 
 	stringValue string
@@ -258,7 +259,7 @@ func (t ResourceType) Namespace() string {
 }
 
 func (t ResourceType) Type() string {
-	return t.t
+	return t.typeName
 }
 
 func (t ResourceType) LastType() string {
@@ -269,19 +270,24 @@ func (t ResourceType) String() string {
 	return t.stringValue
 }
 
-func NewResourceType(providerNamespace, name string) ResourceType {
+// NewResourceType initiate a simple instance of ResourceType using provider namespace such as "Microsoft.Network" and
+// typeName such as "virtualNetworks/subnets"
+func NewResourceType(providerNamespace, typeName string) ResourceType {
 	return ResourceType{
 		namespace:   providerNamespace,
-		t:           name,
-		types:       splitStringAndOmitEmpty(name, "/"),
-		stringValue: fmt.Sprintf("%s/%s", providerNamespace, name),
+		typeName:    typeName,
+		types:       splitStringAndOmitEmpty(typeName, "/"),
+		stringValue: fmt.Sprintf("%s/%s", providerNamespace, typeName),
 	}
 }
 
+// NewResourceTypeFromParent initiate an instance from a ResourceType as parent and the childType.
 func NewResourceTypeFromParent(parent ResourceType, childType string) ResourceType {
-	return NewResourceType(parent.namespace, fmt.Sprintf("%s/%s", parent.t, childType))
+	return NewResourceType(parent.namespace, fmt.Sprintf("%s/%s", parent.typeName, childType))
 }
 
+// ParseResourceType parses the ResourceType from a resource type string (e.g. Microsoft.Network/virtualNetworks/subsets)
+// or a resource identifier string (e.g. /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/mySubnet)
 func ParseResourceType(resourceIdOrType string) (*ResourceType, error) {
 	// split the path into segments
 	parts := splitStringAndOmitEmpty(resourceIdOrType, "/")
@@ -309,7 +315,7 @@ func ParseResourceType(resourceIdOrType string) (*ResourceType, error) {
 		if err != nil {
 			return nil, fmt.Errorf("invalid resource id: %s", resourceIdOrType)
 		}
-		resourceType = NewResourceType(id.resourceType.namespace, id.resourceType.t)
+		resourceType = NewResourceType(id.resourceType.namespace, id.resourceType.typeName)
 		return &resourceType, nil
 	}
 }

@@ -5,8 +5,8 @@ package azservicebus
 
 import (
 	"context"
-	"errors"
 	"crypto/tls"
+	"errors"
 	"fmt"
 	"sync"
 
@@ -31,7 +31,7 @@ type clientConfig struct {
 	credential       azcore.TokenCredential
 	// the Service Bus namespace name (ex: myservicebus.servicebus.windows.net)
 	fullyQualifiedNamespace string
-	tlsConfig        *tls.Config
+	tlsConfig               *tls.Config
 }
 
 // ClientOption is the type for an option that can configure Client.
@@ -101,9 +101,10 @@ func newClientImpl(config clientConfig, options ...ClientOption) (*Client, error
 			client.config.credential)
 
 		nsOptions = append(nsOptions, option)
-	
-	if client.config.tlsConfig != nil {
-		nsOptions = append(nsOptions, internal.NamespaceWithTLSConfig(client.config.tlsConfig))
+
+		if client.config.tlsConfig != nil {
+			nsOptions = append(nsOptions, internal.NamespaceWithTLSConfig(client.config.tlsConfig))
+		}
 	}
 
 	client.namespace, err = internal.NewNamespace(nsOptions...)

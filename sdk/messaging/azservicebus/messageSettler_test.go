@@ -157,8 +157,8 @@ func TestMessageSettlementUsingOnlyBackupSettlement(t *testing.T) {
 	testStuff := newTestStuff(t)
 	defer testStuff.Close()
 
-	testStuff.Receiver.onlyDoBackupSettlement = true
-	testStuff.DeadLetterReceiver.onlyDoBackupSettlement = true
+	testStuff.Receiver.settler.onlyDoBackupSettlement = true
+	testStuff.DeadLetterReceiver.settler.onlyDoBackupSettlement = true
 
 	receiver, deadLetterReceiver := testStuff.Receiver, testStuff.DeadLetterReceiver
 	ctx := context.TODO()

@@ -84,7 +84,7 @@ func (s *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMess
 		d := internal.Disposition{
 			Status: internal.DeferredDisposition,
 		}
-		return mgmt.SendDisposition(ctx, message.LockToken, d)
+		return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), d)
 	}
 
 	return message.RawAMQPMessage.Modify(ctx, false, true, nil)

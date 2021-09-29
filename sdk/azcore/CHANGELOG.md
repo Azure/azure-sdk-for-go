@@ -1,6 +1,9 @@
 # Release History
 
-## 0.19.1 (Unreleased)
+## 0.20.0 (Unreleased)
+
+### Breaking Changes
+* The endpoint parameter for `arm/Connection` constructors has changed to a string typedef in order to provide a hint for applicable values.
 
 ### Features Added
 * Updating Documentation

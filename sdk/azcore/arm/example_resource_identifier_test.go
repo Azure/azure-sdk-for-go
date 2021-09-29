@@ -21,7 +21,6 @@ func ExampleParseResourceType() {
 	// Output:
 	// Microsoft.Network/virtualNetworks/subsets
 	// Namespace: Microsoft.Network, Type: virtualNetworks/subsets, LastType: subnets
-	//
 }
 
 func ExampleParseResourceType_fromResourceIdentifier() {

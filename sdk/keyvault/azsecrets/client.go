@@ -25,8 +25,8 @@ type Client struct {
 
 // ClientOptions are the configurable options on a Client.
 type ClientOptions struct {
-	// Transporter sets the transport for making HTTP requests.
-	Transporter policy.Transporter
+	// Transport sets the transport for making HTTP requests.
+	Transport policy.Transporter
 
 	// Retry configures the built-in retry policy behavior.
 	Retry policy.RetryOptions
@@ -52,7 +52,7 @@ func (c *ClientOptions) toConnectionOptions() *internal.ConnectionOptions {
 	}
 
 	return &internal.ConnectionOptions{
-		HTTPClient:       c.Transporter,
+		HTTPClient:       c.Transport,
 		Retry:            c.Retry,
 		Telemetry:        c.Telemetry,
 		Logging:          c.Logging,
@@ -405,8 +405,8 @@ func (c *Client) GetDeletedSecret(ctx context.Context, secretName string, option
 
 // UpdateSecretPropertiesOptions contains the optional parameters for the Client.UpdateSecretProperties method.
 type UpdateSecretPropertiesOptions struct {
-	// SecretVersion is the specific version of a Secret to update. If not specified it will update the most recent version.
-	SecretVersion string
+	// Version is the specific version of a Secret to update. If not specified it will update the most recent version.
+	Version string
 }
 
 func (u UpdateSecretPropertiesOptions) toGenerated() *internal.KeyVaultClientUpdateSecretOptions {
@@ -468,7 +468,7 @@ func (c *Client) UpdateSecretProperties(ctx context.Context, secretName string, 
 		options = &UpdateSecretPropertiesOptions{}
 	}
 
-	resp, err := c.kvClient.UpdateSecret(ctx, c.vaultUrl, secretName, options.SecretVersion, parameters.toGenerated(), options.toGenerated())
+	resp, err := c.kvClient.UpdateSecret(ctx, c.vaultUrl, secretName, options.Version, parameters.toGenerated(), options.toGenerated())
 	if err != nil {
 		return UpdateSecretPropertiesResponse{}, err
 	}
@@ -772,7 +772,7 @@ type listDeletedSecretsPager struct {
 func (l *listDeletedSecretsPager) PageResponse() ListDeletedSecretsPage {
 	resp := l.genPager.PageResponse()
 
-	var values []*DeletedSecretItem
+	var values []DeletedSecretItem
 	for _, d := range resp.Value {
 		values = append(values, deletedSecretItemFromGenerated(d))
 	}
@@ -803,7 +803,7 @@ type ListDeletedSecretsPage struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of the deleted secrets in the vault along with a link to the next page of deleted secrets
-	DeletedSecrets []*DeletedSecretItem `json:"value,omitempty" azure:"ro"`
+	DeletedSecrets []DeletedSecretItem `json:"value,omitempty" azure:"ro"`
 }
 
 // ListDeletedSecretsOptions contains the optional parameters for the Client.ListDeletedSecrets operation.
@@ -890,12 +890,12 @@ type ListSecretVersionsPage struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
-	Secrets []*Item `json:"value,omitempty" azure:"ro"`
+	Secrets []Item `json:"value,omitempty" azure:"ro"`
 }
 
 // create ListSecretsPage from generated pager
 func listSecretVersionsPageFromGenerated(i internal.KeyVaultClientGetSecretVersionsResponse) ListSecretVersionsPage {
-	var secrets []*Item
+	var secrets []Item
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}
@@ -982,12 +982,12 @@ type ListSecretsPage struct {
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
 
 	// READ-ONLY; A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
-	Secrets []*Item `json:"value,omitempty" azure:"ro"`
+	Secrets []Item `json:"value,omitempty" azure:"ro"`
 }
 
 // create a ListSecretsPage from a generated code response
 func listSecretsPageFromGenerated(i internal.KeyVaultClientGetSecretsResponse) ListSecretsPage {
-	var secrets []*Item
+	var secrets []Item
 	for _, s := range i.Value {
 		secrets = append(secrets, secretItemFromGenerated(s))
 	}

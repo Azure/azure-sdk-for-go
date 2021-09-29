@@ -136,12 +136,12 @@ type Item struct {
 }
 
 // create a SecretItem from the internal.SecretItem model
-func secretItemFromGenerated(i *internal.SecretItem) *Item {
+func secretItemFromGenerated(i *internal.SecretItem) Item {
 	if i == nil {
-		return nil
+		return Item{}
 	}
 
-	return &Item{
+	return Item{
 		Attributes:  secretAttributesFromGenerated(i.Attributes),
 		ContentType: i.ContentType,
 		ID:          i.ID,
@@ -163,16 +163,16 @@ type DeletedSecretItem struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-func deletedSecretItemFromGenerated(i *internal.DeletedSecretItem) *DeletedSecretItem {
+func deletedSecretItemFromGenerated(i *internal.DeletedSecretItem) DeletedSecretItem {
 	if i == nil {
-		return nil
+		return DeletedSecretItem{}
 	}
 
-	return &DeletedSecretItem{
+	return DeletedSecretItem{
 		RecoveryID:         i.RecoveryID,
 		DeletedDate:        i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		Item:         *secretItemFromGenerated(&i.SecretItem),
+		Item:         secretItemFromGenerated(&i.SecretItem),
 	}
 }
 

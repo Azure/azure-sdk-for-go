@@ -106,7 +106,7 @@ func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) 
 			Attributes:  secretAttributesFromGenerated(i.Attributes),
 			ContentType: i.ContentType,
 			ID:          i.ID,
-			Tags:        i.Tags,
+			Tags:        convertPtrMap(i.Tags),
 			Value:       i.Value,
 			Kid:         i.Kid,
 			Managed:     i.Managed,
@@ -133,7 +133,7 @@ type SetSecretOptions struct {
 	SecretAttributes *SecretAttributes `json:"attributes,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // Convert the exposed struct to the generated code version
@@ -155,7 +155,7 @@ type SetSecretResponse struct {
 	ID *string `json:"id,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// The secret value.
 	Value *string `json:"value,omitempty"`
@@ -173,7 +173,7 @@ func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) 
 		RawResponse: i.RawResponse,
 		Attributes:  secretAttributesFromGenerated(i.Attributes),
 		ID:          i.ID,
-		Tags:        i.Tags,
+		Tags:        convertPtrMap(i.Tags),
 		Value:       i.Value,
 		Kid:         i.Kid,
 		Managed:     i.Managed,
@@ -194,7 +194,7 @@ func (c *Client) SetSecret(ctx context.Context, secretName string, value string,
 		Value:            &value,
 		ContentType:      options.ContentType,
 		SecretAttributes: &secretAttribs,
-		Tags:             options.Tags,
+		Tags:             createPtrMap(options.Tags),
 	}, options.toGenerated())
 	return setSecretResponseFromGenerated(resp), err
 }
@@ -215,7 +215,7 @@ func deleteSecretResponseFromGenerated(i *internal.KeyVaultClientDeleteSecretRes
 			SecretBundle: SecretBundle{
 				ContentType: i.ContentType,
 				ID:          i.ID,
-				Tags:        i.Tags,
+				Tags:        convertPtrMap(i.Tags),
 				Value:       i.Value,
 				Kid:         i.Kid,
 				Managed:     i.Managed,
@@ -423,7 +423,7 @@ func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdate
 			Attributes:  secretAttributesFromGenerated(i.Attributes),
 			ContentType: i.ContentType,
 			ID:          i.ID,
-			Tags:        i.Tags,
+			Tags:        convertPtrMap(i.Tags),
 			Value:       i.Value,
 			Kid:         i.Kid,
 			Managed:     i.Managed,
@@ -440,7 +440,7 @@ type SecretProperties struct {
 	SecretAttributes *SecretAttributes `json:"attributes,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 }
 
 // convert the publicly exposed version to the generated version
@@ -451,7 +451,7 @@ func (s SecretProperties) toGenerated() internal.SecretUpdateParameters {
 	}
 	return internal.SecretUpdateParameters{
 		ContentType:      s.ContentType,
-		Tags:             s.Tags,
+		Tags:             createPtrMap(s.Tags),
 		SecretAttributes: secAttribs,
 	}
 }
@@ -534,7 +534,7 @@ func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSe
 		SecretBundle: SecretBundle{
 			ContentType: i.ContentType,
 			ID:          i.ID,
-			Tags:        i.Tags,
+			Tags:        convertPtrMap(i.Tags),
 			Value:       i.Value,
 			Kid:         i.Kid,
 			Managed:     i.Managed,
@@ -696,7 +696,7 @@ func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverD
 			Attributes:  a,
 			ContentType: i.ContentType,
 			ID:          i.ID,
-			Tags:        i.Tags,
+			Tags:        convertPtrMap(i.Tags),
 			Value:       i.Value,
 			Kid:         i.Kid,
 			Managed:     i.Managed,

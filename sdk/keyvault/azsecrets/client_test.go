@@ -70,7 +70,7 @@ func TestSetGetSecret(t *testing.T) {
 	require.Equal(t, *getResp.Value, value)
 }
 
-func TestListSecretVersionss(t *testing.T) {
+func TestListSecretVersions(t *testing.T) {
 	stop := startTest(t)
 	defer stop()
 
@@ -285,8 +285,8 @@ func TestUpdateSecretProperties(t *testing.T) {
 
 	params := SecretProperties{
 		ContentType: to.StringPtr("password"),
-		Tags: map[string]*string{
-			"Tag1": to.StringPtr("TagVal1"),
+		Tags: map[string]string{
+			"Tag1": "TagVal1",
 		},
 	}
 
@@ -296,7 +296,7 @@ func TestUpdateSecretProperties(t *testing.T) {
 	getResp, err = client.GetSecret(context.Background(), secret, nil)
 	require.NoError(t, err)
 	require.Equal(t, *getResp.Value, value)
-	require.Equal(t, *getResp.Tags["Tag1"], "TagVal1")
+	require.Equal(t, getResp.Tags["Tag1"], "TagVal1")
 	require.Equal(t, *getResp.ContentType, "password")
 }
 

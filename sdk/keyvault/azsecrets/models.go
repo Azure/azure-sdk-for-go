@@ -37,7 +37,7 @@ type SecretBundle struct {
 	ID *string `json:"id,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// The secret value.
 	Value *string `json:"value,omitempty"`
@@ -54,7 +54,7 @@ func secretBundleFromGenerated(i internal.SecretBundle) SecretBundle {
 		Attributes:  secretAttributesFromGenerated(i.Attributes),
 		ContentType: i.ContentType,
 		ID:          i.ID,
-		Tags:        i.Tags,
+		Tags:        convertPtrMap(i.Tags),
 		Value:       i.Value,
 		Kid:         i.Kid,
 		Managed:     i.Managed,
@@ -135,7 +135,7 @@ type SecretItem struct {
 	ID *string `json:"id,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]string `json:"tags,omitempty"`
 
 	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then managed will be true.
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
@@ -151,7 +151,7 @@ func secretItemFromGenerated(i *internal.SecretItem) *SecretItem {
 		Attributes:  secretAttributesFromGenerated(i.Attributes),
 		ContentType: i.ContentType,
 		ID:          i.ID,
-		Tags:        i.Tags,
+		Tags:        convertPtrMap(i.Tags),
 		Managed:     i.Managed,
 	}
 }
@@ -186,4 +186,24 @@ func deletedSecretItemFromGenerated(i *internal.DeletedSecretItem) *DeletedSecre
 type BackupSecretResult struct {
 	// READ-ONLY; The backup blob containing the backed up secret.
 	Value []byte `json:"value,omitempty" azure:"ro"`
+}
+
+func convertPtrMap(m map[string]*string) map[string]string {
+	ret := map[string]string{}
+
+	for key, val := range m {
+		ret[key] = *val
+	}
+
+	return ret
+}
+
+func createPtrMap(m map[string]string) map[string]*string {
+	ret := map[string]*string{}
+
+	for key, val := range m {
+		ret[key] = &val
+	}
+
+	return ret
 }

@@ -5,11 +5,14 @@ package azservicebus
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"sort"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
@@ -257,12 +260,27 @@ func TestReceiverPeek(t *testing.T) {
 	require.NoError(t, err)
 	require.EqualValues(t, 1, len(peekedMessages2))
 
+	// peek by seequence using one of our previous messages to prove
+	// that we can peek at any arbitrary point in the messages
 	require.EqualValues(t, []string{
 		"Message 0", "Message 1", "Message 2",
 	}, getSortedBodies(append(peekedMessages, peekedMessages2...)))
+
+	repeekedMessages, err := receiver.PeekMessages(ctx, 1, PeekFromSequenceNumber(*peekedMessages2[0].SequenceNumber))
+	require.NoError(t, err)
+	require.EqualValues(t, 1, len(repeekedMessages))
+
+	require.EqualValues(t, []string{
+		string(peekedMessages2[0].Body),
+	}, getSortedBodies(repeekedMessages))
+
+	// and peek again (note it won't reset so there'll be "nothing")
+	noMessagesExpected, err := receiver.PeekMessages(ctx, 1)
+	require.NoError(t, err)
+	require.Empty(t, noMessagesExpected)
 }
 
-func TestReceiverUnitTests(t *testing.T) {
+func TestReceiverOptions(t *testing.T) {
 	receiver := &Receiver{}
 	require.NoError(t, ReceiverWithSubQueue(SubQueueDeadLetter)(receiver))
 	require.EqualValues(t, SubQueueDeadLetter, receiver.config.Entity.Subqueue)
@@ -287,39 +305,36 @@ func TestReceiverUnitTests(t *testing.T) {
 	receiver = &Receiver{}
 	require.NoError(t, ReceiverWithReceiveMode(ReceiveAndDelete)(receiver))
 	require.EqualValues(t, ReceiveAndDelete, receiver.config.ReceiveMode)
+}
 
-	// If an error occurs and we have some messages accumulated in our internal
-	// buffer we will still return them to the user.
-	//
-	// In ReceiveAndDelete _not_ returning these would mean they would be lost - our
-	// receiver has the only copy of the message.
-	// In PeekLock there is still a chance (if not using sessions, for instance) where
-	// the user can still settle messages using the management link as a backup.
-	//
-	// NOTE: (this is a design item that needs discussion. Just documenting the current behavior)
-	// t.Run("MessagesAreStillReturnedOnErrors", func(t *testing.T) {
-	// 	ns := newFakeNamespace()
+type badMgmtClient struct {
+	internal.MgmtClient
+}
 
-	// 	ns.Links.Receiver.NextReceiveCalls <- receiveCallResponse{
-	// 		message: (&ReceivedMessage{
-	// 			Message: Message{
-	// 				ID: "fakeID",
-	// 			},
-	// 			LockToken:      &amqp.UUID{},
-	// 			SequenceNumber: to.Int64Ptr(1),
-	// 		}).ToAMQPMessage(),
-	// 		err: nil,
-	// 	}
+func (b badMgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
+	return nil, errors.New("receive deferred messages failed")
+}
 
-	// 	receiver, err := newReceiver(ns,
-	// 		ReceiverWithReceiveMode(ReceiveAndDelete),
-	// 		ReceiverWithSubscription("topic", "subscription"))
-	// 	require.NoError(t, err)
+func TestReceiverDeferUnitTests(t *testing.T) {
+	r := &Receiver{
+		amqpLinks: internal.FakeAMQPLinks{
+			Err: errors.New("links are dead"),
+		},
+	}
 
-	// 	messages, err := receiver.ReceiveMessages(context.Background(), 2)
-	// 	require.EqualError(t, err, context.Canceled.Error())
-	// 	require.EqualValues(t, 1, len(messages), "Messages are still returned if we're in ReceiveAndDelete mode")
-	// })
+	messages, err := r.ReceiveDeferredMessages(context.Background(), []int64{1})
+	require.EqualError(t, err, "links are dead")
+	require.Nil(t, messages)
+
+	r = &Receiver{
+		amqpLinks: internal.FakeAMQPLinks{
+			Mgmt: &badMgmtClient{},
+		},
+	}
+
+	messages, err = r.ReceiveDeferredMessages(context.Background(), []int64{1})
+	require.EqualError(t, err, "receive deferred messages failed")
+	require.Nil(t, messages)
 }
 
 type receivedMessageSlice []*ReceivedMessage

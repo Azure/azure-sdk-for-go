@@ -63,7 +63,21 @@ func secretBundleFromGenerated(i internal.SecretBundle) SecretBundle {
 
 // SecretAttributes - The secret management attributes.
 type SecretAttributes struct {
-	Attributes
+	// Determines whether the object is enabled.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Expiry date in UTC.
+	Expires *time.Time `json:"exp,omitempty"`
+
+	// Not before date in UTC.
+	NotBefore *time.Time `json:"nbf,omitempty"`
+
+	// READ-ONLY; Creation time in UTC.
+	Created *time.Time `json:"created,omitempty" azure:"ro"`
+
+	// READ-ONLY; Last updated time in UTC.
+	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
+
 	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
 
@@ -95,32 +109,12 @@ func secretAttributesFromGenerated(i *internal.SecretAttributes) *SecretAttribut
 	return &SecretAttributes{
 		RecoverableDays: i.RecoverableDays,
 		RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.RecoveryLevel).ToPtr(),
-		Attributes: Attributes{
-			Enabled:   i.Enabled,
-			Expires:   i.Expires,
-			NotBefore: i.NotBefore,
-			Created:   i.Created,
-			Updated:   i.Updated,
-		},
+		Enabled:   i.Enabled,
+		Expires:   i.Expires,
+		NotBefore: i.NotBefore,
+		Created:   i.Created,
+		Updated:   i.Updated,
 	}
-}
-
-// Attributes - The object attributes managed by the KeyVault service.
-type Attributes struct {
-	// Determines whether the object is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
-
-	// Expiry date in UTC.
-	Expires *time.Time `json:"exp,omitempty"`
-
-	// Not before date in UTC.
-	NotBefore *time.Time `json:"nbf,omitempty"`
-
-	// READ-ONLY; Creation time in UTC.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
-
-	// READ-ONLY; Last updated time in UTC.
-	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
 // SecretItem - The secret item containing secret metadata.

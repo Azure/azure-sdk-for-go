@@ -220,7 +220,11 @@ func deleteSecretResponseFromGenerated(i *internal.KeyVaultClientDeleteSecretRes
 				Kid:         i.Kid,
 				Managed:     i.Managed,
 				Attributes: &SecretAttributes{
-					Attributes:      Attributes(i.Attributes.Attributes),
+					Enabled:         i.Attributes.Enabled,
+					Expires:         i.Attributes.Expires,
+					NotBefore:       i.Attributes.NotBefore,
+					Created:         i.Attributes.Created,
+					Updated:         i.Attributes.Updated,
 					RecoverableDays: i.Attributes.RecoverableDays,
 					RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel).ToPtr(),
 				},
@@ -539,13 +543,11 @@ func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSe
 			Kid:         i.Kid,
 			Managed:     i.Managed,
 			Attributes: &SecretAttributes{
-				Attributes: Attributes{
-					Enabled:   i.Attributes.Enabled,
-					Expires:   i.Attributes.Expires,
-					NotBefore: i.Attributes.NotBefore,
-					Created:   i.Attributes.Created,
-					Updated:   i.Attributes.Updated,
-				},
+				Enabled:   i.Attributes.Enabled,
+				Expires:   i.Attributes.Expires,
+				NotBefore: i.Attributes.NotBefore,
+				Created:   i.Attributes.Created,
+				Updated:   i.Attributes.Updated,
 				RecoverableDays: i.Attributes.RecoverableDays,
 				RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel).ToPtr(),
 			},
@@ -679,13 +681,11 @@ func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverD
 	var a *SecretAttributes
 	if i.Attributes != nil {
 		a = &SecretAttributes{
-			Attributes: Attributes{
-				Enabled:   i.Attributes.Enabled,
-				Expires:   i.Attributes.Expires,
-				NotBefore: i.Attributes.NotBefore,
-				Created:   i.Attributes.Created,
-				Updated:   i.Attributes.Updated,
-			},
+			Enabled:   i.Attributes.Enabled,
+			Expires:   i.Attributes.Expires,
+			NotBefore: i.Attributes.NotBefore,
+			Created:   i.Attributes.Created,
+			Updated:   i.Attributes.Updated,
 			RecoverableDays: i.Attributes.RecoverableDays,
 			RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel).ToPtr(),
 		}

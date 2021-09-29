@@ -38,6 +38,9 @@ type (
 		// the 'revision' of the link we received on (ie, if it was recovered it won't match)
 		linkRevision uint64
 
+		// deferred indicates we received it using ReceiveDeferredMessages. These messages
+		// will still go through the normal Receiver.Settle functions but internally will
+		// always be settled with the management link.
 		deferred bool
 	}
 

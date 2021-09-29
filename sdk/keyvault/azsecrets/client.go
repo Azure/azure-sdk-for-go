@@ -108,7 +108,7 @@ func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) 
 			ID:          i.ID,
 			Tags:        convertPtrMap(i.Tags),
 			Value:       i.Value,
-			Kid:         i.Kid,
+			KID:         i.Kid,
 			Managed:     i.Managed,
 		},
 	}
@@ -161,7 +161,7 @@ type SetSecretResponse struct {
 	Value *string `json:"value,omitempty"`
 
 	// READ-ONLY; If this is a secret backing a KV certificate, then this field specifies the corresponding key backing the KV certificate.
-	Kid *string `json:"kid,omitempty" azure:"ro"`
+	KID *string `json:"kid,omitempty" azure:"ro"`
 
 	// READ-ONLY; True if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed will be true.
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
@@ -175,7 +175,7 @@ func setSecretResponseFromGenerated(i internal.KeyVaultClientSetSecretResponse) 
 		ID:          i.ID,
 		Tags:        convertPtrMap(i.Tags),
 		Value:       i.Value,
-		Kid:         i.Kid,
+		KID:         i.Kid,
 		Managed:     i.Managed,
 	}
 }
@@ -217,7 +217,7 @@ func deleteSecretResponseFromGenerated(i *internal.KeyVaultClientDeleteSecretRes
 				ID:          i.ID,
 				Tags:        convertPtrMap(i.Tags),
 				Value:       i.Value,
-				Kid:         i.Kid,
+				KID:         i.Kid,
 				Managed:     i.Managed,
 				Attributes: &Attributes{
 					Enabled:         i.Attributes.Enabled,
@@ -429,7 +429,7 @@ func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdate
 			ID:          i.ID,
 			Tags:        convertPtrMap(i.Tags),
 			Value:       i.Value,
-			Kid:         i.Kid,
+			KID:         i.Kid,
 			Managed:     i.Managed,
 		},
 	}
@@ -540,7 +540,7 @@ func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSe
 			ID:          i.ID,
 			Tags:        convertPtrMap(i.Tags),
 			Value:       i.Value,
-			Kid:         i.Kid,
+			KID:         i.Kid,
 			Managed:     i.Managed,
 			Attributes: &Attributes{
 				Enabled:   i.Attributes.Enabled,
@@ -698,7 +698,7 @@ func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverD
 			ID:          i.ID,
 			Tags:        convertPtrMap(i.Tags),
 			Value:       i.Value,
-			Kid:         i.Kid,
+			KID:         i.Kid,
 			Managed:     i.Managed,
 		},
 	}

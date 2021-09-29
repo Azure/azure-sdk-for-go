@@ -237,7 +237,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 
 	// validate the sdk structure
 	log.Printf("Validating services directory structure...")
-	exceptions, err := loadExceptions(filepath.Join(ctx.sdkRoot, "tools/pkgchk/exceptions.txt"))
+	exceptions, err := loadExceptions(filepath.Join(ctx.sdkRoot, "eng/tools/pkgchk/exceptions.txt"))
 	if err != nil {
 		return nil, err
 	}

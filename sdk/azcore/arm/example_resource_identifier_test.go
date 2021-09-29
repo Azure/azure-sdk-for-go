@@ -9,33 +9,33 @@ package arm
 import "fmt"
 
 func ExampleParseResourceType() {
-	rawResourceType := "Microsoft.Network/virtualNetworks/subsets"
+	rawResourceType := "Microsoft.Network/virtualNetworks/subnets"
 	resourceType, err := ParseResourceType(rawResourceType)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(resourceType.String())
+	fmt.Printf("ResourceType: %s\n", resourceType.String())
 	fmt.Printf("Namespace: %s, Type: %s, LastType: %s\n", resourceType.Namespace(), resourceType.Type(), resourceType.LastType())
 
 	// Output:
-	// Microsoft.Network/virtualNetworks/subsets
-	// Namespace: Microsoft.Network, Type: virtualNetworks/subsets, LastType: subnets
+	// ResourceType: Microsoft.Network/virtualNetworks/subnets
+	// Namespace: Microsoft.Network, Type: virtualNetworks/subnets, LastType: subnets
 }
 
 func ExampleParseResourceType_fromResourceIdentifier() {
-	rawResourceId := "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/vnet/subsets/mySub"
+	rawResourceId := "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/mySub"
 	resourceType, err := ParseResourceType(rawResourceId)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(resourceType.String())
+	fmt.Printf("ResourceType: %s\n", resourceType.String())
 	fmt.Printf("Namespace: %s, Type: %s, LastType: %s\n", resourceType.Namespace(), resourceType.Type(), resourceType.LastType())
 
 	// Output:
-	// Microsoft.Network/virtualNetworks/subsets
-	// Namespace: Microsoft.Network, Type: virtualNetworks/subsets, LastType: subnets
+	// ResourceType: Microsoft.Network/virtualNetworks/subnets
+	// Namespace: Microsoft.Network, Type: virtualNetworks/subnets, LastType: subnets
 }
 
 func ExampleParseResourceIdentifier() {

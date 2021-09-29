@@ -8,12 +8,10 @@ package azsecrets_test
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"os"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 )
@@ -47,12 +45,9 @@ func ExampleClient_SetSecret() {
 	secret := "mySecret"
 	value := "mySecretValue"
 
-	resp, err := client.SetSecret(context.Background(), secret, value, nil)
-	var httpErr azcore.HTTPResponse
-	if errors.As(err, &httpErr) {
-		fmt.Println("Operation was not successful")
-		fmt.Println(httpErr.RawResponse())
-		panic(httpErr)
+	resp, err := client.SetSecret(context.TODO(), secret, value, nil)
+	if err != nil {
+		panic(err)
 	}
 
 	fmt.Printf("Set secret %s", *resp.ID)
@@ -70,13 +65,9 @@ func ExampleClient_GetSecret() {
 		panic(err)
 	}
 
-	options := &azsecrets.GetSecretOptions{Version: "mySecretVersion"}
-	resp, err := client.GetSecret(context.Background(), "mySecretName", options)
-	var httpErr azcore.HTTPResponse
-	if errors.As(err, &httpErr) {
-		fmt.Println("Operation was not successful")
-		fmt.Println(httpErr.RawResponse())
-		panic(httpErr)
+	resp, err := client.GetSecret(context.TODO(), "mySecretName", nil)
+	if err != nil {
+		panic(err)
 	}
 
 	fmt.Printf("Secret Name: %s\tSecret Value: %s", *resp.ID, *resp.Value)
@@ -94,25 +85,15 @@ func ExampleClient_BeginDeleteSecret() {
 		panic(err)
 	}
 
-	resp, err := client.BeginDeleteSecret(context.Background(), "secretToDelete", nil)
+	resp, err := client.BeginDeleteSecret(context.TODO(), "secretToDelete", nil)
 	if err != nil {
 		panic(err)
 	}
-	_, err = resp.PollUntilDone(context.Background(), 250*time.Millisecond)
+	// This is optional if you don't care when the secret is deleted
+	_, err = resp.PollUntilDone(context.TODO(), 250*time.Millisecond)
 	if err != nil {
 		panic(err)
 	}
-
-	poller := resp.Poller
-	finalResp, err := poller.FinalResponse(context.Background())
-	var httpErr azcore.HTTPResponse
-	if errors.As(err, &httpErr) {
-		fmt.Println("Operation was not successful")
-		fmt.Println(httpErr.RawResponse())
-		panic(httpErr)
-	}
-
-	fmt.Printf("Deleted secret with name %s\n", *finalResp.ID)
 }
 
 func ExampleClient_ListSecrets() {
@@ -128,21 +109,14 @@ func ExampleClient_ListSecrets() {
 	}
 
 	pager := client.ListSecrets(nil)
-	for pager.NextPage(context.Background()) {
-		resp := pager.PageResponse()
-		fmt.Printf("Found %d secrets in this page.\n", len(resp.Secrets))
-		for _, v := range resp.Secrets {
+	for pager.NextPage(context.TODO()) {
+		for _, v := range pager.PageResponse().Secrets {
 			fmt.Printf("Secret Name: %s\tSecret Tags: %v\n", *v.ID, v.Tags)
 		}
 	}
 
 	if pager.Err() != nil {
-		var httpErr azcore.HTTPResponse
-		if errors.As(pager.Err(), &httpErr) {
-			// handle error
-		} else {
-			// handle non HTTP Error
-		}
+		panic(pager.Err())
 	}
 }
 
@@ -158,12 +132,12 @@ func ExampleClient_RestoreSecretBackup() {
 		panic(err)
 	}
 
-	resp, err := client.BackupSecret(context.Background(), "mySecret", nil)
+	resp, err := client.BackupSecret(context.TODO(), "mySecret", nil)
 	if err != nil {
 		panic(err)
 	}
 
-	restoreResp, err := client.RestoreSecretBackup(context.Background(), resp.Value, nil)
+	restoreResp, err := client.RestoreSecretBackup(context.TODO(), resp.Value, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -183,7 +157,7 @@ func ExampleClient_BackupSecret() {
 		panic(err)
 	}
 
-	resp, err := client.BackupSecret(context.Background(), "mySecret", nil)
+	resp, err := client.BackupSecret(context.TODO(), "mySecret", nil)
 	if err != nil {
 		panic(err)
 	}
@@ -202,16 +176,16 @@ func ExampleClient_PurgeDeletedSecret() {
 		panic(err)
 	}
 
-	resp, err := client.BeginDeleteSecret(context.Background(), "mySecretName", nil)
+	resp, err := client.BeginDeleteSecret(context.TODO(), "mySecretName", nil)
 	if err != nil {
 		panic(err)
 	}
-	_, err = resp.PollUntilDone(context.Background(), 250*time.Millisecond)
+	_, err = resp.PollUntilDone(context.TODO(), 250*time.Millisecond)
 	if err != nil {
 		panic(err)
 	}
 
-	_, err = client.PurgeDeletedSecret(context.Background(), "mySecretName", nil)
+	_, err = client.PurgeDeletedSecret(context.TODO(), "mySecretName", nil)
 	if err != nil {
 		panic(err)
 	}
@@ -229,11 +203,11 @@ func ExampleClient_BeginRecoverDeletedSecret() {
 		panic(err)
 	}
 
-	resp, err := client.BeginRecoverDeletedSecret(context.Background(), "myDeletedSecret", nil)
+	resp, err := client.BeginRecoverDeletedSecret(context.TODO(), "myDeletedSecret", nil)
 	if err != nil {
 		panic(err)
 	}
-	_, err = resp.PollUntilDone(context.Background(), 250*time.Millisecond)
+	_, err = resp.PollUntilDone(context.TODO(), 250*time.Millisecond)
 	if err != nil {
 		panic(err)
 	}

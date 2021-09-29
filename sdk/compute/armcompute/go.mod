@@ -8,9 +8,4 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.10.0
 )
 
-retract (
-	v0.3.1
-	v0.3.0
-	v0.2.0
-	v0.1.0
-)
+retract [v0.1.0, v0.3.1]

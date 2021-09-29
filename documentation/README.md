@@ -4,4 +4,4 @@ If you are onboarding an entirely new service and starting from scratch please r
 
 <!-- LINKS -->
 [new_service_docs]: https://aka.ms
-[dev_setup_docs]: https://aka.ms
+<!-- I will update the above link after merging to main -->

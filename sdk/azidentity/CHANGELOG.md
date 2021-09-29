@@ -26,9 +26,12 @@
   cred, err := NewClientCertificateCredential("tenant", "client-id", certData, nil)
   ```
 * Removed `InteractiveBrowserCredentialOptions.ClientSecret` and `.Port`
+* Removed `AADAuthenticationFailedError`
 
 ### Features Added
 * Added connection configuration options to `DefaultAzureCredentialOptions`
+* `AuthenticationFailedError.RawResponse()` returns the HTTP response motivating the error,
+  if available
 
 
 ## 0.11.0 (2021-09-08)

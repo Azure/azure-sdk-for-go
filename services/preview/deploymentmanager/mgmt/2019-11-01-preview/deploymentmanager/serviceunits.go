@@ -69,7 +69,7 @@ func (client ServiceUnitsClient) CreateOrUpdate(ctx context.Context, resourceGro
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "deploymentmanager.ServiceUnitsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -105,6 +105,7 @@ func (client ServiceUnitsClient) CreateOrUpdatePreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client ServiceUnitsClient) CreateOrUpdateSender(req *http.Request) (future ServiceUnitsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

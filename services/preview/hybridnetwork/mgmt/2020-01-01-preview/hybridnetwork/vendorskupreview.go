@@ -63,7 +63,7 @@ func (client VendorSkuPreviewClient) CreateOrUpdate(ctx context.Context, vendorN
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -101,6 +101,7 @@ func (client VendorSkuPreviewClient) CreateOrUpdatePreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client VendorSkuPreviewClient) CreateOrUpdateSender(req *http.Request) (future VendorSkuPreviewCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -154,7 +155,7 @@ func (client VendorSkuPreviewClient) Delete(ctx context.Context, vendorName stri
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkuPreviewClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -187,6 +188,7 @@ func (client VendorSkuPreviewClient) DeletePreparer(ctx context.Context, vendorN
 // http.Response Body if it receives an error.
 func (client VendorSkuPreviewClient) DeleteSender(req *http.Request) (future VendorSkuPreviewDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

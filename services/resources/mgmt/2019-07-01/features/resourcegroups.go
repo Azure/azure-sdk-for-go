@@ -235,7 +235,7 @@ func (client ResourceGroupsClient) Delete(ctx context.Context, resourceGroupName
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "features.ResourceGroupsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "features.ResourceGroupsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -266,6 +266,7 @@ func (client ResourceGroupsClient) DeletePreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client ResourceGroupsClient) DeleteSender(req *http.Request) (future ResourceGroupsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

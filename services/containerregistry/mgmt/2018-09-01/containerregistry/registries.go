@@ -158,7 +158,7 @@ func (client RegistriesClient) Create(ctx context.Context, resourceGroupName str
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -192,6 +192,7 @@ func (client RegistriesClient) CreatePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client RegistriesClient) CreateSender(req *http.Request) (future RegistriesCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -248,7 +249,7 @@ func (client RegistriesClient) Delete(ctx context.Context, resourceGroupName str
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -280,6 +281,7 @@ func (client RegistriesClient) DeletePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client RegistriesClient) DeleteSender(req *http.Request) (future RegistriesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -514,7 +516,7 @@ func (client RegistriesClient) ImportImage(ctx context.Context, resourceGroupNam
 
 	result, err = client.ImportImageSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ImportImage", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ImportImage", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -548,6 +550,7 @@ func (client RegistriesClient) ImportImagePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client RegistriesClient) ImportImageSender(req *http.Request) (future RegistriesImportImageFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1187,7 +1190,7 @@ func (client RegistriesClient) ScheduleRun(ctx context.Context, resourceGroupNam
 
 	result, err = client.ScheduleRunSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ScheduleRun", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "ScheduleRun", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1221,6 +1224,7 @@ func (client RegistriesClient) ScheduleRunPreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client RegistriesClient) ScheduleRunSender(req *http.Request) (future RegistriesScheduleRunFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1278,7 +1282,7 @@ func (client RegistriesClient) Update(ctx context.Context, resourceGroupName str
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1312,6 +1316,7 @@ func (client RegistriesClient) UpdatePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client RegistriesClient) UpdateSender(req *http.Request) (future RegistriesUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1369,7 +1374,7 @@ func (client RegistriesClient) UpdatePolicies(ctx context.Context, resourceGroup
 
 	result, err = client.UpdatePoliciesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "UpdatePolicies", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "UpdatePolicies", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1403,6 +1408,7 @@ func (client RegistriesClient) UpdatePoliciesPreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client RegistriesClient) UpdatePoliciesSender(req *http.Request) (future RegistriesUpdatePoliciesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -66,7 +66,7 @@ func (client StreamingEndpointsClient) Create(ctx context.Context, resourceGroup
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -104,6 +104,7 @@ func (client StreamingEndpointsClient) CreatePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client StreamingEndpointsClient) CreateSender(req *http.Request) (future StreamingEndpointsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -159,7 +160,7 @@ func (client StreamingEndpointsClient) Delete(ctx context.Context, resourceGroup
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -192,6 +193,7 @@ func (client StreamingEndpointsClient) DeletePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client StreamingEndpointsClient) DeleteSender(req *http.Request) (future StreamingEndpointsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -451,7 +453,7 @@ func (client StreamingEndpointsClient) Scale(ctx context.Context, resourceGroupN
 
 	result, err = client.ScaleSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Scale", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Scale", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -486,6 +488,7 @@ func (client StreamingEndpointsClient) ScalePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client StreamingEndpointsClient) ScaleSender(req *http.Request) (future StreamingEndpointsScaleFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -540,7 +543,7 @@ func (client StreamingEndpointsClient) Start(ctx context.Context, resourceGroupN
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Start", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Start", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -573,6 +576,7 @@ func (client StreamingEndpointsClient) StartPreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client StreamingEndpointsClient) StartSender(req *http.Request) (future StreamingEndpointsStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -627,7 +631,7 @@ func (client StreamingEndpointsClient) Stop(ctx context.Context, resourceGroupNa
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Stop", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Stop", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -660,6 +664,7 @@ func (client StreamingEndpointsClient) StopPreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client StreamingEndpointsClient) StopSender(req *http.Request) (future StreamingEndpointsStopFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -715,7 +720,7 @@ func (client StreamingEndpointsClient) Update(ctx context.Context, resourceGroup
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "media.StreamingEndpointsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -750,6 +755,7 @@ func (client StreamingEndpointsClient) UpdatePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client StreamingEndpointsClient) UpdateSender(req *http.Request) (future StreamingEndpointsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

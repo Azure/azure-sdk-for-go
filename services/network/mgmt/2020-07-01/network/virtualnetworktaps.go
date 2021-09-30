@@ -95,7 +95,7 @@ func (client VirtualNetworkTapsClient) CreateOrUpdate(ctx context.Context, resou
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkTapsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkTapsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -130,6 +130,7 @@ func (client VirtualNetworkTapsClient) CreateOrUpdatePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client VirtualNetworkTapsClient) CreateOrUpdateSender(req *http.Request) (future VirtualNetworkTapsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -176,7 +177,7 @@ func (client VirtualNetworkTapsClient) Delete(ctx context.Context, resourceGroup
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkTapsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkTapsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -208,6 +209,7 @@ func (client VirtualNetworkTapsClient) DeletePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client VirtualNetworkTapsClient) DeleteSender(req *http.Request) (future VirtualNetworkTapsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -81,7 +81,7 @@ func (client CachesClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagecache.CachesClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagecache.CachesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -122,6 +122,7 @@ func (client CachesClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client CachesClient) CreateOrUpdateSender(req *http.Request) (future CachesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -175,7 +176,7 @@ func (client CachesClient) Delete(ctx context.Context, resourceGroupName string,
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagecache.CachesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagecache.CachesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -207,6 +208,7 @@ func (client CachesClient) DeletePreparer(ctx context.Context, resourceGroupName
 // http.Response Body if it receives an error.
 func (client CachesClient) DeleteSender(req *http.Request) (future CachesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -224,7 +226,7 @@ func (client CachesClient) DeleteResponder(resp *http.Response) (result SetObjec
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -261,7 +263,7 @@ func (client CachesClient) Flush(ctx context.Context, resourceGroupName string, 
 
 	result, err = client.FlushSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagecache.CachesClient", "Flush", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagecache.CachesClient", "Flush", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -293,6 +295,7 @@ func (client CachesClient) FlushPreparer(ctx context.Context, resourceGroupName 
 // http.Response Body if it receives an error.
 func (client CachesClient) FlushSender(req *http.Request) (future CachesFlushFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -310,7 +313,7 @@ func (client CachesClient) FlushResponder(resp *http.Response) (result SetObject
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -658,7 +661,7 @@ func (client CachesClient) Start(ctx context.Context, resourceGroupName string, 
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagecache.CachesClient", "Start", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagecache.CachesClient", "Start", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -690,6 +693,7 @@ func (client CachesClient) StartPreparer(ctx context.Context, resourceGroupName 
 // http.Response Body if it receives an error.
 func (client CachesClient) StartSender(req *http.Request) (future CachesStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -707,7 +711,7 @@ func (client CachesClient) StartResponder(resp *http.Response) (result SetObject
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -743,7 +747,7 @@ func (client CachesClient) Stop(ctx context.Context, resourceGroupName string, c
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagecache.CachesClient", "Stop", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagecache.CachesClient", "Stop", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -775,6 +779,7 @@ func (client CachesClient) StopPreparer(ctx context.Context, resourceGroupName s
 // http.Response Body if it receives an error.
 func (client CachesClient) StopSender(req *http.Request) (future CachesStopFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -792,7 +797,7 @@ func (client CachesClient) StopResponder(resp *http.Response) (result SetObject,
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -922,7 +927,7 @@ func (client CachesClient) UpgradeFirmware(ctx context.Context, resourceGroupNam
 
 	result, err = client.UpgradeFirmwareSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagecache.CachesClient", "UpgradeFirmware", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagecache.CachesClient", "UpgradeFirmware", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -954,6 +959,7 @@ func (client CachesClient) UpgradeFirmwarePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client CachesClient) UpgradeFirmwareSender(req *http.Request) (future CachesUpgradeFirmwareFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -971,7 +977,7 @@ func (client CachesClient) UpgradeFirmwareResponder(resp *http.Response) (result
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

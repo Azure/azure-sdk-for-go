@@ -603,7 +603,7 @@ func (client AppsClient) ApproveOrRejectPrivateEndpointConnection(ctx context.Co
 
 	result, err = client.ApproveOrRejectPrivateEndpointConnectionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ApproveOrRejectPrivateEndpointConnection", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ApproveOrRejectPrivateEndpointConnection", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -638,6 +638,7 @@ func (client AppsClient) ApproveOrRejectPrivateEndpointConnectionPreparer(ctx co
 // http.Response Body if it receives an error.
 func (client AppsClient) ApproveOrRejectPrivateEndpointConnectionSender(req *http.Request) (future AppsApproveOrRejectPrivateEndpointConnectionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -901,7 +902,7 @@ func (client AppsClient) CopyProductionSlot(ctx context.Context, resourceGroupNa
 
 	result, err = client.CopyProductionSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "CopyProductionSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CopyProductionSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -935,6 +936,7 @@ func (client AppsClient) CopyProductionSlotPreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client AppsClient) CopyProductionSlotSender(req *http.Request) (future AppsCopyProductionSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1003,7 +1005,7 @@ func (client AppsClient) CopySlotSlot(ctx context.Context, resourceGroupName str
 
 	result, err = client.CopySlotSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "CopySlotSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CopySlotSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1038,6 +1040,7 @@ func (client AppsClient) CopySlotSlotPreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client AppsClient) CopySlotSlotSender(req *http.Request) (future AppsCopySlotSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1274,7 +1277,7 @@ func (client AppsClient) CreateFunction(ctx context.Context, resourceGroupName s
 
 	result, err = client.CreateFunctionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateFunction", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateFunction", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1309,6 +1312,7 @@ func (client AppsClient) CreateFunctionPreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateFunctionSender(req *http.Request) (future AppsCreateFunctionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1366,7 +1370,7 @@ func (client AppsClient) CreateInstanceFunctionSlot(ctx context.Context, resourc
 
 	result, err = client.CreateInstanceFunctionSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateInstanceFunctionSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateInstanceFunctionSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1402,6 +1406,7 @@ func (client AppsClient) CreateInstanceFunctionSlotPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateInstanceFunctionSlotSender(req *http.Request) (future AppsCreateInstanceFunctionSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1458,7 +1463,7 @@ func (client AppsClient) CreateInstanceMSDeployOperation(ctx context.Context, re
 
 	result, err = client.CreateInstanceMSDeployOperationSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateInstanceMSDeployOperation", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateInstanceMSDeployOperation", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1493,6 +1498,7 @@ func (client AppsClient) CreateInstanceMSDeployOperationPreparer(ctx context.Con
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateInstanceMSDeployOperationSender(req *http.Request) (future AppsCreateInstanceMSDeployOperationFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1550,7 +1556,7 @@ func (client AppsClient) CreateInstanceMSDeployOperationSlot(ctx context.Context
 
 	result, err = client.CreateInstanceMSDeployOperationSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateInstanceMSDeployOperationSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateInstanceMSDeployOperationSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1586,6 +1592,7 @@ func (client AppsClient) CreateInstanceMSDeployOperationSlotPreparer(ctx context
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateInstanceMSDeployOperationSlotSender(req *http.Request) (future AppsCreateInstanceMSDeployOperationSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1641,7 +1648,7 @@ func (client AppsClient) CreateMSDeployOperation(ctx context.Context, resourceGr
 
 	result, err = client.CreateMSDeployOperationSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateMSDeployOperation", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateMSDeployOperation", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1675,6 +1682,7 @@ func (client AppsClient) CreateMSDeployOperationPreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateMSDeployOperationSender(req *http.Request) (future AppsCreateMSDeployOperationFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1731,7 +1739,7 @@ func (client AppsClient) CreateMSDeployOperationSlot(ctx context.Context, resour
 
 	result, err = client.CreateMSDeployOperationSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateMSDeployOperationSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateMSDeployOperationSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1766,6 +1774,7 @@ func (client AppsClient) CreateMSDeployOperationSlotPreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateMSDeployOperationSlotSender(req *http.Request) (future AppsCreateMSDeployOperationSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1838,7 +1847,7 @@ func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1872,6 +1881,7 @@ func (client AppsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateSender(req *http.Request) (future AppsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -3427,7 +3437,7 @@ func (client AppsClient) CreateOrUpdateSlot(ctx context.Context, resourceGroupNa
 
 	result, err = client.CreateOrUpdateSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -3462,6 +3472,7 @@ func (client AppsClient) CreateOrUpdateSlotPreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateSlotSender(req *http.Request) (future AppsCreateOrUpdateSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -3517,7 +3528,7 @@ func (client AppsClient) CreateOrUpdateSourceControl(ctx context.Context, resour
 
 	result, err = client.CreateOrUpdateSourceControlSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSourceControl", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSourceControl", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -3551,6 +3562,7 @@ func (client AppsClient) CreateOrUpdateSourceControlPreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateSourceControlSender(req *http.Request) (future AppsCreateOrUpdateSourceControlFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -3608,7 +3620,7 @@ func (client AppsClient) CreateOrUpdateSourceControlSlot(ctx context.Context, re
 
 	result, err = client.CreateOrUpdateSourceControlSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSourceControlSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "CreateOrUpdateSourceControlSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -3643,6 +3655,7 @@ func (client AppsClient) CreateOrUpdateSourceControlSlotPreparer(ctx context.Con
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateSourceControlSlotSender(req *http.Request) (future AppsCreateOrUpdateSourceControlSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -6436,7 +6449,7 @@ func (client AppsClient) DeletePrivateEndpointConnection(ctx context.Context, re
 
 	result, err = client.DeletePrivateEndpointConnectionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeletePrivateEndpointConnection", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "DeletePrivateEndpointConnection", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -6469,6 +6482,7 @@ func (client AppsClient) DeletePrivateEndpointConnectionPreparer(ctx context.Con
 // http.Response Body if it receives an error.
 func (client AppsClient) DeletePrivateEndpointConnectionSender(req *http.Request) (future AppsDeletePrivateEndpointConnectionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -6486,7 +6500,7 @@ func (client AppsClient) DeletePrivateEndpointConnectionResponder(resp *http.Res
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -16806,7 +16820,7 @@ func (client AppsClient) InstallSiteExtension(ctx context.Context, resourceGroup
 
 	result, err = client.InstallSiteExtensionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "InstallSiteExtension", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "InstallSiteExtension", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -16839,6 +16853,7 @@ func (client AppsClient) InstallSiteExtensionPreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client AppsClient) InstallSiteExtensionSender(req *http.Request) (future AppsInstallSiteExtensionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -16895,7 +16910,7 @@ func (client AppsClient) InstallSiteExtensionSlot(ctx context.Context, resourceG
 
 	result, err = client.InstallSiteExtensionSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "InstallSiteExtensionSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "InstallSiteExtensionSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -16929,6 +16944,7 @@ func (client AppsClient) InstallSiteExtensionSlotPreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client AppsClient) InstallSiteExtensionSlotSender(req *http.Request) (future AppsInstallSiteExtensionSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -23885,7 +23901,7 @@ func (client AppsClient) ListPublishingCredentials(ctx context.Context, resource
 
 	result, err = client.ListPublishingCredentialsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingCredentials", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingCredentials", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -23917,6 +23933,7 @@ func (client AppsClient) ListPublishingCredentialsPreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client AppsClient) ListPublishingCredentialsSender(req *http.Request) (future AppsListPublishingCredentialsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -23973,7 +23990,7 @@ func (client AppsClient) ListPublishingCredentialsSlot(ctx context.Context, reso
 
 	result, err = client.ListPublishingCredentialsSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingCredentialsSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "ListPublishingCredentialsSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -24006,6 +24023,7 @@ func (client AppsClient) ListPublishingCredentialsSlotPreparer(ctx context.Conte
 // http.Response Body if it receives an error.
 func (client AppsClient) ListPublishingCredentialsSlotSender(req *http.Request) (future AppsListPublishingCredentialsSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -27625,7 +27643,7 @@ func (client AppsClient) MigrateMySQL(ctx context.Context, resourceGroupName str
 
 	result, err = client.MigrateMySQLSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "MigrateMySQL", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "MigrateMySQL", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -27659,6 +27677,7 @@ func (client AppsClient) MigrateMySQLPreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client AppsClient) MigrateMySQLSender(req *http.Request) (future AppsMigrateMySQLFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -27720,7 +27739,7 @@ func (client AppsClient) MigrateStorage(ctx context.Context, subscriptionName st
 
 	result, err = client.MigrateStorageSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "MigrateStorage", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "MigrateStorage", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -27755,6 +27774,7 @@ func (client AppsClient) MigrateStoragePreparer(ctx context.Context, subscriptio
 // http.Response Body if it receives an error.
 func (client AppsClient) MigrateStorageSender(req *http.Request) (future AppsMigrateStorageFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -28526,7 +28546,7 @@ func (client AppsClient) Restore(ctx context.Context, resourceGroupName string, 
 
 	result, err = client.RestoreSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "Restore", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "Restore", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -28561,6 +28581,7 @@ func (client AppsClient) RestorePreparer(ctx context.Context, resourceGroupName 
 // http.Response Body if it receives an error.
 func (client AppsClient) RestoreSender(req *http.Request) (future AppsRestoreFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -28620,7 +28641,7 @@ func (client AppsClient) RestoreFromBackupBlob(ctx context.Context, resourceGrou
 
 	result, err = client.RestoreFromBackupBlobSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreFromBackupBlob", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreFromBackupBlob", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -28654,6 +28675,7 @@ func (client AppsClient) RestoreFromBackupBlobPreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client AppsClient) RestoreFromBackupBlobSender(req *http.Request) (future AppsRestoreFromBackupBlobFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -28715,7 +28737,7 @@ func (client AppsClient) RestoreFromBackupBlobSlot(ctx context.Context, resource
 
 	result, err = client.RestoreFromBackupBlobSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreFromBackupBlobSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreFromBackupBlobSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -28750,6 +28772,7 @@ func (client AppsClient) RestoreFromBackupBlobSlotPreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client AppsClient) RestoreFromBackupBlobSlotSender(req *http.Request) (future AppsRestoreFromBackupBlobSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -28804,7 +28827,7 @@ func (client AppsClient) RestoreFromDeletedApp(ctx context.Context, resourceGrou
 
 	result, err = client.RestoreFromDeletedAppSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreFromDeletedApp", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreFromDeletedApp", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -28838,6 +28861,7 @@ func (client AppsClient) RestoreFromDeletedAppPreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client AppsClient) RestoreFromDeletedAppSender(req *http.Request) (future AppsRestoreFromDeletedAppFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -28893,7 +28917,7 @@ func (client AppsClient) RestoreFromDeletedAppSlot(ctx context.Context, resource
 
 	result, err = client.RestoreFromDeletedAppSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreFromDeletedAppSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreFromDeletedAppSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -28928,6 +28952,7 @@ func (client AppsClient) RestoreFromDeletedAppSlotPreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client AppsClient) RestoreFromDeletedAppSlotSender(req *http.Request) (future AppsRestoreFromDeletedAppSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -28990,7 +29015,7 @@ func (client AppsClient) RestoreSlot(ctx context.Context, resourceGroupName stri
 
 	result, err = client.RestoreSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -29026,6 +29051,7 @@ func (client AppsClient) RestoreSlotPreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client AppsClient) RestoreSlotSender(req *http.Request) (future AppsRestoreSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -29084,7 +29110,7 @@ func (client AppsClient) RestoreSnapshot(ctx context.Context, resourceGroupName 
 
 	result, err = client.RestoreSnapshotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreSnapshot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreSnapshot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -29118,6 +29144,7 @@ func (client AppsClient) RestoreSnapshotPreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client AppsClient) RestoreSnapshotSender(req *http.Request) (future AppsRestoreSnapshotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -29177,7 +29204,7 @@ func (client AppsClient) RestoreSnapshotSlot(ctx context.Context, resourceGroupN
 
 	result, err = client.RestoreSnapshotSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreSnapshotSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "RestoreSnapshotSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -29212,6 +29239,7 @@ func (client AppsClient) RestoreSnapshotSlotPreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client AppsClient) RestoreSnapshotSlotSender(req *http.Request) (future AppsRestoreSnapshotSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -29696,7 +29724,7 @@ func (client AppsClient) StartNetworkTrace(ctx context.Context, resourceGroupNam
 
 	result, err = client.StartNetworkTraceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartNetworkTrace", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartNetworkTrace", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -29737,6 +29765,7 @@ func (client AppsClient) StartNetworkTracePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client AppsClient) StartNetworkTraceSender(req *http.Request) (future AppsStartNetworkTraceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -29754,7 +29783,7 @@ func (client AppsClient) StartNetworkTraceResponder(resp *http.Response) (result
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -29795,7 +29824,7 @@ func (client AppsClient) StartNetworkTraceSlot(ctx context.Context, resourceGrou
 
 	result, err = client.StartNetworkTraceSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartNetworkTraceSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartNetworkTraceSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -29837,6 +29866,7 @@ func (client AppsClient) StartNetworkTraceSlotPreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client AppsClient) StartNetworkTraceSlotSender(req *http.Request) (future AppsStartNetworkTraceSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -29854,7 +29884,7 @@ func (client AppsClient) StartNetworkTraceSlotResponder(resp *http.Response) (re
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -30075,7 +30105,7 @@ func (client AppsClient) StartWebSiteNetworkTraceOperation(ctx context.Context, 
 
 	result, err = client.StartWebSiteNetworkTraceOperationSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartWebSiteNetworkTraceOperation", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartWebSiteNetworkTraceOperation", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -30116,6 +30146,7 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationPreparer(ctx context.C
 // http.Response Body if it receives an error.
 func (client AppsClient) StartWebSiteNetworkTraceOperationSender(req *http.Request) (future AppsStartWebSiteNetworkTraceOperationFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -30133,7 +30164,7 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationResponder(resp *http.R
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -30174,7 +30205,7 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationSlot(ctx context.Conte
 
 	result, err = client.StartWebSiteNetworkTraceOperationSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartWebSiteNetworkTraceOperationSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "StartWebSiteNetworkTraceOperationSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -30216,6 +30247,7 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationSlotPreparer(ctx conte
 // http.Response Body if it receives an error.
 func (client AppsClient) StartWebSiteNetworkTraceOperationSlotSender(req *http.Request) (future AppsStartWebSiteNetworkTraceOperationSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -30233,7 +30265,7 @@ func (client AppsClient) StartWebSiteNetworkTraceOperationSlotResponder(resp *ht
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -31050,7 +31082,7 @@ func (client AppsClient) SwapSlotSlot(ctx context.Context, resourceGroupName str
 
 	result, err = client.SwapSlotSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "SwapSlotSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "SwapSlotSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -31085,6 +31117,7 @@ func (client AppsClient) SwapSlotSlotPreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client AppsClient) SwapSlotSlotSender(req *http.Request) (future AppsSwapSlotSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -31142,7 +31175,7 @@ func (client AppsClient) SwapSlotWithProduction(ctx context.Context, resourceGro
 
 	result, err = client.SwapSlotWithProductionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppsClient", "SwapSlotWithProduction", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppsClient", "SwapSlotWithProduction", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -31176,6 +31209,7 @@ func (client AppsClient) SwapSlotWithProductionPreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client AppsClient) SwapSlotWithProductionSender(req *http.Request) (future AppsSwapSlotWithProductionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

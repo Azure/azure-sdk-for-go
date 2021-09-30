@@ -148,7 +148,7 @@ func (client CloudAppliancesClient) Provision(ctx context.Context, parameters Cl
 
 	result, err = client.ProvisionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.CloudAppliancesClient", "Provision", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.CloudAppliancesClient", "Provision", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -182,6 +182,7 @@ func (client CloudAppliancesClient) ProvisionPreparer(ctx context.Context, param
 // http.Response Body if it receives an error.
 func (client CloudAppliancesClient) ProvisionSender(req *http.Request) (future CloudAppliancesProvisionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

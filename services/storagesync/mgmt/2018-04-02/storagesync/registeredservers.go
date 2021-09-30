@@ -67,7 +67,7 @@ func (client RegisteredServersClient) Create(ctx context.Context, resourceGroupN
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -102,6 +102,7 @@ func (client RegisteredServersClient) CreatePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client RegisteredServersClient) CreateSender(req *http.Request) (future RegisteredServersCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -159,7 +160,7 @@ func (client RegisteredServersClient) Delete(ctx context.Context, resourceGroupN
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.RegisteredServersClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -192,6 +193,7 @@ func (client RegisteredServersClient) DeletePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client RegisteredServersClient) DeleteSender(req *http.Request) (future RegisteredServersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -64,7 +64,7 @@ func (client AppServiceEnvironmentsClient) ChangeVnet(ctx context.Context, resou
 
 	result, err = client.ChangeVnetSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ChangeVnet", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "ChangeVnet", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -100,6 +100,7 @@ func (client AppServiceEnvironmentsClient) ChangeVnetPreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ChangeVnetSender(req *http.Request) (future AppServiceEnvironmentsChangeVnetFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -203,7 +204,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdate(ctx context.Context, r
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -237,6 +238,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdatePreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) CreateOrUpdateSender(req *http.Request) (future AppServiceEnvironmentsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -292,7 +294,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePool(ctx conte
 
 	result, err = client.CreateOrUpdateMultiRolePoolSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateMultiRolePool", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateMultiRolePool", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -326,6 +328,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolPreparer(c
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) CreateOrUpdateMultiRolePoolSender(req *http.Request) (future AppServiceEnvironmentsCreateOrUpdateMultiRolePoolFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -382,7 +385,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPool(ctx context.
 
 	result, err = client.CreateOrUpdateWorkerPoolSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateWorkerPool", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "CreateOrUpdateWorkerPool", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -417,6 +420,7 @@ func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPoolPreparer(ctx 
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) CreateOrUpdateWorkerPoolSender(req *http.Request) (future AppServiceEnvironmentsCreateOrUpdateWorkerPoolFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -473,7 +477,7 @@ func (client AppServiceEnvironmentsClient) Delete(ctx context.Context, resourceG
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -508,6 +512,7 @@ func (client AppServiceEnvironmentsClient) DeletePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) DeleteSender(req *http.Request) (future AppServiceEnvironmentsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -4294,7 +4299,7 @@ func (client AppServiceEnvironmentsClient) Resume(ctx context.Context, resourceG
 
 	result, err = client.ResumeSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Resume", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Resume", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -4326,6 +4331,7 @@ func (client AppServiceEnvironmentsClient) ResumePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) ResumeSender(req *http.Request) (future AppServiceEnvironmentsResumeFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -4421,7 +4427,7 @@ func (client AppServiceEnvironmentsClient) Suspend(ctx context.Context, resource
 
 	result, err = client.SuspendSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Suspend", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceEnvironmentsClient", "Suspend", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -4453,6 +4459,7 @@ func (client AppServiceEnvironmentsClient) SuspendPreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client AppServiceEnvironmentsClient) SuspendSender(req *http.Request) (future AppServiceEnvironmentsSuspendFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

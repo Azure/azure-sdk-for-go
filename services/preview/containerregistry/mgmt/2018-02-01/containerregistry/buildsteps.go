@@ -73,7 +73,7 @@ func (client BuildStepsClient) Create(ctx context.Context, resourceGroupName str
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -109,6 +109,7 @@ func (client BuildStepsClient) CreatePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client BuildStepsClient) CreateSender(req *http.Request) (future BuildStepsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -173,7 +174,7 @@ func (client BuildStepsClient) Delete(ctx context.Context, resourceGroupName str
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -207,6 +208,7 @@ func (client BuildStepsClient) DeletePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client BuildStepsClient) DeleteSender(req *http.Request) (future BuildStepsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -637,7 +639,7 @@ func (client BuildStepsClient) Update(ctx context.Context, resourceGroupName str
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BuildStepsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -673,6 +675,7 @@ func (client BuildStepsClient) UpdatePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client BuildStepsClient) UpdateSender(req *http.Request) (future BuildStepsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

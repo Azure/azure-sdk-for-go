@@ -84,7 +84,7 @@ func (client OrganizationClient) Create(ctx context.Context, resourceGroupName s
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "confluent.OrganizationClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "confluent.OrganizationClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -125,6 +125,7 @@ func (client OrganizationClient) CreatePreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client OrganizationClient) CreateSender(req *http.Request) (future OrganizationCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -171,7 +172,7 @@ func (client OrganizationClient) Delete(ctx context.Context, resourceGroupName s
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "confluent.OrganizationClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "confluent.OrganizationClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -203,6 +204,7 @@ func (client OrganizationClient) DeletePreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client OrganizationClient) DeleteSender(req *http.Request) (future OrganizationDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

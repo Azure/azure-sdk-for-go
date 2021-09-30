@@ -71,7 +71,7 @@ func (client AppServiceCertificateOrdersClient) CreateOrUpdate(ctx context.Conte
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -105,6 +105,7 @@ func (client AppServiceCertificateOrdersClient) CreateOrUpdatePreparer(ctx conte
 // http.Response Body if it receives an error.
 func (client AppServiceCertificateOrdersClient) CreateOrUpdateSender(req *http.Request) (future AppServiceCertificateOrdersCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -161,7 +162,7 @@ func (client AppServiceCertificateOrdersClient) CreateOrUpdateCertificate(ctx co
 
 	result, err = client.CreateOrUpdateCertificateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdateCertificate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.AppServiceCertificateOrdersClient", "CreateOrUpdateCertificate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -196,6 +197,7 @@ func (client AppServiceCertificateOrdersClient) CreateOrUpdateCertificatePrepare
 // http.Response Body if it receives an error.
 func (client AppServiceCertificateOrdersClient) CreateOrUpdateCertificateSender(req *http.Request) (future AppServiceCertificateOrdersCreateOrUpdateCertificateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -53,7 +53,7 @@ func (client FactoryClient) CreateSubscriptionInEnrollmentAccount(ctx context.Co
 
 	result, err = client.CreateSubscriptionInEnrollmentAccountSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "subscription.FactoryClient", "CreateSubscriptionInEnrollmentAccount", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "subscription.FactoryClient", "CreateSubscriptionInEnrollmentAccount", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -85,6 +85,7 @@ func (client FactoryClient) CreateSubscriptionInEnrollmentAccountPreparer(ctx co
 // http.Response Body if it receives an error.
 func (client FactoryClient) CreateSubscriptionInEnrollmentAccountSender(req *http.Request) (future FactoryCreateSubscriptionInEnrollmentAccountFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

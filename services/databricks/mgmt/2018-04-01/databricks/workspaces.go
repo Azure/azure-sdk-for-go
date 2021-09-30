@@ -88,7 +88,7 @@ func (client WorkspacesClient) CreateOrUpdate(ctx context.Context, parameters Wo
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databricks.WorkspacesClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databricks.WorkspacesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -122,6 +122,7 @@ func (client WorkspacesClient) CreateOrUpdatePreparer(ctx context.Context, param
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) CreateOrUpdateSender(req *http.Request) (future WorkspacesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -179,7 +180,7 @@ func (client WorkspacesClient) Delete(ctx context.Context, resourceGroupName str
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databricks.WorkspacesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databricks.WorkspacesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -211,6 +212,7 @@ func (client WorkspacesClient) DeletePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) DeleteSender(req *http.Request) (future WorkspacesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -592,7 +594,7 @@ func (client WorkspacesClient) Update(ctx context.Context, parameters WorkspaceU
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databricks.WorkspacesClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databricks.WorkspacesClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -626,6 +628,7 @@ func (client WorkspacesClient) UpdatePreparer(ctx context.Context, parameters Wo
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) UpdateSender(req *http.Request) (future WorkspacesUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

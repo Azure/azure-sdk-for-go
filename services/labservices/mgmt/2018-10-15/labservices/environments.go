@@ -223,7 +223,7 @@ func (client EnvironmentsClient) Delete(ctx context.Context, resourceGroupName s
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -258,6 +258,7 @@ func (client EnvironmentsClient) DeletePreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client EnvironmentsClient) DeleteSender(req *http.Request) (future EnvironmentsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -537,7 +538,7 @@ func (client EnvironmentsClient) ResetPassword(ctx context.Context, resourceGrou
 
 	result, err = client.ResetPasswordSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "ResetPassword", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "ResetPassword", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -574,6 +575,7 @@ func (client EnvironmentsClient) ResetPasswordPreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client EnvironmentsClient) ResetPasswordSender(req *http.Request) (future EnvironmentsResetPasswordFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -623,7 +625,7 @@ func (client EnvironmentsClient) Start(ctx context.Context, resourceGroupName st
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "Start", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "Start", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -658,6 +660,7 @@ func (client EnvironmentsClient) StartPreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client EnvironmentsClient) StartSender(req *http.Request) (future EnvironmentsStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -707,7 +710,7 @@ func (client EnvironmentsClient) Stop(ctx context.Context, resourceGroupName str
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "Stop", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.EnvironmentsClient", "Stop", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -742,6 +745,7 @@ func (client EnvironmentsClient) StopPreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client EnvironmentsClient) StopSender(req *http.Request) (future EnvironmentsStopFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

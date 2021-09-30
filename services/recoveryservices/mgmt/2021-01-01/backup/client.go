@@ -76,7 +76,7 @@ func (client BaseClient) BMSPrepareDataMove(ctx context.Context, vaultName strin
 
 	result, err = client.BMSPrepareDataMoveSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.BaseClient", "BMSPrepareDataMove", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "backup.BaseClient", "BMSPrepareDataMove", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -110,6 +110,7 @@ func (client BaseClient) BMSPrepareDataMovePreparer(ctx context.Context, vaultNa
 // http.Response Body if it receives an error.
 func (client BaseClient) BMSPrepareDataMoveSender(req *http.Request) (future BMSPrepareDataMoveFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -164,7 +165,7 @@ func (client BaseClient) BMSTriggerDataMove(ctx context.Context, vaultName strin
 
 	result, err = client.BMSTriggerDataMoveSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.BaseClient", "BMSTriggerDataMove", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "backup.BaseClient", "BMSTriggerDataMove", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -198,6 +199,7 @@ func (client BaseClient) BMSTriggerDataMovePreparer(ctx context.Context, vaultNa
 // http.Response Body if it receives an error.
 func (client BaseClient) BMSTriggerDataMoveSender(req *http.Request) (future BMSTriggerDataMoveFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -321,7 +323,7 @@ func (client BaseClient) MoveRecoveryPoint(ctx context.Context, vaultName string
 
 	result, err = client.MoveRecoveryPointSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.BaseClient", "MoveRecoveryPoint", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "backup.BaseClient", "MoveRecoveryPoint", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -359,6 +361,7 @@ func (client BaseClient) MoveRecoveryPointPreparer(ctx context.Context, vaultNam
 // http.Response Body if it receives an error.
 func (client BaseClient) MoveRecoveryPointSender(req *http.Request) (future MoveRecoveryPointFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -58,7 +58,7 @@ func (client PeeringPoliciesClient) CreateOrUpdate(ctx context.Context, managedN
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -93,6 +93,7 @@ func (client PeeringPoliciesClient) CreateOrUpdatePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client PeeringPoliciesClient) CreateOrUpdateSender(req *http.Request) (future PeeringPoliciesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -141,7 +142,7 @@ func (client PeeringPoliciesClient) Delete(ctx context.Context, resourceGroupNam
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managednetwork.PeeringPoliciesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -174,6 +175,7 @@ func (client PeeringPoliciesClient) DeletePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client PeeringPoliciesClient) DeleteSender(req *http.Request) (future PeeringPoliciesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

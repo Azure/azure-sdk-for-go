@@ -24,4 +24,4 @@ Get-Content ./coverage.json | gocov-html > ./coverage.html
 
 # use internal tool to fail if coverage is too low
 Pop-Location
-go run ../tools/internal/coverage/main.go  -serviceDirectory $serviceDirectory
+go run ../eng/tools/internal/coverage/main.go  -serviceDirectory $serviceDirectory

@@ -18,7 +18,7 @@ import (
 type EnvironmentCredentialOptions struct {
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
-	AuthorityHost string
+	AuthorityHost AuthorityHost
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
 	HTTPClient policy.Transporter
@@ -71,9 +71,13 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		}
 		return &EnvironmentCredential{cred: cred}, nil
 	}
-	if clientCertificate := os.Getenv("AZURE_CLIENT_CERTIFICATE_PATH"); clientCertificate != "" {
+	if certPath := os.Getenv("AZURE_CLIENT_CERTIFICATE_PATH"); certPath != "" {
 		log.Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientCertificateCredential")
-		cred, err := NewClientCertificateCredential(tenantID, clientID, clientCertificate, &ClientCertificateCredentialOptions{AuthorityHost: options.AuthorityHost, HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry, Logging: options.Logging})
+		certData, err := os.ReadFile(certPath)
+		if err != nil {
+			return nil, &CredentialUnavailableError{credentialType: "Environment Credential", message: "Failed to read certificate file: " + err.Error()}
+		}
+		cred, err := NewClientCertificateCredential(tenantID, clientID, certData, &ClientCertificateCredentialOptions{AuthorityHost: options.AuthorityHost, HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry, Logging: options.Logging})
 		if err != nil {
 			return nil, err
 		}

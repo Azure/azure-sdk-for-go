@@ -12,6 +12,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
+// ChainedTokenCredentialOptions contains optional parameters for ChainedTokenCredential
+type ChainedTokenCredentialOptions struct {
+	// placeholder for future options
+}
+
 // ChainedTokenCredential provides a TokenCredential implementation that chains multiple TokenCredential sources to be tried in order
 // and returns the token from the first successful call to GetToken().
 type ChainedTokenCredential struct {
@@ -19,7 +24,7 @@ type ChainedTokenCredential struct {
 }
 
 // NewChainedTokenCredential creates an instance of ChainedTokenCredential with the specified TokenCredential sources.
-func NewChainedTokenCredential(sources ...azcore.TokenCredential) (*ChainedTokenCredential, error) {
+func NewChainedTokenCredential(sources []azcore.TokenCredential, options *ChainedTokenCredentialOptions) (*ChainedTokenCredential, error) {
 	if len(sources) == 0 {
 		credErr := &CredentialUnavailableError{credentialType: "Chained Token Credential", message: "Length of sources cannot be 0"}
 		logCredentialError(credErr.credentialType, credErr)
@@ -32,7 +37,9 @@ func NewChainedTokenCredential(sources ...azcore.TokenCredential) (*ChainedToken
 			return nil, credErr
 		}
 	}
-	return &ChainedTokenCredential{sources: sources}, nil
+	cp := make([]azcore.TokenCredential, len(sources))
+	copy(cp, sources)
+	return &ChainedTokenCredential{sources: cp}, nil
 }
 
 // GetToken sequentially calls TokenCredential.GetToken on all the specified sources, returning the token from the first successful call to GetToken().

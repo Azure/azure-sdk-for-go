@@ -83,7 +83,7 @@ func (client SQLResourcesClient) CreateUpdateSQLContainer(ctx context.Context, r
 
 	result, err = client.CreateUpdateSQLContainerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLContainer", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLContainer", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -119,6 +119,7 @@ func (client SQLResourcesClient) CreateUpdateSQLContainerPreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client SQLResourcesClient) CreateUpdateSQLContainerSender(req *http.Request) (future SQLResourcesCreateUpdateSQLContainerFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -186,7 +187,7 @@ func (client SQLResourcesClient) CreateUpdateSQLDatabase(ctx context.Context, re
 
 	result, err = client.CreateUpdateSQLDatabaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLDatabase", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLDatabase", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -221,6 +222,7 @@ func (client SQLResourcesClient) CreateUpdateSQLDatabasePreparer(ctx context.Con
 // http.Response Body if it receives an error.
 func (client SQLResourcesClient) CreateUpdateSQLDatabaseSender(req *http.Request) (future SQLResourcesCreateUpdateSQLDatabaseFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -290,7 +292,7 @@ func (client SQLResourcesClient) CreateUpdateSQLStoredProcedure(ctx context.Cont
 
 	result, err = client.CreateUpdateSQLStoredProcedureSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLStoredProcedure", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLStoredProcedure", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -327,6 +329,7 @@ func (client SQLResourcesClient) CreateUpdateSQLStoredProcedurePreparer(ctx cont
 // http.Response Body if it receives an error.
 func (client SQLResourcesClient) CreateUpdateSQLStoredProcedureSender(req *http.Request) (future SQLResourcesCreateUpdateSQLStoredProcedureFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -396,7 +399,7 @@ func (client SQLResourcesClient) CreateUpdateSQLTrigger(ctx context.Context, res
 
 	result, err = client.CreateUpdateSQLTriggerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLTrigger", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLTrigger", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -433,6 +436,7 @@ func (client SQLResourcesClient) CreateUpdateSQLTriggerPreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client SQLResourcesClient) CreateUpdateSQLTriggerSender(req *http.Request) (future SQLResourcesCreateUpdateSQLTriggerFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -503,7 +507,7 @@ func (client SQLResourcesClient) CreateUpdateSQLUserDefinedFunction(ctx context.
 
 	result, err = client.CreateUpdateSQLUserDefinedFunctionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLUserDefinedFunction", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "CreateUpdateSQLUserDefinedFunction", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -540,6 +544,7 @@ func (client SQLResourcesClient) CreateUpdateSQLUserDefinedFunctionPreparer(ctx 
 // http.Response Body if it receives an error.
 func (client SQLResourcesClient) CreateUpdateSQLUserDefinedFunctionSender(req *http.Request) (future SQLResourcesCreateUpdateSQLUserDefinedFunctionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -602,7 +607,7 @@ func (client SQLResourcesClient) DeleteSQLContainer(ctx context.Context, resourc
 
 	result, err = client.DeleteSQLContainerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLContainer", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLContainer", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -636,6 +641,7 @@ func (client SQLResourcesClient) DeleteSQLContainerPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client SQLResourcesClient) DeleteSQLContainerSender(req *http.Request) (future SQLResourcesDeleteSQLContainerFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -696,7 +702,7 @@ func (client SQLResourcesClient) DeleteSQLDatabase(ctx context.Context, resource
 
 	result, err = client.DeleteSQLDatabaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLDatabase", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLDatabase", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -729,6 +735,7 @@ func (client SQLResourcesClient) DeleteSQLDatabasePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client SQLResourcesClient) DeleteSQLDatabaseSender(req *http.Request) (future SQLResourcesDeleteSQLDatabaseFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -791,7 +798,7 @@ func (client SQLResourcesClient) DeleteSQLStoredProcedure(ctx context.Context, r
 
 	result, err = client.DeleteSQLStoredProcedureSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLStoredProcedure", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLStoredProcedure", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -826,6 +833,7 @@ func (client SQLResourcesClient) DeleteSQLStoredProcedurePreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client SQLResourcesClient) DeleteSQLStoredProcedureSender(req *http.Request) (future SQLResourcesDeleteSQLStoredProcedureFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -888,7 +896,7 @@ func (client SQLResourcesClient) DeleteSQLTrigger(ctx context.Context, resourceG
 
 	result, err = client.DeleteSQLTriggerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLTrigger", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLTrigger", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -923,6 +931,7 @@ func (client SQLResourcesClient) DeleteSQLTriggerPreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client SQLResourcesClient) DeleteSQLTriggerSender(req *http.Request) (future SQLResourcesDeleteSQLTriggerFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -985,7 +994,7 @@ func (client SQLResourcesClient) DeleteSQLUserDefinedFunction(ctx context.Contex
 
 	result, err = client.DeleteSQLUserDefinedFunctionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLUserDefinedFunction", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "DeleteSQLUserDefinedFunction", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1020,6 +1029,7 @@ func (client SQLResourcesClient) DeleteSQLUserDefinedFunctionPreparer(ctx contex
 // http.Response Body if it receives an error.
 func (client SQLResourcesClient) DeleteSQLUserDefinedFunctionSender(req *http.Request) (future SQLResourcesDeleteSQLUserDefinedFunctionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -2207,7 +2217,7 @@ func (client SQLResourcesClient) MigrateSQLContainerToAutoscale(ctx context.Cont
 
 	result, err = client.MigrateSQLContainerToAutoscaleSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "MigrateSQLContainerToAutoscale", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "MigrateSQLContainerToAutoscale", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -2241,6 +2251,7 @@ func (client SQLResourcesClient) MigrateSQLContainerToAutoscalePreparer(ctx cont
 // http.Response Body if it receives an error.
 func (client SQLResourcesClient) MigrateSQLContainerToAutoscaleSender(req *http.Request) (future SQLResourcesMigrateSQLContainerToAutoscaleFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -2303,7 +2314,7 @@ func (client SQLResourcesClient) MigrateSQLContainerToManualThroughput(ctx conte
 
 	result, err = client.MigrateSQLContainerToManualThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "MigrateSQLContainerToManualThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "MigrateSQLContainerToManualThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -2337,6 +2348,7 @@ func (client SQLResourcesClient) MigrateSQLContainerToManualThroughputPreparer(c
 // http.Response Body if it receives an error.
 func (client SQLResourcesClient) MigrateSQLContainerToManualThroughputSender(req *http.Request) (future SQLResourcesMigrateSQLContainerToManualThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -2398,7 +2410,7 @@ func (client SQLResourcesClient) MigrateSQLDatabaseToAutoscale(ctx context.Conte
 
 	result, err = client.MigrateSQLDatabaseToAutoscaleSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "MigrateSQLDatabaseToAutoscale", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "MigrateSQLDatabaseToAutoscale", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -2431,6 +2443,7 @@ func (client SQLResourcesClient) MigrateSQLDatabaseToAutoscalePreparer(ctx conte
 // http.Response Body if it receives an error.
 func (client SQLResourcesClient) MigrateSQLDatabaseToAutoscaleSender(req *http.Request) (future SQLResourcesMigrateSQLDatabaseToAutoscaleFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -2492,7 +2505,7 @@ func (client SQLResourcesClient) MigrateSQLDatabaseToManualThroughput(ctx contex
 
 	result, err = client.MigrateSQLDatabaseToManualThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "MigrateSQLDatabaseToManualThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "MigrateSQLDatabaseToManualThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -2525,6 +2538,7 @@ func (client SQLResourcesClient) MigrateSQLDatabaseToManualThroughputPreparer(ct
 // http.Response Body if it receives an error.
 func (client SQLResourcesClient) MigrateSQLDatabaseToManualThroughputSender(req *http.Request) (future SQLResourcesMigrateSQLDatabaseToManualThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -2595,7 +2609,7 @@ func (client SQLResourcesClient) UpdateSQLContainerThroughput(ctx context.Contex
 
 	result, err = client.UpdateSQLContainerThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "UpdateSQLContainerThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "UpdateSQLContainerThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -2631,6 +2645,7 @@ func (client SQLResourcesClient) UpdateSQLContainerThroughputPreparer(ctx contex
 // http.Response Body if it receives an error.
 func (client SQLResourcesClient) UpdateSQLContainerThroughputSender(req *http.Request) (future SQLResourcesUpdateSQLContainerThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -2700,7 +2715,7 @@ func (client SQLResourcesClient) UpdateSQLDatabaseThroughput(ctx context.Context
 
 	result, err = client.UpdateSQLDatabaseThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "UpdateSQLDatabaseThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.SQLResourcesClient", "UpdateSQLDatabaseThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -2735,6 +2750,7 @@ func (client SQLResourcesClient) UpdateSQLDatabaseThroughputPreparer(ctx context
 // http.Response Body if it receives an error.
 func (client SQLResourcesClient) UpdateSQLDatabaseThroughputSender(req *http.Request) (future SQLResourcesUpdateSQLDatabaseThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

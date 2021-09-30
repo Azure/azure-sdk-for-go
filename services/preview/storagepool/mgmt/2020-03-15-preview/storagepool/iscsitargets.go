@@ -75,7 +75,7 @@ func (client IscsiTargetsClient) CreateOrUpdate(ctx context.Context, resourceGro
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -110,6 +110,7 @@ func (client IscsiTargetsClient) CreateOrUpdatePreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client IscsiTargetsClient) CreateOrUpdateSender(req *http.Request) (future IscsiTargetsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -171,7 +172,7 @@ func (client IscsiTargetsClient) Delete(ctx context.Context, resourceGroupName s
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagepool.IscsiTargetsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -204,6 +205,7 @@ func (client IscsiTargetsClient) DeletePreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client IscsiTargetsClient) DeleteSender(req *http.Request) (future IscsiTargetsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

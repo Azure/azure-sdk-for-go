@@ -142,7 +142,7 @@ func (client EnterpriseChannelsClient) Create(ctx context.Context, resourceGroup
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -176,6 +176,7 @@ func (client EnterpriseChannelsClient) CreatePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client EnterpriseChannelsClient) CreateSender(req *http.Request) (future EnterpriseChannelsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -234,7 +235,7 @@ func (client EnterpriseChannelsClient) Delete(ctx context.Context, resourceGroup
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -266,6 +267,7 @@ func (client EnterpriseChannelsClient) DeletePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client EnterpriseChannelsClient) DeleteSender(req *http.Request) (future EnterpriseChannelsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -536,7 +538,7 @@ func (client EnterpriseChannelsClient) Update(ctx context.Context, resourceGroup
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "botservice.EnterpriseChannelsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -570,6 +572,7 @@ func (client EnterpriseChannelsClient) UpdatePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client EnterpriseChannelsClient) UpdateSender(req *http.Request) (future EnterpriseChannelsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -77,7 +77,7 @@ func (client CassandraResourcesClient) CreateUpdateCassandraKeyspace(ctx context
 
 	result, err = client.CreateUpdateCassandraKeyspaceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "CreateUpdateCassandraKeyspace", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "CreateUpdateCassandraKeyspace", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -112,6 +112,7 @@ func (client CassandraResourcesClient) CreateUpdateCassandraKeyspacePreparer(ctx
 // http.Response Body if it receives an error.
 func (client CassandraResourcesClient) CreateUpdateCassandraKeyspaceSender(req *http.Request) (future CassandraResourcesCreateUpdateCassandraKeyspaceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -181,7 +182,7 @@ func (client CassandraResourcesClient) CreateUpdateCassandraTable(ctx context.Co
 
 	result, err = client.CreateUpdateCassandraTableSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "CreateUpdateCassandraTable", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "CreateUpdateCassandraTable", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -217,6 +218,7 @@ func (client CassandraResourcesClient) CreateUpdateCassandraTablePreparer(ctx co
 // http.Response Body if it receives an error.
 func (client CassandraResourcesClient) CreateUpdateCassandraTableSender(req *http.Request) (future CassandraResourcesCreateUpdateCassandraTableFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -278,7 +280,7 @@ func (client CassandraResourcesClient) DeleteCassandraKeyspace(ctx context.Conte
 
 	result, err = client.DeleteCassandraKeyspaceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "DeleteCassandraKeyspace", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "DeleteCassandraKeyspace", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -311,6 +313,7 @@ func (client CassandraResourcesClient) DeleteCassandraKeyspacePreparer(ctx conte
 // http.Response Body if it receives an error.
 func (client CassandraResourcesClient) DeleteCassandraKeyspaceSender(req *http.Request) (future CassandraResourcesDeleteCassandraKeyspaceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -372,7 +375,7 @@ func (client CassandraResourcesClient) DeleteCassandraTable(ctx context.Context,
 
 	result, err = client.DeleteCassandraTableSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "DeleteCassandraTable", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "DeleteCassandraTable", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -406,6 +409,7 @@ func (client CassandraResourcesClient) DeleteCassandraTablePreparer(ctx context.
 // http.Response Body if it receives an error.
 func (client CassandraResourcesClient) DeleteCassandraTableSender(req *http.Request) (future CassandraResourcesDeleteCassandraTableFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1024,7 +1028,7 @@ func (client CassandraResourcesClient) MigrateCassandraKeyspaceToAutoscale(ctx c
 
 	result, err = client.MigrateCassandraKeyspaceToAutoscaleSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "MigrateCassandraKeyspaceToAutoscale", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "MigrateCassandraKeyspaceToAutoscale", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1057,6 +1061,7 @@ func (client CassandraResourcesClient) MigrateCassandraKeyspaceToAutoscalePrepar
 // http.Response Body if it receives an error.
 func (client CassandraResourcesClient) MigrateCassandraKeyspaceToAutoscaleSender(req *http.Request) (future CassandraResourcesMigrateCassandraKeyspaceToAutoscaleFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1119,7 +1124,7 @@ func (client CassandraResourcesClient) MigrateCassandraKeyspaceToManualThroughpu
 
 	result, err = client.MigrateCassandraKeyspaceToManualThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "MigrateCassandraKeyspaceToManualThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "MigrateCassandraKeyspaceToManualThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1152,6 +1157,7 @@ func (client CassandraResourcesClient) MigrateCassandraKeyspaceToManualThroughpu
 // http.Response Body if it receives an error.
 func (client CassandraResourcesClient) MigrateCassandraKeyspaceToManualThroughputSender(req *http.Request) (future CassandraResourcesMigrateCassandraKeyspaceToManualThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1214,7 +1220,7 @@ func (client CassandraResourcesClient) MigrateCassandraTableToAutoscale(ctx cont
 
 	result, err = client.MigrateCassandraTableToAutoscaleSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "MigrateCassandraTableToAutoscale", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "MigrateCassandraTableToAutoscale", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1248,6 +1254,7 @@ func (client CassandraResourcesClient) MigrateCassandraTableToAutoscalePreparer(
 // http.Response Body if it receives an error.
 func (client CassandraResourcesClient) MigrateCassandraTableToAutoscaleSender(req *http.Request) (future CassandraResourcesMigrateCassandraTableToAutoscaleFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1311,7 +1318,7 @@ func (client CassandraResourcesClient) MigrateCassandraTableToManualThroughput(c
 
 	result, err = client.MigrateCassandraTableToManualThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "MigrateCassandraTableToManualThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "MigrateCassandraTableToManualThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1345,6 +1352,7 @@ func (client CassandraResourcesClient) MigrateCassandraTableToManualThroughputPr
 // http.Response Body if it receives an error.
 func (client CassandraResourcesClient) MigrateCassandraTableToManualThroughputSender(req *http.Request) (future CassandraResourcesMigrateCassandraTableToManualThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1415,7 +1423,7 @@ func (client CassandraResourcesClient) UpdateCassandraKeyspaceThroughput(ctx con
 
 	result, err = client.UpdateCassandraKeyspaceThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "UpdateCassandraKeyspaceThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "UpdateCassandraKeyspaceThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1450,6 +1458,7 @@ func (client CassandraResourcesClient) UpdateCassandraKeyspaceThroughputPreparer
 // http.Response Body if it receives an error.
 func (client CassandraResourcesClient) UpdateCassandraKeyspaceThroughputSender(req *http.Request) (future CassandraResourcesUpdateCassandraKeyspaceThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1521,7 +1530,7 @@ func (client CassandraResourcesClient) UpdateCassandraTableThroughput(ctx contex
 
 	result, err = client.UpdateCassandraTableThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "UpdateCassandraTableThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraResourcesClient", "UpdateCassandraTableThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1557,6 +1566,7 @@ func (client CassandraResourcesClient) UpdateCassandraTableThroughputPreparer(ct
 // http.Response Body if it receives an error.
 func (client CassandraResourcesClient) UpdateCassandraTableThroughputSender(req *http.Request) (future CassandraResourcesUpdateCassandraTableThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

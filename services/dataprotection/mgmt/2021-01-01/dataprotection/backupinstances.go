@@ -65,7 +65,7 @@ func (client BackupInstancesClient) AdhocBackup(ctx context.Context, vaultName s
 
 	result, err = client.AdhocBackupSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "AdhocBackup", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "AdhocBackup", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -100,6 +100,7 @@ func (client BackupInstancesClient) AdhocBackupPreparer(ctx context.Context, vau
 // http.Response Body if it receives an error.
 func (client BackupInstancesClient) AdhocBackupSender(req *http.Request) (future BackupInstancesAdhocBackupFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -172,7 +173,7 @@ func (client BackupInstancesClient) CreateOrUpdate(ctx context.Context, vaultNam
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -207,6 +208,7 @@ func (client BackupInstancesClient) CreateOrUpdatePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client BackupInstancesClient) CreateOrUpdateSender(req *http.Request) (future BackupInstancesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -254,7 +256,7 @@ func (client BackupInstancesClient) Delete(ctx context.Context, vaultName string
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -287,6 +289,7 @@ func (client BackupInstancesClient) DeletePreparer(ctx context.Context, vaultNam
 // http.Response Body if it receives an error.
 func (client BackupInstancesClient) DeleteSender(req *http.Request) (future BackupInstancesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -536,7 +539,7 @@ func (client BackupInstancesClient) TriggerRehydrate(ctx context.Context, resour
 
 	result, err = client.TriggerRehydrateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "TriggerRehydrate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "TriggerRehydrate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -571,6 +574,7 @@ func (client BackupInstancesClient) TriggerRehydratePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client BackupInstancesClient) TriggerRehydrateSender(req *http.Request) (future BackupInstancesTriggerRehydrateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -618,7 +622,7 @@ func (client BackupInstancesClient) TriggerRestore(ctx context.Context, vaultNam
 
 	result, err = client.TriggerRestoreSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "TriggerRestore", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "TriggerRestore", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -653,6 +657,7 @@ func (client BackupInstancesClient) TriggerRestorePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client BackupInstancesClient) TriggerRestoreSender(req *http.Request) (future BackupInstancesTriggerRestoreFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -724,7 +729,7 @@ func (client BackupInstancesClient) ValidateForBackup(ctx context.Context, vault
 
 	result, err = client.ValidateForBackupSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "ValidateForBackup", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "ValidateForBackup", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -758,6 +763,7 @@ func (client BackupInstancesClient) ValidateForBackupPreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client BackupInstancesClient) ValidateForBackupSender(req *http.Request) (future BackupInstancesValidateForBackupFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -806,7 +812,7 @@ func (client BackupInstancesClient) ValidateRestore(ctx context.Context, vaultNa
 
 	result, err = client.ValidateRestoreSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "ValidateRestore", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dataprotection.BackupInstancesClient", "ValidateRestore", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -841,6 +847,7 @@ func (client BackupInstancesClient) ValidateRestorePreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client BackupInstancesClient) ValidateRestoreSender(req *http.Request) (future BackupInstancesValidateRestoreFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

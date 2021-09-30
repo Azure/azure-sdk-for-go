@@ -71,7 +71,7 @@ func (client ExperimentsClient) Create(ctx context.Context, resourceGroupName st
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.ExperimentsClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.ExperimentsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -104,6 +104,7 @@ func (client ExperimentsClient) CreatePreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client ExperimentsClient) CreateSender(req *http.Request) (future ExperimentsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -167,7 +168,7 @@ func (client ExperimentsClient) Delete(ctx context.Context, resourceGroupName st
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.ExperimentsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.ExperimentsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -200,6 +201,7 @@ func (client ExperimentsClient) DeletePreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client ExperimentsClient) DeleteSender(req *http.Request) (future ExperimentsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

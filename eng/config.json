@@ -5,6 +5,10 @@
             "CoverageGoal": 0.68
         },
         {
+            "Name": "azcosmos",
+            "CoverageGoal": 0.40
+        },
+        {
             "Name": "azcore",
             "CoverageGoal": 0.85
         },
@@ -15,6 +19,10 @@
         {
             "Name": "data",
             "CoverageGoal": 0.62
+        },
+        {
+            "Name": "azblob",
+            "CoverageGoal": 0.45
         }
     ]
 }

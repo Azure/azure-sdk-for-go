@@ -55,7 +55,7 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 
 	result, err = client.CreateOrUpdateManagedHostingEnvironmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "CreateOrUpdateManagedHostingEnvironment", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "CreateOrUpdateManagedHostingEnvironment", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -89,6 +89,7 @@ func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvir
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) CreateOrUpdateManagedHostingEnvironmentSender(req *http.Request) (future ManagedHostingEnvironmentsCreateOrUpdateManagedHostingEnvironmentFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -136,7 +137,7 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironment(c
 
 	result, err = client.DeleteManagedHostingEnvironmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "DeleteManagedHostingEnvironment", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.ManagedHostingEnvironmentsClient", "DeleteManagedHostingEnvironment", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -171,6 +172,7 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentPr
 // http.Response Body if it receives an error.
 func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentSender(req *http.Request) (future ManagedHostingEnvironmentsDeleteManagedHostingEnvironmentFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -188,7 +190,7 @@ func (client ManagedHostingEnvironmentsClient) DeleteManagedHostingEnvironmentRe
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

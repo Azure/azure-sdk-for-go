@@ -71,7 +71,7 @@ func (client DiskPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -108,6 +108,7 @@ func (client DiskPoolsClient) CreateOrUpdatePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client DiskPoolsClient) CreateOrUpdateSender(req *http.Request) (future DiskPoolsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -165,7 +166,7 @@ func (client DiskPoolsClient) Deallocate(ctx context.Context, resourceGroupName 
 
 	result, err = client.DeallocateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Deallocate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Deallocate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -197,6 +198,7 @@ func (client DiskPoolsClient) DeallocatePreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client DiskPoolsClient) DeallocateSender(req *http.Request) (future DiskPoolsDeallocateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -252,7 +254,7 @@ func (client DiskPoolsClient) Delete(ctx context.Context, resourceGroupName stri
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -284,6 +286,7 @@ func (client DiskPoolsClient) DeletePreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client DiskPoolsClient) DeleteSender(req *http.Request) (future DiskPoolsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -798,7 +801,7 @@ func (client DiskPoolsClient) Start(ctx context.Context, resourceGroupName strin
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Start", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Start", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -830,6 +833,7 @@ func (client DiskPoolsClient) StartPreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client DiskPoolsClient) StartSender(req *http.Request) (future DiskPoolsStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -886,7 +890,7 @@ func (client DiskPoolsClient) Update(ctx context.Context, resourceGroupName stri
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagepool.DiskPoolsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -920,6 +924,7 @@ func (client DiskPoolsClient) UpdatePreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client DiskPoolsClient) UpdateSender(req *http.Request) (future DiskPoolsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

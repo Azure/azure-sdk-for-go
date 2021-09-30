@@ -175,7 +175,7 @@ func TestDeviceCodeCredential_GetTokenSuccess(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	options := DeviceCodeCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
@@ -198,7 +198,7 @@ func TestDeviceCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -220,7 +220,7 @@ func TestDeviceCodeCredential_GetTokenAuthorizationPending(t *testing.T) {
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.UserPrompt = func(DeviceCodeMessage) {}
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
@@ -242,7 +242,7 @@ func TestDeviceCodeCredential_GetTokenExpiredToken(t *testing.T) {
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.UserPrompt = func(DeviceCodeMessage) {}
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
@@ -262,7 +262,7 @@ func TestDeviceCodeCredential_GetTokenWithRefreshTokenFailure(t *testing.T) {
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -272,9 +272,12 @@ func TestDeviceCodeCredential_GetTokenWithRefreshTokenFailure(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
-	var aadErr *AADAuthenticationFailedError
-	if !errors.As(err, &aadErr) {
-		t.Fatalf("Did not receive an AADAuthenticationFailedError but was expecting one")
+	var authFailed *AuthenticationFailedError
+	if !errors.As(err, &authFailed) {
+		t.Fatalf("Expected AuthenticationFailedError, got %T", err)
+	}
+	if authFailed.RawResponse() == nil {
+		t.Fatalf("Expected error to include a response")
 	}
 }
 
@@ -286,7 +289,7 @@ func TestDeviceCodeCredential_GetTokenWithRefreshTokenSuccess(t *testing.T) {
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.UserPrompt = func(DeviceCodeMessage) {}
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
@@ -312,7 +315,7 @@ func TestBearerPolicy_DeviceCodeCredential(t *testing.T) {
 	options.ClientID = clientID
 	options.TenantID = tenantID
 	options.HTTPClient = srv
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.UserPrompt = func(DeviceCodeMessage) {}
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {

@@ -55,7 +55,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironment(ctx con
 
 	result, err = client.CreateOrUpdateHostingEnvironmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateHostingEnvironment", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -89,6 +89,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentPreparer
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) CreateOrUpdateHostingEnvironmentSender(req *http.Request) (future HostingEnvironmentsCreateOrUpdateHostingEnvironmentFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -136,7 +137,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePool(ctx context.
 
 	result, err = client.CreateOrUpdateMultiRolePoolSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateMultiRolePool", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -170,6 +171,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolPreparer(ctx 
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) CreateOrUpdateMultiRolePoolSender(req *http.Request) (future HostingEnvironmentsCreateOrUpdateMultiRolePoolFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -218,7 +220,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPool(ctx context.Con
 
 	result, err = client.CreateOrUpdateWorkerPoolSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "CreateOrUpdateWorkerPool", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -253,6 +255,7 @@ func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolPreparer(ctx con
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) CreateOrUpdateWorkerPoolSender(req *http.Request) (future HostingEnvironmentsCreateOrUpdateWorkerPoolFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -300,7 +303,7 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironment(ctx context.Con
 
 	result, err = client.DeleteHostingEnvironmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "DeleteHostingEnvironment", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "DeleteHostingEnvironment", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -335,6 +338,7 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironmentPreparer(ctx con
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) DeleteHostingEnvironmentSender(req *http.Request) (future HostingEnvironmentsDeleteHostingEnvironmentFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -352,7 +356,7 @@ func (client HostingEnvironmentsClient) DeleteHostingEnvironmentResponder(resp *
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusBadRequest, http.StatusNotFound, http.StatusConflict),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -3543,7 +3547,7 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironment(ctx context.Con
 
 	result, err = client.ResumeHostingEnvironmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "ResumeHostingEnvironment", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "ResumeHostingEnvironment", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -3575,6 +3579,7 @@ func (client HostingEnvironmentsClient) ResumeHostingEnvironmentPreparer(ctx con
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) ResumeHostingEnvironmentSender(req *http.Request) (future HostingEnvironmentsResumeHostingEnvironmentFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -3662,7 +3667,7 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironment(ctx context.Co
 
 	result, err = client.SuspendHostingEnvironmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "SuspendHostingEnvironment", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.HostingEnvironmentsClient", "SuspendHostingEnvironment", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -3694,6 +3699,7 @@ func (client HostingEnvironmentsClient) SuspendHostingEnvironmentPreparer(ctx co
 // http.Response Body if it receives an error.
 func (client HostingEnvironmentsClient) SuspendHostingEnvironmentSender(req *http.Request) (future HostingEnvironmentsSuspendHostingEnvironmentFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

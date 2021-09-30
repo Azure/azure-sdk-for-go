@@ -16,3 +16,5 @@ stages:
   parameters:
     ServiceDirectory: 'internal'
     RunTests: true
+    EnvVars:
+      AZURE_RECORD_MODE: 'record'

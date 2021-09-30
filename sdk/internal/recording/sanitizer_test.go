@@ -296,7 +296,6 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 
 	require.Equal(t, data.Entries[0].RequestHeaders["testproxy-header"], "Sanitized")
 	require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "Sanitized")
-	// require.Equal(t, data.Entries[0].RequestHeaders["complexregex"], "https://fakeaccount.table.core.windows.net")
 }
 
 func TestBodyKeySanitizer(t *testing.T) {

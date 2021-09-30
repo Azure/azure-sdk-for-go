@@ -31,24 +31,27 @@ type ResourceType struct {
 	stringValue string
 }
 
-func (t ResourceType) Namespace() string {
+func (t *ResourceType) Namespace() string {
 	return t.namespace
 }
 
-func (t ResourceType) Type() string {
+func (t *ResourceType) Type() string {
 	return t.typeName
 }
 
-func (t ResourceType) LastType() string {
+func (t *ResourceType) LastType() string {
 	return t.types[len(t.types)-1]
 }
 
-func (t ResourceType) String() string {
+func (t *ResourceType) String() string {
 	return t.stringValue
 }
 
 // IsParentOf returns true when the receiver is the parent resource type of the child.
-func (t ResourceType) IsParentOf(child ResourceType) bool {
+func (t *ResourceType) IsParentOf(child *ResourceType) bool {
+	if child == nil {
+		return false
+	}
 	if !strings.EqualFold(t.Namespace(), child.Namespace()) {
 		return false
 	}
@@ -68,8 +71,8 @@ func (t ResourceType) IsParentOf(child ResourceType) bool {
 
 // NewResourceType initiate a simple instance of ResourceType using provider namespace such as "Microsoft.Network" and
 // typeName such as "virtualNetworks/subnets"
-func NewResourceType(providerNamespace, typeName string) ResourceType {
-	return ResourceType{
+func NewResourceType(providerNamespace, typeName string) *ResourceType {
+	return &ResourceType{
 		namespace:   providerNamespace,
 		typeName:    typeName,
 		types:       splitStringAndOmitEmpty(typeName, "/"),
@@ -78,7 +81,7 @@ func NewResourceType(providerNamespace, typeName string) ResourceType {
 }
 
 // AppendChild initiate an instance using the receiver ResourceType as parent and append childType to it.
-func (t ResourceType) AppendChild(childType string) ResourceType {
+func (t ResourceType) AppendChild(childType string) *ResourceType {
 	return NewResourceType(t.Namespace(), fmt.Sprintf("%s/%s", t.Type(), childType))
 }
 
@@ -93,25 +96,20 @@ func ParseResourceType(resourceIdOrType string) (*ResourceType, error) {
 		return nil, fmt.Errorf("invalid resource id or type: %s", resourceIdOrType)
 	}
 
-	resourceType := ResourceType{}
 	// if the type is just subscriptions, it is a built-in type in the Microsoft.Resources namespace
 	if len(parts) == 1 {
 		// Simple resource type
-		resourceType = NewResourceType(builtInResourceNamespace, parts[0])
-		return &resourceType, nil
+		return NewResourceType(builtInResourceNamespace, parts[0]), nil
 	} else if strings.Contains(parts[0], ".") {
 		// Handle resource types (Microsoft.Compute/virtualMachines, Microsoft.Network/virtualNetworks/subnets)
-		// Type
 		// it is a full type name
-		resourceType = NewResourceType(parts[0], strings.Join(parts[1:], "/"))
-		return &resourceType, nil
+		return NewResourceType(parts[0], strings.Join(parts[1:], "/")), nil
 	} else {
 		// Check if ResourceIdentifier
 		id, err := ParseResourceIdentifier(resourceIdOrType)
 		if err != nil {
 			return nil, fmt.Errorf("invalid resource id: %s", resourceIdOrType)
 		}
-		resourceType = NewResourceType(id.resourceType.namespace, id.resourceType.typeName)
-		return &resourceType, nil
+		return NewResourceType(id.resourceType.namespace, id.resourceType.typeName), nil
 	}
 }

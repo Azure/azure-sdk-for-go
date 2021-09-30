@@ -36,38 +36,38 @@ type ResourceIdentifier struct {
 	provider          string
 	resourceGroupName string
 	location          string
-	resourceType      ResourceType
+	resourceType      *ResourceType
 	name              string
 	isChild           bool
 
 	stringValue string
 }
 
-func (id ResourceIdentifier) Parent() *ResourceIdentifier {
+func (id *ResourceIdentifier) Parent() *ResourceIdentifier {
 	return id.parent
 }
 
-func (id ResourceIdentifier) SubscriptionId() string {
+func (id *ResourceIdentifier) SubscriptionId() string {
 	return id.subscriptionId
 }
 
-func (id ResourceIdentifier) Provider() string {
+func (id *ResourceIdentifier) Provider() string {
 	return id.provider
 }
 
-func (id ResourceIdentifier) ResourceGroupName() string {
+func (id *ResourceIdentifier) ResourceGroupName() string {
 	return id.resourceGroupName
 }
 
-func (id ResourceIdentifier) Location() string {
+func (id *ResourceIdentifier) Location() string {
 	return id.location
 }
 
-func (id ResourceIdentifier) ResourceType() ResourceType {
+func (id *ResourceIdentifier) ResourceType() *ResourceType {
 	return id.resourceType
 }
 
-func (id ResourceIdentifier) Name() string {
+func (id *ResourceIdentifier) Name() string {
 	return id.name
 }
 
@@ -77,7 +77,7 @@ func newResourceIdentifier(parent *ResourceIdentifier, resourceTypeName string, 
 	return id
 }
 
-func newResourceIdentifierWithResourceType(parent *ResourceIdentifier, resourceType ResourceType, resourceName string) *ResourceIdentifier {
+func newResourceIdentifierWithResourceType(parent *ResourceIdentifier, resourceType *ResourceType, resourceName string) *ResourceIdentifier {
 	id := &ResourceIdentifier{}
 	id.init(parent, resourceType, resourceName, true)
 	return id
@@ -89,7 +89,7 @@ func newResourceIdentifierWithProvider(parent *ResourceIdentifier, providerNames
 	return id
 }
 
-func chooseResourceType(resourceTypeName string, parent *ResourceIdentifier) ResourceType {
+func chooseResourceType(resourceTypeName string, parent *ResourceIdentifier) *ResourceType {
 	switch strings.ToLower(resourceTypeName) {
 	case resourceGroupsLowerKey:
 		return ResourceGroupResourceType
@@ -100,7 +100,7 @@ func chooseResourceType(resourceTypeName string, parent *ResourceIdentifier) Res
 	}
 }
 
-func (id *ResourceIdentifier) init(parent *ResourceIdentifier, resourceType ResourceType, name string, isChild bool) {
+func (id *ResourceIdentifier) init(parent *ResourceIdentifier, resourceType *ResourceType, name string, isChild bool) {
 	if parent != nil {
 		id.provider = parent.provider
 		id.subscriptionId = parent.subscriptionId

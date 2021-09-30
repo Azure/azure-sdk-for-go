@@ -109,11 +109,11 @@ func secretAttributesFromGenerated(i *internal.SecretAttributes) *Attributes {
 	return &Attributes{
 		RecoverableDays: i.RecoverableDays,
 		RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.RecoveryLevel).ToPtr(),
-		Enabled:   i.Enabled,
-		Expires:   i.Expires,
-		NotBefore: i.NotBefore,
-		Created:   i.Created,
-		Updated:   i.Updated,
+		Enabled:         i.Enabled,
+		Expires:         i.Expires,
+		NotBefore:       i.NotBefore,
+		Created:         i.Created,
+		Updated:         i.Updated,
 	}
 }
 
@@ -172,7 +172,7 @@ func deletedSecretItemFromGenerated(i *internal.DeletedSecretItem) DeletedSecret
 		RecoveryID:         i.RecoveryID,
 		DeletedDate:        i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		Item:         secretItemFromGenerated(&i.SecretItem),
+		Item:               secretItemFromGenerated(&i.SecretItem),
 	}
 }
 

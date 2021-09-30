@@ -389,7 +389,7 @@ func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSe
 		RecoveryID:         i.RecoveryID,
 		DeletedDate:        i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		Bundle:       secretBundleFromGenerated(i.SecretBundle),
+		Bundle:             secretBundleFromGenerated(i.SecretBundle),
 	}
 }
 
@@ -543,11 +543,11 @@ func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSe
 			KID:         i.Kid,
 			Managed:     i.Managed,
 			Attributes: &Attributes{
-				Enabled:   i.Attributes.Enabled,
-				Expires:   i.Attributes.Expires,
-				NotBefore: i.Attributes.NotBefore,
-				Created:   i.Attributes.Created,
-				Updated:   i.Attributes.Updated,
+				Enabled:         i.Attributes.Enabled,
+				Expires:         i.Attributes.Expires,
+				NotBefore:       i.Attributes.NotBefore,
+				Created:         i.Attributes.Created,
+				Updated:         i.Attributes.Updated,
 				RecoverableDays: i.Attributes.RecoverableDays,
 				RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel).ToPtr(),
 			},
@@ -681,11 +681,11 @@ func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverD
 	var a *Attributes
 	if i.Attributes != nil {
 		a = &Attributes{
-			Enabled:   i.Attributes.Enabled,
-			Expires:   i.Attributes.Expires,
-			NotBefore: i.Attributes.NotBefore,
-			Created:   i.Attributes.Created,
-			Updated:   i.Attributes.Updated,
+			Enabled:         i.Attributes.Enabled,
+			Expires:         i.Attributes.Expires,
+			NotBefore:       i.Attributes.NotBefore,
+			Created:         i.Attributes.Created,
+			Updated:         i.Attributes.Updated,
 			RecoverableDays: i.Attributes.RecoverableDays,
 			RecoveryLevel:   deletionRecoveryLevelFromGenerated(*i.Attributes.RecoveryLevel).ToPtr(),
 		}

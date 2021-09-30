@@ -302,7 +302,7 @@ func (c *managedIdentityClient) createAzureArcAuthRequest(ctx context.Context, k
 		return nil, err
 	}
 	request.Raw().Header.Set(headerMetadata, "true")
-	request.Raw().Header.Set(headerAuthorization, fmt.Sprintf("Basic %s", key))
+	request.Raw().Header.Set("Authorization", fmt.Sprintf("Basic %s", key))
 	q := request.Raw().URL.Query()
 	q.Add("api-version", azureArcAPIVersion)
 	q.Add("resource", strings.Join(resources, " "))

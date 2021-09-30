@@ -41,7 +41,7 @@ func TestBearerPolicy_SuccessGetToken(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {
@@ -68,7 +68,7 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
 	if err != nil {
@@ -99,7 +99,7 @@ func TestBearerTokenPolicy_TokenExpired(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespShortLived)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {
@@ -127,7 +127,7 @@ func TestRetryPolicy_NonRetriable(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
 	if err != nil {
@@ -150,7 +150,7 @@ func TestRetryPolicy_HTTPRequest(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
 	if err != nil {
@@ -175,7 +175,7 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &ClientSecretCredentialOptions{
 		HTTPClient:    srv,
-		AuthorityHost: srv.URL(),
+		AuthorityHost: AuthorityHost(srv.URL()),
 		Retry: policy.RetryOptions{
 			// use a negative try timeout to trigger a deadline exceeded error causing GetToken() to fail
 			TryTimeout:    -1 * time.Nanosecond,
@@ -210,7 +210,7 @@ func TestBearerTokenWithAuxiliaryTenants(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse()
 	options := ClientSecretCredentialOptions{
-		AuthorityHost: srv.URL(),
+		AuthorityHost: AuthorityHost(srv.URL()),
 		HTTPClient:    srv,
 	}
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)

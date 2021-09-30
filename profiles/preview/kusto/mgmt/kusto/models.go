@@ -12,7 +12,7 @@ package kusto
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2021-01-01/kusto"
+	original "github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2021-08-27/kusto"
 )
 
 const (
@@ -69,6 +69,13 @@ type BlobStorageEventType = original.BlobStorageEventType
 const (
 	BlobStorageEventTypeMicrosoftStorageBlobCreated BlobStorageEventType = original.BlobStorageEventTypeMicrosoftStorageBlobCreated
 	BlobStorageEventTypeMicrosoftStorageBlobRenamed BlobStorageEventType = original.BlobStorageEventTypeMicrosoftStorageBlobRenamed
+)
+
+type ClusterNetworkAccessFlag = original.ClusterNetworkAccessFlag
+
+const (
+	ClusterNetworkAccessFlagDisabled ClusterNetworkAccessFlag = original.ClusterNetworkAccessFlagDisabled
+	ClusterNetworkAccessFlagEnabled  ClusterNetworkAccessFlag = original.ClusterNetworkAccessFlagEnabled
 )
 
 type ClusterPrincipalRole = original.ClusterPrincipalRole
@@ -251,6 +258,13 @@ const (
 	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
 )
 
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
+)
+
 type Reason = original.Reason
 
 const (
@@ -288,9 +302,11 @@ const (
 	TypeMicrosoftKustoclustersdatabases                      Type = original.TypeMicrosoftKustoclustersdatabases
 )
 
+type AcceptedAudiences = original.AcceptedAudiences
 type AttachedDatabaseConfiguration = original.AttachedDatabaseConfiguration
 type AttachedDatabaseConfigurationListResult = original.AttachedDatabaseConfigurationListResult
 type AttachedDatabaseConfigurationProperties = original.AttachedDatabaseConfigurationProperties
+type AttachedDatabaseConfigurationsCheckNameRequest = original.AttachedDatabaseConfigurationsCheckNameRequest
 type AttachedDatabaseConfigurationsClient = original.AttachedDatabaseConfigurationsClient
 type AttachedDatabaseConfigurationsCreateOrUpdateFuture = original.AttachedDatabaseConfigurationsCreateOrUpdateFuture
 type AttachedDatabaseConfigurationsDeleteFuture = original.AttachedDatabaseConfigurationsDeleteFuture
@@ -358,6 +374,8 @@ type DatabasesCreateOrUpdateFuture = original.DatabasesCreateOrUpdateFuture
 type DatabasesDeleteFuture = original.DatabasesDeleteFuture
 type DatabasesUpdateFuture = original.DatabasesUpdateFuture
 type DiagnoseVirtualNetworkResult = original.DiagnoseVirtualNetworkResult
+type EndpointDependency = original.EndpointDependency
+type EndpointDetail = original.EndpointDetail
 type EventGridConnectionProperties = original.EventGridConnectionProperties
 type EventGridDataConnection = original.EventGridDataConnection
 type EventHubConnectionProperties = original.EventHubConnectionProperties
@@ -372,6 +390,14 @@ type KeyVaultProperties = original.KeyVaultProperties
 type LanguageExtension = original.LanguageExtension
 type LanguageExtensionsList = original.LanguageExtensionsList
 type ListResourceSkusResult = original.ListResourceSkusResult
+type ManagedPrivateEndpoint = original.ManagedPrivateEndpoint
+type ManagedPrivateEndpointListResult = original.ManagedPrivateEndpointListResult
+type ManagedPrivateEndpointProperties = original.ManagedPrivateEndpointProperties
+type ManagedPrivateEndpointsCheckNameRequest = original.ManagedPrivateEndpointsCheckNameRequest
+type ManagedPrivateEndpointsClient = original.ManagedPrivateEndpointsClient
+type ManagedPrivateEndpointsCreateOrUpdateFuture = original.ManagedPrivateEndpointsCreateOrUpdateFuture
+type ManagedPrivateEndpointsDeleteFuture = original.ManagedPrivateEndpointsDeleteFuture
+type ManagedPrivateEndpointsUpdateFuture = original.ManagedPrivateEndpointsUpdateFuture
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
@@ -383,6 +409,23 @@ type OperationResultProperties = original.OperationResultProperties
 type OperationsClient = original.OperationsClient
 type OperationsResultsClient = original.OperationsResultsClient
 type OptimizedAutoscale = original.OptimizedAutoscale
+type OutboundNetworkDependenciesEndpoint = original.OutboundNetworkDependenciesEndpoint
+type OutboundNetworkDependenciesEndpointListResult = original.OutboundNetworkDependenciesEndpointListResult
+type OutboundNetworkDependenciesEndpointListResultIterator = original.OutboundNetworkDependenciesEndpointListResultIterator
+type OutboundNetworkDependenciesEndpointListResultPage = original.OutboundNetworkDependenciesEndpointListResultPage
+type OutboundNetworkDependenciesEndpointProperties = original.OutboundNetworkDependenciesEndpointProperties
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsCreateOrUpdateFuture = original.PrivateEndpointConnectionsCreateOrUpdateFuture
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateEndpointProperty = original.PrivateEndpointProperty
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionStateProperty = original.PrivateLinkServiceConnectionStateProperty
 type ProxyResource = original.ProxyResource
 type ReadOnlyFollowingDatabase = original.ReadOnlyFollowingDatabase
 type ReadOnlyFollowingDatabaseProperties = original.ReadOnlyFollowingDatabaseProperties
@@ -445,6 +488,12 @@ func NewDatabasesClient(subscriptionID string) DatabasesClient {
 func NewDatabasesClientWithBaseURI(baseURI string, subscriptionID string) DatabasesClient {
 	return original.NewDatabasesClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewManagedPrivateEndpointsClient(subscriptionID string) ManagedPrivateEndpointsClient {
+	return original.NewManagedPrivateEndpointsClient(subscriptionID)
+}
+func NewManagedPrivateEndpointsClientWithBaseURI(baseURI string, subscriptionID string) ManagedPrivateEndpointsClient {
+	return original.NewManagedPrivateEndpointsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationListResultIterator(page OperationListResultPage) OperationListResultIterator {
 	return original.NewOperationListResultIterator(page)
 }
@@ -462,6 +511,24 @@ func NewOperationsResultsClient(subscriptionID string) OperationsResultsClient {
 }
 func NewOperationsResultsClientWithBaseURI(baseURI string, subscriptionID string) OperationsResultsClient {
 	return original.NewOperationsResultsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewOutboundNetworkDependenciesEndpointListResultIterator(page OutboundNetworkDependenciesEndpointListResultPage) OutboundNetworkDependenciesEndpointListResultIterator {
+	return original.NewOutboundNetworkDependenciesEndpointListResultIterator(page)
+}
+func NewOutboundNetworkDependenciesEndpointListResultPage(cur OutboundNetworkDependenciesEndpointListResult, getNextPage func(context.Context, OutboundNetworkDependenciesEndpointListResult) (OutboundNetworkDependenciesEndpointListResult, error)) OutboundNetworkDependenciesEndpointListResultPage {
+	return original.NewOutboundNetworkDependenciesEndpointListResultPage(cur, getNextPage)
+}
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewScriptsClient(subscriptionID string) ScriptsClient {
 	return original.NewScriptsClient(subscriptionID)
@@ -483,6 +550,9 @@ func PossibleAzureSkuTierValues() []AzureSkuTier {
 }
 func PossibleBlobStorageEventTypeValues() []BlobStorageEventType {
 	return original.PossibleBlobStorageEventTypeValues()
+}
+func PossibleClusterNetworkAccessFlagValues() []ClusterNetworkAccessFlag {
+	return original.PossibleClusterNetworkAccessFlagValues()
 }
 func PossibleClusterPrincipalRoleValues() []ClusterPrincipalRole {
 	return original.PossibleClusterPrincipalRoleValues()
@@ -534,6 +604,9 @@ func PossiblePrincipalsModificationKindValues() []PrincipalsModificationKind {
 }
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
 }
 func PossibleReasonValues() []Reason {
 	return original.PossibleReasonValues()

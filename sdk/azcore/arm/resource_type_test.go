@@ -10,7 +10,7 @@ import "testing"
 
 var (
 	resourceTypeData = map[string]struct {
-		namespace        string
+		namespace    string
 		resourceType string
 		typesLen     int
 	}{
@@ -50,7 +50,7 @@ var (
 )
 
 func TestParseResourceType(t *testing.T) {
-	for input, expected := range resourceTypeData{
+	for input, expected := range resourceTypeData {
 		resourceType, err := ParseResourceType(input)
 		if err != nil {
 			t.Fatalf("unexpected error: %+v", err)

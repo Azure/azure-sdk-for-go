@@ -176,9 +176,6 @@ func isPermanentNetError(err error) bool {
 	return false
 }
 
-// 2021/09/30 20:46:14 [42] ERROR: error: amqp receiver close error: read tcp 192.168.1.16:50628->13.66.228.204:5671: wsarecv: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
-// amqp session close error: read tcp 192.168.1.16:50628->13.66.228.204:5671: wsarecv: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
-
 func isEOF(err error) bool {
 	return errors.Is(err, io.EOF)
 }

@@ -115,7 +115,7 @@ stages:
           GoVersion: $(go.version)
           RunTests: ${{ parameters.RunTests }}
           EnvVars:
-            AZURE_RECORD_MODE: ${{ coalesce(parameters.EnvVars.AZURE_RECORD_MODE, 'playback') }
+            AZURE_RECORD_MODE: ${{ coalesce(parameters.EnvVars.AZURE_RECORD_MODE, 'playback') }}
 
       - pwsh: |
           docker logs ambitious_azsdk_test_proxy

@@ -61,6 +61,14 @@ func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err erro
 	return req.Next()
 }
 
+func lookupEnvVar(s string) string {
+	ret, ok := os.LookupEnv(s)
+	if !ok {
+		panic(fmt.Sprintf("Could not find env var: '%s'", s))
+	}
+	return ret
+}
+
 func createClient(t *testing.T) (*Client, error) {
 	vaultUrl := recording.GetEnvVariable(t, "AZURE_KEYVAULT_URL", "https://fakekvurl.vault.azure.net/")
 	if recording.GetRecordMode() == "playback" {
@@ -79,12 +87,10 @@ func createClient(t *testing.T) (*Client, error) {
 
 	var cred azcore.TokenCredential
 	if recording.GetRecordMode() == "record" {
-		cred, err = azidentity.NewClientSecretCredential(
-			os.Getenv("KEYVAULT_TENANT_ID"),
-			os.Getenv("KEYVAULT_CLIENT_ID"),
-			os.Getenv("KEYVAULT_CLIENT_SECRET"),
-			nil,
-		)
+		tenantId := lookupEnvVar("KEYVAULT_TENANT_ID")
+		clientId := lookupEnvVar("KEYVAULT_CLIENT_ID")
+		clientSecret := lookupEnvVar("KEYVAULT_CLIENT_SECRET")
+		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
 		require.NoError(t, err)
 	} else {
 		cred = NewFakeCredential("fake", "fake")

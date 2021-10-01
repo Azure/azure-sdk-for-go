@@ -13,7 +13,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"golang.org/x/crypto/pkcs12"
 )
 
@@ -197,11 +196,6 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.
 	}
 	logGetTokenSuccess(c, opts)
 	return tk, nil
-}
-
-// NewAuthenticationPolicy implements the azcore.Credential interface on ClientCertificateCredential.
-func (c *ClientCertificateCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
-	return newBearerTokenPolicy(c, options)
 }
 
 var _ azcore.TokenCredential = (*ClientCertificateCredential)(nil)

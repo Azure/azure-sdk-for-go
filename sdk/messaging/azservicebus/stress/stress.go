@@ -26,15 +26,15 @@ import (
 // | summarize Sum=sum(valueCount) by bin(timestamp, 30s), name
 // | render timechart
 
-type Stats struct {
+type stats struct {
 	Sent     int32
 	Received int32
 	Errors   int32
 }
 
-var processorStats Stats
-var receiverStats Stats
-var senderStats Stats
+var processorStats stats
+var receiverStats stats
+var senderStats stats
 
 func main() {
 	runBasicSendAndReceiveTest()
@@ -136,11 +136,11 @@ func runBasicSendAndReceiveTest() {
 		}
 	}()
 
-	go func() {
-		for {
-			runBatchReceiver(ctx, serviceBusClient, topicName, "batch", telemetryClient)
-		}
-	}()
+	// go func() {
+	// 	for {
+	// 		runBatchReceiver(ctx, serviceBusClient, topicName, "batch", telemetryClient)
+	// 	}
+	// }()
 
 	go func() {
 		for {
@@ -280,7 +280,7 @@ func createSubscriptions(telemetryClient appinsights.TelemetryClient, connection
 	}, nil
 }
 
-func trackException(stats *Stats, telemetryClient appinsights.TelemetryClient, message string, err error) {
+func trackException(stats *stats, telemetryClient appinsights.TelemetryClient, message string, err error) {
 	log.Printf("Exception: %s: %s", message, err.Error())
 
 	if stats != nil {

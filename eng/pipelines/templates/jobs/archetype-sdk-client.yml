@@ -115,7 +115,7 @@ stages:
           GoVersion: $(go.version)
           RunTests: ${{ parameters.RunTests }}
           EnvVars:
-            AZURE_RECORD_MODE: ${{ coalesce(parameters.AZURE_RECORD_MODE, 'playback') }}
+            AZURE_RECORD_MODE: ${{ coalesce(parameters.EnvVars.AZURE_RECORD_MODE, 'playback') }}
 
     - job: Analyze
       displayName: Analyze

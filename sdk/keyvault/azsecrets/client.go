@@ -393,7 +393,7 @@ func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSe
 	}
 }
 
-// GetDeletedSecrets gets the specified deleted secret. The operation returns the deleted secret along with its attributes.
+// GetDeletedSecret gets the specified deleted secret. The operation returns the deleted secret along with its attributes.
 // This operation requires the secrets/get permission.
 func (c *Client) GetDeletedSecret(ctx context.Context, secretName string, options *GetDeletedSecretOptions) (GetDeletedSecretResponse, error) {
 	if options == nil {

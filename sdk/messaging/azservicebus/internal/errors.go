@@ -4,16 +4,30 @@
 package internal
 
 import (
+	"context"
+	"errors"
 	"fmt"
+	"io"
+	"net"
 	"reflect"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v3/rpc"
 	"github.com/Azure/go-amqp"
+	"github.com/devigned/tab"
 )
 
 type NonRetriable interface {
+	error
 	NonRetriable()
+}
+
+// IsNonRetriable indicates an error is fatal. Typically, this means
+// the connection or link has been closed.
+func IsNonRetriable(err error) bool {
+	var nonRetriable NonRetriable
+	return errors.As(err, &nonRetriable)
 }
 
 // Error Conditions
@@ -109,4 +123,108 @@ func IsErrNotFound(err error) bool {
 
 func (e ErrConnectionClosed) Error() string {
 	return fmt.Sprintf("the connection has been closed: %s", string(e))
+}
+
+// Leveraging @serbrech's fine work from go-shuttle:
+// https://github.com/Azure/go-shuttle/blob/ea882947109ade9b34d4d69642fdf7aec4570fee/common/errorhandling/recovery.go
+
+var retryableAMQPConditions = map[string]bool{
+	string(amqp.ErrorInternalError):         true,
+	string(errorServerBusy):                 true, // "com.microsoft:server-busy"
+	string(errorTimeout):                    true, // "com.microsoft:timeout"
+	string(errorOperationCancelled):         true, // "com.microsoft:operation-cancelled"
+	"client.sender:not-enough-link-credit":  true,
+	string(amqp.ErrorUnauthorizedAccess):    true,
+	string(amqp.ErrorDetachForced):          true,
+	string(amqp.ErrorConnectionForced):      true,
+	string(amqp.ErrorTransferLimitExceeded): true,
+	"amqp: connection closed":               true,
+	"unexpected frame":                      true,
+	string(amqp.ErrorNotFound):              true,
+}
+
+func isRetryableAMQPError(ctxForLogging context.Context, err error) bool {
+	var amqpErr *amqp.Error
+	var isAMQPError = errors.As(err, &amqpErr)
+
+	if isAMQPError {
+		_, ok := retryableAMQPConditions[string(amqpErr.Condition)]
+		return ok
+	}
+
+	// TODO: there is a bug somewhere that seems to be errorString'ing errors. Need to track that down.
+	// In the meantime, try string matching instead
+	for condition := range retryableAMQPConditions {
+		if strings.Contains(err.Error(), condition) {
+			tab.For(ctxForLogging).Error(fmt.Errorf("error needed to be matched by a string matcher, rather than by type: %w", err))
+			return true
+		}
+	}
+
+	return false
+}
+
+func isPermanentNetError(err error) bool {
+	var netErr net.Error
+
+	if errors.As(err, &netErr) {
+		temp := netErr.Temporary()
+		timeout := netErr.Timeout()
+		return !temp && !timeout
+	}
+
+	return false
+}
+
+// 2021/09/30 20:46:14 [42] ERROR: error: amqp receiver close error: read tcp 192.168.1.16:50628->13.66.228.204:5671: wsarecv: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+// amqp session close error: read tcp 192.168.1.16:50628->13.66.228.204:5671: wsarecv: A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond.
+
+func isEOF(err error) bool {
+	return errors.Is(err, io.EOF)
+}
+
+func shouldRecreateLink(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	return errors.Is(err, amqp.ErrLinkDetached) ||
+		// I'm really curious if need to include this here or not.
+		errors.Is(err, amqp.ErrLinkClosed) ||
+		errors.Is(err, amqp.ErrSessionClosed) ||
+		// TODO: proper error types needs to happen
+		strings.Contains(err.Error(), "detach frame link detached")
+}
+
+func shouldRecreateConnection(ctxForLogging context.Context, err error) bool {
+	if err == nil {
+		return false
+	}
+
+	shouldRecreate := isPermanentNetError(err) ||
+		isRetryableAMQPError(ctxForLogging, err) ||
+		isEOF(err)
+
+	return shouldRecreate
+}
+
+func IsCancelError(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+		return true
+	}
+
+	if err.Error() == "context canceled" { // go-amqp is returning this when I cancel
+		return true
+	}
+
+	return false
+}
+
+func IsDrainingError(err error) bool {
+	// TODO: we should be able to identify these errors programatically
+	return strings.Contains(err.Error(), "link is currently draining")
 }

@@ -42,8 +42,9 @@ type (
 
 		baseRetrier Retrier
 
-		clientMu sync.Mutex
-		client   *amqp.Client
+		clientMu       sync.Mutex
+		clientRevision uint64
+		client         *amqp.Client
 
 		negotiateClaimMu sync.Mutex
 	}
@@ -60,9 +61,10 @@ type NamespaceWithNewAMQPLinks interface {
 // NamespaceForAMQPLinks is the Namespace surface needed for the internals of AMQPLinks.
 type NamespaceForAMQPLinks interface {
 	NegotiateClaim(ctx context.Context, entityPath string) (func() <-chan struct{}, error)
-	NewAMQPSession(ctx context.Context) (AMQPSessionCloser, error)
-	NewMgmtClient(ctx context.Context, managementPath string) (MgmtClient, error)
+	NewAMQPSession(ctx context.Context) (AMQPSessionCloser, uint64, error)
+	NewMgmtClient(ctx context.Context, links AMQPLinks) (MgmtClient, error)
 	GetEntityAudience(entityPath string) string
+	Recover(ctx context.Context, clientRevision uint64) error
 }
 
 // NamespaceForAMQPLinks is the Namespace surface needed for the *MgmtClient.
@@ -220,24 +222,30 @@ func (ns *Namespace) newClient(ctx context.Context) (*amqp.Client, error) {
 }
 
 // NewAMQPSession creates a new AMQP session with the internally cached *amqp.Client.
-func (ns *Namespace) NewAMQPSession(ctx context.Context) (AMQPSessionCloser, error) {
-	client, err := ns.getAMQPClientImpl(ctx)
+func (ns *Namespace) NewAMQPSession(ctx context.Context) (AMQPSessionCloser, uint64, error) {
+	client, clientRevision, err := ns.getAMQPClientImpl(ctx)
 
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 
-	return client.NewSession()
+	session, err := client.NewSession()
+
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return session, clientRevision, err
 }
 
 // NewMgmtClient creates a new management client with the internally cached *amqp.Client.
-func (ns *Namespace) NewMgmtClient(ctx context.Context, managementPath string) (MgmtClient, error) {
-	return newMgmtClient(ctx, managementPath, ns)
+func (ns *Namespace) NewMgmtClient(ctx context.Context, l AMQPLinks) (MgmtClient, error) {
+	return newMgmtClient(ctx, l, ns)
 }
 
 // NewRPCLink creates a new amqp-common *rpc.Link with the internally cached *amqp.Client.
 func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (*rpc.Link, error) {
-	client, err := ns.getAMQPClientImpl(ctx)
+	client, _, err := ns.getAMQPClientImpl(ctx)
 
 	if err != nil {
 		return nil, err
@@ -249,7 +257,7 @@ func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (*rp
 // NewAMQPLinks creates an AMQPLinks struct, which groups together the commonly needed links for
 // working with Service Bus.
 func (ns *Namespace) NewAMQPLinks(entityPath string, createLinkFunc CreateLinkFunc) AMQPLinks {
-	return newAMQPLinks(ns, entityPath, createLinkFunc)
+	return newAMQPLinks(ns, entityPath, ns.baseRetrier, createLinkFunc)
 }
 
 // Close closes the current cached client.
@@ -265,20 +273,46 @@ func (ns *Namespace) Close(ctx context.Context) error {
 }
 
 // Recover destroys the currently held client and recreates it.
-func (ns *Namespace) Recover(ctx context.Context) (*amqp.Client, error) {
+// clientRevision being nil will recover without a revision check.
+func (ns *Namespace) Recover(ctx context.Context, clientRevision uint64) error {
 	ns.clientMu.Lock()
 	defer ns.clientMu.Unlock()
 
+	_, span := tab.StartSpan(ctx, SpanRecoverClient)
+	defer span.End()
+
+	span.AddAttributes(
+		tab.Int64Attribute("revision", int64(ns.clientRevision)),
+		tab.Int64Attribute("requested", int64(clientRevision)))
+
+	if ns.clientRevision > clientRevision {
+		span.Logger().Info(fmt.Sprintf("Skipping recovery, already recovered: %d vs %d", ns.clientRevision, clientRevision))
+		// we've already recovered since the client last tried.
+		return nil
+	}
+
 	if ns.client != nil {
+		oldClient := ns.client
+		ns.client = nil
+
 		// the error on close isn't critical
-		err := ns.client.Close()
-		tab.For(ctx).Error(err)
+		go func() {
+			span.Logger().Info(fmt.Sprintf("Closing old client (client:%d,passed in:%d)", ns.clientRevision, clientRevision))
+			err := oldClient.Close()
+			tab.For(ctx).Error(err)
+		}()
 	}
 
 	var err error
+	span.Logger().Info(fmt.Sprintf("Creating a new client (client:%d,passed in:%d)", ns.clientRevision, clientRevision))
 	ns.client, err = ns.newClient(ctx)
 
-	return ns.client, err
+	if err == nil {
+		span.AddAttributes(tab.Int64Attribute("newcr", int64(ns.clientRevision)))
+		ns.clientRevision++
+	}
+
+	return err
 }
 
 // negotiateClaim performs initial authentication and starts periodic refresh of credentials.
@@ -294,7 +328,7 @@ func (ns *Namespace) NegotiateClaim(ctx context.Context, entityPath string) (fun
 func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 	entityPath string,
 	cbsNegotiateClaim func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error,
-	nsGetAMQPClientImpl func(ctx context.Context) (*amqp.Client, error),
+	nsGetAMQPClientImpl func(ctx context.Context) (*amqp.Client, uint64, error),
 	nextClaimRefreshDurationFn func(expirationTime time.Time, currentTime time.Time) time.Duration) (func() <-chan struct{}, error) {
 	audience := ns.GetEntityAudience(entityPath)
 
@@ -306,10 +340,10 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 
 		for retrier.Try(ctx) {
 			expiration, lastErr = func() (time.Time, error) {
-				ctx, span := ns.startSpanFromContext(ctx, "sb.namespace.negotiateClaim")
+				ctx, span := ns.startSpanFromContext(ctx, SpanNegotiateClaim)
 				defer span.End()
 
-				amqpClient, err := nsGetAMQPClientImpl(ctx)
+				amqpClient, clientRevision, err := nsGetAMQPClientImpl(ctx)
 
 				if err != nil {
 					span.Logger().Error(err)
@@ -331,6 +365,12 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 				ns.negotiateClaimMu.Unlock()
 
 				if err != nil {
+					if shouldRecreateConnection(ctx, err) {
+						if err := ns.Recover(ctx, clientRevision); err != nil {
+							span.Logger().Error(fmt.Errorf("connection recovery failed: %w", err))
+						}
+					}
+
 					span.Logger().Error(err)
 					return time.Time{}, err
 				}
@@ -378,12 +418,12 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 	return cancelRefresh, nil
 }
 
-func (ns *Namespace) getAMQPClientImpl(ctx context.Context) (*amqp.Client, error) {
+func (ns *Namespace) getAMQPClientImpl(ctx context.Context) (*amqp.Client, uint64, error) {
 	ns.clientMu.Lock()
 	defer ns.clientMu.Unlock()
 
 	if ns.client != nil {
-		return ns.client, nil
+		return ns.client, ns.clientRevision, nil
 	}
 
 	var err error
@@ -397,7 +437,7 @@ func (ns *Namespace) getAMQPClientImpl(ctx context.Context) (*amqp.Client, error
 		}
 	}
 
-	return ns.client, err
+	return ns.client, ns.clientRevision, err
 }
 
 func (ns *Namespace) getWSSHostURI() string {

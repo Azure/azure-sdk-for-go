@@ -13,6 +13,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/devigned/tab"
 	"github.com/joho/godotenv"
 	"github.com/microsoft/ApplicationInsights-Go/appinsights"
 )
@@ -24,9 +26,15 @@ import (
 // | summarize Sum=sum(valueCount) by bin(timestamp, 30s), name
 // | render timechart
 
-var messagesSent int32
-var messagesReceived int32
-var exceptions int32
+type Stats struct {
+	Sent     int32
+	Received int32
+	Errors   int32
+}
+
+var processorStats Stats
+var receiverStats Stats
+var senderStats Stats
 
 func main() {
 	runBasicSendAndReceiveTest()
@@ -55,12 +63,18 @@ func runBasicSendAndReceiveTest() {
 		ticker := time.NewTicker(5 * time.Second)
 
 		for range ticker.C {
-			log.Printf("Received: %d, Sent: %d, Exceptions: %d", atomic.LoadInt32(&messagesReceived), atomic.LoadInt32(&messagesSent), atomic.LoadInt32(&exceptions))
+			log.Printf("Received: (p:%d,r:%d), Sent: %d, Errors: (p:%d,r:%d,s:%d)",
+				atomic.LoadInt32(&processorStats.Received),
+				atomic.LoadInt32(&receiverStats.Received),
+				atomic.LoadInt32(&senderStats.Sent),
+				atomic.LoadInt32(&processorStats.Errors),
+				atomic.LoadInt32(&receiverStats.Errors),
+				atomic.LoadInt32(&senderStats.Errors))
 		}
 	}()
 
 	nanoSeconds := time.Now().UnixNano()
-	queueName := fmt.Sprintf("queue-%X", nanoSeconds)
+	topicName := fmt.Sprintf("topic-%X", nanoSeconds)
 
 	telemetryClient.Context().CommonProperties = map[string]string{
 		"Test":      "SendAndReceive",
@@ -77,38 +91,60 @@ func runBasicSendAndReceiveTest() {
 
 	startEvent := appinsights.NewEventTelemetry("Start")
 	startEvent.Properties = map[string]string{
-		"Queue": queueName,
+		"Topic": topicName,
 	}
 
 	telemetryClient.Track(startEvent)
 
-	cleanupQueue := createQueue(telemetryClient, cs, queueName)
-	defer cleanupQueue()
+	cleanup, err := createSubscriptions(telemetryClient, cs, topicName, []string{"processor", "batch"})
+	defer cleanup()
+
+	if err != nil {
+		log.Printf("Failed to create topic and subscriptions: %s", err.Error())
+		return
+	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 24*5*time.Hour)
 	defer cancel()
 
 	serviceBusClient, err := azservicebus.NewClientWithConnectionString(cs)
 	if err != nil {
-		trackException(telemetryClient, "Failed to create service bus client", err)
+		trackException(nil, telemetryClient, "Failed to create service bus client", err)
 		return
 	}
 
 	defer func() {
 		if err := serviceBusClient.Close(ctx); err != nil {
-			trackException(telemetryClient, "Error when closing client", err)
+			trackException(nil, telemetryClient, "Error when closing client", err)
+		}
+	}()
+
+	tab.Register(&utils.StderrTracer{
+		Include: map[string]bool{
+			internal.SpanProcessorClose: true,
+			internal.SpanProcessorLoop:  true,
+			//internal.SpanProcessorMessage: true,
+			internal.SpanNegotiateClaim: true,
+			internal.SpanRecoverClient:  true,
+			internal.SpanRecoverLink:    true,
+		},
+	})
+
+	go func() {
+		for {
+			runProcessor(ctx, serviceBusClient, topicName, "processor", telemetryClient)
 		}
 	}()
 
 	go func() {
 		for {
-			runProcessor(ctx, serviceBusClient, queueName, telemetryClient)
+			runBatchReceiver(ctx, serviceBusClient, topicName, "batch", telemetryClient)
 		}
 	}()
 
 	go func() {
 		for {
-			continuallySend(ctx, serviceBusClient, queueName, telemetryClient)
+			continuallySend(ctx, serviceBusClient, topicName, telemetryClient)
 		}
 	}()
 
@@ -116,31 +152,55 @@ func runBasicSendAndReceiveTest() {
 	<-ch
 }
 
-func runProcessor(ctx context.Context, client *azservicebus.Client, queueName string, telemetryClient appinsights.TelemetryClient) {
+func runBatchReceiver(ctx context.Context, serviceBusClient *azservicebus.Client, topicName string, subscriptionName string, telemetryClient appinsights.TelemetryClient) {
+	receiver, err := serviceBusClient.NewReceiverForSubscription(topicName, subscriptionName)
+
+	if err != nil {
+		log.Fatalf("Failed to create receiver: %s", err.Error())
+	}
+
+	for {
+		messages, err := receiver.ReceiveMessages(ctx, 20)
+
+		if err != nil {
+			trackException(&receiverStats, telemetryClient, "receive batch failure", err)
+		}
+
+		atomic.AddInt32(&receiverStats.Received, int32(len(messages)))
+
+		for _, msg := range messages {
+			go func(msg *azservicebus.ReceivedMessage) {
+				if err := receiver.CompleteMessage(ctx, msg); err != nil {
+					trackException(&receiverStats, telemetryClient, "complete failed", err)
+				}
+			}(msg)
+		}
+	}
+}
+
+func runProcessor(ctx context.Context, client *azservicebus.Client, topicName string, subscriptionName string, telemetryClient appinsights.TelemetryClient) {
 	log.Printf("Starting processor...")
-	processor, err := client.NewProcessor(
-		azservicebus.ProcessorWithQueue(queueName),
+	processor, err := client.NewProcessorForSubscription(
+		topicName, subscriptionName,
 		azservicebus.ProcessorWithMaxConcurrentCalls(10))
 
 	if err != nil {
-		trackException(telemetryClient, "Failed when creating processor", err)
+		trackException(&processorStats, telemetryClient, "Failed when creating processor", err)
 		return
 	}
 
-	err = processor.Start(func(msg *azservicebus.ReceivedMessage) error {
-		atomic.AddInt32(&messagesReceived, 1)
+	err = processor.Start(ctx, func(msg *azservicebus.ReceivedMessage) error {
+		atomic.AddInt32(&processorStats.Received, 1)
 		telemetryClient.TrackMetric("MessageReceived", 1)
 		return nil
 	}, func(err error) {
-		atomic.AddInt32(&exceptions, 1)
 		log.Printf("Exception in processor: %s", err.Error())
-		trackException(telemetryClient, "Processor.HandleError", err)
+		trackException(&processorStats, telemetryClient, "Processor.HandleError", err)
 	})
 
 	if err != nil {
-		atomic.AddInt32(&exceptions, 1)
 		log.Printf("Exception when starting processor: %s", err.Error())
-		trackException(telemetryClient, "Processor.Start", err)
+		trackException(&processorStats, telemetryClient, "Processor.Start", err)
 		return
 	}
 
@@ -154,7 +214,7 @@ func continuallySend(ctx context.Context, client *azservicebus.Client, queueName
 	sender, err := client.NewSender(queueName)
 
 	if err != nil {
-		trackException(telemetryClient, "SenderCreate", err)
+		trackException(&senderStats, telemetryClient, "SenderCreate", err)
 		return
 	}
 
@@ -168,7 +228,7 @@ func continuallySend(ctx context.Context, client *azservicebus.Client, queueName
 			Body: []byte(fmt.Sprintf("hello world: %s", t.String())),
 		})
 
-		atomic.AddInt32(&messagesSent, 1)
+		atomic.AddInt32(&senderStats.Sent, 1)
 		telemetryClient.TrackMetric("MessageSent", 1)
 
 		if err != nil {
@@ -177,41 +237,57 @@ func continuallySend(ctx context.Context, client *azservicebus.Client, queueName
 				break
 			}
 
-			trackException(telemetryClient, "SendMessage", err)
+			trackException(&senderStats, telemetryClient, "SendMessage", err)
 			break
 		}
 	}
 }
 
-func createQueue(telemetryClient appinsights.TelemetryClient, connectionString string, queueName string) func() {
-	log.Printf("[BEGIN] Creating queue %s", queueName)
-	defer log.Printf("[END] Creating queue %s", queueName)
+func createSubscriptions(telemetryClient appinsights.TelemetryClient, connectionString string, topicName string, subscriptionNames []string) (func(), error) {
+	log.Printf("[BEGIN] Creating topic %s", topicName)
+	defer log.Printf("[END] Creating topic %s", topicName)
 	ns, err := internal.NewNamespace(internal.NamespaceWithConnectionString(connectionString))
 
 	if err != nil {
-		trackException(telemetryClient, "Failed to create namespace client", err)
-		return nil
+		trackException(nil, telemetryClient, "Failed to create namespace client", err)
+		return nil, err
 	}
 
-	qm := internal.NewQueueManager(ns.GetHTTPSHostURI(), ns.TokenProvider)
+	tm := ns.NewTopicManager()
 
-	_, err = qm.Put(context.TODO(), queueName)
+	if _, err := tm.Put(context.TODO(), topicName); err != nil {
+		trackException(nil, telemetryClient, "Failed to create topic", err)
+		return nil, err
+	}
+
+	sm, err := ns.NewSubscriptionManager(topicName)
 
 	if err != nil {
-		trackException(telemetryClient, "Failed to create queue", err)
-		return nil
+		trackException(nil, telemetryClient, "Failed to create subscription manager", err)
+		return nil, err
+	}
+
+	for _, name := range subscriptionNames {
+		if _, err := sm.Put(context.Background(), name); err != nil {
+			trackException(nil, telemetryClient, "Failed to create subscription manager", err)
+		}
 	}
 
 	return func() {
-		if err := qm.Delete(context.TODO(), queueName); err != nil {
-			trackException(telemetryClient, "Failed to delete queue", err)
+		if err := tm.Delete(context.TODO(), topicName); err != nil {
+			trackException(nil, telemetryClient, fmt.Sprintf("Failed to delete topic %s", topicName), err)
 		}
-	}
+	}, nil
 }
 
-func trackException(telemetryClient appinsights.TelemetryClient, message string, err error) {
+func trackException(stats *Stats, telemetryClient appinsights.TelemetryClient, message string, err error) {
 	log.Printf("Exception: %s: %s", message, err.Error())
+
+	if stats != nil {
+		atomic.AddInt32(&stats.Errors, 1)
+	}
+
 	et := appinsights.NewExceptionTelemetry(err)
-	et.Properties["ExtraMessage"] = message
+	et.Properties["Reason"] = message
 	telemetryClient.Track(et)
 }

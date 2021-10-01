@@ -18,8 +18,9 @@ type (
 
 	// Sender is used to send messages as well as schedule them to be delivered at a later date.
 	Sender struct {
-		queueOrTopic string
-		links        internal.AMQPLinks
+		queueOrTopic   string
+		cleanupOnClose func()
+		links          internal.AMQPLinks
 	}
 
 	// SendableMessage are sendable using Sender.SendMessage.
@@ -95,6 +96,7 @@ func (s *Sender) SendMessage(ctx context.Context, message SendableMessage) error
 
 // Close permanently closes the Sender.
 func (s *Sender) Close(ctx context.Context) error {
+	s.cleanupOnClose()
 	return s.links.Close(ctx, true)
 }
 
@@ -104,12 +106,18 @@ func (sender *Sender) createSenderLink(ctx context.Context, session internal.AMQ
 		amqp.LinkReceiverSettle(amqp.ModeFirst),
 		amqp.LinkTargetAddress(sender.queueOrTopic))
 
-	return amqpSender, nil, err
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return nil, nil, err
+	}
+
+	return amqpSender, nil, nil
 }
 
-func newSender(ns *internal.Namespace, queueOrTopic string) (*Sender, error) {
+func newSender(ns *internal.Namespace, queueOrTopic string, cleanupOnClose func()) (*Sender, error) {
 	sender := &Sender{
-		queueOrTopic: queueOrTopic,
+		queueOrTopic:   queueOrTopic,
+		cleanupOnClose: cleanupOnClose,
 	}
 
 	sender.links = ns.NewAMQPLinks(queueOrTopic, sender.createSenderLink)

@@ -35,9 +35,10 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 	err = sender.SendMessage(context.TODO(), &Message{Body: []byte("hello - authenticating with a TokenCredential")})
 	require.NoError(t, err)
 
-	receiver, err := client.NewReceiver(ReceiverWithQueue(queue))
+	receiver, err := client.NewReceiverForQueue(queue)
 	require.NoError(t, err)
-	receiver.settler.onlyDoBackupSettlement = true // this'll also exercise the management link
+	actualSettler, _ := receiver.settler.(*messageSettler)
+	actualSettler.onlyDoBackupSettlement = true // this'll also exercise the management link
 
 	messages, err := receiver.ReceiveMessages(context.TODO(), 1)
 	require.NoError(t, err)

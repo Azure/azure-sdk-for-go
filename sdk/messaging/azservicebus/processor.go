@@ -5,11 +5,11 @@ package azservicebus
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"sync"
 	"time"
 
-	amqpCommon "github.com/Azure/azure-amqp-common-go/v3"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
@@ -26,26 +26,25 @@ type processorConfig struct {
 	ShouldAutoComplete bool
 	MaxConcurrentCalls int
 
-	RetryOptions struct {
-		Times int
-		Delay time.Duration
-	}
+	baseRetrier internal.Retrier
+
+	cleanupOnClose func()
 }
 
 // Processor is a push-based receiver for Service Bus.
 type Processor struct {
-	settler *messageSettler
-
-	mu        *sync.Mutex
+	settler   settler
 	amqpLinks internal.AMQPLinks
+
+	mu *sync.Mutex
+
+	userMessageHandler func(message *ReceivedMessage) error
+	userErrorHandler   func(err error)
 
 	receiversCtx    context.Context
 	cancelReceivers func()
 
-	processorCtx    context.Context
-	cancelProcessor func()
-
-	wg *sync.WaitGroup
+	wg sync.WaitGroup
 
 	// configuration data that is read-only after the Processor has been created
 	config processorConfig
@@ -116,24 +115,23 @@ func ProcessorWithMaxConcurrentCalls(maxConcurrentCalls int) ProcessorOption {
 	}
 }
 
-func newProcessor(ns internal.NamespaceWithNewAMQPLinks, options ...ProcessorOption) (*Processor, error) {
+func newProcessor(ns internal.NamespaceWithNewAMQPLinks, cleanupOnClose func(), options ...ProcessorOption) (*Processor, error) {
 	processor := &Processor{
 		config: processorConfig{
 			ReceiveMode:        PeekLock,
 			ShouldAutoComplete: true,
 			MaxConcurrentCalls: 1,
-			RetryOptions: struct {
-				Times int
-				Delay time.Duration
-			}{
-				// TODO: allow these to be configured.
-				Times: 10,
-				Delay: 5 * time.Second,
-			},
+			// TODO: make this configurable
+			baseRetrier: internal.NewBackoffRetrier(internal.BackoffRetrierParams{
+				Factor:     2,
+				Min:        1,
+				Max:        time.Minute,
+				MaxRetries: 5,
+			}),
+			cleanupOnClose: cleanupOnClose,
 		},
 
 		mu: &sync.Mutex{},
-		wg: &sync.WaitGroup{},
 	}
 
 	for _, opt := range options {
@@ -150,11 +148,21 @@ func newProcessor(ns internal.NamespaceWithNewAMQPLinks, options ...ProcessorOpt
 
 	processor.amqpLinks = ns.NewAMQPLinks(entityPath, func(ctx context.Context, session internal.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
 		linkOptions := createLinkOptions(processor.config.ReceiveMode, entityPath)
-		return createReceiverLink(ctx, session, linkOptions)
-	})
-	processor.settler = &messageSettler{links: processor.amqpLinks}
+		_, receiver, err := createReceiverLink(ctx, session, linkOptions)
 
-	processor.processorCtx, processor.cancelProcessor = context.WithCancel(context.Background())
+		if err != nil {
+			return nil, nil, err
+		}
+
+		if err := receiver.IssueCredit(uint32(processor.config.MaxConcurrentCalls)); err != nil {
+			_ = receiver.Close(ctx)
+			return nil, nil, err
+		}
+
+		return nil, receiver, nil
+	})
+
+	processor.settler = newMessageSettler(processor.amqpLinks, processor.config.baseRetrier)
 	processor.receiversCtx, processor.cancelReceivers = context.WithCancel(context.Background())
 
 	return processor, nil
@@ -171,83 +179,80 @@ func newProcessor(ns internal.NamespaceWithNewAMQPLinks, options ...ProcessorOpt
 // Any errors that occur (such as network disconnects, failures in handleMessage) will be
 // sent to your handleError function. The processor will retry and restart as needed -
 // no user intervention is required.
-func (p *Processor) Start(handleMessage func(message *ReceivedMessage) error, handleError func(err error)) error {
-	p.mu.Lock()
-	defer p.mu.Unlock()
+func (p *Processor) Start(ctx context.Context, handleMessage func(message *ReceivedMessage) error, handleError func(err error)) error {
+	ctx, span := tab.StartSpan(ctx, internal.SpanProcessorLoop)
+	defer span.End()
 
-	// TODO: stop multiple invocations!
-	/*
-		p.handleMessage = ()
-		p.handleError = func() {
-			tab.For(ctx).Debug()
+	err := func() error {
+		p.mu.Lock()
+		defer p.mu.Unlock()
+
+		if p.userMessageHandler != nil {
+			return errors.New("processor already started")
 		}
-	*/
 
-	p.wg.Add(1)
+		p.userMessageHandler = handleMessage
+		p.userErrorHandler = handleError
+		p.receiversCtx, p.cancelReceivers = context.WithCancel(ctx)
 
-	go func(ctx context.Context) {
-		defer func() {
-			p.wg.Done()
-			tab.For(ctx).Debug("Exiting forever loop in Processor")
-		}()
+		return nil
+	}()
 
-		for {
-			retry, _ := amqpCommon.Retry(p.config.RetryOptions.Times, p.config.RetryOptions.Delay, func() (interface{}, error) {
-				_, receiver, _, _, err := p.amqpLinks.Get(ctx)
+	if err != nil {
+		return err
+	}
 
-				if err != nil {
-					if !isRetryableLinksError(err) {
-						tab.For(ctx).Debug(fmt.Sprintf("Non retriable error occurred ('%s'), stopping the processor loop", err.Error()))
-						handleError(fmt.Errorf("Non-retryable error, stopping processor loop: %w", err))
-						return false, nil
-					}
+	for {
+		if err := p.subscribe(p.receiversCtx); err != nil {
 
-					// notify the user and then fall into doing a retry
-					handleError(fmt.Errorf("failed getting links for subscribe, will retry: %w", err))
-					return true, amqpCommon.Retryable("")
-				}
-
-				if err := receiver.IssueCredit(uint32(p.config.MaxConcurrentCalls)); err != nil {
-					// notify the user but there's no reason to restart because this failure must be
-					// an internal error.
-					handleError(fmt.Errorf("internal failure when issuing credit, will recreate links: %w", err))
-					return true, nil
-				}
-
-				// we retry infinitely, but do it in the pattern they specify via their retryOptions for each "round" of retries.
-				err = p.subscribe(ctx, receiver, handleMessage, handleError)
-
-				if err != nil {
-					if isRetryableSubscribeError(err) {
-						if err := p.amqpLinks.Close(ctx, false); err != nil {
-							tab.For(ctx).Debug(fmt.Sprintf("failed when closing links, will reopen: %s", err.Error()))
-						}
-
-						return true, amqpCommon.Retryable("")
-					}
-
-					return false, nil
-				}
-
-				return true, amqpCommon.Retryable("")
-			})
-
-			if !retry.(bool) {
+			if internal.IsCancelError(err) {
 				break
 			}
-		}
-	}(p.receiversCtx)
 
-	return nil
+			p.userErrorHandler(err)
+
+			if err := p.amqpLinks.RecoverIfNeeded(ctx, err); err != nil {
+				p.userErrorHandler(err)
+			}
+		}
+	}
+
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	default:
+		return nil
+	}
 }
 
 // Close will wait for any pending callbacks to complete.
+// NOTE: Close() cannot be called synchronously in a message
+// or error handler. You must run it asynchronously using
+// `go processor.Close(ctx)` or similar.
 func (p *Processor) Close(ctx context.Context) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
+	p.config.cleanupOnClose()
+
+	ctx, span := tab.StartSpan(ctx, internal.SpanProcessorClose)
+	defer span.End()
+
+	_, receiver, _, _, err := p.amqpLinks.Get(ctx)
+
+	if err != nil {
+		span.Logger().Error(err)
+		return err
+	}
+
+	if err := receiver.DrainCredit(ctx); err != nil {
+		span.Logger().Error(err)
+		// fall through for now and just let whatever is going on finish
+		// otherwise they might not be able to actually close.
+	}
+
 	p.cancelReceivers()
-	return utils.WaitForGroupOrContext(ctx, p.wg)
+	return utils.WaitForGroupOrContext(ctx, &p.wg)
 }
 
 // CompleteMessage completes a message, deleting it from the queue or subscription.
@@ -275,13 +280,14 @@ func (p *Processor) DeadLetterMessage(ctx context.Context, message *ReceivedMess
 	return p.settler.DeadLetterMessage(ctx, message, options...)
 }
 
-func (p *Processor) subscribe(
-	ctx context.Context,
-	receiver internal.AMQPReceiver,
-	handleMessage func(message *ReceivedMessage) error,
-	notifyError func(err error)) error {
+// subscribe continually receives messages from Service Bus, stopping
+// if a fatal link/connection error occurs.
+func (p *Processor) subscribe(ctx context.Context) error {
+	_, receiver, _, _, err := p.amqpLinks.Get(ctx)
 
-	notifyErrorAsync := wrapNotifyError(notifyError, p.wg)
+	if err != nil {
+		return err
+	}
 
 	p.wg.Add(1)
 	defer p.wg.Done()
@@ -290,11 +296,12 @@ func (p *Processor) subscribe(
 		amqpMessage, err := receiver.Receive(ctx)
 
 		if err != nil {
-			if !isRetryableSubscribeError(err) {
-				return err
-			}
+			return err
+		}
 
-			// TODO: need to get a backoff policy in here.
+		if amqpMessage == nil {
+			// amqpMessage shouldn't be nil here, but somehow it is.
+			// need to track this down in the AMQP library.
 			continue
 		}
 
@@ -303,84 +310,51 @@ func (p *Processor) subscribe(
 		go func() {
 			defer p.wg.Done()
 
-			receivedMessage := newReceivedMessage(ctx, amqpMessage)
-			err := handleMessage(receivedMessage)
-
-			if err != nil {
-				notifyErrorAsync(err)
-			}
-
-			var settleErr error
-
-			if p.config.ShouldAutoComplete {
-				// NOTE: we ignore the passed in context. Since we're settling behind the scenes
-				// it's nice to wrap it up so users don't have to track it.
-				if err != nil {
-					settleErr = p.settler.AbandonMessage(context.Background(), receivedMessage)
-				} else {
-					settleErr = p.settler.CompleteMessage(context.Background(), receivedMessage)
-				}
-
-				if settleErr != nil {
-					notifyErrorAsync(fmt.Errorf("failed settling message with ID '%s': %w", receivedMessage.ID, settleErr))
-				}
-			}
-
-			if err := receiver.IssueCredit(1); err != nil {
-				notifyErrorAsync(fmt.Errorf("failed issuing additional credit, processor will be restarted: %w", err))
-
-				// close the links here and cause the processor for this receiver to restart
-				if err := p.amqpLinks.Close(ctx, false); err != nil {
-					tab.For(ctx).Debug(fmt.Sprintf("Failed when closing links, but was restarting anyways: %s", err.Error()))
-				}
-			}
-
-			notifyErrorAsync(err)
+			// purposefully avoiding using `ctx`. We always let processing complete
+			// for message threads to avoid potential message loss.
+			_ = p.processMessage(context.Background(), receiver, amqpMessage)
 		}()
 	}
 }
 
-func wrapNotifyError(fn func(err error), wg *sync.WaitGroup) func(err error) {
-	return func(err error) {
-		if err == nil {
-			return
+func (p *Processor) processMessage(ctx context.Context, receiver internal.AMQPReceiver, amqpMessage *amqp.Message) error {
+	ctx, span := tab.StartSpan(ctx, internal.SpanProcessorMessage)
+	defer span.End()
+
+	receivedMessage := newReceivedMessage(ctx, amqpMessage)
+	messageHandlerErr := p.userMessageHandler(receivedMessage)
+
+	if messageHandlerErr != nil {
+		p.userErrorHandler(messageHandlerErr)
+	}
+
+	if p.config.ShouldAutoComplete {
+		var settleErr error
+
+		if messageHandlerErr != nil {
+			settleErr = p.settler.AbandonMessage(ctx, receivedMessage)
+		} else {
+			settleErr = p.settler.CompleteMessage(ctx, receivedMessage)
 		}
 
-		wg.Add(1)
-		go func() {
-			fn(err)
-			wg.Done()
-		}()
-	}
-}
-
-func isRetryableSubscribeError(err error) bool {
-	isFatalLinkError := err == amqp.ErrConnClosed ||
-		err == amqp.ErrLinkClosed ||
-		err == amqp.ErrLinkDetached ||
-		err == amqp.ErrSessionClosed
-
-	if isFatalLinkError || isCancelled(err) {
-		return false
+		if settleErr != nil {
+			p.userErrorHandler(fmt.Errorf("failed to settle message with ID '%s': %w", receivedMessage.ID, settleErr))
+			return settleErr
+		}
 	}
 
-	return true
-}
-
-// isRetryableLinksError checks if an error is retryable if it
-// was returned from links.Get().
-// NOTE: this function panics if you pass it a nil error.
-func isRetryableLinksError(err error) bool {
-	if isCancelled(err) {
-		return false
-	}
-
-	switch err.(type) {
-	case interface{ NonRetriable() }:
-		// we're done, they've closed the links permanently (ie, we're not meant to
-		// recover from this)
-		return false
+	select {
+	case <-p.receiversCtx.Done():
+		return nil
 	default:
-		return true
 	}
+
+	if err := receiver.IssueCredit(1); err != nil {
+		if !internal.IsDrainingError(err) {
+			p.userErrorHandler(err)
+			return fmt.Errorf("failed issuing additional credit, processor will be restarted: %w", err)
+		}
+	}
+
+	return nil
 }

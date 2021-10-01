@@ -54,11 +54,11 @@ func main() {
 	// receive the messages we've sent using the processor
 	//
 
-	processor, err := serviceBusClient.NewProcessor(
+	processor, err := serviceBusClient.NewProcessorForQueue(
+		queue,
 		// Will auto-complete or auto-abandon messages, based on the result from you callback
 		// (this is true, by default)
 		azservicebus.ProcessorWithAutoComplete(true),
-		azservicebus.ProcessorWithQueue(queue),
 		// or for a subscription
 		// azservicebus.ProcessorWithSubscription("topic", "subscription"),
 		azservicebus.ProcessorWithReceiveMode(azservicebus.PeekLock),
@@ -68,7 +68,7 @@ func main() {
 		log.Fatalf("Failed to create processor: %s", err.Error())
 	}
 
-	err = processor.Start(func(message *azservicebus.ReceivedMessage) error {
+	err = processor.Start(context.Background(), func(message *azservicebus.ReceivedMessage) error {
 		log.Printf("Received message %s", string(message.Body))
 
 		// with auto-complete on (which it is, by default):

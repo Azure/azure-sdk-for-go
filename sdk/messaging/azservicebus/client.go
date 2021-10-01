@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"sync"
+	"sync/atomic"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
@@ -18,10 +19,11 @@ import (
 // Client provides methods to create Sender, Receiver and Processor
 // instances to send and receive messages from Service Bus.
 type Client struct {
-	config    clientConfig
-	namespace *internal.Namespace
-	linksMu   *sync.Mutex
-	links     []interface {
+	config      clientConfig
+	namespace   *internal.Namespace
+	linksMu     *sync.Mutex
+	linkCounter uint64
+	links       map[uint64]interface {
 		Close(ctx context.Context) error
 	}
 }
@@ -82,6 +84,9 @@ func newClientImpl(config clientConfig, options ...ClientOption) (*Client, error
 	client := &Client{
 		linksMu: &sync.Mutex{},
 		config:  config,
+		links: map[uint64]interface {
+			Close(ctx context.Context) error
+		}{},
 	}
 
 	for _, opt := range options {
@@ -111,52 +116,77 @@ func newClientImpl(config clientConfig, options ...ClientOption) (*Client, error
 	return client, err
 }
 
-// NewProcessor creates a Processor, which allows you to receive messages from ServiceBus.
-func (client *Client) NewProcessor(options ...ProcessorOption) (*Processor, error) {
-	processor, err := newProcessor(client.namespace, options...)
+// NewProcessor creates a Processor for a queue.
+func (client *Client) NewProcessorForQueue(queue string, options ...ProcessorOption) (*Processor, error) {
+	options = append(options, ProcessorWithQueue(queue))
+	id, cleanupOnClose := client.getCleanupForCloseable()
+
+	processor, err := newProcessor(client.namespace, cleanupOnClose, options...)
 
 	if err != nil {
 		return nil, err
 	}
 
-	// TODO: clean up these links
-	client.linksMu.Lock()
-	client.links = append(client.links, processor)
-	client.linksMu.Unlock()
-
+	client.addCloseable(id, processor)
 	return processor, nil
+}
+
+// NewProcessor creates a Processor for a subscription.
+func (client *Client) NewProcessorForSubscription(topic string, subscription string, options ...ProcessorOption) (*Processor, error) {
+	options = append(options, ProcessorWithSubscription(topic, subscription))
+	id, cleanupOnClose := client.getCleanupForCloseable()
+
+	processor, err := newProcessor(client.namespace, cleanupOnClose, options...)
+
+	if err != nil {
+		return nil, err
+	}
+
+	client.addCloseable(id, processor)
+	return processor, nil
+}
+
+// NewReceiver creates a Receiver for a queue. A receiver allows you to receive messages.
+func (client *Client) NewReceiverForQueue(queue string, options ...ReceiverOption) (*Receiver, error) {
+	id, cleanupOnClose := client.getCleanupForCloseable()
+	options = append(options, receiverWithQueue(queue))
+
+	receiver, err := newReceiver(client.namespace, cleanupOnClose, options...)
+
+	if err != nil {
+		return nil, err
+	}
+
+	client.addCloseable(id, receiver)
+	return receiver, nil
+}
+
+// NewReceiver creates a Receiver for a subscription. A receiver allows you to receive messages.
+func (client *Client) NewReceiverForSubscription(topic string, subscription string, options ...ReceiverOption) (*Receiver, error) {
+	id, cleanupOnClose := client.getCleanupForCloseable()
+	options = append(options, receiverWithSubscription(topic, subscription))
+
+	receiver, err := newReceiver(client.namespace, cleanupOnClose, options...)
+
+	if err != nil {
+		return nil, err
+	}
+
+	client.addCloseable(id, receiver)
+	return receiver, nil
 }
 
 // NewSender creates a Sender, which allows you to send messages or schedule messages.
 func (client *Client) NewSender(queueOrTopic string) (*Sender, error) {
-	sender, err := newSender(client.namespace, queueOrTopic)
+	id, cleanupOnClose := client.getCleanupForCloseable()
+	sender, err := newSender(client.namespace, queueOrTopic, cleanupOnClose)
 
 	if err != nil {
 		return nil, err
 	}
 
-	// TODO: clean up these links
-	client.linksMu.Lock()
-	client.links = append(client.links, sender)
-	client.linksMu.Unlock()
-
+	client.addCloseable(id, sender)
 	return sender, nil
-}
-
-// NewReceiver creates a Receiver, which allows you to receive messages.
-func (client *Client) NewReceiver(options ...ReceiverOption) (*Receiver, error) {
-	receiver, err := newReceiver(client.namespace, options...)
-
-	if err != nil {
-		return nil, err
-	}
-
-	// TODO: clean up these links
-	client.linksMu.Lock()
-	client.links = append(client.links, receiver)
-	client.linksMu.Unlock()
-
-	return receiver, nil
 }
 
 // Close closes the current connection Service Bus as well as any Sender, Receiver or Processors created
@@ -164,19 +194,45 @@ func (client *Client) NewReceiver(options ...ReceiverOption) (*Receiver, error) 
 func (client *Client) Close(ctx context.Context) error {
 	var lastError error
 
+	var links []interface {
+		Close(ctx context.Context) error
+	}
+
 	client.linksMu.Lock()
 
 	for _, link := range client.links {
+		links = append(links, link)
+	}
+
+	client.linksMu.Unlock()
+
+	for _, link := range links {
 		if err := link.Close(ctx); err != nil {
 			tab.For(ctx).Error(err)
 			lastError = err
 		}
 	}
 
-	client.linksMu.Unlock()
-
 	if lastError != nil {
 		return fmt.Errorf("errors while closing links: %w", lastError)
 	}
 	return nil
+}
+
+func (client *Client) addCloseable(id uint64, closeable interface {
+	Close(ctx context.Context) error
+}) {
+	client.linksMu.Lock()
+	client.links[id] = closeable
+	client.linksMu.Unlock()
+}
+
+func (client *Client) getCleanupForCloseable() (uint64, func()) {
+	id := atomic.AddUint64(&client.linkCounter, 1)
+
+	return id, func() {
+		client.linksMu.Lock()
+		delete(client.links, id)
+		client.linksMu.Unlock()
+	}
 }

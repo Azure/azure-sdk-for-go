@@ -7,31 +7,28 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"sort"
 	"sync"
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/stretchr/testify/require"
 )
 
 func TestProcessorReceiveWithDefaults(t *testing.T) {
-	serviceBusClient, cleanup, queueName := setupLiveTest(t)
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
-
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
-	defer cancel()
 
 	go func() {
 		sender, err := serviceBusClient.NewSender(queueName)
 		require.NoError(t, err)
 
-		defer sender.Close(ctx)
+		defer sender.Close(context.Background())
 
 		// it's perfectly fine to have the processor started before the messages
 		// have been sent.
 		for i := 0; i < 5; i++ {
-			err = sender.SendMessage(ctx, &Message{
+			err = sender.SendMessage(context.Background(), &Message{
 				Body: []byte(fmt.Sprintf("hello world %d", i)),
 			})
 
@@ -40,18 +37,27 @@ func TestProcessorReceiveWithDefaults(t *testing.T) {
 		require.NoError(t, err)
 	}()
 
-	processor, err := serviceBusClient.NewProcessor(ProcessorWithQueue(queueName))
+	processor, err := serviceBusClient.NewProcessorForQueue(queueName)
 	require.NoError(t, err)
 
-	defer processor.Close(ctx) // multiple close is fine
+	defer processor.Close(context.Background()) // multiple close is fine
 
-	wg := sync.WaitGroup{}
-	wg.Add(5)
-	messages := make(chan *ReceivedMessage, 5)
+	var messages []string
+	mu := sync.Mutex{}
 
-	err = processor.Start(func(m *ReceivedMessage) error {
-		messages <- m
-		wg.Done()
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
+	defer cancel()
+
+	err = processor.Start(ctx, func(m *ReceivedMessage) error {
+		mu.Lock()
+		defer mu.Unlock()
+
+		messages = append(messages, string(m.Body))
+
+		if len(messages) == 5 {
+			cancel()
+		}
+
 		return nil
 	}, func(err error) {
 		if errors.Is(err, context.Canceled) {
@@ -61,10 +67,9 @@ func TestProcessorReceiveWithDefaults(t *testing.T) {
 		require.NoError(t, err)
 	})
 
-	require.NoError(t, err)
-	require.NoError(t, utils.WaitForGroupOrContext(ctx, &wg))
+	require.ErrorIs(t, err, context.Canceled, "cancelling the context stops the processor")
 
-	bodies := getSortedBodiesFromChannel(messages)
+	sort.Strings(messages)
 
 	require.EqualValues(t, []string{
 		"hello world 0",
@@ -72,17 +77,14 @@ func TestProcessorReceiveWithDefaults(t *testing.T) {
 		"hello world 2",
 		"hello world 3",
 		"hello world 4",
-	}, bodies)
+	}, messages)
 
-	require.NoError(t, processor.Close(ctx))
+	require.NoError(t, processor.Close(context.Background()))
 }
 
 func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
-	serviceBusClient, cleanup, queueName := setupLiveTest(t)
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
-
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
-	defer cancel()
 
 	const numMessages = 100
 	var expectedBodies []string
@@ -91,10 +93,9 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 		sender, err := serviceBusClient.NewSender(queueName)
 		require.NoError(t, err)
 
-		defer sender.Close(ctx)
+		defer sender.Close(context.Background())
 
-		//batch, err := sender.NewMessageBatch(ctx)
-		batch, err := sender.NewMessageBatch(ctx)
+		batch, err := sender.NewMessageBatch(context.Background())
 		require.NoError(t, err)
 
 		// it's perfectly fine to have the processor started before the messages
@@ -106,24 +107,33 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 			}))
 		}
 
-		require.NoError(t, sender.SendMessage(ctx, batch))
+		require.NoError(t, sender.SendMessage(context.Background(), batch))
 	}()
 
-	processor, err := serviceBusClient.NewProcessor(
-		ProcessorWithQueue(queueName),
+	processor, err := serviceBusClient.NewProcessorForQueue(
+		queueName,
 		ProcessorWithMaxConcurrentCalls(20))
 
 	require.NoError(t, err)
 
-	defer processor.Close(ctx) // multiple close is fine
+	defer processor.Close(context.Background()) // multiple close is fine
 
-	wg := sync.WaitGroup{}
-	wg.Add(numMessages)
-	messages := make(chan *ReceivedMessage, numMessages)
+	var messages []string
+	mu := sync.Mutex{}
 
-	err = processor.Start(func(m *ReceivedMessage) error {
-		messages <- m
-		wg.Done()
+	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*2)
+	defer cancel()
+
+	err = processor.Start(ctx, func(m *ReceivedMessage) error {
+		mu.Lock()
+		defer mu.Unlock()
+
+		messages = append(messages, string(m.Body))
+
+		if len(messages) == 100 {
+			go processor.Close(context.Background())
+		}
+
 		return nil
 	}, func(err error) {
 		if errors.Is(err, context.Canceled) {
@@ -134,10 +144,9 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 	})
 
 	require.NoError(t, err)
-	require.NoError(t, utils.WaitForGroupOrContext(ctx, &wg))
 
-	bodies := getSortedBodiesFromChannel(messages)
-	require.EqualValues(t, expectedBodies, bodies)
+	sort.Strings(messages)
+	require.EqualValues(t, expectedBodies, messages)
 
 	require.NoError(t, processor.Close(ctx))
 }

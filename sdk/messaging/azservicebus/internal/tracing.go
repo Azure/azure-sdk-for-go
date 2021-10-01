@@ -11,6 +11,46 @@ import (
 	"github.com/devigned/tab"
 )
 
+// link/connection recovery spans
+const (
+	SpanRecoverLink   = "sb.recover.link"
+	SpanRecoverClient = "sb.recover.client"
+)
+
+// authentication
+const (
+	SpanNegotiateClaim = "sb.auth.negotiateClaim"
+)
+
+// settlement
+const (
+	SpanCompleteMessage = "sb.receiver.complete"
+)
+
+// processor
+const (
+	SpanProcessorLoop    = "sb.processor.main"
+	SpanProcessorMessage = "sb.processor.message"
+	SpanProcessorClose   = "sb.processor.close"
+)
+
+// mgmt client spans
+const (
+	spanNameRenewLock              = "sb.mgmt.RenewLock"
+	spanNameReceiveDeferred        = "sb.mgmt.ReceiveDeferred"
+	spanNameSendDisposition        = "sb.mgmt.SendDisposition"
+	spanNameScheduleMessage        = "sb.mgmt.Schedule"
+	spanNameCancelScheduledMessage = "sb.mgmt.CancelScheduled"
+	spanPeekFromSequenceNumber     = "sb.mgmt.PeekSequenceNumber"
+	spanNameRecover                = "sb.mgmt.Recover"
+	spanNameTryRecover             = "sb.mgmt.TryRecover"
+)
+
+// sender spans
+const (
+	SpanSendMessageFmt string = "sb.SendMessage.%s"
+)
+
 func (ns *Namespace) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
 	ctx, span := tab.StartSpan(ctx, operationName)
 	ApplyComponentInfo(span)
@@ -39,7 +79,7 @@ func applyResponseInfo(span tab.Spanner, res *http.Response) {
 
 func (mc *mgmtClient) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
 	ctx, span := startConsumerSpanFromContext(ctx, operationName)
-	span.AddAttributes(tab.StringAttribute("message_bus.destination", mc.managementPath))
+	span.AddAttributes(tab.StringAttribute("message_bus.destination", mc.links.ManagementPath()))
 	return ctx, span
 }
 
@@ -48,7 +88,7 @@ func (mc *mgmtClient) startProducerSpanFromContext(ctx context.Context, operatio
 	ApplyComponentInfo(span)
 	span.AddAttributes(
 		tab.StringAttribute("span.kind", "producer"),
-		tab.StringAttribute("message_bus.destination", mc.managementPath),
+		tab.StringAttribute("message_bus.destination", mc.links.ManagementPath()),
 	)
 	return ctx, span
 }

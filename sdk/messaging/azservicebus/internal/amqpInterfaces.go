@@ -5,7 +5,9 @@ package internal
 
 import (
 	"context"
+	"time"
 
+	"github.com/Azure/azure-amqp-common-go/v3/rpc"
 	"github.com/Azure/go-amqp"
 )
 
@@ -44,4 +46,10 @@ type AMQPSender interface {
 type AMQPSenderCloser interface {
 	AMQPSender
 	Close(ctx context.Context) error
+}
+
+// RPCLink is implemented by *rpc.Link
+type RPCLink interface {
+	Close(ctx context.Context) error
+	RetryableRPC(ctx context.Context, times int, delay time.Duration, msg *amqp.Message) (*rpc.Response, error)
 }

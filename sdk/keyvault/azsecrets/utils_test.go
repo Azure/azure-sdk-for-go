@@ -87,9 +87,9 @@ func createClient(t *testing.T) (*Client, error) {
 
 	var cred azcore.TokenCredential
 	if recording.GetRecordMode() == "record" {
-		tenantId := lookupEnvVar("KEYVAULT_TENANT_ID")
-		clientId := lookupEnvVar("KEYVAULT_CLIENT_ID")
-		clientSecret := lookupEnvVar("KEYVAULT_CLIENT_SECRET")
+		tenantId := lookupEnvVar("KEYVAULT/AZSECRETS_TENANT_ID")
+		clientId := lookupEnvVar("KEYVAULT/AZSECRETS_CLIENT_ID")
+		clientSecret := lookupEnvVar("KEYVAULT/AZSECRETS_CLIENT_SECRET")
 		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
 		require.NoError(t, err)
 	} else {

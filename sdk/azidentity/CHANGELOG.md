@@ -3,7 +3,7 @@
 ## 0.12.0 (Unreleased)
 ### Breaking Changes
 * Removed `NewAuthenticationPolicy()` from credentials. Clients should instead use azcore's
- `runtime.BearerTokenPolicy()` to construct a bearer token authorization policy.
+ `runtime.NewBearerTokenPolicy()` to construct a bearer token authorization policy.
 * The `AuthorityHost` field in credential options structs is now a custom type,
   `AuthorityHost`, with underlying type `string`
 * `NewChainedTokenCredential` has a new signature to accommodate a placeholder

@@ -82,7 +82,7 @@ func TestUsernamePasswordCredential_GetTokenSuccess(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := UsernamePasswordCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &options)
 	if err != nil {
@@ -99,7 +99,7 @@ func TestUsernamePasswordCredential_GetTokenInvalidCredentials(t *testing.T) {
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	options := UsernamePasswordCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "wrong_password", &options)
 	if err != nil {
@@ -117,7 +117,7 @@ func TestBearerPolicy_UsernamePasswordCredential(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	options := UsernamePasswordCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &options)
 	if err != nil {

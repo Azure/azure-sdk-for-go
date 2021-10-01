@@ -146,7 +146,7 @@ func (client BaseClient) Generatevirtualwanvpnserverconfigurationvpnprofile(ctx 
 
 	result, err = client.GeneratevirtualwanvpnserverconfigurationvpnprofileSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.BaseClient", "Generatevirtualwanvpnserverconfigurationvpnprofile", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.BaseClient", "Generatevirtualwanvpnserverconfigurationvpnprofile", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -180,6 +180,7 @@ func (client BaseClient) GeneratevirtualwanvpnserverconfigurationvpnprofilePrepa
 // http.Response Body if it receives an error.
 func (client BaseClient) GeneratevirtualwanvpnserverconfigurationvpnprofileSender(req *http.Request) (future GeneratevirtualwanvpnserverconfigurationvpnprofileFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

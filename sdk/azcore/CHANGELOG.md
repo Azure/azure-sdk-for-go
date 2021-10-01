@@ -1,12 +1,18 @@
 # Release History
 
-## v0.19.1 (Unreleased)
+## 0.20.0 (Unreleased)
+
+### Breaking Changes
+* The endpoint parameter for `arm/Connection` constructors has changed to a string typedef in order to provide a hint for applicable values.
+* Removed `azcore.Credential` and `.NewAnonymousCredential()`
+  * `NewRPRegistrationPolicy` now requires an `azcore.TokenCredential`
 
 ### Features Added
 * Updating Documentation
 
 ### Bug Fixes
 * Fixed a potential panic when creating the default Transporter.
+* Close LRO initial response body when creating a poller.
 
 ## 0.19.0 (2021-08-25)
 

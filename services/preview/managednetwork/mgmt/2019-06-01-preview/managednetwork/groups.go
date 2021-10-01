@@ -58,7 +58,7 @@ func (client GroupsClient) CreateOrUpdate(ctx context.Context, managedNetworkGro
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "managednetwork.GroupsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managednetwork.GroupsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -93,6 +93,7 @@ func (client GroupsClient) CreateOrUpdatePreparer(ctx context.Context, managedNe
 // http.Response Body if it receives an error.
 func (client GroupsClient) CreateOrUpdateSender(req *http.Request) (future GroupsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -141,7 +142,7 @@ func (client GroupsClient) Delete(ctx context.Context, resourceGroupName string,
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "managednetwork.GroupsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "managednetwork.GroupsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -174,6 +175,7 @@ func (client GroupsClient) DeletePreparer(ctx context.Context, resourceGroupName
 // http.Response Body if it receives an error.
 func (client GroupsClient) DeleteSender(req *http.Request) (future GroupsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

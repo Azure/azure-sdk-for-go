@@ -1,5 +1,41 @@
 # Release History
 
+## 0.12.0 (Unreleased)
+### Breaking Changes
+* Removed `NewAuthenticationPolicy()` from credentials. Clients should instead use azcore's
+ `runtime.NewBearerTokenPolicy()` to construct a bearer token authorization policy.
+* The `AuthorityHost` field in credential options structs is now a custom type,
+  `AuthorityHost`, with underlying type `string`
+* `NewChainedTokenCredential` has a new signature to accommodate a placeholder
+  options struct:
+  ```go
+  // before
+  cred, err := NewChainedTokenCredential(credA, credB)
+
+  // after
+  cred, err := NewChainedTokenCredential([]azcore.TokenCredential{credA, credB}, nil)
+  ```
+* Removed `ExcludeAzureCLICredential`, `ExcludeEnvironmentCredential`, and `ExcludeMSICredential`
+  from `DefaultAzureCredentialOptions`
+* `NewClientCertificateCredential` requires the bytes of a certificate instead of
+  a path to a certificate file:
+  ```go
+  // before
+  cred, err := NewClientCertificateCredential("tenant", "client-id", "/cert.pem", nil)
+
+  // after
+  certData, err := os.ReadFile("/cert.pem")
+  cred, err := NewClientCertificateCredential("tenant", "client-id", certData, nil)
+  ```
+* Removed `InteractiveBrowserCredentialOptions.ClientSecret` and `.Port`
+* Removed `AADAuthenticationFailedError`
+
+### Features Added
+* Added connection configuration options to `DefaultAzureCredentialOptions`
+* `AuthenticationFailedError.RawResponse()` returns the HTTP response motivating the error,
+  if available
+
+
 ## 0.11.0 (2021-09-08)
 ### Breaking Changes
 * Unexported `AzureCLICredentialOptions.TokenProvider` and its type,

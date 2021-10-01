@@ -1,9 +1,21 @@
 trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
   paths:
     include:
       - sdk/storage/azblob
 
 pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
   paths:
     include:
       - sdk/storage/azblob

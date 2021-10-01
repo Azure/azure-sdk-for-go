@@ -53,7 +53,7 @@ func (client PriceSheetClient) Download(ctx context.Context, billingAccountName 
 
 	result, err = client.DownloadSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.PriceSheetClient", "Download", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.PriceSheetClient", "Download", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -84,6 +84,7 @@ func (client PriceSheetClient) DownloadPreparer(ctx context.Context, billingAcco
 // http.Response Body if it receives an error.
 func (client PriceSheetClient) DownloadSender(req *http.Request) (future PriceSheetDownloadFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

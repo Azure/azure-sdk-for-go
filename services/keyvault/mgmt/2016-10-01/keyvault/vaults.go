@@ -927,7 +927,7 @@ func (client VaultsClient) PurgeDeleted(ctx context.Context, vaultName string, l
 
 	result, err = client.PurgeDeletedSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "PurgeDeleted", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "keyvault.VaultsClient", "PurgeDeleted", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -959,6 +959,7 @@ func (client VaultsClient) PurgeDeletedPreparer(ctx context.Context, vaultName s
 // http.Response Body if it receives an error.
 func (client VaultsClient) PurgeDeletedSender(req *http.Request) (future VaultsPurgeDeletedFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

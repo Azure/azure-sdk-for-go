@@ -69,7 +69,7 @@ func (client CustomLocationsClient) CreateOrUpdate(ctx context.Context, resource
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "extendedlocation.CustomLocationsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "extendedlocation.CustomLocationsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -104,6 +104,7 @@ func (client CustomLocationsClient) CreateOrUpdatePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client CustomLocationsClient) CreateOrUpdateSender(req *http.Request) (future CustomLocationsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -164,7 +165,7 @@ func (client CustomLocationsClient) Delete(ctx context.Context, resourceGroupNam
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "extendedlocation.CustomLocationsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "extendedlocation.CustomLocationsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -196,6 +197,7 @@ func (client CustomLocationsClient) DeletePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client CustomLocationsClient) DeleteSender(req *http.Request) (future CustomLocationsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

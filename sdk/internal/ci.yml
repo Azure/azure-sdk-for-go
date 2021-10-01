@@ -1,11 +1,23 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
   paths:
     include:
     - sdk/internal/
     - eng/
 
 pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
   paths:
     include:
     - sdk/internal/

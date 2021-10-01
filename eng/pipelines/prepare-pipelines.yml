@@ -6,5 +6,5 @@ extends:
     Repository: $(Build.Repository.Name)
     Prefix: go
     CIConventionOptions: ''
-    # Includes live test variable group 52 for unified pipeline (ci+live tests)
-    UPConventionOptions: '--variablegroup 58 --variablegroup 76 --variablegroup 56 --variablegroup 93 --variablegroup 52'
+    # Includes live test variable group 64 for unified pipeline (ci+live tests)
+    UPConventionOptions: '--variablegroup 58 --variablegroup 76 --variablegroup 56 --variablegroup 93 --variablegroup 64'

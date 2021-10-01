@@ -98,7 +98,7 @@ func (client JobsClient) Create(ctx context.Context, resourceGroupName string, j
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -132,6 +132,7 @@ func (client JobsClient) CreatePreparer(ctx context.Context, resourceGroupName s
 // http.Response Body if it receives an error.
 func (client JobsClient) CreateSender(req *http.Request) (future JobsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -190,7 +191,7 @@ func (client JobsClient) Delete(ctx context.Context, resourceGroupName string, j
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -222,6 +223,7 @@ func (client JobsClient) DeletePreparer(ctx context.Context, resourceGroupName s
 // http.Response Body if it receives an error.
 func (client JobsClient) DeleteSender(req *http.Request) (future JobsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -938,7 +940,7 @@ func (client JobsClient) Terminate(ctx context.Context, resourceGroupName string
 
 	result, err = client.TerminateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "Terminate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.JobsClient", "Terminate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -970,6 +972,7 @@ func (client JobsClient) TerminatePreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client JobsClient) TerminateSender(req *http.Request) (future JobsTerminateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

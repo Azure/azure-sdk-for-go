@@ -162,7 +162,7 @@ func (client RegistriesClient) Create(ctx context.Context, resourceGroupName str
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.RegistriesClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -196,6 +196,7 @@ func (client RegistriesClient) CreatePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client RegistriesClient) CreateSender(req *http.Request) (future RegistriesCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

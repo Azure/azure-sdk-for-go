@@ -191,7 +191,7 @@ func (client OperationalizationClustersClient) CreateOrUpdate(ctx context.Contex
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -225,6 +225,7 @@ func (client OperationalizationClustersClient) CreateOrUpdatePreparer(ctx contex
 // http.Response Body if it receives an error.
 func (client OperationalizationClustersClient) CreateOrUpdateSender(req *http.Request) (future OperationalizationClustersCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -284,7 +285,7 @@ func (client OperationalizationClustersClient) Delete(ctx context.Context, resou
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -319,6 +320,7 @@ func (client OperationalizationClustersClient) DeletePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client OperationalizationClustersClient) DeleteSender(req *http.Request) (future OperationalizationClustersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -892,7 +894,7 @@ func (client OperationalizationClustersClient) UpdateSystemServices(ctx context.
 
 	result, err = client.UpdateSystemServicesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "UpdateSystemServices", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "compute.OperationalizationClustersClient", "UpdateSystemServices", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -924,6 +926,7 @@ func (client OperationalizationClustersClient) UpdateSystemServicesPreparer(ctx 
 // http.Response Body if it receives an error.
 func (client OperationalizationClustersClient) UpdateSystemServicesSender(req *http.Request) (future OperationalizationClustersUpdateSystemServicesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

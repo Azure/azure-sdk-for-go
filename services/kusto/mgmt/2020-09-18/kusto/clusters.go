@@ -57,7 +57,7 @@ func (client ClustersClient) AddLanguageExtensions(ctx context.Context, resource
 
 	result, err = client.AddLanguageExtensionsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "AddLanguageExtensions", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "AddLanguageExtensions", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -91,6 +91,7 @@ func (client ClustersClient) AddLanguageExtensionsPreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client ClustersClient) AddLanguageExtensionsSender(req *http.Request) (future ClustersAddLanguageExtensionsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -244,7 +245,7 @@ func (client ClustersClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -278,6 +279,7 @@ func (client ClustersClient) CreateOrUpdatePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client ClustersClient) CreateOrUpdateSender(req *http.Request) (future ClustersCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -324,7 +326,7 @@ func (client ClustersClient) Delete(ctx context.Context, resourceGroupName strin
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -356,6 +358,7 @@ func (client ClustersClient) DeletePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client ClustersClient) DeleteSender(req *http.Request) (future ClustersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -409,7 +412,7 @@ func (client ClustersClient) DetachFollowerDatabases(ctx context.Context, resour
 
 	result, err = client.DetachFollowerDatabasesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "DetachFollowerDatabases", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "DetachFollowerDatabases", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -444,6 +447,7 @@ func (client ClustersClient) DetachFollowerDatabasesPreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client ClustersClient) DetachFollowerDatabasesSender(req *http.Request) (future ClustersDetachFollowerDatabasesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -490,7 +494,7 @@ func (client ClustersClient) DiagnoseVirtualNetwork(ctx context.Context, resourc
 
 	result, err = client.DiagnoseVirtualNetworkSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "DiagnoseVirtualNetwork", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "DiagnoseVirtualNetwork", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -522,6 +526,7 @@ func (client ClustersClient) DiagnoseVirtualNetworkPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client ClustersClient) DiagnoseVirtualNetworkSender(req *http.Request) (future ClustersDiagnoseVirtualNetworkFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1090,7 +1095,7 @@ func (client ClustersClient) RemoveLanguageExtensions(ctx context.Context, resou
 
 	result, err = client.RemoveLanguageExtensionsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "RemoveLanguageExtensions", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "RemoveLanguageExtensions", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1124,6 +1129,7 @@ func (client ClustersClient) RemoveLanguageExtensionsPreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client ClustersClient) RemoveLanguageExtensionsSender(req *http.Request) (future ClustersRemoveLanguageExtensionsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1169,7 +1175,7 @@ func (client ClustersClient) Start(ctx context.Context, resourceGroupName string
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "Start", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "Start", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1201,6 +1207,7 @@ func (client ClustersClient) StartPreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client ClustersClient) StartSender(req *http.Request) (future ClustersStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1246,7 +1253,7 @@ func (client ClustersClient) Stop(ctx context.Context, resourceGroupName string,
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "Stop", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "Stop", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1278,6 +1285,7 @@ func (client ClustersClient) StopPreparer(ctx context.Context, resourceGroupName
 // http.Response Body if it receives an error.
 func (client ClustersClient) StopSender(req *http.Request) (future ClustersStopFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1324,7 +1332,7 @@ func (client ClustersClient) Update(ctx context.Context, resourceGroupName strin
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.ClustersClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1358,6 +1366,7 @@ func (client ClustersClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client ClustersClient) UpdateSender(req *http.Request) (future ClustersUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

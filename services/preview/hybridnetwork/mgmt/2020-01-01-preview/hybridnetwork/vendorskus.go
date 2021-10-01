@@ -61,7 +61,7 @@ func (client VendorSkusClient) CreateOrUpdate(ctx context.Context, vendorName st
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -95,6 +95,7 @@ func (client VendorSkusClient) CreateOrUpdatePreparer(ctx context.Context, vendo
 // http.Response Body if it receives an error.
 func (client VendorSkusClient) CreateOrUpdateSender(req *http.Request) (future VendorSkusCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -147,7 +148,7 @@ func (client VendorSkusClient) Delete(ctx context.Context, vendorName string, sk
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorSkusClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -179,6 +180,7 @@ func (client VendorSkusClient) DeletePreparer(ctx context.Context, vendorName st
 // http.Response Body if it receives an error.
 func (client VendorSkusClient) DeleteSender(req *http.Request) (future VendorSkusDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

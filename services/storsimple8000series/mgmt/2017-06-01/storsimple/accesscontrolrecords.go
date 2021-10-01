@@ -67,7 +67,7 @@ func (client AccessControlRecordsClient) CreateOrUpdate(ctx context.Context, acc
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -102,6 +102,7 @@ func (client AccessControlRecordsClient) CreateOrUpdatePreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client AccessControlRecordsClient) CreateOrUpdateSender(req *http.Request) (future AccessControlRecordsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -156,7 +157,7 @@ func (client AccessControlRecordsClient) Delete(ctx context.Context, accessContr
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.AccessControlRecordsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -189,6 +190,7 @@ func (client AccessControlRecordsClient) DeletePreparer(ctx context.Context, acc
 // http.Response Body if it receives an error.
 func (client AccessControlRecordsClient) DeleteSender(req *http.Request) (future AccessControlRecordsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

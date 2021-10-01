@@ -62,7 +62,7 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdate(ctx context.Context, r
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -96,6 +96,7 @@ func (client VirtualNetworkGatewaysClient) CreateOrUpdatePreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewaysClient) CreateOrUpdateSender(req *http.Request) (future VirtualNetworkGatewaysCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -142,7 +143,7 @@ func (client VirtualNetworkGatewaysClient) Delete(ctx context.Context, resourceG
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -174,6 +175,7 @@ func (client VirtualNetworkGatewaysClient) DeletePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewaysClient) DeleteSender(req *http.Request) (future VirtualNetworkGatewaysDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -221,7 +223,7 @@ func (client VirtualNetworkGatewaysClient) Generatevpnclientpackage(ctx context.
 
 	result, err = client.GeneratevpnclientpackageSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "Generatevpnclientpackage", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "Generatevpnclientpackage", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -255,6 +257,7 @@ func (client VirtualNetworkGatewaysClient) GeneratevpnclientpackagePreparer(ctx 
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewaysClient) GeneratevpnclientpackageSender(req *http.Request) (future VirtualNetworkGatewaysGeneratevpnclientpackageFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -272,7 +275,7 @@ func (client VirtualNetworkGatewaysClient) GeneratevpnclientpackageResponder(res
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -379,7 +382,7 @@ func (client VirtualNetworkGatewaysClient) GetAdvertisedRoutes(ctx context.Conte
 
 	result, err = client.GetAdvertisedRoutesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "GetAdvertisedRoutes", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "GetAdvertisedRoutes", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -412,6 +415,7 @@ func (client VirtualNetworkGatewaysClient) GetAdvertisedRoutesPreparer(ctx conte
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewaysClient) GetAdvertisedRoutesSender(req *http.Request) (future VirtualNetworkGatewaysGetAdvertisedRoutesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -459,7 +463,7 @@ func (client VirtualNetworkGatewaysClient) GetBgpPeerStatus(ctx context.Context,
 
 	result, err = client.GetBgpPeerStatusSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "GetBgpPeerStatus", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "GetBgpPeerStatus", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -494,6 +498,7 @@ func (client VirtualNetworkGatewaysClient) GetBgpPeerStatusPreparer(ctx context.
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewaysClient) GetBgpPeerStatusSender(req *http.Request) (future VirtualNetworkGatewaysGetBgpPeerStatusFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -541,7 +546,7 @@ func (client VirtualNetworkGatewaysClient) GetLearnedRoutes(ctx context.Context,
 
 	result, err = client.GetLearnedRoutesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "GetLearnedRoutes", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "GetLearnedRoutes", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -573,6 +578,7 @@ func (client VirtualNetworkGatewaysClient) GetLearnedRoutesPreparer(ctx context.
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewaysClient) GetLearnedRoutesSender(req *http.Request) (future VirtualNetworkGatewaysGetLearnedRoutesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -737,7 +743,7 @@ func (client VirtualNetworkGatewaysClient) Reset(ctx context.Context, resourceGr
 
 	result, err = client.ResetSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "Reset", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.VirtualNetworkGatewaysClient", "Reset", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -772,6 +778,7 @@ func (client VirtualNetworkGatewaysClient) ResetPreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client VirtualNetworkGatewaysClient) ResetSender(req *http.Request) (future VirtualNetworkGatewaysResetFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

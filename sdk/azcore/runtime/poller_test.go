@@ -41,7 +41,9 @@ type widget struct {
 }
 
 func TestNewPollerFail(t *testing.T) {
+	body, closed := mock.NewTrackedCloser(http.NoBody)
 	p, err := NewPoller("fake.poller", &http.Response{
+		Body:       body,
 		StatusCode: http.StatusBadRequest,
 	}, NewPipeline(nil), errUnmarshall)
 	if err == nil {
@@ -49,6 +51,9 @@ func TestNewPollerFail(t *testing.T) {
 	}
 	if p != nil {
 		t.Fatal("expected nil poller")
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 }
 
@@ -91,10 +96,15 @@ func TestLocPollerSimple(t *testing.T) {
 			"Retry-After": []string{"1"},
 		},
 	}
+	body, closed := mock.NewTrackedCloser(http.NoBody)
+	firstResp.Body = body
 	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	resp, err := lro.PollUntilDone(context.Background(), 5*time.Millisecond, nil)
 	if err != nil {
@@ -119,10 +129,15 @@ func TestLocPollerWithWidget(t *testing.T) {
 			"Retry-After": []string{"1"},
 		},
 	}
+	body, closed := mock.NewTrackedCloser(http.NoBody)
+	firstResp.Body = body
 	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	var w widget
 	resp, err := lro.PollUntilDone(context.Background(), 5*time.Millisecond, &w)
@@ -151,10 +166,15 @@ func TestLocPollerCancelled(t *testing.T) {
 			"Retry-After": []string{"1"},
 		},
 	}
+	body, closed := mock.NewTrackedCloser(http.NoBody)
+	firstResp.Body = body
 	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	var w widget
 	resp, err := lro.PollUntilDone(context.Background(), 5*time.Millisecond, &w)
@@ -186,10 +206,15 @@ func TestLocPollerWithError(t *testing.T) {
 			"Retry-After": []string{"1"},
 		},
 	}
+	body, closed := mock.NewTrackedCloser(http.NoBody)
+	firstResp.Body = body
 	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	var w widget
 	resp, err := lro.PollUntilDone(context.Background(), 5*time.Millisecond, &w)
@@ -221,10 +246,15 @@ func TestLocPollerWithResumeToken(t *testing.T) {
 			"Retry-After": []string{"1"},
 		},
 	}
+	body, closed := mock.NewTrackedCloser(http.NoBody)
+	firstResp.Body = body
 	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	resp, err := lro.Poll(context.Background())
 	if err != nil {
@@ -273,10 +303,15 @@ func TestLocPollerWithTimeout(t *testing.T) {
 			"Location": []string{srv.URL()},
 		},
 	}
+	body, closed := mock.NewTrackedCloser(http.NoBody)
+	firstResp.Body = body
 	pl := NewPipeline(srv)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 50*time.Millisecond)
 	resp, err := lro.PollUntilDone(ctx, 5*time.Millisecond, nil)
@@ -300,8 +335,9 @@ func TestOpPollerSimple(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp := &http.Response{
-		Body:       http.NoBody,
+		Body:       body,
 		StatusCode: http.StatusAccepted,
 		Header: http.Header{
 			"Operation-Location": []string{srv.URL()},
@@ -316,6 +352,9 @@ func TestOpPollerSimple(t *testing.T) {
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	resp, err := lro.PollUntilDone(context.Background(), 5*time.Millisecond, nil)
 	if err != nil {
@@ -339,8 +378,9 @@ func TestOpPollerWithWidgetPUT(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp := &http.Response{
-		Body:       http.NoBody,
+		Body:       body,
 		StatusCode: http.StatusAccepted,
 		Header: http.Header{
 			"Operation-Location": []string{srv.URL()},
@@ -355,6 +395,9 @@ func TestOpPollerWithWidgetPUT(t *testing.T) {
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	var w widget
 	resp, err := lro.PollUntilDone(context.Background(), 5*time.Millisecond, &w)
@@ -382,8 +425,9 @@ func TestOpPollerWithWidgetPOSTLocation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp := &http.Response{
-		Body:       http.NoBody,
+		Body:       body,
 		StatusCode: http.StatusAccepted,
 		Header: http.Header{
 			"Operation-Location": []string{srv.URL()},
@@ -399,6 +443,9 @@ func TestOpPollerWithWidgetPOSTLocation(t *testing.T) {
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	var w widget
 	resp, err := lro.PollUntilDone(context.Background(), 5*time.Millisecond, &w)
@@ -425,8 +472,9 @@ func TestOpPollerWithWidgetPOST(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp := &http.Response{
-		Body:       http.NoBody,
+		Body:       body,
 		StatusCode: http.StatusAccepted,
 		Header: http.Header{
 			"Operation-Location": []string{srv.URL()},
@@ -441,6 +489,9 @@ func TestOpPollerWithWidgetPOST(t *testing.T) {
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	var w widget
 	resp, err := lro.PollUntilDone(context.Background(), 5*time.Millisecond, &w)
@@ -469,8 +520,9 @@ func TestOpPollerWithWidgetResourceLocation(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp := &http.Response{
-		Body:       http.NoBody,
+		Body:       body,
 		StatusCode: http.StatusAccepted,
 		Header: http.Header{
 			"Operation-Location": []string{srv.URL()},
@@ -486,6 +538,9 @@ func TestOpPollerWithWidgetResourceLocation(t *testing.T) {
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	var w widget
 	resp, err := lro.PollUntilDone(context.Background(), 5*time.Millisecond, &w)
@@ -511,8 +566,9 @@ func TestOpPollerWithResumeToken(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp := &http.Response{
-		Body:       http.NoBody,
+		Body:       body,
 		StatusCode: http.StatusAccepted,
 		Header: http.Header{
 			"Operation-Location": []string{srv.URL()},
@@ -527,6 +583,9 @@ func TestOpPollerWithResumeToken(t *testing.T) {
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	resp, err := lro.Poll(context.Background())
 	if err != nil {
@@ -566,10 +625,15 @@ func TestNopPoller(t *testing.T) {
 	firstResp := &http.Response{
 		StatusCode: http.StatusOK,
 	}
+	body, closed := mock.NewTrackedCloser(http.NoBody)
+	firstResp.Body = body
 	pl := NewPipeline(nil)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
+	}
+	if !closed() {
+		t.Fatal("initial response body wasn't closed")
 	}
 	if pt := pollers.PollerType(lro); pt != reflect.TypeOf(&pollers.NopPoller{}) {
 		t.Fatalf("unexpected poller type %s", pt.String())

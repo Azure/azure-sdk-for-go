@@ -8,7 +8,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // UsernamePasswordCredentialOptions can be used to provide additional information to configure the UsernamePasswordCredential.
@@ -17,7 +16,7 @@ import (
 type UsernamePasswordCredentialOptions struct {
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
-	AuthorityHost string
+	AuthorityHost AuthorityHost
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
 	HTTPClient policy.Transporter
@@ -77,11 +76,6 @@ func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts policy.T
 	}
 	logGetTokenSuccess(c, opts)
 	return tk, err
-}
-
-// NewAuthenticationPolicy implements the azcore.Credential interface on UsernamePasswordCredential.
-func (c *UsernamePasswordCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
-	return newBearerTokenPolicy(c, options)
 }
 
 var _ azcore.TokenCredential = (*UsernamePasswordCredential)(nil)

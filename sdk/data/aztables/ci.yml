@@ -1,10 +1,22 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
   paths:
     include:
     - sdk/data/aztables
 
 pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
   paths:
     include:
     - sdk/data/aztables
@@ -12,5 +24,10 @@ pr:
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
+<<<<<<< HEAD
     ServiceDirectory: data
+=======
+    ServiceDirectory: 'data/aztables'
+    RunTests: true
+>>>>>>> 9b685ca21145026e8a57ee9b1f6e55d317c16c54
     RunLiveTests: true

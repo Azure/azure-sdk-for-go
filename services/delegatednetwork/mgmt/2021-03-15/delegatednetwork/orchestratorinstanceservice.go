@@ -73,7 +73,7 @@ func (client OrchestratorInstanceServiceClient) Create(ctx context.Context, reso
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -107,6 +107,7 @@ func (client OrchestratorInstanceServiceClient) CreatePreparer(ctx context.Conte
 // http.Response Body if it receives an error.
 func (client OrchestratorInstanceServiceClient) CreateSender(req *http.Request) (future OrchestratorInstanceServiceCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -167,7 +168,7 @@ func (client OrchestratorInstanceServiceClient) Delete(ctx context.Context, reso
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "delegatednetwork.OrchestratorInstanceServiceClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -199,6 +200,7 @@ func (client OrchestratorInstanceServiceClient) DeletePreparer(ctx context.Conte
 // http.Response Body if it receives an error.
 func (client OrchestratorInstanceServiceClient) DeleteSender(req *http.Request) (future OrchestratorInstanceServiceDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

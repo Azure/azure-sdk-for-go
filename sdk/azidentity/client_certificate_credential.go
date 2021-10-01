@@ -10,13 +10,9 @@ import (
 	"encoding/base64"
 	"encoding/pem"
 	"errors"
-	"io/ioutil"
-	"os"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"golang.org/x/crypto/pkcs12"
 )
 
@@ -30,7 +26,7 @@ type ClientCertificateCredentialOptions struct {
 	SendCertificateChain bool
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
-	AuthorityHost string
+	AuthorityHost AuthorityHost
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
 	HTTPClient policy.Transporter
@@ -56,35 +52,18 @@ type ClientCertificateCredential struct {
 // NewClientCertificateCredential creates an instance of ClientCertificateCredential with the details needed to authenticate against Azure Active Directory with the specified certificate.
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
-// certificatePath: The path to the client certificate used to authenticate the client.  Supported formats are PEM and PFX.
+// certData: The bytes of a certificate in PEM or PKCS12 format, including the private key.
 // options: ClientCertificateCredentialOptions that can be used to provide additional configurations for the credential, such as the certificate password.
-func NewClientCertificateCredential(tenantID string, clientID string, certificatePath string, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
+func NewClientCertificateCredential(tenantID string, clientID string, certData []byte, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
 	if !validTenantID(tenantID) {
 		return nil, &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: tenantIDValidationErr}
-	}
-	_, err := os.Stat(certificatePath)
-	if err != nil {
-		credErr := &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: "Certificate file not found in path: " + certificatePath}
-		logCredentialError(credErr.credentialType, credErr)
-		return nil, credErr
-	}
-	certData, err := ioutil.ReadFile(certificatePath)
-	if err != nil {
-		credErr := &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: err.Error()}
-		logCredentialError(credErr.credentialType, credErr)
-		return nil, credErr
 	}
 	if options == nil {
 		options = &ClientCertificateCredentialOptions{}
 	}
-	var cert *certContents
-	certificatePath = strings.ToUpper(certificatePath)
-	if strings.HasSuffix(certificatePath, ".PEM") {
-		cert, err = extractFromPEMFile(certData, options.Password, options.SendCertificateChain)
-	} else if strings.HasSuffix(certificatePath, ".PFX") {
-		cert, err = extractFromPFXFile(certData, options.Password, options.SendCertificateChain)
-	} else {
-		err = errors.New("only PEM and PFX files are supported")
+	cert, err := loadPEMCert(certData, options.Password, options.SendCertificateChain)
+	if err != nil {
+		cert, err = loadPKCS12Cert(certData, options.Password, options.SendCertificateChain)
 	}
 	if err != nil {
 		credErr := &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: err.Error()}
@@ -174,7 +153,7 @@ func newCertContents(blocks []*pem.Block, fromPEM bool, sendCertificateChain boo
 	return &cc, nil
 }
 
-func extractFromPEMFile(certData []byte, password string, sendCertificateChain bool) (*certContents, error) {
+func loadPEMCert(certData []byte, password string, sendCertificateChain bool) (*certContents, error) {
 	// TODO: wire up support for password
 	blocks := []*pem.Block{}
 	// read all of the PEM blocks
@@ -187,19 +166,20 @@ func extractFromPEMFile(certData []byte, password string, sendCertificateChain b
 		blocks = append(blocks, block)
 	}
 	if len(blocks) == 0 {
-		return nil, errors.New("didn't find any blocks in PEM file")
+		return nil, errors.New("didn't find any PEM blocks")
 	}
 	return newCertContents(blocks, true, sendCertificateChain)
 }
 
-func extractFromPFXFile(certData []byte, password string, sendCertificateChain bool) (*certContents, error) {
-	// convert PFX binary data to PEM blocks
+func loadPKCS12Cert(certData []byte, password string, sendCertificateChain bool) (*certContents, error) {
+	// convert data to PEM blocks
 	blocks, err := pkcs12.ToPEM(certData, password)
 	if err != nil {
 		return nil, err
 	}
 	if len(blocks) == 0 {
-		return nil, errors.New("didn't find any blocks in PFX file")
+		// not mentioning PKCS12 in this message because we end up here when certData is garbage
+		return nil, errors.New("didn't find any certificate content")
 	}
 	return newCertContents(blocks, false, sendCertificateChain)
 }
@@ -216,11 +196,6 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.
 	}
 	logGetTokenSuccess(c, opts)
 	return tk, nil
-}
-
-// NewAuthenticationPolicy implements the azcore.Credential interface on ClientCertificateCredential.
-func (c *ClientCertificateCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
-	return newBearerTokenPolicy(c, options)
 }
 
 var _ azcore.TokenCredential = (*ClientCertificateCredential)(nil)

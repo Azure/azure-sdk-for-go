@@ -53,7 +53,7 @@ func (client ExportJobsClient) Trigger(ctx context.Context, resourceGroupName st
 
 	result, err = client.TriggerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dataprotection.ExportJobsClient", "Trigger", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dataprotection.ExportJobsClient", "Trigger", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -85,6 +85,7 @@ func (client ExportJobsClient) TriggerPreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client ExportJobsClient) TriggerSender(req *http.Request) (future ExportJobsTriggerFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

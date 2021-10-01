@@ -69,7 +69,7 @@ func (client ChapSettingsClient) CreateOrUpdate(ctx context.Context, deviceName 
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.ChapSettingsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.ChapSettingsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -105,6 +105,7 @@ func (client ChapSettingsClient) CreateOrUpdatePreparer(ctx context.Context, dev
 // http.Response Body if it receives an error.
 func (client ChapSettingsClient) CreateOrUpdateSender(req *http.Request) (future ChapSettingsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -160,7 +161,7 @@ func (client ChapSettingsClient) Delete(ctx context.Context, deviceName string, 
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.ChapSettingsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.ChapSettingsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -194,6 +195,7 @@ func (client ChapSettingsClient) DeletePreparer(ctx context.Context, deviceName 
 // http.Response Body if it receives an error.
 func (client ChapSettingsClient) DeleteSender(req *http.Request) (future ChapSettingsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

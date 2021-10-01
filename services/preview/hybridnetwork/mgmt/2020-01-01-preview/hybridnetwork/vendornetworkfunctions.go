@@ -63,7 +63,7 @@ func (client VendorNetworkFunctionsClient) CreateOrUpdate(ctx context.Context, l
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorNetworkFunctionsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.VendorNetworkFunctionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -98,6 +98,7 @@ func (client VendorNetworkFunctionsClient) CreateOrUpdatePreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client VendorNetworkFunctionsClient) CreateOrUpdateSender(req *http.Request) (future VendorNetworkFunctionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

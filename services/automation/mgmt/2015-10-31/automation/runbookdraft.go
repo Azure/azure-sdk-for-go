@@ -235,7 +235,7 @@ func (client RunbookDraftClient) Publish(ctx context.Context, resourceGroupName 
 
 	result, err = client.PublishSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.RunbookDraftClient", "Publish", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftClient", "Publish", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -268,6 +268,7 @@ func (client RunbookDraftClient) PublishPreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client RunbookDraftClient) PublishSender(req *http.Request) (future RunbookDraftPublishFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -323,7 +324,7 @@ func (client RunbookDraftClient) ReplaceContent(ctx context.Context, resourceGro
 
 	result, err = client.ReplaceContentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.RunbookDraftClient", "ReplaceContent", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftClient", "ReplaceContent", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -358,6 +359,7 @@ func (client RunbookDraftClient) ReplaceContentPreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client RunbookDraftClient) ReplaceContentSender(req *http.Request) (future RunbookDraftReplaceContentFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -375,7 +377,7 @@ func (client RunbookDraftClient) ReplaceContentResponder(resp *http.Response) (r
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

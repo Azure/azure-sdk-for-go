@@ -90,24 +90,6 @@ func ReceiverWithReceiveMode(receiveMode ReceiveMode) ReceiverOption {
 	}
 }
 
-// receiverWithQueue configures a receiver to connect to a queue.
-func receiverWithQueue(queue string) ReceiverOption {
-	return func(receiver *Receiver) error {
-		receiver.config.Entity.Queue = queue
-		return nil
-	}
-}
-
-// receiverWithSubscription configures a receiver to connect to a subscription
-// associated with a topic.
-func receiverWithSubscription(topic string, subscription string) ReceiverOption {
-	return func(receiver *Receiver) error {
-		receiver.config.Entity.Topic = topic
-		receiver.config.Entity.Subscription = subscription
-		return nil
-	}
-}
-
 func newReceiver(ns internal.NamespaceWithNewAMQPLinks, cleanupOnClose func(), options ...ReceiverOption) (*Receiver, error) {
 	receiver := &Receiver{
 		config: receiverConfig{
@@ -566,4 +548,22 @@ func createLinkOptions(mode ReceiveMode, entityPath string) []amqp.LinkOption {
 	}
 
 	return opts
+}
+
+// receiverWithQueue configures a receiver to connect to a queue.
+func receiverWithQueue(queue string) ReceiverOption {
+	return func(receiver *Receiver) error {
+		receiver.config.Entity.Queue = queue
+		return nil
+	}
+}
+
+// receiverWithSubscription configures a receiver to connect to a subscription
+// associated with a topic.
+func receiverWithSubscription(topic string, subscription string) ReceiverOption {
+	return func(receiver *Receiver) error {
+		receiver.config.Entity.Topic = topic
+		receiver.config.Entity.Subscription = subscription
+		return nil
+	}
 }

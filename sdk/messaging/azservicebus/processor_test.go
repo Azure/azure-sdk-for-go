@@ -161,11 +161,11 @@ func TestProcessorUnitTests(t *testing.T) {
 	require.EqualValues(t, SubQueueTransfer, p.config.Entity.subqueue)
 
 	p = &Processor{}
-	require.NoError(t, ProcessorWithQueue("queue1")(p))
+	require.NoError(t, processorWithQueue("queue1")(p))
 	require.EqualValues(t, "queue1", p.config.Entity.Queue)
 
 	p = &Processor{}
-	require.NoError(t, ProcessorWithSubscription("topic1", "subscription1")(p))
+	require.NoError(t, processorWithSubscription("topic1", "subscription1")(p))
 	require.EqualValues(t, "topic1", p.config.Entity.Topic)
 	require.EqualValues(t, "subscription1", p.config.Entity.Subscription)
 

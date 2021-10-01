@@ -118,7 +118,7 @@ func newClientImpl(config clientConfig, options ...ClientOption) (*Client, error
 
 // NewProcessor creates a Processor for a queue.
 func (client *Client) NewProcessorForQueue(queue string, options ...ProcessorOption) (*Processor, error) {
-	options = append(options, ProcessorWithQueue(queue))
+	options = append(options, processorWithQueue(queue))
 	id, cleanupOnClose := client.getCleanupForCloseable()
 
 	processor, err := newProcessor(client.namespace, cleanupOnClose, options...)
@@ -133,7 +133,7 @@ func (client *Client) NewProcessorForQueue(queue string, options ...ProcessorOpt
 
 // NewProcessor creates a Processor for a subscription.
 func (client *Client) NewProcessorForSubscription(topic string, subscription string, options ...ProcessorOption) (*Processor, error) {
-	options = append(options, ProcessorWithSubscription(topic, subscription))
+	options = append(options, processorWithSubscription(topic, subscription))
 	id, cleanupOnClose := client.getCleanupForCloseable()
 
 	processor, err := newProcessor(client.namespace, cleanupOnClose, options...)

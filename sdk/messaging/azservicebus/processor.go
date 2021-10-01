@@ -76,24 +76,6 @@ func ProcessorWithReceiveMode(receiveMode ReceiveMode) ProcessorOption {
 	}
 }
 
-// ProcessorWithQueue configures a processor to connect to a queue.
-func ProcessorWithQueue(queue string) ProcessorOption {
-	return func(processor *Processor) error {
-		processor.config.Entity.Queue = queue
-		return nil
-	}
-}
-
-// ProcessorWithSubscription configures a processor to connect to a subscription
-// associated with a topic.
-func ProcessorWithSubscription(topic string, subscription string) ProcessorOption {
-	return func(processor *Processor) error {
-		processor.config.Entity.Topic = topic
-		processor.config.Entity.Subscription = subscription
-		return nil
-	}
-}
-
 // ProcessorWithAutoComplete enables or disables auto-completion/abandon of messages
 // When this option is enabled the result of the `processMessage` handler determines whether
 // the message is abandoned (if an `error` is returned) or completed (if `nil` is returned).
@@ -357,4 +339,22 @@ func (p *Processor) processMessage(ctx context.Context, receiver internal.AMQPRe
 	}
 
 	return nil
+}
+
+// processorWithQueue configures a processor to connect to a queue.
+func processorWithQueue(queue string) ProcessorOption {
+	return func(processor *Processor) error {
+		processor.config.Entity.Queue = queue
+		return nil
+	}
+}
+
+// processorWithSubscription configures a processor to connect to a subscription
+// associated with a topic.
+func processorWithSubscription(topic string, subscription string) ProcessorOption {
+	return func(processor *Processor) error {
+		processor.config.Entity.Topic = topic
+		processor.config.Entity.Subscription = subscription
+		return nil
+	}
 }

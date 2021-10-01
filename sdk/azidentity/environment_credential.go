@@ -68,7 +68,11 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		if err != nil {
 			return nil, fmt.Errorf("Failed to read certificate file: %v", err)
 		}
-		cred, err := NewClientCertificateCredential(tenantID, clientID, certData, &ClientCertificateCredentialOptions{AuthorityHost: cp.AuthorityHost, ClientOptions: cp.ClientOptions})
+		certs, key, err := LoadCerts(certData, nil)
+		if err != nil {
+			return nil, &CredentialUnavailableError{credentialType: "Environment Credential", message: "Failed to read certificate file: " + err.Error()}
+		}
+		cred, err := NewClientCertificateCredential(tenantID, clientID, certs, key, &ClientCertificateCredentialOptions{AuthorityHost: cp.AuthorityHost, ClientOptions: cp.ClientOptions})
 		if err != nil {
 			return nil, err
 		}

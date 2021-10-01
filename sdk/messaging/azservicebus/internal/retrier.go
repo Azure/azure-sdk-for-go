@@ -17,8 +17,11 @@ type Retrier interface {
 	// before starting a set of retries.
 	Copy() Retrier
 
-	// Returns true if the retries were exhausted.
+	// Exhausted is true if the retries were exhausted.
 	Exhausted() bool
+
+	// CurrentTry is the current try (0 for the first run before retries)
+	CurrentTry() int
 
 	// Try marks an attempt to call (first call to Try() does not sleep).
 	// Will return false if the `ctx` is cancelled or if we exhaust our retries.
@@ -46,9 +49,8 @@ type backoffRetrier struct {
 	tries int
 }
 
-// NewBackoffRetrier creates a retrier that allows for configurable
-// min/max times, jitter and maximum retries.
-func NewBackoffRetrier(params struct {
+// BackoffRetrierParams are parameters for NewBackoffRetrier.
+type BackoffRetrierParams struct {
 	// MaxRetries is the maximum number of tries (after the first attempt)
 	// that are allowed.
 	MaxRetries int
@@ -58,7 +60,11 @@ func NewBackoffRetrier(params struct {
 	Jitter bool
 	// Min and Max are the minimum and maximum values of the counter
 	Min, Max time.Duration
-}) Retrier {
+}
+
+// NewBackoffRetrier creates a retrier that allows for configurable
+// min/max times, jitter and maximum retries.
+func NewBackoffRetrier(params BackoffRetrierParams) Retrier {
 	return &backoffRetrier{
 		backoff: backoff.Backoff{
 			Factor: params.Factor,
@@ -81,6 +87,11 @@ func (rp *backoffRetrier) Exhausted() bool {
 	return rp.tries > rp.MaxRetries
 }
 
+// CurrentTry is the current try number (0 for the first run before retries)
+func (rp *backoffRetrier) CurrentTry() int {
+	return rp.tries
+}
+
 // Try marks an attempt to call (first call to Try() does not sleep).
 // Will return false if the `ctx` is cancelled or if we exhaust our retries.
 //
@@ -96,6 +107,12 @@ func (rp *backoffRetrier) Exhausted() bool {
 //
 func (rp *backoffRetrier) Try(ctx context.Context) bool {
 	defer func() { rp.tries++ }()
+
+	select {
+	case <-ctx.Done():
+		return false
+	default:
+	}
 
 	if rp.tries == 0 {
 		// first 'try' is always free

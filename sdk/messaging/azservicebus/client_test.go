@@ -35,9 +35,10 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 	err = sender.SendMessage(context.TODO(), &Message{Body: []byte("hello - authenticating with a TokenCredential")})
 	require.NoError(t, err)
 
-	receiver, err := client.NewReceiver(ReceiverWithQueue(queue))
+	receiver, err := client.NewReceiverForQueue(queue)
 	require.NoError(t, err)
-	receiver.settler.onlyDoBackupSettlement = true // this'll also exercise the management link
+	actualSettler, _ := receiver.settler.(*messageSettler)
+	actualSettler.onlyDoBackupSettlement = true // this'll also exercise the management link
 
 	messages, err := receiver.ReceiveMessages(context.TODO(), 1)
 	require.NoError(t, err)
@@ -90,5 +91,71 @@ func TestNewClientUnitTests(t *testing.T) {
 
 		err = internal.NamespacesWithTokenCredential("mysb", fakeTokenCredential)(&internal.Namespace{})
 		require.EqualError(t, err, "fullyQualifiedNamespace is not properly formed. Should be similar to 'myservicebus.servicebus.windows.net'")
+	})
+
+	t.Run("CloseAndLinkTracking", func(t *testing.T) {
+		setupClient := func() (*Client, *internal.FakeNS) {
+			client, err := NewClient("fake.something", struct{ azcore.TokenCredential }{})
+			require.NoError(t, err)
+
+			ns := &internal.FakeNS{
+				AMQPLinks: &internal.FakeAMQPLinks{
+					Receiver: &internal.FakeAMQPReceiver{},
+				},
+			}
+
+			client.namespace = ns
+			return client, ns
+		}
+
+		client, ns := setupClient()
+		_, err := client.NewSender("hello")
+
+		require.NoError(t, err)
+		require.EqualValues(t, 1, len(client.links))
+		require.NotNil(t, client.links[1])
+		require.NoError(t, client.Close(context.Background()))
+		require.Empty(t, client.links)
+		require.True(t, ns.AMQPLinks.ClosedPermanently())
+
+		client, ns = setupClient()
+		_, err = client.NewReceiverForQueue("hello")
+
+		require.NoError(t, err)
+		require.EqualValues(t, 1, len(client.links))
+		require.NotNil(t, client.links[1])
+		require.NoError(t, client.Close(context.Background()))
+		require.Empty(t, client.links)
+		require.True(t, ns.AMQPLinks.ClosedPermanently())
+
+		client, ns = setupClient()
+		_, err = client.NewReceiverForSubscription("hello", "world")
+
+		require.NoError(t, err)
+		require.EqualValues(t, 1, len(client.links))
+		require.NotNil(t, client.links[1])
+		require.NoError(t, client.Close(context.Background()))
+		require.Empty(t, client.links)
+		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
+
+		client, ns = setupClient()
+		_, err = client.NewProcessorForQueue("hello")
+
+		require.NoError(t, err)
+		require.EqualValues(t, 1, len(client.links))
+		require.NotNil(t, client.links[1])
+		require.NoError(t, client.Close(context.Background()))
+		require.Empty(t, client.links)
+		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
+
+		client, ns = setupClient()
+		_, err = client.NewProcessorForSubscription("hello", "world")
+
+		require.NoError(t, err)
+		require.EqualValues(t, 1, len(client.links))
+		require.NotNil(t, client.links[1])
+		require.NoError(t, client.Close(context.Background()))
+		require.Empty(t, client.links)
+		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
 	})
 }

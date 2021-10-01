@@ -35,27 +35,15 @@ const (
 
 type (
 	mgmtClient struct {
-		ns             NamespaceForMgmtClient
-		managementPath string
+		ns    NamespaceForMgmtClient
+		links AMQPLinks
 
 		clientMu sync.RWMutex
-		link     *rpc.Link
+		rpcLink  RPCLink
 
 		sessionID          *string
 		isSessionFilterSet bool
 	}
-)
-
-// tracing span names
-const (
-	spanNameRenewLock              = "sb.mgmt.RenewLock"
-	spanNameReceiveDeferred        = "sb.mgmt.ReceiveDeferred"
-	spanNameSendDisposition        = "sb.mgmt.SendDisposition"
-	spanNameScheduleMessage        = "sb.mgmt.Schedule"
-	spanNameCancelScheduledMessage = "sb.mgmt.CancelScheduled"
-	spanPeekFromSequenceNumber     = "sb.mgmt.PeekSequenceNumber"
-	spanNameRecover                = "sb.mgmt.Recover"
-	spanNameTryRecover             = "sb.mgmt.TryRecover"
 )
 
 type MgmtClient interface {
@@ -65,10 +53,10 @@ type MgmtClient interface {
 	PeekMessages(ctx context.Context, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error)
 }
 
-func newMgmtClient(ctx context.Context, managementPath string, ns NamespaceForMgmtClient) (MgmtClient, error) {
+func newMgmtClient(ctx context.Context, links AMQPLinks, ns NamespaceForMgmtClient) (MgmtClient, error) {
 	r := &mgmtClient{
-		ns:             ns,
-		managementPath: managementPath,
+		ns:    ns,
+		links: links,
 	}
 
 	return r, nil
@@ -82,11 +70,11 @@ func (mc *mgmtClient) recover(ctx context.Context) error {
 	ctx, span := mc.startSpanFromContext(ctx, string(spanNameRecover))
 	defer span.End()
 
-	if mc.link != nil {
-		if err := mc.link.Close(ctx); err != nil {
+	if mc.rpcLink != nil {
+		if err := mc.rpcLink.Close(ctx); err != nil {
 			tab.For(ctx).Debug(fmt.Sprintf("Error while closing old link in recovery: %s", err.Error()))
 		}
-		mc.link = nil
+		mc.rpcLink = nil
 	}
 
 	if _, err := mc.getLinkWithoutLock(ctx); err != nil {
@@ -97,19 +85,19 @@ func (mc *mgmtClient) recover(ctx context.Context) error {
 }
 
 // getLinkWithoutLock returns the currently cached link (or creates a new one)
-func (mc *mgmtClient) getLinkWithoutLock(ctx context.Context) (*rpc.Link, error) {
-	if mc.link != nil {
-		return mc.link, nil
+func (mc *mgmtClient) getLinkWithoutLock(ctx context.Context) (RPCLink, error) {
+	if mc.rpcLink != nil {
+		return mc.rpcLink, nil
 	}
 
 	var err error
-	mc.link, err = mc.ns.NewRPCLink(ctx, mc.managementPath)
+	mc.rpcLink, err = mc.ns.NewRPCLink(ctx, mc.links.ManagementPath())
 
 	if err != nil {
 		return nil, err
 	}
 
-	return mc.link, nil
+	return mc.rpcLink, nil
 }
 
 // Close will close the AMQP connection
@@ -117,12 +105,12 @@ func (mc *mgmtClient) Close(ctx context.Context) error {
 	mc.clientMu.Lock()
 	defer mc.clientMu.Unlock()
 
-	if mc.link == nil {
+	if mc.rpcLink == nil {
 		return nil
 	}
 
-	err := mc.link.Close(ctx)
-	mc.link = nil
+	err := mc.rpcLink.Close(ctx)
+	mc.rpcLink = nil
 	return err
 }
 

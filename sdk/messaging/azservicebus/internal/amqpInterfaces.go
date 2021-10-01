@@ -5,7 +5,9 @@ package internal
 
 import (
 	"context"
+	"time"
 
+	"github.com/Azure/azure-amqp-common-go/v3/rpc"
 	"github.com/Azure/go-amqp"
 )
 
@@ -14,6 +16,12 @@ type AMQPReceiver interface {
 	IssueCredit(credit uint32) error
 	DrainCredit(ctx context.Context) error
 	Receive(ctx context.Context) (*amqp.Message, error)
+
+	// settlement functions
+	AcceptMessage(ctx context.Context, msg *amqp.Message) error
+	RejectMessage(ctx context.Context, msg *amqp.Message, e *amqp.Error) error
+	ReleaseMessage(ctx context.Context, msg *amqp.Message) error
+	ModifyMessage(ctx context.Context, msg *amqp.Message, deliveryFailed, undeliverableHere bool, messageAnnotations amqp.Annotations) error
 }
 
 // AMQPReceiver is implemented by *amqp.Receiver
@@ -43,5 +51,17 @@ type AMQPSender interface {
 // AMQPSenderCloser is implemented by *amqp.Sender
 type AMQPSenderCloser interface {
 	AMQPSender
+	Close(ctx context.Context) error
+}
+
+// RPCLink is implemented by *rpc.Link
+type RPCLink interface {
+	Close(ctx context.Context) error
+	RetryableRPC(ctx context.Context, times int, delay time.Duration, msg *amqp.Message) (*rpc.Response, error)
+}
+
+// Closeable is implemented by pretty much any AMQP link/client
+// including our own higher level Receiver/Sender.
+type Closeable interface {
 	Close(ctx context.Context) error
 }

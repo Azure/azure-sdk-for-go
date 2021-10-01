@@ -5,24 +5,26 @@ package internal
 
 import (
 	"context"
+	"errors"
 	"testing"
 
+	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
 
 func TestAMQPLinks(t *testing.T) {
-	fakeSender := &fakeAMQPSender{}
-	fakeSession := &fakeAMQPSession{}
+	fakeSender := &FakeAMQPSender{}
+	fakeSession := &FakeAMQPSession{}
 	fakeMgmtClient := &fakeMgmtClient{}
 
 	createLinkFunc, createLinkCallCount := setupCreateLinkResponses(t, []createLinkResponse{
 		{sender: fakeSender},
 	})
 
-	links := newAMQPLinks(&fakeNS{
+	links := newAMQPLinks(&FakeNS{
 		Session:    fakeSession,
 		MgmtClient: fakeMgmtClient,
-	}, "entityPath", createLinkFunc)
+	}, "entityPath", &fakeRetrier{}, createLinkFunc)
 
 	require.EqualValues(t, "entityPath", links.EntityPath())
 	require.EqualValues(t, "audience: entityPath", links.Audience())
@@ -62,7 +64,7 @@ func TestAMQPLinks(t *testing.T) {
 	require.True(t, asAMQPLinks.closedPermanently)
 
 	// and the individual links are closed as well
-	require.EqualValues(t, 1, fakeSender.closed)
+	require.EqualValues(t, 1, fakeSender.Closed)
 	require.EqualValues(t, 1, fakeSession.closed)
 	require.EqualValues(t, 1, fakeMgmtClient.closed)
 
@@ -75,6 +77,96 @@ func TestAMQPLinks(t *testing.T) {
 
 	_, ok = err.(NonRetriable)
 	require.True(t, ok)
+}
+
+type permanentNetError struct {
+	temp    bool
+	timeout bool
+}
+
+func (pe permanentNetError) Timeout() bool   { return pe.timeout }
+func (pe permanentNetError) Temporary() bool { return pe.temp }
+func (pe permanentNetError) Error() string   { return "Fake but very permanent error" }
+
+func TestAMQPLinksRecovery(t *testing.T) {
+	sess := &FakeAMQPSession{}
+	ns := &FakeNS{
+		Session: sess,
+	}
+	sender := &FakeAMQPSender{}
+
+	createLinkCalled := 0
+
+	tmpLinks := newAMQPLinks(ns, "entity path", NewBackoffRetrier(BackoffRetrierParams{}), func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+		createLinkCalled++
+		return sender, nil, nil
+	})
+
+	links, _ := tmpLinks.(*amqpLinks)
+
+	links.clientRevision = 2001
+	links.sender = sender
+
+	ctx := context.TODO()
+
+	require.Nil(t, links.RecoverIfNeeded(ctx, nil))
+	require.EqualValues(t, 0, sess.closed)
+	require.EqualValues(t, 0, ns.recovered)
+	require.EqualValues(t, 0, createLinkCalled, "new links aren't needed")
+	require.False(t, links.closedPermanently, "link should still be usable")
+	require.Empty(t, ns.clientRevisions, "no connection recoveries happened")
+
+	require.Nil(t, links.RecoverIfNeeded(ctx, errors.New("Passes through")))
+	require.EqualValues(t, 0, sess.closed)
+	require.EqualValues(t, 0, ns.recovered)
+	require.EqualValues(t, 0, createLinkCalled, "new links aren't needed")
+	require.False(t, links.closedPermanently, "link should still be usable")
+	require.Empty(t, ns.clientRevisions, "no connection recoveries happened")
+
+	// now let's initiate a recovery at the connection level
+	require.NoError(t, links.RecoverIfNeeded(ctx, permanentNetError{}), permanentNetError{}.Error())
+	require.EqualValues(t, 1, ns.recovered, "client gets recovered")
+	require.EqualValues(t, 1, sender.Closed, "link is closed")
+	require.EqualValues(t, 1, createLinkCalled, "link is created")
+	require.False(t, links.closedPermanently, "link should still be usable")
+	require.EqualValues(t, []uint64{2001}, ns.clientRevisions, "links handed us the client revision it got last")
+
+	ns.recovered = 0
+	sender.Closed = 0
+	createLinkCalled = 0
+
+	// let's do just a link level one
+	require.NoError(t, links.RecoverIfNeeded(ctx, amqp.ErrLinkDetached), amqp.ErrLinkDetached.Error())
+	require.EqualValues(t, 0, ns.recovered)
+	require.EqualValues(t, 1, sender.Closed)
+	require.EqualValues(t, 1, createLinkCalled)
+
+	// cancellation
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	ns.recovered = 0
+	sender.Closed = 0
+	createLinkCalled = 0
+
+	// cancellation overrides any other logic.
+	require.Error(t, links.RecoverIfNeeded(ctx, amqp.ErrLinkDetached), amqp.ErrLinkDetached.Error())
+	require.EqualValues(t, 0, ns.recovered)
+	require.EqualValues(t, 0, sender.Closed)
+	require.EqualValues(t, 0, createLinkCalled)
+}
+
+func TestAMQPLinks_Closed(t *testing.T) {
+	createLinks := func(ctx context.Context, session AMQPSession) (AMQPSenderCloser, AMQPReceiverCloser, error) {
+		return nil, nil, nil
+	}
+
+	links := newAMQPLinks(&FakeNS{}, "hello", &backoffRetrier{}, createLinks)
+	links.Close(context.Background(), true)
+
+	_, _, _, _, err := links.Get(context.Background())
+
+	require.True(t, IsNonRetriable(err))
 }
 
 func setupCreateLinkResponses(t *testing.T, responses []createLinkResponse) (CreateLinkFunc, *int) {

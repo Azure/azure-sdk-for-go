@@ -34,29 +34,18 @@ func newMessageBatch(maxBytes int) *MessageBatch {
 	return mb
 }
 
-type MessageTooLarge interface {
-	MessageTooLarge()
-}
-
-type errMessageTooLarge struct {
-}
-
-func (e errMessageTooLarge) Error() string {
-	return "message too large to fit in batch"
-}
-
-func (e errMessageTooLarge) NonRetriable()    {}
-func (e errMessageTooLarge) MessageTooLarge() {}
-
 // Add adds a message to the batch if the message will not exceed the max size of the batch
-// If the message is too large, an error of type 'ErrMessageTooLarge' will be returned.
-func (mb *MessageBatch) Add(m *Message) error {
+// This function will return:
+// (true, nil) if the message was added.
+// (false, nil) if the message was too large to fit into the batch.
+// (false, err) if an error occurs when adding the message.
+func (mb *MessageBatch) Add(m *Message) (bool, error) {
 	msg := m.toAMQPMessage()
 
 	if msg.Properties.MessageID == nil || msg.Properties.MessageID == "" {
 		uid, err := uuid.NewV4()
 		if err != nil {
-			return err
+			return false, err
 		}
 		msg.Properties.MessageID = uid.String()
 	}
@@ -67,11 +56,11 @@ func (mb *MessageBatch) Add(m *Message) error {
 
 	bin, err := msg.MarshalBinary()
 	if err != nil {
-		return err
+		return false, err
 	}
 
 	if mb.Size()+len(bin) > int(mb.maxBytes) {
-		return &errMessageTooLarge{}
+		return false, nil
 	}
 
 	mb.size += len(bin)
@@ -88,7 +77,7 @@ func (mb *MessageBatch) Add(m *Message) error {
 	}
 
 	mb.marshaledMessages = append(mb.marshaledMessages, bin)
-	return nil
+	return true, nil
 }
 
 // Size is the number of bytes in the message batch

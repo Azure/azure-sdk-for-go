@@ -17,7 +17,7 @@ import (
 )
 
 func TestReceiverSendFiveReceiveFive(t *testing.T) {
-	serviceBusClient, cleanup, queueName := setupLiveTest(t)
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
 	sender, err := serviceBusClient.NewSender(queueName)
@@ -31,7 +31,7 @@ func TestReceiverSendFiveReceiveFive(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
+	receiver, err := serviceBusClient.NewReceiverForQueue(queueName)
 	require.NoError(t, err)
 
 	messages, err := receiver.ReceiveMessages(context.Background(), 5)
@@ -51,7 +51,7 @@ func TestReceiverSendFiveReceiveFive(t *testing.T) {
 }
 
 func TestReceiverForceTimeoutWithTooFewMessages(t *testing.T) {
-	serviceBusClient, cleanup, queueName := setupLiveTest(t)
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
 	sender, err := serviceBusClient.NewSender(queueName)
@@ -63,7 +63,7 @@ func TestReceiverForceTimeoutWithTooFewMessages(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
+	receiver, err := serviceBusClient.NewReceiverForQueue(queueName)
 	require.NoError(t, err)
 
 	// there's only one message, requesting more messages will time out.
@@ -78,7 +78,7 @@ func TestReceiverForceTimeoutWithTooFewMessages(t *testing.T) {
 }
 
 func TestReceiverAbandon(t *testing.T) {
-	serviceBusClient, cleanup, queueName := setupLiveTest(t)
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
 	sender, err := serviceBusClient.NewSender(queueName)
@@ -90,7 +90,7 @@ func TestReceiverAbandon(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
+	receiver, err := serviceBusClient.NewReceiverForQueue(queueName)
 	require.NoError(t, err)
 
 	messages, err := receiver.ReceiveMessages(context.Background(), 1)
@@ -110,7 +110,7 @@ func TestReceiverAbandon(t *testing.T) {
 // Receive has two timeouts - an explicit one (passed in via ReceiveWithMaxTimeout)
 // and an implicit one that kicks in as soon as we receive our first message.
 func TestReceiveWithEarlyFirstMessageTimeout(t *testing.T) {
-	serviceBusClient, cleanup, queueName := setupLiveTest(t)
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
 	sender, err := serviceBusClient.NewSender(queueName)
@@ -122,7 +122,7 @@ func TestReceiveWithEarlyFirstMessageTimeout(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
+	receiver, err := serviceBusClient.NewReceiverForQueue(queueName)
 	require.NoError(t, err)
 
 	startTime := time.Now()
@@ -138,7 +138,7 @@ func TestReceiveWithEarlyFirstMessageTimeout(t *testing.T) {
 }
 
 func TestReceiverSendAndReceiveManyTimes(t *testing.T) {
-	serviceBusClient, cleanup, queueName := setupLiveTest(t)
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
 	sender, err := serviceBusClient.NewSender(queueName)
@@ -153,7 +153,7 @@ func TestReceiverSendAndReceiveManyTimes(t *testing.T) {
 		require.NoError(t, err)
 	}
 
-	receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
+	receiver, err := serviceBusClient.NewReceiverForQueue(queueName)
 	require.NoError(t, err)
 
 	var allMessages []*ReceivedMessage
@@ -174,7 +174,7 @@ func TestReceiverSendAndReceiveManyTimes(t *testing.T) {
 }
 
 func TestReceiverDeferAndReceiveDeferredMessages(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t)
+	client, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
 	sender, err := client.NewSender(queueName)
@@ -189,7 +189,7 @@ func TestReceiverDeferAndReceiveDeferredMessages(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	receiver, err := client.NewReceiver(ReceiverWithQueue(queueName))
+	receiver, err := client.NewReceiverForQueue(queueName)
 	require.NoError(t, err)
 
 	messages, err := receiver.ReceiveMessages(ctx, 1)
@@ -217,7 +217,7 @@ func TestReceiverDeferAndReceiveDeferredMessages(t *testing.T) {
 }
 
 func TestReceiverPeek(t *testing.T) {
-	serviceBusClient, cleanup, queueName := setupLiveTest(t)
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
 	sender, err := serviceBusClient.NewSender(queueName)
@@ -231,16 +231,18 @@ func TestReceiverPeek(t *testing.T) {
 	require.NoError(t, err)
 
 	for i := 0; i < 3; i++ {
-		err = batch.Add(&Message{
+		added, err := batch.Add(&Message{
 			Body: []byte(fmt.Sprintf("Message %d", i)),
 		})
+
 		require.NoError(t, err)
+		require.True(t, added)
 	}
 
 	err = sender.SendMessage(ctx, batch)
 	require.NoError(t, err)
 
-	receiver, err := serviceBusClient.NewReceiver(ReceiverWithQueue(queueName))
+	receiver, err := serviceBusClient.NewReceiverForQueue(queueName)
 	require.NoError(t, err)
 
 	// wait for a message to show up
@@ -290,11 +292,11 @@ func TestReceiverOptions(t *testing.T) {
 	require.EqualValues(t, SubQueueTransfer, receiver.config.Entity.subqueue)
 
 	receiver = &Receiver{}
-	require.NoError(t, ReceiverWithQueue("queue1")(receiver))
+	require.NoError(t, receiverWithQueue("queue1")(receiver))
 	require.EqualValues(t, "queue1", receiver.config.Entity.Queue)
 
 	receiver = &Receiver{}
-	require.NoError(t, ReceiverWithSubscription("topic1", "subscription1")(receiver))
+	require.NoError(t, receiverWithSubscription("topic1", "subscription1")(receiver))
 	require.EqualValues(t, "topic1", receiver.config.Entity.Topic)
 	require.EqualValues(t, "subscription1", receiver.config.Entity.Subscription)
 
@@ -317,7 +319,7 @@ func (b badMgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, se
 
 func TestReceiverDeferUnitTests(t *testing.T) {
 	r := &Receiver{
-		amqpLinks: internal.FakeAMQPLinks{
+		amqpLinks: &internal.FakeAMQPLinks{
 			Err: errors.New("links are dead"),
 		},
 	}
@@ -327,7 +329,7 @@ func TestReceiverDeferUnitTests(t *testing.T) {
 	require.Nil(t, messages)
 
 	r = &Receiver{
-		amqpLinks: internal.FakeAMQPLinks{
+		amqpLinks: &internal.FakeAMQPLinks{
 			Mgmt: &badMgmtClient{},
 		},
 	}

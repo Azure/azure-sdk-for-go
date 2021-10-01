@@ -14,17 +14,18 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func setupLiveTest(t *testing.T) (*Client, func(), string) {
+func setupLiveTest(t *testing.T, qd *internal.QueueDescription) (*Client, func(), string) {
 	cs := getConnectionString(t)
 
 	serviceBusClient, err := NewClientWithConnectionString(cs)
 	require.NoError(t, err)
 
-	queueName, cleanupQueue := createQueue(t, cs, nil)
+	queueName, cleanupQueue := createQueue(t, cs, qd)
 
 	testCleanup := func() {
 		require.NoError(t, serviceBusClient.Close(context.Background()))
 		cleanupQueue()
+		require.NoError(t, serviceBusClient.Close(context.Background()))
 	}
 
 	return serviceBusClient, testCleanup, queueName

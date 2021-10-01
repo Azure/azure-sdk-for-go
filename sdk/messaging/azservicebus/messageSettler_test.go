@@ -157,8 +157,11 @@ func TestMessageSettlementUsingOnlyBackupSettlement(t *testing.T) {
 	testStuff := newTestStuff(t)
 	defer testStuff.Close()
 
-	testStuff.Receiver.settler.onlyDoBackupSettlement = true
-	testStuff.DeadLetterReceiver.settler.onlyDoBackupSettlement = true
+	actualSettler, _ := testStuff.Receiver.settler.(*messageSettler)
+	actualSettler.onlyDoBackupSettlement = true
+
+	actualSettler, _ = testStuff.DeadLetterReceiver.settler.(*messageSettler)
+	actualSettler.onlyDoBackupSettlement = true
 
 	receiver, deadLetterReceiver := testStuff.Receiver, testStuff.DeadLetterReceiver
 	ctx := context.TODO()
@@ -169,7 +172,8 @@ func TestMessageSettlementUsingOnlyBackupSettlement(t *testing.T) {
 	require.NoError(t, err)
 
 	// toggle the super secret switch
-	receiver.settler.onlyDoBackupSettlement = true
+	actualSettler, _ = receiver.settler.(*messageSettler)
+	actualSettler.onlyDoBackupSettlement = true
 
 	var msg *ReceivedMessage
 	msg, err = receiver.receiveMessage(ctx)
@@ -221,7 +225,7 @@ func (t *testStuff) First(messages []*ReceivedMessage, err error) *ReceivedMessa
 }
 
 func newTestStuff(t *testing.T) *testStuff {
-	client, cleanup, queueName := setupLiveTest(t)
+	client, cleanup, queueName := setupLiveTest(t, nil)
 
 	testStuff := &testStuff{
 		cleanup:   cleanup,
@@ -231,14 +235,14 @@ func newTestStuff(t *testing.T) *testStuff {
 	}
 
 	var err error
-	testStuff.Receiver, err = client.NewReceiver(ReceiverWithQueue(queueName))
+	testStuff.Receiver, err = client.NewReceiverForQueue(queueName)
 	require.NoError(t, err)
 
 	testStuff.Sender, err = client.NewSender(queueName)
 	require.NoError(t, err)
 
-	testStuff.DeadLetterReceiver, err = client.NewReceiver(
-		ReceiverWithQueue(queueName),
+	testStuff.DeadLetterReceiver, err = client.NewReceiverForQueue(
+		queueName,
 		ReceiverWithSubQueue(SubQueueDeadLetter))
 	require.NoError(t, err)
 

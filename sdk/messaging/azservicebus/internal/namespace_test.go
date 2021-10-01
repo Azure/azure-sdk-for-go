@@ -82,8 +82,18 @@ func (r *fakeRetrier) Exhausted() bool {
 }
 
 func (r *fakeRetrier) Try(ctx context.Context) bool {
+	select {
+	case <-ctx.Done():
+		return false
+	default:
+	}
+
 	r.tryCalled++
 	return true
+}
+
+func (r *fakeRetrier) CurrentTry() int {
+	return r.tryCalled
 }
 
 type fakeTokenCredential struct {
@@ -116,9 +126,9 @@ func TestNamespaceNegotiateClaim(t *testing.T) {
 
 	getAMQPClientCalled := 0
 
-	getAMQPClient := func(ctx context.Context) (*amqp.Client, error) {
+	getAMQPClient := func(ctx context.Context) (*amqp.Client, uint64, error) {
 		getAMQPClientCalled++
-		return &amqp.Client{}, nil
+		return &amqp.Client{}, 0, nil
 	}
 
 	// fire off a basic negotiate claim. The renewal duration is so long that it won't run - that's a separate test.
@@ -167,7 +177,7 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 
 	notify := make(chan struct{})
 
-	getAMQPClient := func(ctx context.Context) (*amqp.Client, error) {
+	getAMQPClient := func(ctx context.Context) (*amqp.Client, uint64, error) {
 		getAMQPClientCalled++
 
 		if getAMQPClientCalled == 3 {
@@ -175,7 +185,7 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 			<-ctx.Done()
 		}
 
-		return &amqp.Client{}, nil
+		return &amqp.Client{}, 0, nil
 	}
 
 	var errorsLogged []error
@@ -220,8 +230,8 @@ func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {
 		"entity path",
 		func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error {
 			return errors.New("NegotiateClaim amqp.Client failed")
-		}, func(ctx context.Context) (*amqp.Client, error) {
-			return nil, errors.New("Getting *amqp.Client failed")
+		}, func(ctx context.Context) (*amqp.Client, uint64, error) {
+			return nil, 0, errors.New("Getting *amqp.Client failed")
 		}, func(expirationTime, currentTime time.Time) time.Duration {
 			// refresh immediately since we're in a unit test.
 			return 0
@@ -242,8 +252,8 @@ func TestNamespaceNegotiateClaimFails(t *testing.T) {
 		"entity path",
 		func(ctx context.Context, audience string, conn *amqp.Client, provider auth.TokenProvider) error {
 			return errors.New("NegotiateClaim amqp.Client failed")
-		}, func(ctx context.Context) (*amqp.Client, error) {
-			return &amqp.Client{}, nil
+		}, func(ctx context.Context) (*amqp.Client, uint64, error) {
+			return &amqp.Client{}, 0, nil
 		}, func(expirationTime, currentTime time.Time) time.Duration {
 			// not even used.
 			return 0

@@ -47,22 +47,22 @@ func ExampleSender_NewMessageBatch() {
 	}
 
 	for i := 0; i < len(messagesToSend); i++ {
-		err = batch.Add(messagesToSend[i])
+		added, err := batch.Add(messagesToSend[i])
 
-		if err == nil {
+		if added {
 			continue
 		}
 
-		if _, ok := err.(azservicebus.MessageTooLarge); ok {
+		if err == nil {
 			// At this point you can do a few things:
 			// 1. Ignore this message
 			// 2. Send this batch (it's full) and create a new batch.
 			//
 			// The batch can still be used after this error.
-			panicOnError("Failed to add message to batch (batch is full)", err)
-		} else {
-			panicOnError("Failed to add message to batch", err)
+			log.Fatal("Failed to add message to batch (batch is full)")
 		}
+
+		panicOnError("Error while trying to add message to batch", err)
 	}
 
 	// now let's send the batch

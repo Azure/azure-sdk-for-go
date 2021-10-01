@@ -93,7 +93,7 @@ func (g *GetSecretOptions) toGenerated() *internal.KeyVaultClientGetSecretOption
 
 // GetSecretResponse is the response object for the Client.GetSecret operation
 type GetSecretResponse struct {
-	Bundle
+	Secret
 
 	// RawResponse contains the underlying HTTP response
 	RawResponse *http.Response
@@ -102,7 +102,7 @@ type GetSecretResponse struct {
 func getSecretResponseFromGenerated(i internal.KeyVaultClientGetSecretResponse) *GetSecretResponse {
 	return &GetSecretResponse{
 		RawResponse: i.RawResponse,
-		Bundle: Bundle{
+		Secret: Secret{
 			Attributes:  secretAttributesFromGenerated(i.Attributes),
 			ContentType: i.ContentType,
 			ID:          i.ID,
@@ -212,7 +212,7 @@ func deleteSecretResponseFromGenerated(i *internal.KeyVaultClientDeleteSecretRes
 	}
 	return &DeleteSecretResponse{
 		DeletedSecretBundle: DeletedSecretBundle{
-			Bundle: Bundle{
+			Secret: Secret{
 				ContentType: i.ContentType,
 				ID:          i.ID,
 				Tags:        convertPtrMap(i.Tags),
@@ -368,7 +368,7 @@ func (g *GetDeletedSecretOptions) toGenerated() *internal.KeyVaultClientGetDelet
 
 // GetDeletedSecretResponse contains the response struct for the Client.GetDeletedSecret operation.
 type GetDeletedSecretResponse struct {
-	Bundle
+	Secret
 	// The url of the recovery object, used to identify and recover the deleted secret.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
@@ -389,7 +389,7 @@ func getDeletedSecretResponseFromGenerated(i internal.KeyVaultClientGetDeletedSe
 		RecoveryID:         i.RecoveryID,
 		DeletedDate:        i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
-		Bundle:             secretBundleFromGenerated(i.SecretBundle),
+		Secret:             secretFromGenerated(i.SecretBundle),
 	}
 }
 
@@ -415,7 +415,7 @@ func (u UpdateSecretPropertiesOptions) toGenerated() *internal.KeyVaultClientUpd
 
 // UpdateSecretPropertiesResponse contains the underlying response object for the UpdateSecretProperties method
 type UpdateSecretPropertiesResponse struct {
-	Bundle
+	Secret
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
@@ -423,7 +423,7 @@ type UpdateSecretPropertiesResponse struct {
 func updateSecretPropertiesResponseFromGenerated(i internal.KeyVaultClientUpdateSecretResponse) UpdateSecretPropertiesResponse {
 	return UpdateSecretPropertiesResponse{
 		RawResponse: i.RawResponse,
-		Bundle: Bundle{
+		Secret: Secret{
 			Attributes:  secretAttributesFromGenerated(i.Attributes),
 			ContentType: i.ContentType,
 			ID:          i.ID,
@@ -526,7 +526,7 @@ func (r RestoreSecretBackupOptions) toGenerated() *internal.KeyVaultClientRestor
 
 // RestoreSecretBackupResponse contains the response object for the Client.RestoreSecretBackup operation.
 type RestoreSecretBackupResponse struct {
-	Bundle
+	Secret
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
@@ -535,7 +535,7 @@ type RestoreSecretBackupResponse struct {
 func restoreSecretBackupResponseFromGenerated(i internal.KeyVaultClientRestoreSecretResponse) RestoreSecretBackupResponse {
 	return RestoreSecretBackupResponse{
 		RawResponse: i.RawResponse,
-		Bundle: Bundle{
+		Secret: Secret{
 			ContentType: i.ContentType,
 			ID:          i.ID,
 			Tags:        convertPtrMap(i.Tags),
@@ -671,7 +671,7 @@ func (b BeginRecoverDeletedSecretOptions) toGenerated() *internal.KeyVaultClient
 
 // RecoverDeletedSecretResponse is the response object for the Client.RecoverDeletedSecret operation.
 type RecoverDeletedSecretResponse struct {
-	Bundle
+	Secret
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
@@ -692,7 +692,7 @@ func recoverDeletedSecretResponseFromGenerated(i internal.KeyVaultClientRecoverD
 	}
 	return RecoverDeletedSecretResponse{
 		RawResponse: i.RawResponse,
-		Bundle: Bundle{
+		Secret: Secret{
 			Attributes:  a,
 			ContentType: i.ContentType,
 			ID:          i.ID,

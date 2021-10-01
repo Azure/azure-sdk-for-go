@@ -14,7 +14,7 @@ import (
 
 // DeletedSecretBundle - A Deleted Secret consisting of its previous id, attributes and its tags, as well as information on when it will be purged.
 type DeletedSecretBundle struct {
-	Bundle
+	Secret
 	// The url of the recovery object, used to identify and recover the deleted secret.
 	RecoveryID *string `json:"recoveryId,omitempty"`
 
@@ -25,8 +25,8 @@ type DeletedSecretBundle struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
-// Bundle - A secret consisting of a value, id and its attributes.
-type Bundle struct {
+// Secret - A secret consisting of a value, id and its attributes.
+type Secret struct {
 	// The secret management attributes.
 	Attributes *Attributes `json:"attributes,omitempty"`
 
@@ -49,8 +49,8 @@ type Bundle struct {
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
-func secretBundleFromGenerated(i internal.SecretBundle) Bundle {
-	return Bundle{
+func secretFromGenerated(i internal.SecretBundle) Secret {
+	return Secret{
 		Attributes:  secretAttributesFromGenerated(i.Attributes),
 		ContentType: i.ContentType,
 		ID:          i.ID,

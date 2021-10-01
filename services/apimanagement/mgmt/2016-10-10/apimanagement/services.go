@@ -63,7 +63,7 @@ func (client ServicesClient) ApplyNetworkConfigurationUpdates(ctx context.Contex
 
 	result, err = client.ApplyNetworkConfigurationUpdatesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.ServicesClient", "ApplyNetworkConfigurationUpdates", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ServicesClient", "ApplyNetworkConfigurationUpdates", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -95,6 +95,7 @@ func (client ServicesClient) ApplyNetworkConfigurationUpdatesPreparer(ctx contex
 // http.Response Body if it receives an error.
 func (client ServicesClient) ApplyNetworkConfigurationUpdatesSender(req *http.Request) (future ServicesApplyNetworkConfigurationUpdatesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -156,7 +157,7 @@ func (client ServicesClient) Backup(ctx context.Context, resourceGroupName strin
 
 	result, err = client.BackupSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.ServicesClient", "Backup", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ServicesClient", "Backup", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -190,6 +191,7 @@ func (client ServicesClient) BackupPreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client ServicesClient) BackupSender(req *http.Request) (future ServicesBackupFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -914,7 +916,7 @@ func (client ServicesClient) ManageDeployments(ctx context.Context, resourceGrou
 
 	result, err = client.ManageDeploymentsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.ServicesClient", "ManageDeployments", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ServicesClient", "ManageDeployments", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -948,6 +950,7 @@ func (client ServicesClient) ManageDeploymentsPreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client ServicesClient) ManageDeploymentsSender(req *http.Request) (future ServicesManageDeploymentsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1009,7 +1012,7 @@ func (client ServicesClient) Restore(ctx context.Context, resourceGroupName stri
 
 	result, err = client.RestoreSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.ServicesClient", "Restore", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ServicesClient", "Restore", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1043,6 +1046,7 @@ func (client ServicesClient) RestorePreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client ServicesClient) RestoreSender(req *http.Request) (future ServicesRestoreFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1098,7 +1102,7 @@ func (client ServicesClient) Update(ctx context.Context, resourceGroupName strin
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.ServicesClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ServicesClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1132,6 +1136,7 @@ func (client ServicesClient) UpdatePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client ServicesClient) UpdateSender(req *http.Request) (future ServicesUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1189,7 +1194,7 @@ func (client ServicesClient) UpdateHostname(ctx context.Context, resourceGroupNa
 
 	result, err = client.UpdateHostnameSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.ServicesClient", "UpdateHostname", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.ServicesClient", "UpdateHostname", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1223,6 +1228,7 @@ func (client ServicesClient) UpdateHostnamePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client ServicesClient) UpdateHostnameSender(req *http.Request) (future ServicesUpdateHostnameFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

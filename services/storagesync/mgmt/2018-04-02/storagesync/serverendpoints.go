@@ -74,7 +74,7 @@ func (client ServerEndpointsClient) Create(ctx context.Context, resourceGroupNam
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -110,6 +110,7 @@ func (client ServerEndpointsClient) CreatePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client ServerEndpointsClient) CreateSender(req *http.Request) (future ServerEndpointsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -168,7 +169,7 @@ func (client ServerEndpointsClient) Delete(ctx context.Context, resourceGroupNam
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -202,6 +203,7 @@ func (client ServerEndpointsClient) DeletePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client ServerEndpointsClient) DeleteSender(req *http.Request) (future ServerEndpointsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -438,7 +440,7 @@ func (client ServerEndpointsClient) RecallAction(ctx context.Context, resourceGr
 
 	result, err = client.RecallActionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "RecallAction", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "RecallAction", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -474,6 +476,7 @@ func (client ServerEndpointsClient) RecallActionPreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client ServerEndpointsClient) RecallActionSender(req *http.Request) (future ServerEndpointsRecallActionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -532,7 +535,7 @@ func (client ServerEndpointsClient) Update(ctx context.Context, resourceGroupNam
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storagesync.ServerEndpointsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -571,6 +574,7 @@ func (client ServerEndpointsClient) UpdatePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client ServerEndpointsClient) UpdateSender(req *http.Request) (future ServerEndpointsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

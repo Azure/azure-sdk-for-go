@@ -67,7 +67,7 @@ func (client WorkloadNetworksClient) CreateDhcp(ctx context.Context, resourceGro
 
 	result, err = client.CreateDhcpSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreateDhcp", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreateDhcp", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -102,6 +102,7 @@ func (client WorkloadNetworksClient) CreateDhcpPreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client WorkloadNetworksClient) CreateDhcpSender(req *http.Request) (future WorkloadNetworksCreateDhcpFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -160,7 +161,7 @@ func (client WorkloadNetworksClient) CreatePortMirroring(ctx context.Context, re
 
 	result, err = client.CreatePortMirroringSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreatePortMirroring", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreatePortMirroring", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -195,6 +196,7 @@ func (client WorkloadNetworksClient) CreatePortMirroringPreparer(ctx context.Con
 // http.Response Body if it receives an error.
 func (client WorkloadNetworksClient) CreatePortMirroringSender(req *http.Request) (future WorkloadNetworksCreatePortMirroringFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -253,7 +255,7 @@ func (client WorkloadNetworksClient) CreateSegments(ctx context.Context, resourc
 
 	result, err = client.CreateSegmentsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreateSegments", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreateSegments", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -288,6 +290,7 @@ func (client WorkloadNetworksClient) CreateSegmentsPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client WorkloadNetworksClient) CreateSegmentsSender(req *http.Request) (future WorkloadNetworksCreateSegmentsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -346,7 +349,7 @@ func (client WorkloadNetworksClient) CreateVMGroup(ctx context.Context, resource
 
 	result, err = client.CreateVMGroupSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreateVMGroup", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "CreateVMGroup", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -381,6 +384,7 @@ func (client WorkloadNetworksClient) CreateVMGroupPreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client WorkloadNetworksClient) CreateVMGroupSender(req *http.Request) (future WorkloadNetworksCreateVMGroupFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -438,7 +442,7 @@ func (client WorkloadNetworksClient) DeleteDhcp(ctx context.Context, resourceGro
 
 	result, err = client.DeleteDhcpSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeleteDhcp", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeleteDhcp", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -471,6 +475,7 @@ func (client WorkloadNetworksClient) DeleteDhcpPreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client WorkloadNetworksClient) DeleteDhcpSender(req *http.Request) (future WorkloadNetworksDeleteDhcpFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -527,7 +532,7 @@ func (client WorkloadNetworksClient) DeletePortMirroring(ctx context.Context, re
 
 	result, err = client.DeletePortMirroringSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeletePortMirroring", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeletePortMirroring", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -560,6 +565,7 @@ func (client WorkloadNetworksClient) DeletePortMirroringPreparer(ctx context.Con
 // http.Response Body if it receives an error.
 func (client WorkloadNetworksClient) DeletePortMirroringSender(req *http.Request) (future WorkloadNetworksDeletePortMirroringFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -616,7 +622,7 @@ func (client WorkloadNetworksClient) DeleteSegment(ctx context.Context, resource
 
 	result, err = client.DeleteSegmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeleteSegment", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeleteSegment", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -649,6 +655,7 @@ func (client WorkloadNetworksClient) DeleteSegmentPreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client WorkloadNetworksClient) DeleteSegmentSender(req *http.Request) (future WorkloadNetworksDeleteSegmentFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -705,7 +712,7 @@ func (client WorkloadNetworksClient) DeleteVMGroup(ctx context.Context, resource
 
 	result, err = client.DeleteVMGroupSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeleteVMGroup", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "DeleteVMGroup", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -738,6 +745,7 @@ func (client WorkloadNetworksClient) DeleteVMGroupPreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client WorkloadNetworksClient) DeleteVMGroupSender(req *http.Request) (future WorkloadNetworksDeleteVMGroupFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -2091,7 +2099,7 @@ func (client WorkloadNetworksClient) UpdateDhcp(ctx context.Context, resourceGro
 
 	result, err = client.UpdateDhcpSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdateDhcp", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdateDhcp", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -2126,6 +2134,7 @@ func (client WorkloadNetworksClient) UpdateDhcpPreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client WorkloadNetworksClient) UpdateDhcpSender(req *http.Request) (future WorkloadNetworksUpdateDhcpFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -2184,7 +2193,7 @@ func (client WorkloadNetworksClient) UpdatePortMirroring(ctx context.Context, re
 
 	result, err = client.UpdatePortMirroringSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdatePortMirroring", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdatePortMirroring", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -2219,6 +2228,7 @@ func (client WorkloadNetworksClient) UpdatePortMirroringPreparer(ctx context.Con
 // http.Response Body if it receives an error.
 func (client WorkloadNetworksClient) UpdatePortMirroringSender(req *http.Request) (future WorkloadNetworksUpdatePortMirroringFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -2277,7 +2287,7 @@ func (client WorkloadNetworksClient) UpdateSegments(ctx context.Context, resourc
 
 	result, err = client.UpdateSegmentsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdateSegments", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdateSegments", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -2312,6 +2322,7 @@ func (client WorkloadNetworksClient) UpdateSegmentsPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client WorkloadNetworksClient) UpdateSegmentsSender(req *http.Request) (future WorkloadNetworksUpdateSegmentsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -2370,7 +2381,7 @@ func (client WorkloadNetworksClient) UpdateVMGroup(ctx context.Context, resource
 
 	result, err = client.UpdateVMGroupSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdateVMGroup", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.WorkloadNetworksClient", "UpdateVMGroup", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -2405,6 +2416,7 @@ func (client WorkloadNetworksClient) UpdateVMGroupPreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client WorkloadNetworksClient) UpdateVMGroupSender(req *http.Request) (future WorkloadNetworksUpdateVMGroupFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

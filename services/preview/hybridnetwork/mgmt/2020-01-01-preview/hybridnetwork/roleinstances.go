@@ -274,7 +274,7 @@ func (client RoleInstancesClient) Restart(ctx context.Context, locationName stri
 
 	result, err = client.RestartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesClient", "Restart", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesClient", "Restart", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -308,6 +308,7 @@ func (client RoleInstancesClient) RestartPreparer(ctx context.Context, locationN
 // http.Response Body if it receives an error.
 func (client RoleInstancesClient) RestartSender(req *http.Request) (future RoleInstancesRestartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -361,7 +362,7 @@ func (client RoleInstancesClient) Start(ctx context.Context, locationName string
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesClient", "Start", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesClient", "Start", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -395,6 +396,7 @@ func (client RoleInstancesClient) StartPreparer(ctx context.Context, locationNam
 // http.Response Body if it receives an error.
 func (client RoleInstancesClient) StartSender(req *http.Request) (future RoleInstancesStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -448,7 +450,7 @@ func (client RoleInstancesClient) Stop(ctx context.Context, locationName string,
 
 	result, err = client.StopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesClient", "Stop", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.RoleInstancesClient", "Stop", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -482,6 +484,7 @@ func (client RoleInstancesClient) StopPreparer(ctx context.Context, locationName
 // http.Response Body if it receives an error.
 func (client RoleInstancesClient) StopSender(req *http.Request) (future RoleInstancesStopFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

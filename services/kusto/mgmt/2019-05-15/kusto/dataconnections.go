@@ -147,7 +147,7 @@ func (client DataConnectionsClient) CreateOrUpdate(ctx context.Context, resource
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.DataConnectionsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.DataConnectionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -183,6 +183,7 @@ func (client DataConnectionsClient) CreateOrUpdatePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client DataConnectionsClient) CreateOrUpdateSender(req *http.Request) (future DataConnectionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -200,7 +201,7 @@ func (client DataConnectionsClient) CreateOrUpdateResponder(resp *http.Response)
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -312,7 +313,7 @@ func (client DataConnectionsClient) Delete(ctx context.Context, resourceGroupNam
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.DataConnectionsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.DataConnectionsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -346,6 +347,7 @@ func (client DataConnectionsClient) DeletePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client DataConnectionsClient) DeleteSender(req *http.Request) (future DataConnectionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -552,7 +554,7 @@ func (client DataConnectionsClient) Update(ctx context.Context, resourceGroupNam
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "kusto.DataConnectionsClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "kusto.DataConnectionsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -588,6 +590,7 @@ func (client DataConnectionsClient) UpdatePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client DataConnectionsClient) UpdateSender(req *http.Request) (future DataConnectionsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -605,7 +608,7 @@ func (client DataConnectionsClient) UpdateResponder(resp *http.Response) (result
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

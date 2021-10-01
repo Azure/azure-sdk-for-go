@@ -65,7 +65,7 @@ func (client QuotaClient) CreateOrUpdate(ctx context.Context, subscriptionID str
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.QuotaClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.QuotaClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -100,6 +100,7 @@ func (client QuotaClient) CreateOrUpdatePreparer(ctx context.Context, subscripti
 // http.Response Body if it receives an error.
 func (client QuotaClient) CreateOrUpdateSender(req *http.Request) (future QuotaCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -117,7 +118,7 @@ func (client QuotaClient) CreateOrUpdateResponder(resp *http.Response) (result S
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -359,7 +360,7 @@ func (client QuotaClient) Update(ctx context.Context, subscriptionID string, pro
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.QuotaClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.QuotaClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -394,6 +395,7 @@ func (client QuotaClient) UpdatePreparer(ctx context.Context, subscriptionID str
 // http.Response Body if it receives an error.
 func (client QuotaClient) UpdateSender(req *http.Request) (future QuotaUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -411,7 +413,7 @@ func (client QuotaClient) UpdateResponder(resp *http.Response) (result SetObject
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

@@ -55,7 +55,7 @@ func (client PrivateEndpointConnectionClient) Delete(ctx context.Context, vaultN
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.PrivateEndpointConnectionClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "backup.PrivateEndpointConnectionClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -88,6 +88,7 @@ func (client PrivateEndpointConnectionClient) DeletePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client PrivateEndpointConnectionClient) DeleteSender(req *http.Request) (future PrivateEndpointConnectionDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -213,7 +214,7 @@ func (client PrivateEndpointConnectionClient) Put(ctx context.Context, vaultName
 
 	result, err = client.PutSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.PrivateEndpointConnectionClient", "Put", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "backup.PrivateEndpointConnectionClient", "Put", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -248,6 +249,7 @@ func (client PrivateEndpointConnectionClient) PutPreparer(ctx context.Context, v
 // http.Response Body if it receives an error.
 func (client PrivateEndpointConnectionClient) PutSender(req *http.Request) (future PrivateEndpointConnectionPutFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

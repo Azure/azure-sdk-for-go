@@ -67,7 +67,7 @@ func (client SharedPrivateLinkResourcesClient) CreateOrUpdate(ctx context.Contex
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "signalr.SharedPrivateLinkResourcesClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "signalr.SharedPrivateLinkResourcesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -103,6 +103,7 @@ func (client SharedPrivateLinkResourcesClient) CreateOrUpdatePreparer(ctx contex
 // http.Response Body if it receives an error.
 func (client SharedPrivateLinkResourcesClient) CreateOrUpdateSender(req *http.Request) (future SharedPrivateLinkResourcesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -151,7 +152,7 @@ func (client SharedPrivateLinkResourcesClient) Delete(ctx context.Context, share
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "signalr.SharedPrivateLinkResourcesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "signalr.SharedPrivateLinkResourcesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -184,6 +185,7 @@ func (client SharedPrivateLinkResourcesClient) DeletePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client SharedPrivateLinkResourcesClient) DeleteSender(req *http.Request) (future SharedPrivateLinkResourcesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

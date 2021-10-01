@@ -1,21 +1,13 @@
 Param(
-    [string] $serviceDir
+  [string] $serviceDir
 )
 
-function Get-ModuleDirs ([string] $serviceDir) {
-    $modDirs = [Collections.Generic.List[String]]@()
+. (Join-Path $PSScriptRoot .. common scripts common.ps1)
 
-    # find each module directory under $serviceDir
-    Get-ChildItem -recurse -path $serviceDir -filter go.mod | ForEach-Object {
-        $cdir = $_.Directory
-        Write-Host "Adding $cdir to list of module paths"
-        $modDirs.Add($cdir)
-    }
-
-    # return the list of module directories
-    return $modDirs
+$modDirs = @()
+foreach ($sdk in (Get-AllPackageInfoFromRepo $serviceDir))
+{
+    $modDirs += $sdk.DirectoryPath
 }
 
-if ($MyInvocation.InvocationName -ne ".") {
-    Get-ModuleDirs $serviceDir
-}
+return $modDirs

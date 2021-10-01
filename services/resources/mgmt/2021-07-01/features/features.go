@@ -20,22 +20,21 @@ type Client struct {
 }
 
 // NewClient creates an instance of the Client client.
-func NewClient(subscriptionID string, providerNamespace string) Client {
-	return NewClientWithBaseURI(DefaultBaseURI, subscriptionID, providerNamespace)
+func NewClient(subscriptionID string) Client {
+	return NewClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewClientWithBaseURI creates an instance of the Client client using a custom endpoint.  Use this when interacting
 // with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewClientWithBaseURI(baseURI string, subscriptionID string, providerNamespace string) Client {
-	return Client{NewWithBaseURI(baseURI, subscriptionID, providerNamespace)}
+func NewClientWithBaseURI(baseURI string, subscriptionID string) Client {
+	return Client{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // Get gets the preview feature with the specified name.
 // Parameters:
 // resourceProviderNamespace - the resource provider namespace for the feature.
 // featureName - the name of the feature to get.
-// APIVersion - the API version to use for this operation.
-func (client Client) Get(ctx context.Context, resourceProviderNamespace string, featureName string, APIVersion string) (result Result, err error) {
+func (client Client) Get(ctx context.Context, resourceProviderNamespace string, featureName string) (result Result, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Get")
 		defer func() {
@@ -46,7 +45,7 @@ func (client Client) Get(ctx context.Context, resourceProviderNamespace string, 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, resourceProviderNamespace, featureName, APIVersion)
+	req, err := client.GetPreparer(ctx, resourceProviderNamespace, featureName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.Client", "Get", nil, "Failure preparing request")
 		return
@@ -69,13 +68,14 @@ func (client Client) Get(ctx context.Context, resourceProviderNamespace string, 
 }
 
 // GetPreparer prepares the Get request.
-func (client Client) GetPreparer(ctx context.Context, resourceProviderNamespace string, featureName string, APIVersion string) (*http.Request, error) {
+func (client Client) GetPreparer(ctx context.Context, resourceProviderNamespace string, featureName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"featureName":               autorest.Encode("path", featureName),
 		"resourceProviderNamespace": autorest.Encode("path", resourceProviderNamespace),
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -109,8 +109,7 @@ func (client Client) GetResponder(resp *http.Response) (result Result, err error
 // List gets all the preview features in a provider namespace that are available through AFEC for the subscription.
 // Parameters:
 // resourceProviderNamespace - the namespace of the resource provider for getting features.
-// APIVersion - the API version to use for this operation.
-func (client Client) List(ctx context.Context, resourceProviderNamespace string, APIVersion string) (result OperationsListResultPage, err error) {
+func (client Client) List(ctx context.Context, resourceProviderNamespace string) (result OperationsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.List")
 		defer func() {
@@ -122,7 +121,7 @@ func (client Client) List(ctx context.Context, resourceProviderNamespace string,
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, resourceProviderNamespace, APIVersion)
+	req, err := client.ListPreparer(ctx, resourceProviderNamespace)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.Client", "List", nil, "Failure preparing request")
 		return
@@ -149,12 +148,13 @@ func (client Client) List(ctx context.Context, resourceProviderNamespace string,
 }
 
 // ListPreparer prepares the List request.
-func (client Client) ListPreparer(ctx context.Context, resourceProviderNamespace string, APIVersion string) (*http.Request, error) {
+func (client Client) ListPreparer(ctx context.Context, resourceProviderNamespace string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceProviderNamespace": autorest.Encode("path", resourceProviderNamespace),
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -207,7 +207,7 @@ func (client Client) listNextResults(ctx context.Context, lastResults Operations
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListComplete(ctx context.Context, resourceProviderNamespace string, APIVersion string) (result OperationsListResultIterator, err error) {
+func (client Client) ListComplete(ctx context.Context, resourceProviderNamespace string) (result OperationsListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.List")
 		defer func() {
@@ -218,14 +218,12 @@ func (client Client) ListComplete(ctx context.Context, resourceProviderNamespace
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, resourceProviderNamespace, APIVersion)
+	result.page, err = client.List(ctx, resourceProviderNamespace)
 	return
 }
 
 // ListAll gets all the preview features that are available through AFEC for the subscription.
-// Parameters:
-// APIVersion - the API version to use for this operation.
-func (client Client) ListAll(ctx context.Context, APIVersion string) (result OperationsListResultPage, err error) {
+func (client Client) ListAll(ctx context.Context) (result OperationsListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListAll")
 		defer func() {
@@ -237,7 +235,7 @@ func (client Client) ListAll(ctx context.Context, APIVersion string) (result Ope
 		}()
 	}
 	result.fn = client.listAllNextResults
-	req, err := client.ListAllPreparer(ctx, APIVersion)
+	req, err := client.ListAllPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.Client", "ListAll", nil, "Failure preparing request")
 		return
@@ -264,11 +262,12 @@ func (client Client) ListAll(ctx context.Context, APIVersion string) (result Ope
 }
 
 // ListAllPreparer prepares the ListAll request.
-func (client Client) ListAllPreparer(ctx context.Context, APIVersion string) (*http.Request, error) {
+func (client Client) ListAllPreparer(ctx context.Context) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -321,7 +320,7 @@ func (client Client) listAllNextResults(ctx context.Context, lastResults Operati
 }
 
 // ListAllComplete enumerates all values, automatically crossing page boundaries as required.
-func (client Client) ListAllComplete(ctx context.Context, APIVersion string) (result OperationsListResultIterator, err error) {
+func (client Client) ListAllComplete(ctx context.Context) (result OperationsListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListAll")
 		defer func() {
@@ -332,7 +331,7 @@ func (client Client) ListAllComplete(ctx context.Context, APIVersion string) (re
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListAll(ctx, APIVersion)
+	result.page, err = client.ListAll(ctx)
 	return
 }
 
@@ -340,8 +339,7 @@ func (client Client) ListAllComplete(ctx context.Context, APIVersion string) (re
 // Parameters:
 // resourceProviderNamespace - the namespace of the resource provider.
 // featureName - the name of the feature to register.
-// APIVersion - the API version to use for this operation.
-func (client Client) Register(ctx context.Context, resourceProviderNamespace string, featureName string, APIVersion string) (result Result, err error) {
+func (client Client) Register(ctx context.Context, resourceProviderNamespace string, featureName string) (result Result, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Register")
 		defer func() {
@@ -352,7 +350,7 @@ func (client Client) Register(ctx context.Context, resourceProviderNamespace str
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.RegisterPreparer(ctx, resourceProviderNamespace, featureName, APIVersion)
+	req, err := client.RegisterPreparer(ctx, resourceProviderNamespace, featureName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.Client", "Register", nil, "Failure preparing request")
 		return
@@ -375,13 +373,14 @@ func (client Client) Register(ctx context.Context, resourceProviderNamespace str
 }
 
 // RegisterPreparer prepares the Register request.
-func (client Client) RegisterPreparer(ctx context.Context, resourceProviderNamespace string, featureName string, APIVersion string) (*http.Request, error) {
+func (client Client) RegisterPreparer(ctx context.Context, resourceProviderNamespace string, featureName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"featureName":               autorest.Encode("path", featureName),
 		"resourceProviderNamespace": autorest.Encode("path", resourceProviderNamespace),
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -416,8 +415,7 @@ func (client Client) RegisterResponder(resp *http.Response) (result Result, err 
 // Parameters:
 // resourceProviderNamespace - the namespace of the resource provider.
 // featureName - the name of the feature to unregister.
-// APIVersion - the API version to use for this operation.
-func (client Client) Unregister(ctx context.Context, resourceProviderNamespace string, featureName string, APIVersion string) (result Result, err error) {
+func (client Client) Unregister(ctx context.Context, resourceProviderNamespace string, featureName string) (result Result, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.Unregister")
 		defer func() {
@@ -428,7 +426,7 @@ func (client Client) Unregister(ctx context.Context, resourceProviderNamespace s
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.UnregisterPreparer(ctx, resourceProviderNamespace, featureName, APIVersion)
+	req, err := client.UnregisterPreparer(ctx, resourceProviderNamespace, featureName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.Client", "Unregister", nil, "Failure preparing request")
 		return
@@ -451,13 +449,14 @@ func (client Client) Unregister(ctx context.Context, resourceProviderNamespace s
 }
 
 // UnregisterPreparer prepares the Unregister request.
-func (client Client) UnregisterPreparer(ctx context.Context, resourceProviderNamespace string, featureName string, APIVersion string) (*http.Request, error) {
+func (client Client) UnregisterPreparer(ctx context.Context, resourceProviderNamespace string, featureName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"featureName":               autorest.Encode("path", featureName),
 		"resourceProviderNamespace": autorest.Encode("path", resourceProviderNamespace),
 		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

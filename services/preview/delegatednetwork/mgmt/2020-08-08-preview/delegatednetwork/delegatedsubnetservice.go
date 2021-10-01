@@ -68,7 +68,7 @@ func (client DelegatedSubnetServiceClient) DeleteDetails(ctx context.Context, re
 
 	result, err = client.DeleteDetailsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "DeleteDetails", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "DeleteDetails", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -100,6 +100,7 @@ func (client DelegatedSubnetServiceClient) DeleteDetailsPreparer(ctx context.Con
 // http.Response Body if it receives an error.
 func (client DelegatedSubnetServiceClient) DeleteDetailsSender(req *http.Request) (future DelegatedSubnetServiceDeleteDetailsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -486,7 +487,7 @@ func (client DelegatedSubnetServiceClient) PatchDetails(ctx context.Context, res
 
 	result, err = client.PatchDetailsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "PatchDetails", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "PatchDetails", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -520,6 +521,7 @@ func (client DelegatedSubnetServiceClient) PatchDetailsPreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client DelegatedSubnetServiceClient) PatchDetailsSender(req *http.Request) (future DelegatedSubnetServicePatchDetailsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -580,7 +582,7 @@ func (client DelegatedSubnetServiceClient) PutDetails(ctx context.Context, resou
 
 	result, err = client.PutDetailsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "PutDetails", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "delegatednetwork.DelegatedSubnetServiceClient", "PutDetails", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -615,6 +617,7 @@ func (client DelegatedSubnetServiceClient) PutDetailsPreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client DelegatedSubnetServiceClient) PutDetailsSender(req *http.Request) (future DelegatedSubnetServicePutDetailsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -659,7 +659,7 @@ func (client DeploymentsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -693,6 +693,7 @@ func (client DeploymentsClient) CreateOrUpdatePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) CreateOrUpdateSender(req *http.Request) (future DeploymentsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -759,7 +760,7 @@ func (client DeploymentsClient) CreateOrUpdateAtManagementGroupScope(ctx context
 
 	result, err = client.CreateOrUpdateAtManagementGroupScopeSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CreateOrUpdateAtManagementGroupScope", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CreateOrUpdateAtManagementGroupScope", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -792,6 +793,7 @@ func (client DeploymentsClient) CreateOrUpdateAtManagementGroupScopePreparer(ctx
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) CreateOrUpdateAtManagementGroupScopeSender(req *http.Request) (future DeploymentsCreateOrUpdateAtManagementGroupScopeFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -854,7 +856,7 @@ func (client DeploymentsClient) CreateOrUpdateAtSubscriptionScope(ctx context.Co
 
 	result, err = client.CreateOrUpdateAtSubscriptionScopeSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CreateOrUpdateAtSubscriptionScope", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "CreateOrUpdateAtSubscriptionScope", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -887,6 +889,7 @@ func (client DeploymentsClient) CreateOrUpdateAtSubscriptionScopePreparer(ctx co
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) CreateOrUpdateAtSubscriptionScopeSender(req *http.Request) (future DeploymentsCreateOrUpdateAtSubscriptionScopeFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -952,7 +955,7 @@ func (client DeploymentsClient) Delete(ctx context.Context, resourceGroupName st
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -984,6 +987,7 @@ func (client DeploymentsClient) DeletePreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) DeleteSender(req *http.Request) (future DeploymentsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1045,7 +1049,7 @@ func (client DeploymentsClient) DeleteAtManagementGroupScope(ctx context.Context
 
 	result, err = client.DeleteAtManagementGroupScopeSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "DeleteAtManagementGroupScope", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "DeleteAtManagementGroupScope", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1076,6 +1080,7 @@ func (client DeploymentsClient) DeleteAtManagementGroupScopePreparer(ctx context
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) DeleteAtManagementGroupScopeSender(req *http.Request) (future DeploymentsDeleteAtManagementGroupScopeFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -1133,7 +1138,7 @@ func (client DeploymentsClient) DeleteAtSubscriptionScope(ctx context.Context, d
 
 	result, err = client.DeleteAtSubscriptionScopeSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "DeleteAtSubscriptionScope", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resources.DeploymentsClient", "DeleteAtSubscriptionScope", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1164,6 +1169,7 @@ func (client DeploymentsClient) DeleteAtSubscriptionScopePreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client DeploymentsClient) DeleteAtSubscriptionScopeSender(req *http.Request) (future DeploymentsDeleteAtSubscriptionScopeFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

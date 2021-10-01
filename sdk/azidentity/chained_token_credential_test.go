@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -27,7 +28,7 @@ func TestChainedTokenCredential_InstantiateSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not find appropriate environment credentials")
 	}
-	cred, err := NewChainedTokenCredential(secCred, envCred)
+	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{secCred, envCred}, nil)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -43,7 +44,7 @@ func TestChainedTokenCredential_InstantiateFailure(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = NewChainedTokenCredential(secCred, nil)
+	_, err = NewChainedTokenCredential([]azcore.TokenCredential{secCred, nil}, nil)
 	if err == nil {
 		t.Fatalf("Expected an error for sending a nil credential in the chain")
 	}
@@ -51,7 +52,7 @@ func TestChainedTokenCredential_InstantiateFailure(t *testing.T) {
 	if !errors.As(err, &credErr) {
 		t.Fatalf("Expected a CredentialUnavailableError, but received: %T", credErr)
 	}
-	_, err = NewChainedTokenCredential()
+	_, err = NewChainedTokenCredential([]azcore.TokenCredential{}, nil)
 	if err == nil {
 		t.Fatalf("Expected an error for not sending any credential sources")
 	}
@@ -69,17 +70,17 @@ func TestChainedTokenCredential_GetTokenSuccess(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	secCred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{HTTPClient: srv, AuthorityHost: srv.URL()})
+	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{HTTPClient: srv, AuthorityHost: AuthorityHost(srv.URL())})
 	if err != nil {
 		t.Fatalf("Failed to create environment credential: %v", err)
 	}
-	cred, err := NewChainedTokenCredential(secCred, envCred)
+	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{secCred, envCred}, nil)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -100,13 +101,13 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	secCred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	cred, err := NewChainedTokenCredential(secCred)
+	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{secCred}, nil)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -129,7 +130,7 @@ func TestChainedTokenCredential_GetTokenWithUnavailableCredentialInChain(t *test
 	srv.AppendError(&CredentialUnavailableError{credentialType: "MockCredential", message: "Mocking a credential unavailable error"})
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	secCred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
 	if err != nil {
@@ -140,7 +141,7 @@ func TestChainedTokenCredential_GetTokenWithUnavailableCredentialInChain(t *test
 	// CredentialUnavailable error from the constructor. In order to test the CredentialUnavailable functionality for
 	// ChainedTokenCredential we have to mock with two valid credentials, but the first will fail since the first response queued
 	// in the test server is a CredentialUnavailable error.
-	cred, err := NewChainedTokenCredential(secCred, secCred)
+	cred, err := NewChainedTokenCredential([]azcore.TokenCredential{secCred, secCred}, nil)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -166,13 +167,13 @@ func TestBearerPolicy_ChainedTokenCredential(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	options := ClientSecretCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	chainedCred, err := NewChainedTokenCredential(cred)
+	chainedCred, err := NewChainedTokenCredential([]azcore.TokenCredential{cred}, nil)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

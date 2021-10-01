@@ -77,7 +77,7 @@ func (client GremlinResourcesClient) CreateUpdateGremlinDatabase(ctx context.Con
 
 	result, err = client.CreateUpdateGremlinDatabaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "CreateUpdateGremlinDatabase", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "CreateUpdateGremlinDatabase", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -112,6 +112,7 @@ func (client GremlinResourcesClient) CreateUpdateGremlinDatabasePreparer(ctx con
 // http.Response Body if it receives an error.
 func (client GremlinResourcesClient) CreateUpdateGremlinDatabaseSender(req *http.Request) (future GremlinResourcesCreateUpdateGremlinDatabaseFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -188,7 +189,7 @@ func (client GremlinResourcesClient) CreateUpdateGremlinGraph(ctx context.Contex
 
 	result, err = client.CreateUpdateGremlinGraphSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "CreateUpdateGremlinGraph", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "CreateUpdateGremlinGraph", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -224,6 +225,7 @@ func (client GremlinResourcesClient) CreateUpdateGremlinGraphPreparer(ctx contex
 // http.Response Body if it receives an error.
 func (client GremlinResourcesClient) CreateUpdateGremlinGraphSender(req *http.Request) (future GremlinResourcesCreateUpdateGremlinGraphFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -285,7 +287,7 @@ func (client GremlinResourcesClient) DeleteGremlinDatabase(ctx context.Context, 
 
 	result, err = client.DeleteGremlinDatabaseSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "DeleteGremlinDatabase", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "DeleteGremlinDatabase", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -318,6 +320,7 @@ func (client GremlinResourcesClient) DeleteGremlinDatabasePreparer(ctx context.C
 // http.Response Body if it receives an error.
 func (client GremlinResourcesClient) DeleteGremlinDatabaseSender(req *http.Request) (future GremlinResourcesDeleteGremlinDatabaseFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -379,7 +382,7 @@ func (client GremlinResourcesClient) DeleteGremlinGraph(ctx context.Context, res
 
 	result, err = client.DeleteGremlinGraphSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "DeleteGremlinGraph", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "DeleteGremlinGraph", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -413,6 +416,7 @@ func (client GremlinResourcesClient) DeleteGremlinGraphPreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client GremlinResourcesClient) DeleteGremlinGraphSender(req *http.Request) (future GremlinResourcesDeleteGremlinGraphFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1037,7 +1041,7 @@ func (client GremlinResourcesClient) UpdateGremlinDatabaseThroughput(ctx context
 
 	result, err = client.UpdateGremlinDatabaseThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "UpdateGremlinDatabaseThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "UpdateGremlinDatabaseThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1072,6 +1076,7 @@ func (client GremlinResourcesClient) UpdateGremlinDatabaseThroughputPreparer(ctx
 // http.Response Body if it receives an error.
 func (client GremlinResourcesClient) UpdateGremlinDatabaseThroughputSender(req *http.Request) (future GremlinResourcesUpdateGremlinDatabaseThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1140,7 +1145,7 @@ func (client GremlinResourcesClient) UpdateGremlinGraphThroughput(ctx context.Co
 
 	result, err = client.UpdateGremlinGraphThroughputSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "UpdateGremlinGraphThroughput", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.GremlinResourcesClient", "UpdateGremlinGraphThroughput", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1176,6 +1181,7 @@ func (client GremlinResourcesClient) UpdateGremlinGraphThroughputPreparer(ctx co
 // http.Response Body if it receives an error.
 func (client GremlinResourcesClient) UpdateGremlinGraphThroughputSender(req *http.Request) (future GremlinResourcesUpdateGremlinGraphThroughputFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

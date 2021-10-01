@@ -25,31 +25,27 @@ const (
 // BaseClient is the base client for Features.
 type BaseClient struct {
 	autorest.Client
-	BaseURI           string
-	SubscriptionID    string
-	ProviderNamespace string
+	BaseURI        string
+	SubscriptionID string
 }
 
 // New creates an instance of the BaseClient client.
-func New(subscriptionID string, providerNamespace string) BaseClient {
-	return NewWithBaseURI(DefaultBaseURI, subscriptionID, providerNamespace)
+func New(subscriptionID string) BaseClient {
+	return NewWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewWithBaseURI creates an instance of the BaseClient client using a custom endpoint.  Use this when interacting with
 // an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewWithBaseURI(baseURI string, subscriptionID string, providerNamespace string) BaseClient {
+func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return BaseClient{
-		Client:            autorest.NewClientWithUserAgent(UserAgent()),
-		BaseURI:           baseURI,
-		SubscriptionID:    subscriptionID,
-		ProviderNamespace: providerNamespace,
+		Client:         autorest.NewClientWithUserAgent(UserAgent()),
+		BaseURI:        baseURI,
+		SubscriptionID: subscriptionID,
 	}
 }
 
 // ListOperations lists all of the available Microsoft.Features REST API operations.
-// Parameters:
-// APIVersion - the API version to use for this operation.
-func (client BaseClient) ListOperations(ctx context.Context, APIVersion string) (result OperationListResultPage, err error) {
+func (client BaseClient) ListOperations(ctx context.Context) (result OperationListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.ListOperations")
 		defer func() {
@@ -61,7 +57,7 @@ func (client BaseClient) ListOperations(ctx context.Context, APIVersion string) 
 		}()
 	}
 	result.fn = client.listOperationsNextResults
-	req, err := client.ListOperationsPreparer(ctx, APIVersion)
+	req, err := client.ListOperationsPreparer(ctx)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "features.BaseClient", "ListOperations", nil, "Failure preparing request")
 		return
@@ -88,7 +84,8 @@ func (client BaseClient) ListOperations(ctx context.Context, APIVersion string) 
 }
 
 // ListOperationsPreparer prepares the ListOperations request.
-func (client BaseClient) ListOperationsPreparer(ctx context.Context, APIVersion string) (*http.Request, error) {
+func (client BaseClient) ListOperationsPreparer(ctx context.Context) (*http.Request, error) {
+	const APIVersion = "2021-07-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -141,7 +138,7 @@ func (client BaseClient) listOperationsNextResults(ctx context.Context, lastResu
 }
 
 // ListOperationsComplete enumerates all values, automatically crossing page boundaries as required.
-func (client BaseClient) ListOperationsComplete(ctx context.Context, APIVersion string) (result OperationListResultIterator, err error) {
+func (client BaseClient) ListOperationsComplete(ctx context.Context) (result OperationListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.ListOperations")
 		defer func() {
@@ -152,6 +149,6 @@ func (client BaseClient) ListOperationsComplete(ctx context.Context, APIVersion 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListOperations(ctx, APIVersion)
+	result.page, err = client.ListOperations(ctx)
 	return
 }

@@ -131,8 +131,8 @@ func newReceiver(ns internal.NamespaceWithNewAMQPLinks, cleanupOnClose func(), o
 	return receiver, nil
 }
 
-// ReceiveOptions are options for the ReceiveMessages function.
-type ReceiveOptions struct {
+// receiveOptions are options for the ReceiveMessages function.
+type receiveOptions struct {
 	maxWaitTime                  time.Duration
 	maxWaitTimeAfterFirstMessage time.Duration
 }
@@ -140,13 +140,13 @@ type ReceiveOptions struct {
 // ReceiveOption represents an option for a `ReceiveMessages`.
 // For example, `ReceiveWithMaxWaitTime` will let you configure the
 // maxmimum amount of time to wait for messages to arrive.
-type ReceiveOption func(options *ReceiveOptions) error
+type ReceiveOption func(options *receiveOptions) error
 
 // ReceiveWithMaxWaitTime configures how long to wait for the first
 // message in a set of messages to arrive.
 // Default: 60 seconds
 func ReceiveWithMaxWaitTime(max time.Duration) ReceiveOption {
-	return func(options *ReceiveOptions) error {
+	return func(options *receiveOptions) error {
 		options.maxWaitTime = max
 		return nil
 	}
@@ -156,7 +156,7 @@ func ReceiveWithMaxWaitTime(max time.Duration) ReceiveOption {
 // message arrives, to wait before returning.
 // Default: 1 second
 func ReceiveWithMaxTimeAfterFirstMessage(max time.Duration) ReceiveOption {
-	return func(options *ReceiveOptions) error {
+	return func(options *receiveOptions) error {
 		options.maxWaitTimeAfterFirstMessage = max
 		return nil
 	}
@@ -203,7 +203,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	//    user isn't actually waiting for anymore. So we make sure that #3 runs if the
 	//    link is still valid.
 	// Phase 3. <drain the link and leave it in a good state>
-	ropts := &ReceiveOptions{
+	ropts := &receiveOptions{
 		maxWaitTime:                  time.Minute,
 		maxWaitTimeAfterFirstMessage: time.Second,
 	}
@@ -290,7 +290,7 @@ func (r *Receiver) drainLink(receiver internal.AMQPReceiver, messages []*Receive
 
 // getMessages receives messages until a link failure, timeout or the user
 // cancels their context.
-func (r *Receiver) getMessages(theirCtx context.Context, receiver internal.AMQPReceiver, maxMessages int, ropts *ReceiveOptions) ([]*ReceivedMessage, error) {
+func (r *Receiver) getMessages(theirCtx context.Context, receiver internal.AMQPReceiver, maxMessages int, ropts *receiveOptions) ([]*ReceivedMessage, error) {
 	ctx, cancel := context.WithTimeout(theirCtx, ropts.maxWaitTime)
 	defer cancel()
 

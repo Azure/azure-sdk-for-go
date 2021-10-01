@@ -6,6 +6,8 @@ package internal
 import (
 	"context"
 	"fmt"
+
+	"github.com/Azure/azure-amqp-common-go/v3/rpc"
 )
 
 type FakeNS struct {
@@ -13,16 +15,17 @@ type FakeNS struct {
 	recovered       uint64
 	clientRevisions []uint64
 	MgmtClient      MgmtClient
+	RPCLink         *rpc.Link
 	Session         AMQPSessionCloser
 	AMQPLinks       *FakeAMQPLinks
 }
 
-type fakeAMQPSender struct {
-	closed int
+type FakeAMQPSender struct {
+	Closed int
 	AMQPSender
 }
 
-type fakeAMQPSession struct {
+type FakeAMQPSession struct {
 	AMQPSessionCloser
 	closed int
 }
@@ -35,24 +38,57 @@ type fakeMgmtClient struct {
 type FakeAMQPLinks struct {
 	AMQPLinks
 
+	Closed int
+
 	// values to be returned for each `Get` call
 	Revision uint64
 	Receiver AMQPReceiver
 	Sender   AMQPSender
 	Mgmt     MgmtClient
 	Err      error
+
+	permanently bool
 }
 
-func (l FakeAMQPLinks) Get(ctx context.Context) (AMQPSender, AMQPReceiver, MgmtClient, uint64, error) {
-	return l.Sender, l.Receiver, l.Mgmt, l.Revision, l.Err
+type FakeAMQPReceiver struct {
+	AMQPReceiver
+	Closed int
+	Drain  int
 }
 
-func (s *fakeAMQPSender) Close(ctx context.Context) error {
-	s.closed++
+func (r *FakeAMQPReceiver) DrainCredit(ctx context.Context) error {
+	r.Drain++
 	return nil
 }
 
-func (s *fakeAMQPSession) Close(ctx context.Context) error {
+func (r *FakeAMQPReceiver) Close(ctx context.Context) error {
+	r.Closed++
+	return nil
+}
+
+func (l *FakeAMQPLinks) Get(ctx context.Context) (AMQPSender, AMQPReceiver, MgmtClient, uint64, error) {
+	return l.Sender, l.Receiver, l.Mgmt, l.Revision, l.Err
+}
+
+func (l *FakeAMQPLinks) Close(ctx context.Context, permanently bool) error {
+	if permanently {
+		l.permanently = true
+	}
+
+	l.Closed++
+	return nil
+}
+
+func (l *FakeAMQPLinks) ClosedPermanently() bool {
+	return l.permanently
+}
+
+func (s *FakeAMQPSender) Close(ctx context.Context) error {
+	s.Closed++
+	return nil
+}
+
+func (s *FakeAMQPSession) Close(ctx context.Context) error {
 	s.closed++
 	return nil
 }
@@ -83,6 +119,10 @@ func (ns *FakeNS) NewAMQPSession(ctx context.Context) (AMQPSessionCloser, uint64
 
 func (ns *FakeNS) NewMgmtClient(ctx context.Context, links AMQPLinks) (MgmtClient, error) {
 	return ns.MgmtClient, nil
+}
+
+func (ns *FakeNS) NewRPCLink(ctx context.Context, managementPath string) (*rpc.Link, error) {
+	return ns.RPCLink, nil
 }
 
 func (ns *FakeNS) Recover(ctx context.Context, clientRevision uint64) error {

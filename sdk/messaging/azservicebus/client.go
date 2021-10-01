@@ -19,13 +19,17 @@ import (
 // Client provides methods to create Sender, Receiver and Processor
 // instances to send and receive messages from Service Bus.
 type Client struct {
-	config      clientConfig
-	namespace   *internal.Namespace
+	config    clientConfig
+	namespace interface {
+		// used internally by `Client`
+		internal.NamespaceWithNewAMQPLinks
+		// for child clients
+		internal.NamespaceForAMQPLinks
+		internal.NamespaceForMgmtClient
+	}
 	linksMu     *sync.Mutex
 	linkCounter uint64
-	links       map[uint64]interface {
-		Close(ctx context.Context) error
-	}
+	links       map[uint64]internal.Closeable
 }
 
 type clientConfig struct {
@@ -84,9 +88,7 @@ func newClientImpl(config clientConfig, options ...ClientOption) (*Client, error
 	client := &Client{
 		linksMu: &sync.Mutex{},
 		config:  config,
-		links: map[uint64]interface {
-			Close(ctx context.Context) error
-		}{},
+		links:   map[uint64]internal.Closeable{},
 	}
 
 	for _, opt := range options {
@@ -194,9 +196,7 @@ func (client *Client) NewSender(queueOrTopic string) (*Sender, error) {
 func (client *Client) Close(ctx context.Context) error {
 	var lastError error
 
-	var links []interface {
-		Close(ctx context.Context) error
-	}
+	var links []internal.Closeable
 
 	client.linksMu.Lock()
 
@@ -219,9 +219,7 @@ func (client *Client) Close(ctx context.Context) error {
 	return nil
 }
 
-func (client *Client) addCloseable(id uint64, closeable interface {
-	Close(ctx context.Context) error
-}) {
+func (client *Client) addCloseable(id uint64, closeable internal.Closeable) {
 	client.linksMu.Lock()
 	client.links[id] = closeable
 	client.linksMu.Unlock()

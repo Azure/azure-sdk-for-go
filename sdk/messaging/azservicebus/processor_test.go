@@ -116,7 +116,9 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 
 	require.NoError(t, err)
 
-	defer processor.Close(context.Background()) // multiple close is fine
+	defer func() {
+		require.NoError(t, processor.Close(context.Background())) // multiple close is fine
+	}()
 
 	var messages []string
 	mu := sync.Mutex{}

@@ -215,10 +215,20 @@ func (p *Processor) Close(ctx context.Context) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
-	p.config.cleanupOnClose()
+	if p.amqpLinks.ClosedPermanently() {
+		return nil
+	}
 
 	ctx, span := tab.StartSpan(ctx, internal.SpanProcessorClose)
 	defer span.End()
+
+	defer func() {
+		if err := p.amqpLinks.Close(ctx, true); err != nil {
+			span.Logger().Debug(fmt.Sprintf("Error closing amqpLinks on processor.Close(): %s", err.Error()))
+		}
+	}()
+
+	p.config.cleanupOnClose()
 
 	_, receiver, _, _, err := p.amqpLinks.Get(ctx)
 

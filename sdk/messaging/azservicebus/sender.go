@@ -114,7 +114,7 @@ func (sender *Sender) createSenderLink(ctx context.Context, session internal.AMQ
 	return amqpSender, nil, nil
 }
 
-func newSender(ns *internal.Namespace, queueOrTopic string, cleanupOnClose func()) (*Sender, error) {
+func newSender(ns internal.NamespaceWithNewAMQPLinks, queueOrTopic string, cleanupOnClose func()) (*Sender, error) {
 	sender := &Sender{
 		queueOrTopic:   queueOrTopic,
 		cleanupOnClose: cleanupOnClose,

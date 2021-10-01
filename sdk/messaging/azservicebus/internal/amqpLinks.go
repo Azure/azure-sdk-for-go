@@ -40,6 +40,9 @@ type AMQPLinks interface {
 	// If permanent is true the link will not be auto-recreated if Get/Recover
 	// are called. All functions will return `ErrLinksClosed`
 	Close(ctx context.Context, permanent bool) error
+
+	// ClosedPermanently is true if AMQPLinks.Close(ctx, true) has been called.
+	ClosedPermanently() bool
 }
 
 // amqpLinks manages the set of AMQP links (and detritus) typically needed to work
@@ -270,6 +273,13 @@ func (l *amqpLinks) EntityPath() string {
 // EntityPath is the audience for the queue/topic/subscription.
 func (l *amqpLinks) Audience() string {
 	return l.audience
+}
+
+// ClosedPermanently is true if AMQPLinks.Close(ctx, true) has been called.
+func (l *amqpLinks) ClosedPermanently() bool {
+	l.mu.RLock()
+	defer l.mu.RUnlock()
+	return l.closedPermanently
 }
 
 // Close will close the the link permanently.

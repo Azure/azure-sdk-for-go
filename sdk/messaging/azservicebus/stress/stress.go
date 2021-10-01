@@ -130,17 +130,21 @@ func runBasicSendAndReceiveTest() {
 		},
 	})
 
-	go func() {
-		for {
-			runProcessor(ctx, serviceBusClient, topicName, "processor", telemetryClient)
-		}
-	}()
+	runProcessorTest := true
 
-	// go func() {
-	// 	for {
-	// 		runBatchReceiver(ctx, serviceBusClient, topicName, "batch", telemetryClient)
-	// 	}
-	// }()
+	if runProcessorTest {
+		go func() {
+			for {
+				runProcessor(ctx, serviceBusClient, topicName, "processor", telemetryClient)
+			}
+		}()
+	} else {
+		go func() {
+			for {
+				runBatchReceiver(ctx, serviceBusClient, topicName, "batch", telemetryClient)
+			}
+		}()
+	}
 
 	go func() {
 		for {

@@ -317,7 +317,7 @@ func (b badMgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, se
 
 func TestReceiverDeferUnitTests(t *testing.T) {
 	r := &Receiver{
-		amqpLinks: internal.FakeAMQPLinks{
+		amqpLinks: &internal.FakeAMQPLinks{
 			Err: errors.New("links are dead"),
 		},
 	}
@@ -327,7 +327,7 @@ func TestReceiverDeferUnitTests(t *testing.T) {
 	require.Nil(t, messages)
 
 	r = &Receiver{
-		amqpLinks: internal.FakeAMQPLinks{
+		amqpLinks: &internal.FakeAMQPLinks{
 			Mgmt: &badMgmtClient{},
 		},
 	}

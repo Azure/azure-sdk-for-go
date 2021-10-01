@@ -59,3 +59,9 @@ type RPCLink interface {
 	Close(ctx context.Context) error
 	RetryableRPC(ctx context.Context, times int, delay time.Duration, msg *amqp.Message) (*rpc.Response, error)
 }
+
+// Closeable is implemented by pretty much any AMQP link/client
+// including our own higher level Receiver/Sender.
+type Closeable interface {
+	Close(ctx context.Context) error
+}

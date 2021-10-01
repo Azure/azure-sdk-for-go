@@ -30,10 +30,7 @@ type (
 		// available in the raw AMQP message, but not exported by default
 		// GroupSequence  *uint32
 
-		// these are internal attributes and will no longer be exported
-		// after we merge jhendrix's refactor to move the settlement
-		// methods from the message to the receiver.
-		RawAMQPMessage *amqp.Message
+		rawAMQPMessage *amqp.Message
 
 		// the 'revision' of the link we received on (ie, if it was recovered it won't match)
 		linkRevision uint64
@@ -196,7 +193,7 @@ func newReceivedMessage(ctxForLogging context.Context, amqpMsg *amqp.Message) *R
 		Message: Message{
 			Body: amqpMsg.GetData(),
 		},
-		RawAMQPMessage: amqpMsg,
+		rawAMQPMessage: amqpMsg,
 	}
 
 	if amqpMsg.Properties != nil {

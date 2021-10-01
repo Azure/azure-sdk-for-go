@@ -16,6 +16,12 @@ type AMQPReceiver interface {
 	IssueCredit(credit uint32) error
 	DrainCredit(ctx context.Context) error
 	Receive(ctx context.Context) (*amqp.Message, error)
+
+	// settlement functions
+	AcceptMessage(ctx context.Context, msg *amqp.Message) error
+	RejectMessage(ctx context.Context, msg *amqp.Message, e *amqp.Error) error
+	ReleaseMessage(ctx context.Context, msg *amqp.Message) error
+	ModifyMessage(ctx context.Context, msg *amqp.Message, deliveryFailed, undeliverableHere bool, messageAnnotations amqp.Annotations) error
 }
 
 // AMQPReceiver is implemented by *amqp.Receiver

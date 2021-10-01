@@ -85,7 +85,7 @@ func createClientForRecording(t *testing.T, tableName string, serviceURL string,
 
 	options := &ClientOptions{
 		PerCallPolicies: []policy.Policy{p},
-		Transporter:     client,
+		Transport:       client,
 	}
 	if !strings.HasSuffix(serviceURL, "/") && tableName != "" {
 		serviceURL += "/"
@@ -102,7 +102,7 @@ func createServiceClientForRecording(t *testing.T, serviceURL string, cred azcor
 
 	options := &ClientOptions{
 		PerCallPolicies: []policy.Policy{p},
-		Transporter:     client,
+		Transport:       client,
 	}
 	return NewServiceClient(serviceURL, cred, options)
 }

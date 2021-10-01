@@ -9,8 +9,8 @@ import (
 )
 
 type ClientOptions struct {
-	// Transporter sets the transport for making HTTP requests.
-	Transporter policy.Transporter
+	// Transport sets the transport for making HTTP requests.
+	Transport policy.Transporter
 
 	// Retry configures the built-in retry policy behavior.
 	Retry policy.RetryOptions
@@ -31,7 +31,7 @@ func (o *ClientOptions) getConnectionOptions() *generated.ConnectionOptions {
 	}
 
 	return &generated.ConnectionOptions{
-		HTTPClient:       o.Transporter,
+		HTTPClient:       o.Transport,
 		Retry:            o.Retry,
 		Telemetry:        o.Telemetry,
 		PerCallPolicies:  []policy.Policy{},

@@ -6,8 +6,33 @@ package azidentity
 import (
 	"os"
 	"testing"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
+// constants used throughout this package
+const (
+	accessTokenRespError     = `{"error": "invalid_client","error_description": "Invalid client secret is provided.","error_codes": [0],"timestamp": "2019-12-01 19:00:00Z","trace_id": "2d091b0","correlation_id": "a999","error_uri": "https://login.contoso.com/error?code=0"}`
+	accessTokenRespSuccess   = `{"access_token": "` + tokenValue + `", "expires_in": 3600}`
+	accessTokenRespMalformed = `{"access_token": 0, "expires_in": 3600}`
+)
+
+func defaultTestPipeline(srv policy.Transporter, cred azcore.TokenCredential, scope string) runtime.Pipeline {
+	retryOpts := policy.RetryOptions{
+		MaxRetryDelay: 500 * time.Millisecond,
+		RetryDelay:    50 * time.Millisecond,
+	}
+	return runtime.NewPipeline(
+		srv,
+		runtime.NewRetryPolicy(&retryOpts),
+		runtime.NewBearerTokenPolicy(cred, runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: []string{scope}}}),
+		runtime.NewLogPolicy(nil))
+}
+
+// constants for this file
 const (
 	envHostString    = "https://mock.com/"
 	customHostString = "https://custommock.com/"

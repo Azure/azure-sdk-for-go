@@ -27,15 +27,17 @@ func Test_Sender_SendBatchOfTwo(t *testing.T) {
 	batch, err := sender.NewMessageBatch(ctx)
 	require.NoError(t, err)
 
-	err = batch.Add(&Message{
+	added, err := batch.Add(&Message{
 		Body: []byte("[0] message in batch"),
 	})
 	require.NoError(t, err)
+	require.True(t, added)
 
-	err = batch.Add(&Message{
+	added, err = batch.Add(&Message{
 		Body: []byte("[1] message in batch"),
 	})
 	require.NoError(t, err)
+	require.True(t, added)
 
 	err = sender.SendMessage(ctx, batch)
 	require.NoError(t, err)
@@ -78,17 +80,19 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 	batch, err := sender.NewMessageBatch(context.Background())
 	require.NoError(t, err)
 
-	err = batch.Add(&Message{
+	added, err := batch.Add(&Message{
 		Body:         []byte("2. Message in batch"),
 		PartitionKey: to.StringPtr("partitionKey1"),
 	})
 	require.NoError(t, err)
+	require.True(t, added)
 
-	err = batch.Add(&Message{
+	added, err = batch.Add(&Message{
 		Body:         []byte("3. Message in batch"),
 		PartitionKey: to.StringPtr("partitionKey1"),
 	})
 	require.NoError(t, err)
+	require.True(t, added)
 
 	err = sender.SendMessage(context.Background(), batch)
 	require.NoError(t, err)

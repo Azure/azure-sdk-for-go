@@ -231,10 +231,12 @@ func TestReceiverPeek(t *testing.T) {
 	require.NoError(t, err)
 
 	for i := 0; i < 3; i++ {
-		err = batch.Add(&Message{
+		added, err := batch.Add(&Message{
 			Body: []byte(fmt.Sprintf("Message %d", i)),
 		})
+
 		require.NoError(t, err)
+		require.True(t, added)
 	}
 
 	err = sender.SendMessage(ctx, batch)

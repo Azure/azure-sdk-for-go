@@ -102,9 +102,11 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 		// have been sent.
 		for i := 0; i < numMessages; i++ {
 			expectedBodies = append(expectedBodies, fmt.Sprintf("hello world %03d", i))
-			require.NoError(t, batch.Add(&Message{
+			added, err := batch.Add(&Message{
 				Body: []byte(expectedBodies[len(expectedBodies)-1]),
-			}))
+			})
+			require.NoError(t, err)
+			require.True(t, added)
 		}
 
 		require.NoError(t, sender.SendMessage(context.Background(), batch))

@@ -1,50 +1,141 @@
-# Microsoft Azure Service Bus Client for Golang
-[![Go Report Card](https://goreportcard.com/badge/github.com/Azure/azure-service-bus-go)](https://goreportcard.com/report/github.com/Azure/azure-service-bus-go)
-[![godoc](https://godoc.org/github.com/Azure/azure-service-bus-go?status.svg)](https://godoc.org/github.com/Azure/azure-service-bus-go)
-[![Build Status](https://travis-ci.org/Azure/azure-service-bus-go.svg?branch=master)](https://travis-ci.org/Azure/azure-service-bus-go)
-[![Coverage Status](https://coveralls.io/repos/github/Azure/azure-service-bus-go/badge.svg?branch=master)](https://coveralls.io/github/Azure/azure-service-bus-go?branch=master)
+# Azure Service Bus Client Module for Go
 
-Microsoft Azure Service Bus is a reliable cloud messaging service (MaaS) which simplifies enterprise cloud messaging. It
-enables developers to build scalable cloud solutions and implement complex messaging workflows over an efficient binary
-protocol called AMQP.
+[Azure Service Bus](https://azure.microsoft.com/services/service-bus/) is a highly-reliable cloud messaging service from Microsoft.
 
-This library provides a simple interface for sending, receiving and managing Service Bus entities such as Queues, Topics
-and Subscriptions.
+Use the client library `github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus` in your application to:
 
-For more information about Service Bus, check out the [Azure documentation](https://azure.microsoft.com/services/service-bus/).
+- Send messages to an Azure Service Bus Queue or Topic
+- Receive messages from an Azure Service Bus Queue or Subscription
 
-This library is a pure Golang implementation of Azure Service Bus over AMQP.
+**NOTE**: This library is currently a preview. There may be breaking interface changes until it reaches semantic version `v1.0.0`.
 
-## Preview of Service Bus for Golang
-This library is currently a preview. There may be breaking interface changes until it reaches semantic version `v1.0.0`. 
-If you run into an issue, please don't hesitate to log a 
-[new issue](https://github.com/Azure/azure-service-bus-go/issues/new) or open a pull request.
+Key links:
+- [Source code][source]
+- [API Reference Documentation](https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus)
+- [Product documentation](https://azure.microsoft.com/services/service-bus/)
+- [Samples][godoc_samples]
 
-## Install using Go modules
+## Getting started
 
-``` bash
-go get -u github.com/Azure/azure-service-bus-go
+### Install the package
+
+Install the Azure Service Bus client module for Go with `go get`:
+
+```bash
+go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus
 ```
 
-If you need to install Go, follow [the official instructions](https://golang.org/dl/)
+### Prerequisites
+- Go, version 1.16 or higher
+- An [Azure subscription](https://azure.microsoft.com/free/)
+- A [Service Bus Namespace](https://docs.microsoft.com/azure/service-bus-messaging/) 
 
-### Examples
+### Authenticate the client
+
+The Service Bus [Client][gopkg_client] can be created using a Service Bus connection string or a credential from the [Azure Identity package][azure_identity_pkg], like [DefaultAzureCredential][default_azure_credential].
+
+#### Using a connection string
+
+```go
+import (
+  "log"
+  "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
+)
+
+func main() {
+  client, err := azservicebus.NewClient("<Service Bus connection string>")
+ 
+  if err != nil {
+    log.Fatalf("Failed to create Service Bus Client: %s", err.Error())
+  }
+}
+```
+
+#### Using an Azure Active Directory Credential
+
+```go
+import (
+  "log"
+  "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+  "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
+)
+
+func main() {
+  // For more information about the DefaultAzureCredential:
+  // https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
+  cred, err := azidentity.NewDefaultAzureCredential(nil)
+
+  if err != nil {
+    log.Fatalf("Failed creating DefaultAzureCredential: %s", err.Error())
+  }
+
+  client, err := azservicebus.NewClient("<ex: my-service-bus.servicebus.windows.net>", cred)
+
+  if err != nil {
+    log.Fatalf("Failed to create Service Bus Client: %s", err.Error())
+  }
+}
+```
+
+## Key concepts
+
+Once you've created a [Client][godoc_client], you can interact with resources within a Service Bus Namespace:
+
+- [Queues][queue_concept]: Allows for sending and receiving messages. Often used for point-to-point communication.
+- [Topics][topic_concept]: As opposed to Queues, Topics are better suited to publish/subscribe scenarios. A topic can be sent to, but requires a subscription, of which there can be multiple in parallel, to consume from.
+- [Subscriptions][subscription_concept]: The mechanism to consume from a Topic. Each subscription is independent, and receives a copy of each message sent to the topic. Rules and Filters can be used to tailor which messages are received by a specific subscription.
+
+For more information about these resources, see [What is Azure Service Bus?][service_bus_overview].
+
+Using a `Client` you can do the following:
+
+- Send messages, to a queue or topic, using a [Sender][godoc_sender] created using [Client.NewSender()][godoc_newsender]. [sample link]()
+- Receive messages, from either a queue or a subscription, using a [Receiver][godoc_receiver] created using [client.NewReceiverForQueue()][godoc_newreceiver_queue] or [client.NewReceiverForSubscription()][godoc_newreceiver_subscription]
+
+Please note that the Queues, Topics and Subscriptions should be created prior to using this library.
+
+### Samples
 
 Find up-to-date examples and documentation on [godoc.org](https://godoc.org/github.com/Azure/azure-service-bus-go#pkg-examples).
 
-### Running tests
+## Examples
 
-Most tests require a properly configured service bus in Azure.  The easiest way to set this up is to use the [Terraform](https://www.terraform.io/) deployment script.
-Running the integration tests will take longer than the default 10 mintues, please use a larger timeout `go test -timeout 30m`.
+The following sections provide code snippets that cover some of the common tasks using Azure Service Bus
 
-### Have questions?
+- [Send messages](#send-messages)
 
-The developers of this library are all active on the [Gopher Slack](https://gophers.slack.com), it is likely easiest to 
-get our attention in the [Microsoft Channel](https://gophers.slack.com/messages/C6NH8V2E9). We'll also find your issue
-if you ask on [Stack Overflow](https://stackoverflow.com/questions/tagged/go+azure) with the tags `azure` and `go`.
+### Send messages
 
-## Code of Conduct
+Once you've created a [Client][godoc_client] you can create a [Sender][godoc_sender], which will allow you to send messages and schedule messages that will be delivered at a later time.
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+NOTE: Creating a client is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme.
+
+```go
+
+```
+
+## Next steps
+
+Please take a look at the [samples][godoc_samples] for detailed examples on how to use this library to send and receive messages to/from [Service Bus Queues, Topics and Subscriptions](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview).
+
+## Contributing
+
+If you'd like to contribute to this library, please read the [contributing guide](https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md) to learn more about how to build and test the code.
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fmessaging%2Fazservicebus%2FREADME.png)
+
+[source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/azservicebus
+[new_issue]: https://github.com/Azure/azure-sdk-for-go/issues/new
+[azure_identity_pkg]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
+[default_azure_credential]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
+[queue_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#queues
+[topic_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#topics
+[subscription_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
+[service_bus_overview]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview
+[godoc_samples]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#pkg-examples
+[godoc_receiver]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Receiver
+[godoc_client]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client
+[godoc_sender]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Sender
+[godoc_newsender]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewSender
+[godoc_newreceiver_queue]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewReceiverWithQueue
+[godoc_newreceiver_subscription]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewReceiverWithQueue

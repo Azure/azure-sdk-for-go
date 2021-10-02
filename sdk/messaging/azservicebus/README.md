@@ -13,7 +13,7 @@ Key links:
 - [Source code][source]
 - [API Reference Documentation](https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus)
 - [Product documentation](https://azure.microsoft.com/services/service-bus/)
-- [Samples][godoc_samples]
+- [Samples][godoc_examples]
 
 ## Getting started
 
@@ -32,7 +32,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus
 
 ### Authenticate the client
 
-The Service Bus [Client][gopkg_client] can be created using a Service Bus connection string or a credential from the [Azure Identity package][azure_identity_pkg], like [DefaultAzureCredential][default_azure_credential].
+The Service Bus [Client][godoc_client] can be created using a Service Bus connection string or a credential from the [Azure Identity package][azure_identity_pkg], like [DefaultAzureCredential][default_azure_credential].
 
 #### Using a connection string
 
@@ -96,7 +96,7 @@ Please note that the Queues, Topics and Subscriptions should be created prior to
 
 ### Samples
 
-Find up-to-date examples and documentation on [godoc.org](https://godoc.org/github.com/Azure/azure-service-bus-go#pkg-examples).
+Find up-to-date examples and documentation on the [azservicebus godoc.org page][godoc_examples].
 
 ## Examples
 
@@ -242,7 +242,7 @@ if err != nil {
 Once you've created a [Client][godoc_client] you can create a [Receiver][godoc_receiver], which will allow you to receive messages.
 
 The [Receiver][godoc_receiver] is a good fit for applications that want to receive messages in fixed increments, rather than
-continually streaming messages, as the [Processor][godoc_processor does.
+continually streaming messages, as the [Processor][godoc_processor] does.
 
 > NOTE: Creating a `client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme.
 
@@ -329,7 +329,7 @@ To see some example code for receiving messages using the Processor or Receiver 
 
 ## Next steps
 
-Please take a look at the [samples][godoc_samples] for detailed examples on how to use this library to send and receive messages to/from [Service Bus Queues, Topics and Subscriptions](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview).
+Please take a look at the [samples][godoc_examples] for detailed examples on how to use this library to send and receive messages to/from [Service Bus Queues, Topics and Subscriptions](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview).
 
 ## Contributing
 
@@ -345,7 +345,7 @@ If you'd like to contribute to this library, please read the [contributing guide
 [topic_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#topics
 [subscription_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
 [service_bus_overview]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview
-[godoc_samples]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#pkg-examples
+[godoc_examples]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#pkg-examples
 [godoc_client]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client
 [godoc_sender]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Sender
 [godoc_receiver]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Receiver

@@ -55,14 +55,14 @@ func (s *messageSettler) settleWithRetries(ctx context.Context, message *Receive
 		_, receiver, mgmt, linkRevision, lastErr = s.links.Get(ctx)
 
 		if lastErr != nil {
-			_ = s.links.RecoverIfNeeded(ctx, lastErr)
+			_ = s.links.RecoverIfNeeded(ctx, linkRevision, lastErr)
 			continue
 		}
 
 		lastErr := settleFn(receiver, mgmt, linkRevision)
 
 		if lastErr != nil {
-			_ = s.links.RecoverIfNeeded(ctx, lastErr)
+			_ = s.links.RecoverIfNeeded(ctx, linkRevision, lastErr)
 			continue
 		}
 

@@ -34,7 +34,7 @@ type AMQPLinks interface {
 
 	// RecoverIfNeeded will check if an error requires recovery, and will recover
 	// the link or, possibly, the connection.
-	RecoverIfNeeded(ctx context.Context, err error) error
+	RecoverIfNeeded(ctx context.Context, linksRevision uint64, err error) error
 
 	// Close will close the the link.
 	// If permanent is true the link will not be auto-recreated if Get/Recover
@@ -118,22 +118,42 @@ func (links *amqpLinks) ManagementPath() string {
 
 // recoverLink will recycle all associated links (mgmt, receiver, sender and session)
 // and recreate them using the link.linkCreator function.
-func (links *amqpLinks) recoverLink(ctx context.Context) error {
+func (links *amqpLinks) recoverLink(ctx context.Context, theirLinkRevision *uint64) error {
 	ctx, span := tab.StartSpan(ctx, SpanRecoverLink)
 	defer span.End()
 
 	links.mu.RLock()
 	closedPermanently := links.closedPermanently
+	ourLinkRevision := links.revision
 	links.mu.RUnlock()
 
 	if closedPermanently {
+		span.AddAttributes(tab.StringAttribute("outcome", "already_closed"))
 		return errClosedPermanently{}
+	}
+
+	if theirLinkRevision != nil && ourLinkRevision > *theirLinkRevision {
+		// we've already recovered past their failure.
+		span.AddAttributes(
+			tab.StringAttribute("outcome", "already_recovered"),
+			tab.StringAttribute("lock", "readlock"),
+			tab.StringAttribute("revisions", fmt.Sprintf("ours(%d), theirs(%d)", ourLinkRevision, *theirLinkRevision)),
+		)
+		return nil
 	}
 
 	links.mu.Lock()
 	defer links.mu.Unlock()
 
-	links.revision++
+	if theirLinkRevision != nil && ourLinkRevision > *theirLinkRevision {
+		// we've already recovered past their failure.
+		span.AddAttributes(
+			tab.StringAttribute("outcome", "already_recovered"),
+			tab.StringAttribute("lock", "writelock"),
+			tab.StringAttribute("revisions", fmt.Sprintf("ours(%d), theirs(%d)", ourLinkRevision, *theirLinkRevision)),
+		)
+		return nil
+	}
 
 	if err := links.closeWithoutLocking(ctx, false); err != nil {
 		span.Logger().Error(err)
@@ -142,22 +162,23 @@ func (links *amqpLinks) recoverLink(ctx context.Context) error {
 	err := links.initWithoutLocking(ctx)
 
 	if err != nil {
-		span.Logger().Error(err)
+		span.AddAttributes(tab.StringAttribute("init_error", err.Error()))
 		return err
 	}
 
+	links.revision++
 	return nil
 }
 
 // Recover will recover the links or the connection, depending
 // on the severity of the error. This function uses the `baseRetrier`
 // defined in the links struct.
-func (links *amqpLinks) RecoverIfNeeded(ctx context.Context, origErr error) error {
+func (links *amqpLinks) RecoverIfNeeded(ctx context.Context, linksRevision uint64, origErr error) error {
 	retrier := links.baseRetrier.Copy()
 	var err error = origErr
 
 	for retrier.Try(ctx) {
-		err = links.recoverImpl(ctx, retrier.CurrentTry(), err)
+		err = links.recoverImpl(ctx, retrier.CurrentTry(), linksRevision, err)
 
 		if err == nil {
 			return nil
@@ -167,7 +188,7 @@ func (links *amqpLinks) RecoverIfNeeded(ctx context.Context, origErr error) erro
 	return err
 }
 
-func (links *amqpLinks) recoverImpl(ctx context.Context, try int, origErr error) error {
+func (links *amqpLinks) recoverImpl(ctx context.Context, try int, linksRevision uint64, origErr error) error {
 	_, span := tab.StartSpan(ctx, SpanRecoverLink)
 	defer span.End()
 
@@ -187,10 +208,9 @@ func (links *amqpLinks) recoverImpl(ctx context.Context, try int, origErr error)
 		span.AddAttributes(tab.StringAttribute(
 			"recovery", "link",
 		))
-		span.Logger().Info("Link was detached, recovering")
 
-		if err := links.recoverLink(ctx); err != nil {
-			span.Logger().Error(fmt.Errorf("failed to recover links after detach: %w", err))
+		if err := links.recoverLink(ctx, &linksRevision); err != nil {
+			span.AddAttributes(tab.StringAttribute("recoveryFailure", err.Error()))
 			return err
 		}
 
@@ -200,14 +220,13 @@ func (links *amqpLinks) recoverImpl(ctx context.Context, try int, origErr error)
 			"recovery", "connection",
 		))
 
-		span.Logger().Info("Recreating connection")
-
 		if err := links.recoverConnection(ctx); err != nil {
 			span.Logger().Error(fmt.Errorf("failed to recreate connection: %w", err))
 			return err
 		}
 
-		if err := links.recoverLink(ctx); err != nil {
+		// unconditionally recover the link if the connection died.
+		if err := links.recoverLink(ctx, nil); err != nil {
 			span.Logger().Error(fmt.Errorf("failed to recover links after connection restarted: %w", err))
 			return err
 		}

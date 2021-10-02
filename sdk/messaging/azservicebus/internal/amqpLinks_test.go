@@ -8,7 +8,9 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
+	"github.com/devigned/tab"
 	"github.com/stretchr/testify/require"
 )
 
@@ -109,14 +111,14 @@ func TestAMQPLinksRecovery(t *testing.T) {
 
 	ctx := context.TODO()
 
-	require.Nil(t, links.RecoverIfNeeded(ctx, nil))
+	require.Nil(t, links.RecoverIfNeeded(ctx, 0, nil))
 	require.EqualValues(t, 0, sess.closed)
 	require.EqualValues(t, 0, ns.recovered)
 	require.EqualValues(t, 0, createLinkCalled, "new links aren't needed")
 	require.False(t, links.closedPermanently, "link should still be usable")
 	require.Empty(t, ns.clientRevisions, "no connection recoveries happened")
 
-	require.Nil(t, links.RecoverIfNeeded(ctx, errors.New("Passes through")))
+	require.Nil(t, links.RecoverIfNeeded(ctx, 0, errors.New("Passes through")))
 	require.EqualValues(t, 0, sess.closed)
 	require.EqualValues(t, 0, ns.recovered)
 	require.EqualValues(t, 0, createLinkCalled, "new links aren't needed")
@@ -124,7 +126,7 @@ func TestAMQPLinksRecovery(t *testing.T) {
 	require.Empty(t, ns.clientRevisions, "no connection recoveries happened")
 
 	// now let's initiate a recovery at the connection level
-	require.NoError(t, links.RecoverIfNeeded(ctx, permanentNetError{}), permanentNetError{}.Error())
+	require.NoError(t, links.RecoverIfNeeded(ctx, 0, permanentNetError{}), permanentNetError{}.Error())
 	require.EqualValues(t, 1, ns.recovered, "client gets recovered")
 	require.EqualValues(t, 1, sender.Closed, "link is closed")
 	require.EqualValues(t, 1, createLinkCalled, "link is created")
@@ -135,8 +137,18 @@ func TestAMQPLinksRecovery(t *testing.T) {
 	sender.Closed = 0
 	createLinkCalled = 0
 
+	tab.Register(&utils.StderrTracer{
+		Include: map[string]bool{
+			SpanProcessorClose: true,
+			SpanProcessorLoop:  true,
+			SpanNegotiateClaim: true,
+			SpanRecoverLink:    true,
+			SpanRecoverClient:  true,
+		},
+	})
+
 	// let's do just a link level one
-	require.NoError(t, links.RecoverIfNeeded(ctx, amqp.ErrLinkDetached), amqp.ErrLinkDetached.Error())
+	require.NoError(t, links.RecoverIfNeeded(ctx, links.revision+1, amqp.ErrLinkDetached), amqp.ErrLinkDetached.Error())
 	require.EqualValues(t, 0, ns.recovered)
 	require.EqualValues(t, 1, sender.Closed)
 	require.EqualValues(t, 1, createLinkCalled)
@@ -150,7 +162,7 @@ func TestAMQPLinksRecovery(t *testing.T) {
 	createLinkCalled = 0
 
 	// cancellation overrides any other logic.
-	require.Error(t, links.RecoverIfNeeded(ctx, amqp.ErrLinkDetached), amqp.ErrLinkDetached.Error())
+	require.Error(t, links.RecoverIfNeeded(ctx, links.revision+1, amqp.ErrLinkDetached), amqp.ErrLinkDetached.Error())
 	require.EqualValues(t, 0, ns.recovered)
 	require.EqualValues(t, 0, sender.Closed)
 	require.EqualValues(t, 0, createLinkCalled)

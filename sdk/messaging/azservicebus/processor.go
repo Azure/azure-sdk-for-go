@@ -175,6 +175,7 @@ func (p *Processor) Start(ctx context.Context, handleMessage func(message *Recei
 
 		p.userMessageHandler = handleMessage
 		p.userErrorHandler = handleError
+
 		p.receiversCtx, p.cancelReceivers = context.WithCancel(ctx)
 
 		return nil
@@ -187,23 +188,34 @@ func (p *Processor) Start(ctx context.Context, handleMessage func(message *Recei
 	for {
 		retrier := p.config.baseRetrier.Copy()
 
-		for retrier.Try(ctx) {
-			if err := p.subscribe(p.receiversCtx); err != nil {
+		for retrier.Try(p.receiversCtx) {
+			_, receiver, _, linkRevision, err := p.amqpLinks.Get(p.receiversCtx)
+
+			if err != nil {
+				if err := p.amqpLinks.RecoverIfNeeded(p.receiversCtx, linkRevision, err); err != nil {
+					p.userErrorHandler(err)
+					continue
+				}
+			}
+
+			if err := p.subscribe(receiver); err != nil {
 				if internal.IsCancelError(err) {
 					break
 				}
 
 				p.userErrorHandler(err)
-
-				if err := p.amqpLinks.RecoverIfNeeded(ctx, err); err != nil {
-					p.userErrorHandler(err)
-				}
 			}
 		}
 
 		select {
-		case <-ctx.Done():
-			return ctx.Err()
+		case <-p.receiversCtx.Done():
+			// check, did they cancel or did we cancel?
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			default:
+				return nil
+			}
 		default:
 		}
 	}
@@ -277,18 +289,12 @@ func (p *Processor) DeadLetterMessage(ctx context.Context, message *ReceivedMess
 
 // subscribe continually receives messages from Service Bus, stopping
 // if a fatal link/connection error occurs.
-func (p *Processor) subscribe(ctx context.Context) error {
-	_, receiver, _, _, err := p.amqpLinks.Get(ctx)
-
-	if err != nil {
-		return err
-	}
-
+func (p *Processor) subscribe(receiver internal.AMQPReceiver) error {
 	p.wg.Add(1)
 	defer p.wg.Done()
 
 	for {
-		amqpMessage, err := receiver.Receive(ctx)
+		amqpMessage, err := receiver.Receive(p.receiversCtx)
 
 		if err != nil {
 			return err

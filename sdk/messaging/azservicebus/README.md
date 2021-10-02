@@ -43,7 +43,7 @@ import (
 )
 
 func main() {
-  client, err := azservicebus.NewClient("<Service Bus connection string>")
+  client, err := azservicebus.NewClientWithConnectionString("<Service Bus connection string>")
  
   if err != nil {
     log.Fatalf("Failed to create Service Bus Client: %s", err.Error())
@@ -190,7 +190,11 @@ processor, err := client.NewProcessorForQueue(
   // https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
   azservicebus.ProcessorWithReceiveMode(azservicebus.PeekLock),
 
-  // AutoComplete
+  // 'AutoComplete' (enabled by default) will use your `handleMessage`
+  // function's return value to determine how it should settle your message. 
+  //
+  // A non-nil return error will cause your message to be Abandon()'d.
+  // Nil return errors will cause your message to be Complete'd.  
   azservicebus.ProcessorWithAutoComplete(true),
 )
 // or
@@ -202,14 +206,7 @@ if err != nil {
 
 handleMessage := func(message *azservicebus.ReceivedMessage) error {
   // This is where your logic for handling messages goes
-
   yourLogicForProcessing(message)
-
-  // 'AutoComplete' (enabled by default, and controlled by `ProcessorWithAutoComplete`)
-  // will use this return value to determine how it should settle your message. 
-  //
-  // Non-nil errors will cause your message to be Abandon()'d.
-  // Nil errors will cause your message to be Complete'd.  
   return nil
 }
 

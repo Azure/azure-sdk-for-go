@@ -124,6 +124,7 @@ func runBasicSendAndReceiveTest() {
 			internal.SpanProcessorClose: true,
 			internal.SpanProcessorLoop:  true,
 			//internal.SpanProcessorMessage: true,
+			internal.SpanRecover:        true,
 			internal.SpanNegotiateClaim: true,
 			internal.SpanRecoverClient:  true,
 			internal.SpanRecoverLink:    true,

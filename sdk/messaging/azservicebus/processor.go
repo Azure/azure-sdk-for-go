@@ -105,10 +105,10 @@ func newProcessor(ns internal.NamespaceWithNewAMQPLinks, cleanupOnClose func(), 
 			MaxConcurrentCalls: 1,
 			// TODO: make this configurable
 			baseRetrier: internal.NewBackoffRetrier(internal.BackoffRetrierParams{
-				Factor:     2,
-				Min:        1,
+				Factor:     1.5,
+				Min:        time.Second,
 				Max:        time.Minute,
-				MaxRetries: 5,
+				MaxRetries: 10,
 			}),
 			cleanupOnClose: cleanupOnClose,
 		},
@@ -189,21 +189,10 @@ func (p *Processor) Start(ctx context.Context, handleMessage func(message *Recei
 		retrier := p.config.baseRetrier.Copy()
 
 		for retrier.Try(p.receiversCtx) {
-			_, receiver, _, linkRevision, err := p.amqpLinks.Get(p.receiversCtx)
-
-			if err != nil {
-				if err := p.amqpLinks.RecoverIfNeeded(p.receiversCtx, linkRevision, err); err != nil {
-					p.userErrorHandler(err)
-					continue
-				}
-			}
-
-			if err := p.subscribe(receiver); err != nil {
+			if err := p.subscribe(); err != nil {
 				if internal.IsCancelError(err) {
 					break
 				}
-
-				p.userErrorHandler(err)
 			}
 		}
 
@@ -289,15 +278,36 @@ func (p *Processor) DeadLetterMessage(ctx context.Context, message *ReceivedMess
 
 // subscribe continually receives messages from Service Bus, stopping
 // if a fatal link/connection error occurs.
-func (p *Processor) subscribe(receiver internal.AMQPReceiver) error {
+func (p *Processor) subscribe() error {
 	p.wg.Add(1)
 	defer p.wg.Done()
+
+	_, receiver, _, linkRevision, err := p.amqpLinks.Get(p.receiversCtx)
+
+	if err != nil {
+		if internal.IsCancelError(err) {
+			return err
+		}
+
+		if err := p.amqpLinks.RecoverIfNeeded(p.receiversCtx, linkRevision, err); err != nil {
+			p.userErrorHandler(err)
+			return err
+		}
+	}
 
 	for {
 		amqpMessage, err := receiver.Receive(p.receiversCtx)
 
 		if err != nil {
-			return err
+			if internal.IsCancelError(err) {
+				return err
+			}
+
+			if err := p.amqpLinks.RecoverIfNeeded(p.receiversCtx, linkRevision, err); err != nil {
+				p.userErrorHandler(err)
+			}
+
+			return nil
 		}
 
 		if amqpMessage == nil {

@@ -2,7 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: go-sb-stresstest
-  namespace: ripark-awesome
+  namespace: <your namespace>
 spec:
   backoffLimit: 4
   completions: 1
@@ -15,13 +15,13 @@ spec:
           valueFrom:
             secretKeyRef:
               key: SERVICEBUS_CONNECTION_STRING
-              name: go-seecrud
+              name: go-secret
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           valueFrom:
             secretKeyRef:
               key: APPINSIGHTS_INSTRUMENTATIONKEY
-              name: go-seecrud
-        image: stresstestregistry.azurecr.io/ripark/gosbtest
+              name: go-secret
+        image: stresstestregistry.azurecr.io/<your user>/gosbtest
         imagePullPolicy: Always
         command:
           - "/stress"

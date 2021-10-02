@@ -21,6 +21,7 @@ import (
 // 			internal.SpanProcessorClose: true,
 // 			internal.SpanProcessorLoop:  true,
 // 			internal.SpanNegotiateClaim: true,
+// 			internal.SpanRecover:        true,
 // 			internal.SpanRecoverLink:    true,
 // 			internal.SpanRecoverClient:  true,
 // 		},
@@ -82,10 +83,12 @@ func (t *StderrTracer) NewContext(parent context.Context, span tab.Spanner) cont
 }
 
 func (t *StderrTracer) getSpanID(operationName string) int64 {
-	_, ok := t.Include[operationName]
+	if len(t.Include) > 0 {
+		_, ok := t.Include[operationName]
 
-	if !ok {
-		return -1
+		if !ok {
+			return -1
+		}
 	}
 
 	return atomic.AddInt64(&t.spanCounter, 1)

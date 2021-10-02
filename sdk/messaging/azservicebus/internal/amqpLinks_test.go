@@ -8,9 +8,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
-	"github.com/devigned/tab"
 	"github.com/stretchr/testify/require"
 )
 
@@ -136,16 +134,6 @@ func TestAMQPLinksRecovery(t *testing.T) {
 	ns.recovered = 0
 	sender.Closed = 0
 	createLinkCalled = 0
-
-	tab.Register(&utils.StderrTracer{
-		Include: map[string]bool{
-			SpanProcessorClose: true,
-			SpanProcessorLoop:  true,
-			SpanNegotiateClaim: true,
-			SpanRecoverLink:    true,
-			SpanRecoverClient:  true,
-		},
-	})
 
 	// let's do just a link level one
 	require.NoError(t, links.RecoverIfNeeded(ctx, links.revision+1, amqp.ErrLinkDetached), amqp.ErrLinkDetached.Error())

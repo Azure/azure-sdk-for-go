@@ -167,6 +167,10 @@ func (links *amqpLinks) recoverLink(ctx context.Context, theirLinkRevision *uint
 	}
 
 	links.revision++
+	span.AddAttributes(
+		tab.StringAttribute("outcome", "recovered"),
+		tab.StringAttribute("revision_new", fmt.Sprintf("%d", links.revision)),
+	)
 	return nil
 }
 
@@ -174,10 +178,16 @@ func (links *amqpLinks) recoverLink(ctx context.Context, theirLinkRevision *uint
 // on the severity of the error. This function uses the `baseRetrier`
 // defined in the links struct.
 func (links *amqpLinks) RecoverIfNeeded(ctx context.Context, linksRevision uint64, origErr error) error {
-	retrier := links.baseRetrier.Copy()
+	ctx, span := tab.StartSpan(ctx, SpanRecover)
+	defer span.End()
+
 	var err error = origErr
 
+	retrier := links.baseRetrier.Copy()
+
 	for retrier.Try(ctx) {
+		span.AddAttributes(tab.StringAttribute("recover_attempt", fmt.Sprintf("%d", retrier.CurrentTry())))
+
 		err = links.recoverImpl(ctx, retrier.CurrentTry(), linksRevision, err)
 
 		if err == nil {

@@ -13,6 +13,7 @@ import (
 
 // link/connection recovery spans
 const (
+	SpanRecover       = "sb.recover"
 	SpanRecoverLink   = "sb.recover.link"
 	SpanRecoverClient = "sb.recover.client"
 )

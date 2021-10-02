@@ -96,10 +96,11 @@ func newReceiver(ns internal.NamespaceWithNewAMQPLinks, cleanupOnClose func(), o
 			ReceiveMode: PeekLock,
 			// TODO: make this configurable
 			baseRetrier: internal.NewBackoffRetrier(internal.BackoffRetrierParams{
-				Factor:     2,
-				Min:        1,
+				Factor:     1.5,
+				Jitter:     true,
+				Min:        time.Second,
 				Max:        time.Minute,
-				MaxRetries: 5,
+				MaxRetries: 10,
 			}),
 			cleanupOnClose: cleanupOnClose,
 		},

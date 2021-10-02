@@ -126,7 +126,7 @@ err = sender.SendMessage(context.TODO(), &azservicebus.Message{
 You can also send messages in batches, which can be more efficient than sending them individually
 
 ```go
-// allocate a batch. It will automatically be sized for the Service Bus
+// Create a message batch. It will automatically be sized for the Service Bus
 // Namespace's maximum message size.
 messageBatch, err := sender.NewMessageBatch(context.TODO())
 

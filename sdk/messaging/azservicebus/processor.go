@@ -282,20 +282,20 @@ func (p *Processor) subscribe() error {
 	p.wg.Add(1)
 	defer p.wg.Done()
 
-	_, receiver, _, linkRevision, err := p.amqpLinks.Get(p.receiversCtx)
-
-	if err != nil {
-		if internal.IsCancelError(err) {
-			return err
-		}
-
-		if err := p.amqpLinks.RecoverIfNeeded(p.receiversCtx, linkRevision, err); err != nil {
-			p.userErrorHandler(err)
-			return err
-		}
-	}
-
 	for {
+		_, receiver, _, linkRevision, err := p.amqpLinks.Get(p.receiversCtx)
+
+		if err != nil {
+			if internal.IsCancelError(err) {
+				return err
+			}
+
+			if err := p.amqpLinks.RecoverIfNeeded(p.receiversCtx, linkRevision, err); err != nil {
+				p.userErrorHandler(err)
+				return err
+			}
+		}
+
 		amqpMessage, err := receiver.Receive(p.receiversCtx)
 
 		if err != nil {

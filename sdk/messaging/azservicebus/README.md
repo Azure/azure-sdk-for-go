@@ -103,6 +103,8 @@ Find up-to-date examples and documentation on [godoc.org](https://godoc.org/gith
 The following sections provide code snippets that cover some of the common tasks using Azure Service Bus
 
 - [Send messages](#send-messages)
+- [Receive messages](#receive-messages)
+- [Dead lettering and subqueues](#dead-letter-queue)
 
 ### Send messages
 
@@ -157,6 +159,177 @@ if !added {
 }
 ```
 
+### Receive messages
+
+Once you've created a [Client][godoc_client] you can create a [Processor][godoc_processor], which will allow you to receive messages.
+
+The [Processor][godoc_processor] handles error recovery internally, making it a good fit for
+applications where the intention is to stream and process events for an extended period 
+of time.
+
+> NOTE: Creating a `client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme.
+
+```go
+processor, err := client.NewProcessorForQueue(
+  "<queue>",
+  // NOTE: this is a parameter you'll want to tune. It controls the number of 
+  // active message `handleMessage` calls that the processor will allow at any time.
+  azservicebus.ProcessorWithMaxConcurrentCalls(1),
+
+  // The receive mode controls when a message is deleted from Service Bus. 
+  //
+  // `azservicebus.PeekLock` is the default. The message is locked, preventing multiple
+  // receivers from processing the message at once. You control the lock state of the message
+  //  using one of the message settlement functions, processor.CompleteMessage(), which removes
+  // it from Service Bus, or processor.AbandonMessage(), which makes it available again.
+  // 
+  // `azservicebus.ReceiveAndDelete` causes Service Bus to remove the message as soon
+  // as it's received.
+  //
+  // More information about receive modes:
+  // https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
+  azservicebus.ProcessorWithReceiveMode(azservicebus.PeekLock),
+
+  // AutoComplete
+  azservicebus.ProcessorWithAutoComplete(true),
+)
+// or
+// client.NewProcessorForSubscription("<topic>", "<subscription>")
+
+if err != nil {
+  log.Fatalf("Failed to create the processor: %s", err.Error())
+}
+
+handleMessage := func(message *azservicebus.ReceivedMessage) error {
+  // This is where your logic for handling messages goes
+
+  yourLogicForProcessing(message)
+
+  // 'AutoComplete' (enabled by default, and controlled by `ProcessorWithAutoComplete`)
+  // will use this return value to determine how it should settle your message. 
+  //
+  // Non-nil errors will cause your message to be Abandon()'d.
+  // Nil errors will cause your message to be Complete'd.  
+  return nil
+}
+
+handleError := func(err error) {
+  // handleError will be called on errors that are noteworthy
+  // but the Processor internally will continue to attempt to 
+  // recover.
+  
+  // NOTE: errors returned from `handleMessage` above will also be 
+  // sent here, but do not affect the running of the Processor
+  // itself.
+
+  // We'll just print these out, as they're informational and
+  // can indicate if there are longer lived problems that we might
+  // want to resolve manually (for instance, longer term network
+  // outages, or issues affecting your `handleMessage` handler)
+  log.Printf("Error: %s", err.Error())
+}
+
+err := processor.Start(context.TODO(), handleMessage, handleError)
+
+if err != nil {
+  log.Printf("Processor loop has exited: %s", err.Error())
+}
+
+err := processor.Close(context.TODO())
+
+if err != nil {
+  log.Printf("Processor failed to close: %s", err.Error())
+}
+```
+
+Once you've created a [Client][godoc_client] you can create a [Receiver][godoc_receiver], which will allow you to receive messages.
+
+The [Receiver][godoc_receiver] is a good fit for applications that want to receive messages in fixed increments, rather than
+continually streaming messages, as the [Processor][godoc_processor does.
+
+> NOTE: Creating a `client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme.
+
+```go
+receiver, err := client.NewReceiverForQueue(
+  "<queue>",
+  // The receive mode controls when a message is deleted from Service Bus. 
+  //
+  // `azservicebus.PeekLock` is the default. The message is locked, preventing multiple
+  // receivers from processing the message at once. You control the lock state of the message
+  //  using one of the message settlement functions, receiver.CompleteMessage(), which removes
+  // it from Service Bus, or receiver.AbandonMessage(), which makes it available again.
+  // 
+  // `azservicebus.ReceiveAndDelete` causes Service Bus to remove the message as soon
+  // as it's received.
+  //
+  // More information about receive modes:
+  // https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
+  azservicebus.ReceiverWithReceiveMode(azservicebus.PeekLock),
+)
+// or
+// client.NewReceiverForSubscription("<topic>", "<subscription>")
+
+if err != nil {
+  log.Fatalf("Failed to create the receiver: %s", err.Error())
+}
+
+// Receive a fixed set of messages. Note that the number of messages
+// to receive and the amount of time to wait are upper bounds. 
+messages, err := receiver.ReceiveMessages(context.TODO(), 
+  // The number of messages to receive. Note this is merely an upper
+  // bound. It is possible to get fewer message (or zero), depending
+  // on the contents of the remote queue or subscription and network
+  // conditions.
+  10, 
+  // This configures the amount of time to wait for messages to arrive.
+  // Note that this is merely an upper bound. It is possible to get messages
+  // faster than the duration specified.
+  azservicebus.ReceiveWithMaxWaitTime(time.Second * 60)
+)
+
+if err != nil {
+  log.Fatalf("Failed to get messages: %s", err.Error())
+}
+
+for _, message := range messages {
+  // process the message here (or in parallel)
+  yourLogicForProcessing(message)  
+
+  // For more information about settling messages:
+  // https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
+  if err := receiver.CompleteMessage(message); err != nil {
+    log.Printf("Error completing message: %s", err.Error())
+  }
+}
+```
+
+### Dead letter queue
+
+The dead letter queue is a **sub-queue**. Each queue or subscription has its own dead letter queue. Dead letter queues store
+messages that have been explicitly dead lettered via the [Processor.DeadLetterMessage][godoc_processor_deadlettermessage] 
+or [Receiver.DeadLetterMessage][godoc_receiver_deadlettermessage] functions.
+
+Opening a dead letter queue is just a configuration option when creating a [Processor][godoc_processor] or [Receiver][godoc_receiver].
+
+> NOTE: Creating a `client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme.
+
+```go
+
+deadLetterReceiver, err := client.NewProcessorForQueue("<queue>", 
+  ProcessorWithSubQueue(azservicebus.SubQueueDeadLetter),
+)
+// or client.NewProcessorForSubscription("<topic>", "<subscription>", 
+//    ProcessorWithSubQueue(azservicebus.SubQueueDeadLetter))
+
+deadLetterReceiver, err := client.NewReceiverForQueue("<queue>", 
+  ReceiverWithSubQueue(azservicebus.SubQueueDeadLetter),
+)
+// or client.NewReceiverForSubscription("<topic>", "<subscription>", 
+//    ReceiverWithSubQueue(azservicebus.SubQueueDeadLetter))
+```
+
+To see some example code for receiving messages using the Processor or Receiver see the ["Receive messages"](#receive-messages) sample.
+
 ## Next steps
 
 Please take a look at the [samples][godoc_samples] for detailed examples on how to use this library to send and receive messages to/from [Service Bus Queues, Topics and Subscriptions](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview).
@@ -176,9 +349,14 @@ If you'd like to contribute to this library, please read the [contributing guide
 [subscription_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
 [service_bus_overview]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview
 [godoc_samples]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#pkg-examples
-[godoc_receiver]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Receiver
 [godoc_client]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client
 [godoc_sender]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Sender
+[godoc_receiver]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Receiver
+[godoc_receiver_completemessage]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Receiver.CompleteMessage
+[godoc_receiver_deadlettermessage]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Receiver.DeadLetterMessage
+[godoc_processor]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Processor
+[godoc_processor_deadlettermessage]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Processor.DeadLetterMessage
 [godoc_newsender]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewSender
 [godoc_newreceiver_queue]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewReceiverWithQueue
 [godoc_newreceiver_subscription]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewReceiverWithQueue
+[msdoc_settling]: https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations

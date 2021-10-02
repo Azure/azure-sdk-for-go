@@ -89,14 +89,10 @@ For more information about these resources, see [What is Azure Service Bus?][ser
 
 Using a `Client` you can do the following:
 
-- Send messages, to a queue or topic, using a [Sender][godoc_sender] created using [Client.NewSender()][godoc_newsender]. [sample link]()
-- Receive messages, from either a queue or a subscription, using a [Receiver][godoc_receiver] created using [client.NewReceiverForQueue()][godoc_newreceiver_queue] or [client.NewReceiverForSubscription()][godoc_newreceiver_subscription]
+- Send messages, to a queue or topic, using a [Sender][godoc_sender] created using [Client.NewSender()][godoc_newsender]. You can see an example here: [(link)](#send-messages)
+- Receive messages, from either a queue or a subscription, using a [Receiver][godoc_receiver] created using [client.NewReceiverForQueue()][godoc_newreceiver_queue] or [client.NewReceiverForSubscription()][godoc_newreceiver_subscription]. You can see an example here: [(link)](#receive-messages)
 
 Please note that the Queues, Topics and Subscriptions should be created prior to using this library.
-
-### Samples
-
-Find up-to-date examples and documentation on the [azservicebus godoc.org page][godoc_examples].
 
 ## Examples
 

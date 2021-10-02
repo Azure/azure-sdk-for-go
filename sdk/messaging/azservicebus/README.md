@@ -106,12 +106,55 @@ The following sections provide code snippets that cover some of the common tasks
 
 ### Send messages
 
-Once you've created a [Client][godoc_client] you can create a [Sender][godoc_sender], which will allow you to send messages and schedule messages that will be delivered at a later time.
+Once you've created a [Client][godoc_client] you can create a [Sender][godoc_sender], which will allow you to send messages.
 
-NOTE: Creating a client is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme.
+NOTE: Creating a `client` is covered in the ["Authenticate the client"](#authenticate-the-client) section of the readme.
 
 ```go
+sender, err := client.NewSender("<queue or topic>")
 
+if err != nil {
+  log.Fatalf("Failed to create Sender: %s", err.Error())
+}
+
+// send a single message
+err = sender.SendMessage(context.TODO(), &azservicebus.Message{
+  Body: []byte("hello world!"),
+})
+```
+
+You can also send messages in batches, which can be more efficient than sending them individually
+
+```go
+// allocate a batch. It will automatically be sized for the Service Bus
+// Namespace's maximum message size.
+messageBatch, err := sender.NewMessageBatch(context.TODO())
+
+if err != nil {
+  log.Fatalf("Failed to create a message batch: %s", err.Error())
+}
+
+// Add a message using TryAdd.
+// This can be called multiple times, and will return (false, nil)
+// if the message cannot be added because the batch is full.
+added, err := messageBatch.TryAdd(&azservicebus.Message{
+    Body: []byte(fmt.Sprintf("hello world")),
+})
+
+if err != nil {
+  log.Fatalf("Failed to add message to batch because of an error: %s", err.Error())
+}
+
+if !added {
+  log.Printf("Message batch is full. We should send it and create a new one.")
+  err := sender.SendMessageBatch(context.TODO(), messageBatch)
+
+  if err != nil {
+    log.Fatalf("Failed to send message batch: %s", err.Error())
+  }
+
+  // add the next message to a new batch and start again.
+}
 ```
 
 ## Next steps

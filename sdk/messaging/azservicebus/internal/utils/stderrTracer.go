@@ -64,13 +64,19 @@ func (t *StderrTracer) StartSpanWithRemoteParent(ctx context.Context, operationN
 
 // FromContext creates a stderrSpanner to allow for our stderrLogger to be created.
 func (t *StderrTracer) FromContext(ctx context.Context) tab.Spanner {
-	id := atomic.AddInt64(&t.spanCounter, 1)
 	operationName := ctx.Value(spanOpKey("operationName"))
 
 	val, ok := operationName.(string)
 
 	if !ok {
 		val = "<unknown>"
+	}
+
+	id := t.getSpanID(val)
+
+	if id == -1 {
+		_, span := t.NoOpTracer.StartSpan(ctx, val)
+		return span
 	}
 
 	log.Printf("[%d] START(%s), from context", id, val)

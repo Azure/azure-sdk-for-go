@@ -128,7 +128,7 @@ func (links *amqpLinks) recoverLink(ctx context.Context, theirLinkRevision *uint
 	links.mu.RUnlock()
 
 	if closedPermanently {
-		span.AddAttributes(tab.StringAttribute("outcome", "already_closed"))
+		span.AddAttributes(tab.StringAttribute("outcome", "was_closed_permanently"))
 		return errClosedPermanently{}
 	}
 
@@ -167,6 +167,7 @@ func (links *amqpLinks) recoverLink(ctx context.Context, theirLinkRevision *uint
 	}
 
 	links.revision++
+
 	span.AddAttributes(
 		tab.StringAttribute("outcome", "recovered"),
 		tab.StringAttribute("revision_new", fmt.Sprintf("%d", links.revision)),
@@ -273,7 +274,7 @@ func (links *amqpLinks) recoverConnection(ctx context.Context) error {
 // If this link has been closed via Close() it will return an non retriable error.
 func (l *amqpLinks) Get(ctx context.Context) (AMQPSender, AMQPReceiver, MgmtClient, uint64, error) {
 	l.mu.RLock()
-	sender, receiver, mgmt, closedPermanently := l.sender, l.receiver, l.mgmt, l.closedPermanently
+	sender, receiver, mgmt, revision, closedPermanently := l.sender, l.receiver, l.mgmt, l.revision, l.closedPermanently
 	l.mu.RUnlock()
 
 	if closedPermanently {
@@ -281,7 +282,7 @@ func (l *amqpLinks) Get(ctx context.Context) (AMQPSender, AMQPReceiver, MgmtClie
 	}
 
 	if sender != nil || receiver != nil {
-		return sender, receiver, mgmt, 0, nil
+		return sender, receiver, mgmt, revision, nil
 	}
 
 	l.mu.Lock()
@@ -291,7 +292,7 @@ func (l *amqpLinks) Get(ctx context.Context) (AMQPSender, AMQPReceiver, MgmtClie
 		return nil, nil, nil, 0, err
 	}
 
-	return l.sender, l.receiver, l.mgmt, 0, nil
+	return l.sender, l.receiver, l.mgmt, l.revision, nil
 }
 
 // EntityPath is the full entity path for the queue/topic/subscription.

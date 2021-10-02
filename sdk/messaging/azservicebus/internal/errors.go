@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net"
 	"reflect"
 	"strings"
@@ -213,6 +214,8 @@ func IsCancelError(err error) bool {
 	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
 		return true
 	}
+
+	log.Printf("===> IsCancelError: %T, %+v", err, err)
 
 	if err.Error() == "context canceled" { // go-amqp is returning this when I cancel
 		return true

@@ -185,26 +185,29 @@ func (p *Processor) Start(ctx context.Context, handleMessage func(message *Recei
 	}
 
 	for {
-		if err := p.subscribe(p.receiversCtx); err != nil {
+		retrier := p.config.baseRetrier.Copy()
 
-			if internal.IsCancelError(err) {
-				break
-			}
+		for retrier.Try(ctx) {
+			if err := p.subscribe(p.receiversCtx); err != nil {
+				if internal.IsCancelError(err) {
+					break
+				}
 
-			p.userErrorHandler(err)
-
-			if err := p.amqpLinks.RecoverIfNeeded(ctx, err); err != nil {
 				p.userErrorHandler(err)
+
+				if err := p.amqpLinks.RecoverIfNeeded(ctx, err); err != nil {
+					p.userErrorHandler(err)
+				}
 			}
+		}
+
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		default:
 		}
 	}
 
-	select {
-	case <-ctx.Done():
-		return ctx.Err()
-	default:
-		return nil
-	}
 }
 
 // Close will wait for any pending callbacks to complete.

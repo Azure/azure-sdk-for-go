@@ -216,9 +216,10 @@ func (links *amqpLinks) recoverImpl(ctx context.Context, try int, linksRevision 
 	span.AddAttributes(tab.Int64Attribute("attempt", int64(try)))
 
 	if shouldRecreateLink(origErr) {
-		span.AddAttributes(tab.StringAttribute(
-			"recovery", "link",
-		))
+		span.AddAttributes(
+			tab.StringAttribute("recovery_kind", "link"),
+			tab.StringAttribute("error", origErr.Error()),
+			tab.StringAttribute("error_type", fmt.Sprintf("%T", origErr)))
 
 		if err := links.recoverLink(ctx, &linksRevision); err != nil {
 			span.AddAttributes(tab.StringAttribute("recoveryFailure", err.Error()))
@@ -227,9 +228,10 @@ func (links *amqpLinks) recoverImpl(ctx context.Context, try int, linksRevision 
 
 		return nil
 	} else if shouldRecreateConnection(ctx, origErr) {
-		span.AddAttributes(tab.StringAttribute(
-			"recovery", "connection",
-		))
+		span.AddAttributes(
+			tab.StringAttribute("recovery_kind", "connection"),
+			tab.StringAttribute("error", origErr.Error()),
+			tab.StringAttribute("error_type", fmt.Sprintf("%T", origErr)))
 
 		if err := links.recoverConnection(ctx); err != nil {
 			span.Logger().Error(fmt.Errorf("failed to recreate connection: %w", err))

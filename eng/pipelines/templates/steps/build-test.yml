@@ -77,6 +77,7 @@ steps:
     - pwsh: |
         docker logs ambitious_azsdk_test_proxy
       displayName: 'Dump Docker logs'
+      condition: succeededOrFailed()
 
     - pwsh: ../eng/scripts/create_coverage.ps1 ${{parameters.ServiceDirectory}}
       displayName: 'Generate Coverage XML'

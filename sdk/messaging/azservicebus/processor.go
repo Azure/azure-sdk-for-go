@@ -16,23 +16,50 @@ import (
 	"github.com/devigned/tab"
 )
 
-type processorConfig struct {
+// ProcessorOptions contains options for the `Client.NewProcessorForQueue` or
+// `Client.NewProcessorForSubscription` functions.
+type ProcessorOptions struct {
+	// ReceiveMode controls when a message is deleted from Service Bus.
+	//
+	// `azservicebus.PeekLock` is the default. The message is locked, preventing multiple
+	// receivers from processing the message at once. You control the lock state of the message
+	// using one of the message settlement functions like processor.CompleteMessage(), which removes
+	// it from Service Bus, or processor.AbandonMessage(), which makes it available again.
+	//
+	// `azservicebus.ReceiveAndDelete` causes Service Bus to remove the message as soon
+	// as it's received.
+	//
+	// More information about receive modes:
+	// https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
 	ReceiveMode ReceiveMode
 
-	Entity entity
+	// SubQueue should be set to connect to the sub queue (ex: dead letter queue)
+	// of the queue or subscription.
+	SubQueue SubQueue
 
-	// determines if auto completion or abandonment of messages
-	// happens based on the return value of user's processMessage handler.
-	ShouldAutoComplete bool
+	// ManualComplete controls whether messages must be settled explicitly via the
+	// settlement methods (ie, Complete, Abandon) or if the
+	// processor will automatically settle messages.
+	//
+	// If true, no automatic settlement is done.
+	// If false, the return value of your `handleMessage` function will control if the
+	// message is abandoned (non-nil error return) or completed (nil error return).
+	//
+	// This option is enabled, by default.
+	ManualComplete bool
+
+	// MaxConcurrentCalls controls the maximum number of message processing
+	// goroutines that are active at any time.
+	// Default is 1.
 	MaxConcurrentCalls int
-
-	baseRetrier internal.Retrier
-
-	cleanupOnClose func()
 }
 
 // Processor is a push-based receiver for Service Bus.
 type Processor struct {
+	receiveMode        ReceiveMode
+	autoComplete       bool
+	maxConcurrentCalls int
+
 	settler   settler
 	amqpLinks internal.AMQPLinks
 
@@ -46,97 +73,70 @@ type Processor struct {
 
 	wg sync.WaitGroup
 
-	// configuration data that is read-only after the Processor has been created
-	config processorConfig
+	baseRetrier    internal.Retrier
+	cleanupOnClose func()
 }
 
-// ProcessorOption represents an option on the Processor.
-// Some examples:
-// - `ProcessorWithReceiveMode` to configure the receive mode,
-// - `ProcessorWithQueue` to target a queue.
-type ProcessorOption func(processor *Processor) error
+func applyProcessorOptions(processor *Processor, entity *entity, options *ProcessorOptions) error {
+	if options == nil {
+		processor.maxConcurrentCalls = 1
+		processor.receiveMode = PeekLock
+		processor.autoComplete = true
 
-// ProcessorWithSubQueue allows you to open the sub queue (ie: dead letter queues, transfer dead letter queues)
-// for a queue or subscription.
-func ProcessorWithSubQueue(subQueue SubQueue) ProcessorOption {
-	return func(p *Processor) error {
-		return p.config.Entity.SetSubQueue(subQueue)
-	}
-}
-
-// ProcessorWithReceiveMode controls the receive mode for the processor.
-func ProcessorWithReceiveMode(receiveMode ReceiveMode) ProcessorOption {
-	return func(processor *Processor) error {
-		if receiveMode != PeekLock && receiveMode != ReceiveAndDelete {
-			return fmt.Errorf("invalid receive mode specified %d", receiveMode)
-		}
-
-		processor.config.ReceiveMode = receiveMode
 		return nil
 	}
-}
 
-// ProcessorWithAutoComplete enables or disables auto-completion/abandon of messages
-// When this option is enabled the result of the `processMessage` handler determines whether
-// the message is abandoned (if an `error` is returned) or completed (if `nil` is returned).
-// This option is enabled, by default.
-func ProcessorWithAutoComplete(enableAutoCompleteMessages bool) ProcessorOption {
-	return func(processor *Processor) error {
-		processor.config.ShouldAutoComplete = enableAutoCompleteMessages
-		return nil
+	processor.autoComplete = !options.ManualComplete
+
+	if err := checkReceiverMode(options.ReceiveMode); err != nil {
+		return err
 	}
-}
 
-// ProcessorWithMaxConcurrentCalls controls the maximum number of message processing
-// goroutines that are active at any time.
-// Default is 1.
-func ProcessorWithMaxConcurrentCalls(maxConcurrentCalls int) ProcessorOption {
-	return func(processor *Processor) error {
-		processor.config.MaxConcurrentCalls = maxConcurrentCalls
-		return nil
+	processor.receiveMode = options.ReceiveMode
+
+	if err := entity.SetSubQueue(options.SubQueue); err != nil {
+		return err
 	}
+
+	if options.MaxConcurrentCalls > 0 {
+		processor.maxConcurrentCalls = options.MaxConcurrentCalls
+	}
+
+	return nil
 }
 
-func newProcessor(ns internal.NamespaceWithNewAMQPLinks, cleanupOnClose func(), options ...ProcessorOption) (*Processor, error) {
+func newProcessor(ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupOnClose func(), options *ProcessorOptions) (*Processor, error) {
 	processor := &Processor{
-		config: processorConfig{
-			ReceiveMode:        PeekLock,
-			ShouldAutoComplete: true,
-			MaxConcurrentCalls: 1,
-			// TODO: make this configurable
-			baseRetrier: internal.NewBackoffRetrier(internal.BackoffRetrierParams{
-				Factor:     1.5,
-				Min:        time.Second,
-				Max:        time.Minute,
-				MaxRetries: 10,
-			}),
-			cleanupOnClose: cleanupOnClose,
-		},
-
-		mu: &sync.Mutex{},
+		// TODO: make this configurable
+		baseRetrier: internal.NewBackoffRetrier(internal.BackoffRetrierParams{
+			Factor:     1.5,
+			Min:        time.Second,
+			Max:        time.Minute,
+			MaxRetries: 10,
+		}),
+		cleanupOnClose: cleanupOnClose,
+		mu:             &sync.Mutex{},
 	}
 
-	for _, opt := range options {
-		if err := opt(processor); err != nil {
-			return nil, err
-		}
+	if err := applyProcessorOptions(processor, entity, options); err != nil {
+		return nil, err
 	}
 
-	entityPath, err := processor.config.Entity.String()
+	entityPath, err := entity.String()
 
 	if err != nil {
 		return nil, err
 	}
 
 	processor.amqpLinks = ns.NewAMQPLinks(entityPath, func(ctx context.Context, session internal.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
-		linkOptions := createLinkOptions(processor.config.ReceiveMode, entityPath)
+		linkOptions := createLinkOptions(processor.receiveMode, entityPath)
 		_, receiver, err := createReceiverLink(ctx, session, linkOptions)
 
 		if err != nil {
 			return nil, nil, err
 		}
 
-		if err := receiver.IssueCredit(uint32(processor.config.MaxConcurrentCalls)); err != nil {
+		if err := receiver.IssueCredit(uint32(processor.maxConcurrentCalls)); err != nil {
 			_ = receiver.Close(ctx)
 			return nil, nil, err
 		}
@@ -144,7 +144,7 @@ func newProcessor(ns internal.NamespaceWithNewAMQPLinks, cleanupOnClose func(), 
 		return nil, receiver, nil
 	})
 
-	processor.settler = newMessageSettler(processor.amqpLinks, processor.config.baseRetrier)
+	processor.settler = newMessageSettler(processor.amqpLinks, processor.baseRetrier)
 	processor.receiversCtx, processor.cancelReceivers = context.WithCancel(context.Background())
 
 	return processor, nil
@@ -186,7 +186,7 @@ func (p *Processor) Start(ctx context.Context, handleMessage func(message *Recei
 	}
 
 	for {
-		retrier := p.config.baseRetrier.Copy()
+		retrier := p.baseRetrier.Copy()
 
 		for retrier.Try(p.receiversCtx) {
 			if err := p.subscribe(); err != nil {
@@ -232,7 +232,7 @@ func (p *Processor) Close(ctx context.Context) error {
 		}
 	}()
 
-	p.config.cleanupOnClose()
+	p.cleanupOnClose()
 
 	_, receiver, _, _, err := p.amqpLinks.Get(ctx)
 
@@ -270,10 +270,10 @@ func (p *Processor) DeferMessage(ctx context.Context, message *ReceivedMessage) 
 }
 
 // DeadLetterMessage settles a message by moving it to the dead letter queue for a
-// queue or subscription. To receive these messages create a receiver with `Client.NewProcessor()`
-// using the `ProcessorWithSubQueue()` option.
-func (p *Processor) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options ...DeadLetterOption) error {
-	return p.settler.DeadLetterMessage(ctx, message, options...)
+// queue or subscription. To receive these messages create a processor with `Client.NewProcessorForQueue()`
+// or `Client.NewProcessorForSubscription()` using the `ProcessorOptions.SubQueue` option.
+func (p *Processor) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error {
+	return p.settler.DeadLetterMessage(ctx, message, options)
 }
 
 // subscribe continually receives messages from Service Bus, stopping
@@ -339,7 +339,7 @@ func (p *Processor) processMessage(ctx context.Context, receiver internal.AMQPRe
 		p.userErrorHandler(messageHandlerErr)
 	}
 
-	if p.config.ShouldAutoComplete {
+	if p.autoComplete {
 		var settleErr error
 
 		if messageHandlerErr != nil {
@@ -370,20 +370,10 @@ func (p *Processor) processMessage(ctx context.Context, receiver internal.AMQPRe
 	return nil
 }
 
-// processorWithQueue configures a processor to connect to a queue.
-func processorWithQueue(queue string) ProcessorOption {
-	return func(processor *Processor) error {
-		processor.config.Entity.Queue = queue
+func checkReceiverMode(receiveMode ReceiveMode) error {
+	if receiveMode == PeekLock || receiveMode == ReceiveAndDelete {
 		return nil
-	}
-}
-
-// processorWithSubscription configures a processor to connect to a subscription
-// associated with a topic.
-func processorWithSubscription(topic string, subscription string) ProcessorOption {
-	return func(processor *Processor) error {
-		processor.config.Entity.Topic = topic
-		processor.config.Entity.Subscription = subscription
-		return nil
+	} else {
+		return fmt.Errorf("Invalid receive mode %d, must be either azservicebus.PeekLock or azservicebus.ReceiveAndDelete", receiveMode)
 	}
 }

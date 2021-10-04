@@ -37,7 +37,7 @@ func TestProcessorReceiveWithDefaults(t *testing.T) {
 		require.NoError(t, err)
 	}()
 
-	processor, err := serviceBusClient.NewProcessorForQueue(queueName)
+	processor, err := serviceBusClient.NewProcessorForQueue(queueName, nil)
 	require.NoError(t, err)
 
 	defer processor.Close(context.Background()) // multiple close is fine
@@ -95,7 +95,7 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 
 		defer sender.Close(context.Background())
 
-		batch, err := sender.NewMessageBatch(context.Background())
+		batch, err := sender.NewMessageBatch(context.Background(), nil)
 		require.NoError(t, err)
 
 		// it's perfectly fine to have the processor started before the messages
@@ -114,7 +114,9 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 
 	processor, err := serviceBusClient.NewProcessorForQueue(
 		queueName,
-		ProcessorWithMaxConcurrentCalls(20))
+		&ProcessorOptions{
+			MaxConcurrentCalls: 20,
+		})
 
 	require.NoError(t, err)
 
@@ -157,30 +159,31 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 
 func TestProcessorUnitTests(t *testing.T) {
 	p := &Processor{}
-	require.NoError(t, ProcessorWithSubQueue(SubQueueDeadLetter)(p))
-	require.EqualValues(t, SubQueueDeadLetter, p.config.Entity.subqueue)
+	e := &entity{}
+
+	require.NoError(t, applyProcessorOptions(p, e, nil))
+	require.True(t, p.autoComplete)
+	require.EqualValues(t, 1, p.maxConcurrentCalls)
+	require.EqualValues(t, PeekLock, p.receiveMode)
 
 	p = &Processor{}
-	require.NoError(t, ProcessorWithSubQueue(SubQueueTransfer)(p))
-	require.EqualValues(t, SubQueueTransfer, p.config.Entity.subqueue)
+	e = &entity{
+		Queue: "queue",
+	}
 
-	p = &Processor{}
-	require.NoError(t, processorWithQueue("queue1")(p))
-	require.EqualValues(t, "queue1", p.config.Entity.Queue)
+	require.NoError(t, applyProcessorOptions(p, e, &ProcessorOptions{
+		ReceiveMode:        ReceiveAndDelete,
+		SubQueue:           SubQueueDeadLetter,
+		ManualComplete:     true,
+		MaxConcurrentCalls: 101,
+	}))
 
-	p = &Processor{}
-	require.NoError(t, processorWithSubscription("topic1", "subscription1")(p))
-	require.EqualValues(t, "topic1", p.config.Entity.Topic)
-	require.EqualValues(t, "subscription1", p.config.Entity.Subscription)
-
-	p = &Processor{}
-	require.NoError(t, ProcessorWithReceiveMode(PeekLock)(p))
-	require.EqualValues(t, PeekLock, p.config.ReceiveMode)
-
-	p = &Processor{}
-	require.NoError(t, ProcessorWithReceiveMode(ReceiveAndDelete)(p))
-	require.EqualValues(t, ReceiveAndDelete, p.config.ReceiveMode)
-
+	require.False(t, p.autoComplete)
+	require.EqualValues(t, 101, p.maxConcurrentCalls)
+	require.EqualValues(t, ReceiveAndDelete, p.receiveMode)
+	fullEntityPath, err := e.String()
+	require.NoError(t, err)
+	require.EqualValues(t, "queue/$DeadLetterQueue", fullEntityPath)
 }
 
 // func TestProcessorUnitTests(t *testing.T) {

@@ -24,7 +24,7 @@ func main() {
 		log.Fatalf("SERVICEBUS_CONNECTION_STRING and QUEUE_NAME must be defined in the environment for this sample")
 	}
 
-	serviceBusClient, err := azservicebus.NewClientWithConnectionString(cs)
+	serviceBusClient, err := azservicebus.NewClientWithConnectionString(cs, nil)
 
 	if err != nil {
 		log.Fatalf("Failed to create service bus client: %s", err.Error())
@@ -55,13 +55,15 @@ func main() {
 	//
 
 	processor, err := serviceBusClient.NewProcessorForQueue(
+		// or: azservicebus.NewProcessorForSubscription
 		queue,
-		// Will auto-complete or auto-abandon messages, based on the result from you callback
-		// (this is true, by default)
-		azservicebus.ProcessorWithAutoComplete(true),
-		// or for a subscription
-		// azservicebus.ProcessorWithSubscription("topic", "subscription"),
-		azservicebus.ProcessorWithReceiveMode(azservicebus.PeekLock),
+		&azservicebus.ProcessorOptions{
+			// Will auto-complete or auto-abandon messages, based on the result from you callback
+			// (this is true, by default)
+			ManualComplete: false,
+			// or for a subscription
+			ReceiveMode: azservicebus.PeekLock,
+		},
 	)
 
 	if err != nil {

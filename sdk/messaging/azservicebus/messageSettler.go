@@ -114,9 +114,16 @@ func (s *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMess
 	})
 }
 
+// DeadLetterOptions describe the reason and error description for dead lettering
+// a message using the `Receiver.DeadLetterMessage()`
 type DeadLetterOptions struct {
-	ErrorDescription   *string
-	Reason             *string
+	// ErrorDescription that caused the dead lettering of the message.
+	ErrorDescription *string
+
+	// Reason for dead lettering the message.
+	Reason *string
+
+	// PropertiesToModify specifies properties to modify in the message when it is dead lettered.
 	PropertiesToModify map[string]interface{}
 }
 

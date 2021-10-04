@@ -400,7 +400,7 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 }
 
 // ReceiveDeferredMessage receives a single message that was deferred using `Receiver.DeferMessage`.
-func (r *Receiver) receiveDeferredMessage(ctx context.Context, sequenceNumber int64) (*ReceivedMessage, error) {
+func (r *Receiver) ReceiveDeferredMessage(ctx context.Context, sequenceNumber int64) (*ReceivedMessage, error) {
 	messages, err := r.ReceiveDeferredMessages(ctx, []int64{sequenceNumber})
 
 	if err != nil {
@@ -415,7 +415,7 @@ func (r *Receiver) receiveDeferredMessage(ctx context.Context, sequenceNumber in
 }
 
 // ReceiveMessage receives a single message.
-func (r *Receiver) receiveMessage(ctx context.Context, options *ReceiveOptions) (*ReceivedMessage, error) {
+func (r *Receiver) ReceiveMessage(ctx context.Context, options *ReceiveOptions) (*ReceivedMessage, error) {
 	messages, err := r.ReceiveMessages(ctx, 1, options)
 
 	if err != nil {

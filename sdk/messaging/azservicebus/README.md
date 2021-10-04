@@ -11,7 +11,7 @@ Use the client library `github.com/Azure/azure-sdk-for-go/sdk/messaging/azservic
 
 Key links:
 - [Source code][source]
-- [API Reference Documentation](https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus)
+- [API Reference Documentation][godoc]
 - [Product documentation](https://azure.microsoft.com/services/service-bus/)
 - [Samples][godoc_examples]
 

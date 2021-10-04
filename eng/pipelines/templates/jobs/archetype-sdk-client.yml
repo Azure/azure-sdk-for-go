@@ -62,6 +62,9 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
+  - name: EnvVars
+    type: object
+    default: {}
 
 
 stages:
@@ -111,7 +114,12 @@ stages:
           Image: $(vm.image)
           GoVersion: $(go.version)
           EnvVars:
-            AZURE_RECORD_MODE: 'playback'
+            AZURE_RECORD_MODE: ${{ coalesce(parameters.EnvVars.AZURE_RECORD_MODE, 'playback') }}
+
+      - pwsh: |
+          docker logs ambitious_azsdk_test_proxy
+        displayName: "Show Docker Logs"
+        condition: succeededOrFailed()
 
     - job: Analyze
       displayName: Analyze

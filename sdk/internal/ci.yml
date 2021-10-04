@@ -27,3 +27,9 @@ stages:
 - template: ../../eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: 'internal'
+<<<<<<< HEAD
+=======
+    RunTests: true
+    EnvVars:
+      AZURE_RECORD_MODE: 'record'
+>>>>>>> 54a11639ff30219f975599d3671f89dd2b97b83e

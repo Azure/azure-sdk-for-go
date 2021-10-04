@@ -46,7 +46,7 @@ type ProcessorOptions struct {
 	// This option is enabled, by default.
 	ManualComplete bool
 
-	// ProcessorWithMaxConcurrentCalls controls the maximum number of message processing
+	// MaxConcurrentCalls controls the maximum number of message processing
 	// goroutines that are active at any time.
 	// Default is 1.
 	MaxConcurrentCalls int
@@ -268,8 +268,8 @@ func (p *Processor) DeferMessage(ctx context.Context, message *ReceivedMessage) 
 }
 
 // DeadLetterMessage settles a message by moving it to the dead letter queue for a
-// queue or subscription. To receive these messages create a receiver with `Client.NewProcessor()`
-// using the `ProcessorWithSubQueue()` option.
+// queue or subscription. To receive these messages create a processor with `Client.NewProcessorForQueue()`
+// or `Client.NewProcessorForSubscription()` using the `ProcessorOptions.SubQueue` option.
 func (p *Processor) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error {
 	return p.settler.DeadLetterMessage(ctx, message, options)
 }

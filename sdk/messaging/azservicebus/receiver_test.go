@@ -109,7 +109,7 @@ func TestReceiverAbandon(t *testing.T) {
 	require.NoError(t, receiver.CompleteMessage(context.Background(), abandonedMessages[0]))
 }
 
-// Receive has two timeouts - an explicit one (passed in via ReceiveWithMaxTimeout)
+// Receive has two timeouts - an explicit one (passed in via ReceiveOptions.MaxWaitTime)
 // and an implicit one that kicks in as soon as we receive our first message.
 func TestReceiveWithEarlyFirstMessageTimeout(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)

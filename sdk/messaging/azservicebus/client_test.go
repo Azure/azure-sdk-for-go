@@ -26,7 +26,7 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 		t.Skip("Azure Identity compatible credentials not configured")
 	}
 
-	client, err := NewClient(ns, dac)
+	client, err := NewClient(ns, dac, nil)
 	require.NoError(t, err)
 
 	sender, err := client.NewSender(queue)
@@ -57,28 +57,28 @@ func TestNewClientUnitTests(t *testing.T) {
 	t.Run("WithTokenCredential", func(t *testing.T) {
 		fakeTokenCredential := struct{ azcore.TokenCredential }{}
 
-		client, err := NewClient("fake.something", fakeTokenCredential)
+		client, err := NewClient("fake.something", fakeTokenCredential, nil)
 		require.NoError(t, err)
 
 		require.NoError(t, err)
 		require.EqualValues(t, fakeTokenCredential, client.config.credential)
 		require.EqualValues(t, "fake.something", client.config.fullyQualifiedNamespace)
 
-		client, err = NewClient("mysb.windows.servicebus.net", fakeTokenCredential)
+		client, err = NewClient("mysb.windows.servicebus.net", fakeTokenCredential, nil)
 		require.NoError(t, err)
 		require.EqualValues(t, fakeTokenCredential, client.config.credential)
 		require.EqualValues(t, "mysb.windows.servicebus.net", client.config.fullyQualifiedNamespace)
 
-		_, err = NewClientWithConnectionString("")
+		_, err = NewClientWithConnectionString("", nil)
 		require.EqualError(t, err, "connectionString must not be empty")
 
-		_, err = NewClient("", fakeTokenCredential)
+		_, err = NewClient("", fakeTokenCredential, nil)
 		require.EqualError(t, err, "fullyQualifiedNamespace must not be empty")
 
-		_, err = NewClient("mysb", fakeTokenCredential)
+		_, err = NewClient("mysb", fakeTokenCredential, nil)
 		require.EqualError(t, err, "fullyQualifiedNamespace is not properly formed. Should be similar to 'myservicebus.servicebus.windows.net'")
 
-		_, err = NewClient("fake.something", nil)
+		_, err = NewClient("fake.something", nil, nil)
 		require.EqualError(t, err, "credential was nil")
 
 		// (really all part of the same functionality)
@@ -95,7 +95,7 @@ func TestNewClientUnitTests(t *testing.T) {
 
 	t.Run("CloseAndLinkTracking", func(t *testing.T) {
 		setupClient := func() (*Client, *internal.FakeNS) {
-			client, err := NewClient("fake.something", struct{ azcore.TokenCredential }{})
+			client, err := NewClient("fake.something", struct{ azcore.TokenCredential }{}, nil)
 			require.NoError(t, err)
 
 			ns := &internal.FakeNS{

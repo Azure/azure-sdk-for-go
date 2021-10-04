@@ -1,5 +1,3 @@
-<!-- autorest --use=@autorest/go@4.0.0-preview.27 https://github.com/Azure/azure-rest-api-specs/tree/1e2c9f3ec93078da8078389941531359e274f32a/specification/keyvault/data-plane --tag=package-7.2 --output-folder=internal --module-azsecrets --module-version=0.1.0 --openapi-type="data-plane" --security="AADToken" --security-scopes="https://vault.azure.net/.default" -->
-
 # Azure Key Vault Secrets client library for Go
 Azure Key Vault helps securely store and control access to tokens, passwords, certificates, API keys, and other secrets.
 
@@ -287,16 +285,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_identity_goget]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-<!-- Will add these links at a later date when the samples are in place
-[default_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.DefaultAzureCredential
-[hello_world_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-secrets/samples/hello_world.py
-[hello_world_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-secrets/samples/hello_world_async.py
-[backup_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-secrets/samples/backup_restore_operations.py
-[backup_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-secrets/samples/backup_restore_operations_async.py
-[list_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-secrets/samples/list_operations.py
-[list_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-secrets/samples/list_operations_async.py
-[recover_purge_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-secrets/samples/recover_purge_operations.py
-[recover_purge_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-secrets/samples/recover_purge_operations_async.py -->
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
 [rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
 [reference_docs]: https://aka.ms/azsdk/go/keyvault

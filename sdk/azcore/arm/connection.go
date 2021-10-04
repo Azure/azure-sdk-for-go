@@ -110,13 +110,12 @@ func (con *Connection) NewPipeline(module, version string) pipeline.Pipeline {
 	policies = append(policies, azruntime.NewRetryPolicy(&con.opt.Retry))
 	policies = append(policies, con.opt.PerRetryPolicies...)
 	policies = append(policies,
-		con.cred.NewAuthenticationPolicy(
-			azruntime.AuthenticationOptions{
-				TokenRequest: policy.TokenRequestOptions{
-					Scopes: []string{shared.EndpointToScope(string(con.ep))},
-				},
-				AuxiliaryTenants: con.opt.AuxiliaryTenants,
+		azruntime.NewBearerTokenPolicy(con.cred, azruntime.AuthenticationOptions{
+			TokenRequest: policy.TokenRequestOptions{
+				Scopes: []string{shared.EndpointToScope(string(con.ep))},
 			},
+			AuxiliaryTenants: con.opt.AuxiliaryTenants,
+		},
 		),
 		azruntime.NewLogPolicy(&con.opt.Logging))
 	return azruntime.NewPipeline(con.opt.HTTPClient, policies...)

@@ -8,7 +8,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ClientSecretCredentialOptions configures the ClientSecretCredential with optional parameters.
@@ -73,12 +72,6 @@ func (c *ClientSecretCredential) GetToken(ctx context.Context, opts policy.Token
 	}
 	logGetTokenSuccess(c, opts)
 	return tk, nil
-}
-
-// NewAuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential and calls the Bearer Token policy
-// to get the bearer token.
-func (c *ClientSecretCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
-	return newBearerTokenPolicy(c, options)
 }
 
 var _ azcore.TokenCredential = (*ClientSecretCredential)(nil)

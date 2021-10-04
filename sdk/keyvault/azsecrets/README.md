@@ -108,8 +108,7 @@ If you have enabled role-based access control (RBAC) for Key Vault instead, you 
 #### Create a client
 Once the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and
 **AZURE_TENANT_ID** environment variables are set,
-[DefaultAzureCredential][default_cred_ref] will be able to authenticate the
-[SecretClient][secret_client_docs].
+[DefaultAzureCredential][default_cred_ref] will be able to authenticate the Client.
 
 Constructing the client also requires your vault's URL, which you can
 get from the Azure CLI or the Azure Portal. In the Azure Portal, this URL is
@@ -125,7 +124,7 @@ client, err := azsecrets.NewClient("https://my-key-vault.vault.azure.net/", cred
 ### Secret
 A secret consists of a secret value and its associated metadata and management information. This library handles secret values as strings, but Azure Key Vault doesn't store them as such. For more information about secrets and how Key Vault stores and manages them, see the [Key Vault documentation](https://docs.microsoft.com/azure/key-vault/general/about-keys-secrets-certificates).
 
-[SecretClient][secret_client_docs] can set secret values in the vault, update secret metadata, and delete secrets, as shown in the [examples](#examples "examples") below.
+Client can set secret values in the vault, update secret metadata, and delete secrets, as shown in the [examples](#examples "examples") below.
 
 ## Examples
 This section contains code snippets covering common tasks:
@@ -134,8 +133,6 @@ This section contains code snippets covering common tasks:
 * [Update Secret metadata](#update-secret-metadata "Update Secret metadata")
 * [Delete a Secret](#delete-a-secret "Delete a Secret")
 * [List Secrets](#list-secrets "List Secrets")
-* [Asynchronously create a Secret](#asynchronously-create-a-secret "Asynchronously create a Secret")
-* [Asynchronously list Secrets](#asynchronously-list-secrets "Asynchronously list Secrets")
 
 ### Set a Secret
 [set_secret](https://aka.ms/azsdk/go/keyvault) creates new secrets and changes the values of existing secrets. If no secret with the given name exists, `set_secret` creates a new secret with that name and the given value. If the given name is in use, `set_secret` creates a new version of that secret, with the given value.
@@ -240,7 +237,7 @@ if pager.Err() != nil {
 
 All I/O operations will return an `error` that can be investigated to discover more information about the error. In addition, you can investigate the raw response of any response object:
 ```golang
-resp, err := client.CreateTable(context.Background(), nil)
+resp, err := client.GetSecret(context.Background(), "mySecretName", nil)
 if err != nil {
     var httpErr azcore.HTTPResponse
     if errors.As(err, &httpErr) {
@@ -251,7 +248,7 @@ if err != nil {
 
 ### Logging
 
-This module uses the classification based logging implementation in azcore. To turn on logging set `AZURE_SDK_GO_LOGGING` to `all`. If you only want to include logs for `aztables`, you must create your own logger and set the log classification as `LogCredential`.
+This module uses the classification based logging implementation in azcore. To turn on logging set `AZURE_SDK_GO_LOGGING` to `all`. If you only want to include logs for `azsecrets`, you must create your own logger and set the log classification as `LogCredential`.
 
 To obtain more detailed logging, including request/response bodies and header values, make sure to leave the logger as default or enable the `LogRequest` and/or `LogResponse` classificatons. A logger that only includes credential logs can be like the following:
 

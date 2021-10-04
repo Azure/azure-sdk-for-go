@@ -126,8 +126,11 @@ func Test_shouldRecreateLink(t *testing.T) {
 	require.False(t, shouldRecreateLink(nil))
 
 	require.True(t, shouldRecreateLink(amqp.ErrLinkDetached))
-	require.True(t, shouldRecreateLink(amqp.ErrLinkClosed))
-	require.True(t, shouldRecreateLink(amqp.ErrSessionClosed))
+
+	// going to treat these as "connection troubles" and throw them into the
+	// connection recovery scenario instead.
+	require.False(t, shouldRecreateLink(amqp.ErrLinkClosed))
+	require.False(t, shouldRecreateLink(amqp.ErrSessionClosed))
 }
 
 func Test_shouldRecreateConnection(t *testing.T) {
@@ -135,6 +138,13 @@ func Test_shouldRecreateConnection(t *testing.T) {
 
 	require.False(t, shouldRecreateConnection(ctx, nil))
 	require.True(t, shouldRecreateConnection(ctx, &permanentNetError{}))
+	require.True(t, shouldRecreateConnection(ctx, fmt.Errorf("%w", &permanentNetError{})))
+
+	require.False(t, shouldRecreateLink(amqp.ErrLinkClosed))
+	require.False(t, shouldRecreateLink(fmt.Errorf("wrapped: %w", amqp.ErrLinkClosed)))
+
+	require.False(t, shouldRecreateLink(amqp.ErrSessionClosed))
+	require.False(t, shouldRecreateLink(fmt.Errorf("wrapped: %w", amqp.ErrSessionClosed)))
 }
 
 // TODO: while testing it appeared there were some errors that were getting string-ized

@@ -96,10 +96,11 @@ func newReceiver(ns internal.NamespaceWithNewAMQPLinks, cleanupOnClose func(), o
 			ReceiveMode: PeekLock,
 			// TODO: make this configurable
 			baseRetrier: internal.NewBackoffRetrier(internal.BackoffRetrierParams{
-				Factor:     2,
-				Min:        1,
+				Factor:     1.5,
+				Jitter:     true,
+				Min:        time.Second,
 				Max:        time.Minute,
-				MaxRetries: 5,
+				MaxRetries: 10,
 			}),
 			cleanupOnClose: cleanupOnClose,
 		},
@@ -186,13 +187,7 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 		return nil, errors.New("receiver is already receiving messages. ReceiveMessages() cannot be called concurrently.")
 	}
 
-	messages, err := r.receiveMessagesImpl(ctx, maxMessages, options...)
-
-	if err != nil {
-		_ = r.amqpLinks.RecoverIfNeeded(ctx, err)
-	}
-
-	return messages, err
+	return r.receiveMessagesImpl(ctx, maxMessages, options...)
 }
 
 func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, options ...ReceiveOption) ([]*ReceivedMessage, error) {
@@ -214,10 +209,10 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		}
 	}
 
-	_, receiver, _, _, err := r.amqpLinks.Get(ctx)
+	_, receiver, _, linksRevision, err := r.amqpLinks.Get(ctx)
 
 	if err != nil {
-		if err := r.amqpLinks.RecoverIfNeeded(ctx, err); err != nil {
+		if err := r.amqpLinks.RecoverIfNeeded(ctx, linksRevision, err); err != nil {
 			return nil, err
 		}
 
@@ -225,7 +220,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	}
 
 	if err := receiver.IssueCredit(uint32(maxMessages)); err != nil {
-		_ = r.amqpLinks.RecoverIfNeeded(ctx, err)
+		_ = r.amqpLinks.RecoverIfNeeded(ctx, linksRevision, err)
 		return nil, err
 	}
 

@@ -105,10 +105,10 @@ func newProcessor(ns internal.NamespaceWithNewAMQPLinks, cleanupOnClose func(), 
 			MaxConcurrentCalls: 1,
 			// TODO: make this configurable
 			baseRetrier: internal.NewBackoffRetrier(internal.BackoffRetrierParams{
-				Factor:     2,
-				Min:        1,
+				Factor:     1.5,
+				Min:        time.Second,
 				Max:        time.Minute,
-				MaxRetries: 5,
+				MaxRetries: 10,
 			}),
 			cleanupOnClose: cleanupOnClose,
 		},
@@ -175,6 +175,7 @@ func (p *Processor) Start(ctx context.Context, handleMessage func(message *Recei
 
 		p.userMessageHandler = handleMessage
 		p.userErrorHandler = handleError
+
 		p.receiversCtx, p.cancelReceivers = context.WithCancel(ctx)
 
 		return nil
@@ -185,26 +186,29 @@ func (p *Processor) Start(ctx context.Context, handleMessage func(message *Recei
 	}
 
 	for {
-		if err := p.subscribe(p.receiversCtx); err != nil {
+		retrier := p.config.baseRetrier.Copy()
 
-			if internal.IsCancelError(err) {
-				break
+		for retrier.Try(p.receiversCtx) {
+			if err := p.subscribe(); err != nil {
+				if internal.IsCancelError(err) {
+					break
+				}
 			}
+		}
 
-			p.userErrorHandler(err)
-
-			if err := p.amqpLinks.RecoverIfNeeded(ctx, err); err != nil {
-				p.userErrorHandler(err)
+		select {
+		case <-p.receiversCtx.Done():
+			// check, did they cancel or did we cancel?
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			default:
+				return nil
 			}
+		default:
 		}
 	}
 
-	select {
-	case <-ctx.Done():
-		return ctx.Err()
-	default:
-		return nil
-	}
 }
 
 // Close will wait for any pending callbacks to complete.
@@ -274,21 +278,36 @@ func (p *Processor) DeadLetterMessage(ctx context.Context, message *ReceivedMess
 
 // subscribe continually receives messages from Service Bus, stopping
 // if a fatal link/connection error occurs.
-func (p *Processor) subscribe(ctx context.Context) error {
-	_, receiver, _, _, err := p.amqpLinks.Get(ctx)
-
-	if err != nil {
-		return err
-	}
-
+func (p *Processor) subscribe() error {
 	p.wg.Add(1)
 	defer p.wg.Done()
 
 	for {
-		amqpMessage, err := receiver.Receive(ctx)
+		_, receiver, _, linkRevision, err := p.amqpLinks.Get(p.receiversCtx)
 
 		if err != nil {
-			return err
+			if internal.IsCancelError(err) {
+				return err
+			}
+
+			if err := p.amqpLinks.RecoverIfNeeded(p.receiversCtx, linkRevision, err); err != nil {
+				p.userErrorHandler(err)
+				return err
+			}
+		}
+
+		amqpMessage, err := receiver.Receive(p.receiversCtx)
+
+		if err != nil {
+			if internal.IsCancelError(err) {
+				return err
+			}
+
+			if err := p.amqpLinks.RecoverIfNeeded(p.receiversCtx, linkRevision, err); err != nil {
+				p.userErrorHandler(err)
+			}
+
+			return nil
 		}
 
 		if amqpMessage == nil {

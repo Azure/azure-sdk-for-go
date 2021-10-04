@@ -21,6 +21,7 @@ import (
 // 			internal.SpanProcessorClose: true,
 // 			internal.SpanProcessorLoop:  true,
 // 			internal.SpanNegotiateClaim: true,
+// 			internal.SpanRecover:        true,
 // 			internal.SpanRecoverLink:    true,
 // 			internal.SpanRecoverClient:  true,
 // 		},
@@ -63,13 +64,19 @@ func (t *StderrTracer) StartSpanWithRemoteParent(ctx context.Context, operationN
 
 // FromContext creates a stderrSpanner to allow for our stderrLogger to be created.
 func (t *StderrTracer) FromContext(ctx context.Context) tab.Spanner {
-	id := atomic.AddInt64(&t.spanCounter, 1)
 	operationName := ctx.Value(spanOpKey("operationName"))
 
 	val, ok := operationName.(string)
 
 	if !ok {
 		val = "<unknown>"
+	}
+
+	id := t.getSpanID(val)
+
+	if id == -1 {
+		_, span := t.NoOpTracer.StartSpan(ctx, val)
+		return span
 	}
 
 	log.Printf("[%d] START(%s), from context", id, val)
@@ -82,10 +89,12 @@ func (t *StderrTracer) NewContext(parent context.Context, span tab.Spanner) cont
 }
 
 func (t *StderrTracer) getSpanID(operationName string) int64 {
-	_, ok := t.Include[operationName]
+	if len(t.Include) > 0 {
+		_, ok := t.Include[operationName]
 
-	if !ok {
-		return -1
+		if !ok {
+			return -1
+		}
 	}
 
 	return atomic.AddInt64(&t.spanCounter, 1)

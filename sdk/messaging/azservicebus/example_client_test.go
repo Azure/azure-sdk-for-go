@@ -25,6 +25,4 @@ func ExampleNewClientWithConnectionString() {
 
 	client, err = azservicebus.NewClientWithConnectionString(connectionString)
 	exitOnError("Failed to create ServiceBusClient in example", err)
-
-	// Output:
 }

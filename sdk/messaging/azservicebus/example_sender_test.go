@@ -13,8 +13,6 @@ import (
 func ExampleClient_NewSender() {
 	sender, err = client.NewSender(queueName) // or topicName
 	exitOnError("Failed to create sender", err)
-
-	// Output:
 }
 
 func ExampleSender_SendMessage_message() {
@@ -24,8 +22,6 @@ func ExampleSender_SendMessage_message() {
 
 	err = sender.SendMessage(context.TODO(), message)
 	exitOnError("Failed to send message", err)
-
-	// Output:
 }
 
 func ExampleSender_SendMessage_messageBatch() {
@@ -59,6 +55,4 @@ func ExampleSender_SendMessage_messageBatch() {
 	// now let's send the batch
 	err = sender.SendMessage(context.TODO(), batch)
 	exitOnError("Failed to send message batch", err)
-
-	// Output:
 }

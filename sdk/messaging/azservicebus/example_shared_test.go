@@ -21,7 +21,7 @@ func exitOnError(message string, err error) {
 		return
 	}
 
-	log.Printf("(error in example): %s: %s", message, err.Error())
+	log.Fatalf("(error in example): %s: %s", message, err.Error())
 }
 
 func yourLogicForProcessing(message *azservicebus.ReceivedMessage) {

@@ -18,10 +18,6 @@ func ExampleClient_NewReceiverForSubscription() {
 		azservicebus.ReceiverWithReceiveMode(azservicebus.PeekLock),
 	)
 	exitOnError("Failed to create receiver", err)
-
-	fmt.Printf("Receiver created")
-
-	// Output: Receiver created
 }
 
 func ExampleClient_NewReceiverForQueue() {
@@ -30,10 +26,6 @@ func ExampleClient_NewReceiverForQueue() {
 		azservicebus.ReceiverWithReceiveMode(azservicebus.PeekLock),
 	)
 	exitOnError("Failed to create Receiver", err)
-
-	fmt.Printf("Receiver created")
-
-	// Output: Receiver created
 }
 
 func ExampleReceiver_ReceiveMessages() {
@@ -58,6 +50,4 @@ func ExampleReceiver_ReceiveMessages() {
 		fmt.Printf("Received and completed message\n")
 		exitOnError("Failed to complete message", err)
 	}
-
-	// Output: Received and completed message
 }

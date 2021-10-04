@@ -5,7 +5,6 @@ package azservicebus_test
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
@@ -24,9 +23,6 @@ func ExampleClient_NewProcessorForSubscription() {
 		azservicebus.ProcessorWithAutoComplete(true),
 	)
 	exitOnError("Failed to create Processor", err)
-
-	fmt.Printf("Processor created")
-	// Output: Processor created
 }
 
 func ExampleClient_NewProcessorForQueue() {
@@ -39,9 +35,6 @@ func ExampleClient_NewProcessorForQueue() {
 		azservicebus.ProcessorWithAutoComplete(true),
 	)
 	exitOnError("Failed to create Processor", err)
-
-	fmt.Printf("Processor created")
-	// Output: Processor created
 }
 
 func ExampleProcessor_Start() {
@@ -80,5 +73,4 @@ func ExampleProcessor_Start() {
 func ExampleProcessor_Close() {
 	err = processor.Close(context.TODO())
 	exitOnError("Processor failed to close", err)
-	// Output:
 }

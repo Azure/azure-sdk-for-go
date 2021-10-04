@@ -4,9 +4,6 @@
 package azservicebus_test
 
 import (
-	"log"
-	"os"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 )
@@ -27,9 +24,7 @@ func ExampleNewClientWithConnectionString() {
 	// the `NewClient` function instead.
 
 	client, err = azservicebus.NewClientWithConnectionString(connectionString)
+	exitOnError("Failed to create ServiceBusClient in example", err)
 
-	if err != nil {
-		log.Printf("Failed to create ServiceBusClient in example: %s", err.Error())
-		os.Exit(0)
-	}
+	// Output:
 }

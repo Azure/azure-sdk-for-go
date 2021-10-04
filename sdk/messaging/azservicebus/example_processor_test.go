@@ -16,11 +16,13 @@ func ExampleClient_NewProcessorForSubscription() {
 	processor, err = client.NewProcessorForSubscription(
 		topicName,
 		subscriptionName,
-		// NOTE: this is a parameter you'll want to tune. It controls the number of
-		// active message `handleMessage` calls that the processor will allow at any time.
-		azservicebus.ProcessorWithMaxConcurrentCalls(1),
-		azservicebus.ProcessorWithReceiveMode(azservicebus.PeekLock),
-		azservicebus.ProcessorWithAutoComplete(true),
+		&azservicebus.ProcessorOptions{
+			// NOTE: this is a parameter you'll want to tune. It controls the number of
+			// active message `handleMessage` calls that the processor will allow at any time.
+			MaxConcurrentCalls: 1,
+			ReceiveMode:        azservicebus.PeekLock,
+			ManualComplete:     false,
+		},
 	)
 	exitOnError("Failed to create Processor", err)
 }
@@ -28,11 +30,13 @@ func ExampleClient_NewProcessorForSubscription() {
 func ExampleClient_NewProcessorForQueue() {
 	processor, err = client.NewProcessorForQueue(
 		queueName,
-		// NOTE: this is a parameter you'll want to tune. It controls the number of
-		// active message `handleMessage` calls that the processor will allow at any time.
-		azservicebus.ProcessorWithMaxConcurrentCalls(1),
-		azservicebus.ProcessorWithReceiveMode(azservicebus.PeekLock),
-		azservicebus.ProcessorWithAutoComplete(true),
+		&azservicebus.ProcessorOptions{
+			// NOTE: this is a parameter you'll want to tune. It controls the number of
+			// active message `handleMessage` calls that the processor will allow at any time.
+			MaxConcurrentCalls: 1,
+			ReceiveMode:        azservicebus.PeekLock,
+			ManualComplete:     false,
+		},
 	)
 	exitOnError("Failed to create Processor", err)
 }

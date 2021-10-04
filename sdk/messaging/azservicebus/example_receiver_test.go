@@ -15,7 +15,9 @@ func ExampleClient_NewReceiverForSubscription() {
 	receiver, err = client.NewReceiverForSubscription(
 		topicName,
 		subscriptionName,
-		azservicebus.ReceiverWithReceiveMode(azservicebus.PeekLock),
+		&azservicebus.ReceiverOptions{
+			ReceiveMode: azservicebus.PeekLock,
+		},
 	)
 	exitOnError("Failed to create receiver", err)
 }
@@ -23,7 +25,9 @@ func ExampleClient_NewReceiverForSubscription() {
 func ExampleClient_NewReceiverForQueue() {
 	receiver, err = client.NewReceiverForQueue(
 		queueName,
-		azservicebus.ReceiverWithReceiveMode(azservicebus.PeekLock),
+		&azservicebus.ReceiverOptions{
+			ReceiveMode: azservicebus.PeekLock,
+		},
 	)
 	exitOnError("Failed to create Receiver", err)
 }
@@ -37,10 +41,12 @@ func ExampleReceiver_ReceiveMessages() {
 		// on the contents of the remote queue or subscription and network
 		// conditions.
 		1,
-		// This configures the amount of time to wait for messages to arrive.
-		// Note that this is merely an upper bound. It is possible to get messages
-		// faster than the duration specified.
-		azservicebus.ReceiveWithMaxWaitTime(60*time.Second),
+		&azservicebus.ReceiveOptions{
+			// This configures the amount of time to wait for messages to arrive.
+			// Note that this is merely an upper bound. It is possible to get messages
+			// faster than the duration specified.
+			MaxWaitTime: 60 * time.Second,
+		},
 	)
 
 	exitOnError("Failed to receive messages", err)

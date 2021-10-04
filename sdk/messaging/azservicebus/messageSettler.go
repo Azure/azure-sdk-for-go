@@ -126,15 +126,16 @@ type DeadLetterOptions struct {
 func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error {
 	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient, linkRevision uint64) error {
 		reason := ""
-
-		if options.Reason != nil {
-			reason = *options.Reason
-		}
-
 		description := ""
 
-		if options.ErrorDescription != nil {
-			description = *options.ErrorDescription
+		if options != nil {
+			if options.Reason != nil {
+				reason = *options.Reason
+			}
+
+			if options.ErrorDescription != nil {
+				description = *options.ErrorDescription
+			}
 		}
 
 		if s.useManagementLink(message, linkRevision) {
@@ -151,7 +152,7 @@ func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *Receive
 			"DeadLetterErrorDescription": description,
 		}
 
-		if options.PropertiesToModify != nil {
+		if options != nil && options.PropertiesToModify != nil {
 			for key, val := range options.PropertiesToModify {
 				info[key] = val
 			}

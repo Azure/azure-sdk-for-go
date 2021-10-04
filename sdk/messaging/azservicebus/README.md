@@ -333,7 +333,6 @@ If you'd like to contribute to this library, please read the [contributing guide
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fmessaging%2Fazservicebus%2FREADME.png)
 
-[source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/azservicebus
 [new_issue]: https://github.com/Azure/azure-sdk-for-go/issues/new
 [azure_identity_pkg]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [default_azure_credential]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
@@ -342,6 +341,7 @@ If you'd like to contribute to this library, please read the [contributing guide
 [subscription_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
 [service_bus_overview]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview
 [msdoc_settling]: https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
+[source]: https://aka.ms/azsdkgo/azservicebus
 [godoc_examples]: https://aka.ms/azsdkgo/azservicebus
 [godoc_client]: https://aka.ms/azsdkgo/azservicebus
 [godoc_sender]: https://aka.ms/azsdkgo/azservicebus
@@ -354,6 +354,7 @@ If you'd like to contribute to this library, please read the [contributing guide
 [godoc_newreceiver_queue]: https://aka.ms/azsdkgo/azservicebus
 [godoc_newreceiver_subscription]: https://aka.ms/azsdkgo/azservicebus
 <!-- 
+[source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/azservicebus
 [godoc_examples]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#pkg-examples
 [godoc_client]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client
 [godoc_sender]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Sender

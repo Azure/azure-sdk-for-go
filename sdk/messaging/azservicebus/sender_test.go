@@ -24,7 +24,7 @@ func Test_Sender_SendBatchOfTwo(t *testing.T) {
 
 	defer sender.Close(ctx)
 
-	batch, err := sender.NewMessageBatch(ctx)
+	batch, err := sender.NewMessageBatch(ctx, nil)
 	require.NoError(t, err)
 
 	added, err := batch.Add(&Message{
@@ -75,7 +75,7 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	batch, err := sender.NewMessageBatch(context.Background())
+	batch, err := sender.NewMessageBatch(context.Background(), nil)
 	require.NoError(t, err)
 
 	added, err := batch.Add(&Message{

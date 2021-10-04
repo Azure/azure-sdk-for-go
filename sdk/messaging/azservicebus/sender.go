@@ -36,46 +36,29 @@ const (
 	spanNameSendMessageFmt string = "sb.sender.SendMessage.%s"
 )
 
-type messageBatchOptions struct {
-	maxSizeInBytes *int
-}
-
-// MessageBatchOption is an option for configuring batch creation in
-// `NewMessageBatch`.
-type MessageBatchOption func(options *messageBatchOptions) error
-
-// MessageBatchWithMaxSize overrides the max size (in bytes) for a batch.
-// By default NewMessageBatch will use the max message size provided by the service.
-func MessageBatchWithMaxSize(maxSizeInBytes int) func(options *messageBatchOptions) error {
-	return func(options *messageBatchOptions) error {
-		options.maxSizeInBytes = &maxSizeInBytes
-		return nil
-	}
+type MessageBatchOptions struct {
+	// MaxSizeInBytes overrides the max size (in bytes) for a batch.
+	// By default NewMessageBatch will use the max message size provided by the service.
+	MaxSizeInBytes int
 }
 
 // NewMessageBatch can be used to create a batch that contain multiple
 // messages. Sending a batch of messages is more efficient than sending the
 // messages one at a time.
-func (s *Sender) NewMessageBatch(ctx context.Context, options ...MessageBatchOption) (*MessageBatch, error) {
+func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptions) (*MessageBatch, error) {
 	sender, _, _, _, err := s.links.Get(ctx)
 
 	if err != nil {
 		return nil, err
 	}
 
-	maxMessageSize := int(sender.MaxMessageSize())
+	maxBytes := int(sender.MaxMessageSize())
 
-	opts := &messageBatchOptions{
-		maxSizeInBytes: &maxMessageSize,
+	if options != nil && options.MaxSizeInBytes != 0 {
+		maxBytes = options.MaxSizeInBytes
 	}
 
-	for _, opt := range options {
-		if err := opt(opts); err != nil {
-			return nil, err
-		}
-	}
-
-	return &MessageBatch{maxBytes: *opts.maxSizeInBytes}, nil
+	return &MessageBatch{maxBytes: maxBytes}, nil
 }
 
 // SendMessage sends a message to a queue or topic.

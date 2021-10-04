@@ -234,7 +234,7 @@ func TestReceiverPeek(t *testing.T) {
 
 	defer sender.Close(ctx)
 
-	batch, err := sender.NewMessageBatch(ctx)
+	batch, err := sender.NewMessageBatch(ctx, nil)
 	require.NoError(t, err)
 
 	for i := 0; i < 3; i++ {

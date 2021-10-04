@@ -95,7 +95,7 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 
 		defer sender.Close(context.Background())
 
-		batch, err := sender.NewMessageBatch(context.Background())
+		batch, err := sender.NewMessageBatch(context.Background(), nil)
 		require.NoError(t, err)
 
 		// it's perfectly fine to have the processor started before the messages

@@ -119,11 +119,10 @@ func newClientImpl(config clientConfig, options ...ClientOption) (*Client, error
 }
 
 // NewProcessor creates a Processor for a queue.
-func (client *Client) NewProcessorForQueue(queue string, options ...ProcessorOption) (*Processor, error) {
-	options = append(options, processorWithQueue(queue))
+func (client *Client) NewProcessorForQueue(queue string, options *ProcessorOptions) (*Processor, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 
-	processor, err := newProcessor(client.namespace, cleanupOnClose, options...)
+	processor, err := newProcessor(client.namespace, &entity{Queue: queue}, cleanupOnClose, options)
 
 	if err != nil {
 		return nil, err
@@ -134,11 +133,10 @@ func (client *Client) NewProcessorForQueue(queue string, options ...ProcessorOpt
 }
 
 // NewProcessor creates a Processor for a subscription.
-func (client *Client) NewProcessorForSubscription(topic string, subscription string, options ...ProcessorOption) (*Processor, error) {
-	options = append(options, processorWithSubscription(topic, subscription))
+func (client *Client) NewProcessorForSubscription(topic string, subscription string, options *ProcessorOptions) (*Processor, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 
-	processor, err := newProcessor(client.namespace, cleanupOnClose, options...)
+	processor, err := newProcessor(client.namespace, &entity{Topic: topic, Subscription: subscription}, cleanupOnClose, options)
 
 	if err != nil {
 		return nil, err
@@ -149,11 +147,9 @@ func (client *Client) NewProcessorForSubscription(topic string, subscription str
 }
 
 // NewReceiver creates a Receiver for a queue. A receiver allows you to receive messages.
-func (client *Client) NewReceiverForQueue(queue string, options ...ReceiverOption) (*Receiver, error) {
+func (client *Client) NewReceiverForQueue(queue string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
-	options = append(options, receiverWithQueue(queue))
-
-	receiver, err := newReceiver(client.namespace, cleanupOnClose, options...)
+	receiver, err := newReceiver(client.namespace, &entity{Queue: queue}, cleanupOnClose, options)
 
 	if err != nil {
 		return nil, err
@@ -164,11 +160,9 @@ func (client *Client) NewReceiverForQueue(queue string, options ...ReceiverOptio
 }
 
 // NewReceiver creates a Receiver for a subscription. A receiver allows you to receive messages.
-func (client *Client) NewReceiverForSubscription(topic string, subscription string, options ...ReceiverOption) (*Receiver, error) {
+func (client *Client) NewReceiverForSubscription(topic string, subscription string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
-	options = append(options, receiverWithSubscription(topic, subscription))
-
-	receiver, err := newReceiver(client.namespace, cleanupOnClose, options...)
+	receiver, err := newReceiver(client.namespace, &entity{Topic: topic, Subscription: subscription}, cleanupOnClose, options)
 
 	if err != nil {
 		return nil, err

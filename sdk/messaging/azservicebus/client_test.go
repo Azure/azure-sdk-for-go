@@ -35,12 +35,12 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 	err = sender.SendMessage(context.TODO(), &Message{Body: []byte("hello - authenticating with a TokenCredential")})
 	require.NoError(t, err)
 
-	receiver, err := client.NewReceiverForQueue(queue)
+	receiver, err := client.NewReceiverForQueue(queue, nil)
 	require.NoError(t, err)
 	actualSettler, _ := receiver.settler.(*messageSettler)
 	actualSettler.onlyDoBackupSettlement = true // this'll also exercise the management link
 
-	messages, err := receiver.ReceiveMessages(context.TODO(), 1)
+	messages, err := receiver.ReceiveMessages(context.TODO(), 1, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, []string{"hello - authenticating with a TokenCredential"}, getSortedBodies(messages))
@@ -119,7 +119,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.True(t, ns.AMQPLinks.ClosedPermanently())
 
 		client, ns = setupClient()
-		_, err = client.NewReceiverForQueue("hello")
+		_, err = client.NewReceiverForQueue("hello", nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, len(client.links))
@@ -129,7 +129,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.True(t, ns.AMQPLinks.ClosedPermanently())
 
 		client, ns = setupClient()
-		_, err = client.NewReceiverForSubscription("hello", "world")
+		_, err = client.NewReceiverForSubscription("hello", "world", nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, len(client.links))
@@ -139,7 +139,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
 
 		client, ns = setupClient()
-		_, err = client.NewProcessorForQueue("hello")
+		_, err = client.NewProcessorForQueue("hello", nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, len(client.links))
@@ -149,7 +149,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
 
 		client, ns = setupClient()
-		_, err = client.NewProcessorForSubscription("hello", "world")
+		_, err = client.NewProcessorForSubscription("hello", "world", nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, len(client.links))

@@ -56,12 +56,14 @@ func main() {
 
 	processor, err := serviceBusClient.NewProcessorForQueue(
 		queue,
-		// Will auto-complete or auto-abandon messages, based on the result from you callback
-		// (this is true, by default)
-		azservicebus.ProcessorWithAutoComplete(true),
-		// or for a subscription
-		// azservicebus.ProcessorWithSubscription("topic", "subscription"),
-		azservicebus.ProcessorWithReceiveMode(azservicebus.PeekLock),
+		&azservicebus.ProcessorOptions{
+			// Will auto-complete or auto-abandon messages, based on the result from you callback
+			// (this is true, by default)
+			ManualComplete: false,
+			// or for a subscription
+			// azservicebus.ProcessorWithSubscription("topic", "subscription"),
+			ReceiveMode: azservicebus.PeekLock,
+		},
 	)
 
 	if err != nil {

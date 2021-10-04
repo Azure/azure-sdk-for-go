@@ -43,12 +43,11 @@ func Test_Sender_SendBatchOfTwo(t *testing.T) {
 	require.NoError(t, err)
 
 	receiver, err := client.NewReceiverForQueue(
-		queueName,
-		ReceiverWithReceiveMode(ReceiveAndDelete))
+		queueName, &ReceiverOptions{ReceiveMode: ReceiveAndDelete})
 	require.NoError(t, err)
 	defer receiver.Close(ctx)
 
-	messages, err := receiver.ReceiveMessages(ctx, 2)
+	messages, err := receiver.ReceiveMessages(ctx, 2, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, []string{"[0] message in batch", "[1] message in batch"}, getSortedBodies(messages))
@@ -65,8 +64,7 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 	defer sender.Close(context.Background())
 
 	receiver, err := client.NewReceiverForQueue(
-		queueName,
-		ReceiverWithReceiveMode(ReceiveAndDelete))
+		queueName, &ReceiverOptions{ReceiveMode: ReceiveAndDelete})
 	require.NoError(t, err)
 	defer receiver.Close(context.Background())
 
@@ -97,7 +95,7 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 	err = sender.SendMessage(context.Background(), batch)
 	require.NoError(t, err)
 
-	messages, err := receiver.ReceiveMessages(context.Background(), 1+2)
+	messages, err := receiver.ReceiveMessages(context.Background(), 1+2, nil)
 	require.NoError(t, err)
 
 	sort.Sort(receivedMessages(messages))

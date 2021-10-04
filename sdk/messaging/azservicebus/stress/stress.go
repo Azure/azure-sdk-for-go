@@ -158,7 +158,7 @@ func runBasicSendAndReceiveTest() {
 }
 
 func runBatchReceiver(ctx context.Context, serviceBusClient *azservicebus.Client, topicName string, subscriptionName string, telemetryClient appinsights.TelemetryClient) {
-	receiver, err := serviceBusClient.NewReceiverForSubscription(topicName, subscriptionName)
+	receiver, err := serviceBusClient.NewReceiverForSubscription(topicName, subscriptionName, nil)
 
 	if err != nil {
 		log.Fatalf("Failed to create receiver: %s", err.Error())
@@ -187,7 +187,7 @@ func runProcessor(ctx context.Context, client *azservicebus.Client, topicName st
 	log.Printf("Starting processor...")
 	processor, err := client.NewProcessorForSubscription(
 		topicName, subscriptionName,
-		azservicebus.ProcessorWithMaxConcurrentCalls(10))
+		&azservicebus.ProcessorOptions{MaxConcurrentCalls: 10})
 
 	if err != nil {
 		trackException(&processorStats, telemetryClient, "Failed when creating processor", err)

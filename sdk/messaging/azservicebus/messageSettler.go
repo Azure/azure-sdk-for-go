@@ -115,57 +115,26 @@ func (s *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMess
 }
 
 type DeadLetterOptions struct {
-	errorDescription   *string
-	reason             *string
-	propertiesToModify map[string]interface{}
-}
-
-type DeadLetterOption func(options *DeadLetterOptions) error
-
-func DeadLetterWithErrorDescription(description string) DeadLetterOption {
-	return func(options *DeadLetterOptions) error {
-		options.errorDescription = &description
-		return nil
-	}
-}
-
-func DeadLetterWithReason(reason string) DeadLetterOption {
-	return func(options *DeadLetterOptions) error {
-		options.reason = &reason
-		return nil
-	}
-}
-
-func DeadLetterWithPropertiesToModify(propertiesToModify map[string]interface{}) DeadLetterOption {
-	return func(options *DeadLetterOptions) error {
-		options.propertiesToModify = propertiesToModify
-		return nil
-	}
+	ErrorDescription   *string
+	Reason             *string
+	PropertiesToModify map[string]interface{}
 }
 
 // DeadLetterMessage settles a message by moving it to the dead letter queue for a
 // queue or subscription. To receive these messages create a receiver with `Client.NewReceiver()`
-// using the `ReceiverWithSubQueue()` option.
-func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options ...DeadLetterOption) error {
+// using the `SubQueue` option.
+func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error {
 	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient, linkRevision uint64) error {
-		deadLetterOptions := &DeadLetterOptions{}
-
-		for _, opt := range options {
-			if err := opt(deadLetterOptions); err != nil {
-				return err
-			}
-		}
-
 		reason := ""
 
-		if deadLetterOptions.reason != nil {
-			reason = *deadLetterOptions.reason
+		if options.Reason != nil {
+			reason = *options.Reason
 		}
 
 		description := ""
 
-		if deadLetterOptions.errorDescription != nil {
-			description = *deadLetterOptions.errorDescription
+		if options.ErrorDescription != nil {
+			description = *options.ErrorDescription
 		}
 
 		if s.useManagementLink(message, linkRevision) {
@@ -182,8 +151,8 @@ func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *Receive
 			"DeadLetterErrorDescription": description,
 		}
 
-		if deadLetterOptions.propertiesToModify != nil {
-			for key, val := range deadLetterOptions.propertiesToModify {
+		if options.PropertiesToModify != nil {
+			for key, val := range options.PropertiesToModify {
 				info[key] = val
 			}
 		}

@@ -33,6 +33,8 @@ const (
 type SubQueue int
 
 const (
+	// SubQueueNone means no sub queue.
+	SubQueueNone SubQueue = 0
 	// SubQueueDeadLetter targets the dead letter queue for a queue or subscription.
 	SubQueueDeadLetter SubQueue = 1
 	// SubQueueTransfer targets the transfer dead letter queue for a queue or subscription.
@@ -42,9 +44,11 @@ const (
 // Receiver receives messages using pull based functions (ReceiveMessages).
 // For push-based receiving via callbacks look at the `Processor` type.
 type Receiver struct {
-	settler settler
+	receiveMode ReceiveMode
 
-	config receiverConfig
+	settler        settler
+	baseRetrier    internal.Retrier
+	cleanupOnClose func()
 
 	lastPeekedSequenceNumber int64
 	amqpLinks                internal.AMQPLinks
@@ -53,122 +57,100 @@ type Receiver struct {
 	receiving bool
 }
 
-type receiverConfig struct {
-	ReceiveMode    ReceiveMode
-	FullEntityPath string
-	Entity         entity
+type ReceiverOptions struct {
+	// ReceiveMode controls when a message is deleted from Service Bus.
+	//
+	// `azservicebus.PeekLock` is the default. The message is locked, preventing multiple
+	// receivers from processing the message at once. You control the lock state of the message
+	// using one of the message settlement functions like processor.CompleteMessage(), which removes
+	// it from Service Bus, or processor.AbandonMessage(), which makes it available again.
+	//
+	// `azservicebus.ReceiveAndDelete` causes Service Bus to remove the message as soon
+	// as it's received.
+	//
+	// More information about receive modes:
+	// https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
+	ReceiveMode ReceiveMode
 
-	baseRetrier    internal.Retrier
-	cleanupOnClose func()
+	// SubQueue should be set to connect to the sub queue (ex: dead letter queue)
+	// of the queue or subscription.
+	SubQueue SubQueue
 }
 
 const defaultLinkRxBuffer = 2048
 
-// ReceiverOption represents an option for a receiver.
-// Some examples:
-// - `ReceiverWithReceiveMode` to configure the receive mode,
-// - `ReceiverWithSubQueue` to connect to a subqueue, like a dead letter queue
-type ReceiverOption func(receiver *Receiver) error
-
-// ReceiverWithSubQueue allows you to open the sub queue (ie: dead letter queues, transfer dead letter queues)
-// for a queue or subscription.
-func ReceiverWithSubQueue(subQueue SubQueue) ReceiverOption {
-	return func(r *Receiver) error {
-		return r.config.Entity.SetSubQueue(subQueue)
-	}
-}
-
-// ReceiverWithReceiveMode controls the receive mode for the receiver.
-func ReceiverWithReceiveMode(receiveMode ReceiveMode) ReceiverOption {
-	return func(receiver *Receiver) error {
-		if receiveMode != PeekLock && receiveMode != ReceiveAndDelete {
-			return fmt.Errorf("invalid receive mode specified %d", receiveMode)
-		}
-
-		receiver.config.ReceiveMode = receiveMode
+func applyReceiverOptions(receiver *Receiver, entity *entity, options *ReceiverOptions) error {
+	if options == nil {
+		receiver.receiveMode = PeekLock
 		return nil
 	}
+
+	if err := checkReceiverMode(options.ReceiveMode); err != nil {
+		return err
+	}
+
+	receiver.receiveMode = options.ReceiveMode
+
+	if err := entity.SetSubQueue(options.SubQueue); err != nil {
+		return err
+	}
+
+	return nil
 }
 
-func newReceiver(ns internal.NamespaceWithNewAMQPLinks, cleanupOnClose func(), options ...ReceiverOption) (*Receiver, error) {
+func newReceiver(ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupOnClose func(), options *ReceiverOptions) (*Receiver, error) {
 	receiver := &Receiver{
-		config: receiverConfig{
-			ReceiveMode: PeekLock,
-			// TODO: make this configurable
-			baseRetrier: internal.NewBackoffRetrier(internal.BackoffRetrierParams{
-				Factor:     1.5,
-				Jitter:     true,
-				Min:        time.Second,
-				Max:        time.Minute,
-				MaxRetries: 10,
-			}),
-			cleanupOnClose: cleanupOnClose,
-		},
 		lastPeekedSequenceNumber: 0,
+		// TODO: make this configurable
+		baseRetrier: internal.NewBackoffRetrier(internal.BackoffRetrierParams{
+			Factor:     1.5,
+			Jitter:     true,
+			Min:        time.Second,
+			Max:        time.Minute,
+			MaxRetries: 10,
+		}),
+		cleanupOnClose: cleanupOnClose,
 	}
 
-	for _, opt := range options {
-		if err := opt(receiver); err != nil {
-			return nil, err
-		}
+	if err := applyReceiverOptions(receiver, entity, options); err != nil {
+		return nil, err
 	}
 
-	entityPath, err := receiver.config.Entity.String()
+	entityPath, err := entity.String()
 
 	if err != nil {
 		return nil, err
 	}
 
 	receiver.amqpLinks = ns.NewAMQPLinks(entityPath, func(ctx context.Context, session internal.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
-		linkOptions := createLinkOptions(receiver.config.ReceiveMode, entityPath)
+		linkOptions := createLinkOptions(receiver.receiveMode, entityPath)
 		return createReceiverLink(ctx, session, linkOptions)
 	})
 
 	// 'nil' settler handles returning an error message for receiveAndDelete links.
-	if receiver.config.ReceiveMode == PeekLock {
-		receiver.settler = newMessageSettler(receiver.amqpLinks, receiver.config.baseRetrier)
+	if receiver.receiveMode == PeekLock {
+		receiver.settler = newMessageSettler(receiver.amqpLinks, receiver.baseRetrier)
 	}
 
 	return receiver, nil
 }
 
-// receiveOptions are options for the ReceiveMessages function.
-type receiveOptions struct {
-	maxWaitTime                  time.Duration
+// ReceiveOptions are options for the ReceiveMessages function.
+type ReceiveOptions struct {
+	// MaxWaitTime configures how long to wait for the first
+	// message in a set of messages to arrive.
+	// Default: 60 seconds
+	MaxWaitTime time.Duration
+
 	maxWaitTimeAfterFirstMessage time.Duration
-}
-
-// ReceiveOption represents an option for a `ReceiveMessages`.
-// For example, `ReceiveWithMaxWaitTime` will let you configure the
-// maxmimum amount of time to wait for messages to arrive.
-type ReceiveOption func(options *receiveOptions) error
-
-// ReceiveWithMaxWaitTime configures how long to wait for the first
-// message in a set of messages to arrive.
-// Default: 60 seconds
-func ReceiveWithMaxWaitTime(max time.Duration) ReceiveOption {
-	return func(options *receiveOptions) error {
-		options.maxWaitTime = max
-		return nil
-	}
-}
-
-// ReceiveWithMaxTimeAfterFirstMessage confiures how long, after the first
-// message arrives, to wait before returning.
-// Default: 1 second
-func ReceiveWithMaxTimeAfterFirstMessage(max time.Duration) ReceiveOption {
-	return func(options *receiveOptions) error {
-		options.maxWaitTimeAfterFirstMessage = max
-		return nil
-	}
 }
 
 // ReceiveMessages receives a fixed number of messages, up to numMessages.
 // There are two timeouts involved in receiving messages:
 // 1. An explicit timeout set with `ReceiveWithMaxWaitTime` (default: 60 seconds)
 // 2. An implicit timeout (default: 1 second) that starts after the first
-//    message has been received. This time can be adjusted with `ReceiveWithMaxTimeAfterFirstMessage`
-func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options ...ReceiveOption) ([]*ReceivedMessage, error) {
+//    message has been received.
+func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options *ReceiveOptions) ([]*ReceivedMessage, error) {
 	r.mu.Lock()
 	isReceiving := r.receiving
 
@@ -187,10 +169,10 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 		return nil, errors.New("receiver is already receiving messages. ReceiveMessages() cannot be called concurrently.")
 	}
 
-	return r.receiveMessagesImpl(ctx, maxMessages, options...)
+	return r.receiveMessagesImpl(ctx, maxMessages, options)
 }
 
-func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, options ...ReceiveOption) ([]*ReceivedMessage, error) {
+func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, options *ReceiveOptions) ([]*ReceivedMessage, error) {
 	// There are three phases for this function:
 	// Phase 1. <receive, respecting user cancellation>
 	// Phase 2. <check error and exit if fatal>
@@ -198,14 +180,16 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	//    user isn't actually waiting for anymore. So we make sure that #3 runs if the
 	//    link is still valid.
 	// Phase 3. <drain the link and leave it in a good state>
-	ropts := &receiveOptions{
-		maxWaitTime:                  time.Minute,
+	localOpts := &ReceiveOptions{
+		MaxWaitTime:                  time.Minute,
 		maxWaitTimeAfterFirstMessage: time.Second,
 	}
 
-	for _, opt := range options {
-		if err := opt(ropts); err != nil {
-			return nil, err
+	if options != nil {
+		localOpts.MaxWaitTime = options.MaxWaitTime
+
+		if options.maxWaitTimeAfterFirstMessage != 0 {
+			localOpts.maxWaitTimeAfterFirstMessage = options.maxWaitTimeAfterFirstMessage
 		}
 	}
 
@@ -224,7 +208,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		return nil, err
 	}
 
-	messages, err := r.getMessages(ctx, receiver, maxMessages, ropts)
+	messages, err := r.getMessages(ctx, receiver, maxMessages, localOpts)
 
 	if err != nil {
 		return nil, err
@@ -285,8 +269,8 @@ func (r *Receiver) drainLink(receiver internal.AMQPReceiver, messages []*Receive
 
 // getMessages receives messages until a link failure, timeout or the user
 // cancels their context.
-func (r *Receiver) getMessages(theirCtx context.Context, receiver internal.AMQPReceiver, maxMessages int, ropts *receiveOptions) ([]*ReceivedMessage, error) {
-	ctx, cancel := context.WithTimeout(theirCtx, ropts.maxWaitTime)
+func (r *Receiver) getMessages(theirCtx context.Context, receiver internal.AMQPReceiver, maxMessages int, ropts *ReceiveOptions) ([]*ReceivedMessage, error) {
+	ctx, cancel := context.WithTimeout(theirCtx, ropts.MaxWaitTime)
 	defer cancel()
 
 	var messages []*ReceivedMessage
@@ -336,7 +320,7 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 		return nil, err
 	}
 
-	amqpMessages, err := mgmt.ReceiveDeferred(ctx, r.config.ReceiveMode, sequenceNumbers)
+	amqpMessages, err := mgmt.ReceiveDeferred(ctx, r.receiveMode, sequenceNumbers)
 
 	if err != nil {
 		return nil, err
@@ -415,7 +399,7 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 	return receivedMessages, nil
 }
 
-// receiveDeferredMessage receives a single message that was deferred using `Receiver.DeferMessage`.
+// ReceiveDeferredMessage receives a single message that was deferred using `Receiver.DeferMessage`.
 func (r *Receiver) receiveDeferredMessage(ctx context.Context, sequenceNumber int64) (*ReceivedMessage, error) {
 	messages, err := r.ReceiveDeferredMessages(ctx, []int64{sequenceNumber})
 
@@ -430,9 +414,9 @@ func (r *Receiver) receiveDeferredMessage(ctx context.Context, sequenceNumber in
 	return messages[0], nil
 }
 
-// receiveMessage receives a single message.
-func (r *Receiver) receiveMessage(ctx context.Context, options ...ReceiveOption) (*ReceivedMessage, error) {
-	messages, err := r.ReceiveMessages(ctx, 1, options...)
+// ReceiveMessage receives a single message.
+func (r *Receiver) receiveMessage(ctx context.Context, options *ReceiveOptions) (*ReceivedMessage, error) {
+	messages, err := r.ReceiveMessages(ctx, 1, options)
 
 	if err != nil {
 		return nil, err
@@ -447,7 +431,7 @@ func (r *Receiver) receiveMessage(ctx context.Context, options ...ReceiveOption)
 
 // Close permanently closes the receiver.
 func (r *Receiver) Close(ctx context.Context) error {
-	r.config.cleanupOnClose()
+	r.cleanupOnClose()
 	return r.amqpLinks.Close(ctx, true)
 }
 
@@ -504,13 +488,14 @@ func (e *entity) String() (string, error) {
 }
 
 func (e *entity) SetSubQueue(subQueue SubQueue) error {
-	if subQueue == SubQueueDeadLetter || subQueue == SubQueueTransfer {
+	if subQueue == SubQueueNone {
+		return nil
+	} else if subQueue == SubQueueDeadLetter || subQueue == SubQueueTransfer {
 		e.subqueue = subQueue
-	} else {
-		return fmt.Errorf("unknown SubQueue %d", subQueue)
+		return nil
 	}
 
-	return nil
+	return fmt.Errorf("unknown SubQueue %d", subQueue)
 }
 
 func createReceiverLink(ctx context.Context, session internal.AMQPSession, linkOptions []amqp.LinkOption) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
@@ -543,22 +528,4 @@ func createLinkOptions(mode ReceiveMode, entityPath string) []amqp.LinkOption {
 	}
 
 	return opts
-}
-
-// receiverWithQueue configures a receiver to connect to a queue.
-func receiverWithQueue(queue string) ReceiverOption {
-	return func(receiver *Receiver) error {
-		receiver.config.Entity.Queue = queue
-		return nil
-	}
-}
-
-// receiverWithSubscription configures a receiver to connect to a subscription
-// associated with a topic.
-func receiverWithSubscription(topic string, subscription string) ReceiverOption {
-	return func(receiver *Receiver) error {
-		receiver.config.Entity.Topic = topic
-		receiver.config.Entity.Subscription = subscription
-		return nil
-	}
 }

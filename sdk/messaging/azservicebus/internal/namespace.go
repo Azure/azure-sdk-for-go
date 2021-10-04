@@ -168,9 +168,10 @@ func NewNamespace(opts ...NamespaceOption) (*Namespace, error) {
 			Min        time.Duration
 			Max        time.Duration
 		}{
-			MaxRetries: 5,
-			Factor:     1,
-			Min:        5 * time.Second,
+			Factor:     2,
+			Min:        time.Second,
+			Max:        time.Minute,
+			MaxRetries: 10,
 		}),
 	}
 

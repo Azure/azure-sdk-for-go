@@ -107,7 +107,7 @@ func runBasicSendAndReceiveTest() {
 	ctx, cancel := context.WithTimeout(context.Background(), 24*5*time.Hour)
 	defer cancel()
 
-	serviceBusClient, err := azservicebus.NewClientWithConnectionString(cs)
+	serviceBusClient, err := azservicebus.NewClientWithConnectionString(cs, nil)
 	if err != nil {
 		trackException(nil, telemetryClient, "Failed to create service bus client", err)
 		return
@@ -124,6 +124,7 @@ func runBasicSendAndReceiveTest() {
 			internal.SpanProcessorClose: true,
 			internal.SpanProcessorLoop:  true,
 			//internal.SpanProcessorMessage: true,
+			internal.SpanRecover:        true,
 			internal.SpanNegotiateClaim: true,
 			internal.SpanRecoverClient:  true,
 			internal.SpanRecoverLink:    true,
@@ -157,14 +158,14 @@ func runBasicSendAndReceiveTest() {
 }
 
 func runBatchReceiver(ctx context.Context, serviceBusClient *azservicebus.Client, topicName string, subscriptionName string, telemetryClient appinsights.TelemetryClient) {
-	receiver, err := serviceBusClient.NewReceiverForSubscription(topicName, subscriptionName)
+	receiver, err := serviceBusClient.NewReceiverForSubscription(topicName, subscriptionName, nil)
 
 	if err != nil {
 		log.Fatalf("Failed to create receiver: %s", err.Error())
 	}
 
 	for {
-		messages, err := receiver.ReceiveMessages(ctx, 20)
+		messages, err := receiver.ReceiveMessages(ctx, 20, nil)
 
 		if err != nil {
 			trackException(&receiverStats, telemetryClient, "receive batch failure", err)
@@ -186,7 +187,7 @@ func runProcessor(ctx context.Context, client *azservicebus.Client, topicName st
 	log.Printf("Starting processor...")
 	processor, err := client.NewProcessorForSubscription(
 		topicName, subscriptionName,
-		azservicebus.ProcessorWithMaxConcurrentCalls(10))
+		&azservicebus.ProcessorOptions{MaxConcurrentCalls: 10})
 
 	if err != nil {
 		trackException(&processorStats, telemetryClient, "Failed when creating processor", err)

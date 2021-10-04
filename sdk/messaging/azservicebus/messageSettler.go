@@ -17,7 +17,7 @@ type settler interface {
 	CompleteMessage(ctx context.Context, message *ReceivedMessage) error
 	AbandonMessage(ctx context.Context, message *ReceivedMessage) error
 	DeferMessage(ctx context.Context, message *ReceivedMessage) error
-	DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options ...DeadLetterOption) error
+	DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error
 }
 
 type messageSettler struct {
@@ -55,14 +55,14 @@ func (s *messageSettler) settleWithRetries(ctx context.Context, message *Receive
 		_, receiver, mgmt, linkRevision, lastErr = s.links.Get(ctx)
 
 		if lastErr != nil {
-			_ = s.links.RecoverIfNeeded(ctx, lastErr)
+			_ = s.links.RecoverIfNeeded(ctx, linkRevision, lastErr)
 			continue
 		}
 
 		lastErr := settleFn(receiver, mgmt, linkRevision)
 
 		if lastErr != nil {
-			_ = s.links.RecoverIfNeeded(ctx, lastErr)
+			_ = s.links.RecoverIfNeeded(ctx, linkRevision, lastErr)
 			continue
 		}
 
@@ -114,58 +114,35 @@ func (s *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMess
 	})
 }
 
+// DeadLetterOptions describe the reason and error description for dead lettering
+// a message using the `Receiver.DeadLetterMessage()`
 type DeadLetterOptions struct {
-	errorDescription   *string
-	reason             *string
-	propertiesToModify map[string]interface{}
-}
+	// ErrorDescription that caused the dead lettering of the message.
+	ErrorDescription *string
 
-type DeadLetterOption func(options *DeadLetterOptions) error
+	// Reason for dead lettering the message.
+	Reason *string
 
-func DeadLetterWithErrorDescription(description string) DeadLetterOption {
-	return func(options *DeadLetterOptions) error {
-		options.errorDescription = &description
-		return nil
-	}
-}
-
-func DeadLetterWithReason(reason string) DeadLetterOption {
-	return func(options *DeadLetterOptions) error {
-		options.reason = &reason
-		return nil
-	}
-}
-
-func DeadLetterWithPropertiesToModify(propertiesToModify map[string]interface{}) DeadLetterOption {
-	return func(options *DeadLetterOptions) error {
-		options.propertiesToModify = propertiesToModify
-		return nil
-	}
+	// PropertiesToModify specifies properties to modify in the message when it is dead lettered.
+	PropertiesToModify map[string]interface{}
 }
 
 // DeadLetterMessage settles a message by moving it to the dead letter queue for a
 // queue or subscription. To receive these messages create a receiver with `Client.NewReceiver()`
-// using the `ReceiverWithSubQueue()` option.
-func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options ...DeadLetterOption) error {
+// using the `SubQueue` option.
+func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error {
 	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient, linkRevision uint64) error {
-		deadLetterOptions := &DeadLetterOptions{}
-
-		for _, opt := range options {
-			if err := opt(deadLetterOptions); err != nil {
-				return err
-			}
-		}
-
 		reason := ""
-
-		if deadLetterOptions.reason != nil {
-			reason = *deadLetterOptions.reason
-		}
-
 		description := ""
 
-		if deadLetterOptions.errorDescription != nil {
-			description = *deadLetterOptions.errorDescription
+		if options != nil {
+			if options.Reason != nil {
+				reason = *options.Reason
+			}
+
+			if options.ErrorDescription != nil {
+				description = *options.ErrorDescription
+			}
 		}
 
 		if s.useManagementLink(message, linkRevision) {
@@ -182,8 +159,8 @@ func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *Receive
 			"DeadLetterErrorDescription": description,
 		}
 
-		if deadLetterOptions.propertiesToModify != nil {
-			for key, val := range deadLetterOptions.propertiesToModify {
+		if options != nil && options.PropertiesToModify != nil {
+			for key, val := range options.PropertiesToModify {
 				info[key] = val
 			}
 		}

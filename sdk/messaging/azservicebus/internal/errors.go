@@ -186,9 +186,6 @@ func shouldRecreateLink(err error) bool {
 	}
 
 	return errors.Is(err, amqp.ErrLinkDetached) ||
-		// I'm really curious if need to include this here or not.
-		errors.Is(err, amqp.ErrLinkClosed) ||
-		errors.Is(err, amqp.ErrSessionClosed) ||
 		// TODO: proper error types needs to happen
 		strings.Contains(err.Error(), "detach frame link detached")
 }
@@ -200,7 +197,11 @@ func shouldRecreateConnection(ctxForLogging context.Context, err error) bool {
 
 	shouldRecreate := isPermanentNetError(err) ||
 		isRetryableAMQPError(ctxForLogging, err) ||
-		isEOF(err)
+		isEOF(err) ||
+		// these are distinct from a detach and probably indicate something
+		// wrong with the connection itself, rather than just the link
+		errors.Is(err, amqp.ErrSessionClosed) ||
+		errors.Is(err, amqp.ErrLinkClosed)
 
 	return shouldRecreate
 }

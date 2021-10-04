@@ -26,7 +26,7 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 		t.Skip("Azure Identity compatible credentials not configured")
 	}
 
-	client, err := NewClient(ns, dac)
+	client, err := NewClient(ns, dac, nil)
 	require.NoError(t, err)
 
 	sender, err := client.NewSender(queue)
@@ -35,12 +35,12 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 	err = sender.SendMessage(context.TODO(), &Message{Body: []byte("hello - authenticating with a TokenCredential")})
 	require.NoError(t, err)
 
-	receiver, err := client.NewReceiverForQueue(queue)
+	receiver, err := client.NewReceiverForQueue(queue, nil)
 	require.NoError(t, err)
 	actualSettler, _ := receiver.settler.(*messageSettler)
 	actualSettler.onlyDoBackupSettlement = true // this'll also exercise the management link
 
-	messages, err := receiver.ReceiveMessages(context.TODO(), 1)
+	messages, err := receiver.ReceiveMessages(context.TODO(), 1, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, []string{"hello - authenticating with a TokenCredential"}, getSortedBodies(messages))
@@ -57,28 +57,28 @@ func TestNewClientUnitTests(t *testing.T) {
 	t.Run("WithTokenCredential", func(t *testing.T) {
 		fakeTokenCredential := struct{ azcore.TokenCredential }{}
 
-		client, err := NewClient("fake.something", fakeTokenCredential)
+		client, err := NewClient("fake.something", fakeTokenCredential, nil)
 		require.NoError(t, err)
 
 		require.NoError(t, err)
 		require.EqualValues(t, fakeTokenCredential, client.config.credential)
 		require.EqualValues(t, "fake.something", client.config.fullyQualifiedNamespace)
 
-		client, err = NewClient("mysb.windows.servicebus.net", fakeTokenCredential)
+		client, err = NewClient("mysb.windows.servicebus.net", fakeTokenCredential, nil)
 		require.NoError(t, err)
 		require.EqualValues(t, fakeTokenCredential, client.config.credential)
 		require.EqualValues(t, "mysb.windows.servicebus.net", client.config.fullyQualifiedNamespace)
 
-		_, err = NewClientWithConnectionString("")
+		_, err = NewClientWithConnectionString("", nil)
 		require.EqualError(t, err, "connectionString must not be empty")
 
-		_, err = NewClient("", fakeTokenCredential)
+		_, err = NewClient("", fakeTokenCredential, nil)
 		require.EqualError(t, err, "fullyQualifiedNamespace must not be empty")
 
-		_, err = NewClient("mysb", fakeTokenCredential)
+		_, err = NewClient("mysb", fakeTokenCredential, nil)
 		require.EqualError(t, err, "fullyQualifiedNamespace is not properly formed. Should be similar to 'myservicebus.servicebus.windows.net'")
 
-		_, err = NewClient("fake.something", nil)
+		_, err = NewClient("fake.something", nil, nil)
 		require.EqualError(t, err, "credential was nil")
 
 		// (really all part of the same functionality)
@@ -95,7 +95,7 @@ func TestNewClientUnitTests(t *testing.T) {
 
 	t.Run("CloseAndLinkTracking", func(t *testing.T) {
 		setupClient := func() (*Client, *internal.FakeNS) {
-			client, err := NewClient("fake.something", struct{ azcore.TokenCredential }{})
+			client, err := NewClient("fake.something", struct{ azcore.TokenCredential }{}, nil)
 			require.NoError(t, err)
 
 			ns := &internal.FakeNS{
@@ -119,7 +119,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.True(t, ns.AMQPLinks.ClosedPermanently())
 
 		client, ns = setupClient()
-		_, err = client.NewReceiverForQueue("hello")
+		_, err = client.NewReceiverForQueue("hello", nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, len(client.links))
@@ -129,7 +129,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.True(t, ns.AMQPLinks.ClosedPermanently())
 
 		client, ns = setupClient()
-		_, err = client.NewReceiverForSubscription("hello", "world")
+		_, err = client.NewReceiverForSubscription("hello", "world", nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, len(client.links))
@@ -139,7 +139,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
 
 		client, ns = setupClient()
-		_, err = client.NewProcessorForQueue("hello")
+		_, err = client.NewProcessorForQueue("hello", nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, len(client.links))
@@ -149,7 +149,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.EqualValues(t, 1, ns.AMQPLinks.Closed)
 
 		client, ns = setupClient()
-		_, err = client.NewProcessorForSubscription("hello", "world")
+		_, err = client.NewProcessorForSubscription("hello", "world", nil)
 
 		require.NoError(t, err)
 		require.EqualValues(t, 1, len(client.links))

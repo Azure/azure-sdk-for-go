@@ -34,7 +34,7 @@ type AMQPLinks interface {
 
 	// RecoverIfNeeded will check if an error requires recovery, and will recover
 	// the link or, possibly, the connection.
-	RecoverIfNeeded(ctx context.Context, err error) error
+	RecoverIfNeeded(ctx context.Context, linksRevision uint64, err error) error
 
 	// Close will close the the link.
 	// If permanent is true the link will not be auto-recreated if Get/Recover
@@ -118,22 +118,42 @@ func (links *amqpLinks) ManagementPath() string {
 
 // recoverLink will recycle all associated links (mgmt, receiver, sender and session)
 // and recreate them using the link.linkCreator function.
-func (links *amqpLinks) recoverLink(ctx context.Context) error {
+func (links *amqpLinks) recoverLink(ctx context.Context, theirLinkRevision *uint64) error {
 	ctx, span := tab.StartSpan(ctx, SpanRecoverLink)
 	defer span.End()
 
 	links.mu.RLock()
 	closedPermanently := links.closedPermanently
+	ourLinkRevision := links.revision
 	links.mu.RUnlock()
 
 	if closedPermanently {
+		span.AddAttributes(tab.StringAttribute("outcome", "was_closed_permanently"))
 		return errClosedPermanently{}
+	}
+
+	if theirLinkRevision != nil && ourLinkRevision > *theirLinkRevision {
+		// we've already recovered past their failure.
+		span.AddAttributes(
+			tab.StringAttribute("outcome", "already_recovered"),
+			tab.StringAttribute("lock", "readlock"),
+			tab.StringAttribute("revisions", fmt.Sprintf("ours(%d), theirs(%d)", ourLinkRevision, *theirLinkRevision)),
+		)
+		return nil
 	}
 
 	links.mu.Lock()
 	defer links.mu.Unlock()
 
-	links.revision++
+	if theirLinkRevision != nil && ourLinkRevision > *theirLinkRevision {
+		// we've already recovered past their failure.
+		span.AddAttributes(
+			tab.StringAttribute("outcome", "already_recovered"),
+			tab.StringAttribute("lock", "writelock"),
+			tab.StringAttribute("revisions", fmt.Sprintf("ours(%d), theirs(%d)", ourLinkRevision, *theirLinkRevision)),
+		)
+		return nil
+	}
 
 	if err := links.closeWithoutLocking(ctx, false); err != nil {
 		span.Logger().Error(err)
@@ -142,22 +162,34 @@ func (links *amqpLinks) recoverLink(ctx context.Context) error {
 	err := links.initWithoutLocking(ctx)
 
 	if err != nil {
-		span.Logger().Error(err)
+		span.AddAttributes(tab.StringAttribute("init_error", err.Error()))
 		return err
 	}
 
+	links.revision++
+
+	span.AddAttributes(
+		tab.StringAttribute("outcome", "recovered"),
+		tab.StringAttribute("revision_new", fmt.Sprintf("%d", links.revision)),
+	)
 	return nil
 }
 
 // Recover will recover the links or the connection, depending
 // on the severity of the error. This function uses the `baseRetrier`
 // defined in the links struct.
-func (links *amqpLinks) RecoverIfNeeded(ctx context.Context, origErr error) error {
-	retrier := links.baseRetrier.Copy()
+func (links *amqpLinks) RecoverIfNeeded(ctx context.Context, linksRevision uint64, origErr error) error {
+	ctx, span := tab.StartSpan(ctx, SpanRecover)
+	defer span.End()
+
 	var err error = origErr
 
+	retrier := links.baseRetrier.Copy()
+
 	for retrier.Try(ctx) {
-		err = links.recoverImpl(ctx, retrier.CurrentTry(), err)
+		span.AddAttributes(tab.StringAttribute("recover_attempt", fmt.Sprintf("%d", retrier.CurrentTry())))
+
+		err = links.recoverImpl(ctx, retrier.CurrentTry(), linksRevision, err)
 
 		if err == nil {
 			return nil
@@ -167,7 +199,7 @@ func (links *amqpLinks) RecoverIfNeeded(ctx context.Context, origErr error) erro
 	return err
 }
 
-func (links *amqpLinks) recoverImpl(ctx context.Context, try int, origErr error) error {
+func (links *amqpLinks) recoverImpl(ctx context.Context, try int, linksRevision uint64, origErr error) error {
 	_, span := tab.StartSpan(ctx, SpanRecoverLink)
 	defer span.End()
 
@@ -184,30 +216,30 @@ func (links *amqpLinks) recoverImpl(ctx context.Context, try int, origErr error)
 	span.AddAttributes(tab.Int64Attribute("attempt", int64(try)))
 
 	if shouldRecreateLink(origErr) {
-		span.AddAttributes(tab.StringAttribute(
-			"recovery", "link",
-		))
-		span.Logger().Info("Link was detached, recovering")
+		span.AddAttributes(
+			tab.StringAttribute("recovery_kind", "link"),
+			tab.StringAttribute("error", origErr.Error()),
+			tab.StringAttribute("error_type", fmt.Sprintf("%T", origErr)))
 
-		if err := links.recoverLink(ctx); err != nil {
-			span.Logger().Error(fmt.Errorf("failed to recover links after detach: %w", err))
+		if err := links.recoverLink(ctx, &linksRevision); err != nil {
+			span.AddAttributes(tab.StringAttribute("recoveryFailure", err.Error()))
 			return err
 		}
 
 		return nil
 	} else if shouldRecreateConnection(ctx, origErr) {
-		span.AddAttributes(tab.StringAttribute(
-			"recovery", "connection",
-		))
-
-		span.Logger().Info("Recreating connection")
+		span.AddAttributes(
+			tab.StringAttribute("recovery_kind", "connection"),
+			tab.StringAttribute("error", origErr.Error()),
+			tab.StringAttribute("error_type", fmt.Sprintf("%T", origErr)))
 
 		if err := links.recoverConnection(ctx); err != nil {
 			span.Logger().Error(fmt.Errorf("failed to recreate connection: %w", err))
 			return err
 		}
 
-		if err := links.recoverLink(ctx); err != nil {
+		// unconditionally recover the link if the connection died.
+		if err := links.recoverLink(ctx, nil); err != nil {
 			span.Logger().Error(fmt.Errorf("failed to recover links after connection restarted: %w", err))
 			return err
 		}
@@ -244,7 +276,7 @@ func (links *amqpLinks) recoverConnection(ctx context.Context) error {
 // If this link has been closed via Close() it will return an non retriable error.
 func (l *amqpLinks) Get(ctx context.Context) (AMQPSender, AMQPReceiver, MgmtClient, uint64, error) {
 	l.mu.RLock()
-	sender, receiver, mgmt, closedPermanently := l.sender, l.receiver, l.mgmt, l.closedPermanently
+	sender, receiver, mgmt, revision, closedPermanently := l.sender, l.receiver, l.mgmt, l.revision, l.closedPermanently
 	l.mu.RUnlock()
 
 	if closedPermanently {
@@ -252,7 +284,7 @@ func (l *amqpLinks) Get(ctx context.Context) (AMQPSender, AMQPReceiver, MgmtClie
 	}
 
 	if sender != nil || receiver != nil {
-		return sender, receiver, mgmt, 0, nil
+		return sender, receiver, mgmt, revision, nil
 	}
 
 	l.mu.Lock()
@@ -262,7 +294,7 @@ func (l *amqpLinks) Get(ctx context.Context) (AMQPSender, AMQPReceiver, MgmtClie
 		return nil, nil, nil, 0, err
 	}
 
-	return l.sender, l.receiver, l.mgmt, 0, nil
+	return l.sender, l.receiver, l.mgmt, l.revision, nil
 }
 
 // EntityPath is the full entity path for the queue/topic/subscription.

@@ -22,7 +22,7 @@ func TestMessageSettlementUsingReceiver(t *testing.T) {
 	require.NoError(t, err)
 
 	var msg *ReceivedMessage
-	msg, err = receiver.receiveMessage(ctx)
+	msg, err = receiver.ReceiveMessage(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, 1, msg.DeliveryCount)
 
@@ -30,15 +30,15 @@ func TestMessageSettlementUsingReceiver(t *testing.T) {
 	err = receiver.AbandonMessage(context.Background(), msg)
 	require.NoError(t, err)
 
-	msg, err = receiver.receiveMessage(ctx)
+	msg, err = receiver.ReceiveMessage(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, 2, msg.DeliveryCount)
 
 	// message from queue -> DeadLetter -> to the dead letter queue
-	err = receiver.DeadLetterMessage(ctx, msg)
+	err = receiver.DeadLetterMessage(ctx, msg, nil)
 	require.NoError(t, err)
 
-	msg, err = deadLetterReceiver.receiveMessage(ctx)
+	msg, err = deadLetterReceiver.ReceiveMessage(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, 2, msg.DeliveryCount)
 
@@ -54,7 +54,7 @@ func TestMessageSettlementUsingReceiver(t *testing.T) {
 	err = deadLetterReceiver.AbandonMessage(ctx, msg)
 	require.NoError(t, err)
 
-	msg, err = deadLetterReceiver.receiveMessage(ctx)
+	msg, err = deadLetterReceiver.ReceiveMessage(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, 2, msg.DeliveryCount)
 
@@ -77,7 +77,7 @@ func TestDeferredMessages(t *testing.T) {
 		require.NoError(t, err)
 
 		var msg *ReceivedMessage
-		msg, err = receiver.receiveMessage(ctx)
+		msg, err = receiver.ReceiveMessage(ctx, nil)
 		require.NoError(t, err)
 		require.NotNil(t, msg)
 
@@ -86,7 +86,7 @@ func TestDeferredMessages(t *testing.T) {
 		err = receiver.DeferMessage(ctx, msg)
 		require.NoError(t, err)
 
-		msg, err = receiver.receiveDeferredMessage(ctx, *msg.SequenceNumber)
+		msg, err = receiver.ReceiveDeferredMessage(ctx, *msg.SequenceNumber)
 		require.NoError(t, err)
 
 		return msg
@@ -105,7 +105,7 @@ func TestDeferredMessages(t *testing.T) {
 		// BUG: we're timing out here, even though our abandon should have put the message
 		// back into the queue. It appears that settlement methods don't work on messages
 		// that have been received as deferred.
-		msg, err = receiver.receiveMessage(ctx)
+		msg, err = receiver.ReceiveMessage(ctx, nil)
 		require.NoError(t, err)
 		require.NotNil(t, msg)
 	})
@@ -113,11 +113,11 @@ func TestDeferredMessages(t *testing.T) {
 	t.Run("DeadLetter", func(t *testing.T) {
 		msg := deferMessage()
 
-		err := receiver.DeadLetterMessage(ctx, msg)
+		err := receiver.DeadLetterMessage(ctx, msg, nil)
 		require.NoError(t, err)
 
 		// check that the message made it to the dead letter queue
-		msg, err = deadLetterReceiver.receiveMessage(ctx)
+		msg, err = deadLetterReceiver.ReceiveMessage(ctx, nil)
 		require.NoError(t, err)
 
 		// remove it from the DLQ
@@ -143,7 +143,7 @@ func TestDeferredMessages(t *testing.T) {
 		err := receiver.DeferMessage(ctx, msg)
 		require.NoError(t, err)
 
-		msg, err = receiver.receiveDeferredMessage(ctx, *msg.SequenceNumber)
+		msg, err = receiver.ReceiveDeferredMessage(ctx, *msg.SequenceNumber)
 		require.NoError(t, err)
 
 		err = receiver.CompleteMessage(ctx, msg)
@@ -176,21 +176,21 @@ func TestMessageSettlementUsingOnlyBackupSettlement(t *testing.T) {
 	actualSettler.onlyDoBackupSettlement = true
 
 	var msg *ReceivedMessage
-	msg, err = receiver.receiveMessage(ctx)
+	msg, err = receiver.ReceiveMessage(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, 1, msg.DeliveryCount)
 
 	err = receiver.AbandonMessage(context.Background(), msg)
 	require.NoError(t, err)
 
-	msg, err = receiver.receiveMessage(ctx)
+	msg, err = receiver.ReceiveMessage(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, 2, msg.DeliveryCount)
 
-	err = receiver.DeadLetterMessage(ctx, msg)
+	err = receiver.DeadLetterMessage(ctx, msg, nil)
 	require.NoError(t, err)
 
-	msg, err = deadLetterReceiver.receiveMessage(ctx)
+	msg, err = deadLetterReceiver.ReceiveMessage(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, 2, msg.DeliveryCount)
 
@@ -235,22 +235,21 @@ func newTestStuff(t *testing.T) *testStuff {
 	}
 
 	var err error
-	testStuff.Receiver, err = client.NewReceiverForQueue(queueName)
+	testStuff.Receiver, err = client.NewReceiverForQueue(queueName, nil)
 	require.NoError(t, err)
 
 	testStuff.Sender, err = client.NewSender(queueName)
 	require.NoError(t, err)
 
 	testStuff.DeadLetterReceiver, err = client.NewReceiverForQueue(
-		queueName,
-		ReceiverWithSubQueue(SubQueueDeadLetter))
+		queueName, &ReceiverOptions{SubQueue: SubQueueDeadLetter})
 	require.NoError(t, err)
 
 	return testStuff
 }
 
 func assertEntityEmpty(t *testing.T, receiver *Receiver) {
-	messages, err := receiver.PeekMessages(context.TODO(), 1)
+	messages, err := receiver.PeekMessages(context.TODO(), 1, nil)
 	require.NoError(t, err)
 	require.Empty(t, messages)
 }

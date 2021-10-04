@@ -35,7 +35,7 @@ func TestAMQPLinks(t *testing.T) {
 	require.NotNil(t, mgmt) // you always get a free mgmt link
 	require.Nil(t, receiver)
 	require.Nil(t, err)
-	require.EqualValues(t, 0, linkRevision)
+	require.EqualValues(t, 1, linkRevision)
 	require.EqualValues(t, 1, *createLinkCallCount)
 
 	// further calls should just be cached instances
@@ -44,7 +44,7 @@ func TestAMQPLinks(t *testing.T) {
 	require.EqualValues(t, mgmt, mgmt2)
 	require.Nil(t, receiver2)
 	require.Nil(t, err2)
-	require.EqualValues(t, 0, linkRevision2, "No recover calls, so link revision remains the same")
+	require.EqualValues(t, 1, linkRevision2, "No recover calls, so link revision remains the same")
 	require.EqualValues(t, 1, *createLinkCallCount, "No create call needed since an instance was cached")
 
 	// closing multiple times is fine.
@@ -109,14 +109,14 @@ func TestAMQPLinksRecovery(t *testing.T) {
 
 	ctx := context.TODO()
 
-	require.Nil(t, links.RecoverIfNeeded(ctx, nil))
+	require.Nil(t, links.RecoverIfNeeded(ctx, 0, nil))
 	require.EqualValues(t, 0, sess.closed)
 	require.EqualValues(t, 0, ns.recovered)
 	require.EqualValues(t, 0, createLinkCalled, "new links aren't needed")
 	require.False(t, links.closedPermanently, "link should still be usable")
 	require.Empty(t, ns.clientRevisions, "no connection recoveries happened")
 
-	require.Nil(t, links.RecoverIfNeeded(ctx, errors.New("Passes through")))
+	require.Nil(t, links.RecoverIfNeeded(ctx, 0, errors.New("Passes through")))
 	require.EqualValues(t, 0, sess.closed)
 	require.EqualValues(t, 0, ns.recovered)
 	require.EqualValues(t, 0, createLinkCalled, "new links aren't needed")
@@ -124,22 +124,33 @@ func TestAMQPLinksRecovery(t *testing.T) {
 	require.Empty(t, ns.clientRevisions, "no connection recoveries happened")
 
 	// now let's initiate a recovery at the connection level
-	require.NoError(t, links.RecoverIfNeeded(ctx, permanentNetError{}), permanentNetError{}.Error())
+	require.NoError(t, links.RecoverIfNeeded(ctx, 0, permanentNetError{}), permanentNetError{}.Error())
 	require.EqualValues(t, 1, ns.recovered, "client gets recovered")
 	require.EqualValues(t, 1, sender.Closed, "link is closed")
 	require.EqualValues(t, 1, createLinkCalled, "link is created")
 	require.False(t, links.closedPermanently, "link should still be usable")
 	require.EqualValues(t, []uint64{2001}, ns.clientRevisions, "links handed us the client revision it got last")
 
+	// validate that our linkRevision got updated and that we're returning it.
+	// (note that link revisions start at 1, so we're not at 2, even though
+	// only one recover has happened)
+	_, _, _, linkRevision, err := links.Get(ctx)
+	require.NoError(t, err)
+	require.EqualValues(t, uint64(2), linkRevision)
+
 	ns.recovered = 0
 	sender.Closed = 0
 	createLinkCalled = 0
 
 	// let's do just a link level one
-	require.NoError(t, links.RecoverIfNeeded(ctx, amqp.ErrLinkDetached), amqp.ErrLinkDetached.Error())
+	require.NoError(t, links.RecoverIfNeeded(ctx, links.revision+1, amqp.ErrLinkDetached), amqp.ErrLinkDetached.Error())
 	require.EqualValues(t, 0, ns.recovered)
 	require.EqualValues(t, 1, sender.Closed)
 	require.EqualValues(t, 1, createLinkCalled)
+
+	_, _, _, linkRevision, err = links.Get(ctx)
+	require.NoError(t, err)
+	require.EqualValues(t, uint64(3), linkRevision)
 
 	// cancellation
 	ctx, cancel := context.WithCancel(context.Background())
@@ -150,7 +161,7 @@ func TestAMQPLinksRecovery(t *testing.T) {
 	createLinkCalled = 0
 
 	// cancellation overrides any other logic.
-	require.Error(t, links.RecoverIfNeeded(ctx, amqp.ErrLinkDetached), amqp.ErrLinkDetached.Error())
+	require.Error(t, links.RecoverIfNeeded(ctx, links.revision+1, amqp.ErrLinkDetached), amqp.ErrLinkDetached.Error())
 	require.EqualValues(t, 0, ns.recovered)
 	require.EqualValues(t, 0, sender.Closed)
 	require.EqualValues(t, 0, createLinkCalled)

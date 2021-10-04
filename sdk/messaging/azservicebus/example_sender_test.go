@@ -25,8 +25,14 @@ func ExampleSender_SendMessage_message() {
 }
 
 func ExampleSender_SendMessage_messageBatch() {
-	batch, err := sender.NewMessageBatch(context.TODO())
-	exitOnError("Failed to create message batch", err)
+	client, err := azservicebus.NewClientWithConnectionString(connectionString, nil)
+	panicOnError("Failed to create client", err)
+
+	sender, err := client.NewSender(queueName)
+	panicOnError("Failed to create sender", err)
+
+	batch, err := sender.NewMessageBatch(context.TODO(), nil)
+	panicOnError("Failed to create message batch", err)
 
 	messagesToSend := []*azservicebus.Message{
 		{Body: []byte("hello world")},

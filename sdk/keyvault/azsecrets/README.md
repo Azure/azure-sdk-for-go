@@ -59,17 +59,11 @@ go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity
   > The `"vaultUri"` property is the `vault_url` used by [azsecrets.NewClient][secret_client_docs]
 
 ### Authenticate the client
-This document demonstrates using [DefaultAzureCredential][default_cred_ref]
-to authenticate as a service principal. However, [Client][secret_client_docs]
-accepts any [azure-identity][azure_identity] credential. See the
-[azure-identity][azure_identity] documentation for more information about other
-credentials.
+This document demonstrates using [DefaultAzureCredential][default_cred_ref] to authenticate as a service principal. However, [Client][secret_client_docs] accepts any [azure-identity][azure_identity] credential. See the [azure-identity][azure_identity] documentation for more information about other credentials.
 
 
 #### Create a service principal (optional)
-This [Azure Cloud Shell][azure_cloud_shell] snippet shows how to create a
-new service principal. Before using it, replace "your-application-name" with
-a more appropriate name for your service principal.
+This [Azure Cloud Shell][azure_cloud_shell] snippet shows how to create a new service principal. Before using it, replace "your-application-name" with a more appropriate name for your service principal.
 
 Create a service principal:
 ```Bash
@@ -87,9 +81,7 @@ az ad sp create-for-rbac --name http://my-application --skip-assignment
 > }
 > ```
 
-Use the output to set **AZURE_CLIENT_ID** ("appId" above), **AZURE_CLIENT_SECRET**
-("password" above) and **AZURE_TENANT_ID** ("tenant" above) environment variables.
-The following example shows a way to do this in Bash:
+Use the output to set **AZURE_CLIENT_ID** ("appId" above), **AZURE_CLIENT_SECRET** ("password" above) and **AZURE_TENANT_ID** ("tenant" above) environment variables. The following example shows a way to do this in Bash:
 ```Bash
 export AZURE_CLIENT_ID="generated app id"
 export AZURE_CLIENT_SECRET="random password"
@@ -106,13 +98,9 @@ az keyvault set-policy --name my-key-vault --spn $AZURE_CLIENT_ID --secret-permi
 If you have enabled role-based access control (RBAC) for Key Vault instead, you can find roles like "Key Vault Secrets Officer" in our [RBAC guide][rbac_guide].
 
 #### Create a client
-Once the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and
-**AZURE_TENANT_ID** environment variables are set,
-[DefaultAzureCredential][default_cred_ref] will be able to authenticate the Client.
+Once the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET** and **AZURE_TENANT_ID** environment variables are set, [DefaultAzureCredential][default_cred_ref] will be able to authenticate the Client.
 
-Constructing the client also requires your vault's URL, which you can
-get from the Azure CLI or the Azure Portal. In the Azure Portal, this URL is
-the vault's "DNS Name".
+Constructing the client also requires your vault's URL, which you can get from the Azure CLI or the Azure Portal. In the Azure Portal, this URL is the vault's "DNS Name".
 
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -135,7 +123,7 @@ This section contains code snippets covering common tasks:
 * [List Secrets](#list-secrets "List Secrets")
 
 ### Set a Secret
-[set_secret](https://aka.ms/azsdk/go/keyvault) creates new secrets and changes the values of existing secrets. If no secret with the given name exists, `set_secret` creates a new secret with that name and the given value. If the given name is in use, `set_secret` creates a new version of that secret, with the given value.
+[SetSecret](https://aka.ms/azsdk/go/keyvault) creates new secrets and changes the values of existing secrets. If no secret with the given name exists, `SetSecret` creates a new secret with that name and the given value. If the given name is in use, `SetSecret` creates a new version of that secret, with the given value.
 
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -150,8 +138,7 @@ fmt.Printf("Name: %s, Value: %s\n", *resp.ID, *resp.Value)
 ```
 
 ### Retrieve a Secret
-[get_secret](https://aka.ms/azsdk/go/keyvault)
-retrieves a secret previously stored in the Key Vault.
+[GetSecret](https://aka.ms/azsdk/go/keyvault) retrieves a secret previously stored in the Key Vault.
 
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -166,9 +153,7 @@ fmt.Printf("Name: %s, Value: %s\n", *resp.ID, *resp.Value)
 ```
 
 ### Update Secret metadata
-[update_secret_properties](https://aka.ms/azsdk/go/keyvault)
-updates a secret's metadata. It cannot change the secret's value; use [set_secret](#set-a-secret) to set a secret's
-value.
+[UpdateSecretProperties](https://aka.ms/azsdk/go/keyvault) updates a secret's metadata. It cannot change the secret's value; use [SetSecret](#set-a-secret) to set a secret's value.
 
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -197,10 +182,7 @@ fmt.Printf("Updated on: %v, Content type: %v, Enabled: %v", *resp.Attributes.Upd
 ```
 
 ### Delete a Secret
-[begin_delete_secret](https://aka.ms/azsdk/go/keyvault)
-requests Key Vault delete a secret, returning a poller which allows you to wait for the deletion to finish. Waiting is
-helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge (permanently delete) the secret as
-soon as possible. When [soft-delete][soft_delete] is disabled, `begin_delete_secret` itself is permanent.
+[BeginDeleteSecret](https://aka.ms/azsdk/go/keyvault) requests Key Vault delete a secret, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge (permanently delete) the secret as soon as possible. When [soft-delete][soft_delete] is disabled, `BeginDeleteSecret` itself is permanent.
 
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -211,8 +193,7 @@ final, err := resp.PollUntilDone(context.Background(), 1 * time.Second)
 ```
 
 ### List secrets
-[list_properties_of_secrets](https://aka.ms/azsdk/go/keyvault)
-lists the properties of all of the secrets in the client's vault. This list doesn't include the secret's values.
+[ListSecrets](https://aka.ms/azsdk/go/keyvault) lists the properties of all of the secrets in the client's vault. This list doesn't include the secret's values.
 
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)

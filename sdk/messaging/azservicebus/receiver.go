@@ -147,7 +147,7 @@ type ReceiveOptions struct {
 
 // ReceiveMessages receives a fixed number of messages, up to numMessages.
 // There are two timeouts involved in receiving messages:
-// 1. An explicit timeout set with `ReceiveWithMaxWaitTime` (default: 60 seconds)
+// 1. An explicit timeout set with `ReceiveOptions.MaxWaitTime` (default: 60 seconds)
 // 2. An implicit timeout (default: 1 second) that starts after the first
 //    message has been received.
 func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options *ReceiveOptions) ([]*ReceivedMessage, error) {
@@ -414,7 +414,7 @@ func (r *Receiver) ReceiveDeferredMessage(ctx context.Context, sequenceNumber in
 	return messages[0], nil
 }
 
-// ReceiveMessage receives a single message.
+// ReceiveMessage receives a single message, waiting up to `ReceiveOptions.MaxWaitTime` (default: 60 seconds)
 func (r *Receiver) ReceiveMessage(ctx context.Context, options *ReceiveOptions) (*ReceivedMessage, error) {
 	messages, err := r.ReceiveMessages(ctx, 1, options)
 

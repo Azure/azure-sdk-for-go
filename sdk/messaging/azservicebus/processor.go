@@ -16,6 +16,8 @@ import (
 	"github.com/devigned/tab"
 )
 
+// ProcessorOptions contains options for the `Client.NewProcessorForQueue` or
+// `Client.NewProcessorForSubscription` functions.
 type ProcessorOptions struct {
 	// ReceiveMode controls when a message is deleted from Service Bus.
 	//

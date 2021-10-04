@@ -32,8 +32,8 @@ type Client struct {
 	links       map[uint64]internal.Closeable
 }
 
-// ClientOptions can be used to configure options in the client
-// beyond authentication.
+// ClientOptions contains options for the `NewClient` and `NewClientWithConnectionString`
+// functions.
 type ClientOptions struct {
 	// TLSConfig configures a client with a custom *tls.Config.
 	TLSConfig *tls.Config

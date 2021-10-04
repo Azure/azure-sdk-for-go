@@ -57,6 +57,8 @@ type Receiver struct {
 	receiving bool
 }
 
+// ReceiverOptions contains options for the `Client.NewReceiverForQueue` or `Client.NewReceiverForSubscription`
+// functions.
 type ReceiverOptions struct {
 	// ReceiveMode controls when a message is deleted from Service Bus.
 	//

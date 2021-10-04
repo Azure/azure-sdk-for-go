@@ -13,9 +13,6 @@ import (
 )
 
 type (
-	// SenderOption specifies an option that can configure a Sender.
-	SenderOption func(sender *Sender) error
-
 	// Sender is used to send messages as well as schedule them to be delivered at a later date.
 	Sender struct {
 		queueOrTopic   string
@@ -36,6 +33,7 @@ const (
 	spanNameSendMessageFmt string = "sb.sender.SendMessage.%s"
 )
 
+// MessageBatchOptions contains options for the `Sender.NewMessageBatch` function.
 type MessageBatchOptions struct {
 	// MaxSizeInBytes overrides the max size (in bytes) for a batch.
 	// By default NewMessageBatch will use the max message size provided by the service.

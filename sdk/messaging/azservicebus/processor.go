@@ -65,6 +65,18 @@ func ProcessorWithSubQueue(subQueue SubQueue) ProcessorOption {
 }
 
 // ProcessorWithReceiveMode controls the receive mode for the processor.
+// The receive mode controls when a message is deleted from Service Bus.
+//
+// `azservicebus.PeekLock` is the default. The message is locked, preventing multiple
+// receivers from processing the message at once. You control the lock state of the message
+// using one of the message settlement functions like processor.CompleteMessage(), which removes
+// it from Service Bus, or processor.AbandonMessage(), which makes it available again.
+//
+// `azservicebus.ReceiveAndDelete` causes Service Bus to remove the message as soon
+// as it's received.
+//
+// More information about receive modes:
+// https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
 func ProcessorWithReceiveMode(receiveMode ReceiveMode) ProcessorOption {
 	return func(processor *Processor) error {
 		if receiveMode != PeekLock && receiveMode != ReceiveAndDelete {

@@ -24,13 +24,18 @@ func exitOnError(message string, err error) {
 	log.Printf("(error in example): %s: %s", message, err.Error())
 }
 
-func yourLogicForProcessing(message *azservicebus.ReceivedMessage) {}
+func yourLogicForProcessing(message *azservicebus.ReceivedMessage) {
+	log.Printf("Message received")
+}
 
 func yourMessageHandler(message *azservicebus.ReceivedMessage) error {
+	log.Printf("Message received")
 	return nil
 }
 
-func yourErrorHandler(err error) {}
+func yourErrorHandler(err error) {
+	log.Printf("Error received: %s", err.Error())
+}
 
 var connectionString string
 var queueName string
@@ -44,10 +49,13 @@ var err error
 
 func init() {
 	_ = godotenv.Load()
-	connectionString, queueName = os.Getenv("SERVICEBUS_CONNECTION_STRING"), os.Getenv("SERVICEBUS_QUEUE")
+	connectionString = os.Getenv("SERVICEBUS_CONNECTION_STRING")
+	queueName = os.Getenv("SERVICEBUS_QUEUE")
+	topicName = os.Getenv("SERVICEBUS_TOPIC")
+	subscriptionName = os.Getenv("SERVICEBUS_SUBSCRIPTION")
 
-	if connectionString == "" || queueName == "" {
-		log.Printf("Need a connection string and queue for this example")
+	if connectionString == "" || queueName == "" || topicName == "" || subscriptionName == "" {
+		log.Printf("SERVICEBUS_CONNECTION_STRING, SERVICEBUS_QUEUE, SERVICEBUS_TOPIC, and SERVICEBUS_SUBSCRIPTION need to be defined in the environment")
 		return
 	}
 

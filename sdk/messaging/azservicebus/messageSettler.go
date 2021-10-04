@@ -17,7 +17,7 @@ type settler interface {
 	CompleteMessage(ctx context.Context, message *ReceivedMessage) error
 	AbandonMessage(ctx context.Context, message *ReceivedMessage) error
 	DeferMessage(ctx context.Context, message *ReceivedMessage) error
-	DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options ...DeadLetterOption) error
+	DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error
 }
 
 type messageSettler struct {

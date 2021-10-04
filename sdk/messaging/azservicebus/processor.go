@@ -270,8 +270,8 @@ func (p *Processor) DeferMessage(ctx context.Context, message *ReceivedMessage) 
 // DeadLetterMessage settles a message by moving it to the dead letter queue for a
 // queue or subscription. To receive these messages create a receiver with `Client.NewProcessor()`
 // using the `ProcessorWithSubQueue()` option.
-func (p *Processor) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options ...DeadLetterOption) error {
-	return p.settler.DeadLetterMessage(ctx, message, options...)
+func (p *Processor) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error {
+	return p.settler.DeadLetterMessage(ctx, message, options)
 }
 
 // subscribe continually receives messages from Service Bus, stopping

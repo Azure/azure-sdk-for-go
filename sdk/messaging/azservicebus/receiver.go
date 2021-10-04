@@ -456,8 +456,8 @@ func (r *Receiver) DeferMessage(ctx context.Context, message *ReceivedMessage) e
 // DeadLetterMessage settles a message by moving it to the dead letter queue for a
 // queue or subscription. To receive these messages create a receiver with `Client.NewReceiver()`
 // using the `ReceiverWithSubQueue()` option.
-func (r *Receiver) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options ...DeadLetterOption) error {
-	return r.settler.DeadLetterMessage(ctx, message, options...)
+func (r *Receiver) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error {
+	return r.settler.DeadLetterMessage(ctx, message, options)
 }
 
 type entity struct {

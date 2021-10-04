@@ -165,7 +165,7 @@ func runBatchReceiver(ctx context.Context, serviceBusClient *azservicebus.Client
 	}
 
 	for {
-		messages, err := receiver.ReceiveMessages(ctx, 20)
+		messages, err := receiver.ReceiveMessages(ctx, 20, nil)
 
 		if err != nil {
 			trackException(&receiverStats, telemetryClient, "receive batch failure", err)

@@ -35,7 +35,7 @@ func TestMessageSettlementUsingReceiver(t *testing.T) {
 	require.EqualValues(t, 2, msg.DeliveryCount)
 
 	// message from queue -> DeadLetter -> to the dead letter queue
-	err = receiver.DeadLetterMessage(ctx, msg)
+	err = receiver.DeadLetterMessage(ctx, msg, nil)
 	require.NoError(t, err)
 
 	msg, err = deadLetterReceiver.receiveMessage(ctx, nil)
@@ -113,7 +113,7 @@ func TestDeferredMessages(t *testing.T) {
 	t.Run("DeadLetter", func(t *testing.T) {
 		msg := deferMessage()
 
-		err := receiver.DeadLetterMessage(ctx, msg)
+		err := receiver.DeadLetterMessage(ctx, msg, nil)
 		require.NoError(t, err)
 
 		// check that the message made it to the dead letter queue
@@ -187,7 +187,7 @@ func TestMessageSettlementUsingOnlyBackupSettlement(t *testing.T) {
 	require.NoError(t, err)
 	require.EqualValues(t, 2, msg.DeliveryCount)
 
-	err = receiver.DeadLetterMessage(ctx, msg)
+	err = receiver.DeadLetterMessage(ctx, msg, nil)
 	require.NoError(t, err)
 
 	msg, err = deadLetterReceiver.receiveMessage(ctx, nil)

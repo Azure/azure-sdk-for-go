@@ -261,11 +261,11 @@ func TestReceiverPeek(t *testing.T) {
 		require.NoError(t, receiver.AbandonMessage(ctx, m))
 	}
 
-	peekedMessages, err := receiver.PeekMessages(ctx, 2)
+	peekedMessages, err := receiver.PeekMessages(ctx, 2, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, 2, len(peekedMessages))
 
-	peekedMessages2, err := receiver.PeekMessages(ctx, 2)
+	peekedMessages2, err := receiver.PeekMessages(ctx, 2, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, 1, len(peekedMessages2))
 
@@ -275,7 +275,9 @@ func TestReceiverPeek(t *testing.T) {
 		"Message 0", "Message 1", "Message 2",
 	}, getSortedBodies(append(peekedMessages, peekedMessages2...)))
 
-	repeekedMessages, err := receiver.PeekMessages(ctx, 1, PeekFromSequenceNumber(*peekedMessages2[0].SequenceNumber))
+	repeekedMessages, err := receiver.PeekMessages(ctx, 1, &PeekOptions{
+		FromSequenceNumber: peekedMessages2[0].SequenceNumber,
+	})
 	require.NoError(t, err)
 	require.EqualValues(t, 1, len(repeekedMessages))
 
@@ -284,7 +286,7 @@ func TestReceiverPeek(t *testing.T) {
 	}, getSortedBodies(repeekedMessages))
 
 	// and peek again (note it won't reset so there'll be "nothing")
-	noMessagesExpected, err := receiver.PeekMessages(ctx, 1)
+	noMessagesExpected, err := receiver.PeekMessages(ctx, 1, nil)
 	require.NoError(t, err)
 	require.Empty(t, noMessagesExpected)
 }

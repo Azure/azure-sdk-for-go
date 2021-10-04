@@ -340,35 +340,18 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 	return receivedMessages, nil
 }
 
-type peekOptions struct {
-	fromSequenceNumber *int64
-}
-
-type PeekOption func(p *peekOptions) error
-
-// PeekFromSequenceNumber sets the sequence number to start peeking
-// messages.
-func PeekFromSequenceNumber(sequenceNumber int64) PeekOption {
-	return func(p *peekOptions) error {
-		p.fromSequenceNumber = &sequenceNumber
-		return nil
-	}
+// PeekOptions contains options for the `Receiver.PeekMessages`
+// function.
+type PeekOptions struct {
+	// FromSequenceNumber is the sequence number to start with when peeking messages.
+	FromSequenceNumber *int64
 }
 
 // PeekMessages will peek messages without locking or deleting messages.
 // Messages that are peeked do not have lock tokens, so settlement methods
 // like CompleteMessage, AbandonMessage, DeferMessage or DeadLetterMessage
 // will not work with them.
-func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, options ...PeekOption) ([]*ReceivedMessage, error) {
-
-	peekOptions := &peekOptions{}
-
-	for _, opt := range options {
-		if err := opt(peekOptions); err != nil {
-			return nil, err
-		}
-	}
-
+func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, options *PeekOptions) ([]*ReceivedMessage, error) {
 	_, _, mgmt, _, err := r.amqpLinks.Get(ctx)
 
 	if err != nil {
@@ -376,9 +359,11 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 	}
 
 	var sequenceNumber = r.lastPeekedSequenceNumber + 1
+	updateInternalSequenceNumber := true
 
-	if peekOptions.fromSequenceNumber != nil {
-		sequenceNumber = *peekOptions.fromSequenceNumber
+	if options != nil && options.FromSequenceNumber != nil {
+		sequenceNumber = *options.FromSequenceNumber
+		updateInternalSequenceNumber = false
 	}
 
 	messages, err := mgmt.PeekMessages(ctx, sequenceNumber, int32(maxMessageCount))
@@ -393,7 +378,7 @@ func (r *Receiver) PeekMessages(ctx context.Context, maxMessageCount int, option
 		receivedMessages[i] = newReceivedMessage(ctx, messages[i])
 	}
 
-	if len(receivedMessages) > 0 && peekOptions.fromSequenceNumber == nil {
+	if len(receivedMessages) > 0 && updateInternalSequenceNumber {
 		// only update this if they're doing the implicit iteration as part of the receiver.
 		r.lastPeekedSequenceNumber = *receivedMessages[len(receivedMessages)-1].SequenceNumber
 	}

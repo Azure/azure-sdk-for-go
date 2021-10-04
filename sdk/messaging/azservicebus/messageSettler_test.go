@@ -249,7 +249,7 @@ func newTestStuff(t *testing.T) *testStuff {
 }
 
 func assertEntityEmpty(t *testing.T, receiver *Receiver) {
-	messages, err := receiver.PeekMessages(context.TODO(), 1)
+	messages, err := receiver.PeekMessages(context.TODO(), 1, nil)
 	require.NoError(t, err)
 	require.Empty(t, messages)
 }

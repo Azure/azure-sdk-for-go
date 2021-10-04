@@ -341,6 +341,19 @@ If you'd like to contribute to this library, please read the [contributing guide
 [topic_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#topics
 [subscription_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
 [service_bus_overview]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview
+[msdoc_settling]: https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
+[godoc_examples]: https://aka.ms/azsdkgo/azservicebus
+[godoc_client]: https://aka.ms/azsdkgo/azservicebus
+[godoc_sender]: https://aka.ms/azsdkgo/azservicebus
+[godoc_receiver]: https://aka.ms/azsdkgo/azservicebus
+[godoc_receiver_completemessage]: https://aka.ms/azsdkgo/azservicebus
+[godoc_receiver_deadlettermessage]: https://aka.ms/azsdkgo/azservicebus
+[godoc_processor]: https://aka.ms/azsdkgo/azservicebus
+[godoc_processor_deadlettermessage]: https://aka.ms/azsdkgo/azservicebus
+[godoc_newsender]: https://aka.ms/azsdkgo/azservicebus
+[godoc_newreceiver_queue]: https://aka.ms/azsdkgo/azservicebus
+[godoc_newreceiver_subscription]: https://aka.ms/azsdkgo/azservicebus
+<!-- 
 [godoc_examples]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#pkg-examples
 [godoc_client]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client
 [godoc_sender]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Sender
@@ -352,4 +365,4 @@ If you'd like to contribute to this library, please read the [contributing guide
 [godoc_newsender]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewSender
 [godoc_newreceiver_queue]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewReceiverWithQueue
 [godoc_newreceiver_subscription]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewReceiverWithQueue
-[msdoc_settling]: https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
+-->

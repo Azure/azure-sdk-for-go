@@ -28,15 +28,6 @@ func yourLogicForProcessing(message *azservicebus.ReceivedMessage) {
 	log.Printf("Message received")
 }
 
-func yourMessageHandler(message *azservicebus.ReceivedMessage) error {
-	log.Printf("Message received")
-	return nil
-}
-
-func yourErrorHandler(err error) {
-	log.Printf("Error received: %s", err.Error())
-}
-
 var connectionString string
 var queueName string
 var topicName string

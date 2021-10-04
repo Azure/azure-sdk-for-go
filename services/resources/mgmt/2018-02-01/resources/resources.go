@@ -722,7 +722,7 @@ func (client Client) GetByIDResponder(resp *http.Response) (result GenericResour
 // Parameters:
 // filter - the filter to apply on the operation.
 // expand - the $expand query parameter.
-// top - the number of results to return. If null is passed, returns all resource groups.
+// top - the maximum number of results to return. If null is passed, returns all resources.
 func (client Client) List(ctx context.Context, filter string, expand string, top *int32) (result ListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.List")
@@ -850,7 +850,7 @@ func (client Client) ListComplete(ctx context.Context, filter string, expand str
 // filter - the filter to apply on the operation.
 // expand - comma-separated list of additional properties to be included in the response. Valid values include
 // `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
-// top - the number of results to return. If null is passed, returns all resources.
+// top - the maximum number of results to return. If null is passed, returns all resources.
 func (client Client) ListByResourceGroup(ctx context.Context, resourceGroupName string, filter string, expand string, top *int32) (result ListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListByResourceGroup")

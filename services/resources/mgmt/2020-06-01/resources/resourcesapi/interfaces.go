@@ -117,7 +117,7 @@ var _ ClientAPI = (*resources.Client)(nil)
 type GroupsClientAPI interface {
 	CheckExistence(ctx context.Context, resourceGroupName string) (result autorest.Response, err error)
 	CreateOrUpdate(ctx context.Context, resourceGroupName string, parameters resources.Group) (result resources.Group, err error)
-	Delete(ctx context.Context, resourceGroupName string, forceDeletionResourceTypes string) (result resources.GroupsDeleteFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, forceDeletionTypes string) (result resources.GroupsDeleteFuture, err error)
 	ExportTemplate(ctx context.Context, resourceGroupName string, parameters resources.ExportTemplateRequest) (result resources.GroupsExportTemplateFuture, err error)
 	Get(ctx context.Context, resourceGroupName string) (result resources.Group, err error)
 	List(ctx context.Context, filter string, top *int32) (result resources.GroupListResultPage, err error)

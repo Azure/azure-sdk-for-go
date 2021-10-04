@@ -21,22 +21,21 @@ type DefinitionsClient struct {
 }
 
 // NewDefinitionsClient creates an instance of the DefinitionsClient client.
-func NewDefinitionsClient() DefinitionsClient {
-	return NewDefinitionsClientWithBaseURI(DefaultBaseURI)
+func NewDefinitionsClient(subscriptionID string) DefinitionsClient {
+	return NewDefinitionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewDefinitionsClientWithBaseURI creates an instance of the DefinitionsClient client using a custom endpoint.  Use
 // this when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewDefinitionsClientWithBaseURI(baseURI string) DefinitionsClient {
-	return DefinitionsClient{NewWithBaseURI(baseURI)}
+func NewDefinitionsClientWithBaseURI(baseURI string, subscriptionID string) DefinitionsClient {
+	return DefinitionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate this operation creates or updates a policy definition in the given subscription with the given name.
 // Parameters:
 // policyDefinitionName - the name of the policy definition to create.
 // parameters - the policy definition properties.
-// subscriptionID - the ID of the target subscription.
-func (client DefinitionsClient) CreateOrUpdate(ctx context.Context, policyDefinitionName string, parameters Definition, subscriptionID string) (result Definition, err error) {
+func (client DefinitionsClient) CreateOrUpdate(ctx context.Context, policyDefinitionName string, parameters Definition) (result Definition, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DefinitionsClient.CreateOrUpdate")
 		defer func() {
@@ -47,7 +46,7 @@ func (client DefinitionsClient) CreateOrUpdate(ctx context.Context, policyDefini
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.CreateOrUpdatePreparer(ctx, policyDefinitionName, parameters, subscriptionID)
+	req, err := client.CreateOrUpdatePreparer(ctx, policyDefinitionName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -70,10 +69,10 @@ func (client DefinitionsClient) CreateOrUpdate(ctx context.Context, policyDefini
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client DefinitionsClient) CreateOrUpdatePreparer(ctx context.Context, policyDefinitionName string, parameters Definition, subscriptionID string) (*http.Request, error) {
+func (client DefinitionsClient) CreateOrUpdatePreparer(ctx context.Context, policyDefinitionName string, parameters Definition) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policyDefinitionName": autorest.Encode("path", policyDefinitionName),
-		"subscriptionId":       autorest.Encode("path", subscriptionID),
+		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2020-03-01"
@@ -197,8 +196,7 @@ func (client DefinitionsClient) CreateOrUpdateAtManagementGroupResponder(resp *h
 // Delete this operation deletes the policy definition in the given subscription with the given name.
 // Parameters:
 // policyDefinitionName - the name of the policy definition to delete.
-// subscriptionID - the ID of the target subscription.
-func (client DefinitionsClient) Delete(ctx context.Context, policyDefinitionName string, subscriptionID string) (result autorest.Response, err error) {
+func (client DefinitionsClient) Delete(ctx context.Context, policyDefinitionName string) (result autorest.Response, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DefinitionsClient.Delete")
 		defer func() {
@@ -209,7 +207,7 @@ func (client DefinitionsClient) Delete(ctx context.Context, policyDefinitionName
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.DeletePreparer(ctx, policyDefinitionName, subscriptionID)
+	req, err := client.DeletePreparer(ctx, policyDefinitionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -232,10 +230,10 @@ func (client DefinitionsClient) Delete(ctx context.Context, policyDefinitionName
 }
 
 // DeletePreparer prepares the Delete request.
-func (client DefinitionsClient) DeletePreparer(ctx context.Context, policyDefinitionName string, subscriptionID string) (*http.Request, error) {
+func (client DefinitionsClient) DeletePreparer(ctx context.Context, policyDefinitionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policyDefinitionName": autorest.Encode("path", policyDefinitionName),
-		"subscriptionId":       autorest.Encode("path", subscriptionID),
+		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2020-03-01"
@@ -346,8 +344,7 @@ func (client DefinitionsClient) DeleteAtManagementGroupResponder(resp *http.Resp
 // Get this operation retrieves the policy definition in the given subscription with the given name.
 // Parameters:
 // policyDefinitionName - the name of the policy definition to get.
-// subscriptionID - the ID of the target subscription.
-func (client DefinitionsClient) Get(ctx context.Context, policyDefinitionName string, subscriptionID string) (result Definition, err error) {
+func (client DefinitionsClient) Get(ctx context.Context, policyDefinitionName string) (result Definition, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DefinitionsClient.Get")
 		defer func() {
@@ -358,7 +355,7 @@ func (client DefinitionsClient) Get(ctx context.Context, policyDefinitionName st
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	req, err := client.GetPreparer(ctx, policyDefinitionName, subscriptionID)
+	req, err := client.GetPreparer(ctx, policyDefinitionName)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "Get", nil, "Failure preparing request")
 		return
@@ -381,10 +378,10 @@ func (client DefinitionsClient) Get(ctx context.Context, policyDefinitionName st
 }
 
 // GetPreparer prepares the Get request.
-func (client DefinitionsClient) GetPreparer(ctx context.Context, policyDefinitionName string, subscriptionID string) (*http.Request, error) {
+func (client DefinitionsClient) GetPreparer(ctx context.Context, policyDefinitionName string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policyDefinitionName": autorest.Encode("path", policyDefinitionName),
-		"subscriptionId":       autorest.Encode("path", subscriptionID),
+		"subscriptionId":       autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2020-03-01"
@@ -577,7 +574,6 @@ func (client DefinitionsClient) GetBuiltInResponder(resp *http.Response) (result
 // If $filter='category -eq {value}' is provided, the returned list only includes all policy definitions whose category
 // match the {value}.
 // Parameters:
-// subscriptionID - the ID of the target subscription.
 // filter - the filter to apply on the operation. Valid values for $filter are: 'atExactScope()', 'policyType
 // -eq {value}' or 'category eq '{value}''. If $filter is not provided, no filtering is performed. If
 // $filter=atExactScope() is provided, the returned list only includes all policy definitions that at the given
@@ -586,7 +582,7 @@ func (client DefinitionsClient) GetBuiltInResponder(resp *http.Response) (result
 // Static. If $filter='category -eq {value}' is provided, the returned list only includes all policy
 // definitions whose category match the {value}.
 // top - maximum number of records to return. When the $top filter is not provided, it will return 500 records.
-func (client DefinitionsClient) List(ctx context.Context, subscriptionID string, filter string, top *int32) (result DefinitionListResultPage, err error) {
+func (client DefinitionsClient) List(ctx context.Context, filter string, top *int32) (result DefinitionListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DefinitionsClient.List")
 		defer func() {
@@ -607,7 +603,7 @@ func (client DefinitionsClient) List(ctx context.Context, subscriptionID string,
 	}
 
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, subscriptionID, filter, top)
+	req, err := client.ListPreparer(ctx, filter, top)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.DefinitionsClient", "List", nil, "Failure preparing request")
 		return
@@ -634,9 +630,9 @@ func (client DefinitionsClient) List(ctx context.Context, subscriptionID string,
 }
 
 // ListPreparer prepares the List request.
-func (client DefinitionsClient) ListPreparer(ctx context.Context, subscriptionID string, filter string, top *int32) (*http.Request, error) {
+func (client DefinitionsClient) ListPreparer(ctx context.Context, filter string, top *int32) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", subscriptionID),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2020-03-01"
@@ -698,7 +694,7 @@ func (client DefinitionsClient) listNextResults(ctx context.Context, lastResults
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client DefinitionsClient) ListComplete(ctx context.Context, subscriptionID string, filter string, top *int32) (result DefinitionListResultIterator, err error) {
+func (client DefinitionsClient) ListComplete(ctx context.Context, filter string, top *int32) (result DefinitionListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DefinitionsClient.List")
 		defer func() {
@@ -709,7 +705,7 @@ func (client DefinitionsClient) ListComplete(ctx context.Context, subscriptionID
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, subscriptionID, filter, top)
+	result.page, err = client.List(ctx, filter, top)
 	return
 }
 

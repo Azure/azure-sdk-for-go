@@ -18,14 +18,6 @@ type BaseClientAPI interface {
 
 var _ BaseClientAPI = (*subscriptions.BaseClient)(nil)
 
-// OperationsClientAPI contains the set of methods on the OperationsClient type.
-type OperationsClientAPI interface {
-	List(ctx context.Context) (result subscriptions.OperationListResultPage, err error)
-	ListComplete(ctx context.Context) (result subscriptions.OperationListResultIterator, err error)
-}
-
-var _ OperationsClientAPI = (*subscriptions.OperationsClient)(nil)
-
 // ClientAPI contains the set of methods on the Client type.
 type ClientAPI interface {
 	Get(ctx context.Context, subscriptionID string) (result subscriptions.Subscription, err error)

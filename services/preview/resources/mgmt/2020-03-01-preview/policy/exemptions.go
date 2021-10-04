@@ -21,14 +21,14 @@ type ExemptionsClient struct {
 }
 
 // NewExemptionsClient creates an instance of the ExemptionsClient client.
-func NewExemptionsClient() ExemptionsClient {
-	return NewExemptionsClientWithBaseURI(DefaultBaseURI)
+func NewExemptionsClient(subscriptionID string) ExemptionsClient {
+	return NewExemptionsClientWithBaseURI(DefaultBaseURI, subscriptionID)
 }
 
 // NewExemptionsClientWithBaseURI creates an instance of the ExemptionsClient client using a custom endpoint.  Use this
 // when interacting with an Azure cloud that uses a non-standard base URI (sovereign clouds, Azure stack).
-func NewExemptionsClientWithBaseURI(baseURI string) ExemptionsClient {
-	return ExemptionsClient{NewWithBaseURI(baseURI)}
+func NewExemptionsClientWithBaseURI(baseURI string, subscriptionID string) ExemptionsClient {
+	return ExemptionsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
 // CreateOrUpdate this operation creates or updates a policy exemption with the given scope and name. Policy exemptions
@@ -36,14 +36,14 @@ func NewExemptionsClientWithBaseURI(baseURI string) ExemptionsClient {
 // group scope for a policy assignment at the same or above level, the exemption exempts to all applicable resources in
 // the resource group.
 // Parameters:
-// parameters - parameters for the policy exemption.
 // scope - the scope of the policy exemption. Valid scopes are: management group (format:
 // '/providers/Microsoft.Management/managementGroups/{managementGroup}'), subscription (format:
 // '/subscriptions/{subscriptionId}'), resource group (format:
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}', or resource (format:
 // '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
 // policyExemptionName - the name of the policy exemption to delete.
-func (client ExemptionsClient) CreateOrUpdate(ctx context.Context, parameters Exemption, scope string, policyExemptionName string) (result Exemption, err error) {
+// parameters - parameters for the policy exemption.
+func (client ExemptionsClient) CreateOrUpdate(ctx context.Context, scope string, policyExemptionName string, parameters Exemption) (result Exemption, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExemptionsClient.CreateOrUpdate")
 		defer func() {
@@ -61,7 +61,7 @@ func (client ExemptionsClient) CreateOrUpdate(ctx context.Context, parameters Ex
 		return result, validation.NewError("policy.ExemptionsClient", "CreateOrUpdate", err.Error())
 	}
 
-	req, err := client.CreateOrUpdatePreparer(ctx, parameters, scope, policyExemptionName)
+	req, err := client.CreateOrUpdatePreparer(ctx, scope, policyExemptionName, parameters)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "CreateOrUpdate", nil, "Failure preparing request")
 		return
@@ -84,7 +84,7 @@ func (client ExemptionsClient) CreateOrUpdate(ctx context.Context, parameters Ex
 }
 
 // CreateOrUpdatePreparer prepares the CreateOrUpdate request.
-func (client ExemptionsClient) CreateOrUpdatePreparer(ctx context.Context, parameters Exemption, scope string, policyExemptionName string) (*http.Request, error) {
+func (client ExemptionsClient) CreateOrUpdatePreparer(ctx context.Context, scope string, policyExemptionName string, parameters Exemption) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"policyExemptionName": autorest.Encode("path", policyExemptionName),
 		"scope":               scope,
@@ -96,6 +96,9 @@ func (client ExemptionsClient) CreateOrUpdatePreparer(ctx context.Context, param
 	}
 
 	parameters.SystemData = nil
+	parameters.ID = nil
+	parameters.Name = nil
+	parameters.Type = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),
@@ -289,7 +292,6 @@ func (client ExemptionsClient) GetResponder(resp *http.Response) (result Exempti
 // associated with the subscription, including those that apply directly or from management groups that contain the
 // given subscription, as well as any applied to objects contained within the subscription.
 // Parameters:
-// subscriptionID - the ID of the target subscription.
 // filter - the filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()',
 // 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, no filtering is
 // performed. If $filter is not provided, the unfiltered list includes all policy exemptions associated with
@@ -301,7 +303,7 @@ func (client ExemptionsClient) GetResponder(resp *http.Response) (result Exempti
 // either haven't expired or didn't set expiration date. If $filter=policyAssignmentId eq '{value}' is
 // provided. the returned list only includes all policy exemptions that are associated with the give
 // policyAssignmentId.
-func (client ExemptionsClient) List(ctx context.Context, subscriptionID string, filter string) (result ExemptionListResultPage, err error) {
+func (client ExemptionsClient) List(ctx context.Context, filter string) (result ExemptionListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExemptionsClient.List")
 		defer func() {
@@ -313,7 +315,7 @@ func (client ExemptionsClient) List(ctx context.Context, subscriptionID string, 
 		}()
 	}
 	result.fn = client.listNextResults
-	req, err := client.ListPreparer(ctx, subscriptionID, filter)
+	req, err := client.ListPreparer(ctx, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "List", nil, "Failure preparing request")
 		return
@@ -340,9 +342,9 @@ func (client ExemptionsClient) List(ctx context.Context, subscriptionID string, 
 }
 
 // ListPreparer prepares the List request.
-func (client ExemptionsClient) ListPreparer(ctx context.Context, subscriptionID string, filter string) (*http.Request, error) {
+func (client ExemptionsClient) ListPreparer(ctx context.Context, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
-		"subscriptionId": autorest.Encode("path", subscriptionID),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2020-07-01-preview"
@@ -401,7 +403,7 @@ func (client ExemptionsClient) listNextResults(ctx context.Context, lastResults 
 }
 
 // ListComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ExemptionsClient) ListComplete(ctx context.Context, subscriptionID string, filter string) (result ExemptionListResultIterator, err error) {
+func (client ExemptionsClient) ListComplete(ctx context.Context, filter string) (result ExemptionListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExemptionsClient.List")
 		defer func() {
@@ -412,7 +414,7 @@ func (client ExemptionsClient) ListComplete(ctx context.Context, subscriptionID 
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.List(ctx, subscriptionID, filter)
+	result.page, err = client.List(ctx, filter)
 	return
 }
 
@@ -563,7 +565,6 @@ func (client ExemptionsClient) ListForManagementGroupComplete(ctx context.Contex
 // to provide both in the {resourceType} parameter, format: ({resourceProviderNamespace} == '', {parentResourcePath} ==
 // '', {resourceType} == 'Microsoft.Web/sites', {resourceName} == 'MyWebApp').
 // Parameters:
-// subscriptionID - the ID of the target subscription.
 // resourceGroupName - the name of the resource group containing the resource.
 // resourceProviderNamespace - the namespace of the resource provider. For example, the namespace of a virtual
 // machine is Microsoft.Compute (from Microsoft.Compute/virtualMachines)
@@ -582,7 +583,7 @@ func (client ExemptionsClient) ListForManagementGroupComplete(ctx context.Contex
 // either haven't expired or didn't set expiration date. If $filter=policyAssignmentId eq '{value}' is
 // provided. the returned list only includes all policy exemptions that are associated with the give
 // policyAssignmentId.
-func (client ExemptionsClient) ListForResource(ctx context.Context, subscriptionID string, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result ExemptionListResultPage, err error) {
+func (client ExemptionsClient) ListForResource(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result ExemptionListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExemptionsClient.ListForResource")
 		defer func() {
@@ -602,7 +603,7 @@ func (client ExemptionsClient) ListForResource(ctx context.Context, subscription
 	}
 
 	result.fn = client.listForResourceNextResults
-	req, err := client.ListForResourcePreparer(ctx, subscriptionID, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
+	req, err := client.ListForResourcePreparer(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "ListForResource", nil, "Failure preparing request")
 		return
@@ -629,14 +630,14 @@ func (client ExemptionsClient) ListForResource(ctx context.Context, subscription
 }
 
 // ListForResourcePreparer prepares the ListForResource request.
-func (client ExemptionsClient) ListForResourcePreparer(ctx context.Context, subscriptionID string, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (*http.Request, error) {
+func (client ExemptionsClient) ListForResourcePreparer(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"parentResourcePath":        parentResourcePath,
 		"resourceGroupName":         autorest.Encode("path", resourceGroupName),
 		"resourceName":              autorest.Encode("path", resourceName),
 		"resourceProviderNamespace": autorest.Encode("path", resourceProviderNamespace),
 		"resourceType":              resourceType,
-		"subscriptionId":            autorest.Encode("path", subscriptionID),
+		"subscriptionId":            autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2020-07-01-preview"
@@ -695,7 +696,7 @@ func (client ExemptionsClient) listForResourceNextResults(ctx context.Context, l
 }
 
 // ListForResourceComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ExemptionsClient) ListForResourceComplete(ctx context.Context, subscriptionID string, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result ExemptionListResultIterator, err error) {
+func (client ExemptionsClient) ListForResourceComplete(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, filter string) (result ExemptionListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExemptionsClient.ListForResource")
 		defer func() {
@@ -706,7 +707,7 @@ func (client ExemptionsClient) ListForResourceComplete(ctx context.Context, subs
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListForResource(ctx, subscriptionID, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
+	result.page, err = client.ListForResource(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
 	return
 }
 
@@ -716,7 +717,6 @@ func (client ExemptionsClient) ListForResourceComplete(ctx context.Context, subs
 // unfiltered list includes all policy exemptions associated with the resource group, including those that apply
 // directly or apply from containing scopes, as well as any applied to resources contained within the resource group.
 // Parameters:
-// subscriptionID - the ID of the target subscription.
 // resourceGroupName - the name of the resource group containing the resource.
 // filter - the filter to apply on the operation. Valid values for $filter are: 'atScope()', 'atExactScope()',
 // 'excludeExpired()' or 'policyAssignmentId eq '{value}''. If $filter is not provided, no filtering is
@@ -729,7 +729,7 @@ func (client ExemptionsClient) ListForResourceComplete(ctx context.Context, subs
 // either haven't expired or didn't set expiration date. If $filter=policyAssignmentId eq '{value}' is
 // provided. the returned list only includes all policy exemptions that are associated with the give
 // policyAssignmentId.
-func (client ExemptionsClient) ListForResourceGroup(ctx context.Context, subscriptionID string, resourceGroupName string, filter string) (result ExemptionListResultPage, err error) {
+func (client ExemptionsClient) ListForResourceGroup(ctx context.Context, resourceGroupName string, filter string) (result ExemptionListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExemptionsClient.ListForResourceGroup")
 		defer func() {
@@ -749,7 +749,7 @@ func (client ExemptionsClient) ListForResourceGroup(ctx context.Context, subscri
 	}
 
 	result.fn = client.listForResourceGroupNextResults
-	req, err := client.ListForResourceGroupPreparer(ctx, subscriptionID, resourceGroupName, filter)
+	req, err := client.ListForResourceGroupPreparer(ctx, resourceGroupName, filter)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "policy.ExemptionsClient", "ListForResourceGroup", nil, "Failure preparing request")
 		return
@@ -776,10 +776,10 @@ func (client ExemptionsClient) ListForResourceGroup(ctx context.Context, subscri
 }
 
 // ListForResourceGroupPreparer prepares the ListForResourceGroup request.
-func (client ExemptionsClient) ListForResourceGroupPreparer(ctx context.Context, subscriptionID string, resourceGroupName string, filter string) (*http.Request, error) {
+func (client ExemptionsClient) ListForResourceGroupPreparer(ctx context.Context, resourceGroupName string, filter string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
-		"subscriptionId":    autorest.Encode("path", subscriptionID),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
 	const APIVersion = "2020-07-01-preview"
@@ -838,7 +838,7 @@ func (client ExemptionsClient) listForResourceGroupNextResults(ctx context.Conte
 }
 
 // ListForResourceGroupComplete enumerates all values, automatically crossing page boundaries as required.
-func (client ExemptionsClient) ListForResourceGroupComplete(ctx context.Context, subscriptionID string, resourceGroupName string, filter string) (result ExemptionListResultIterator, err error) {
+func (client ExemptionsClient) ListForResourceGroupComplete(ctx context.Context, resourceGroupName string, filter string) (result ExemptionListResultIterator, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ExemptionsClient.ListForResourceGroup")
 		defer func() {
@@ -849,6 +849,6 @@ func (client ExemptionsClient) ListForResourceGroupComplete(ctx context.Context,
 			tracing.EndSpan(ctx, sc, err)
 		}()
 	}
-	result.page, err = client.ListForResourceGroup(ctx, subscriptionID, resourceGroupName, filter)
+	result.page, err = client.ListForResourceGroup(ctx, resourceGroupName, filter)
 	return
 }

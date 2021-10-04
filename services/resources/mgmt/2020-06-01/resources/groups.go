@@ -206,10 +206,9 @@ func (client GroupsClient) CreateOrUpdateResponder(resp *http.Response) (result 
 // all of its template deployments and currently stored operations.
 // Parameters:
 // resourceGroupName - the name of the resource group to delete. The name is case insensitive.
-// forceDeletionResourceTypes - the resource types you want to force delete. Currently, only the following is
-// supported:
-// forceDeletionResourceTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets
-func (client GroupsClient) Delete(ctx context.Context, resourceGroupName string, forceDeletionResourceTypes string) (result GroupsDeleteFuture, err error) {
+// forceDeletionTypes - the resource types you want to force delete. Currently, only the following is
+// supported: forceDeletionTypes=Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets
+func (client GroupsClient) Delete(ctx context.Context, resourceGroupName string, forceDeletionTypes string) (result GroupsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/GroupsClient.Delete")
 		defer func() {
@@ -227,7 +226,7 @@ func (client GroupsClient) Delete(ctx context.Context, resourceGroupName string,
 		return result, validation.NewError("resources.GroupsClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, forceDeletionResourceTypes)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, forceDeletionTypes)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "resources.GroupsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -243,7 +242,7 @@ func (client GroupsClient) Delete(ctx context.Context, resourceGroupName string,
 }
 
 // DeletePreparer prepares the Delete request.
-func (client GroupsClient) DeletePreparer(ctx context.Context, resourceGroupName string, forceDeletionResourceTypes string) (*http.Request, error) {
+func (client GroupsClient) DeletePreparer(ctx context.Context, resourceGroupName string, forceDeletionTypes string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
@@ -253,8 +252,8 @@ func (client GroupsClient) DeletePreparer(ctx context.Context, resourceGroupName
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
-	if len(forceDeletionResourceTypes) > 0 {
-		queryParameters["forceDeletionResourceTypes"] = autorest.Encode("query", forceDeletionResourceTypes)
+	if len(forceDeletionTypes) > 0 {
+		queryParameters["forceDeletionTypes"] = autorest.Encode("query", forceDeletionTypes)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -310,8 +309,7 @@ func (client GroupsClient) ExportTemplate(ctx context.Context, resourceGroupName
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("resources.GroupsClient", "ExportTemplate", err.Error())
 	}
 

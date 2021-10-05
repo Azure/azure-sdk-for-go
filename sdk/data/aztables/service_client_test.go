@@ -380,3 +380,15 @@ func TestGetAccountSASToken(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, "https://myAccountName.table.core.windows.net/?se=2021-09-09T14%3A30%3A00Z&sig=m%2F%2FxhMvxidHaswzZRpyuiHykqnTppPi%2BQ9S5xHMksIQ%3D&sp=r&spr=https&srt=s&ss=t&st=2021-09-08T14%3A30%3A00Z&sv=2019-02-02", sas)
 }
+
+func TestGetAccountSASTokenError(t *testing.T) {
+	cred := NewFakeCredential("fakeaccount", "fakekey")
+	service, err := NewServiceClient("https://myAccountName.table.core.windows.net", cred, nil)
+	require.NoError(t, err)
+
+	resources := AccountSASResourceTypes{Service: true}
+	perms := AccountSASPermissions{Read: true}
+
+	_, err = service.GetAccountSASToken(resources, perms, time.Now(), time.Now().Add(time.Hour))
+	require.Error(t, err)
+}

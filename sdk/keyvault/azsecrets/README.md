@@ -56,7 +56,7 @@ go get -u github.com/Azure/azure-sdk-for-go/sdk/azidentity
   }
   ```
 
-  > The `"vaultUri"` property is the `vault_url` used by [azsecrets.NewClient][secret_client_docs]
+  > The `"vaultUri"` property is the `vaultUrl` used by [azsecrets.NewClient][secret_client_docs]
 
 ### Authenticate the client
 This document demonstrates using [DefaultAzureCredential][default_cred_ref] to authenticate as a service principal. However, [Client][secret_client_docs] accepts any [azure-identity][azure_identity] credential. See the [azure-identity][azure_identity] documentation for more information about other credentials.
@@ -127,7 +127,7 @@ This section contains code snippets covering common tasks:
 
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
-client, err := azsecrets.NewClient"https://my-key-vault.vault.azure.net/", cred, nil)
+client, err := azsecrets.NewClient("https://my-key-vault.vault.azure.net/", cred, nil)
 
 resp, err := client.SetSecret(context.Background(), "secretName", "secretValue", nil)
 if err != nil {
@@ -142,7 +142,7 @@ fmt.Printf("Name: %s, Value: %s\n", *resp.ID, *resp.Value)
 
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
-client, err := azsecrets.NewClient"https://my-key-vault.vault.azure.net/", cred, nil)
+client, err := azsecrets.NewClient("https://my-key-vault.vault.azure.net/", cred, nil)
 
 resp, err := client.GetSecret(context.Background(), "mySecretName", nil)
 if err != nil {
@@ -157,7 +157,7 @@ fmt.Printf("Name: %s, Value: %s\n", *resp.ID, *resp.Value)
 
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
-client, err := azsecrets.NewClient"https://my-key-vault.vault.azure.net/", cred, nil)
+client, err := azsecrets.NewClient("https://my-key-vault.vault.azure.net/", cred, nil)
 
 // Clients may specify the content type of a secret to assist in interpreting the secret data when it's retrieved
 contentType := "text/plain"
@@ -186,7 +186,7 @@ fmt.Printf("Updated on: %v, Content type: %v, Enabled: %v", *resp.Attributes.Upd
 
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
-client, err := azsecrets.NewClient"https://my-key-vault.vault.azure.net/", cred, nil)
+client, err := azsecrets.NewClient("https://my-key-vault.vault.azure.net/", cred, nil)
 
 resp, err := client.BeginDeleteSecret(context.Background(), "secret-name", nil)
 final, err := resp.PollUntilDone(context.Background(), 1 * time.Second)
@@ -197,7 +197,7 @@ final, err := resp.PollUntilDone(context.Background(), 1 * time.Second)
 
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
-client, err := azsecrets.NewClient"https://my-key-vault.vault.azure.net/", cred, nil)
+client, err := azsecrets.NewClient("https://my-key-vault.vault.azure.net/", cred, nil)
 
 pager := client.ListSecrets(nil)
 for pager.NextPage(context.Background()) {

@@ -9,12 +9,11 @@
 package internal
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-var scopes = []string{"https://storage.azure.com/.default"}
+var Scopes = []string{"https://storage.azure.com/.default"}
 
 // ConnectionOptions contains configuration settings for the connection's pipeline.
 // All zero-value fields will be initialized with their default values.
@@ -42,7 +41,7 @@ type connection struct {
 
 // NewConnection creates an instance of the connection type with the specified endpoint.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
-func NewConnection(endpoint string, cred azcore.Credential, options *ConnectionOptions) *connection {
+func NewConnection(endpoint string, options *ConnectionOptions) *connection {
 	if options == nil {
 		options = &ConnectionOptions{}
 	}
@@ -53,7 +52,6 @@ func NewConnection(endpoint string, cred azcore.Credential, options *ConnectionO
 	policies = append(policies, options.PerCallPolicies...)
 	policies = append(policies, runtime.NewRetryPolicy(&options.Retry))
 	policies = append(policies, options.PerRetryPolicies...)
-	policies = append(policies, cred.NewAuthenticationPolicy(runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: scopes}}))
 	policies = append(policies, runtime.NewLogPolicy(&options.Logging))
 	return &connection{u: endpoint, p: runtime.NewPipeline(options.HTTPClient, policies...)}
 }

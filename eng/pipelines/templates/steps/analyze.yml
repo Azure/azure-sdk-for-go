@@ -45,7 +45,7 @@ steps:
 
   - script: |
       echo scanning copyright headers in $(pwd)
-      grep -L -r --include LICENSE -P "Copyright (\d{4}|\(c\)) Microsoft" . | tee >&2
+      grep -L -r --include ./LICENSE -P "Copyright (\d{4}|\(c\)) Microsoft" . | tee >&2
     displayName: 'License Check'
     condition: succeededOrFailed()
     failOnStderr: true

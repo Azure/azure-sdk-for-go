@@ -15,7 +15,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
@@ -92,16 +91,12 @@ type sharedKeyCredPolicy struct {
 	cred *SharedKeyCredential
 }
 
-func newSharedKeyCredPolicy(cred *SharedKeyCredential, opts runtime.AuthenticationOptions) *sharedKeyCredPolicy {
+func newSharedKeyCredPolicy(cred *SharedKeyCredential) *sharedKeyCredPolicy {
 	s := &sharedKeyCredPolicy{
 		cred: cred,
 	}
 
 	return s
-}
-
-func (c *SharedKeyCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
-	return newSharedKeyCredPolicy(c, options)
 }
 
 func (s *sharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {

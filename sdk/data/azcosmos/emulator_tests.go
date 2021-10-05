@@ -28,7 +28,7 @@ func newEmulatorTests(t *testing.T) *emulatorTests {
 
 func (e *emulatorTests) getClient(t *testing.T) *CosmosClient {
 	cred, _ := NewSharedKeyCredential(e.key)
-	client, err := NewCosmosClient(e.host, cred, nil)
+	client, err := NewClientWithSharedKey(e.host, cred, nil)
 	if err != nil {
 		t.Fatalf("Failed to create client: %v", err)
 	}

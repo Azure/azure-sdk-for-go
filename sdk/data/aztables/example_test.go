@@ -31,7 +31,7 @@ func ExampleNewSharedKeyCredential() {
 	if err != nil {
 		panic(err)
 	}
-	client, err := aztables.NewServiceClient(serviceURL, cred, nil)
+	client, err := aztables.NewServiceClientWithSharedKey(serviceURL, cred, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -79,7 +79,7 @@ func ExampleClient_SubmitTransaction() {
 	if err != nil {
 		panic(err)
 	}
-	client, err := aztables.NewClient(serviceURL, cred, nil)
+	client, err := aztables.NewClientWithSharedKey(serviceURL, cred, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -279,7 +279,7 @@ func ExampleNewClient() {
 	if err != nil {
 		panic(err)
 	}
-	client, err := aztables.NewClient(serviceURL, cred, nil)
+	client, err := aztables.NewClientWithSharedKey(serviceURL, cred, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -309,7 +309,7 @@ func ExampleClient_InsertEntity() {
 	if err != nil {
 		panic(err)
 	}
-	client, err := aztables.NewClient(serviceURL, cred, nil)
+	client, err := aztables.NewClientWithSharedKey(serviceURL, cred, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -377,7 +377,7 @@ func ExampleClient_DeleteEntity() {
 	if err != nil {
 		panic(err)
 	}
-	client, err := aztables.NewClient(serviceURL, cred, nil)
+	client, err := aztables.NewClientWithSharedKey(serviceURL, cred, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -404,7 +404,7 @@ func ExampleClient_List() {
 	if err != nil {
 		panic(err)
 	}
-	client, err := aztables.NewClient(serviceURL, cred, nil)
+	client, err := aztables.NewClientWithSharedKey(serviceURL, cred, nil)
 	if err != nil {
 		panic(err)
 	}
@@ -450,7 +450,7 @@ func ExampleServiceClient_ListTables() {
 	if err != nil {
 		panic(err)
 	}
-	service, err := aztables.NewServiceClient(serviceURL, cred, nil)
+	service, err := aztables.NewServiceClientWithSharedKey(serviceURL, cred, nil)
 	if err != nil {
 		panic(err)
 	}

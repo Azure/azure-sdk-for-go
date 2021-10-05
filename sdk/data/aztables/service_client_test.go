@@ -9,7 +9,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -163,7 +162,7 @@ func TestListTables(t *testing.T) {
 
 // This functionality is only available on storage accounts
 func TestGetStatistics(t *testing.T) {
-	var cred azcore.Credential
+	var cred *SharedKeyCredential
 	var err error
 
 	err = recording.StartRecording(t, pathToPackage, nil)
@@ -178,13 +177,13 @@ func TestGetStatistics(t *testing.T) {
 	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakeAccountKey")
 
 	if recording.GetRecordMode() == "playback" {
-		cred, err = NewFakeCredential("fakestorageaccount", "fakeAccountKey"), nil
+		cred, err = NewSharedKeyCredential("fakestorageaccount", "fakeAccountKey==")
 	} else {
 		cred, err = NewSharedKeyCredential(accountName, accountKey)
 	}
 
 	serviceURL := storageURI(accountName + "-secondary")
-	service, err := createServiceClientForRecording(t, serviceURL, cred)
+	service, err := createServiceClientForRecording(t, serviceURL, *cred)
 	require.NoError(t, err)
 
 	resp, err := service.GetStatistics(ctx, nil)
@@ -369,7 +368,7 @@ func TestRetentionTooLong(t *testing.T) {
 func TestGetAccountSASToken(t *testing.T) {
 	cred, err := NewSharedKeyCredential("myAccountName", "daaaaaaaaaabbbbbbbbbbcccccccccccccccccccdddddddddddddddddddeeeeeeeeeeefffffffffffggggg==")
 	require.NoError(t, err)
-	service, err := NewServiceClient("https://myAccountName.table.core.windows.net", cred, nil)
+	service, err := NewServiceClientWithSharedKey("https://myAccountName.table.core.windows.net", cred, nil)
 	require.NoError(t, err)
 
 	resources := AccountSASResourceTypes{Service: true}

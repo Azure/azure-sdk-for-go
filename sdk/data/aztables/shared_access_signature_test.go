@@ -11,7 +11,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -23,7 +22,7 @@ func TestSASServiceClient(t *testing.T) {
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
-	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
+	serviceClient, err := NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
 	require.NoError(t, err)
 
 	tableName, err := createRandomName(t, tableNamePrefix)
@@ -59,7 +58,7 @@ func TestSASServiceClient(t *testing.T) {
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	svcClient, err := createServiceClientForRecording(t, sasUrl, azcore.NewAnonymousCredential())
+	svcClient, err := createServiceClientForRecordingWithNoCredential(t, sasUrl)
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil) //nolint
 
@@ -77,7 +76,7 @@ func TestSASClient(t *testing.T) {
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
-	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
+	serviceClient, err := NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
 	require.NoError(t, err)
 
 	tableName, err := createRandomName(t, tableNamePrefix)
@@ -105,7 +104,7 @@ func TestSASClient(t *testing.T) {
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err := createClientForRecording(t, "", sasUrl, azcore.NewAnonymousCredential())
+	client, err := createClientForRecordingWithNoCredential(t, "", sasUrl)
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil) //nolint
 
@@ -128,7 +127,7 @@ func TestSASClientReadOnly(t *testing.T) {
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
-	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
+	serviceClient, err := NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.table.core.windows.net/", accountName), cred, nil)
 	require.NoError(t, err)
 
 	tableName, err := createRandomName(t, tableNamePrefix)
@@ -159,7 +158,7 @@ func TestSASClientReadOnly(t *testing.T) {
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err = createClientForRecording(t, "", sasUrl, azcore.NewAnonymousCredential())
+	client, err = createClientForRecordingWithNoCredential(t, "", sasUrl)
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil) //nolint
 
@@ -193,7 +192,7 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	cred, err := NewSharedKeyCredential(accountName, accountKey)
 	require.NoError(t, err)
 
-	serviceClient, err := NewServiceClient(fmt.Sprintf("https://%s.table.cosmos.azure.com/", accountName), cred, nil)
+	serviceClient, err := NewServiceClientWithSharedKey(fmt.Sprintf("https://%s.table.cosmos.azure.com/", accountName), cred, nil)
 	require.NoError(t, err)
 
 	tableName, err := createRandomName(t, tableNamePrefix)
@@ -224,7 +223,7 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 
 	err = recording.StartRecording(t, pathToPackage, nil)
 	require.NoError(t, err)
-	client, err = createClientForRecording(t, "", sasUrl, azcore.NewAnonymousCredential())
+	client, err = createClientForRecordingWithNoCredential(t, "", sasUrl)
 	require.NoError(t, err)
 	defer recording.StopRecording(t, nil) //nolint
 

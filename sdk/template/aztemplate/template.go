@@ -1,14 +1,10 @@
-//go:build go1.17
-// +build go1.17
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 package aztemplate
-
-import (
-	generated "github.com/Azure/azure-sdk-for-go/sdk/template/aztemplate/internal/packageinfo"
-)
 
 type TemplateClient struct{}
 

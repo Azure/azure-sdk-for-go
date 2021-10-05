@@ -11,6 +11,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
 )
 
@@ -18,11 +20,48 @@ import (
 type ServiceClient struct {
 	client  *generated.TableClient
 	service *generated.ServiceClient
-	cred    azcore.Credential
+	cred    interface{}
 }
 
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
-func NewServiceClient(serviceURL string, cred azcore.Credential, options *ClientOptions) (*ServiceClient, error) {
+func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
+	conOptions := getConnectionOptions(serviceURL, options)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, runtime.NewBearerTokenPolicy(cred, runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: generated.Scopes}}))
+	con := generated.NewConnection(serviceURL, conOptions)
+	return &ServiceClient{
+		client:  generated.NewTableClient(con),
+		service: generated.NewServiceClient(con),
+		cred:    cred,
+	}, nil
+}
+
+// NewServiceClientWithNoCredential creates a ServiceClient struct using the specified serviceURL and options.
+// Call this method when serviceURL contains a SAS token.
+func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (*ServiceClient, error) {
+	conOptions := getConnectionOptions(serviceURL, options)
+	if isCosmosEndpoint(serviceURL) {
+		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
+	}
+	con := generated.NewConnection(serviceURL, conOptions)
+	return &ServiceClient{
+		client:  generated.NewTableClient(con),
+		service: generated.NewServiceClient(con),
+	}, nil
+}
+
+// NewServiceClientWithSharedKey creates a ServiceClient struct using the specified serviceURL, credential, and options.
+func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*ServiceClient, error) {
+	conOptions := getConnectionOptions(serviceURL, options)
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, newSharedKeyCredPolicy(cred, runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: generated.Scopes}}))
+	con := generated.NewConnection(serviceURL, conOptions)
+	return &ServiceClient{
+		client:  generated.NewTableClient(con),
+		service: generated.NewServiceClient(con),
+		cred:    cred,
+	}, nil
+}
+
+func getConnectionOptions(serviceURL string, options *ClientOptions) *generated.ConnectionOptions {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -32,12 +71,7 @@ func NewServiceClient(serviceURL string, cred azcore.Credential, options *Client
 	}
 	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, options.PerCallPolicies...)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, options.PerTryPolicies...)
-	con := generated.NewConnection(serviceURL, cred, conOptions)
-	return &ServiceClient{
-		client:  generated.NewTableClient(con),
-		service: generated.NewServiceClient(con),
-		cred:    cred,
-	}, nil
+	return conOptions
 }
 
 // NewClient returns a pointer to a Client affinitized to the specified table name and initialized with the same serviceURL and credentials as this ServiceClient
@@ -359,7 +393,7 @@ func (t *ServiceClient) SetProperties(ctx context.Context, properties ServicePro
 }
 
 // GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account. This methods returns the full service URL and an error
-// if there was an error during creation. This method can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// if there was an error during creation. This method can only be used by clients created by NewServiceClientWithSharedKey().
 func (t ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (string, error) {
 	cred, ok := t.cred.(*SharedKeyCredential)
 	if !ok {

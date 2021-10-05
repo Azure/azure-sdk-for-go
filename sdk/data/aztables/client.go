@@ -21,21 +21,65 @@ import (
 type Client struct {
 	client  *generated.TableClient
 	service *ServiceClient
-	cred    azcore.Credential
+	cred    interface{}
 	name    string
 }
 
-// NewClient creates a Client struct in the context of the table specified in the serviceURL, credential, and options.
+// NewClient creates a Client struct in the context of the table specified in the serviceURL, authorizing requests with an Azure AD access token.
 // The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.core.windows.net/<myTableName>".
-// If the serviceURL contains a Shared Access Signature, use azcore.NewAnonymousCredential() as the credential.
-func NewClient(serviceURL string, cred azcore.Credential, options *ClientOptions) (*Client, error) {
+func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
-
-	parsedUrl, err := url.Parse(serviceURL)
+	rawServiceURL, tableName, err := parseURL(serviceURL)
 	if err != nil {
 		return &Client{}, err
+	}
+	s, err := NewServiceClient(rawServiceURL, cred, options)
+	if err != nil {
+		return &Client{}, err
+	}
+	return s.NewClient(tableName), nil
+}
+
+// NewClientWithNoCredential creates a Client struct in the context of the table specified in the serviceURL.
+// The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.core.windows.net/<myTableName>?<SAS token>".
+func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
+	if options == nil {
+		options = &ClientOptions{}
+	}
+	rawServiceURL, tableName, err := parseURL(serviceURL)
+	if err != nil {
+		return &Client{}, err
+	}
+	s, err := NewServiceClientWithNoCredential(rawServiceURL, options)
+	if err != nil {
+		return &Client{}, err
+	}
+	return s.NewClient(tableName), nil
+}
+
+// NewClientWithSharedKey creates a Client struct in the context of the table specified in the serviceURL, authorizing requests with a shared key.
+// The serviceURL param is expected to have the name of the table in a format similar to: "https://myAccountName.core.windows.net/<myTableName>".
+func NewClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
+	if options == nil {
+		options = &ClientOptions{}
+	}
+	rawServiceURL, tableName, err := parseURL(serviceURL)
+	if err != nil {
+		return &Client{}, err
+	}
+	s, err := NewServiceClientWithSharedKey(rawServiceURL, cred, options)
+	if err != nil {
+		return &Client{}, err
+	}
+	return s.NewClient(tableName), nil
+}
+
+func parseURL(serviceURL string) (string, string, error) {
+	parsedUrl, err := url.Parse(serviceURL)
+	if err != nil {
+		return "", "", err
 	}
 
 	tableName := parsedUrl.Path[1:]
@@ -53,11 +97,7 @@ func NewClient(serviceURL string, cred azcore.Credential, options *ClientOptions
 		rawServiceURL += "/?" + sas.Encode()
 	}
 
-	s, err := NewServiceClient(rawServiceURL, cred, options)
-	if err != nil {
-		return &Client{}, err
-	}
-	return s.NewClient(tableName), nil
+	return rawServiceURL, tableName, nil
 }
 
 type CreateTableResponse struct {
@@ -616,7 +656,7 @@ func (t *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOp
 }
 
 // GetTableSASToken is a convenience method for generating a SAS token for a specific table.
-// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// It can only be used by clients created by NewClientWithSharedKey().
 func (t Client) GetTableSASToken(permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {
 	cred, ok := t.cred.(*SharedKeyCredential)
 	if !ok {

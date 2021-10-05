@@ -14,7 +14,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -64,20 +63,6 @@ func NewFakeCredential(accountName, accountKey string) *FakeCredential {
 		accountName: accountName,
 		accountKey:  accountKey,
 	}
-}
-
-type fakeCredPolicy struct {
-	cred *FakeCredential
-}
-
-func newFakeCredPolicy(cred *FakeCredential, opts runtime.AuthenticationOptions) *fakeCredPolicy {
-	return &fakeCredPolicy{cred: cred}
-}
-
-func (f *fakeCredPolicy) Do(req *policy.Request) (*http.Response, error) {
-	authHeader := strings.Join([]string{"Authorization ", f.cred.accountName, ":", f.cred.accountKey}, "")
-	req.Raw().Header.Set(headerAuthorization, authHeader)
-	return req.Next()
 }
 
 func createClientForRecording(t *testing.T, tableName string, serviceURL string, cred SharedKeyCredential) (*Client, error) {

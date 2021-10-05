@@ -1,10 +1,22 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
 trigger:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
   paths:
     include:
     - sdk/messaging/azservicebus
 
 pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*  
   paths:
     include:
     - sdk/messaging/azservicebus
@@ -12,6 +24,6 @@ pr:
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: 'messaging'
+    ServiceDirectory: 'messaging/azservicebus'
     RunTests: true
     RunLiveTests: true

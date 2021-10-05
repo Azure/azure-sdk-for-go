@@ -19,7 +19,9 @@ require (
 	github.com/jpillora/backoff v1.0.0
 	github.com/microsoft/ApplicationInsights-Go v0.4.4
 	github.com/stretchr/testify v1.7.0
-	golang.org/x/sys v0.0.0-20210910150752-751e447fb3d0 // indirect
+	golang.org/x/net v0.0.0-20210929193557-e81a3d93ecf6 // indirect
+	golang.org/x/sys v0.0.0-20211001092434-39dca1131b70 // indirect
+	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	nhooyr.io/websocket v1.8.6
 )

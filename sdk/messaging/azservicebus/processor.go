@@ -152,11 +152,9 @@ func newProcessor(ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanup
 
 // Start will start receiving messages from the queue or subscription.
 //
-//   if err := processor.Start(messageHandler, errorHandler); err != nil {
+//   if err := processor.Start(context.TODO(), messageHandler, errorHandler); err != nil {
 //     log.Fatalf("Processor failed to start: %s", err.Error())
 //   }
-//
-//   <- processor.Done()
 //
 // Any errors that occur (such as network disconnects, failures in handleMessage) will be
 // sent to your handleError function. The processor will retry and restart as needed -

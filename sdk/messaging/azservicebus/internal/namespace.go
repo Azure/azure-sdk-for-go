@@ -25,7 +25,7 @@ import (
 )
 
 const (
-	rootUserAgent = "/golang-service-bus"
+	rootUserAgent = "/azsdk-go-azservicebus/" + Version
 )
 
 type (

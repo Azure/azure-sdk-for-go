@@ -5,41 +5,34 @@ package azservicebus_test
 
 import (
 	"context"
-	"fmt"
 	"log"
-	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 )
 
-func panicOnError(message string, err error) {
-	if err == nil {
-		return
-	}
-
-	panic(fmt.Sprintf("%s: %s", message, err))
+func ExampleClient_NewSender() {
+	sender, err = client.NewSender(queueName) // or topicName
+	exitOnError("Failed to create sender", err)
 }
 
-func getConnectionString() (string, string) {
-	return os.Getenv("SERVICEBUS_CONNECTION_STRING"), os.Getenv("QUEUE_NAME")
-}
-
-func ExampleSender_NewMessageBatch() {
-	connectionString, queueName := getConnectionString()
-
-	if connectionString == "" || queueName == "" {
-		log.Printf("Need a connection string and queue for this example")
-		return
+func ExampleSender_SendMessage_message() {
+	message := &azservicebus.Message{
+		Body: []byte("hello, this is a message"),
 	}
 
+	err = sender.SendMessage(context.TODO(), message)
+	exitOnError("Failed to send message", err)
+}
+
+func ExampleSender_SendMessage_messageBatch() {
 	client, err := azservicebus.NewClientWithConnectionString(connectionString, nil)
-	panicOnError("Failed to create client", err)
+	exitOnError("Failed to create client", err)
 
 	sender, err := client.NewSender(queueName)
-	panicOnError("Failed to create sender", err)
+	exitOnError("Failed to create sender", err)
 
 	batch, err := sender.NewMessageBatch(context.TODO(), nil)
-	panicOnError("Failed to create message batch", err)
+	exitOnError("Failed to create message batch", err)
 
 	messagesToSend := []*azservicebus.Message{
 		{Body: []byte("hello world")},
@@ -62,10 +55,10 @@ func ExampleSender_NewMessageBatch() {
 			log.Fatal("Failed to add message to batch (batch is full)")
 		}
 
-		panicOnError("Error while trying to add message to batch", err)
+		exitOnError("Error while trying to add message to batch", err)
 	}
 
 	// now let's send the batch
 	err = sender.SendMessage(context.TODO(), batch)
-	panicOnError("Failed to send message batch", err)
+	exitOnError("Failed to send message batch", err)
 }

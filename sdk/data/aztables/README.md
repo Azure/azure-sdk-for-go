@@ -4,7 +4,7 @@ Azure Tables is a NoSQL data storage service that can be accessed from anywhere 
 Tables scales as needed to support the amount of data inserted, and allows for the storing of data with non-complex accessing.
 The Azure Tables client can be used to access Azure Storage or Cosmos accounts.
 
-[Source code][source_code] | [Package][Tables_gopackage] | [API reference documentation][Tables_ref_docs]
+[Source code][source_code] | [API reference documentation][Tables_ref_docs]
 
 ## Getting started
 The Azure Tables SDK can access an Azure Storage or CosmosDB account.
@@ -306,8 +306,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][msft_oss_co
 
 <!-- LINKS -->
 [source_code]:https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/data/aztables
-[Tables_gopackage]:https://aka.ms/azsdk/go/tables
-[Tables_ref_docs]:https://aka.ms/azsdk/go/tables
+[Tables_ref_docs]:https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/data/aztables
 [Tables_product_doc]:https://docs.microsoft.com/azure/cosmos-db/table-introduction
 
 [azure_subscription]:https://azure.microsoft.com/free/

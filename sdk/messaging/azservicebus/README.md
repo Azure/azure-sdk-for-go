@@ -324,20 +324,6 @@ If you'd like to contribute to this library, please read the [contributing guide
 [subscription_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
 [service_bus_overview]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview
 [msdoc_settling]: https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
-[source]: https://aka.ms/azsdkgo/azservicebus
-[godoc]: https://aka.ms/azsdkgo/azservicebus
-[godoc_examples]: https://aka.ms/azsdkgo/azservicebus
-[godoc_client]: https://aka.ms/azsdkgo/azservicebus
-[godoc_sender]: https://aka.ms/azsdkgo/azservicebus
-[godoc_receiver]: https://aka.ms/azsdkgo/azservicebus
-[godoc_receiver_completemessage]: https://aka.ms/azsdkgo/azservicebus
-[godoc_receiver_deadlettermessage]: https://aka.ms/azsdkgo/azservicebus
-[godoc_processor]: https://aka.ms/azsdkgo/azservicebus
-[godoc_processor_deadlettermessage]: https://aka.ms/azsdkgo/azservicebus
-[godoc_newsender]: https://aka.ms/azsdkgo/azservicebus
-[godoc_newreceiver_queue]: https://aka.ms/azsdkgo/azservicebus
-[godoc_newreceiver_subscription]: https://aka.ms/azsdkgo/azservicebus
-<!-- 
 [source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/messaging/azservicebus
 [godoc]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus
 [godoc_examples]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#pkg-examples
@@ -349,6 +335,5 @@ If you'd like to contribute to this library, please read the [contributing guide
 [godoc_processor]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Processor
 [godoc_processor_deadlettermessage]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Processor.DeadLetterMessage
 [godoc_newsender]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewSender
-[godoc_newreceiver_queue]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewReceiverWithQueue
-[godoc_newreceiver_subscription]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewReceiverWithQueue
--->
+[godoc_newreceiver_queue]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewReceiverForQueue
+[godoc_newreceiver_subscription]: https://godoc.org/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/#Client.NewReceiverForSubscription

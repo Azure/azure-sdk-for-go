@@ -6,8 +6,6 @@ package azcosmos
 import (
 	"context"
 	"errors"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // A CosmosClient is used to interact with the Azure Cosmos DB database service.
@@ -19,20 +17,18 @@ type CosmosClient struct {
 	options    *CosmosClientOptions
 }
 
-// NewCosmosClient creates a new instance of CosmosClient with the specified values. It uses the default pipeline configuration.
+// NewClientWithSharedKey creates a new instance of CosmosClient with the specified values. It uses the default pipeline configuration.
 // endpoint - The cosmos service endpoint to use.
 // cred - The credential used to authenticate with the cosmos service.
 // options - Optional CosmosClient options.  Pass nil to accept default values.
-func NewCosmosClient(endpoint string, cred azcore.Credential, options *CosmosClientOptions) (*CosmosClient, error) {
+func NewClientWithSharedKey(endpoint string, cred *SharedKeyCredential, options *CosmosClientOptions) (*CosmosClient, error) {
 	if options == nil {
 		options = &CosmosClientOptions{}
 	}
 
 	connection := newCosmosClientConnection(endpoint, cred, options)
 
-	c, _ := cred.(*SharedKeyCredential)
-
-	return &CosmosClient{Endpoint: endpoint, connection: connection, cred: c, options: options}, nil
+	return &CosmosClient{Endpoint: endpoint, connection: connection, cred: cred, options: options}, nil
 }
 
 // GetCosmosDatabase returns a CosmosDatabase object.

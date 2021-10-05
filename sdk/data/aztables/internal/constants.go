@@ -10,7 +10,7 @@ package internal
 
 const (
 	module  = "aztables"
-	version = "v0.2.0"
+	version = "v0.2.1"
 )
 
 // GeoReplicationStatusType - The status of the secondary location.

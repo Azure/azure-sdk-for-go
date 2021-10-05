@@ -19,7 +19,7 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 	defer cleanup()
 
 	// test with azure identity support
-	ns := os.Getenv("SERVICEBUS_FQDN")
+	ns := os.Getenv("SERVICEBUS_ENDPOINT")
 	dac, err := azidentity.NewDefaultAzureCredential(nil)
 
 	if err != nil || ns == "" {

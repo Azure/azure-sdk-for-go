@@ -168,30 +168,13 @@ of time.
 ```go
 processor, err := client.NewProcessorForQueue(
   "<queue>",
-  // NOTE: this is a parameter you'll want to tune. It controls the number of 
-  // active message `handleMessage` calls that the processor will allow at any time.
-  azservicebus.ProcessorWithMaxConcurrentCalls(1),
-
-  // The receive mode controls when a message is deleted from Service Bus. 
-  //
-  // `azservicebus.PeekLock` is the default. The message is locked, preventing multiple
-  // receivers from processing the message at once. You control the lock state of the message
-  //  using one of the message settlement functions, processor.CompleteMessage(), which removes
-  // it from Service Bus, or processor.AbandonMessage(), which makes it available again.
-  // 
-  // `azservicebus.ReceiveAndDelete` causes Service Bus to remove the message as soon
-  // as it's received.
-  //
-  // More information about receive modes:
-  // https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
-  azservicebus.ProcessorWithReceiveMode(azservicebus.PeekLock),
-
-  // 'AutoComplete' (enabled by default) will use your `handleMessage`
-  // function's return value to determine how it should settle your message. 
-  //
-  // A non-nil return error will cause your message to be Abandon()'d.
-  // Nil return errors will cause your message to be Complete'd.  
-  azservicebus.ProcessorWithAutoComplete(true),
+  &azservicebus.ProcessorOptions{
+    // NOTE: this is a parameter you'll want to tune. It controls the number of
+    // active message `handleMessage` calls that the processor will allow at any time.
+    MaxConcurrentCalls: 1,
+    ReceiveMode:        azservicebus.PeekLock,
+    ManualComplete:     false,
+  },
 )
 // or
 // client.NewProcessorForSubscription("<topic>", "<subscription>")
@@ -245,19 +228,9 @@ continually streaming messages, as the [Processor][godoc_processor] does.
 ```go
 receiver, err := client.NewReceiverForQueue(
   "<queue>",
-  // The receive mode controls when a message is deleted from Service Bus. 
-  //
-  // `azservicebus.PeekLock` is the default. The message is locked, preventing multiple
-  // receivers from processing the message at once. You control the lock state of the message
-  //  using one of the message settlement functions, receiver.CompleteMessage(), which removes
-  // it from Service Bus, or receiver.AbandonMessage(), which makes it available again.
-  // 
-  // `azservicebus.ReceiveAndDelete` causes Service Bus to remove the message as soon
-  // as it's received.
-  //
-  // More information about receive modes:
-  // https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
-  azservicebus.ReceiverWithReceiveMode(azservicebus.PeekLock),
+  &azservicebus.ReceiverOptions{
+    ReceiveMode: azservicebus.PeekLock,
+  },
 )
 // or
 // client.NewReceiverForSubscription("<topic>", "<subscription>")
@@ -274,10 +247,12 @@ messages, err := receiver.ReceiveMessages(context.TODO(),
   // on the contents of the remote queue or subscription and network
   // conditions.
   10, 
-  // This configures the amount of time to wait for messages to arrive.
-  // Note that this is merely an upper bound. It is possible to get messages
-  // faster than the duration specified.
-  azservicebus.ReceiveWithMaxWaitTime(time.Second * 60)
+  &azservicebus.ReceiveOptions{
+		// This configures the amount of time to wait for messages to arrive.
+		// Note that this is merely an upper bound. It is possible to get messages
+		// faster than the duration specified.
+		MaxWaitTime: 60 * time.Second,
+	},
 )
 
 if err != nil {
@@ -308,17 +283,25 @@ Opening a dead letter queue is just a configuration option when creating a [Proc
 
 ```go
 
-deadLetterReceiver, err := client.NewProcessorForQueue("<queue>", 
-  ProcessorWithSubQueue(azservicebus.SubQueueDeadLetter),
-)
-// or client.NewProcessorForSubscription("<topic>", "<subscription>", 
-//    ProcessorWithSubQueue(azservicebus.SubQueueDeadLetter))
+deadLetterReceiver, err := client.NewProcessorForQueue("<queue>",
+  &azservicebus.ProcessorOptions{
+    SubQueue: azservicebus.SubQueueDeadLetter,
+  })
+// or 
+// client.NewProcessorForSubscription("<topic>", "<subscription>", 
+//   &azservicebus.ProcessorOptions{
+//      SubQueue: azservicebus.SubQueueDeadLetter,
+//   })
 
-deadLetterReceiver, err := client.NewReceiverForQueue("<queue>", 
-  ReceiverWithSubQueue(azservicebus.SubQueueDeadLetter),
-)
-// or client.NewReceiverForSubscription("<topic>", "<subscription>", 
-//    ReceiverWithSubQueue(azservicebus.SubQueueDeadLetter))
+deadLetterReceiver, err := client.NewReceiverForQueue("<queue>",
+  &azservicebus.ReceiverOptions{
+	  SubQueue: azservicebus.SubQueueDeadLetter,
+  })
+// or 
+// client.NewReceiverForSubscription("<topic>", "<subscription>", 
+//   &azservicebus.ReceiverOptions{
+//     SubQueue: azservicebus.SubQueueDeadLetter,
+//   })
 ```
 
 To see some example code for receiving messages using the Processor or Receiver see the ["Receive messages"](#receive-messages) sample.

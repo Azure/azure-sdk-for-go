@@ -56,10 +56,7 @@ jobs:
         set -e
         go version
         curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-        for dd in eng/tools profiles services storage; do
-          cd $(sdkPath)/$dd
-          dep ensure -v
-        done
+        dep ensure -v
         go get -u golang.org/x/lint/golint
       workingDirectory: '$(sdkPath)'
       displayName: 'Install Dependencies'

@@ -5,12 +5,14 @@ trigger:
     exclude:
     - sdk/
     - eng/tools/
+    - eng/config.json
 
 pr:
   paths:
     exclude:
     - sdk/
     - eng/tools/
+    - eng/config.json
 
 jobs:
   - job: Build_Test
@@ -32,7 +34,7 @@ jobs:
       GO111MODULE: 'off'
       IGNORE_BREAKING_CHANGES: true
       go.list.filter: '| grep -v vendor | grep -v azure-sdk-for-go/sdk | grep -v azure-sdk-for-go/eng'
-      go.test.filter: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./tools -prune'
+      go.test.filter: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./eng -prune'
 
     steps:
     - task: GoTool@0
@@ -54,7 +56,10 @@ jobs:
         set -e
         go version
         curl -sSL https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-        dep ensure -v
+        for dd in eng/tools profiles services storage; do
+          cd $(sdkPath)/$dd
+          dep ensure -v
+        done
         go get -u golang.org/x/lint/golint
       workingDirectory: '$(sdkPath)'
       displayName: 'Install Dependencies'

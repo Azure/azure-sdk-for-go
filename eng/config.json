@@ -23,6 +23,10 @@
         {
             "Name": "azblob",
             "CoverageGoal": 0.45
+        },
+        {
+            "Name": "azsecrets",
+            "CoverageGoal": 0.76
         }
     ]
 }

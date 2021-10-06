@@ -72,6 +72,7 @@ steps:
       env:
         GO111MODULE: 'on'
         PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
+        AZURE_RECORD_MODE: 'playback'
         ${{ insert }}: ${{ parameters.EnvVars }}
 
     - pwsh: |

@@ -64,7 +64,7 @@ func (client LedgerClient) Create(ctx context.Context, resourceGroupName string,
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "confidentialledger.LedgerClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "confidentialledger.LedgerClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -102,6 +102,7 @@ func (client LedgerClient) CreatePreparer(ctx context.Context, resourceGroupName
 // http.Response Body if it receives an error.
 func (client LedgerClient) CreateSender(req *http.Request) (future LedgerCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -157,7 +158,7 @@ func (client LedgerClient) Delete(ctx context.Context, resourceGroupName string,
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "confidentialledger.LedgerClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "confidentialledger.LedgerClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -189,6 +190,7 @@ func (client LedgerClient) DeletePreparer(ctx context.Context, resourceGroupName
 // http.Response Body if it receives an error.
 func (client LedgerClient) DeleteSender(req *http.Request) (future LedgerDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -574,7 +576,7 @@ func (client LedgerClient) Update(ctx context.Context, resourceGroupName string,
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "confidentialledger.LedgerClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "confidentialledger.LedgerClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -612,6 +614,7 @@ func (client LedgerClient) UpdatePreparer(ctx context.Context, resourceGroupName
 // http.Response Body if it receives an error.
 func (client LedgerClient) UpdateSender(req *http.Request) (future LedgerUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

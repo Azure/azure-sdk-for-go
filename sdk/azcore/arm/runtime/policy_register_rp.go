@@ -83,7 +83,7 @@ func (r *RegistrationOptions) init() {
 // credentials and options.  The policy controls if an unregistered resource provider should
 // automatically be registered. See https://aka.ms/rps-not-found for more information.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
-func NewRPRegistrationPolicy(endpoint string, cred azcore.Credential, o *RegistrationOptions) policy.Policy {
+func NewRPRegistrationPolicy(endpoint string, cred azcore.TokenCredential, o *RegistrationOptions) policy.Policy {
 	if o == nil {
 		o = &RegistrationOptions{}
 	}
@@ -92,7 +92,7 @@ func NewRPRegistrationPolicy(endpoint string, cred azcore.Credential, o *Registr
 		pipeline: runtime.NewPipeline(o.HTTPClient,
 			runtime.NewTelemetryPolicy(shared.Module, shared.Version, &o.Telemetry),
 			runtime.NewRetryPolicy(&o.Retry),
-			cred.NewAuthenticationPolicy(runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: []string{shared.EndpointToScope(endpoint)}}}),
+			runtime.NewBearerTokenPolicy(cred, runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: []string{shared.EndpointToScope(endpoint)}}}),
 			runtime.NewLogPolicy(&o.Logging)),
 		options: *o,
 	}

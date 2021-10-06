@@ -65,7 +65,7 @@ func (client MoveResourcesClient) Create(ctx context.Context, resourceGroupName 
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -106,6 +106,7 @@ func (client MoveResourcesClient) CreatePreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client MoveResourcesClient) CreateSender(req *http.Request) (future MoveResourcesCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -153,7 +154,7 @@ func (client MoveResourcesClient) Delete(ctx context.Context, resourceGroupName 
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveResourcesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -186,6 +187,7 @@ func (client MoveResourcesClient) DeletePreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client MoveResourcesClient) DeleteSender(req *http.Request) (future MoveResourcesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

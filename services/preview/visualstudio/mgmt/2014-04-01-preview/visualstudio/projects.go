@@ -63,7 +63,7 @@ func (client ProjectsClient) Create(ctx context.Context, body ProjectResource, r
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "visualstudio.ProjectsClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "visualstudio.ProjectsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -101,6 +101,7 @@ func (client ProjectsClient) CreatePreparer(ctx context.Context, body ProjectRes
 // http.Response Body if it receives an error.
 func (client ProjectsClient) CreateSender(req *http.Request) (future ProjectsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

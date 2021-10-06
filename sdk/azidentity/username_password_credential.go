@@ -8,7 +8,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // UsernamePasswordCredentialOptions can be used to provide additional information to configure the UsernamePasswordCredential.
@@ -77,11 +76,6 @@ func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts policy.T
 	}
 	logGetTokenSuccess(c, opts)
 	return tk, err
-}
-
-// NewAuthenticationPolicy implements the azcore.Credential interface on UsernamePasswordCredential.
-func (c *UsernamePasswordCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
-	return newBearerTokenPolicy(c, options)
 }
 
 var _ azcore.TokenCredential = (*UsernamePasswordCredential)(nil)

@@ -57,7 +57,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Chained
 		errMsg += err.Error()
 	}
 
-	msiCred, err := NewManagedIdentityCredential("", &ManagedIdentityCredentialOptions{HTTPClient: options.HTTPClient,
+	msiCred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{HTTPClient: options.HTTPClient,
 		Logging:   options.Logging,
 		Telemetry: options.Telemetry,
 	})

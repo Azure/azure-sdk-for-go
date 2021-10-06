@@ -98,11 +98,6 @@ func (c *InteractiveBrowserCredential) GetToken(ctx context.Context, opts policy
 	return tk, nil
 }
 
-// NewAuthenticationPolicy implements the azcore.Credential interface on InteractiveBrowserCredential.
-func (c *InteractiveBrowserCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
-	return newBearerTokenPolicy(c, options)
-}
-
 var _ azcore.TokenCredential = (*InteractiveBrowserCredential)(nil)
 
 // authCodeReceiver is used to allow for testing without opening an interactive browser window. Allows mocking a response authorization code and redirect URI.

@@ -281,7 +281,7 @@ func (client OriginsClient) Update(ctx context.Context, resourceGroupName string
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.OriginsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -317,6 +317,7 @@ func (client OriginsClient) UpdatePreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client OriginsClient) UpdateSender(req *http.Request) (future OriginsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

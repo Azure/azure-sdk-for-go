@@ -9,7 +9,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ChainedTokenCredentialOptions contains optional parameters for ChainedTokenCredential
@@ -75,11 +74,6 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.Token
 	// skip adding the stack trace here as it was already logged by other calls to GetToken()
 	addGetTokenFailureLogs("Chained Token Credential", credErr, false)
 	return nil, credErr
-}
-
-// NewAuthenticationPolicy implements the azcore.Credential interface on ChainedTokenCredential and sets the bearer token
-func (c *ChainedTokenCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
-	return newBearerTokenPolicy(c, options)
 }
 
 // helper function used to chain the error messages of the CredentialUnavailableError slice

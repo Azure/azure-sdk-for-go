@@ -4,6 +4,8 @@
 
 ### Breaking Changes
 * The endpoint parameter for `arm/Connection` constructors has changed to a string typedef in order to provide a hint for applicable values.
+* Removed `azcore.Credential` and `.NewAnonymousCredential()`
+  * `NewRPRegistrationPolicy` now requires an `azcore.TokenCredential`
 
 ### Features Added
 * Updating Documentation

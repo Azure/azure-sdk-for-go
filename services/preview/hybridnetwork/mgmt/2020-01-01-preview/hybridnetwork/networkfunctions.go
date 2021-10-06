@@ -66,7 +66,7 @@ func (client NetworkFunctionsClient) CreateOrUpdate(ctx context.Context, resourc
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -100,6 +100,7 @@ func (client NetworkFunctionsClient) CreateOrUpdatePreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client NetworkFunctionsClient) CreateOrUpdateSender(req *http.Request) (future NetworkFunctionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -156,7 +157,7 @@ func (client NetworkFunctionsClient) Delete(ctx context.Context, resourceGroupNa
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridnetwork.NetworkFunctionsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -188,6 +189,7 @@ func (client NetworkFunctionsClient) DeletePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client NetworkFunctionsClient) DeleteSender(req *http.Request) (future NetworkFunctionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

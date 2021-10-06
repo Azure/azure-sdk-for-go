@@ -80,7 +80,7 @@ func (client AppsClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "appplatform.AppsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "appplatform.AppsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -115,6 +115,7 @@ func (client AppsClient) CreateOrUpdatePreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client AppsClient) CreateOrUpdateSender(req *http.Request) (future AppsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -523,7 +524,7 @@ func (client AppsClient) Update(ctx context.Context, resourceGroupName string, s
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "appplatform.AppsClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "appplatform.AppsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -558,6 +559,7 @@ func (client AppsClient) UpdatePreparer(ctx context.Context, resourceGroupName s
 // http.Response Body if it receives an error.
 func (client AppsClient) UpdateSender(req *http.Request) (future AppsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -29,30 +29,31 @@ function Get-GoModuleVersionInfo($modPath)
 
 function Get-GoModuleProperties($goModPath)
 {
-    if ($goModPath -match "(?<modPath>sdk[\\/](resourcemanager[\\/])?(?:(?<modGroup>[^\\/]+)[\\/])?(?<modName>[^\\/]+$))")
-    {
-      $modPath = $matches["modPath"] -replace "\\", "/"
-      $modName = $matches["modName"] # We may need to start readong this from the go.mod file if the path and mod config start to differ
-      $modGroup = $matches["modGroup"]
-      $sdkType = "client"
-      if ($modName.StartsWith("arm")) { $sdkType = "mgmt" }
+  $goModPath = $goModPath -replace "\\", "/"
+  if ($goModPath -match "(?<modPath>sdk/(?<serviceDir>(resourcemanager/)?([^/]+/)?(?<modName>[^/]+$)))")
+  {
+    $modPath = $matches["modPath"]
+    $modName = $matches["modName"] # We may need to start readong this from the go.mod file if the path and mod config start to differ
+    $serviceDir = $matches["serviceDir"]
+    $sdkType = "client"
+    if ($modName.StartsWith("arm")) { $sdkType = "mgmt" }
 
-      $modVersion, $versionFile = Get-GoModuleVersionInfo $goModPath
+    $modVersion, $versionFile = Get-GoModuleVersionInfo $goModPath
 
-      if (!$modVersion) {
-        return $null
-      }
-
-      $pkgProp = [PackageProps]::new($modPath, $modVersion, $goModPath, $modGroup)
-      $pkgProp.IsNewSdk = $true
-      $pkgProp.SdkType = $sdkType
-
-      $pkgProp | Add-Member -NotePropertyName "VersionFile" -NotePropertyValue $versionFile
-      $pkgProp | Add-Member -NotePropertyName "ModuleName" -NotePropertyValue $modName
-
-      return $pkgProp
+    if (!$modVersion) {
+      return $null
     }
-    return $null
+
+    $pkgProp = [PackageProps]::new($modPath, $modVersion, $goModPath, $serviceDir)
+    $pkgProp.IsNewSdk = $true
+    $pkgProp.SdkType = $sdkType
+
+    $pkgProp | Add-Member -NotePropertyName "VersionFile" -NotePropertyValue $versionFile
+    $pkgProp | Add-Member -NotePropertyName "ModuleName" -NotePropertyValue $modName
+
+    return $pkgProp
+  }
+  return $null
 }
 
 # rewrite from artifact-metadata-parsing.ps1 used in RetrievePackages for fetch go single module info

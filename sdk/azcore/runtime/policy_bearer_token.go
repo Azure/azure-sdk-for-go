@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package azidentity
+package runtime
 
 import (
 	"fmt"
@@ -12,20 +12,23 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 const (
-	bearerTokenPrefix = "Bearer "
+	bearerTokenPrefix            = "Bearer "
+	headerXmsDate                = "x-ms-date"
+	headerAuthorization          = "Authorization"
+	headerAuxiliaryAuthorization = "x-ms-authorization-auxiliary"
 )
 
-type bearerTokenPolicy struct {
+// BearerTokenPolicy authorizes requests with bearer tokens acquired from a TokenCredential.
+type BearerTokenPolicy struct {
 	// mainResource is the resource to be retreived using the tenant specified in the credential
 	mainResource *expiringResource
 	// auxResources are additional resources that are required for cross-tenant applications
 	auxResources map[string]*expiringResource
 	// the following fields are read-only
-	creds   azcore.TokenCredential
+	cred    azcore.TokenCredential
 	options policy.TokenRequestOptions
 }
 
@@ -50,14 +53,14 @@ type acquireResource func(state interface{}) (newResource interface{}, newExpira
 
 type acquiringResourceState struct {
 	req *policy.Request
-	p   bearerTokenPolicy
+	p   BearerTokenPolicy
 }
 
 // acquire acquires or updates the resource; only one
 // thread/goroutine at a time ever calls this function
 func acquire(state interface{}) (newResource interface{}, newExpiration time.Time, err error) {
 	s := state.(acquiringResourceState)
-	tk, err := s.p.creds.GetToken(s.req.Raw().Context(), s.p.options)
+	tk, err := s.p.cred.GetToken(s.req.Raw().Context(), s.p.options)
 	if err != nil {
 		return nil, time.Time{}, err
 	}
@@ -127,9 +130,12 @@ func (er *expiringResource) GetResource(state interface{}) (interface{}, error) 
 	return resource, err // Return the resource this thread/goroutine can use
 }
 
-func newBearerTokenPolicy(creds azcore.TokenCredential, opts runtime.AuthenticationOptions) *bearerTokenPolicy {
-	p := &bearerTokenPolicy{
-		creds:        creds,
+// NewBearerTokenPolicy creates a policy object that authorizes requests with bearer tokens.
+// cred: an azcore.TokenCredential implementation such as a credential object from azidentity
+// opts: optional settings. Pass nil to accept default values; this is the same as passing a zero-value options.
+func NewBearerTokenPolicy(cred azcore.TokenCredential, opts AuthenticationOptions) *BearerTokenPolicy {
+	p := &BearerTokenPolicy{
+		cred:         cred,
 		options:      opts.TokenRequest,
 		mainResource: newExpiringResource(acquire),
 	}
@@ -143,7 +149,8 @@ func newBearerTokenPolicy(creds azcore.TokenCredential, opts runtime.Authenticat
 	return p
 }
 
-func (b *bearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
+// Do authorizes a request with a bearer token
+func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 	as := acquiringResourceState{
 		p:   *b,
 		req: req,
@@ -154,7 +161,7 @@ func (b *bearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 	}
 	if token, ok := tk.(*azcore.AccessToken); ok {
 		req.Raw().Header.Set(headerXmsDate, time.Now().UTC().Format(http.TimeFormat))
-		req.Raw().Header.Set(headerAuthorization, fmt.Sprintf("Bearer %s", token.Token))
+		req.Raw().Header.Set(headerAuthorization, bearerTokenPrefix+token.Token)
 	}
 	auxTokens := []string{}
 	for tenant, er := range b.auxResources {

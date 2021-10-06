@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"os"
 	"testing"
 	"time"
 
@@ -19,12 +20,12 @@ import (
 // This example shows you how to get started using the Azure Cosmos DB SDK for Go.// NewCosmosClient creates a new instance of CosmosClient with the specified values. It uses the default pipeline configuration.
 func TestExample(t *testing.T) {
 
-	endpoint := "https://localhost:8081"                                                              //os.LookupEnv("SOME_ENDPOINT")
-	key := "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==" //os.LookupEnv("SOME_KEY")
+	endpoint, _ := os.LookupEnv("SOME_ENDPOINT")
+	key, _ := os.LookupEnv("SOME_KEY")
 
 	// Create new Cosmos DB client.
 	cred, _ := azcosmos.NewSharedKeyCredential(key)
-	client, err := azcosmos.NewCosmosClient(endpoint, cred, nil)
+	client, err := azcosmos.NewClientWithSharedKey(endpoint, cred, nil)
 	if err != nil {
 		log.Fatal(err)
 	}

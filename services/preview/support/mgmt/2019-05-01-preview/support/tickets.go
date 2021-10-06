@@ -162,7 +162,7 @@ func (client TicketsClient) Create(ctx context.Context, supportTicketName string
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "support.TicketsClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "support.TicketsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -198,6 +198,7 @@ func (client TicketsClient) CreatePreparer(ctx context.Context, supportTicketNam
 // http.Response Body if it receives an error.
 func (client TicketsClient) CreateSender(req *http.Request) (future TicketsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

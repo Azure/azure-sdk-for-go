@@ -9,7 +9,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
@@ -104,11 +103,6 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *EnvironmentCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	return c.cred.GetToken(ctx, opts)
-}
-
-// NewAuthenticationPolicy implements the azcore.Credential interface on EnvironmentCredential.
-func (c *EnvironmentCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
-	return newBearerTokenPolicy(c.cred, options)
 }
 
 var _ azcore.TokenCredential = (*EnvironmentCredential)(nil)

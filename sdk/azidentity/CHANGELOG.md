@@ -2,6 +2,8 @@
 
 ## 0.12.0 (Unreleased)
 ### Breaking Changes
+* Removed `NewAuthenticationPolicy()` from credentials. Clients should instead use azcore's
+ `runtime.NewBearerTokenPolicy()` to construct a bearer token authorization policy.
 * The `AuthorityHost` field in credential options structs is now a custom type,
   `AuthorityHost`, with underlying type `string`
 * `NewChainedTokenCredential` has a new signature to accommodate a placeholder
@@ -27,6 +29,23 @@
   ```
 * Removed `InteractiveBrowserCredentialOptions.ClientSecret` and `.Port`
 * Removed `AADAuthenticationFailedError`
+* Removed `id` parameter of `NewManagedIdentityCredential()`. User assigned identities are now
+  specified by `ManagedIdentityCredentialOptions.ID`:
+  ```go
+  // before
+  cred, err := NewManagedIdentityCredential("client-id", nil)
+  // or, for a resource ID
+  opts := &ManagedIdentityCredentialOptions{ID: ResourceID}
+  cred, err := NewManagedIdentityCredential("/subscriptions/...", opts)
+
+  // after
+  clientID := ClientID("7cf7db0d-...")
+  opts := &ManagedIdentityCredentialOptions{ID: clientID}
+  // or, for a resource ID
+  resID: ResourceID("/subscriptions/...")
+  opts := &ManagedIdentityCredentialOptions{ID: resID}
+  cred, err := NewManagedIdentityCredential(opts)
+  ```
 
 ### Features Added
 * Added connection configuration options to `DefaultAzureCredentialOptions`

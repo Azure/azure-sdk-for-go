@@ -64,7 +64,7 @@ func (client WatchersClient) CheckConnectivity(ctx context.Context, resourceGrou
 
 	result, err = client.CheckConnectivitySender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.WatchersClient", "CheckConnectivity", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.WatchersClient", "CheckConnectivity", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -98,6 +98,7 @@ func (client WatchersClient) CheckConnectivityPreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client WatchersClient) CheckConnectivitySender(req *http.Request) (future WatchersCheckConnectivityFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -223,7 +224,7 @@ func (client WatchersClient) Delete(ctx context.Context, resourceGroupName strin
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.WatchersClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.WatchersClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -255,6 +256,7 @@ func (client WatchersClient) DeletePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client WatchersClient) DeleteSender(req *http.Request) (future WatchersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -387,7 +389,7 @@ func (client WatchersClient) GetAzureReachabilityReport(ctx context.Context, res
 
 	result, err = client.GetAzureReachabilityReportSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.WatchersClient", "GetAzureReachabilityReport", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.WatchersClient", "GetAzureReachabilityReport", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -421,6 +423,7 @@ func (client WatchersClient) GetAzureReachabilityReportPreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client WatchersClient) GetAzureReachabilityReportSender(req *http.Request) (future WatchersGetAzureReachabilityReportFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -474,7 +477,7 @@ func (client WatchersClient) GetFlowLogStatus(ctx context.Context, resourceGroup
 
 	result, err = client.GetFlowLogStatusSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.WatchersClient", "GetFlowLogStatus", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.WatchersClient", "GetFlowLogStatus", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -508,6 +511,7 @@ func (client WatchersClient) GetFlowLogStatusPreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client WatchersClient) GetFlowLogStatusSender(req *http.Request) (future WatchersGetFlowLogStatusFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -563,7 +567,7 @@ func (client WatchersClient) GetNextHop(ctx context.Context, resourceGroupName s
 
 	result, err = client.GetNextHopSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.WatchersClient", "GetNextHop", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.WatchersClient", "GetNextHop", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -597,6 +601,7 @@ func (client WatchersClient) GetNextHopPreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client WatchersClient) GetNextHopSender(req *http.Request) (future WatchersGetNextHopFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -733,7 +738,7 @@ func (client WatchersClient) GetTroubleshooting(ctx context.Context, resourceGro
 
 	result, err = client.GetTroubleshootingSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.WatchersClient", "GetTroubleshooting", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.WatchersClient", "GetTroubleshooting", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -767,6 +772,7 @@ func (client WatchersClient) GetTroubleshootingPreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client WatchersClient) GetTroubleshootingSender(req *http.Request) (future WatchersGetTroubleshootingFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -820,7 +826,7 @@ func (client WatchersClient) GetTroubleshootingResult(ctx context.Context, resou
 
 	result, err = client.GetTroubleshootingResultSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.WatchersClient", "GetTroubleshootingResult", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.WatchersClient", "GetTroubleshootingResult", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -854,6 +860,7 @@ func (client WatchersClient) GetTroubleshootingResultPreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client WatchersClient) GetTroubleshootingResultSender(req *http.Request) (future WatchersGetTroubleshootingResultFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -907,7 +914,7 @@ func (client WatchersClient) GetVMSecurityRules(ctx context.Context, resourceGro
 
 	result, err = client.GetVMSecurityRulesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.WatchersClient", "GetVMSecurityRules", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.WatchersClient", "GetVMSecurityRules", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -941,6 +948,7 @@ func (client WatchersClient) GetVMSecurityRulesPreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client WatchersClient) GetVMSecurityRulesSender(req *http.Request) (future WatchersGetVMSecurityRulesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1133,7 +1141,7 @@ func (client WatchersClient) ListAvailableProviders(ctx context.Context, resourc
 
 	result, err = client.ListAvailableProvidersSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.WatchersClient", "ListAvailableProviders", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.WatchersClient", "ListAvailableProviders", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1167,6 +1175,7 @@ func (client WatchersClient) ListAvailableProvidersPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client WatchersClient) ListAvailableProvidersSender(req *http.Request) (future WatchersListAvailableProvidersFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1224,7 +1233,7 @@ func (client WatchersClient) SetFlowLogConfiguration(ctx context.Context, resour
 
 	result, err = client.SetFlowLogConfigurationSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.WatchersClient", "SetFlowLogConfiguration", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.WatchersClient", "SetFlowLogConfiguration", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1258,6 +1267,7 @@ func (client WatchersClient) SetFlowLogConfigurationPreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client WatchersClient) SetFlowLogConfigurationSender(req *http.Request) (future WatchersSetFlowLogConfigurationFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1394,7 +1404,7 @@ func (client WatchersClient) VerifyIPFlow(ctx context.Context, resourceGroupName
 
 	result, err = client.VerifyIPFlowSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "network.WatchersClient", "VerifyIPFlow", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "network.WatchersClient", "VerifyIPFlow", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1428,6 +1438,7 @@ func (client WatchersClient) VerifyIPFlowPreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client WatchersClient) VerifyIPFlowSender(req *http.Request) (future WatchersVerifyIPFlowFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

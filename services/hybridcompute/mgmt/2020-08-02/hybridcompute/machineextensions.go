@@ -56,7 +56,7 @@ func (client MachineExtensionsClient) CreateOrUpdate(ctx context.Context, resour
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -91,6 +91,7 @@ func (client MachineExtensionsClient) CreateOrUpdatePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client MachineExtensionsClient) CreateOrUpdateSender(req *http.Request) (future MachineExtensionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -138,7 +139,7 @@ func (client MachineExtensionsClient) Delete(ctx context.Context, resourceGroupN
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -171,6 +172,7 @@ func (client MachineExtensionsClient) DeletePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client MachineExtensionsClient) DeleteSender(req *http.Request) (future MachineExtensionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -418,7 +420,7 @@ func (client MachineExtensionsClient) Update(ctx context.Context, resourceGroupN
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybridcompute.MachineExtensionsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -453,6 +455,7 @@ func (client MachineExtensionsClient) UpdatePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client MachineExtensionsClient) UpdateSender(req *http.Request) (future MachineExtensionsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

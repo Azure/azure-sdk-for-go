@@ -134,7 +134,7 @@ func (client JobCollectionsClient) Delete(ctx context.Context, resourceGroupName
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -166,6 +166,7 @@ func (client JobCollectionsClient) DeletePreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client JobCollectionsClient) DeleteSender(req *http.Request) (future JobCollectionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -211,7 +212,7 @@ func (client JobCollectionsClient) Disable(ctx context.Context, resourceGroupNam
 
 	result, err = client.DisableSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Disable", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Disable", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -243,6 +244,7 @@ func (client JobCollectionsClient) DisablePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client JobCollectionsClient) DisableSender(req *http.Request) (future JobCollectionsDisableFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -288,7 +290,7 @@ func (client JobCollectionsClient) Enable(ctx context.Context, resourceGroupName
 
 	result, err = client.EnableSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Enable", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "scheduler.JobCollectionsClient", "Enable", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -320,6 +322,7 @@ func (client JobCollectionsClient) EnablePreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client JobCollectionsClient) EnableSender(req *http.Request) (future JobCollectionsEnableFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

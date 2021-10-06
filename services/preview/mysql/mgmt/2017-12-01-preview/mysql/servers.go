@@ -69,7 +69,7 @@ func (client ServersClient) Create(ctx context.Context, resourceGroupName string
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mysql.ServersClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mysql.ServersClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -103,6 +103,7 @@ func (client ServersClient) CreatePreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client ServersClient) CreateSender(req *http.Request) (future ServersCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -150,7 +151,7 @@ func (client ServersClient) Delete(ctx context.Context, resourceGroupName string
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mysql.ServersClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mysql.ServersClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -182,6 +183,7 @@ func (client ServersClient) DeletePreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client ServersClient) DeleteSender(req *http.Request) (future ServersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -451,7 +453,7 @@ func (client ServersClient) Restart(ctx context.Context, resourceGroupName strin
 
 	result, err = client.RestartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mysql.ServersClient", "Restart", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mysql.ServersClient", "Restart", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -483,6 +485,7 @@ func (client ServersClient) RestartPreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client ServersClient) RestartSender(req *http.Request) (future ServersRestartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -531,7 +534,7 @@ func (client ServersClient) Update(ctx context.Context, resourceGroupName string
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "mysql.ServersClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "mysql.ServersClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -565,6 +568,7 @@ func (client ServersClient) UpdatePreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client ServersClient) UpdateSender(req *http.Request) (future ServersUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

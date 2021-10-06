@@ -44,6 +44,14 @@ steps:
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
   - script: |
+      echo ensuring $(pwd)/LICENSE file exists
+      grep -L -r --include ./LICENSE -P "Copyright (\d{4}|\(c\)) Microsoft" . | tee >&2
+    displayName: 'License Check'
+    condition: succeededOrFailed()
+    failOnStderr: true
+    workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
+
+  - script: |
       echo Check source file formatting in $(pwd)
       gofmt -s -l -d . | tee >&2
     displayName: 'Format Check'

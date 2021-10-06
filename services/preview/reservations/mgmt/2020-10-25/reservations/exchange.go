@@ -52,7 +52,7 @@ func (client ExchangeClient) Post(ctx context.Context, body ExchangeRequest) (re
 
 	result, err = client.PostSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.ExchangeClient", "Post", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.ExchangeClient", "Post", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -80,6 +80,7 @@ func (client ExchangeClient) PostPreparer(ctx context.Context, body ExchangeRequ
 // http.Response Body if it receives an error.
 func (client ExchangeClient) PostSender(req *http.Request) (future ExchangePostFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

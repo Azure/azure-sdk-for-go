@@ -56,7 +56,7 @@ func (client InvoiceSectionsClient) CreateOrUpdate(ctx context.Context, billingA
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.InvoiceSectionsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -90,6 +90,7 @@ func (client InvoiceSectionsClient) CreateOrUpdatePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client InvoiceSectionsClient) CreateOrUpdateSender(req *http.Request) (future InvoiceSectionsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

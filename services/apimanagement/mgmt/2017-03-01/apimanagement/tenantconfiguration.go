@@ -67,7 +67,7 @@ func (client TenantConfigurationClient) Deploy(ctx context.Context, resourceGrou
 
 	result, err = client.DeploySender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Deploy", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Deploy", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -102,6 +102,7 @@ func (client TenantConfigurationClient) DeployPreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client TenantConfigurationClient) DeploySender(req *http.Request) (future TenantConfigurationDeployFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -246,7 +247,7 @@ func (client TenantConfigurationClient) Save(ctx context.Context, resourceGroupN
 
 	result, err = client.SaveSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Save", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Save", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -281,6 +282,7 @@ func (client TenantConfigurationClient) SavePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client TenantConfigurationClient) SaveSender(req *http.Request) (future TenantConfigurationSaveFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -339,7 +341,7 @@ func (client TenantConfigurationClient) Validate(ctx context.Context, resourceGr
 
 	result, err = client.ValidateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Validate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "apimanagement.TenantConfigurationClient", "Validate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -374,6 +376,7 @@ func (client TenantConfigurationClient) ValidatePreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client TenantConfigurationClient) ValidateSender(req *http.Request) (future TenantConfigurationValidateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

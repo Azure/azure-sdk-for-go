@@ -27,3 +27,4 @@ stages:
     ServiceDirectory: 'data/aztables'
     RunTests: true
     RunLiveTests: true
+

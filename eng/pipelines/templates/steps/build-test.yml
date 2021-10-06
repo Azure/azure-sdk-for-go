@@ -43,11 +43,11 @@ steps:
 
   - ${{ if eq(parameters.RunTests, 'true') }}:
     - pwsh: |
-        go install github.com/jstemmer/go-junit-report
-        go install github.com/axw/gocov/gocov
-        go install github.com/AlekSi/gocov-xml
-        go install github.com/matm/gocov-html
-        go install -u github.com/wadey/gocovmerge
+        go install github.com/jstemmer/go-junit-report@v0.9.1
+        go install github.com/axw/gocov/gocov@v1.0.0
+        go install github.com/AlekSi/gocov-xml@v1.0.0
+        go install github.com/matm/gocov-html@v1.1
+        go install github.com/wadey/gocovmerge@v0.0.0-20160331181800-b5bfa59ec0ad
       displayName: "Install Coverage and Junit Dependencies"
       workingDirectory: '${{parameters.GoWorkspace}}'
 

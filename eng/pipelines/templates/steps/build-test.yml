@@ -43,11 +43,11 @@ steps:
 
   - ${{ if eq(parameters.RunTests, 'true') }}:
     - pwsh: |
-        go get github.com/jstemmer/go-junit-report
-        go get github.com/axw/gocov/gocov
-        go get github.com/AlekSi/gocov-xml
-        go get github.com/matm/gocov-html
-        go get -u github.com/wadey/gocovmerge
+        go install github.com/jstemmer/go-junit-report
+        go install github.com/axw/gocov/gocov
+        go install github.com/AlekSi/gocov-xml
+        go install github.com/matm/gocov-html
+        go install -u github.com/wadey/gocovmerge
       displayName: "Install Coverage and Junit Dependencies"
       workingDirectory: '${{parameters.GoWorkspace}}'
 
@@ -57,7 +57,7 @@ steps:
       displayName: 'Run Tests'
       inputs:
         targetType: 'filePath'
-        filePath: ./eng/scripts/run_test.ps1
+        filePath: ./eng/scripts/run_tests.ps1
         workingDirectory: '${{ parameters.GoWorkspace }}'
         arguments: '${{ parameters.ServiceDirectory }}'
         pwsh: true

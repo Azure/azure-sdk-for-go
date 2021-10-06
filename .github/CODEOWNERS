@@ -33,7 +33,7 @@
 # PRLabel: %Tables
 /sdk/data/aztables/      @seankane-msft
 
-# PRLabel: %Tables
+# PRLabel: %Mgmt
 /sdk/resourcemanager/    @ArcturusZhang @lirenhe
 
 # PRLabel: %EngSys

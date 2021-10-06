@@ -54,7 +54,7 @@ func (client SupportPlanTypesClient) CreateOrUpdate(ctx context.Context, provide
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -86,6 +86,7 @@ func (client SupportPlanTypesClient) CreateOrUpdatePreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client SupportPlanTypesClient) CreateOrUpdateSender(req *http.Request) (future SupportPlanTypesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -132,7 +133,7 @@ func (client SupportPlanTypesClient) Delete(ctx context.Context, providerName st
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "addons.SupportPlanTypesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -164,6 +165,7 @@ func (client SupportPlanTypesClient) DeletePreparer(ctx context.Context, provide
 // http.Response Body if it receives an error.
 func (client SupportPlanTypesClient) DeleteSender(req *http.Request) (future SupportPlanTypesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

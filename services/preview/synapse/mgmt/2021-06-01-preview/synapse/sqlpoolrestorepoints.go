@@ -68,7 +68,7 @@ func (client SQLPoolRestorePointsClient) Create(ctx context.Context, resourceGro
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.SQLPoolRestorePointsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -103,6 +103,7 @@ func (client SQLPoolRestorePointsClient) CreatePreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client SQLPoolRestorePointsClient) CreateSender(req *http.Request) (future SQLPoolRestorePointsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

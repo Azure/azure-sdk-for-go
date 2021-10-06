@@ -57,7 +57,7 @@ func (client GenerateReservationDetailsReportClient) ByBillingAccountID(ctx cont
 
 	result, err = client.ByBillingAccountIDSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "costmanagement.GenerateReservationDetailsReportClient", "ByBillingAccountID", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "costmanagement.GenerateReservationDetailsReportClient", "ByBillingAccountID", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -89,6 +89,7 @@ func (client GenerateReservationDetailsReportClient) ByBillingAccountIDPreparer(
 // http.Response Body if it receives an error.
 func (client GenerateReservationDetailsReportClient) ByBillingAccountIDSender(req *http.Request) (future GenerateReservationDetailsReportByBillingAccountIDFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -138,7 +139,7 @@ func (client GenerateReservationDetailsReportClient) ByBillingProfileID(ctx cont
 
 	result, err = client.ByBillingProfileIDSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "costmanagement.GenerateReservationDetailsReportClient", "ByBillingProfileID", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "costmanagement.GenerateReservationDetailsReportClient", "ByBillingProfileID", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -171,6 +172,7 @@ func (client GenerateReservationDetailsReportClient) ByBillingProfileIDPreparer(
 // http.Response Body if it receives an error.
 func (client GenerateReservationDetailsReportClient) ByBillingProfileIDSender(req *http.Request) (future GenerateReservationDetailsReportByBillingProfileIDFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

@@ -72,8 +72,8 @@ func TestNewConnectionWithOptions(t *testing.T) {
 	srv.AppendResponse()
 	opt := ConnectionOptions{}
 	opt.HTTPClient = srv
-	con := NewConnection(srv.URL(), mockTokenCred{}, &opt)
-	if ep := con.Endpoint(); ep != srv.URL() {
+	con := NewConnection(Endpoint(srv.URL()), mockTokenCred{}, &opt)
+	if ep := con.Endpoint(); ep != Endpoint(srv.URL()) {
 		t.Fatalf("unexpected endpoint %s", ep)
 	}
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
@@ -100,8 +100,8 @@ func TestNewConnectionWithCustomTelemetry(t *testing.T) {
 	opt := ConnectionOptions{}
 	opt.HTTPClient = srv
 	opt.Telemetry.ApplicationID = myTelemetry
-	con := NewConnection(srv.URL(), mockTokenCred{}, &opt)
-	if ep := con.Endpoint(); ep != srv.URL() {
+	con := NewConnection(Endpoint(srv.URL()), mockTokenCred{}, &opt)
+	if ep := con.Endpoint(); ep != Endpoint(srv.URL()) {
 		t.Fatalf("unexpected endpoint %s", ep)
 	}
 	if opt.Telemetry.ApplicationID != myTelemetry {
@@ -128,8 +128,8 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	defer close()
 	// initial response that RP is unregistered
 	srv.SetResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
-	con := NewConnection(srv.URL(), mockTokenCred{}, &ConnectionOptions{DisableRPRegistration: true})
-	if ep := con.Endpoint(); ep != srv.URL() {
+	con := NewConnection(Endpoint(srv.URL()), mockTokenCred{}, &ConnectionOptions{DisableRPRegistration: true})
+	if ep := con.Endpoint(); ep != Endpoint(srv.URL()) {
 		t.Fatalf("unexpected endpoint %s", ep)
 	}
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
@@ -177,7 +177,7 @@ func TestConnectionWithCustomPolicies(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	perCallPolicy := countingPolicy{}
 	perRetryPolicy := countingPolicy{}
-	con := NewConnection(srv.URL(), mockTokenCred{}, &ConnectionOptions{
+	con := NewConnection(Endpoint(srv.URL()), mockTokenCred{}, &ConnectionOptions{
 		DisableRPRegistration: true,
 		PerCallPolicies:       []policy.Policy{&perCallPolicy},
 		PerRetryPolicies:      []policy.Policy{&perRetryPolicy},

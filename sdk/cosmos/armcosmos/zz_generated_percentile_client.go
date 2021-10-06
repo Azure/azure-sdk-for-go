@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,23 +11,26 @@ package armcosmos
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PercentileClient contains the methods for the Percentile group.
 // Don't use this type directly, use NewPercentileClient() instead.
 type PercentileClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewPercentileClient creates a new instance of PercentileClient with the specified values.
-func NewPercentileClient(con *armcore.Connection, subscriptionID string) *PercentileClient {
-	return &PercentileClient{con: con, subscriptionID: subscriptionID}
+func NewPercentileClient(con *arm.Connection, subscriptionID string) *PercentileClient {
+	return &PercentileClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // ListMetrics - Retrieves the metrics determined by the given filter for the given database account. This url is only for PBS and Replication Latency data
@@ -36,18 +40,18 @@ func (client *PercentileClient) ListMetrics(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return PercentileListMetricsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return PercentileListMetricsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return PercentileListMetricsResponse{}, client.listMetricsHandleError(resp)
 	}
 	return client.listMetricsHandleResponse(resp)
 }
 
 // listMetricsCreateRequest creates the ListMetrics request.
-func (client *PercentileClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, filter string, options *PercentileListMetricsOptions) (*azcore.Request, error) {
+func (client *PercentileClient) listMetricsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, filter string, options *PercentileListMetricsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/percentile/metrics"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -61,36 +65,35 @@ func (client *PercentileClient) listMetricsCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2021-06-15")
 	reqQP.Set("$filter", filter)
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listMetricsHandleResponse handles the ListMetrics response.
-func (client *PercentileClient) listMetricsHandleResponse(resp *azcore.Response) (PercentileListMetricsResponse, error) {
-	result := PercentileListMetricsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PercentileMetricListResult); err != nil {
+func (client *PercentileClient) listMetricsHandleResponse(resp *http.Response) (PercentileListMetricsResponse, error) {
+	result := PercentileListMetricsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PercentileMetricListResult); err != nil {
 		return PercentileListMetricsResponse{}, err
 	}
 	return result, nil
 }
 
 // listMetricsHandleError handles the ListMetrics error response.
-func (client *PercentileClient) listMetricsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *PercentileClient) listMetricsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

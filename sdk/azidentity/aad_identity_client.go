@@ -63,6 +63,32 @@ func newAADIdentityClient(authorityHost string, options pipelineOptions) (*aadId
 	return &aadIdentityClient{authorityHost: authorityHost, pipeline: newDefaultPipeline(options)}, nil
 }
 
+// aadAuthenticationError is used to unmarshal error responses received from Azure Active Directory
+type aadAuthenticationError struct {
+	Message       string `json:"error"`
+	Description   string `json:"error_description"`
+	Timestamp     string `json:"timestamp"`
+	TraceID       string `json:"trace_id"`
+	CorrelationID string `json:"correlation_id"`
+	URL           string `json:"error_uri"`
+}
+
+func getError(resp *http.Response) error {
+	authFailed := &aadAuthenticationError{}
+	err := runtime.UnmarshalAsJSON(resp, authFailed)
+	if err != nil {
+		authFailed.Message = resp.Status
+		authFailed.Description = "failed to unmarshal response: " + err.Error()
+	}
+	var msg string
+	if len(authFailed.Description) > 0 {
+		msg = fmt.Sprintf("(%s) %s", authFailed.Message, authFailed.Description)
+	} else {
+		msg = fmt.Sprintf("authentication failed: %s", authFailed.Message)
+	}
+	return &AuthenticationFailedError{msg: msg, resp: resp}
+}
+
 // refreshAccessToken creates a refresh token request and returns the resulting Access Token or
 // an error in case of an authentication failure.
 // ctx: The current request context
@@ -85,7 +111,7 @@ func (c *aadIdentityClient) refreshAccessToken(ctx context.Context, tenantID str
 		return c.createRefreshAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+	return nil, getError(resp)
 }
 
 // authenticate creates a client secret authentication request and returns the resulting Access Token or
@@ -110,7 +136,7 @@ func (c *aadIdentityClient) authenticate(ctx context.Context, tenantID string, c
 		return c.createAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+	return nil, getError(resp)
 }
 
 // authenticateCertificate creates a client certificate authentication request and returns an Access Token or
@@ -135,7 +161,7 @@ func (c *aadIdentityClient) authenticateCertificate(ctx context.Context, tenantI
 		return c.createAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+	return nil, getError(resp)
 }
 
 func (c *aadIdentityClient) createAccessToken(res *http.Response) (*azcore.AccessToken, error) {
@@ -192,7 +218,7 @@ func (c *aadIdentityClient) createRefreshTokenRequest(ctx context.Context, tenan
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := streaming.NopCloser(strings.NewReader(dataEncoded))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(c.authorityHost, tenantID, tokenEndpoint(oauthPath(tenantID))))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(string(c.authorityHost), tenantID, tokenEndpoint(oauthPath(tenantID))))
 	if err != nil {
 		return nil, err
 	}
@@ -210,7 +236,7 @@ func (c *aadIdentityClient) createClientSecretAuthRequest(ctx context.Context, t
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := streaming.NopCloser(strings.NewReader(dataEncoded))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(c.authorityHost, tenantID, tokenEndpoint(oauthPath(tenantID))))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(string(c.authorityHost), tenantID, tokenEndpoint(oauthPath(tenantID))))
 	if err != nil {
 		return nil, err
 	}
@@ -222,7 +248,7 @@ func (c *aadIdentityClient) createClientSecretAuthRequest(ctx context.Context, t
 }
 
 func (c *aadIdentityClient) createClientCertificateAuthRequest(ctx context.Context, tenantID string, clientID string, cert *certContents, sendCertificateChain bool, scopes []string) (*policy.Request, error) {
-	u := runtime.JoinPaths(c.authorityHost, tenantID, tokenEndpoint(oauthPath(tenantID)))
+	u := runtime.JoinPaths(string(c.authorityHost), tenantID, tokenEndpoint(oauthPath(tenantID)))
 	clientAssertion, err := createClientAssertionJWT(clientID, u, cert, sendCertificateChain)
 	if err != nil {
 		return nil, err
@@ -269,7 +295,7 @@ func (c *aadIdentityClient) authenticateUsernamePassword(ctx context.Context, te
 		return c.createAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+	return nil, getError(resp)
 }
 
 func (c *aadIdentityClient) createUsernamePasswordAuthRequest(ctx context.Context, tenantID string, clientID string, username string, password string, scopes []string) (*policy.Request, error) {
@@ -282,7 +308,7 @@ func (c *aadIdentityClient) createUsernamePasswordAuthRequest(ctx context.Contex
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := streaming.NopCloser(strings.NewReader(dataEncoded))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(c.authorityHost, tenantID, tokenEndpoint(oauthPath(tenantID))))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(string(c.authorityHost), tenantID, tokenEndpoint(oauthPath(tenantID))))
 	if err != nil {
 		return nil, err
 	}
@@ -322,7 +348,7 @@ func (c *aadIdentityClient) authenticateDeviceCode(ctx context.Context, tenantID
 		return c.createRefreshAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+	return nil, getError(resp)
 }
 
 func (c *aadIdentityClient) createDeviceCodeAuthRequest(ctx context.Context, tenantID string, clientID string, deviceCode string, scopes []string) (*policy.Request, error) {
@@ -333,7 +359,7 @@ func (c *aadIdentityClient) createDeviceCodeAuthRequest(ctx context.Context, ten
 	data.Set(qpScope, strings.Join(scopes, " "))
 	dataEncoded := data.Encode()
 	body := streaming.NopCloser(strings.NewReader(dataEncoded))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(c.authorityHost, tenantID, tokenEndpoint(oauthPath(tenantID))))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(string(c.authorityHost), tenantID, tokenEndpoint(oauthPath(tenantID))))
 	if err != nil {
 		return nil, err
 	}
@@ -357,7 +383,7 @@ func (c *aadIdentityClient) requestNewDeviceCode(ctx context.Context, tenantID, 
 	if runtime.HasStatusCode(resp, successStatusCodes[:]...) {
 		return createDeviceCodeResult(resp)
 	}
-	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+	return nil, getError(resp)
 }
 
 func (c *aadIdentityClient) createDeviceCodeNumberRequest(ctx context.Context, tenantID string, clientID string, scopes []string) (*policy.Request, error) {
@@ -367,7 +393,7 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(ctx context.Context, t
 	dataEncoded := data.Encode()
 	body := streaming.NopCloser(strings.NewReader(dataEncoded))
 	// endpoint that will return a device code along with the other necessary authentication flow parameters in the DeviceCodeResult struct
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(c.authorityHost, tenantID, path.Join(oauthPath(tenantID), "/devicecode")))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(string(c.authorityHost), tenantID, path.Join(oauthPath(tenantID), "/devicecode")))
 	if err != nil {
 		return nil, err
 	}
@@ -380,11 +406,11 @@ func (c *aadIdentityClient) createDeviceCodeNumberRequest(ctx context.Context, t
 // authenticateInteractiveBrowser opens an interactive browser window, gets the authorization code and requests an Access Token with the
 // authorization code and returns the token or an error in case of authentication failure.
 func (c *aadIdentityClient) authenticateInteractiveBrowser(ctx context.Context, opts *InteractiveBrowserCredentialOptions, scopes []string) (*azcore.AccessToken, error) {
-	cfg, err := authCodeReceiver(ctx, c.authorityHost, opts, scopes)
+	cfg, err := authCodeReceiver(ctx, string(c.authorityHost), opts, scopes)
 	if err != nil {
 		return nil, err
 	}
-	return c.authenticateAuthCode(ctx, opts.TenantID, opts.ClientID, cfg.authCode, opts.ClientSecret, cfg.codeVerifier, cfg.redirectURI, scopes)
+	return c.authenticateAuthCode(ctx, opts.TenantID, opts.ClientID, cfg.authCode, "", cfg.codeVerifier, cfg.redirectURI, scopes)
 }
 
 // authenticateAuthCode requests an Access Token with the authorization code and returns the token or an error in case of authentication failure.
@@ -410,7 +436,7 @@ func (c *aadIdentityClient) authenticateAuthCode(ctx context.Context, tenantID, 
 		return c.createAccessToken(resp)
 	}
 
-	return nil, &AuthenticationFailedError{inner: newAADAuthenticationFailedError(resp)}
+	return nil, getError(resp)
 }
 
 // createAuthorizationCodeAuthRequest creates a request for an Access Token for authorization_code grant types.
@@ -430,7 +456,7 @@ func (c *aadIdentityClient) createAuthorizationCodeAuthRequest(ctx context.Conte
 	data.Set(qpCode, authCode)
 	dataEncoded := data.Encode()
 	body := streaming.NopCloser(strings.NewReader(dataEncoded))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(c.authorityHost, tenantID, tokenEndpoint(oauthPath(tenantID))))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(string(c.authorityHost), tenantID, tokenEndpoint(oauthPath(tenantID))))
 	if err != nil {
 		return nil, err
 	}

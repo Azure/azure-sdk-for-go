@@ -2,17 +2,23 @@ Param(
     [string] $serviceDir
 )
 
-$testDirs = [Collections.Generic.List[String]]@()
+. (Join-Path $PSScriptRoot .. common scripts common.ps1)
 
-# find each directory under $serviceDir that contains Go test files
-Get-ChildItem -recurse -path $serviceDir -filter *_test.go | ForEach-Object {
-    $cdir = $_.Directory
-    $tests = Select-String -Path $_ 'Test' -AllMatches
+$testDirs = @()
 
-    if ($tests.Count -gt 0) {
-        if (!$testDirs.Contains($cdir)) {
-            Write-Host "Adding $cdir to list of test directories"
-            $testDirs.Add($cdir)
+foreach ($sdk in (Get-AllPackageInfoFromRepo $serviceDir))
+{
+    # find each directory under $serviceDir that contains Go test files
+    foreach ($testFile in (Get-ChildItem -recurse -path $sdk.DirectoryPath -filter *_test.go))
+    {
+        $cdir = $testFile.Directory.FullName
+        $tests = Select-String -Path $testFile 'Test' -AllMatches
+
+        if ($tests.Count -gt 0) {
+            if ($testDirs -notcontains $cdir) {
+                Write-Host "Adding $cdir to list of test directories"
+                $testDirs += $cdir
+            }
         }
     }
 }

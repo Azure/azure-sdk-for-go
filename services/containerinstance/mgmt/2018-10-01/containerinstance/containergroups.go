@@ -75,7 +75,7 @@ func (client ContainerGroupsClient) CreateOrUpdate(ctx context.Context, resource
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -109,6 +109,7 @@ func (client ContainerGroupsClient) CreateOrUpdatePreparer(ctx context.Context, 
 // http.Response Body if it receives an error.
 func (client ContainerGroupsClient) CreateOrUpdateSender(req *http.Request) (future ContainerGroupsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -544,7 +545,7 @@ func (client ContainerGroupsClient) Restart(ctx context.Context, resourceGroupNa
 
 	result, err = client.RestartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsClient", "Restart", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsClient", "Restart", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -576,6 +577,7 @@ func (client ContainerGroupsClient) RestartPreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client ContainerGroupsClient) RestartSender(req *http.Request) (future ContainerGroupsRestartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -621,7 +623,7 @@ func (client ContainerGroupsClient) Start(ctx context.Context, resourceGroupName
 
 	result, err = client.StartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsClient", "Start", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerinstance.ContainerGroupsClient", "Start", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -653,6 +655,7 @@ func (client ContainerGroupsClient) StartPreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client ContainerGroupsClient) StartSender(req *http.Request) (future ContainerGroupsStartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

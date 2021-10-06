@@ -7,7 +7,7 @@
 
 # Catch all for non-code project files and unowned files | folders
 *                        @rickwinter @jhendrixMSFT
-/sdk/                    @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
+/sdk/                    @rickwinter @chlowell @richardpark-msft @seankane-msft
 
 # Samples
 /samples/                @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
@@ -18,11 +18,26 @@
 # PRLabel: %Azure.Identity
 /sdk/azidentity/         @rickwinter @chlowell
 
+# PRLabel: %Internal
+/sdk/internal/           @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
+
 # PRLabel: %KeyVault
-/sdk/keyvault/           @rickwinter @jhendrixMSFT
+/sdk/keyvault/           @rickwinter @jhendrixMSFT @seankane-msft
 
 # PRLabel: %Storage
 /sdk/storage/            @rickwinter @jhendrixMSFT
+
+# PRLabel: %Cosmos
+/sdk/data/azcosmos/      @ealsur @ausfeldt 
+
+# PRLabel: %Tables
+/sdk/data/aztables/      @seankane-msft
+
+# PRLabel: %Mgmt
+/sdk/resourcemanager/    @ArcturusZhang @lirenhe
+
+# PRLabel: %Tables
+/sdk/data/aztables           @rickwinter @seankane-msft
 
 # PRLabel: %EngSys
 /sdk/template/           @benbp @Azure/azure-sdk-eng

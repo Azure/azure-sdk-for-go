@@ -70,7 +70,7 @@ func (client WorkspacesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "operationalinsights.WorkspacesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -104,6 +104,7 @@ func (client WorkspacesClient) CreateOrUpdatePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client WorkspacesClient) CreateOrUpdateSender(req *http.Request) (future WorkspacesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

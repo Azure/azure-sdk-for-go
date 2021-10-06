@@ -7,11 +7,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 const (
@@ -33,7 +33,7 @@ type DeviceCodeCredentialOptions struct {
 	UserPrompt func(DeviceCodeMessage)
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
-	AuthorityHost string
+	AuthorityHost AuthorityHost
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
 	HTTPClient policy.Transporter
@@ -82,7 +82,7 @@ type DeviceCodeCredential struct {
 	tenantID     string                  // Gets the Azure Active Directory tenant (directory) ID of the service principal
 	clientID     string                  // Gets the client (application) ID of the service principal
 	userPrompt   func(DeviceCodeMessage) // Sends the user a message with a verification URL and device code to sign in to the login server
-	refreshToken string                  // Gets the refresh token sent from the service and will be used to retreive new access tokens after the initial request for a token. Thread safety for updates is handled in the NewAuthenticationPolicy since only one goroutine will be updating at a time
+	refreshToken string                  // Gets the refresh token sent from the service and will be used to retreive new access tokens after the initial request for a token. Thread safety for updates is handled in the authentication policy since only one goroutine will be updating at a time
 }
 
 // NewDeviceCodeCredential constructs a new DeviceCodeCredential used to authenticate against Azure Active Directory with a device code.
@@ -158,7 +158,8 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 		}
 		// if there is an error, check for an AADAuthenticationFailedError in order to check the status for token retrieval
 		// if the error is not an AADAuthenticationFailedError, then fail here since something unexpected occurred
-		if authRespErr := (*AADAuthenticationFailedError)(nil); errors.As(err, &authRespErr) && authRespErr.Message == "authorization_pending" {
+		var authFailed *AuthenticationFailedError
+		if errors.As(err, &authFailed) && strings.Contains(authFailed.msg, "authorization_pending") {
 			// wait for the interval specified from the initial device code endpoint and then poll for the token again
 			time.Sleep(time.Duration(dc.Interval) * time.Second)
 		} else {
@@ -167,11 +168,6 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 			return nil, err
 		}
 	}
-}
-
-// NewAuthenticationPolicy implements the azcore.Credential interface on DeviceCodeCredential.
-func (c *DeviceCodeCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
-	return newBearerTokenPolicy(c, options)
 }
 
 // deviceCodeResult is used to store device code related information to help the user login and allow the device code flow to continue

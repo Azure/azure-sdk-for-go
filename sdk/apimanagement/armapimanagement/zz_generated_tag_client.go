@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,24 +12,27 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TagClient contains the methods for the Tag group.
 // Don't use this type directly, use NewTagClient() instead.
 type TagClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewTagClient creates a new instance of TagClient with the specified values.
-func NewTagClient(con *armcore.Connection, subscriptionID string) *TagClient {
-	return &TagClient{con: con, subscriptionID: subscriptionID}
+func NewTagClient(con *arm.Connection, subscriptionID string) *TagClient {
+	return &TagClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // AssignToAPI - Assign tag to the Api.
@@ -38,18 +42,18 @@ func (client *TagClient) AssignToAPI(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return TagAssignToAPIResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TagAssignToAPIResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return TagAssignToAPIResponse{}, client.assignToAPIHandleError(resp)
 	}
 	return client.assignToAPIHandleResponse(resp)
 }
 
 // assignToAPICreateRequest creates the AssignToAPI request.
-func (client *TagClient) assignToAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagAssignToAPIOptions) (*azcore.Request, error) {
+func (client *TagClient) assignToAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagAssignToAPIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -71,41 +75,40 @@ func (client *TagClient) assignToAPICreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // assignToAPIHandleResponse handles the AssignToAPI response.
-func (client *TagClient) assignToAPIHandleResponse(resp *azcore.Response) (TagAssignToAPIResponse, error) {
-	result := TagAssignToAPIResponse{RawResponse: resp.Response}
+func (client *TagClient) assignToAPIHandleResponse(resp *http.Response) (TagAssignToAPIResponse, error) {
+	result := TagAssignToAPIResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.TagContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
 		return TagAssignToAPIResponse{}, err
 	}
 	return result, nil
 }
 
 // assignToAPIHandleError handles the AssignToAPI error response.
-func (client *TagClient) assignToAPIHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TagClient) assignToAPIHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // AssignToOperation - Assign tag to the Operation.
@@ -115,18 +118,18 @@ func (client *TagClient) AssignToOperation(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return TagAssignToOperationResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TagAssignToOperationResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return TagAssignToOperationResponse{}, client.assignToOperationHandleError(resp)
 	}
 	return client.assignToOperationHandleResponse(resp)
 }
 
 // assignToOperationCreateRequest creates the AssignToOperation request.
-func (client *TagClient) assignToOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagAssignToOperationOptions) (*azcore.Request, error) {
+func (client *TagClient) assignToOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagAssignToOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -152,38 +155,37 @@ func (client *TagClient) assignToOperationCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // assignToOperationHandleResponse handles the AssignToOperation response.
-func (client *TagClient) assignToOperationHandleResponse(resp *azcore.Response) (TagAssignToOperationResponse, error) {
-	result := TagAssignToOperationResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TagContract); err != nil {
+func (client *TagClient) assignToOperationHandleResponse(resp *http.Response) (TagAssignToOperationResponse, error) {
+	result := TagAssignToOperationResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
 		return TagAssignToOperationResponse{}, err
 	}
 	return result, nil
 }
 
 // assignToOperationHandleError handles the AssignToOperation error response.
-func (client *TagClient) assignToOperationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TagClient) assignToOperationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // AssignToProduct - Assign tag to the Product.
@@ -193,18 +195,18 @@ func (client *TagClient) AssignToProduct(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return TagAssignToProductResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TagAssignToProductResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return TagAssignToProductResponse{}, client.assignToProductHandleError(resp)
 	}
 	return client.assignToProductHandleResponse(resp)
 }
 
 // assignToProductCreateRequest creates the AssignToProduct request.
-func (client *TagClient) assignToProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagAssignToProductOptions) (*azcore.Request, error) {
+func (client *TagClient) assignToProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagAssignToProductOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -226,38 +228,37 @@ func (client *TagClient) assignToProductCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // assignToProductHandleResponse handles the AssignToProduct response.
-func (client *TagClient) assignToProductHandleResponse(resp *azcore.Response) (TagAssignToProductResponse, error) {
-	result := TagAssignToProductResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TagContract); err != nil {
+func (client *TagClient) assignToProductHandleResponse(resp *http.Response) (TagAssignToProductResponse, error) {
+	result := TagAssignToProductResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
 		return TagAssignToProductResponse{}, err
 	}
 	return result, nil
 }
 
 // assignToProductHandleError handles the AssignToProduct error response.
-func (client *TagClient) assignToProductHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TagClient) assignToProductHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // CreateOrUpdate - Creates a tag.
@@ -267,18 +268,18 @@ func (client *TagClient) CreateOrUpdate(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return TagCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TagCreateOrUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated) {
 		return TagCreateOrUpdateResponse{}, client.createOrUpdateHandleError(resp)
 	}
 	return client.createOrUpdateHandleResponse(resp)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *TagClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, parameters TagCreateUpdateParameters, options *TagCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *TagClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, parameters TagCreateUpdateParameters, options *TagCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -296,44 +297,43 @@ func (client *TagClient) createOrUpdateCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
-		req.Header.Set("If-Match", *options.IfMatch)
+		req.Raw().Header.Set("If-Match", *options.IfMatch)
 	}
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *TagClient) createOrUpdateHandleResponse(resp *azcore.Response) (TagCreateOrUpdateResponse, error) {
-	result := TagCreateOrUpdateResponse{RawResponse: resp.Response}
+func (client *TagClient) createOrUpdateHandleResponse(resp *http.Response) (TagCreateOrUpdateResponse, error) {
+	result := TagCreateOrUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.TagContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
 		return TagCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *TagClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TagClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Delete - Deletes specific tag of the API Management service instance.
@@ -343,18 +343,18 @@ func (client *TagClient) Delete(ctx context.Context, resourceGroupName string, s
 	if err != nil {
 		return TagDeleteResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TagDeleteResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return TagDeleteResponse{}, client.deleteHandleError(resp)
 	}
-	return TagDeleteResponse{RawResponse: resp.Response}, nil
+	return TagDeleteResponse{RawResponse: resp}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *TagClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, ifMatch string, options *TagDeleteOptions) (*azcore.Request, error) {
+func (client *TagClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, ifMatch string, options *TagDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -372,30 +372,29 @@ func (client *TagClient) deleteCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("If-Match", ifMatch)
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("If-Match", ifMatch)
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *TagClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TagClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // DetachFromAPI - Detach the tag from the Api.
@@ -405,18 +404,18 @@ func (client *TagClient) DetachFromAPI(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return TagDetachFromAPIResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TagDetachFromAPIResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return TagDetachFromAPIResponse{}, client.detachFromAPIHandleError(resp)
 	}
-	return TagDetachFromAPIResponse{RawResponse: resp.Response}, nil
+	return TagDetachFromAPIResponse{RawResponse: resp}, nil
 }
 
 // detachFromAPICreateRequest creates the DetachFromAPI request.
-func (client *TagClient) detachFromAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagDetachFromAPIOptions) (*azcore.Request, error) {
+func (client *TagClient) detachFromAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagDetachFromAPIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -438,29 +437,28 @@ func (client *TagClient) detachFromAPICreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // detachFromAPIHandleError handles the DetachFromAPI error response.
-func (client *TagClient) detachFromAPIHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TagClient) detachFromAPIHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // DetachFromOperation - Detach the tag from the Operation.
@@ -470,18 +468,18 @@ func (client *TagClient) DetachFromOperation(ctx context.Context, resourceGroupN
 	if err != nil {
 		return TagDetachFromOperationResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TagDetachFromOperationResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return TagDetachFromOperationResponse{}, client.detachFromOperationHandleError(resp)
 	}
-	return TagDetachFromOperationResponse{RawResponse: resp.Response}, nil
+	return TagDetachFromOperationResponse{RawResponse: resp}, nil
 }
 
 // detachFromOperationCreateRequest creates the DetachFromOperation request.
-func (client *TagClient) detachFromOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagDetachFromOperationOptions) (*azcore.Request, error) {
+func (client *TagClient) detachFromOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagDetachFromOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -507,29 +505,28 @@ func (client *TagClient) detachFromOperationCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // detachFromOperationHandleError handles the DetachFromOperation error response.
-func (client *TagClient) detachFromOperationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TagClient) detachFromOperationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // DetachFromProduct - Detach the tag from the Product.
@@ -539,18 +536,18 @@ func (client *TagClient) DetachFromProduct(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return TagDetachFromProductResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TagDetachFromProductResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
 		return TagDetachFromProductResponse{}, client.detachFromProductHandleError(resp)
 	}
-	return TagDetachFromProductResponse{RawResponse: resp.Response}, nil
+	return TagDetachFromProductResponse{RawResponse: resp}, nil
 }
 
 // detachFromProductCreateRequest creates the DetachFromProduct request.
-func (client *TagClient) detachFromProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagDetachFromProductOptions) (*azcore.Request, error) {
+func (client *TagClient) detachFromProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagDetachFromProductOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -572,29 +569,28 @@ func (client *TagClient) detachFromProductCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // detachFromProductHandleError handles the DetachFromProduct error response.
-func (client *TagClient) detachFromProductHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TagClient) detachFromProductHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Gets the details of the tag specified by its identifier.
@@ -604,18 +600,18 @@ func (client *TagClient) Get(ctx context.Context, resourceGroupName string, serv
 	if err != nil {
 		return TagGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TagGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TagGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *TagClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, options *TagGetOptions) (*azcore.Request, error) {
+func (client *TagClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, options *TagGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -633,41 +629,40 @@ func (client *TagClient) getCreateRequest(ctx context.Context, resourceGroupName
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *TagClient) getHandleResponse(resp *azcore.Response) (TagGetResponse, error) {
-	result := TagGetResponse{RawResponse: resp.Response}
+func (client *TagClient) getHandleResponse(resp *http.Response) (TagGetResponse, error) {
+	result := TagGetResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.TagContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
 		return TagGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *TagClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TagClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetByAPI - Get tag associated with the API.
@@ -677,18 +672,18 @@ func (client *TagClient) GetByAPI(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return TagGetByAPIResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TagGetByAPIResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TagGetByAPIResponse{}, client.getByAPIHandleError(resp)
 	}
 	return client.getByAPIHandleResponse(resp)
 }
 
 // getByAPICreateRequest creates the GetByAPI request.
-func (client *TagClient) getByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagGetByAPIOptions) (*azcore.Request, error) {
+func (client *TagClient) getByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagGetByAPIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -710,41 +705,40 @@ func (client *TagClient) getByAPICreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getByAPIHandleResponse handles the GetByAPI response.
-func (client *TagClient) getByAPIHandleResponse(resp *azcore.Response) (TagGetByAPIResponse, error) {
-	result := TagGetByAPIResponse{RawResponse: resp.Response}
+func (client *TagClient) getByAPIHandleResponse(resp *http.Response) (TagGetByAPIResponse, error) {
+	result := TagGetByAPIResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.TagContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
 		return TagGetByAPIResponse{}, err
 	}
 	return result, nil
 }
 
 // getByAPIHandleError handles the GetByAPI error response.
-func (client *TagClient) getByAPIHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TagClient) getByAPIHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetByOperation - Get tag associated with the Operation.
@@ -754,18 +748,18 @@ func (client *TagClient) GetByOperation(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return TagGetByOperationResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TagGetByOperationResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TagGetByOperationResponse{}, client.getByOperationHandleError(resp)
 	}
 	return client.getByOperationHandleResponse(resp)
 }
 
 // getByOperationCreateRequest creates the GetByOperation request.
-func (client *TagClient) getByOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagGetByOperationOptions) (*azcore.Request, error) {
+func (client *TagClient) getByOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagGetByOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -791,41 +785,40 @@ func (client *TagClient) getByOperationCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getByOperationHandleResponse handles the GetByOperation response.
-func (client *TagClient) getByOperationHandleResponse(resp *azcore.Response) (TagGetByOperationResponse, error) {
-	result := TagGetByOperationResponse{RawResponse: resp.Response}
+func (client *TagClient) getByOperationHandleResponse(resp *http.Response) (TagGetByOperationResponse, error) {
+	result := TagGetByOperationResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.TagContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
 		return TagGetByOperationResponse{}, err
 	}
 	return result, nil
 }
 
 // getByOperationHandleError handles the GetByOperation error response.
-func (client *TagClient) getByOperationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TagClient) getByOperationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetByProduct - Get tag associated with the Product.
@@ -835,18 +828,18 @@ func (client *TagClient) GetByProduct(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return TagGetByProductResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TagGetByProductResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TagGetByProductResponse{}, client.getByProductHandleError(resp)
 	}
 	return client.getByProductHandleResponse(resp)
 }
 
 // getByProductCreateRequest creates the GetByProduct request.
-func (client *TagClient) getByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagGetByProductOptions) (*azcore.Request, error) {
+func (client *TagClient) getByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagGetByProductOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -868,41 +861,40 @@ func (client *TagClient) getByProductCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getByProductHandleResponse handles the GetByProduct response.
-func (client *TagClient) getByProductHandleResponse(resp *azcore.Response) (TagGetByProductResponse, error) {
-	result := TagGetByProductResponse{RawResponse: resp.Response}
+func (client *TagClient) getByProductHandleResponse(resp *http.Response) (TagGetByProductResponse, error) {
+	result := TagGetByProductResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.TagContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
 		return TagGetByProductResponse{}, err
 	}
 	return result, nil
 }
 
 // getByProductHandleError handles the GetByProduct error response.
-func (client *TagClient) getByProductHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TagClient) getByProductHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetEntityState - Gets the entity state version of the tag specified by its identifier.
@@ -912,7 +904,7 @@ func (client *TagClient) GetEntityState(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return TagGetEntityStateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TagGetEntityStateResponse{}, err
 	}
@@ -920,7 +912,7 @@ func (client *TagClient) GetEntityState(ctx context.Context, resourceGroupName s
 }
 
 // getEntityStateCreateRequest creates the GetEntityState request.
-func (client *TagClient) getEntityStateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, options *TagGetEntityStateOptions) (*azcore.Request, error) {
+func (client *TagClient) getEntityStateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, options *TagGetEntityStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -938,21 +930,20 @@ func (client *TagClient) getEntityStateCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getEntityStateHandleResponse handles the GetEntityState response.
-func (client *TagClient) getEntityStateHandleResponse(resp *azcore.Response) (TagGetEntityStateResponse, error) {
-	result := TagGetEntityStateResponse{RawResponse: resp.Response}
+func (client *TagClient) getEntityStateHandleResponse(resp *http.Response) (TagGetEntityStateResponse, error) {
+	result := TagGetEntityStateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -969,7 +960,7 @@ func (client *TagClient) GetEntityStateByAPI(ctx context.Context, resourceGroupN
 	if err != nil {
 		return TagGetEntityStateByAPIResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TagGetEntityStateByAPIResponse{}, err
 	}
@@ -977,7 +968,7 @@ func (client *TagClient) GetEntityStateByAPI(ctx context.Context, resourceGroupN
 }
 
 // getEntityStateByAPICreateRequest creates the GetEntityStateByAPI request.
-func (client *TagClient) getEntityStateByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagGetEntityStateByAPIOptions) (*azcore.Request, error) {
+func (client *TagClient) getEntityStateByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, tagID string, options *TagGetEntityStateByAPIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -999,21 +990,20 @@ func (client *TagClient) getEntityStateByAPICreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getEntityStateByAPIHandleResponse handles the GetEntityStateByAPI response.
-func (client *TagClient) getEntityStateByAPIHandleResponse(resp *azcore.Response) (TagGetEntityStateByAPIResponse, error) {
-	result := TagGetEntityStateByAPIResponse{RawResponse: resp.Response}
+func (client *TagClient) getEntityStateByAPIHandleResponse(resp *http.Response) (TagGetEntityStateByAPIResponse, error) {
+	result := TagGetEntityStateByAPIResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -1030,7 +1020,7 @@ func (client *TagClient) GetEntityStateByOperation(ctx context.Context, resource
 	if err != nil {
 		return TagGetEntityStateByOperationResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TagGetEntityStateByOperationResponse{}, err
 	}
@@ -1038,7 +1028,7 @@ func (client *TagClient) GetEntityStateByOperation(ctx context.Context, resource
 }
 
 // getEntityStateByOperationCreateRequest creates the GetEntityStateByOperation request.
-func (client *TagClient) getEntityStateByOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagGetEntityStateByOperationOptions) (*azcore.Request, error) {
+func (client *TagClient) getEntityStateByOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, tagID string, options *TagGetEntityStateByOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1064,21 +1054,20 @@ func (client *TagClient) getEntityStateByOperationCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getEntityStateByOperationHandleResponse handles the GetEntityStateByOperation response.
-func (client *TagClient) getEntityStateByOperationHandleResponse(resp *azcore.Response) (TagGetEntityStateByOperationResponse, error) {
-	result := TagGetEntityStateByOperationResponse{RawResponse: resp.Response}
+func (client *TagClient) getEntityStateByOperationHandleResponse(resp *http.Response) (TagGetEntityStateByOperationResponse, error) {
+	result := TagGetEntityStateByOperationResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -1095,7 +1084,7 @@ func (client *TagClient) GetEntityStateByProduct(ctx context.Context, resourceGr
 	if err != nil {
 		return TagGetEntityStateByProductResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TagGetEntityStateByProductResponse{}, err
 	}
@@ -1103,7 +1092,7 @@ func (client *TagClient) GetEntityStateByProduct(ctx context.Context, resourceGr
 }
 
 // getEntityStateByProductCreateRequest creates the GetEntityStateByProduct request.
-func (client *TagClient) getEntityStateByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagGetEntityStateByProductOptions) (*azcore.Request, error) {
+func (client *TagClient) getEntityStateByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, tagID string, options *TagGetEntityStateByProductOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1125,21 +1114,20 @@ func (client *TagClient) getEntityStateByProductCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodHead, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getEntityStateByProductHandleResponse handles the GetEntityStateByProduct response.
-func (client *TagClient) getEntityStateByProductHandleResponse(resp *azcore.Response) (TagGetEntityStateByProductResponse, error) {
-	result := TagGetEntityStateByProductResponse{RawResponse: resp.Response}
+func (client *TagClient) getEntityStateByProductHandleResponse(resp *http.Response) (TagGetEntityStateByProductResponse, error) {
+	result := TagGetEntityStateByProductResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
@@ -1151,20 +1139,20 @@ func (client *TagClient) getEntityStateByProductHandleResponse(resp *azcore.Resp
 
 // ListByAPI - Lists all Tags associated with the API.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) ListByAPI(resourceGroupName string, serviceName string, apiID string, options *TagListByAPIOptions) TagListByAPIPager {
-	return &tagListByAPIPager{
+func (client *TagClient) ListByAPI(resourceGroupName string, serviceName string, apiID string, options *TagListByAPIOptions) *TagListByAPIPager {
+	return &TagListByAPIPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByAPICreateRequest(ctx, resourceGroupName, serviceName, apiID, options)
 		},
-		advancer: func(ctx context.Context, resp TagListByAPIResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.TagCollection.NextLink)
+		advancer: func(ctx context.Context, resp TagListByAPIResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.TagCollection.NextLink)
 		},
 	}
 }
 
 // listByAPICreateRequest creates the ListByAPI request.
-func (client *TagClient) listByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *TagListByAPIOptions) (*azcore.Request, error) {
+func (client *TagClient) listByAPICreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, options *TagListByAPIOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/tags"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1182,12 +1170,11 @@ func (client *TagClient) listByAPICreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -1197,50 +1184,50 @@ func (client *TagClient) listByAPICreateRequest(ctx context.Context, resourceGro
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByAPIHandleResponse handles the ListByAPI response.
-func (client *TagClient) listByAPIHandleResponse(resp *azcore.Response) (TagListByAPIResponse, error) {
-	result := TagListByAPIResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TagCollection); err != nil {
+func (client *TagClient) listByAPIHandleResponse(resp *http.Response) (TagListByAPIResponse, error) {
+	result := TagListByAPIResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TagCollection); err != nil {
 		return TagListByAPIResponse{}, err
 	}
 	return result, nil
 }
 
 // listByAPIHandleError handles the ListByAPI error response.
-func (client *TagClient) listByAPIHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TagClient) listByAPIHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByOperation - Lists all Tags associated with the Operation.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) ListByOperation(resourceGroupName string, serviceName string, apiID string, operationID string, options *TagListByOperationOptions) TagListByOperationPager {
-	return &tagListByOperationPager{
+func (client *TagClient) ListByOperation(resourceGroupName string, serviceName string, apiID string, operationID string, options *TagListByOperationOptions) *TagListByOperationPager {
+	return &TagListByOperationPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByOperationCreateRequest(ctx, resourceGroupName, serviceName, apiID, operationID, options)
 		},
-		advancer: func(ctx context.Context, resp TagListByOperationResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.TagCollection.NextLink)
+		advancer: func(ctx context.Context, resp TagListByOperationResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.TagCollection.NextLink)
 		},
 	}
 }
 
 // listByOperationCreateRequest creates the ListByOperation request.
-func (client *TagClient) listByOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, options *TagListByOperationOptions) (*azcore.Request, error) {
+func (client *TagClient) listByOperationCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, apiID string, operationID string, options *TagListByOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operations/{operationId}/tags"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1262,12 +1249,11 @@ func (client *TagClient) listByOperationCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -1277,50 +1263,50 @@ func (client *TagClient) listByOperationCreateRequest(ctx context.Context, resou
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByOperationHandleResponse handles the ListByOperation response.
-func (client *TagClient) listByOperationHandleResponse(resp *azcore.Response) (TagListByOperationResponse, error) {
-	result := TagListByOperationResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TagCollection); err != nil {
+func (client *TagClient) listByOperationHandleResponse(resp *http.Response) (TagListByOperationResponse, error) {
+	result := TagListByOperationResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TagCollection); err != nil {
 		return TagListByOperationResponse{}, err
 	}
 	return result, nil
 }
 
 // listByOperationHandleError handles the ListByOperation error response.
-func (client *TagClient) listByOperationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TagClient) listByOperationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByProduct - Lists all Tags associated with the Product.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) ListByProduct(resourceGroupName string, serviceName string, productID string, options *TagListByProductOptions) TagListByProductPager {
-	return &tagListByProductPager{
+func (client *TagClient) ListByProduct(resourceGroupName string, serviceName string, productID string, options *TagListByProductOptions) *TagListByProductPager {
+	return &TagListByProductPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByProductCreateRequest(ctx, resourceGroupName, serviceName, productID, options)
 		},
-		advancer: func(ctx context.Context, resp TagListByProductResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.TagCollection.NextLink)
+		advancer: func(ctx context.Context, resp TagListByProductResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.TagCollection.NextLink)
 		},
 	}
 }
 
 // listByProductCreateRequest creates the ListByProduct request.
-func (client *TagClient) listByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *TagListByProductOptions) (*azcore.Request, error) {
+func (client *TagClient) listByProductCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, productID string, options *TagListByProductOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/products/{productId}/tags"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1338,12 +1324,11 @@ func (client *TagClient) listByProductCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -1353,50 +1338,50 @@ func (client *TagClient) listByProductCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByProductHandleResponse handles the ListByProduct response.
-func (client *TagClient) listByProductHandleResponse(resp *azcore.Response) (TagListByProductResponse, error) {
-	result := TagListByProductResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TagCollection); err != nil {
+func (client *TagClient) listByProductHandleResponse(resp *http.Response) (TagListByProductResponse, error) {
+	result := TagListByProductResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TagCollection); err != nil {
 		return TagListByProductResponse{}, err
 	}
 	return result, nil
 }
 
 // listByProductHandleError handles the ListByProduct error response.
-func (client *TagClient) listByProductHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TagClient) listByProductHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByService - Lists a collection of tags defined within a service instance.
 // If the operation fails it returns the *ErrorResponse error type.
-func (client *TagClient) ListByService(resourceGroupName string, serviceName string, options *TagListByServiceOptions) TagListByServicePager {
-	return &tagListByServicePager{
+func (client *TagClient) ListByService(resourceGroupName string, serviceName string, options *TagListByServiceOptions) *TagListByServicePager {
+	return &TagListByServicePager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByServiceCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp TagListByServiceResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.TagCollection.NextLink)
+		advancer: func(ctx context.Context, resp TagListByServiceResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.TagCollection.NextLink)
 		},
 	}
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *TagClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *TagListByServiceOptions) (*azcore.Request, error) {
+func (client *TagClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *TagListByServiceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tags"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1410,12 +1395,11 @@ func (client *TagClient) listByServiceCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -1428,32 +1412,32 @@ func (client *TagClient) listByServiceCreateRequest(ctx context.Context, resourc
 	if options != nil && options.Scope != nil {
 		reqQP.Set("scope", *options.Scope)
 	}
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *TagClient) listByServiceHandleResponse(resp *azcore.Response) (TagListByServiceResponse, error) {
-	result := TagListByServiceResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.TagCollection); err != nil {
+func (client *TagClient) listByServiceHandleResponse(resp *http.Response) (TagListByServiceResponse, error) {
+	result := TagListByServiceResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TagCollection); err != nil {
 		return TagListByServiceResponse{}, err
 	}
 	return result, nil
 }
 
 // listByServiceHandleError handles the ListByService error response.
-func (client *TagClient) listByServiceHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TagClient) listByServiceHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Update - Updates the details of the tag specified by its identifier.
@@ -1463,18 +1447,18 @@ func (client *TagClient) Update(ctx context.Context, resourceGroupName string, s
 	if err != nil {
 		return TagUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return TagUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return TagUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *TagClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, ifMatch string, parameters TagCreateUpdateParameters, options *TagUpdateOptions) (*azcore.Request, error) {
+func (client *TagClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, tagID string, ifMatch string, parameters TagCreateUpdateParameters, options *TagUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tags/{tagId}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1492,40 +1476,39 @@ func (client *TagClient) updateCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("If-Match", ifMatch)
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(parameters)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("If-Match", ifMatch)
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *TagClient) updateHandleResponse(resp *azcore.Response) (TagUpdateResponse, error) {
-	result := TagUpdateResponse{RawResponse: resp.Response}
+func (client *TagClient) updateHandleResponse(resp *http.Response) (TagUpdateResponse, error) {
+	result := TagUpdateResponse{RawResponse: resp}
 	if val := resp.Header.Get("ETag"); val != "" {
 		result.ETag = &val
 	}
-	if err := resp.UnmarshalAsJSON(&result.TagContract); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.TagContract); err != nil {
 		return TagUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *TagClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *TagClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := ErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType.InnerError); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType.InnerError); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

@@ -65,7 +65,7 @@ func (client AddonsClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AddonsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.AddonsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -100,6 +100,7 @@ func (client AddonsClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client AddonsClient) CreateOrUpdateSender(req *http.Request) (future AddonsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -156,7 +157,7 @@ func (client AddonsClient) Delete(ctx context.Context, resourceGroupName string,
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.AddonsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.AddonsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -189,6 +190,7 @@ func (client AddonsClient) DeletePreparer(ctx context.Context, resourceGroupName
 // http.Response Body if it receives an error.
 func (client AddonsClient) DeleteSender(req *http.Request) (future AddonsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

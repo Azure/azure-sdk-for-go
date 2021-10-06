@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -10,93 +11,68 @@ package armcompute
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DisksClient contains the methods for the Disks group.
 // Don't use this type directly, use NewDisksClient() instead.
 type DisksClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewDisksClient creates a new instance of DisksClient with the specified values.
-func NewDisksClient(con *armcore.Connection, subscriptionID string) *DisksClient {
-	return &DisksClient{con: con, subscriptionID: subscriptionID}
+func NewDisksClient(con *arm.Connection, subscriptionID string) *DisksClient {
+	return &DisksClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Creates or updates a disk.
 // If the operation fails it returns a generic error.
-func (client *DisksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskName string, disk Disk, options *DisksBeginCreateOrUpdateOptions) (DiskPollerResponse, error) {
+func (client *DisksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, diskName string, disk Disk, options *DisksBeginCreateOrUpdateOptions) (DisksCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, diskName, disk, options)
 	if err != nil {
-		return DiskPollerResponse{}, err
+		return DisksCreateOrUpdatePollerResponse{}, err
 	}
-	result := DiskPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DisksClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return DiskPollerResponse{}, err
-	}
-	poller := &diskPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new DiskPoller from the specified resume token.
-// token - The value must come from a previous call to DiskPoller.ResumeToken().
-func (client *DisksClient) ResumeCreateOrUpdate(ctx context.Context, token string) (DiskPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DisksClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return DiskPollerResponse{}, err
-	}
-	poller := &diskPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return DiskPollerResponse{}, err
-	}
-	result := DiskPollerResponse{
+	result := DisksCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DisksClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return DisksCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &DisksCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a disk.
 // If the operation fails it returns a generic error.
-func (client *DisksClient) createOrUpdate(ctx context.Context, resourceGroupName string, diskName string, disk Disk, options *DisksBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *DisksClient) createOrUpdate(ctx context.Context, resourceGroupName string, diskName string, disk Disk, options *DisksBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, diskName, disk, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DisksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, diskName string, disk Disk, options *DisksBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *DisksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, diskName string, disk Disk, options *DisksBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -110,97 +86,68 @@ func (client *DisksClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter diskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskName}", url.PathEscape(diskName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(disk)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, disk)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *DisksClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DisksClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginDelete - Deletes a disk.
 // If the operation fails it returns a generic error.
-func (client *DisksClient) BeginDelete(ctx context.Context, resourceGroupName string, diskName string, options *DisksBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *DisksClient) BeginDelete(ctx context.Context, resourceGroupName string, diskName string, options *DisksBeginDeleteOptions) (DisksDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, diskName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DisksDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DisksClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *DisksClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DisksClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := DisksDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DisksClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return DisksDeletePollerResponse{}, err
+	}
+	result.Poller = &DisksDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Deletes a disk.
 // If the operation fails it returns a generic error.
-func (client *DisksClient) deleteOperation(ctx context.Context, resourceGroupName string, diskName string, options *DisksBeginDeleteOptions) (*azcore.Response, error) {
+func (client *DisksClient) deleteOperation(ctx context.Context, resourceGroupName string, diskName string, options *DisksBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, diskName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DisksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, diskName string, options *DisksBeginDeleteOptions) (*azcore.Request, error) {
+func (client *DisksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, diskName string, options *DisksBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -214,48 +161,47 @@ func (client *DisksClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter diskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskName}", url.PathEscape(diskName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *DisksClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DisksClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // Get - Gets information about a disk.
 // If the operation fails it returns a generic error.
-func (client *DisksClient) Get(ctx context.Context, resourceGroupName string, diskName string, options *DisksGetOptions) (DiskResponse, error) {
+func (client *DisksClient) Get(ctx context.Context, resourceGroupName string, diskName string, options *DisksGetOptions) (DisksGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, diskName, options)
 	if err != nil {
-		return DiskResponse{}, err
+		return DisksGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return DiskResponse{}, err
+		return DisksGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return DiskResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return DisksGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *DisksClient) getCreateRequest(ctx context.Context, resourceGroupName string, diskName string, options *DisksGetOptions) (*azcore.Request, error) {
+func (client *DisksClient) getCreateRequest(ctx context.Context, resourceGroupName string, diskName string, options *DisksGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -269,106 +215,77 @@ func (client *DisksClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter diskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskName}", url.PathEscape(diskName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DisksClient) getHandleResponse(resp *azcore.Response) (DiskResponse, error) {
-	var val *Disk
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiskResponse{}, err
-	}
-	return DiskResponse{RawResponse: resp.Response, Disk: val}, nil
-}
-
-// getHandleError handles the Get error response.
-func (client *DisksClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
-	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
-	}
-	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-}
-
-// BeginGrantAccess - Grants access to a disk.
-// If the operation fails it returns a generic error.
-func (client *DisksClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, diskName string, grantAccessData GrantAccessData, options *DisksBeginGrantAccessOptions) (AccessURIPollerResponse, error) {
-	resp, err := client.grantAccess(ctx, resourceGroupName, diskName, grantAccessData, options)
-	if err != nil {
-		return AccessURIPollerResponse{}, err
-	}
-	result := AccessURIPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DisksClient.GrantAccess", "location", resp, client.con.Pipeline(), client.grantAccessHandleError)
-	if err != nil {
-		return AccessURIPollerResponse{}, err
-	}
-	poller := &accessURIPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AccessURIResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+func (client *DisksClient) getHandleResponse(resp *http.Response) (DisksGetResponse, error) {
+	result := DisksGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Disk); err != nil {
+		return DisksGetResponse{}, err
 	}
 	return result, nil
 }
 
-// ResumeGrantAccess creates a new AccessURIPoller from the specified resume token.
-// token - The value must come from a previous call to AccessURIPoller.ResumeToken().
-func (client *DisksClient) ResumeGrantAccess(ctx context.Context, token string) (AccessURIPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DisksClient.GrantAccess", token, client.con.Pipeline(), client.grantAccessHandleError)
+// getHandleError handles the Get error response.
+func (client *DisksClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return AccessURIPollerResponse{}, err
+		return runtime.NewResponseError(err, resp)
 	}
-	poller := &accessURIPoller{
-		pt: pt,
+	if len(body) == 0 {
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	resp, err := poller.Poll(ctx)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
+}
+
+// BeginGrantAccess - Grants access to a disk.
+// If the operation fails it returns a generic error.
+func (client *DisksClient) BeginGrantAccess(ctx context.Context, resourceGroupName string, diskName string, grantAccessData GrantAccessData, options *DisksBeginGrantAccessOptions) (DisksGrantAccessPollerResponse, error) {
+	resp, err := client.grantAccess(ctx, resourceGroupName, diskName, grantAccessData, options)
 	if err != nil {
-		return AccessURIPollerResponse{}, err
+		return DisksGrantAccessPollerResponse{}, err
 	}
-	result := AccessURIPollerResponse{
+	result := DisksGrantAccessPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AccessURIResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DisksClient.GrantAccess", "location", resp, client.pl, client.grantAccessHandleError)
+	if err != nil {
+		return DisksGrantAccessPollerResponse{}, err
+	}
+	result.Poller = &DisksGrantAccessPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // GrantAccess - Grants access to a disk.
 // If the operation fails it returns a generic error.
-func (client *DisksClient) grantAccess(ctx context.Context, resourceGroupName string, diskName string, grantAccessData GrantAccessData, options *DisksBeginGrantAccessOptions) (*azcore.Response, error) {
+func (client *DisksClient) grantAccess(ctx context.Context, resourceGroupName string, diskName string, grantAccessData GrantAccessData, options *DisksBeginGrantAccessOptions) (*http.Response, error) {
 	req, err := client.grantAccessCreateRequest(ctx, resourceGroupName, diskName, grantAccessData, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.grantAccessHandleError(resp)
 	}
 	return resp, nil
 }
 
 // grantAccessCreateRequest creates the GrantAccess request.
-func (client *DisksClient) grantAccessCreateRequest(ctx context.Context, resourceGroupName string, diskName string, grantAccessData GrantAccessData, options *DisksBeginGrantAccessOptions) (*azcore.Request, error) {
+func (client *DisksClient) grantAccessCreateRequest(ctx context.Context, resourceGroupName string, diskName string, grantAccessData GrantAccessData, options *DisksBeginGrantAccessOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}/beginGetAccess"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -382,106 +299,98 @@ func (client *DisksClient) grantAccessCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter diskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskName}", url.PathEscape(diskName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(grantAccessData)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, grantAccessData)
 }
 
 // grantAccessHandleError handles the GrantAccess error response.
-func (client *DisksClient) grantAccessHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DisksClient) grantAccessHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // List - Lists all the disks under a subscription.
 // If the operation fails it returns a generic error.
-func (client *DisksClient) List(options *DisksListOptions) DiskListPager {
-	return &diskListPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *DisksClient) List(options *DisksListOptions) *DisksListPager {
+	return &DisksListPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		responder: client.listHandleResponse,
-		errorer:   client.listHandleError,
-		advancer: func(ctx context.Context, resp DiskListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DiskList.NextLink)
+		advancer: func(ctx context.Context, resp DisksListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiskList.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *DisksClient) listCreateRequest(ctx context.Context, options *DisksListOptions) (*azcore.Request, error) {
+func (client *DisksClient) listCreateRequest(ctx context.Context, options *DisksListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/disks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DisksClient) listHandleResponse(resp *azcore.Response) (DiskListResponse, error) {
-	var val *DiskList
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiskListResponse{}, err
+func (client *DisksClient) listHandleResponse(resp *http.Response) (DisksListResponse, error) {
+	result := DisksListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DiskList); err != nil {
+		return DisksListResponse{}, err
 	}
-	return DiskListResponse{RawResponse: resp.Response, DiskList: val}, nil
+	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *DisksClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DisksClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // ListByResourceGroup - Lists all the disks under a resource group.
 // If the operation fails it returns a generic error.
-func (client *DisksClient) ListByResourceGroup(resourceGroupName string, options *DisksListByResourceGroupOptions) DiskListPager {
-	return &diskListPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *DisksClient) ListByResourceGroup(resourceGroupName string, options *DisksListByResourceGroupOptions) *DisksListByResourceGroupPager {
+	return &DisksListByResourceGroupPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		responder: client.listByResourceGroupHandleResponse,
-		errorer:   client.listByResourceGroupHandleError,
-		advancer: func(ctx context.Context, resp DiskListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.DiskList.NextLink)
+		advancer: func(ctx context.Context, resp DisksListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.DiskList.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *DisksClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DisksListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *DisksClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *DisksListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -491,106 +400,77 @@ func (client *DisksClient) listByResourceGroupCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DisksClient) listByResourceGroupHandleResponse(resp *azcore.Response) (DiskListResponse, error) {
-	var val *DiskList
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return DiskListResponse{}, err
-	}
-	return DiskListResponse{RawResponse: resp.Response, DiskList: val}, nil
-}
-
-// listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *DisksClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
-	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
-	}
-	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
-	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
-}
-
-// BeginRevokeAccess - Revokes access to a disk.
-// If the operation fails it returns a generic error.
-func (client *DisksClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, diskName string, options *DisksBeginRevokeAccessOptions) (HTTPPollerResponse, error) {
-	resp, err := client.revokeAccess(ctx, resourceGroupName, diskName, options)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DisksClient.RevokeAccess", "location", resp, client.con.Pipeline(), client.revokeAccessHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+func (client *DisksClient) listByResourceGroupHandleResponse(resp *http.Response) (DisksListByResourceGroupResponse, error) {
+	result := DisksListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DiskList); err != nil {
+		return DisksListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// ResumeRevokeAccess creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *DisksClient) ResumeRevokeAccess(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DisksClient.RevokeAccess", token, client.con.Pipeline(), client.revokeAccessHandleError)
+// listByResourceGroupHandleError handles the ListByResourceGroup error response.
+func (client *DisksClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return runtime.NewResponseError(err, resp)
 	}
-	poller := &httpPoller{
-		pt: pt,
+	if len(body) == 0 {
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	resp, err := poller.Poll(ctx)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
+}
+
+// BeginRevokeAccess - Revokes access to a disk.
+// If the operation fails it returns a generic error.
+func (client *DisksClient) BeginRevokeAccess(ctx context.Context, resourceGroupName string, diskName string, options *DisksBeginRevokeAccessOptions) (DisksRevokeAccessPollerResponse, error) {
+	resp, err := client.revokeAccess(ctx, resourceGroupName, diskName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return DisksRevokeAccessPollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
+	result := DisksRevokeAccessPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DisksClient.RevokeAccess", "location", resp, client.pl, client.revokeAccessHandleError)
+	if err != nil {
+		return DisksRevokeAccessPollerResponse{}, err
+	}
+	result.Poller = &DisksRevokeAccessPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // RevokeAccess - Revokes access to a disk.
 // If the operation fails it returns a generic error.
-func (client *DisksClient) revokeAccess(ctx context.Context, resourceGroupName string, diskName string, options *DisksBeginRevokeAccessOptions) (*azcore.Response, error) {
+func (client *DisksClient) revokeAccess(ctx context.Context, resourceGroupName string, diskName string, options *DisksBeginRevokeAccessOptions) (*http.Response, error) {
 	req, err := client.revokeAccessCreateRequest(ctx, resourceGroupName, diskName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.revokeAccessHandleError(resp)
 	}
 	return resp, nil
 }
 
 // revokeAccessCreateRequest creates the RevokeAccess request.
-func (client *DisksClient) revokeAccessCreateRequest(ctx context.Context, resourceGroupName string, diskName string, options *DisksBeginRevokeAccessOptions) (*azcore.Request, error) {
+func (client *DisksClient) revokeAccessCreateRequest(ctx context.Context, resourceGroupName string, diskName string, options *DisksBeginRevokeAccessOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}/endGetAccess"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -604,96 +484,67 @@ func (client *DisksClient) revokeAccessCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter diskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskName}", url.PathEscape(diskName))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // revokeAccessHandleError handles the RevokeAccess error response.
-func (client *DisksClient) revokeAccessHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DisksClient) revokeAccessHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }
 
 // BeginUpdate - Updates (patches) a disk.
 // If the operation fails it returns a generic error.
-func (client *DisksClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskName string, disk DiskUpdate, options *DisksBeginUpdateOptions) (DiskPollerResponse, error) {
+func (client *DisksClient) BeginUpdate(ctx context.Context, resourceGroupName string, diskName string, disk DiskUpdate, options *DisksBeginUpdateOptions) (DisksUpdatePollerResponse, error) {
 	resp, err := client.update(ctx, resourceGroupName, diskName, disk, options)
 	if err != nil {
-		return DiskPollerResponse{}, err
+		return DisksUpdatePollerResponse{}, err
 	}
-	result := DiskPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("DisksClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return DiskPollerResponse{}, err
-	}
-	poller := &diskPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeUpdate creates a new DiskPoller from the specified resume token.
-// token - The value must come from a previous call to DiskPoller.ResumeToken().
-func (client *DisksClient) ResumeUpdate(ctx context.Context, token string) (DiskPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("DisksClient.Update", token, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return DiskPollerResponse{}, err
-	}
-	poller := &diskPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return DiskPollerResponse{}, err
-	}
-	result := DiskPollerResponse{
+	result := DisksUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (DiskResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("DisksClient.Update", "", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return DisksUpdatePollerResponse{}, err
+	}
+	result.Poller = &DisksUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Updates (patches) a disk.
 // If the operation fails it returns a generic error.
-func (client *DisksClient) update(ctx context.Context, resourceGroupName string, diskName string, disk DiskUpdate, options *DisksBeginUpdateOptions) (*azcore.Response, error) {
+func (client *DisksClient) update(ctx context.Context, resourceGroupName string, diskName string, disk DiskUpdate, options *DisksBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, diskName, disk, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *DisksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, diskName string, disk DiskUpdate, options *DisksBeginUpdateOptions) (*azcore.Request, error) {
+func (client *DisksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, diskName string, disk DiskUpdate, options *DisksBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/disks/{diskName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -707,26 +558,25 @@ func (client *DisksClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter diskName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{diskName}", url.PathEscape(diskName))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", "2020-12-01")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(disk)
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, disk)
 }
 
 // updateHandleError handles the Update error response.
-func (client *DisksClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *DisksClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	if len(body) == 0 {
-		return azcore.NewResponseError(errors.New(resp.Status), resp.Response)
+		return runtime.NewResponseError(errors.New(resp.Status), resp)
 	}
-	return azcore.NewResponseError(errors.New(string(body)), resp.Response)
+	return runtime.NewResponseError(errors.New(string(body)), resp)
 }

@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,25 +12,28 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AppServiceEnvironmentsClient contains the methods for the AppServiceEnvironments group.
 // Don't use this type directly, use NewAppServiceEnvironmentsClient() instead.
 type AppServiceEnvironmentsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewAppServiceEnvironmentsClient creates a new instance of AppServiceEnvironmentsClient with the specified values.
-func NewAppServiceEnvironmentsClient(con *armcore.Connection, subscriptionID string) *AppServiceEnvironmentsClient {
-	return &AppServiceEnvironmentsClient{con: con, subscriptionID: subscriptionID}
+func NewAppServiceEnvironmentsClient(con *arm.Connection, subscriptionID string) *AppServiceEnvironmentsClient {
+	return &AppServiceEnvironmentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection
@@ -40,65 +44,37 @@ func (client *AppServiceEnvironmentsClient) BeginApproveOrRejectPrivateEndpointC
 		return AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse{}, err
 	}
 	result := AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.ApproveOrRejectPrivateEndpointConnection", "", resp, client.con.Pipeline(), client.approveOrRejectPrivateEndpointConnectionHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeApproveOrRejectPrivateEndpointConnection creates a new AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller from the specified resume token.
-// token - The value must come from a previous call to AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeApproveOrRejectPrivateEndpointConnection(ctx context.Context, token string) (AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.ApproveOrRejectPrivateEndpointConnection", token, client.con.Pipeline(), client.approveOrRejectPrivateEndpointConnectionHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse{}, err
-	}
-	result := AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("AppServiceEnvironmentsClient.ApproveOrRejectPrivateEndpointConnection", "", resp, client.pl, client.approveOrRejectPrivateEndpointConnectionHandleError)
+	if err != nil {
+		return AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPollerResponse{}, err
+	}
+	result.Poller = &AppServiceEnvironmentsApproveOrRejectPrivateEndpointConnectionPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // ApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) approveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *AppServiceEnvironmentsBeginApproveOrRejectPrivateEndpointConnectionOptions) (*azcore.Response, error) {
+func (client *AppServiceEnvironmentsClient) approveOrRejectPrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *AppServiceEnvironmentsBeginApproveOrRejectPrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.approveOrRejectPrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.approveOrRejectPrivateEndpointConnectionHandleError(resp)
 	}
 	return resp, nil
 }
 
 // approveOrRejectPrivateEndpointConnectionCreateRequest creates the ApproveOrRejectPrivateEndpointConnection request.
-func (client *AppServiceEnvironmentsClient) approveOrRejectPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *AppServiceEnvironmentsBeginApproveOrRejectPrivateEndpointConnectionOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) approveOrRejectPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper PrivateLinkConnectionApprovalRequestResource, options *AppServiceEnvironmentsBeginApproveOrRejectPrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -116,29 +92,28 @@ func (client *AppServiceEnvironmentsClient) approveOrRejectPrivateEndpointConnec
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(privateEndpointWrapper)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, privateEndpointWrapper)
 }
 
 // approveOrRejectPrivateEndpointConnectionHandleError handles the ApproveOrRejectPrivateEndpointConnection error response.
-func (client *AppServiceEnvironmentsClient) approveOrRejectPrivateEndpointConnectionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) approveOrRejectPrivateEndpointConnectionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginChangeVnet - Description for Move an App Service Environment to a different VNET.
@@ -149,67 +124,38 @@ func (client *AppServiceEnvironmentsClient) BeginChangeVnet(ctx context.Context,
 		return AppServiceEnvironmentsChangeVnetPollerResponse{}, err
 	}
 	result := AppServiceEnvironmentsChangeVnetPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.ChangeVnet", "", resp, client.con.Pipeline(), client.changeVnetHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsChangeVnetPollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsChangeVnetPoller{
-		pt:     pt,
-		client: client,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsChangeVnetPager, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeChangeVnet creates a new AppServiceEnvironmentsChangeVnetPoller from the specified resume token.
-// token - The value must come from a previous call to AppServiceEnvironmentsChangeVnetPoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeChangeVnet(ctx context.Context, token string) (AppServiceEnvironmentsChangeVnetPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.ChangeVnet", token, client.con.Pipeline(), client.changeVnetHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsChangeVnetPollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsChangeVnetPoller{
-		pt:     pt,
-		client: client,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return AppServiceEnvironmentsChangeVnetPollerResponse{}, err
-	}
-	result := AppServiceEnvironmentsChangeVnetPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsChangeVnetPager, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("AppServiceEnvironmentsClient.ChangeVnet", "", resp, client.pl, client.changeVnetHandleError)
+	if err != nil {
+		return AppServiceEnvironmentsChangeVnetPollerResponse{}, err
+	}
+	result.Poller = &AppServiceEnvironmentsChangeVnetPoller{
+		pt:     pt,
+		client: client,
 	}
 	return result, nil
 }
 
 // ChangeVnet - Description for Move an App Service Environment to a different VNET.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) changeVnet(ctx context.Context, resourceGroupName string, name string, vnetInfo VirtualNetworkProfile, options *AppServiceEnvironmentsBeginChangeVnetOptions) (*azcore.Response, error) {
+func (client *AppServiceEnvironmentsClient) changeVnet(ctx context.Context, resourceGroupName string, name string, vnetInfo VirtualNetworkProfile, options *AppServiceEnvironmentsBeginChangeVnetOptions) (*http.Response, error) {
 	req, err := client.changeVnetCreateRequest(ctx, resourceGroupName, name, vnetInfo, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.changeVnetHandleError(resp)
 	}
 	return resp, nil
 }
 
 // changeVnetCreateRequest creates the ChangeVnet request.
-func (client *AppServiceEnvironmentsClient) changeVnetCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetInfo VirtualNetworkProfile, options *AppServiceEnvironmentsBeginChangeVnetOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) changeVnetCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetInfo VirtualNetworkProfile, options *AppServiceEnvironmentsBeginChangeVnetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/changeVirtualNetwork"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -223,38 +169,37 @@ func (client *AppServiceEnvironmentsClient) changeVnetCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(vnetInfo)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, vnetInfo)
 }
 
 // changeVnetHandleResponse handles the ChangeVnet response.
-func (client *AppServiceEnvironmentsClient) changeVnetHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsChangeVnetResponse, error) {
-	result := AppServiceEnvironmentsChangeVnetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WebAppCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) changeVnetHandleResponse(resp *http.Response) (AppServiceEnvironmentsChangeVnetResponse, error) {
+	result := AppServiceEnvironmentsChangeVnetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
 		return AppServiceEnvironmentsChangeVnetResponse{}, err
 	}
 	return result, nil
 }
 
 // changeVnetHandleError handles the ChangeVnet error response.
-func (client *AppServiceEnvironmentsClient) changeVnetHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) changeVnetHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginCreateOrUpdate - Description for Create or update an App Service Environment.
@@ -265,65 +210,37 @@ func (client *AppServiceEnvironmentsClient) BeginCreateOrUpdate(ctx context.Cont
 		return AppServiceEnvironmentsCreateOrUpdatePollerResponse{}, err
 	}
 	result := AppServiceEnvironmentsCreateOrUpdatePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new AppServiceEnvironmentsCreateOrUpdatePoller from the specified resume token.
-// token - The value must come from a previous call to AppServiceEnvironmentsCreateOrUpdatePoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (AppServiceEnvironmentsCreateOrUpdatePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsCreateOrUpdatePollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsCreateOrUpdatePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return AppServiceEnvironmentsCreateOrUpdatePollerResponse{}, err
-	}
-	result := AppServiceEnvironmentsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsCreateOrUpdateResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("AppServiceEnvironmentsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return AppServiceEnvironmentsCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &AppServiceEnvironmentsCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Description for Create or update an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironmentResource, options *AppServiceEnvironmentsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *AppServiceEnvironmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironmentResource, options *AppServiceEnvironmentsBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, hostingEnvironmentEnvelope, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AppServiceEnvironmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironmentResource, options *AppServiceEnvironmentsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironmentResource, options *AppServiceEnvironmentsBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -337,29 +254,28 @@ func (client *AppServiceEnvironmentsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(hostingEnvironmentEnvelope)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, hostingEnvironmentEnvelope)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *AppServiceEnvironmentsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginCreateOrUpdateMultiRolePool - Description for Create or update a multi-role pool.
@@ -370,65 +286,37 @@ func (client *AppServiceEnvironmentsClient) BeginCreateOrUpdateMultiRolePool(ctx
 		return AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse{}, err
 	}
 	result := AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.CreateOrUpdateMultiRolePool", "", resp, client.con.Pipeline(), client.createOrUpdateMultiRolePoolHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdateMultiRolePool creates a new AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller from the specified resume token.
-// token - The value must come from a previous call to AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeCreateOrUpdateMultiRolePool(ctx context.Context, token string) (AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.CreateOrUpdateMultiRolePool", token, client.con.Pipeline(), client.createOrUpdateMultiRolePoolHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse{}, err
-	}
-	result := AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsCreateOrUpdateMultiRolePoolResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("AppServiceEnvironmentsClient.CreateOrUpdateMultiRolePool", "", resp, client.pl, client.createOrUpdateMultiRolePoolHandleError)
+	if err != nil {
+		return AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPollerResponse{}, err
+	}
+	result.Poller = &AppServiceEnvironmentsCreateOrUpdateMultiRolePoolPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdateMultiRolePool - Description for Create or update a multi-role pool.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) createOrUpdateMultiRolePool(ctx context.Context, resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsBeginCreateOrUpdateMultiRolePoolOptions) (*azcore.Response, error) {
+func (client *AppServiceEnvironmentsClient) createOrUpdateMultiRolePool(ctx context.Context, resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsBeginCreateOrUpdateMultiRolePoolOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateMultiRolePoolCreateRequest(ctx, resourceGroupName, name, multiRolePoolEnvelope, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.createOrUpdateMultiRolePoolHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateMultiRolePoolCreateRequest creates the CreateOrUpdateMultiRolePool request.
-func (client *AppServiceEnvironmentsClient) createOrUpdateMultiRolePoolCreateRequest(ctx context.Context, resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsBeginCreateOrUpdateMultiRolePoolOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) createOrUpdateMultiRolePoolCreateRequest(ctx context.Context, resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsBeginCreateOrUpdateMultiRolePoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -442,29 +330,28 @@ func (client *AppServiceEnvironmentsClient) createOrUpdateMultiRolePoolCreateReq
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(multiRolePoolEnvelope)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, multiRolePoolEnvelope)
 }
 
 // createOrUpdateMultiRolePoolHandleError handles the CreateOrUpdateMultiRolePool error response.
-func (client *AppServiceEnvironmentsClient) createOrUpdateMultiRolePoolHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) createOrUpdateMultiRolePoolHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginCreateOrUpdateWorkerPool - Description for Create or update a worker pool.
@@ -475,65 +362,37 @@ func (client *AppServiceEnvironmentsClient) BeginCreateOrUpdateWorkerPool(ctx co
 		return AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse{}, err
 	}
 	result := AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.CreateOrUpdateWorkerPool", "", resp, client.con.Pipeline(), client.createOrUpdateWorkerPoolHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsCreateOrUpdateWorkerPoolPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdateWorkerPool creates a new AppServiceEnvironmentsCreateOrUpdateWorkerPoolPoller from the specified resume token.
-// token - The value must come from a previous call to AppServiceEnvironmentsCreateOrUpdateWorkerPoolPoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeCreateOrUpdateWorkerPool(ctx context.Context, token string) (AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.CreateOrUpdateWorkerPool", token, client.con.Pipeline(), client.createOrUpdateWorkerPoolHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsCreateOrUpdateWorkerPoolPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse{}, err
-	}
-	result := AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsCreateOrUpdateWorkerPoolResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("AppServiceEnvironmentsClient.CreateOrUpdateWorkerPool", "", resp, client.pl, client.createOrUpdateWorkerPoolHandleError)
+	if err != nil {
+		return AppServiceEnvironmentsCreateOrUpdateWorkerPoolPollerResponse{}, err
+	}
+	result.Poller = &AppServiceEnvironmentsCreateOrUpdateWorkerPoolPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdateWorkerPool - Description for Create or update a worker pool.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) createOrUpdateWorkerPool(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsBeginCreateOrUpdateWorkerPoolOptions) (*azcore.Response, error) {
+func (client *AppServiceEnvironmentsClient) createOrUpdateWorkerPool(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsBeginCreateOrUpdateWorkerPoolOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateWorkerPoolCreateRequest(ctx, resourceGroupName, name, workerPoolName, workerPoolEnvelope, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.createOrUpdateWorkerPoolHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateWorkerPoolCreateRequest creates the CreateOrUpdateWorkerPool request.
-func (client *AppServiceEnvironmentsClient) createOrUpdateWorkerPoolCreateRequest(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsBeginCreateOrUpdateWorkerPoolOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) createOrUpdateWorkerPoolCreateRequest(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsBeginCreateOrUpdateWorkerPoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -551,29 +410,28 @@ func (client *AppServiceEnvironmentsClient) createOrUpdateWorkerPoolCreateReques
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(workerPoolEnvelope)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, workerPoolEnvelope)
 }
 
 // createOrUpdateWorkerPoolHandleError handles the CreateOrUpdateWorkerPool error response.
-func (client *AppServiceEnvironmentsClient) createOrUpdateWorkerPoolHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) createOrUpdateWorkerPoolHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDelete - Description for Delete an App Service Environment.
@@ -584,65 +442,37 @@ func (client *AppServiceEnvironmentsClient) BeginDelete(ctx context.Context, res
 		return AppServiceEnvironmentsDeletePollerResponse{}, err
 	}
 	result := AppServiceEnvironmentsDeletePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsDeletePollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsDeletePoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new AppServiceEnvironmentsDeletePoller from the specified resume token.
-// token - The value must come from a previous call to AppServiceEnvironmentsDeletePoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeDelete(ctx context.Context, token string) (AppServiceEnvironmentsDeletePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsDeletePollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsDeletePoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return AppServiceEnvironmentsDeletePollerResponse{}, err
-	}
-	result := AppServiceEnvironmentsDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsDeleteResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("AppServiceEnvironmentsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return AppServiceEnvironmentsDeletePollerResponse{}, err
+	}
+	result.Poller = &AppServiceEnvironmentsDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Description for Delete an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginDeleteOptions) (*azcore.Response, error) {
+func (client *AppServiceEnvironmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AppServiceEnvironmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginDeleteOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -656,32 +486,31 @@ func (client *AppServiceEnvironmentsClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.ForceDelete != nil {
 		reqQP.Set("forceDelete", strconv.FormatBool(*options.ForceDelete))
 	}
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *AppServiceEnvironmentsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDeletePrivateEndpointConnection - Description for Deletes a private endpoint connection
@@ -692,65 +521,37 @@ func (client *AppServiceEnvironmentsClient) BeginDeletePrivateEndpointConnection
 		return AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse{}, err
 	}
 	result := AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.DeletePrivateEndpointConnection", "", resp, client.con.Pipeline(), client.deletePrivateEndpointConnectionHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsDeletePrivateEndpointConnectionPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDeletePrivateEndpointConnection creates a new AppServiceEnvironmentsDeletePrivateEndpointConnectionPoller from the specified resume token.
-// token - The value must come from a previous call to AppServiceEnvironmentsDeletePrivateEndpointConnectionPoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeDeletePrivateEndpointConnection(ctx context.Context, token string) (AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.DeletePrivateEndpointConnection", token, client.con.Pipeline(), client.deletePrivateEndpointConnectionHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsDeletePrivateEndpointConnectionPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse{}, err
-	}
-	result := AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsDeletePrivateEndpointConnectionResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("AppServiceEnvironmentsClient.DeletePrivateEndpointConnection", "", resp, client.pl, client.deletePrivateEndpointConnectionHandleError)
+	if err != nil {
+		return AppServiceEnvironmentsDeletePrivateEndpointConnectionPollerResponse{}, err
+	}
+	result.Poller = &AppServiceEnvironmentsDeletePrivateEndpointConnectionPoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // DeletePrivateEndpointConnection - Description for Deletes a private endpoint connection
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *AppServiceEnvironmentsBeginDeletePrivateEndpointConnectionOptions) (*azcore.Response, error) {
+func (client *AppServiceEnvironmentsClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *AppServiceEnvironmentsBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
 	req, err := client.deletePrivateEndpointConnectionCreateRequest(ctx, resourceGroupName, name, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deletePrivateEndpointConnectionHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deletePrivateEndpointConnectionCreateRequest creates the DeletePrivateEndpointConnection request.
-func (client *AppServiceEnvironmentsClient) deletePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *AppServiceEnvironmentsBeginDeletePrivateEndpointConnectionOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) deletePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *AppServiceEnvironmentsBeginDeletePrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -768,29 +569,28 @@ func (client *AppServiceEnvironmentsClient) deletePrivateEndpointConnectionCreat
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deletePrivateEndpointConnectionHandleError handles the DeletePrivateEndpointConnection error response.
-func (client *AppServiceEnvironmentsClient) deletePrivateEndpointConnectionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) deletePrivateEndpointConnectionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Description for Get the properties of an App Service Environment.
@@ -800,18 +600,18 @@ func (client *AppServiceEnvironmentsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return AppServiceEnvironmentsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServiceEnvironmentsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServiceEnvironmentsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AppServiceEnvironmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -825,38 +625,37 @@ func (client *AppServiceEnvironmentsClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AppServiceEnvironmentsClient) getHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetResponse, error) {
-	result := AppServiceEnvironmentsGetResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AppServiceEnvironmentResource); err != nil {
+func (client *AppServiceEnvironmentsClient) getHandleResponse(resp *http.Response) (AppServiceEnvironmentsGetResponse, error) {
+	result := AppServiceEnvironmentsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppServiceEnvironmentResource); err != nil {
 		return AppServiceEnvironmentsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *AppServiceEnvironmentsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetAseV3NetworkingConfiguration - Description for Get networking configuration of an App Service Environment
@@ -866,18 +665,18 @@ func (client *AppServiceEnvironmentsClient) GetAseV3NetworkingConfiguration(ctx 
 	if err != nil {
 		return AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse{}, client.getAseV3NetworkingConfigurationHandleError(resp)
 	}
 	return client.getAseV3NetworkingConfigurationHandleResponse(resp)
 }
 
 // getAseV3NetworkingConfigurationCreateRequest creates the GetAseV3NetworkingConfiguration request.
-func (client *AppServiceEnvironmentsClient) getAseV3NetworkingConfigurationCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetAseV3NetworkingConfigurationOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) getAseV3NetworkingConfigurationCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetAseV3NetworkingConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/configurations/networking"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -891,38 +690,37 @@ func (client *AppServiceEnvironmentsClient) getAseV3NetworkingConfigurationCreat
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getAseV3NetworkingConfigurationHandleResponse handles the GetAseV3NetworkingConfiguration response.
-func (client *AppServiceEnvironmentsClient) getAseV3NetworkingConfigurationHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse, error) {
-	result := AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AseV3NetworkingConfiguration); err != nil {
+func (client *AppServiceEnvironmentsClient) getAseV3NetworkingConfigurationHandleResponse(resp *http.Response) (AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse, error) {
+	result := AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AseV3NetworkingConfiguration); err != nil {
 		return AppServiceEnvironmentsGetAseV3NetworkingConfigurationResponse{}, err
 	}
 	return result, nil
 }
 
 // getAseV3NetworkingConfigurationHandleError handles the GetAseV3NetworkingConfiguration error response.
-func (client *AppServiceEnvironmentsClient) getAseV3NetworkingConfigurationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) getAseV3NetworkingConfigurationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetDiagnosticsItem - Description for Get a diagnostics item for an App Service Environment.
@@ -932,18 +730,18 @@ func (client *AppServiceEnvironmentsClient) GetDiagnosticsItem(ctx context.Conte
 	if err != nil {
 		return AppServiceEnvironmentsGetDiagnosticsItemResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServiceEnvironmentsGetDiagnosticsItemResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServiceEnvironmentsGetDiagnosticsItemResponse{}, client.getDiagnosticsItemHandleError(resp)
 	}
 	return client.getDiagnosticsItemHandleResponse(resp)
 }
 
 // getDiagnosticsItemCreateRequest creates the GetDiagnosticsItem request.
-func (client *AppServiceEnvironmentsClient) getDiagnosticsItemCreateRequest(ctx context.Context, resourceGroupName string, name string, diagnosticsName string, options *AppServiceEnvironmentsGetDiagnosticsItemOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) getDiagnosticsItemCreateRequest(ctx context.Context, resourceGroupName string, name string, diagnosticsName string, options *AppServiceEnvironmentsGetDiagnosticsItemOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/diagnostics/{diagnosticsName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -961,56 +759,55 @@ func (client *AppServiceEnvironmentsClient) getDiagnosticsItemCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getDiagnosticsItemHandleResponse handles the GetDiagnosticsItem response.
-func (client *AppServiceEnvironmentsClient) getDiagnosticsItemHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetDiagnosticsItemResponse, error) {
-	result := AppServiceEnvironmentsGetDiagnosticsItemResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.HostingEnvironmentDiagnostics); err != nil {
+func (client *AppServiceEnvironmentsClient) getDiagnosticsItemHandleResponse(resp *http.Response) (AppServiceEnvironmentsGetDiagnosticsItemResponse, error) {
+	result := AppServiceEnvironmentsGetDiagnosticsItemResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.HostingEnvironmentDiagnostics); err != nil {
 		return AppServiceEnvironmentsGetDiagnosticsItemResponse{}, err
 	}
 	return result, nil
 }
 
 // getDiagnosticsItemHandleError handles the GetDiagnosticsItem error response.
-func (client *AppServiceEnvironmentsClient) getDiagnosticsItemHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) getDiagnosticsItemHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetInboundNetworkDependenciesEndpoints - Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) GetInboundNetworkDependenciesEndpoints(resourceGroupName string, name string, options *AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsOptions) AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsPager {
-	return &appServiceEnvironmentsGetInboundNetworkDependenciesEndpointsPager{
+func (client *AppServiceEnvironmentsClient) GetInboundNetworkDependenciesEndpoints(resourceGroupName string, name string, options *AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsOptions) *AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsPager {
+	return &AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.getInboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.InboundEnvironmentEndpointCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.InboundEnvironmentEndpointCollection.NextLink)
 		},
 	}
 }
 
 // getInboundNetworkDependenciesEndpointsCreateRequest creates the GetInboundNetworkDependenciesEndpoints request.
-func (client *AppServiceEnvironmentsClient) getInboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) getInboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/inboundNetworkDependenciesEndpoints"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1024,38 +821,37 @@ func (client *AppServiceEnvironmentsClient) getInboundNetworkDependenciesEndpoin
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getInboundNetworkDependenciesEndpointsHandleResponse handles the GetInboundNetworkDependenciesEndpoints response.
-func (client *AppServiceEnvironmentsClient) getInboundNetworkDependenciesEndpointsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse, error) {
-	result := AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.InboundEnvironmentEndpointCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) getInboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response) (AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse, error) {
+	result := AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.InboundEnvironmentEndpointCollection); err != nil {
 		return AppServiceEnvironmentsGetInboundNetworkDependenciesEndpointsResponse{}, err
 	}
 	return result, nil
 }
 
 // getInboundNetworkDependenciesEndpointsHandleError handles the GetInboundNetworkDependenciesEndpoints error response.
-func (client *AppServiceEnvironmentsClient) getInboundNetworkDependenciesEndpointsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) getInboundNetworkDependenciesEndpointsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetMultiRolePool - Description for Get properties of a multi-role pool.
@@ -1065,18 +861,18 @@ func (client *AppServiceEnvironmentsClient) GetMultiRolePool(ctx context.Context
 	if err != nil {
 		return AppServiceEnvironmentsGetMultiRolePoolResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServiceEnvironmentsGetMultiRolePoolResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServiceEnvironmentsGetMultiRolePoolResponse{}, client.getMultiRolePoolHandleError(resp)
 	}
 	return client.getMultiRolePoolHandleResponse(resp)
 }
 
 // getMultiRolePoolCreateRequest creates the GetMultiRolePool request.
-func (client *AppServiceEnvironmentsClient) getMultiRolePoolCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetMultiRolePoolOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) getMultiRolePoolCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetMultiRolePoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1090,56 +886,55 @@ func (client *AppServiceEnvironmentsClient) getMultiRolePoolCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getMultiRolePoolHandleResponse handles the GetMultiRolePool response.
-func (client *AppServiceEnvironmentsClient) getMultiRolePoolHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetMultiRolePoolResponse, error) {
-	result := AppServiceEnvironmentsGetMultiRolePoolResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WorkerPoolResource); err != nil {
+func (client *AppServiceEnvironmentsClient) getMultiRolePoolHandleResponse(resp *http.Response) (AppServiceEnvironmentsGetMultiRolePoolResponse, error) {
+	result := AppServiceEnvironmentsGetMultiRolePoolResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkerPoolResource); err != nil {
 		return AppServiceEnvironmentsGetMultiRolePoolResponse{}, err
 	}
 	return result, nil
 }
 
 // getMultiRolePoolHandleError handles the GetMultiRolePool error response.
-func (client *AppServiceEnvironmentsClient) getMultiRolePoolHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) getMultiRolePoolHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetOutboundNetworkDependenciesEndpoints - Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) GetOutboundNetworkDependenciesEndpoints(resourceGroupName string, name string, options *AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsOptions) AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsPager {
-	return &appServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsPager{
+func (client *AppServiceEnvironmentsClient) GetOutboundNetworkDependenciesEndpoints(resourceGroupName string, name string, options *AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsOptions) *AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsPager {
+	return &AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.getOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.OutboundEnvironmentEndpointCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.OutboundEnvironmentEndpointCollection.NextLink)
 		},
 	}
 }
 
 // getOutboundNetworkDependenciesEndpointsCreateRequest creates the GetOutboundNetworkDependenciesEndpoints request.
-func (client *AppServiceEnvironmentsClient) getOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) getOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/outboundNetworkDependenciesEndpoints"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1153,38 +948,37 @@ func (client *AppServiceEnvironmentsClient) getOutboundNetworkDependenciesEndpoi
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getOutboundNetworkDependenciesEndpointsHandleResponse handles the GetOutboundNetworkDependenciesEndpoints response.
-func (client *AppServiceEnvironmentsClient) getOutboundNetworkDependenciesEndpointsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse, error) {
-	result := AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.OutboundEnvironmentEndpointCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) getOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response) (AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse, error) {
+	result := AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundEnvironmentEndpointCollection); err != nil {
 		return AppServiceEnvironmentsGetOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
 	return result, nil
 }
 
 // getOutboundNetworkDependenciesEndpointsHandleError handles the GetOutboundNetworkDependenciesEndpoints error response.
-func (client *AppServiceEnvironmentsClient) getOutboundNetworkDependenciesEndpointsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) getOutboundNetworkDependenciesEndpointsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetPrivateEndpointConnection - Description for Gets a private endpoint connection
@@ -1194,18 +988,18 @@ func (client *AppServiceEnvironmentsClient) GetPrivateEndpointConnection(ctx con
 	if err != nil {
 		return AppServiceEnvironmentsGetPrivateEndpointConnectionResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServiceEnvironmentsGetPrivateEndpointConnectionResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServiceEnvironmentsGetPrivateEndpointConnectionResponse{}, client.getPrivateEndpointConnectionHandleError(resp)
 	}
 	return client.getPrivateEndpointConnectionHandleResponse(resp)
 }
 
 // getPrivateEndpointConnectionCreateRequest creates the GetPrivateEndpointConnection request.
-func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *AppServiceEnvironmentsGetPrivateEndpointConnectionOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, options *AppServiceEnvironmentsGetPrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1223,56 +1017,55 @@ func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionCreateRe
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getPrivateEndpointConnectionHandleResponse handles the GetPrivateEndpointConnection response.
-func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetPrivateEndpointConnectionResponse, error) {
-	result := AppServiceEnvironmentsGetPrivateEndpointConnectionResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.RemotePrivateEndpointConnectionARMResource); err != nil {
+func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionHandleResponse(resp *http.Response) (AppServiceEnvironmentsGetPrivateEndpointConnectionResponse, error) {
+	result := AppServiceEnvironmentsGetPrivateEndpointConnectionResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RemotePrivateEndpointConnectionARMResource); err != nil {
 		return AppServiceEnvironmentsGetPrivateEndpointConnectionResponse{}, err
 	}
 	return result, nil
 }
 
 // getPrivateEndpointConnectionHandleError handles the GetPrivateEndpointConnection error response.
-func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetPrivateEndpointConnectionList - Description for Gets the list of private endpoints associated with a hosting environment
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) GetPrivateEndpointConnectionList(resourceGroupName string, name string, options *AppServiceEnvironmentsGetPrivateEndpointConnectionListOptions) AppServiceEnvironmentsGetPrivateEndpointConnectionListPager {
-	return &appServiceEnvironmentsGetPrivateEndpointConnectionListPager{
+func (client *AppServiceEnvironmentsClient) GetPrivateEndpointConnectionList(resourceGroupName string, name string, options *AppServiceEnvironmentsGetPrivateEndpointConnectionListOptions) *AppServiceEnvironmentsGetPrivateEndpointConnectionListPager {
+	return &AppServiceEnvironmentsGetPrivateEndpointConnectionListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.getPrivateEndpointConnectionListCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.PrivateEndpointConnectionCollection.NextLink)
 		},
 	}
 }
 
 // getPrivateEndpointConnectionListCreateRequest creates the GetPrivateEndpointConnectionList request.
-func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionListCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetPrivateEndpointConnectionListOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionListCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetPrivateEndpointConnectionListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/privateEndpointConnections"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1286,38 +1079,37 @@ func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionListCrea
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getPrivateEndpointConnectionListHandleResponse handles the GetPrivateEndpointConnectionList response.
-func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionListHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse, error) {
-	result := AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PrivateEndpointConnectionCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionListHandleResponse(resp *http.Response) (AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse, error) {
+	result := AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionCollection); err != nil {
 		return AppServiceEnvironmentsGetPrivateEndpointConnectionListResponse{}, err
 	}
 	return result, nil
 }
 
 // getPrivateEndpointConnectionListHandleError handles the GetPrivateEndpointConnectionList error response.
-func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionListHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) getPrivateEndpointConnectionListHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetPrivateLinkResources - Description for Gets the private link resources
@@ -1327,18 +1119,18 @@ func (client *AppServiceEnvironmentsClient) GetPrivateLinkResources(ctx context.
 	if err != nil {
 		return AppServiceEnvironmentsGetPrivateLinkResourcesResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServiceEnvironmentsGetPrivateLinkResourcesResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServiceEnvironmentsGetPrivateLinkResourcesResponse{}, client.getPrivateLinkResourcesHandleError(resp)
 	}
 	return client.getPrivateLinkResourcesHandleResponse(resp)
 }
 
 // getPrivateLinkResourcesCreateRequest creates the GetPrivateLinkResources request.
-func (client *AppServiceEnvironmentsClient) getPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetPrivateLinkResourcesOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) getPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetPrivateLinkResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/privateLinkResources"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1352,38 +1144,37 @@ func (client *AppServiceEnvironmentsClient) getPrivateLinkResourcesCreateRequest
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getPrivateLinkResourcesHandleResponse handles the GetPrivateLinkResources response.
-func (client *AppServiceEnvironmentsClient) getPrivateLinkResourcesHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetPrivateLinkResourcesResponse, error) {
-	result := AppServiceEnvironmentsGetPrivateLinkResourcesResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.PrivateLinkResourcesWrapper); err != nil {
+func (client *AppServiceEnvironmentsClient) getPrivateLinkResourcesHandleResponse(resp *http.Response) (AppServiceEnvironmentsGetPrivateLinkResourcesResponse, error) {
+	result := AppServiceEnvironmentsGetPrivateLinkResourcesResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourcesWrapper); err != nil {
 		return AppServiceEnvironmentsGetPrivateLinkResourcesResponse{}, err
 	}
 	return result, nil
 }
 
 // getPrivateLinkResourcesHandleError handles the GetPrivateLinkResources error response.
-func (client *AppServiceEnvironmentsClient) getPrivateLinkResourcesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) getPrivateLinkResourcesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetVipInfo - Description for Get IP addresses assigned to an App Service Environment.
@@ -1393,18 +1184,18 @@ func (client *AppServiceEnvironmentsClient) GetVipInfo(ctx context.Context, reso
 	if err != nil {
 		return AppServiceEnvironmentsGetVipInfoResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServiceEnvironmentsGetVipInfoResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServiceEnvironmentsGetVipInfoResponse{}, client.getVipInfoHandleError(resp)
 	}
 	return client.getVipInfoHandleResponse(resp)
 }
 
 // getVipInfoCreateRequest creates the GetVipInfo request.
-func (client *AppServiceEnvironmentsClient) getVipInfoCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetVipInfoOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) getVipInfoCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsGetVipInfoOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/capacities/virtualip"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1418,38 +1209,37 @@ func (client *AppServiceEnvironmentsClient) getVipInfoCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getVipInfoHandleResponse handles the GetVipInfo response.
-func (client *AppServiceEnvironmentsClient) getVipInfoHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetVipInfoResponse, error) {
-	result := AppServiceEnvironmentsGetVipInfoResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AddressResponse); err != nil {
+func (client *AppServiceEnvironmentsClient) getVipInfoHandleResponse(resp *http.Response) (AppServiceEnvironmentsGetVipInfoResponse, error) {
+	result := AppServiceEnvironmentsGetVipInfoResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AddressResponse); err != nil {
 		return AppServiceEnvironmentsGetVipInfoResponse{}, err
 	}
 	return result, nil
 }
 
 // getVipInfoHandleError handles the GetVipInfo error response.
-func (client *AppServiceEnvironmentsClient) getVipInfoHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) getVipInfoHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // GetWorkerPool - Description for Get properties of a worker pool.
@@ -1459,18 +1249,18 @@ func (client *AppServiceEnvironmentsClient) GetWorkerPool(ctx context.Context, r
 	if err != nil {
 		return AppServiceEnvironmentsGetWorkerPoolResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServiceEnvironmentsGetWorkerPoolResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServiceEnvironmentsGetWorkerPoolResponse{}, client.getWorkerPoolHandleError(resp)
 	}
 	return client.getWorkerPoolHandleResponse(resp)
 }
 
 // getWorkerPoolCreateRequest creates the GetWorkerPool request.
-func (client *AppServiceEnvironmentsClient) getWorkerPoolCreateRequest(ctx context.Context, resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsGetWorkerPoolOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) getWorkerPoolCreateRequest(ctx context.Context, resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsGetWorkerPoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1488,111 +1278,109 @@ func (client *AppServiceEnvironmentsClient) getWorkerPoolCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getWorkerPoolHandleResponse handles the GetWorkerPool response.
-func (client *AppServiceEnvironmentsClient) getWorkerPoolHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsGetWorkerPoolResponse, error) {
-	result := AppServiceEnvironmentsGetWorkerPoolResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WorkerPoolResource); err != nil {
+func (client *AppServiceEnvironmentsClient) getWorkerPoolHandleResponse(resp *http.Response) (AppServiceEnvironmentsGetWorkerPoolResponse, error) {
+	result := AppServiceEnvironmentsGetWorkerPoolResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkerPoolResource); err != nil {
 		return AppServiceEnvironmentsGetWorkerPoolResponse{}, err
 	}
 	return result, nil
 }
 
 // getWorkerPoolHandleError handles the GetWorkerPool error response.
-func (client *AppServiceEnvironmentsClient) getWorkerPoolHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) getWorkerPoolHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // List - Description for Get all App Service Environments for a subscription.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) List(options *AppServiceEnvironmentsListOptions) AppServiceEnvironmentsListPager {
-	return &appServiceEnvironmentsListPager{
+func (client *AppServiceEnvironmentsClient) List(options *AppServiceEnvironmentsListOptions) *AppServiceEnvironmentsListPager {
+	return &AppServiceEnvironmentsListPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.AppServiceEnvironmentCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AppServiceEnvironmentCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *AppServiceEnvironmentsClient) listCreateRequest(ctx context.Context, options *AppServiceEnvironmentsListOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listCreateRequest(ctx context.Context, options *AppServiceEnvironmentsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/hostingEnvironments"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AppServiceEnvironmentsClient) listHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListResponse, error) {
-	result := AppServiceEnvironmentsListResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AppServiceEnvironmentCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) listHandleResponse(resp *http.Response) (AppServiceEnvironmentsListResponse, error) {
+	result := AppServiceEnvironmentsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppServiceEnvironmentCollection); err != nil {
 		return AppServiceEnvironmentsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *AppServiceEnvironmentsClient) listHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListAppServicePlans - Description for Get all App Service plans in an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListAppServicePlans(resourceGroupName string, name string, options *AppServiceEnvironmentsListAppServicePlansOptions) AppServiceEnvironmentsListAppServicePlansPager {
-	return &appServiceEnvironmentsListAppServicePlansPager{
+func (client *AppServiceEnvironmentsClient) ListAppServicePlans(resourceGroupName string, name string, options *AppServiceEnvironmentsListAppServicePlansOptions) *AppServiceEnvironmentsListAppServicePlansPager {
+	return &AppServiceEnvironmentsListAppServicePlansPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listAppServicePlansCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListAppServicePlansResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.AppServicePlanCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListAppServicePlansResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AppServicePlanCollection.NextLink)
 		},
 	}
 }
 
 // listAppServicePlansCreateRequest creates the ListAppServicePlans request.
-func (client *AppServiceEnvironmentsClient) listAppServicePlansCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListAppServicePlansOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listAppServicePlansCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListAppServicePlansOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/serverfarms"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1606,56 +1394,55 @@ func (client *AppServiceEnvironmentsClient) listAppServicePlansCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listAppServicePlansHandleResponse handles the ListAppServicePlans response.
-func (client *AppServiceEnvironmentsClient) listAppServicePlansHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListAppServicePlansResponse, error) {
-	result := AppServiceEnvironmentsListAppServicePlansResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AppServicePlanCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) listAppServicePlansHandleResponse(resp *http.Response) (AppServiceEnvironmentsListAppServicePlansResponse, error) {
+	result := AppServiceEnvironmentsListAppServicePlansResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppServicePlanCollection); err != nil {
 		return AppServiceEnvironmentsListAppServicePlansResponse{}, err
 	}
 	return result, nil
 }
 
 // listAppServicePlansHandleError handles the ListAppServicePlans error response.
-func (client *AppServiceEnvironmentsClient) listAppServicePlansHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listAppServicePlansHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByResourceGroup - Description for Get all App Service Environments in a resource group.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListByResourceGroup(resourceGroupName string, options *AppServiceEnvironmentsListByResourceGroupOptions) AppServiceEnvironmentsListByResourceGroupPager {
-	return &appServiceEnvironmentsListByResourceGroupPager{
+func (client *AppServiceEnvironmentsClient) ListByResourceGroup(resourceGroupName string, options *AppServiceEnvironmentsListByResourceGroupOptions) *AppServiceEnvironmentsListByResourceGroupPager {
+	return &AppServiceEnvironmentsListByResourceGroupPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListByResourceGroupResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.AppServiceEnvironmentCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListByResourceGroupResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.AppServiceEnvironmentCollection.NextLink)
 		},
 	}
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AppServiceEnvironmentsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AppServiceEnvironmentsListByResourceGroupOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AppServiceEnvironmentsListByResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1665,56 +1452,55 @@ func (client *AppServiceEnvironmentsClient) listByResourceGroupCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AppServiceEnvironmentsClient) listByResourceGroupHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListByResourceGroupResponse, error) {
-	result := AppServiceEnvironmentsListByResourceGroupResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AppServiceEnvironmentCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) listByResourceGroupHandleResponse(resp *http.Response) (AppServiceEnvironmentsListByResourceGroupResponse, error) {
+	result := AppServiceEnvironmentsListByResourceGroupResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppServiceEnvironmentCollection); err != nil {
 		return AppServiceEnvironmentsListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
 // listByResourceGroupHandleError handles the ListByResourceGroup error response.
-func (client *AppServiceEnvironmentsClient) listByResourceGroupHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listByResourceGroupHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListCapacities - Description for Get the used, available, and total worker capacity an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListCapacities(resourceGroupName string, name string, options *AppServiceEnvironmentsListCapacitiesOptions) AppServiceEnvironmentsListCapacitiesPager {
-	return &appServiceEnvironmentsListCapacitiesPager{
+func (client *AppServiceEnvironmentsClient) ListCapacities(resourceGroupName string, name string, options *AppServiceEnvironmentsListCapacitiesOptions) *AppServiceEnvironmentsListCapacitiesPager {
+	return &AppServiceEnvironmentsListCapacitiesPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCapacitiesCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListCapacitiesResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.StampCapacityCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListCapacitiesResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.StampCapacityCollection.NextLink)
 		},
 	}
 }
 
 // listCapacitiesCreateRequest creates the ListCapacities request.
-func (client *AppServiceEnvironmentsClient) listCapacitiesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListCapacitiesOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listCapacitiesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListCapacitiesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/capacities/compute"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1728,38 +1514,37 @@ func (client *AppServiceEnvironmentsClient) listCapacitiesCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listCapacitiesHandleResponse handles the ListCapacities response.
-func (client *AppServiceEnvironmentsClient) listCapacitiesHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListCapacitiesResponse, error) {
-	result := AppServiceEnvironmentsListCapacitiesResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.StampCapacityCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) listCapacitiesHandleResponse(resp *http.Response) (AppServiceEnvironmentsListCapacitiesResponse, error) {
+	result := AppServiceEnvironmentsListCapacitiesResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StampCapacityCollection); err != nil {
 		return AppServiceEnvironmentsListCapacitiesResponse{}, err
 	}
 	return result, nil
 }
 
 // listCapacitiesHandleError handles the ListCapacities error response.
-func (client *AppServiceEnvironmentsClient) listCapacitiesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listCapacitiesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListDiagnostics - Description for Get diagnostic information for an App Service Environment.
@@ -1769,18 +1554,18 @@ func (client *AppServiceEnvironmentsClient) ListDiagnostics(ctx context.Context,
 	if err != nil {
 		return AppServiceEnvironmentsListDiagnosticsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServiceEnvironmentsListDiagnosticsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServiceEnvironmentsListDiagnosticsResponse{}, client.listDiagnosticsHandleError(resp)
 	}
 	return client.listDiagnosticsHandleResponse(resp)
 }
 
 // listDiagnosticsCreateRequest creates the ListDiagnostics request.
-func (client *AppServiceEnvironmentsClient) listDiagnosticsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListDiagnosticsOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listDiagnosticsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListDiagnosticsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/diagnostics"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1794,56 +1579,55 @@ func (client *AppServiceEnvironmentsClient) listDiagnosticsCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listDiagnosticsHandleResponse handles the ListDiagnostics response.
-func (client *AppServiceEnvironmentsClient) listDiagnosticsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListDiagnosticsResponse, error) {
-	result := AppServiceEnvironmentsListDiagnosticsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.HostingEnvironmentDiagnosticsArray); err != nil {
+func (client *AppServiceEnvironmentsClient) listDiagnosticsHandleResponse(resp *http.Response) (AppServiceEnvironmentsListDiagnosticsResponse, error) {
+	result := AppServiceEnvironmentsListDiagnosticsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.HostingEnvironmentDiagnosticsArray); err != nil {
 		return AppServiceEnvironmentsListDiagnosticsResponse{}, err
 	}
 	return result, nil
 }
 
 // listDiagnosticsHandleError handles the ListDiagnostics error response.
-func (client *AppServiceEnvironmentsClient) listDiagnosticsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listDiagnosticsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListMultiRoleMetricDefinitions - Description for Get metric definitions for a multi-role pool of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListMultiRoleMetricDefinitions(resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRoleMetricDefinitionsOptions) AppServiceEnvironmentsListMultiRoleMetricDefinitionsPager {
-	return &appServiceEnvironmentsListMultiRoleMetricDefinitionsPager{
+func (client *AppServiceEnvironmentsClient) ListMultiRoleMetricDefinitions(resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRoleMetricDefinitionsOptions) *AppServiceEnvironmentsListMultiRoleMetricDefinitionsPager {
+	return &AppServiceEnvironmentsListMultiRoleMetricDefinitionsPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listMultiRoleMetricDefinitionsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceMetricDefinitionCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceMetricDefinitionCollection.NextLink)
 		},
 	}
 }
 
 // listMultiRoleMetricDefinitionsCreateRequest creates the ListMultiRoleMetricDefinitions request.
-func (client *AppServiceEnvironmentsClient) listMultiRoleMetricDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRoleMetricDefinitionsOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listMultiRoleMetricDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRoleMetricDefinitionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/metricdefinitions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1857,56 +1641,55 @@ func (client *AppServiceEnvironmentsClient) listMultiRoleMetricDefinitionsCreate
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listMultiRoleMetricDefinitionsHandleResponse handles the ListMultiRoleMetricDefinitions response.
-func (client *AppServiceEnvironmentsClient) listMultiRoleMetricDefinitionsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse, error) {
-	result := AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ResourceMetricDefinitionCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) listMultiRoleMetricDefinitionsHandleResponse(resp *http.Response) (AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse, error) {
+	result := AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceMetricDefinitionCollection); err != nil {
 		return AppServiceEnvironmentsListMultiRoleMetricDefinitionsResponse{}, err
 	}
 	return result, nil
 }
 
 // listMultiRoleMetricDefinitionsHandleError handles the ListMultiRoleMetricDefinitions error response.
-func (client *AppServiceEnvironmentsClient) listMultiRoleMetricDefinitionsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listMultiRoleMetricDefinitionsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListMultiRolePoolInstanceMetricDefinitions - Description for Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricDefinitions(resourceGroupName string, name string, instance string, options *AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsOptions) AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsPager {
-	return &appServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsPager{
+func (client *AppServiceEnvironmentsClient) ListMultiRolePoolInstanceMetricDefinitions(resourceGroupName string, name string, instance string, options *AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsOptions) *AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsPager {
+	return &AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listMultiRolePoolInstanceMetricDefinitionsCreateRequest(ctx, resourceGroupName, name, instance, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceMetricDefinitionCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceMetricDefinitionCollection.NextLink)
 		},
 	}
 }
 
 // listMultiRolePoolInstanceMetricDefinitionsCreateRequest creates the ListMultiRolePoolInstanceMetricDefinitions request.
-func (client *AppServiceEnvironmentsClient) listMultiRolePoolInstanceMetricDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, name string, instance string, options *AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listMultiRolePoolInstanceMetricDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, name string, instance string, options *AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/instances/{instance}/metricdefinitions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1924,56 +1707,55 @@ func (client *AppServiceEnvironmentsClient) listMultiRolePoolInstanceMetricDefin
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listMultiRolePoolInstanceMetricDefinitionsHandleResponse handles the ListMultiRolePoolInstanceMetricDefinitions response.
-func (client *AppServiceEnvironmentsClient) listMultiRolePoolInstanceMetricDefinitionsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse, error) {
-	result := AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ResourceMetricDefinitionCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) listMultiRolePoolInstanceMetricDefinitionsHandleResponse(resp *http.Response) (AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse, error) {
+	result := AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceMetricDefinitionCollection); err != nil {
 		return AppServiceEnvironmentsListMultiRolePoolInstanceMetricDefinitionsResponse{}, err
 	}
 	return result, nil
 }
 
 // listMultiRolePoolInstanceMetricDefinitionsHandleError handles the ListMultiRolePoolInstanceMetricDefinitions error response.
-func (client *AppServiceEnvironmentsClient) listMultiRolePoolInstanceMetricDefinitionsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listMultiRolePoolInstanceMetricDefinitionsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListMultiRolePoolSKUs - Description for Get available SKUs for scaling a multi-role pool.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListMultiRolePoolSKUs(resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRolePoolSKUsOptions) AppServiceEnvironmentsListMultiRolePoolSKUsPager {
-	return &appServiceEnvironmentsListMultiRolePoolSKUsPager{
+func (client *AppServiceEnvironmentsClient) ListMultiRolePoolSKUs(resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRolePoolSKUsOptions) *AppServiceEnvironmentsListMultiRolePoolSKUsPager {
+	return &AppServiceEnvironmentsListMultiRolePoolSKUsPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listMultiRolePoolSKUsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListMultiRolePoolSKUsResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.SKUInfoCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListMultiRolePoolSKUsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SKUInfoCollection.NextLink)
 		},
 	}
 }
 
 // listMultiRolePoolSKUsCreateRequest creates the ListMultiRolePoolSKUs request.
-func (client *AppServiceEnvironmentsClient) listMultiRolePoolSKUsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRolePoolSKUsOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listMultiRolePoolSKUsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRolePoolSKUsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/skus"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1987,56 +1769,55 @@ func (client *AppServiceEnvironmentsClient) listMultiRolePoolSKUsCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listMultiRolePoolSKUsHandleResponse handles the ListMultiRolePoolSKUs response.
-func (client *AppServiceEnvironmentsClient) listMultiRolePoolSKUsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListMultiRolePoolSKUsResponse, error) {
-	result := AppServiceEnvironmentsListMultiRolePoolSKUsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SKUInfoCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) listMultiRolePoolSKUsHandleResponse(resp *http.Response) (AppServiceEnvironmentsListMultiRolePoolSKUsResponse, error) {
+	result := AppServiceEnvironmentsListMultiRolePoolSKUsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SKUInfoCollection); err != nil {
 		return AppServiceEnvironmentsListMultiRolePoolSKUsResponse{}, err
 	}
 	return result, nil
 }
 
 // listMultiRolePoolSKUsHandleError handles the ListMultiRolePoolSKUs error response.
-func (client *AppServiceEnvironmentsClient) listMultiRolePoolSKUsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listMultiRolePoolSKUsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListMultiRolePools - Description for Get all multi-role pools.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListMultiRolePools(resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRolePoolsOptions) AppServiceEnvironmentsListMultiRolePoolsPager {
-	return &appServiceEnvironmentsListMultiRolePoolsPager{
+func (client *AppServiceEnvironmentsClient) ListMultiRolePools(resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRolePoolsOptions) *AppServiceEnvironmentsListMultiRolePoolsPager {
+	return &AppServiceEnvironmentsListMultiRolePoolsPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listMultiRolePoolsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListMultiRolePoolsResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.WorkerPoolCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListMultiRolePoolsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkerPoolCollection.NextLink)
 		},
 	}
 }
 
 // listMultiRolePoolsCreateRequest creates the ListMultiRolePools request.
-func (client *AppServiceEnvironmentsClient) listMultiRolePoolsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRolePoolsOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listMultiRolePoolsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRolePoolsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2050,56 +1831,55 @@ func (client *AppServiceEnvironmentsClient) listMultiRolePoolsCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listMultiRolePoolsHandleResponse handles the ListMultiRolePools response.
-func (client *AppServiceEnvironmentsClient) listMultiRolePoolsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListMultiRolePoolsResponse, error) {
-	result := AppServiceEnvironmentsListMultiRolePoolsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WorkerPoolCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) listMultiRolePoolsHandleResponse(resp *http.Response) (AppServiceEnvironmentsListMultiRolePoolsResponse, error) {
+	result := AppServiceEnvironmentsListMultiRolePoolsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkerPoolCollection); err != nil {
 		return AppServiceEnvironmentsListMultiRolePoolsResponse{}, err
 	}
 	return result, nil
 }
 
 // listMultiRolePoolsHandleError handles the ListMultiRolePools error response.
-func (client *AppServiceEnvironmentsClient) listMultiRolePoolsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listMultiRolePoolsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListMultiRoleUsages - Description for Get usage metrics for a multi-role pool of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListMultiRoleUsages(resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRoleUsagesOptions) AppServiceEnvironmentsListMultiRoleUsagesPager {
-	return &appServiceEnvironmentsListMultiRoleUsagesPager{
+func (client *AppServiceEnvironmentsClient) ListMultiRoleUsages(resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRoleUsagesOptions) *AppServiceEnvironmentsListMultiRoleUsagesPager {
+	return &AppServiceEnvironmentsListMultiRoleUsagesPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listMultiRoleUsagesCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListMultiRoleUsagesResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.UsageCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListMultiRoleUsagesResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.UsageCollection.NextLink)
 		},
 	}
 }
 
 // listMultiRoleUsagesCreateRequest creates the ListMultiRoleUsages request.
-func (client *AppServiceEnvironmentsClient) listMultiRoleUsagesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRoleUsagesOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listMultiRoleUsagesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListMultiRoleUsagesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default/usages"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2113,38 +1893,37 @@ func (client *AppServiceEnvironmentsClient) listMultiRoleUsagesCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listMultiRoleUsagesHandleResponse handles the ListMultiRoleUsages response.
-func (client *AppServiceEnvironmentsClient) listMultiRoleUsagesHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListMultiRoleUsagesResponse, error) {
-	result := AppServiceEnvironmentsListMultiRoleUsagesResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.UsageCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) listMultiRoleUsagesHandleResponse(resp *http.Response) (AppServiceEnvironmentsListMultiRoleUsagesResponse, error) {
+	result := AppServiceEnvironmentsListMultiRoleUsagesResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.UsageCollection); err != nil {
 		return AppServiceEnvironmentsListMultiRoleUsagesResponse{}, err
 	}
 	return result, nil
 }
 
 // listMultiRoleUsagesHandleError handles the ListMultiRoleUsages error response.
-func (client *AppServiceEnvironmentsClient) listMultiRoleUsagesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listMultiRoleUsagesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListOperations - Description for List all currently running operations on the App Service Environment.
@@ -2154,18 +1933,18 @@ func (client *AppServiceEnvironmentsClient) ListOperations(ctx context.Context, 
 	if err != nil {
 		return AppServiceEnvironmentsListOperationsResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServiceEnvironmentsListOperationsResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServiceEnvironmentsListOperationsResponse{}, client.listOperationsHandleError(resp)
 	}
 	return client.listOperationsHandleResponse(resp)
 }
 
 // listOperationsCreateRequest creates the ListOperations request.
-func (client *AppServiceEnvironmentsClient) listOperationsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListOperationsOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listOperationsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListOperationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/operations"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2179,56 +1958,55 @@ func (client *AppServiceEnvironmentsClient) listOperationsCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listOperationsHandleResponse handles the ListOperations response.
-func (client *AppServiceEnvironmentsClient) listOperationsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListOperationsResponse, error) {
-	result := AppServiceEnvironmentsListOperationsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.OperationArray); err != nil {
+func (client *AppServiceEnvironmentsClient) listOperationsHandleResponse(resp *http.Response) (AppServiceEnvironmentsListOperationsResponse, error) {
+	result := AppServiceEnvironmentsListOperationsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperationArray); err != nil {
 		return AppServiceEnvironmentsListOperationsResponse{}, err
 	}
 	return result, nil
 }
 
 // listOperationsHandleError handles the ListOperations error response.
-func (client *AppServiceEnvironmentsClient) listOperationsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listOperationsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListUsages - Description for Get global usage metrics of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListUsages(resourceGroupName string, name string, options *AppServiceEnvironmentsListUsagesOptions) AppServiceEnvironmentsListUsagesPager {
-	return &appServiceEnvironmentsListUsagesPager{
+func (client *AppServiceEnvironmentsClient) ListUsages(resourceGroupName string, name string, options *AppServiceEnvironmentsListUsagesOptions) *AppServiceEnvironmentsListUsagesPager {
+	return &AppServiceEnvironmentsListUsagesPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listUsagesCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListUsagesResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.CsmUsageQuotaCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListUsagesResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.CsmUsageQuotaCollection.NextLink)
 		},
 	}
 }
 
 // listUsagesCreateRequest creates the ListUsages request.
-func (client *AppServiceEnvironmentsClient) listUsagesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListUsagesOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listUsagesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListUsagesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/usages"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2242,61 +2020,60 @@ func (client *AppServiceEnvironmentsClient) listUsagesCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	unencodedParams := []string{req.URL.RawQuery}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	unencodedParams := []string{req.Raw().URL.RawQuery}
 	if options != nil && options.Filter != nil {
 		unencodedParams = append(unencodedParams, "$filter="+*options.Filter)
 	}
-	req.URL.RawQuery = strings.Join(unencodedParams, "&")
-	req.Header.Set("Accept", "application/json")
+	req.Raw().URL.RawQuery = strings.Join(unencodedParams, "&")
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listUsagesHandleResponse handles the ListUsages response.
-func (client *AppServiceEnvironmentsClient) listUsagesHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListUsagesResponse, error) {
-	result := AppServiceEnvironmentsListUsagesResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.CsmUsageQuotaCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) listUsagesHandleResponse(resp *http.Response) (AppServiceEnvironmentsListUsagesResponse, error) {
+	result := AppServiceEnvironmentsListUsagesResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CsmUsageQuotaCollection); err != nil {
 		return AppServiceEnvironmentsListUsagesResponse{}, err
 	}
 	return result, nil
 }
 
 // listUsagesHandleError handles the ListUsages error response.
-func (client *AppServiceEnvironmentsClient) listUsagesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listUsagesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListWebApps - Description for Get all apps in an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListWebApps(resourceGroupName string, name string, options *AppServiceEnvironmentsListWebAppsOptions) AppServiceEnvironmentsListWebAppsPager {
-	return &appServiceEnvironmentsListWebAppsPager{
+func (client *AppServiceEnvironmentsClient) ListWebApps(resourceGroupName string, name string, options *AppServiceEnvironmentsListWebAppsOptions) *AppServiceEnvironmentsListWebAppsPager {
+	return &AppServiceEnvironmentsListWebAppsPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listWebAppsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWebAppsResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.WebAppCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWebAppsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.WebAppCollection.NextLink)
 		},
 	}
 }
 
 // listWebAppsCreateRequest creates the ListWebApps request.
-func (client *AppServiceEnvironmentsClient) listWebAppsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListWebAppsOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listWebAppsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListWebAppsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/sites"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2310,59 +2087,58 @@ func (client *AppServiceEnvironmentsClient) listWebAppsCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.PropertiesToInclude != nil {
 		reqQP.Set("propertiesToInclude", *options.PropertiesToInclude)
 	}
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listWebAppsHandleResponse handles the ListWebApps response.
-func (client *AppServiceEnvironmentsClient) listWebAppsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListWebAppsResponse, error) {
-	result := AppServiceEnvironmentsListWebAppsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WebAppCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) listWebAppsHandleResponse(resp *http.Response) (AppServiceEnvironmentsListWebAppsResponse, error) {
+	result := AppServiceEnvironmentsListWebAppsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
 		return AppServiceEnvironmentsListWebAppsResponse{}, err
 	}
 	return result, nil
 }
 
 // listWebAppsHandleError handles the ListWebApps error response.
-func (client *AppServiceEnvironmentsClient) listWebAppsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listWebAppsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListWebWorkerMetricDefinitions - Description for Get metric definitions for a worker pool of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListWebWorkerMetricDefinitions(resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWebWorkerMetricDefinitionsOptions) AppServiceEnvironmentsListWebWorkerMetricDefinitionsPager {
-	return &appServiceEnvironmentsListWebWorkerMetricDefinitionsPager{
+func (client *AppServiceEnvironmentsClient) ListWebWorkerMetricDefinitions(resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWebWorkerMetricDefinitionsOptions) *AppServiceEnvironmentsListWebWorkerMetricDefinitionsPager {
+	return &AppServiceEnvironmentsListWebWorkerMetricDefinitionsPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listWebWorkerMetricDefinitionsCreateRequest(ctx, resourceGroupName, name, workerPoolName, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceMetricDefinitionCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceMetricDefinitionCollection.NextLink)
 		},
 	}
 }
 
 // listWebWorkerMetricDefinitionsCreateRequest creates the ListWebWorkerMetricDefinitions request.
-func (client *AppServiceEnvironmentsClient) listWebWorkerMetricDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWebWorkerMetricDefinitionsOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listWebWorkerMetricDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWebWorkerMetricDefinitionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/metricdefinitions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2380,56 +2156,55 @@ func (client *AppServiceEnvironmentsClient) listWebWorkerMetricDefinitionsCreate
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listWebWorkerMetricDefinitionsHandleResponse handles the ListWebWorkerMetricDefinitions response.
-func (client *AppServiceEnvironmentsClient) listWebWorkerMetricDefinitionsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse, error) {
-	result := AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ResourceMetricDefinitionCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) listWebWorkerMetricDefinitionsHandleResponse(resp *http.Response) (AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse, error) {
+	result := AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceMetricDefinitionCollection); err != nil {
 		return AppServiceEnvironmentsListWebWorkerMetricDefinitionsResponse{}, err
 	}
 	return result, nil
 }
 
 // listWebWorkerMetricDefinitionsHandleError handles the ListWebWorkerMetricDefinitions error response.
-func (client *AppServiceEnvironmentsClient) listWebWorkerMetricDefinitionsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listWebWorkerMetricDefinitionsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListWebWorkerUsages - Description for Get usage metrics for a worker pool of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListWebWorkerUsages(resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWebWorkerUsagesOptions) AppServiceEnvironmentsListWebWorkerUsagesPager {
-	return &appServiceEnvironmentsListWebWorkerUsagesPager{
+func (client *AppServiceEnvironmentsClient) ListWebWorkerUsages(resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWebWorkerUsagesOptions) *AppServiceEnvironmentsListWebWorkerUsagesPager {
+	return &AppServiceEnvironmentsListWebWorkerUsagesPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listWebWorkerUsagesCreateRequest(ctx, resourceGroupName, name, workerPoolName, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWebWorkerUsagesResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.UsageCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWebWorkerUsagesResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.UsageCollection.NextLink)
 		},
 	}
 }
 
 // listWebWorkerUsagesCreateRequest creates the ListWebWorkerUsages request.
-func (client *AppServiceEnvironmentsClient) listWebWorkerUsagesCreateRequest(ctx context.Context, resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWebWorkerUsagesOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listWebWorkerUsagesCreateRequest(ctx context.Context, resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWebWorkerUsagesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/usages"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2447,56 +2222,55 @@ func (client *AppServiceEnvironmentsClient) listWebWorkerUsagesCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listWebWorkerUsagesHandleResponse handles the ListWebWorkerUsages response.
-func (client *AppServiceEnvironmentsClient) listWebWorkerUsagesHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListWebWorkerUsagesResponse, error) {
-	result := AppServiceEnvironmentsListWebWorkerUsagesResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.UsageCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) listWebWorkerUsagesHandleResponse(resp *http.Response) (AppServiceEnvironmentsListWebWorkerUsagesResponse, error) {
+	result := AppServiceEnvironmentsListWebWorkerUsagesResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.UsageCollection); err != nil {
 		return AppServiceEnvironmentsListWebWorkerUsagesResponse{}, err
 	}
 	return result, nil
 }
 
 // listWebWorkerUsagesHandleError handles the ListWebWorkerUsages error response.
-func (client *AppServiceEnvironmentsClient) listWebWorkerUsagesHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listWebWorkerUsagesHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListWorkerPoolInstanceMetricDefinitions - Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricDefinitions(resourceGroupName string, name string, workerPoolName string, instance string, options *AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsOptions) AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsPager {
-	return &appServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsPager{
+func (client *AppServiceEnvironmentsClient) ListWorkerPoolInstanceMetricDefinitions(resourceGroupName string, name string, workerPoolName string, instance string, options *AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsOptions) *AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsPager {
+	return &AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listWorkerPoolInstanceMetricDefinitionsCreateRequest(ctx, resourceGroupName, name, workerPoolName, instance, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.ResourceMetricDefinitionCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceMetricDefinitionCollection.NextLink)
 		},
 	}
 }
 
 // listWorkerPoolInstanceMetricDefinitionsCreateRequest creates the ListWorkerPoolInstanceMetricDefinitions request.
-func (client *AppServiceEnvironmentsClient) listWorkerPoolInstanceMetricDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, name string, workerPoolName string, instance string, options *AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listWorkerPoolInstanceMetricDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, name string, workerPoolName string, instance string, options *AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/instances/{instance}/metricdefinitions"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2518,56 +2292,55 @@ func (client *AppServiceEnvironmentsClient) listWorkerPoolInstanceMetricDefiniti
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listWorkerPoolInstanceMetricDefinitionsHandleResponse handles the ListWorkerPoolInstanceMetricDefinitions response.
-func (client *AppServiceEnvironmentsClient) listWorkerPoolInstanceMetricDefinitionsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse, error) {
-	result := AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.ResourceMetricDefinitionCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) listWorkerPoolInstanceMetricDefinitionsHandleResponse(resp *http.Response) (AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse, error) {
+	result := AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceMetricDefinitionCollection); err != nil {
 		return AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsResponse{}, err
 	}
 	return result, nil
 }
 
 // listWorkerPoolInstanceMetricDefinitionsHandleError handles the ListWorkerPoolInstanceMetricDefinitions error response.
-func (client *AppServiceEnvironmentsClient) listWorkerPoolInstanceMetricDefinitionsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listWorkerPoolInstanceMetricDefinitionsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListWorkerPoolSKUs - Description for Get available SKUs for scaling a worker pool.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListWorkerPoolSKUs(resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWorkerPoolSKUsOptions) AppServiceEnvironmentsListWorkerPoolSKUsPager {
-	return &appServiceEnvironmentsListWorkerPoolSKUsPager{
+func (client *AppServiceEnvironmentsClient) ListWorkerPoolSKUs(resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWorkerPoolSKUsOptions) *AppServiceEnvironmentsListWorkerPoolSKUsPager {
+	return &AppServiceEnvironmentsListWorkerPoolSKUsPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listWorkerPoolSKUsCreateRequest(ctx, resourceGroupName, name, workerPoolName, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWorkerPoolSKUsResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.SKUInfoCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWorkerPoolSKUsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.SKUInfoCollection.NextLink)
 		},
 	}
 }
 
 // listWorkerPoolSKUsCreateRequest creates the ListWorkerPoolSKUs request.
-func (client *AppServiceEnvironmentsClient) listWorkerPoolSKUsCreateRequest(ctx context.Context, resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWorkerPoolSKUsOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listWorkerPoolSKUsCreateRequest(ctx context.Context, resourceGroupName string, name string, workerPoolName string, options *AppServiceEnvironmentsListWorkerPoolSKUsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}/skus"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2585,56 +2358,55 @@ func (client *AppServiceEnvironmentsClient) listWorkerPoolSKUsCreateRequest(ctx 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listWorkerPoolSKUsHandleResponse handles the ListWorkerPoolSKUs response.
-func (client *AppServiceEnvironmentsClient) listWorkerPoolSKUsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListWorkerPoolSKUsResponse, error) {
-	result := AppServiceEnvironmentsListWorkerPoolSKUsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.SKUInfoCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) listWorkerPoolSKUsHandleResponse(resp *http.Response) (AppServiceEnvironmentsListWorkerPoolSKUsResponse, error) {
+	result := AppServiceEnvironmentsListWorkerPoolSKUsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SKUInfoCollection); err != nil {
 		return AppServiceEnvironmentsListWorkerPoolSKUsResponse{}, err
 	}
 	return result, nil
 }
 
 // listWorkerPoolSKUsHandleError handles the ListWorkerPoolSKUs error response.
-func (client *AppServiceEnvironmentsClient) listWorkerPoolSKUsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listWorkerPoolSKUsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListWorkerPools - Description for Get all worker pools of an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) ListWorkerPools(resourceGroupName string, name string, options *AppServiceEnvironmentsListWorkerPoolsOptions) AppServiceEnvironmentsListWorkerPoolsPager {
-	return &appServiceEnvironmentsListWorkerPoolsPager{
+func (client *AppServiceEnvironmentsClient) ListWorkerPools(resourceGroupName string, name string, options *AppServiceEnvironmentsListWorkerPoolsOptions) *AppServiceEnvironmentsListWorkerPoolsPager {
+	return &AppServiceEnvironmentsListWorkerPoolsPager{
 		client: client,
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listWorkerPoolsCreateRequest(ctx, resourceGroupName, name, options)
 		},
-		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWorkerPoolsResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.WorkerPoolCollection.NextLink)
+		advancer: func(ctx context.Context, resp AppServiceEnvironmentsListWorkerPoolsResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.WorkerPoolCollection.NextLink)
 		},
 	}
 }
 
 // listWorkerPoolsCreateRequest creates the ListWorkerPools request.
-func (client *AppServiceEnvironmentsClient) listWorkerPoolsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListWorkerPoolsOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) listWorkerPoolsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsListWorkerPoolsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2648,38 +2420,37 @@ func (client *AppServiceEnvironmentsClient) listWorkerPoolsCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listWorkerPoolsHandleResponse handles the ListWorkerPools response.
-func (client *AppServiceEnvironmentsClient) listWorkerPoolsHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsListWorkerPoolsResponse, error) {
-	result := AppServiceEnvironmentsListWorkerPoolsResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WorkerPoolCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) listWorkerPoolsHandleResponse(resp *http.Response) (AppServiceEnvironmentsListWorkerPoolsResponse, error) {
+	result := AppServiceEnvironmentsListWorkerPoolsResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkerPoolCollection); err != nil {
 		return AppServiceEnvironmentsListWorkerPoolsResponse{}, err
 	}
 	return result, nil
 }
 
 // listWorkerPoolsHandleError handles the ListWorkerPools error response.
-func (client *AppServiceEnvironmentsClient) listWorkerPoolsHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) listWorkerPoolsHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Reboot - Description for Reboot all machines in an App Service Environment.
@@ -2689,18 +2460,18 @@ func (client *AppServiceEnvironmentsClient) Reboot(ctx context.Context, resource
 	if err != nil {
 		return AppServiceEnvironmentsRebootResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServiceEnvironmentsRebootResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
 		return AppServiceEnvironmentsRebootResponse{}, client.rebootHandleError(resp)
 	}
-	return AppServiceEnvironmentsRebootResponse{RawResponse: resp.Response}, nil
+	return AppServiceEnvironmentsRebootResponse{RawResponse: resp}, nil
 }
 
 // rebootCreateRequest creates the Reboot request.
-func (client *AppServiceEnvironmentsClient) rebootCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsRebootOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) rebootCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsRebootOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/reboot"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2714,29 +2485,28 @@ func (client *AppServiceEnvironmentsClient) rebootCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // rebootHandleError handles the Reboot error response.
-func (client *AppServiceEnvironmentsClient) rebootHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) rebootHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginResume - Description for Resume an App Service Environment.
@@ -2747,67 +2517,38 @@ func (client *AppServiceEnvironmentsClient) BeginResume(ctx context.Context, res
 		return AppServiceEnvironmentsResumePollerResponse{}, err
 	}
 	result := AppServiceEnvironmentsResumePollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.Resume", "", resp, client.con.Pipeline(), client.resumeHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsResumePollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsResumePoller{
-		pt:     pt,
-		client: client,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsResumePager, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeResume creates a new AppServiceEnvironmentsResumePoller from the specified resume token.
-// token - The value must come from a previous call to AppServiceEnvironmentsResumePoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeResume(ctx context.Context, token string) (AppServiceEnvironmentsResumePollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.Resume", token, client.con.Pipeline(), client.resumeHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsResumePollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsResumePoller{
-		pt:     pt,
-		client: client,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return AppServiceEnvironmentsResumePollerResponse{}, err
-	}
-	result := AppServiceEnvironmentsResumePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsResumePager, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("AppServiceEnvironmentsClient.Resume", "", resp, client.pl, client.resumeHandleError)
+	if err != nil {
+		return AppServiceEnvironmentsResumePollerResponse{}, err
+	}
+	result.Poller = &AppServiceEnvironmentsResumePoller{
+		pt:     pt,
+		client: client,
 	}
 	return result, nil
 }
 
 // Resume - Description for Resume an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) resume(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginResumeOptions) (*azcore.Response, error) {
+func (client *AppServiceEnvironmentsClient) resume(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginResumeOptions) (*http.Response, error) {
 	req, err := client.resumeCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.resumeHandleError(resp)
 	}
 	return resp, nil
 }
 
 // resumeCreateRequest creates the Resume request.
-func (client *AppServiceEnvironmentsClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginResumeOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginResumeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/resume"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2821,38 +2562,37 @@ func (client *AppServiceEnvironmentsClient) resumeCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // resumeHandleResponse handles the Resume response.
-func (client *AppServiceEnvironmentsClient) resumeHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsResumeResponse, error) {
-	result := AppServiceEnvironmentsResumeResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WebAppCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) resumeHandleResponse(resp *http.Response) (AppServiceEnvironmentsResumeResponse, error) {
+	result := AppServiceEnvironmentsResumeResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
 		return AppServiceEnvironmentsResumeResponse{}, err
 	}
 	return result, nil
 }
 
 // resumeHandleError handles the Resume error response.
-func (client *AppServiceEnvironmentsClient) resumeHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) resumeHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginSuspend - Description for Suspend an App Service Environment.
@@ -2863,67 +2603,38 @@ func (client *AppServiceEnvironmentsClient) BeginSuspend(ctx context.Context, re
 		return AppServiceEnvironmentsSuspendPollerResponse{}, err
 	}
 	result := AppServiceEnvironmentsSuspendPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("AppServiceEnvironmentsClient.Suspend", "", resp, client.con.Pipeline(), client.suspendHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsSuspendPollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsSuspendPoller{
-		pt:     pt,
-		client: client,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsSuspendPager, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeSuspend creates a new AppServiceEnvironmentsSuspendPoller from the specified resume token.
-// token - The value must come from a previous call to AppServiceEnvironmentsSuspendPoller.ResumeToken().
-func (client *AppServiceEnvironmentsClient) ResumeSuspend(ctx context.Context, token string) (AppServiceEnvironmentsSuspendPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("AppServiceEnvironmentsClient.Suspend", token, client.con.Pipeline(), client.suspendHandleError)
-	if err != nil {
-		return AppServiceEnvironmentsSuspendPollerResponse{}, err
-	}
-	poller := &appServiceEnvironmentsSuspendPoller{
-		pt:     pt,
-		client: client,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return AppServiceEnvironmentsSuspendPollerResponse{}, err
-	}
-	result := AppServiceEnvironmentsSuspendPollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (AppServiceEnvironmentsSuspendPager, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("AppServiceEnvironmentsClient.Suspend", "", resp, client.pl, client.suspendHandleError)
+	if err != nil {
+		return AppServiceEnvironmentsSuspendPollerResponse{}, err
+	}
+	result.Poller = &AppServiceEnvironmentsSuspendPoller{
+		pt:     pt,
+		client: client,
 	}
 	return result, nil
 }
 
 // Suspend - Description for Suspend an App Service Environment.
 // If the operation fails it returns the *DefaultErrorResponse error type.
-func (client *AppServiceEnvironmentsClient) suspend(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginSuspendOptions) (*azcore.Response, error) {
+func (client *AppServiceEnvironmentsClient) suspend(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginSuspendOptions) (*http.Response, error) {
 	req, err := client.suspendCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, client.suspendHandleError(resp)
 	}
 	return resp, nil
 }
 
 // suspendCreateRequest creates the Suspend request.
-func (client *AppServiceEnvironmentsClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginSuspendOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, name string, options *AppServiceEnvironmentsBeginSuspendOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/suspend"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2937,38 +2648,37 @@ func (client *AppServiceEnvironmentsClient) suspendCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPost, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // suspendHandleResponse handles the Suspend response.
-func (client *AppServiceEnvironmentsClient) suspendHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsSuspendResponse, error) {
-	result := AppServiceEnvironmentsSuspendResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WebAppCollection); err != nil {
+func (client *AppServiceEnvironmentsClient) suspendHandleResponse(resp *http.Response) (AppServiceEnvironmentsSuspendResponse, error) {
+	result := AppServiceEnvironmentsSuspendResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
 		return AppServiceEnvironmentsSuspendResponse{}, err
 	}
 	return result, nil
 }
 
 // suspendHandleError handles the Suspend error response.
-func (client *AppServiceEnvironmentsClient) suspendHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) suspendHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Update - Description for Create or update an App Service Environment.
@@ -2978,18 +2688,18 @@ func (client *AppServiceEnvironmentsClient) Update(ctx context.Context, resource
 	if err != nil {
 		return AppServiceEnvironmentsUpdateResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServiceEnvironmentsUpdateResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return AppServiceEnvironmentsUpdateResponse{}, client.updateHandleError(resp)
 	}
 	return client.updateHandleResponse(resp)
 }
 
 // updateCreateRequest creates the Update request.
-func (client *AppServiceEnvironmentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironmentPatchResource, options *AppServiceEnvironmentsUpdateOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, hostingEnvironmentEnvelope AppServiceEnvironmentPatchResource, options *AppServiceEnvironmentsUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -3003,38 +2713,37 @@ func (client *AppServiceEnvironmentsClient) updateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(hostingEnvironmentEnvelope)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, hostingEnvironmentEnvelope)
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AppServiceEnvironmentsClient) updateHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsUpdateResponse, error) {
-	result := AppServiceEnvironmentsUpdateResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AppServiceEnvironmentResource); err != nil {
+func (client *AppServiceEnvironmentsClient) updateHandleResponse(resp *http.Response) (AppServiceEnvironmentsUpdateResponse, error) {
+	result := AppServiceEnvironmentsUpdateResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppServiceEnvironmentResource); err != nil {
 		return AppServiceEnvironmentsUpdateResponse{}, err
 	}
 	return result, nil
 }
 
 // updateHandleError handles the Update error response.
-func (client *AppServiceEnvironmentsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // UpdateAseNetworkingConfiguration - Description for Update networking configuration of an App Service Environment
@@ -3044,18 +2753,18 @@ func (client *AppServiceEnvironmentsClient) UpdateAseNetworkingConfiguration(ctx
 	if err != nil {
 		return AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse{}, client.updateAseNetworkingConfigurationHandleError(resp)
 	}
 	return client.updateAseNetworkingConfigurationHandleResponse(resp)
 }
 
 // updateAseNetworkingConfigurationCreateRequest creates the UpdateAseNetworkingConfiguration request.
-func (client *AppServiceEnvironmentsClient) updateAseNetworkingConfigurationCreateRequest(ctx context.Context, resourceGroupName string, name string, aseNetworkingConfiguration AseV3NetworkingConfiguration, options *AppServiceEnvironmentsUpdateAseNetworkingConfigurationOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) updateAseNetworkingConfigurationCreateRequest(ctx context.Context, resourceGroupName string, name string, aseNetworkingConfiguration AseV3NetworkingConfiguration, options *AppServiceEnvironmentsUpdateAseNetworkingConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/configurations/networking"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -3069,38 +2778,37 @@ func (client *AppServiceEnvironmentsClient) updateAseNetworkingConfigurationCrea
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(aseNetworkingConfiguration)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, aseNetworkingConfiguration)
 }
 
 // updateAseNetworkingConfigurationHandleResponse handles the UpdateAseNetworkingConfiguration response.
-func (client *AppServiceEnvironmentsClient) updateAseNetworkingConfigurationHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse, error) {
-	result := AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.AseV3NetworkingConfiguration); err != nil {
+func (client *AppServiceEnvironmentsClient) updateAseNetworkingConfigurationHandleResponse(resp *http.Response) (AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse, error) {
+	result := AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AseV3NetworkingConfiguration); err != nil {
 		return AppServiceEnvironmentsUpdateAseNetworkingConfigurationResponse{}, err
 	}
 	return result, nil
 }
 
 // updateAseNetworkingConfigurationHandleError handles the UpdateAseNetworkingConfiguration error response.
-func (client *AppServiceEnvironmentsClient) updateAseNetworkingConfigurationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) updateAseNetworkingConfigurationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // UpdateMultiRolePool - Description for Create or update a multi-role pool.
@@ -3110,18 +2818,18 @@ func (client *AppServiceEnvironmentsClient) UpdateMultiRolePool(ctx context.Cont
 	if err != nil {
 		return AppServiceEnvironmentsUpdateMultiRolePoolResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServiceEnvironmentsUpdateMultiRolePoolResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return AppServiceEnvironmentsUpdateMultiRolePoolResponse{}, client.updateMultiRolePoolHandleError(resp)
 	}
 	return client.updateMultiRolePoolHandleResponse(resp)
 }
 
 // updateMultiRolePoolCreateRequest creates the UpdateMultiRolePool request.
-func (client *AppServiceEnvironmentsClient) updateMultiRolePoolCreateRequest(ctx context.Context, resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsUpdateMultiRolePoolOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) updateMultiRolePoolCreateRequest(ctx context.Context, resourceGroupName string, name string, multiRolePoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsUpdateMultiRolePoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/multiRolePools/default"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -3135,38 +2843,37 @@ func (client *AppServiceEnvironmentsClient) updateMultiRolePoolCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(multiRolePoolEnvelope)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, multiRolePoolEnvelope)
 }
 
 // updateMultiRolePoolHandleResponse handles the UpdateMultiRolePool response.
-func (client *AppServiceEnvironmentsClient) updateMultiRolePoolHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsUpdateMultiRolePoolResponse, error) {
-	result := AppServiceEnvironmentsUpdateMultiRolePoolResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WorkerPoolResource); err != nil {
+func (client *AppServiceEnvironmentsClient) updateMultiRolePoolHandleResponse(resp *http.Response) (AppServiceEnvironmentsUpdateMultiRolePoolResponse, error) {
+	result := AppServiceEnvironmentsUpdateMultiRolePoolResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkerPoolResource); err != nil {
 		return AppServiceEnvironmentsUpdateMultiRolePoolResponse{}, err
 	}
 	return result, nil
 }
 
 // updateMultiRolePoolHandleError handles the UpdateMultiRolePool error response.
-func (client *AppServiceEnvironmentsClient) updateMultiRolePoolHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) updateMultiRolePoolHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // UpdateWorkerPool - Description for Create or update a worker pool.
@@ -3176,18 +2883,18 @@ func (client *AppServiceEnvironmentsClient) UpdateWorkerPool(ctx context.Context
 	if err != nil {
 		return AppServiceEnvironmentsUpdateWorkerPoolResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return AppServiceEnvironmentsUpdateWorkerPoolResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return AppServiceEnvironmentsUpdateWorkerPoolResponse{}, client.updateWorkerPoolHandleError(resp)
 	}
 	return client.updateWorkerPoolHandleResponse(resp)
 }
 
 // updateWorkerPoolCreateRequest creates the UpdateWorkerPool request.
-func (client *AppServiceEnvironmentsClient) updateWorkerPoolCreateRequest(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsUpdateWorkerPoolOptions) (*azcore.Request, error) {
+func (client *AppServiceEnvironmentsClient) updateWorkerPoolCreateRequest(ctx context.Context, resourceGroupName string, name string, workerPoolName string, workerPoolEnvelope WorkerPoolResource, options *AppServiceEnvironmentsUpdateWorkerPoolOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/workerPools/{workerPoolName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -3205,36 +2912,35 @@ func (client *AppServiceEnvironmentsClient) updateWorkerPoolCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2021-01-15")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(workerPoolEnvelope)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, workerPoolEnvelope)
 }
 
 // updateWorkerPoolHandleResponse handles the UpdateWorkerPool response.
-func (client *AppServiceEnvironmentsClient) updateWorkerPoolHandleResponse(resp *azcore.Response) (AppServiceEnvironmentsUpdateWorkerPoolResponse, error) {
-	result := AppServiceEnvironmentsUpdateWorkerPoolResponse{RawResponse: resp.Response}
-	if err := resp.UnmarshalAsJSON(&result.WorkerPoolResource); err != nil {
+func (client *AppServiceEnvironmentsClient) updateWorkerPoolHandleResponse(resp *http.Response) (AppServiceEnvironmentsUpdateWorkerPoolResponse, error) {
+	result := AppServiceEnvironmentsUpdateWorkerPoolResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkerPoolResource); err != nil {
 		return AppServiceEnvironmentsUpdateWorkerPoolResponse{}, err
 	}
 	return result, nil
 }
 
 // updateWorkerPoolHandleError handles the UpdateWorkerPool error response.
-func (client *AppServiceEnvironmentsClient) updateWorkerPoolHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *AppServiceEnvironmentsClient) updateWorkerPoolHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := DefaultErrorResponse{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

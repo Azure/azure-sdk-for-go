@@ -53,7 +53,7 @@ func (client LabClient) CreateEnvironment(ctx context.Context, resourceGroupName
 
 	result, err = client.CreateEnvironmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.LabClient", "CreateEnvironment", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.LabClient", "CreateEnvironment", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -87,6 +87,7 @@ func (client LabClient) CreateEnvironmentPreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client LabClient) CreateEnvironmentSender(req *http.Request) (future LabCreateEnvironmentFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -132,7 +133,7 @@ func (client LabClient) CreateOrUpdateResource(ctx context.Context, resourceGrou
 
 	result, err = client.CreateOrUpdateResourceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.LabClient", "CreateOrUpdateResource", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.LabClient", "CreateOrUpdateResource", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -166,6 +167,7 @@ func (client LabClient) CreateOrUpdateResourcePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client LabClient) CreateOrUpdateResourceSender(req *http.Request) (future LabCreateOrUpdateResourceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -212,7 +214,7 @@ func (client LabClient) DeleteResource(ctx context.Context, resourceGroupName st
 
 	result, err = client.DeleteResourceSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "dtl.LabClient", "DeleteResource", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "dtl.LabClient", "DeleteResource", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -244,6 +246,7 @@ func (client LabClient) DeleteResourcePreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client LabClient) DeleteResourceSender(req *http.Request) (future LabDeleteResourceFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

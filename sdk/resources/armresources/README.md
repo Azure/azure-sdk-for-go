@@ -2,18 +2,18 @@
 
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources)
 
-The `armresources` module provides operations for working with Azure resources and resource groups.
+The `armresources` module provides operations for working with Azure Resources.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resources/armresources)
 
-# Getting Started
+# Getting started
 
 ## Prerequisites
 
 - an [Azure subscription](https://azure.microsoft.com/free/)
 - Go 1.13 or above
 
-## Install the Module
+## Install the package
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
@@ -23,11 +23,9 @@ Install the Azure Resources module:
 go get github.com/Azure/azure-sdk-for-go/sdk/resources/armresources
 ```
 
-Documentation and examples are available at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources)
-
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Resource Manager.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Resources.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -35,19 +33,19 @@ cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 For more information on authentication, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
 
-## Connecting to Azure Resource Manager
+## Connecting to Azure Resources
 
-Once you have a credential, create a connection to the desired ARM endpoint.  The `armcore` module provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
+Once you have a credential, create a connection to the desired ARM endpoint. The `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` package provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
 
 ```go
-con := armcore.NewDefaultConnection(cred, nil)
+con := arm.NewDefaultConnection(cred, nil)
 ```
 
-For more information on ARM connections, please see the documentation for `armcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore).
+For more information on ARM connections, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
 
 ## Clients
 
-Azure Resource Manager modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `armcore.Connection`.
+Azure Resources modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `arm.Connection`.
 
 ```go
 client := armresources.NewResourcesClient(con, "<subscription ID>")
@@ -56,7 +54,7 @@ client := armresources.NewResourcesClient(con, "<subscription ID>")
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Resource Graph` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Resources` label.
 
 # Contributing
 

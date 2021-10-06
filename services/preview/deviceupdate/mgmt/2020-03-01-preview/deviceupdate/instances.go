@@ -70,7 +70,7 @@ func (client InstancesClient) Create(ctx context.Context, resourceGroupName stri
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deviceupdate.InstancesClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "deviceupdate.InstancesClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -105,6 +105,7 @@ func (client InstancesClient) CreatePreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client InstancesClient) CreateSender(req *http.Request) (future InstancesCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -164,7 +165,7 @@ func (client InstancesClient) Delete(ctx context.Context, resourceGroupName stri
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "deviceupdate.InstancesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "deviceupdate.InstancesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -197,6 +198,7 @@ func (client InstancesClient) DeletePreparer(ctx context.Context, resourceGroupN
 // http.Response Body if it receives an error.
 func (client InstancesClient) DeleteSender(req *http.Request) (future InstancesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

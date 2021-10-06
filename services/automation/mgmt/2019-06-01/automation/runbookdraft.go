@@ -237,7 +237,7 @@ func (client RunbookDraftClient) ReplaceContent(ctx context.Context, resourceGro
 
 	result, err = client.ReplaceContentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "automation.RunbookDraftClient", "ReplaceContent", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "automation.RunbookDraftClient", "ReplaceContent", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -272,6 +272,7 @@ func (client RunbookDraftClient) ReplaceContentPreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client RunbookDraftClient) ReplaceContentSender(req *http.Request) (future RunbookDraftReplaceContentFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

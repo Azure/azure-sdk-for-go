@@ -4,23 +4,25 @@ trigger:
   paths:
     exclude:
     - sdk/
-    - tools/
+    - eng/tools/
+    - eng/config.json
 
 pr:
   paths:
     exclude:
     - sdk/
-    - tools/
+    - eng/tools/
+    - eng/config.json
 
 jobs:
   - job: Build_Test
     strategy:
       matrix:
         Linux_Go116:
-          pool.name: azsdk-pool-mms-ubuntu-1804-general
+          pool.name: azsdk-pool-mms-ubuntu-2004-general
           go.version: '1.16.7'
         Linux_Go117:
-          pool.name: azsdk-pool-mms-ubuntu-1804-general
+          pool.name: azsdk-pool-mms-ubuntu-2004-general
           go.version: '1.17'
 
     pool:
@@ -31,8 +33,8 @@ jobs:
       sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
       GO111MODULE: 'off'
       IGNORE_BREAKING_CHANGES: true
-      go.list.filter: '| grep -v vendor | grep -v azure-sdk-for-go/sdk | grep -v azure-sdk-for-go/tools'
-      go.test.filter: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./tools -prune'
+      go.list.filter: 'profiles services storage'
+      go.test.filter: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./eng -prune'
 
     steps:
     - task: GoTool@0
@@ -59,11 +61,19 @@ jobs:
       workingDirectory: '$(sdkPath)'
       displayName: 'Install Dependencies'
 
-    - script: go vet -v $(go list ./... $(go.list.filter))
+    - script: |
+        for dd in $(go.list.filter); do
+          cd $(sdkPath)/$dd
+          go vet -v ./...
+        done
       workingDirectory: '$(sdkPath)'
       displayName: 'Vet'
 
-    - script: go build -v $(go list ./... $(go.list.filter))
+    - script: |
+        for dd in $(go.list.filter); do
+          cd $(sdkPath)/$dd
+          go build -v ./...
+        done
       workingDirectory: '$(sdkPath)'
       displayName: 'Build'
 
@@ -78,11 +88,11 @@ jobs:
         WorkingDirectory: '$(sdkPath)'
         Urls: $(Get-ChildItem -Path '$(sdkPath)/*.md' -Recurse | Where {$_.FullName -notlike "*/vendor/*" -and $_.FullName -notlike "*/sdk/*"})
 
-    - script: go run ./tools/apidiff/main.go packages ./services FETCH_HEAD~1 FETCH_HEAD --copyrepo --breakingchanges || $IGNORE_BREAKING_CHANGES
+    - script: go run ./eng/tools/apidiff/main.go packages ./services FETCH_HEAD~1 FETCH_HEAD --copyrepo --breakingchanges || $IGNORE_BREAKING_CHANGES
       workingDirectory: '$(sdkPath)'
       displayName: 'Display Breaking Changes'
 
-    - script: go run ./tools/pkgchk/main.go ./services --exceptions ./tools/pkgchk/exceptions.txt
+    - script: go run ./eng/tools/pkgchk/main.go ./services --exceptions ./eng/tools/pkgchk/exceptions.txt
       workingDirectory: '$(sdkPath)'
       displayName: 'Verify Package Directory'
 

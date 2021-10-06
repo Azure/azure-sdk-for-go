@@ -77,7 +77,7 @@ func (client PoolsClient) CreateOrUpdate(ctx context.Context, body CapacityPool,
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.PoolsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.PoolsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -115,6 +115,7 @@ func (client PoolsClient) CreateOrUpdatePreparer(ctx context.Context, body Capac
 // http.Response Body if it receives an error.
 func (client PoolsClient) CreateOrUpdateSender(req *http.Request) (future PoolsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -170,7 +171,7 @@ func (client PoolsClient) Delete(ctx context.Context, resourceGroupName string, 
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.PoolsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.PoolsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -203,6 +204,7 @@ func (client PoolsClient) DeletePreparer(ctx context.Context, resourceGroupName 
 // http.Response Body if it receives an error.
 func (client PoolsClient) DeleteSender(req *http.Request) (future PoolsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

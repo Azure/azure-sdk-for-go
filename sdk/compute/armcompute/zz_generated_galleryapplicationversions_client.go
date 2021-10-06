@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,93 +12,68 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/armcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // GalleryApplicationVersionsClient contains the methods for the GalleryApplicationVersions group.
 // Don't use this type directly, use NewGalleryApplicationVersionsClient() instead.
 type GalleryApplicationVersionsClient struct {
-	con            *armcore.Connection
+	ep             string
+	pl             runtime.Pipeline
 	subscriptionID string
 }
 
 // NewGalleryApplicationVersionsClient creates a new instance of GalleryApplicationVersionsClient with the specified values.
-func NewGalleryApplicationVersionsClient(con *armcore.Connection, subscriptionID string) *GalleryApplicationVersionsClient {
-	return &GalleryApplicationVersionsClient{con: con, subscriptionID: subscriptionID}
+func NewGalleryApplicationVersionsClient(con *arm.Connection, subscriptionID string) *GalleryApplicationVersionsClient {
+	return &GalleryApplicationVersionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
 }
 
 // BeginCreateOrUpdate - Create or update a gallery Application Version.
 // If the operation fails it returns the *CloudError error type.
-func (client *GalleryApplicationVersionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersion, options *GalleryApplicationVersionsBeginCreateOrUpdateOptions) (GalleryApplicationVersionPollerResponse, error) {
+func (client *GalleryApplicationVersionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersion, options *GalleryApplicationVersionsBeginCreateOrUpdateOptions) (GalleryApplicationVersionsCreateOrUpdatePollerResponse, error) {
 	resp, err := client.createOrUpdate(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, galleryApplicationVersion, options)
 	if err != nil {
-		return GalleryApplicationVersionPollerResponse{}, err
+		return GalleryApplicationVersionsCreateOrUpdatePollerResponse{}, err
 	}
-	result := GalleryApplicationVersionPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("GalleryApplicationVersionsClient.CreateOrUpdate", "", resp, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return GalleryApplicationVersionPollerResponse{}, err
-	}
-	poller := &galleryApplicationVersionPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryApplicationVersionResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeCreateOrUpdate creates a new GalleryApplicationVersionPoller from the specified resume token.
-// token - The value must come from a previous call to GalleryApplicationVersionPoller.ResumeToken().
-func (client *GalleryApplicationVersionsClient) ResumeCreateOrUpdate(ctx context.Context, token string) (GalleryApplicationVersionPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("GalleryApplicationVersionsClient.CreateOrUpdate", token, client.con.Pipeline(), client.createOrUpdateHandleError)
-	if err != nil {
-		return GalleryApplicationVersionPollerResponse{}, err
-	}
-	poller := &galleryApplicationVersionPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return GalleryApplicationVersionPollerResponse{}, err
-	}
-	result := GalleryApplicationVersionPollerResponse{
+	result := GalleryApplicationVersionsCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryApplicationVersionResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("GalleryApplicationVersionsClient.CreateOrUpdate", "", resp, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return GalleryApplicationVersionsCreateOrUpdatePollerResponse{}, err
+	}
+	result.Poller = &GalleryApplicationVersionsCreateOrUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // CreateOrUpdate - Create or update a gallery Application Version.
 // If the operation fails it returns the *CloudError error type.
-func (client *GalleryApplicationVersionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersion, options *GalleryApplicationVersionsBeginCreateOrUpdateOptions) (*azcore.Response, error) {
+func (client *GalleryApplicationVersionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersion, options *GalleryApplicationVersionsBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, galleryApplicationVersion, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusCreated, http.StatusAccepted) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
 		return nil, client.createOrUpdateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *GalleryApplicationVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersion, options *GalleryApplicationVersionsBeginCreateOrUpdateOptions) (*azcore.Request, error) {
+func (client *GalleryApplicationVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersion, options *GalleryApplicationVersionsBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -119,98 +95,69 @@ func (client *GalleryApplicationVersionsClient) createOrUpdateCreateRequest(ctx 
 		return nil, errors.New("parameter galleryApplicationVersionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryApplicationVersionName}", url.PathEscape(galleryApplicationVersionName))
-	req, err := azcore.NewRequest(ctx, http.MethodPut, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-09-30")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(galleryApplicationVersion)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, galleryApplicationVersion)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *GalleryApplicationVersionsClient) createOrUpdateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *GalleryApplicationVersionsClient) createOrUpdateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // BeginDelete - Delete a gallery Application Version.
 // If the operation fails it returns the *CloudError error type.
-func (client *GalleryApplicationVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, options *GalleryApplicationVersionsBeginDeleteOptions) (HTTPPollerResponse, error) {
+func (client *GalleryApplicationVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, options *GalleryApplicationVersionsBeginDeleteOptions) (GalleryApplicationVersionsDeletePollerResponse, error) {
 	resp, err := client.deleteOperation(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, options)
 	if err != nil {
-		return HTTPPollerResponse{}, err
+		return GalleryApplicationVersionsDeletePollerResponse{}, err
 	}
-	result := HTTPPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("GalleryApplicationVersionsClient.Delete", "", resp, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
-	}
-	return result, nil
-}
-
-// ResumeDelete creates a new HTTPPoller from the specified resume token.
-// token - The value must come from a previous call to HTTPPoller.ResumeToken().
-func (client *GalleryApplicationVersionsClient) ResumeDelete(ctx context.Context, token string) (HTTPPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("GalleryApplicationVersionsClient.Delete", token, client.con.Pipeline(), client.deleteHandleError)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	poller := &httpPoller{
-		pt: pt,
-	}
-	resp, err := poller.Poll(ctx)
-	if err != nil {
-		return HTTPPollerResponse{}, err
-	}
-	result := HTTPPollerResponse{
+	result := GalleryApplicationVersionsDeletePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (*http.Response, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("GalleryApplicationVersionsClient.Delete", "", resp, client.pl, client.deleteHandleError)
+	if err != nil {
+		return GalleryApplicationVersionsDeletePollerResponse{}, err
+	}
+	result.Poller = &GalleryApplicationVersionsDeletePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Delete - Delete a gallery Application Version.
 // If the operation fails it returns the *CloudError error type.
-func (client *GalleryApplicationVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, options *GalleryApplicationVersionsBeginDeleteOptions) (*azcore.Response, error) {
+func (client *GalleryApplicationVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, options *GalleryApplicationVersionsBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.deleteHandleError(resp)
 	}
 	return resp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *GalleryApplicationVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, options *GalleryApplicationVersionsBeginDeleteOptions) (*azcore.Request, error) {
+func (client *GalleryApplicationVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, options *GalleryApplicationVersionsBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -232,50 +179,49 @@ func (client *GalleryApplicationVersionsClient) deleteCreateRequest(ctx context.
 		return nil, errors.New("parameter galleryApplicationVersionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryApplicationVersionName}", url.PathEscape(galleryApplicationVersionName))
-	req, err := azcore.NewRequest(ctx, http.MethodDelete, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-09-30")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *GalleryApplicationVersionsClient) deleteHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *GalleryApplicationVersionsClient) deleteHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // Get - Retrieves information about a gallery Application Version.
 // If the operation fails it returns the *CloudError error type.
-func (client *GalleryApplicationVersionsClient) Get(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, options *GalleryApplicationVersionsGetOptions) (GalleryApplicationVersionResponse, error) {
+func (client *GalleryApplicationVersionsClient) Get(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, options *GalleryApplicationVersionsGetOptions) (GalleryApplicationVersionsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, options)
 	if err != nil {
-		return GalleryApplicationVersionResponse{}, err
+		return GalleryApplicationVersionsGetResponse{}, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
-		return GalleryApplicationVersionResponse{}, err
+		return GalleryApplicationVersionsGetResponse{}, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
-		return GalleryApplicationVersionResponse{}, client.getHandleError(resp)
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return GalleryApplicationVersionsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *GalleryApplicationVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, options *GalleryApplicationVersionsGetOptions) (*azcore.Request, error) {
+func (client *GalleryApplicationVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, options *GalleryApplicationVersionsGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -297,62 +243,58 @@ func (client *GalleryApplicationVersionsClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter galleryApplicationVersionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryApplicationVersionName}", url.PathEscape(galleryApplicationVersionName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
+	reqQP := req.Raw().URL.Query()
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
-	reqQP.Set("api-version", "2020-09-30")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *GalleryApplicationVersionsClient) getHandleResponse(resp *azcore.Response) (GalleryApplicationVersionResponse, error) {
-	var val *GalleryApplicationVersion
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return GalleryApplicationVersionResponse{}, err
+func (client *GalleryApplicationVersionsClient) getHandleResponse(resp *http.Response) (GalleryApplicationVersionsGetResponse, error) {
+	result := GalleryApplicationVersionsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryApplicationVersion); err != nil {
+		return GalleryApplicationVersionsGetResponse{}, err
 	}
-	return GalleryApplicationVersionResponse{RawResponse: resp.Response, GalleryApplicationVersion: val}, nil
+	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *GalleryApplicationVersionsClient) getHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *GalleryApplicationVersionsClient) getHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }
 
 // ListByGalleryApplication - List gallery Application Versions in a gallery Application Definition.
 // If the operation fails it returns the *CloudError error type.
-func (client *GalleryApplicationVersionsClient) ListByGalleryApplication(resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationVersionsListByGalleryApplicationOptions) GalleryApplicationVersionListPager {
-	return &galleryApplicationVersionListPager{
-		pipeline: client.con.Pipeline(),
-		requester: func(ctx context.Context) (*azcore.Request, error) {
+func (client *GalleryApplicationVersionsClient) ListByGalleryApplication(resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationVersionsListByGalleryApplicationOptions) *GalleryApplicationVersionsListByGalleryApplicationPager {
+	return &GalleryApplicationVersionsListByGalleryApplicationPager{
+		client: client,
+		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listByGalleryApplicationCreateRequest(ctx, resourceGroupName, galleryName, galleryApplicationName, options)
 		},
-		responder: client.listByGalleryApplicationHandleResponse,
-		errorer:   client.listByGalleryApplicationHandleError,
-		advancer: func(ctx context.Context, resp GalleryApplicationVersionListResponse) (*azcore.Request, error) {
-			return azcore.NewRequest(ctx, http.MethodGet, *resp.GalleryApplicationVersionList.NextLink)
+		advancer: func(ctx context.Context, resp GalleryApplicationVersionsListByGalleryApplicationResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.GalleryApplicationVersionList.NextLink)
 		},
-		statusCodes: []int{http.StatusOK},
 	}
 }
 
 // listByGalleryApplicationCreateRequest creates the ListByGalleryApplication request.
-func (client *GalleryApplicationVersionsClient) listByGalleryApplicationCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationVersionsListByGalleryApplicationOptions) (*azcore.Request, error) {
+func (client *GalleryApplicationVersionsClient) listByGalleryApplicationCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, options *GalleryApplicationVersionsListByGalleryApplicationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}/versions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -370,107 +312,78 @@ func (client *GalleryApplicationVersionsClient) listByGalleryApplicationCreateRe
 		return nil, errors.New("parameter galleryApplicationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryApplicationName}", url.PathEscape(galleryApplicationName))
-	req, err := azcore.NewRequest(ctx, http.MethodGet, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-09-30")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listByGalleryApplicationHandleResponse handles the ListByGalleryApplication response.
-func (client *GalleryApplicationVersionsClient) listByGalleryApplicationHandleResponse(resp *azcore.Response) (GalleryApplicationVersionListResponse, error) {
-	var val *GalleryApplicationVersionList
-	if err := resp.UnmarshalAsJSON(&val); err != nil {
-		return GalleryApplicationVersionListResponse{}, err
-	}
-	return GalleryApplicationVersionListResponse{RawResponse: resp.Response, GalleryApplicationVersionList: val}, nil
-}
-
-// listByGalleryApplicationHandleError handles the ListByGalleryApplication error response.
-func (client *GalleryApplicationVersionsClient) listByGalleryApplicationHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
-	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
-	}
-	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
-	}
-	return azcore.NewResponseError(&errType, resp.Response)
-}
-
-// BeginUpdate - Update a gallery Application Version.
-// If the operation fails it returns the *CloudError error type.
-func (client *GalleryApplicationVersionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersionUpdate, options *GalleryApplicationVersionsBeginUpdateOptions) (GalleryApplicationVersionPollerResponse, error) {
-	resp, err := client.update(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, galleryApplicationVersion, options)
-	if err != nil {
-		return GalleryApplicationVersionPollerResponse{}, err
-	}
-	result := GalleryApplicationVersionPollerResponse{
-		RawResponse: resp.Response,
-	}
-	pt, err := armcore.NewLROPoller("GalleryApplicationVersionsClient.Update", "", resp, client.con.Pipeline(), client.updateHandleError)
-	if err != nil {
-		return GalleryApplicationVersionPollerResponse{}, err
-	}
-	poller := &galleryApplicationVersionPoller{
-		pt: pt,
-	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryApplicationVersionResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+func (client *GalleryApplicationVersionsClient) listByGalleryApplicationHandleResponse(resp *http.Response) (GalleryApplicationVersionsListByGalleryApplicationResponse, error) {
+	result := GalleryApplicationVersionsListByGalleryApplicationResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryApplicationVersionList); err != nil {
+		return GalleryApplicationVersionsListByGalleryApplicationResponse{}, err
 	}
 	return result, nil
 }
 
-// ResumeUpdate creates a new GalleryApplicationVersionPoller from the specified resume token.
-// token - The value must come from a previous call to GalleryApplicationVersionPoller.ResumeToken().
-func (client *GalleryApplicationVersionsClient) ResumeUpdate(ctx context.Context, token string) (GalleryApplicationVersionPollerResponse, error) {
-	pt, err := armcore.NewLROPollerFromResumeToken("GalleryApplicationVersionsClient.Update", token, client.con.Pipeline(), client.updateHandleError)
+// listByGalleryApplicationHandleError handles the ListByGalleryApplication error response.
+func (client *GalleryApplicationVersionsClient) listByGalleryApplicationHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return GalleryApplicationVersionPollerResponse{}, err
+		return runtime.NewResponseError(err, resp)
 	}
-	poller := &galleryApplicationVersionPoller{
-		pt: pt,
+	errType := CloudError{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	resp, err := poller.Poll(ctx)
+	return runtime.NewResponseError(&errType, resp)
+}
+
+// BeginUpdate - Update a gallery Application Version.
+// If the operation fails it returns the *CloudError error type.
+func (client *GalleryApplicationVersionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersionUpdate, options *GalleryApplicationVersionsBeginUpdateOptions) (GalleryApplicationVersionsUpdatePollerResponse, error) {
+	resp, err := client.update(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, galleryApplicationVersion, options)
 	if err != nil {
-		return GalleryApplicationVersionPollerResponse{}, err
+		return GalleryApplicationVersionsUpdatePollerResponse{}, err
 	}
-	result := GalleryApplicationVersionPollerResponse{
+	result := GalleryApplicationVersionsUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	result.Poller = poller
-	result.PollUntilDone = func(ctx context.Context, frequency time.Duration) (GalleryApplicationVersionResponse, error) {
-		return poller.pollUntilDone(ctx, frequency)
+	pt, err := armruntime.NewPoller("GalleryApplicationVersionsClient.Update", "", resp, client.pl, client.updateHandleError)
+	if err != nil {
+		return GalleryApplicationVersionsUpdatePollerResponse{}, err
+	}
+	result.Poller = &GalleryApplicationVersionsUpdatePoller{
+		pt: pt,
 	}
 	return result, nil
 }
 
 // Update - Update a gallery Application Version.
 // If the operation fails it returns the *CloudError error type.
-func (client *GalleryApplicationVersionsClient) update(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersionUpdate, options *GalleryApplicationVersionsBeginUpdateOptions) (*azcore.Response, error) {
+func (client *GalleryApplicationVersionsClient) update(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersionUpdate, options *GalleryApplicationVersionsBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, galleryName, galleryApplicationName, galleryApplicationVersionName, galleryApplicationVersion, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.con.Pipeline().Do(req)
+	resp, err := client.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
-	if !resp.HasStatusCode(http.StatusOK) {
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
 		return nil, client.updateHandleError(resp)
 	}
 	return resp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *GalleryApplicationVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersionUpdate, options *GalleryApplicationVersionsBeginUpdateOptions) (*azcore.Request, error) {
+func (client *GalleryApplicationVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, galleryApplicationName string, galleryApplicationVersionName string, galleryApplicationVersion GalleryApplicationVersionUpdate, options *GalleryApplicationVersionsBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -492,27 +405,26 @@ func (client *GalleryApplicationVersionsClient) updateCreateRequest(ctx context.
 		return nil, errors.New("parameter galleryApplicationVersionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryApplicationVersionName}", url.PathEscape(galleryApplicationVersionName))
-	req, err := azcore.NewRequest(ctx, http.MethodPatch, azcore.JoinPaths(client.con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
-	req.Telemetry(telemetryInfo)
-	reqQP := req.URL.Query()
-	reqQP.Set("api-version", "2020-09-30")
-	req.URL.RawQuery = reqQP.Encode()
-	req.Header.Set("Accept", "application/json")
-	return req, req.MarshalAsJSON(galleryApplicationVersion)
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "2021-07-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, galleryApplicationVersion)
 }
 
 // updateHandleError handles the Update error response.
-func (client *GalleryApplicationVersionsClient) updateHandleError(resp *azcore.Response) error {
-	body, err := resp.Payload()
+func (client *GalleryApplicationVersionsClient) updateHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
 	if err != nil {
-		return azcore.NewResponseError(err, resp.Response)
+		return runtime.NewResponseError(err, resp)
 	}
 	errType := CloudError{raw: string(body)}
-	if err := resp.UnmarshalAsJSON(&errType); err != nil {
-		return azcore.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp.Response)
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
-	return azcore.NewResponseError(&errType, resp.Response)
+	return runtime.NewResponseError(&errType, resp)
 }

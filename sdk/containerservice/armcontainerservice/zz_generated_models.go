@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -9,9 +10,11 @@ package armcontainerservice
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AccessProfile - Profile for enabling a user to access a managed cluster.
@@ -23,7 +26,7 @@ type AccessProfile struct {
 // MarshalJSON implements the json.Marshaller interface for type AccessProfile.
 func (a AccessProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populateByteArray(objectMap, "kubeConfig", a.KubeConfig, azcore.Base64StdFormat)
+	populateByteArray(objectMap, "kubeConfig", a.KubeConfig, runtime.Base64StdFormat)
 	return json.Marshal(objectMap)
 }
 
@@ -37,7 +40,7 @@ func (a *AccessProfile) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "kubeConfig":
-			err = azcore.DecodeByteArray(string(val), &a.KubeConfig, azcore.Base64StdFormat)
+			err = runtime.DecodeByteArray(string(val), &a.KubeConfig, runtime.Base64StdFormat)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -435,7 +438,7 @@ type CredentialResult struct {
 func (c CredentialResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "name", c.Name)
-	populateByteArray(objectMap, "value", c.Value, azcore.Base64StdFormat)
+	populateByteArray(objectMap, "value", c.Value, runtime.Base64StdFormat)
 	return json.Marshal(objectMap)
 }
 
@@ -452,7 +455,7 @@ func (c *CredentialResult) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &c.Name)
 			delete(rawMsg, key)
 		case "value":
-			err = azcore.DecodeByteArray(string(val), &c.Value, azcore.Base64StdFormat)
+			err = runtime.DecodeByteArray(string(val), &c.Value, runtime.Base64StdFormat)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2272,13 +2275,13 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func populateByteArray(m map[string]interface{}, k string, b []byte, f azcore.Base64Encoding) {
+func populateByteArray(m map[string]interface{}, k string, b []byte, f runtime.Base64Encoding) {
 	if azcore.IsNullValue(b) {
 		m[k] = nil
 	} else if len(b) == 0 {
 		return
 	} else {
-		m[k] = azcore.EncodeByteArray(b, f)
+		m[k] = runtime.EncodeByteArray(b, f)
 	}
 }
 

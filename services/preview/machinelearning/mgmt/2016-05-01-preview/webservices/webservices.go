@@ -59,7 +59,7 @@ func (client Client) CreateOrUpdate(ctx context.Context, resourceGroupName strin
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.Client", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "webservices.Client", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -93,6 +93,7 @@ func (client Client) CreateOrUpdatePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client Client) CreateOrUpdateSender(req *http.Request) (future CreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -532,7 +533,7 @@ func (client Client) Patch(ctx context.Context, resourceGroupName string, webSer
 
 	result, err = client.PatchSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.Client", "Patch", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "webservices.Client", "Patch", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -566,6 +567,7 @@ func (client Client) PatchPreparer(ctx context.Context, resourceGroupName string
 // http.Response Body if it receives an error.
 func (client Client) PatchSender(req *http.Request) (future PatchFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -612,7 +614,7 @@ func (client Client) Remove(ctx context.Context, resourceGroupName string, webSe
 
 	result, err = client.RemoveSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "webservices.Client", "Remove", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "webservices.Client", "Remove", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -644,6 +646,7 @@ func (client Client) RemovePreparer(ctx context.Context, resourceGroupName strin
 // http.Response Body if it receives an error.
 func (client Client) RemoveSender(req *http.Request) (future RemoveFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

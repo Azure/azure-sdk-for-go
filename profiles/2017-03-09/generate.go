@@ -3,4 +3,4 @@
 
 package v20170309
 
-//go:generate go run ../../tools/profileBuilder/main.go list --clear-output --input ./definition.json --name 2017-03-09 --output-location ./
+//go:generate go run ../../eng/tools/profileBuilder/main.go list --clear-output --input ./definition.json --name 2017-03-09 --output-location ./

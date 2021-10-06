@@ -867,7 +867,7 @@ func (client SitesClient) CreateOrUpdateSite(ctx context.Context, resourceGroupN
 
 	result, err = client.CreateOrUpdateSiteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSite", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSite", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -913,6 +913,7 @@ func (client SitesClient) CreateOrUpdateSitePreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteSender(req *http.Request) (future SitesCreateOrUpdateSiteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1455,7 +1456,7 @@ func (client SitesClient) CreateOrUpdateSiteSlot(ctx context.Context, resourceGr
 
 	result, err = client.CreateOrUpdateSiteSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "CreateOrUpdateSiteSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1502,6 +1503,7 @@ func (client SitesClient) CreateOrUpdateSiteSlotPreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client SitesClient) CreateOrUpdateSiteSlotSender(req *http.Request) (future SitesCreateOrUpdateSiteSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -10177,7 +10179,7 @@ func (client SitesClient) ListSitePublishingCredentials(ctx context.Context, res
 
 	result, err = client.ListSitePublishingCredentialsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePublishingCredentials", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePublishingCredentials", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -10209,6 +10211,7 @@ func (client SitesClient) ListSitePublishingCredentialsPreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSitePublishingCredentialsSender(req *http.Request) (future SitesListSitePublishingCredentialsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -10256,7 +10259,7 @@ func (client SitesClient) ListSitePublishingCredentialsSlot(ctx context.Context,
 
 	result, err = client.ListSitePublishingCredentialsSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePublishingCredentialsSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "ListSitePublishingCredentialsSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -10289,6 +10292,7 @@ func (client SitesClient) ListSitePublishingCredentialsSlotPreparer(ctx context.
 // http.Response Body if it receives an error.
 func (client SitesClient) ListSitePublishingCredentialsSlotSender(req *http.Request) (future SitesListSitePublishingCredentialsSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -10651,7 +10655,7 @@ func (client SitesClient) RecoverSite(ctx context.Context, resourceGroupName str
 
 	result, err = client.RecoverSiteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "RecoverSite", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "RecoverSite", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -10685,6 +10689,7 @@ func (client SitesClient) RecoverSitePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client SitesClient) RecoverSiteSender(req *http.Request) (future SitesRecoverSiteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -10734,7 +10739,7 @@ func (client SitesClient) RecoverSiteSlot(ctx context.Context, resourceGroupName
 
 	result, err = client.RecoverSiteSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "RecoverSiteSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "RecoverSiteSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -10769,6 +10774,7 @@ func (client SitesClient) RecoverSiteSlotPreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client SitesClient) RecoverSiteSlotSender(req *http.Request) (future SitesRecoverSiteSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -11143,7 +11149,7 @@ func (client SitesClient) RestoreSite(ctx context.Context, resourceGroupName str
 
 	result, err = client.RestoreSiteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "RestoreSite", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "RestoreSite", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -11178,6 +11184,7 @@ func (client SitesClient) RestoreSitePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client SitesClient) RestoreSiteSender(req *http.Request) (future SitesRestoreSiteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -11227,7 +11234,7 @@ func (client SitesClient) RestoreSiteSlot(ctx context.Context, resourceGroupName
 
 	result, err = client.RestoreSiteSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "RestoreSiteSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "RestoreSiteSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -11263,6 +11270,7 @@ func (client SitesClient) RestoreSiteSlotPreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client SitesClient) RestoreSiteSlotSender(req *http.Request) (future SitesRestoreSiteSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -11619,7 +11627,7 @@ func (client SitesClient) SwapSlotsSlot(ctx context.Context, resourceGroupName s
 
 	result, err = client.SwapSlotsSlotSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "SwapSlotsSlot", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "SwapSlotsSlot", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -11654,6 +11662,7 @@ func (client SitesClient) SwapSlotsSlotPreparer(ctx context.Context, resourceGro
 // http.Response Body if it receives an error.
 func (client SitesClient) SwapSlotsSlotSender(req *http.Request) (future SitesSwapSlotsSlotFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -11671,7 +11680,7 @@ func (client SitesClient) SwapSlotsSlotResponder(resp *http.Response) (result Se
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -11701,7 +11710,7 @@ func (client SitesClient) SwapSlotWithProduction(ctx context.Context, resourceGr
 
 	result, err = client.SwapSlotWithProductionSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "web.SitesClient", "SwapSlotWithProduction", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "web.SitesClient", "SwapSlotWithProduction", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -11735,6 +11744,7 @@ func (client SitesClient) SwapSlotWithProductionPreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client SitesClient) SwapSlotWithProductionSender(req *http.Request) (future SitesSwapSlotWithProductionFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -11752,7 +11762,7 @@ func (client SitesClient) SwapSlotWithProductionResponder(resp *http.Response) (
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return

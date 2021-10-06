@@ -82,7 +82,7 @@ func (client BuildTasksClient) Create(ctx context.Context, resourceGroupName str
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BuildTasksClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BuildTasksClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -117,6 +117,7 @@ func (client BuildTasksClient) CreatePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client BuildTasksClient) CreateSender(req *http.Request) (future BuildTasksCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -176,7 +177,7 @@ func (client BuildTasksClient) Delete(ctx context.Context, resourceGroupName str
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BuildTasksClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BuildTasksClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -209,6 +210,7 @@ func (client BuildTasksClient) DeletePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client BuildTasksClient) DeleteSender(req *http.Request) (future BuildTasksDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -583,7 +585,7 @@ func (client BuildTasksClient) Update(ctx context.Context, resourceGroupName str
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "containerregistry.BuildTasksClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "containerregistry.BuildTasksClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -618,6 +620,7 @@ func (client BuildTasksClient) UpdatePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client BuildTasksClient) UpdateSender(req *http.Request) (future BuildTasksUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

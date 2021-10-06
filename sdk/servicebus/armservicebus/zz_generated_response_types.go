@@ -1,4 +1,5 @@
-// +build go1.13
+//go:build go1.16
+// +build go1.16
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
@@ -11,6 +12,8 @@ import (
 	"context"
 	"net/http"
 	"time"
+
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // DisasterRecoveryConfigsBreakPairingResponse contains the response from method DisasterRecoveryConfigs.BreakPairing.
@@ -135,14 +138,40 @@ type MigrationConfigsCompleteMigrationResponse struct {
 
 // MigrationConfigsCreateAndStartMigrationPollerResponse contains the response from method MigrationConfigs.CreateAndStartMigration.
 type MigrationConfigsCreateAndStartMigrationPollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (MigrationConfigsCreateAndStartMigrationResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller MigrationConfigsCreateAndStartMigrationPoller
+	Poller *MigrationConfigsCreateAndStartMigrationPoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l MigrationConfigsCreateAndStartMigrationPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (MigrationConfigsCreateAndStartMigrationResponse, error) {
+	respType := MigrationConfigsCreateAndStartMigrationResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.MigrationConfigProperties)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a MigrationConfigsCreateAndStartMigrationPollerResponse from the provided client and resume token.
+func (l *MigrationConfigsCreateAndStartMigrationPollerResponse) Resume(ctx context.Context, client *MigrationConfigsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("MigrationConfigsClient.CreateAndStartMigration", token, client.pl, client.createAndStartMigrationHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &MigrationConfigsCreateAndStartMigrationPoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // MigrationConfigsCreateAndStartMigrationResponse contains the response from method MigrationConfigs.CreateAndStartMigration.
@@ -243,14 +272,40 @@ type NamespacesCreateOrUpdateNetworkRuleSetResult struct {
 
 // NamespacesCreateOrUpdatePollerResponse contains the response from method Namespaces.CreateOrUpdate.
 type NamespacesCreateOrUpdatePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (NamespacesCreateOrUpdateResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller NamespacesCreateOrUpdatePoller
+	Poller *NamespacesCreateOrUpdatePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l NamespacesCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NamespacesCreateOrUpdateResponse, error) {
+	respType := NamespacesCreateOrUpdateResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SBNamespace)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a NamespacesCreateOrUpdatePollerResponse from the provided client and resume token.
+func (l *NamespacesCreateOrUpdatePollerResponse) Resume(ctx context.Context, client *NamespacesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("NamespacesClient.CreateOrUpdate", token, client.pl, client.createOrUpdateHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &NamespacesCreateOrUpdatePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // NamespacesCreateOrUpdateResponse contains the response from method Namespaces.CreateOrUpdate.
@@ -291,14 +346,40 @@ type NamespacesDeleteIPFilterRuleResponse struct {
 
 // NamespacesDeletePollerResponse contains the response from method Namespaces.Delete.
 type NamespacesDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (NamespacesDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller NamespacesDeletePoller
+	Poller *NamespacesDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l NamespacesDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (NamespacesDeleteResponse, error) {
+	respType := NamespacesDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a NamespacesDeletePollerResponse from the provided client and resume token.
+func (l *NamespacesDeletePollerResponse) Resume(ctx context.Context, client *NamespacesClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("NamespacesClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &NamespacesDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // NamespacesDeleteResponse contains the response from method Namespaces.Delete.
@@ -525,14 +606,40 @@ type PrivateEndpointConnectionsCreateOrUpdateResult struct {
 
 // PrivateEndpointConnectionsDeletePollerResponse contains the response from method PrivateEndpointConnections.Delete.
 type PrivateEndpointConnectionsDeletePollerResponse struct {
-	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received
-	PollUntilDone func(ctx context.Context, frequency time.Duration) (PrivateEndpointConnectionsDeleteResponse, error)
-
 	// Poller contains an initialized poller.
-	Poller PrivateEndpointConnectionsDeletePoller
+	Poller *PrivateEndpointConnectionsDeletePoller
 
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+}
+
+// PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsDeleteResponse, error) {
+	respType := PrivateEndpointConnectionsDeleteResponse{}
+	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
+	if err != nil {
+		return respType, err
+	}
+	respType.RawResponse = resp
+	return respType, nil
+}
+
+// Resume rehydrates a PrivateEndpointConnectionsDeletePollerResponse from the provided client and resume token.
+func (l *PrivateEndpointConnectionsDeletePollerResponse) Resume(ctx context.Context, client *PrivateEndpointConnectionsClient, token string) error {
+	pt, err := armruntime.NewPollerFromResumeToken("PrivateEndpointConnectionsClient.Delete", token, client.pl, client.deleteHandleError)
+	if err != nil {
+		return err
+	}
+	poller := &PrivateEndpointConnectionsDeletePoller{
+		pt: pt,
+	}
+	resp, err := poller.Poll(ctx)
+	if err != nil {
+		return err
+	}
+	l.Poller = poller
+	l.RawResponse = resp
+	return nil
 }
 
 // PrivateEndpointConnectionsDeleteResponse contains the response from method PrivateEndpointConnections.Delete.

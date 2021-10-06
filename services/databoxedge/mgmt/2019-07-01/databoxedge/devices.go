@@ -61,7 +61,7 @@ func (client DevicesClient) CreateOrUpdate(ctx context.Context, deviceName strin
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -95,6 +95,7 @@ func (client DevicesClient) CreateOrUpdatePreparer(ctx context.Context, deviceNa
 // http.Response Body if it receives an error.
 func (client DevicesClient) CreateOrUpdateSender(req *http.Request) (future DevicesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -151,7 +152,7 @@ func (client DevicesClient) CreateOrUpdateSecuritySettings(ctx context.Context, 
 
 	result, err = client.CreateOrUpdateSecuritySettingsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "CreateOrUpdateSecuritySettings", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "CreateOrUpdateSecuritySettings", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -185,6 +186,7 @@ func (client DevicesClient) CreateOrUpdateSecuritySettingsPreparer(ctx context.C
 // http.Response Body if it receives an error.
 func (client DevicesClient) CreateOrUpdateSecuritySettingsSender(req *http.Request) (future DevicesCreateOrUpdateSecuritySettingsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -230,7 +232,7 @@ func (client DevicesClient) Delete(ctx context.Context, deviceName string, resou
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -262,6 +264,7 @@ func (client DevicesClient) DeletePreparer(ctx context.Context, deviceName strin
 // http.Response Body if it receives an error.
 func (client DevicesClient) DeleteSender(req *http.Request) (future DevicesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -307,7 +310,7 @@ func (client DevicesClient) DownloadUpdates(ctx context.Context, deviceName stri
 
 	result, err = client.DownloadUpdatesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "DownloadUpdates", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "DownloadUpdates", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -339,6 +342,7 @@ func (client DevicesClient) DownloadUpdatesPreparer(ctx context.Context, deviceN
 // http.Response Body if it receives an error.
 func (client DevicesClient) DownloadUpdatesSender(req *http.Request) (future DevicesDownloadUpdatesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -688,7 +692,7 @@ func (client DevicesClient) InstallUpdates(ctx context.Context, deviceName strin
 
 	result, err = client.InstallUpdatesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "InstallUpdates", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "InstallUpdates", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -720,6 +724,7 @@ func (client DevicesClient) InstallUpdatesPreparer(ctx context.Context, deviceNa
 // http.Response Body if it receives an error.
 func (client DevicesClient) InstallUpdatesSender(req *http.Request) (future DevicesInstallUpdatesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1005,7 +1010,7 @@ func (client DevicesClient) ScanForUpdates(ctx context.Context, deviceName strin
 
 	result, err = client.ScanForUpdatesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "ScanForUpdates", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databoxedge.DevicesClient", "ScanForUpdates", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1037,6 +1042,7 @@ func (client DevicesClient) ScanForUpdatesPreparer(ctx context.Context, deviceNa
 // http.Response Body if it receives an error.
 func (client DevicesClient) ScanForUpdatesSender(req *http.Request) (future DevicesScanForUpdatesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

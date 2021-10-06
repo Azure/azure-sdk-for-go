@@ -3,7 +3,8 @@ parameters:
   ServiceDirectory: ''
   GoWorkspace: ''
   LintVersion: ''
-  Scope: 'sdk/...'
+  NonShipping: false
+
 
 steps:
 
@@ -14,7 +15,7 @@ steps:
     workingDirectory: '${{parameters.GoWorkspace}}'
 
   - pwsh: |
-      $modDirs = (./eng/scripts/get_module_dirs.ps1 -serviceDir $(SCOPE))
+      $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
       foreach ($md in $modDirs) {
         pushd $md
         Write-Host "##[command]Executing golangci-lint run -c ${{parameters.GoWorkspace}}eng/.golangci.yml in $md"
@@ -24,10 +25,28 @@ steps:
     failOnStderr: false
     workingDirectory: '${{parameters.GoWorkspace}}'
 
+  - pwsh: |
+      $modDirs = ./eng/scripts/get_module_dirs.ps1 '${{ parameters.ServiceDirectory }}'
+      foreach ($md in $modDirs) {
+        if (-Not $md -Match "/arm") {
+          Get-ChildItem $md/doc.go
+        }
+      }
+    displayName: 'Verify doc.go'
+    workingDirectory: '${{parameters.GoWorkspace}}'
+
   - script: |
       echo scanning copyright headers in $(pwd)
       grep -L -r --include \*.go -P "Copyright (\d{4}|\(c\)) Microsoft" . | tee >&2
     displayName: 'Copyright Header Check'
+    condition: succeededOrFailed()
+    failOnStderr: true
+    workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
+
+  - script: |
+      echo ensuring $(pwd)/LICENSE file exists
+      grep -L -r --include ./LICENSE -P "Copyright (\d{4}|\(c\)) Microsoft" . | tee >&2
+    displayName: 'License Check'
     condition: succeededOrFailed()
     failOnStderr: true
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
@@ -46,3 +65,9 @@ steps:
       CheckLinkGuidance: $true
 
   - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
+
+  - ${{if eq(parameters.NonShipping, 'false')}}:
+    - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+      parameters:
+        PackageName: 'sdk/${{parameters.ServiceDirectory}}'
+        ForRelease: false

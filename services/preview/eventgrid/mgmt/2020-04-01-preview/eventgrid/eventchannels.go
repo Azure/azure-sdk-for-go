@@ -135,7 +135,7 @@ func (client EventChannelsClient) Delete(ctx context.Context, resourceGroupName 
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "eventgrid.EventChannelsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "eventgrid.EventChannelsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -168,6 +168,7 @@ func (client EventChannelsClient) DeletePreparer(ctx context.Context, resourceGr
 // http.Response Body if it receives an error.
 func (client EventChannelsClient) DeleteSender(req *http.Request) (future EventChannelsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

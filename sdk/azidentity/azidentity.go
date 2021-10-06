@@ -18,27 +18,28 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
-const (
-	// AzureChina is a global constant to use in order to access the Azure China cloud.
-	AzureChina = "https://login.chinacloudapi.cn/"
-	// AzureGermany is a global constant to use in order to access the Azure Germany cloud.
-	AzureGermany = "https://login.microsoftonline.de/"
-	// AzureGovernment is a global constant to use in order to access the Azure Government cloud.
-	AzureGovernment = "https://login.microsoftonline.us/"
-	// AzurePublicCloud is a global constant to use in order to access the Azure public cloud.
-	AzurePublicCloud = "https://login.microsoftonline.com/"
-	// defaultSuffix is a suffix the signals that a string is in scope format
-	defaultSuffix = "/.default"
-)
+// AuthorityHost is the base URL for Azure Active Directory
+type AuthorityHost string
 
 const (
-	headerXmsDate                = "x-ms-date"
-	headerUserAgent              = "User-Agent"
-	headerURLEncoded             = "application/x-www-form-urlencoded"
-	headerAuthorization          = "Authorization"
-	headerAuxiliaryAuthorization = "x-ms-authorization-auxiliary"
-	headerMetadata               = "Metadata"
-	headerContentType            = "Content-Type"
+	// AzureChina is a global constant to use in order to access the Azure China cloud.
+	AzureChina AuthorityHost = "https://login.chinacloudapi.cn/"
+	// AzureGermany is a global constant to use in order to access the Azure Germany cloud.
+	AzureGermany AuthorityHost = "https://login.microsoftonline.de/"
+	// AzureGovernment is a global constant to use in order to access the Azure Government cloud.
+	AzureGovernment AuthorityHost = "https://login.microsoftonline.us/"
+	// AzurePublicCloud is a global constant to use in order to access the Azure public cloud.
+	AzurePublicCloud AuthorityHost = "https://login.microsoftonline.com"
+)
+
+// defaultSuffix is the default AADv2 scope
+const defaultSuffix = "/.default"
+
+const (
+	headerUserAgent   = "User-Agent"
+	headerURLEncoded  = "application/x-www-form-urlencoded"
+	headerMetadata    = "Metadata"
+	headerContentType = "Content-Type"
 )
 
 const tenantIDValidationErr = "Invalid tenantID provided. You can locate your tenantID by following the instructions listed here: https://docs.microsoft.com/partner-center/find-ids-and-domain-names."
@@ -55,29 +56,11 @@ type tokenResponse struct {
 	refreshToken string
 }
 
-// AADAuthenticationFailedError is used to unmarshal error responses received from Azure Active Directory.
-type AADAuthenticationFailedError struct {
-	Message       string `json:"error"`
-	Description   string `json:"error_description"`
-	Timestamp     string `json:"timestamp"`
-	TraceID       string `json:"trace_id"`
-	CorrelationID string `json:"correlation_id"`
-	URL           string `json:"error_uri"`
-	Response      *http.Response
-}
-
-func (e *AADAuthenticationFailedError) Error() string {
-	msg := e.Message
-	if len(e.Description) > 0 {
-		msg += " " + e.Description
-	}
-	return msg
-}
-
 // AuthenticationFailedError is returned when the authentication request has failed.
 type AuthenticationFailedError struct {
 	inner error
 	msg   string
+	resp  *http.Response
 }
 
 // Unwrap method on AuthenticationFailedError provides access to the inner error if available.
@@ -91,25 +74,16 @@ func (e *AuthenticationFailedError) NonRetriable() {
 }
 
 func (e *AuthenticationFailedError) Error() string {
-	if e.inner == nil {
-		return e.msg
-	} else if e.msg == "" {
-		return e.inner.Error()
-	}
-	return e.msg + " details: " + e.inner.Error()
+	return e.msg
 }
 
+// RawResponse returns the HTTP response motivating the error, if available
+func (e *AuthenticationFailedError) RawResponse() *http.Response {
+	return e.resp
+}
+
+var _ azcore.HTTPResponse = (*AuthenticationFailedError)(nil)
 var _ errorinfo.NonRetriable = (*AuthenticationFailedError)(nil)
-
-func newAADAuthenticationFailedError(resp *http.Response) error {
-	authFailed := &AADAuthenticationFailedError{Response: resp}
-	err := runtime.UnmarshalAsJSON(resp, authFailed)
-	if err != nil {
-		authFailed.Message = resp.Status
-		authFailed.Description = "Failed to unmarshal response: " + err.Error()
-	}
-	return authFailed
-}
 
 // CredentialUnavailableError is the error type returned when the conditions required to
 // create a credential do not exist or are unavailable.
@@ -148,22 +122,22 @@ type pipelineOptions struct {
 }
 
 // setAuthorityHost initializes the authority host for credentials.
-func setAuthorityHost(authorityHost string) (string, error) {
-	if authorityHost == "" {
-		authorityHost = AzurePublicCloud
-		// NOTE: we only allow overriding the authority host if no host was specified
+func setAuthorityHost(authorityHost AuthorityHost) (string, error) {
+	host := string(authorityHost)
+	if host == "" {
+		host = string(AzurePublicCloud)
 		if envAuthorityHost := os.Getenv("AZURE_AUTHORITY_HOST"); envAuthorityHost != "" {
-			authorityHost = envAuthorityHost
+			host = envAuthorityHost
 		}
 	}
-	u, err := url.Parse(authorityHost)
+	u, err := url.Parse(host)
 	if err != nil {
 		return "", err
 	}
 	if u.Scheme != "https" {
 		return "", errors.New("cannot use an authority host without https")
 	}
-	return authorityHost, nil
+	return host, nil
 }
 
 // newDefaultPipeline creates a pipeline using the specified pipeline options.

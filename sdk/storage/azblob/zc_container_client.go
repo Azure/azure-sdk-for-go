@@ -13,7 +13,7 @@ import (
 // A ContainerClient represents a URL to the Azure Storage container allowing you to manipulate its blobs.
 type ContainerClient struct {
 	client *containerClient
-	cred   azcore.Credential
+	cred   interface{}
 }
 
 // URL returns the URL endpoint used by the ContainerClient object.
@@ -21,8 +21,22 @@ func (c ContainerClient) URL() string {
 	return c.client.con.u
 }
 
-// NewContainerClient creates a ContainerClient object using the specified URL and request policy pipeline.
-func NewContainerClient(containerURL string, cred azcore.Credential, options *ClientOptions) (ContainerClient, error) {
+// NewContainerClient creates a ContainerClient object using the specified URL, Azure AD credential, and options.
+func NewContainerClient(containerURL string, cred azcore.TokenCredential, options *ClientOptions) (ContainerClient, error) {
+	return ContainerClient{client: &containerClient{
+		con: newConnection(containerURL, cred, options.getConnectionOptions()),
+	}, cred: cred}, nil
+}
+
+// NewContainerClientWithNoCredential creates a ContainerClient object using the specified URL and options.
+func NewContainerClientWithNoCredential(containerURL string, options *ClientOptions) (ContainerClient, error) {
+	return ContainerClient{client: &containerClient{
+		con: newConnection(containerURL, nil, options.getConnectionOptions()),
+	}, cred: nil}, nil
+}
+
+// NewContainerClientWithSharedKey creates a ContainerClient object using the specified URL, shared key, and options.
+func NewContainerClientWithSharedKey(containerURL string, cred *SharedKeyCredential, options *ClientOptions) (ContainerClient, error) {
 	return ContainerClient{client: &containerClient{
 		con: newConnection(containerURL, cred, options.getConnectionOptions()),
 	}, cred: cred}, nil

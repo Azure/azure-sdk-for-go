@@ -14,7 +14,26 @@ type AppendBlobClient struct {
 	client *appendBlobClient
 }
 
-func NewAppendBlobClient(blobURL string, cred azcore.Credential, options *ClientOptions) (AppendBlobClient, error) {
+// NewAppendBlobClient creates an AppendBlobClient with the specified URL, Azure AD credential, and options.
+func NewAppendBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (AppendBlobClient, error) {
+	con := newConnection(blobURL, cred, options.getConnectionOptions())
+	return AppendBlobClient{
+		client:     &appendBlobClient{con: con},
+		BlobClient: BlobClient{client: &blobClient{con: con}},
+	}, nil
+}
+
+// NewAppendBlobClientWithNoCredential creates an AppendBlobClient with the specified URL and options.
+func NewAppendBlobClientWithNoCredential(blobURL string, options *ClientOptions) (AppendBlobClient, error) {
+	con := newConnection(blobURL, nil, options.getConnectionOptions())
+	return AppendBlobClient{
+		client:     &appendBlobClient{con: con},
+		BlobClient: BlobClient{client: &blobClient{con: con}},
+	}, nil
+}
+
+// NewAppendBlobClientWithSharedKey creates an AppendBlobClient with the specified URL, shared key, and options.
+func NewAppendBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (AppendBlobClient, error) {
 	con := newConnection(blobURL, cred, options.getConnectionOptions())
 	return AppendBlobClient{
 		client:     &appendBlobClient{con: con},

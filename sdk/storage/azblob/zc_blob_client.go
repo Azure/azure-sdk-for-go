@@ -14,11 +14,25 @@ import (
 // A BlobClient represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
 type BlobClient struct {
 	client *blobClient
-	cred   azcore.Credential
+	cred   interface{}
 }
 
-// NewBlobClient creates a BlobClient object using the specified URL and request policy pipeline.
-func NewBlobClient(blobURL string, cred azcore.Credential, options *ClientOptions) (BlobClient, error) {
+// NewBlobClient creates a BlobClient object using the specified URL, Azure AD credential, and options.
+func NewBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (BlobClient, error) {
+	con := newConnection(blobURL, cred, options.getConnectionOptions())
+
+	return BlobClient{client: &blobClient{con, nil}, cred: cred}, nil
+}
+
+// NewBlobClientWithNoCredential creates a BlobClient object using the specified URL and options.
+func NewBlobClientWithNoCredential(blobURL string, options *ClientOptions) (BlobClient, error) {
+	con := newConnection(blobURL, nil, options.getConnectionOptions())
+
+	return BlobClient{client: &blobClient{con, nil}, cred: nil}, nil
+}
+
+// NewBlobClientWithSharedKey creates a BlobClient object using the specified URL, shared key, and options.
+func NewBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (BlobClient, error) {
 	con := newConnection(blobURL, cred, options.getConnectionOptions())
 
 	return BlobClient{client: &blobClient{con, nil}, cred: cred}, nil

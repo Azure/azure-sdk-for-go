@@ -20,7 +20,29 @@ type PageBlobClient struct {
 	client *pageBlobClient
 }
 
-func NewPageBlobClient(blobURL string, cred azcore.Credential, options *ClientOptions) (PageBlobClient, error) {
+// NewPageBlobClient creates a ServiceClient object using the specified URL, Azure AD credential, and options.
+// Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
+func NewPageBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (PageBlobClient, error) {
+	con := newConnection(blobURL, cred, options.getConnectionOptions())
+	return PageBlobClient{
+		client:     &pageBlobClient{con: con},
+		BlobClient: BlobClient{client: &blobClient{con: con}},
+	}, nil
+}
+
+// NewPageBlobClientWithNoCredential creates a ServiceClient object using the specified URL and options.
+// Example of serviceURL: https://<your_storage_account>.blob.core.windows.net?<SAS token>
+func NewPageBlobClientWithNoCredential(blobURL string, options *ClientOptions) (PageBlobClient, error) {
+	con := newConnection(blobURL, nil, options.getConnectionOptions())
+	return PageBlobClient{
+		client:     &pageBlobClient{con: con},
+		BlobClient: BlobClient{client: &blobClient{con: con}},
+	}, nil
+}
+
+// NewPageBlobClientWithSharedKey creates a ServiceClient object using the specified URL, shared key, and options.
+// Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
+func NewPageBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (PageBlobClient, error) {
 	con := newConnection(blobURL, cred, options.getConnectionOptions())
 	return PageBlobClient{
 		client:     &pageBlobClient{con: con},

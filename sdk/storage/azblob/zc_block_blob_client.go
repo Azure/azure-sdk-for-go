@@ -27,14 +27,31 @@ type BlockBlobClient struct {
 	client *blockBlobClient
 }
 
-// NewBlockBlobClient creates a BlockBlobClient object using the specified URL and request policy pipeline.
-func NewBlockBlobClient(blobURL string, cred azcore.Credential, options *ClientOptions) (BlockBlobClient, error) {
+// NewBlockBlobClient creates a BlockBlobClient object using the specified URL, Azure AD credential, and options.
+func NewBlockBlobClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (BlockBlobClient, error) {
 	con := newConnection(blobURL, cred, options.getConnectionOptions())
 	return BlockBlobClient{
 		client:     &blockBlobClient{con: con},
 		BlobClient: BlobClient{client: &blobClient{con: con}},
 	}, nil
-	//return bbc, nil
+}
+
+// NewBlockBlobClientWithNoCredential creates a BlockBlobClient object using the specified URL and options.
+func NewBlockBlobClientWithNoCredential(blobURL string, options *ClientOptions) (BlockBlobClient, error) {
+	con := newConnection(blobURL, nil, options.getConnectionOptions())
+	return BlockBlobClient{
+		client:     &blockBlobClient{con: con},
+		BlobClient: BlobClient{client: &blobClient{con: con}},
+	}, nil
+}
+
+// NewBlockBlobClientWithSharedKey creates a BlockBlobClient object using the specified URL, shared key, and options.
+func NewBlockBlobClientWithSharedKey(blobURL string, cred *SharedKeyCredential, options *ClientOptions) (BlockBlobClient, error) {
+	con := newConnection(blobURL, cred, options.getConnectionOptions())
+	return BlockBlobClient{
+		client:     &blockBlobClient{con: con},
+		BlobClient: BlobClient{client: &blobClient{con: con}},
+	}, nil
 }
 
 // WithSnapshot creates a new BlockBlobClient object identical to the source but with the specified snapshot timestamp.

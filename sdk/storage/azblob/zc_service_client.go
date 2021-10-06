@@ -27,7 +27,7 @@ const (
 type ServiceClient struct {
 	client *serviceClient
 	u      url.URL
-	cred   azcore.Credential
+	cred   interface{}
 }
 
 // URL returns the URL endpoint used by the ServiceClient object.
@@ -35,9 +35,35 @@ func (s ServiceClient) URL() string {
 	return s.client.con.u
 }
 
-// NewServiceClient creates a ServiceClient object using the specified URL, credential, and options.
+// NewServiceClient creates a ServiceClient object using the specified URL, Azure AD credential, and options.
 // Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
-func NewServiceClient(serviceURL string, cred azcore.Credential, options *ClientOptions) (ServiceClient, error) {
+func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (ServiceClient, error) {
+	u, err := url.Parse(serviceURL)
+	if err != nil {
+		return ServiceClient{}, err
+	}
+
+	return ServiceClient{client: &serviceClient{
+		con: newConnection(serviceURL, cred, options.getConnectionOptions()),
+	}, u: *u, cred: cred}, nil
+}
+
+// NewServiceClientWithNoCredential creates a ServiceClient object using the specified URL and options.
+// Example of serviceURL: https://<your_storage_account>.blob.core.windows.net?<SAS token>
+func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions) (ServiceClient, error) {
+	u, err := url.Parse(serviceURL)
+	if err != nil {
+		return ServiceClient{}, err
+	}
+
+	return ServiceClient{client: &serviceClient{
+		con: newConnection(serviceURL, nil, options.getConnectionOptions()),
+	}, u: *u, cred: nil}, nil
+}
+
+// NewServiceClientWithSharedKey creates a ServiceClient object using the specified URL, shared key, and options.
+// Example of serviceURL: https://<your_storage_account>.blob.core.windows.net
+func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (ServiceClient, error) {
 	u, err := url.Parse(serviceURL)
 	if err != nil {
 		return ServiceClient{}, err
@@ -55,7 +81,7 @@ func NewServiceClientFromConnectionString(connectionString string, options *Clie
 	if err != nil {
 		return ServiceClient{}, err
 	}
-	return NewServiceClient(endpoint, credential, options)
+	return NewServiceClientWithSharedKey(endpoint, credential, options)
 }
 
 // NewContainerClient creates a new ContainerClient object by concatenating containerName to the end of

@@ -25,6 +25,10 @@
             "CoverageGoal": 0.45
         },
         {
+            "Name": "messaging",
+            "CoverageGoal": 0.10
+        }, 
+        {
             "Name": "azsecrets",
             "CoverageGoal": 0.76
         },

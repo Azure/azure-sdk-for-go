@@ -45,14 +45,20 @@ steps:
 
   - pwsh: |
       Write-Host "ensuring $(pwd)/LICENSE file exists"
-      $patternMatches = Get-Content ./LICENSE | Select-String -Pattern 'Copyright (\d{4}|\(c\)) Microsoft'
-      if ($patternMatches.Length -eq 0) {
-        Write-Host "Could not find a LICENSE file"
-        $patternMatches = Get-Content ./LICENSE.txt | Select-String -Pattern 'Copyright (\d{4}|\(c\)) Microsoft'
+      if (Test-Path LICENSE) {
+        $patternMatches = Get-Content ./LICENSE | Select-String -Pattern 'Copyright (\d{4}|\(c\)) Microsoft'
         if ($patternMatches.Length -eq 0) {
-          Write-Host "Could not find a valid LICENSE.txt file"
+          Write-Host "LICENSE file is invalid"
           exit 1
         }
+      } else if (Test-Path LICENSE.txt) {
+        $patternMatches = Get-Content ./LICENSE.txt | Select-String -Pattern 'Copyright (\d{4}|\(c\)) Microsoft'
+        if ($patternMatches.Length -eq 0) {
+          Write-Host "LICENSE file is invalid"
+          exit 1
+        }
+      } else {
+        Write-Host "Could not find a LICENSE or LICENSE.txt file"
       }
     displayName: 'License Check'
     condition: succeededOrFailed()

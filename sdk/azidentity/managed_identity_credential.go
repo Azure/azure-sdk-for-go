@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"strings"
 
@@ -12,24 +13,50 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
-// ManagedIdentityIDKind is used to specify the type of identifier that is passed in for a user-assigned managed identity.
-type ManagedIdentityIDKind int
+type managedIdentityIDKind int
 
 const (
-	// ClientID is the default identifier for a user-assigned managed identity.
-	ClientID ManagedIdentityIDKind = 0
-	// ResourceID is set when the resource ID of the user-assigned managed identity is to be used.
-	ResourceID ManagedIdentityIDKind = 1
+	miClientID   managedIdentityIDKind = 0
+	miResourceID managedIdentityIDKind = 1
 )
+
+// ManagedIDKind identifies the ID of a managed identity as either a client or resource ID
+type ManagedIDKind interface {
+	fmt.Stringer
+	idKind() managedIdentityIDKind
+}
+
+// ClientID is an identity's client ID. Use it with ManagedIdentityCredentialOptions, for example:
+// ManagedIdentityCredentialOptions{ID: ClientID("7cf7db0d-...")}
+type ClientID string
+
+func (ClientID) idKind() managedIdentityIDKind {
+	return miClientID
+}
+
+func (c ClientID) String() string {
+	return string(c)
+}
+
+// ResourceID is an identity's resource ID. Use it with ManagedIdentityCredentialOptions, for example:
+// ManagedIdentityCredentialOptions{ID: ResourceID("/subscriptions/...")}
+type ResourceID string
+
+func (ResourceID) idKind() managedIdentityIDKind {
+	return miResourceID
+}
+
+func (r ResourceID) String() string {
+	return string(r)
+}
 
 // ManagedIdentityCredentialOptions contains parameters that can be used to configure the pipeline used with Managed Identity Credential.
 // All zero-value fields will be initialized with their default values.
 type ManagedIdentityCredentialOptions struct {
-	// ID is used to configure an alternate identifier for a user-assigned identity. The default is client ID.
-	// Select the identifier to be used and pass the corresponding ID value in the string param in
-	// NewManagedIdentityCredential().
-	// Hint: Choose from the list of allowed ManagedIdentityIDKind values.
-	ID ManagedIdentityIDKind
+	// ID is the ID of a managed identity the credential should authenticate. Set this field to use a specific identity
+	// instead of the hosting environment's default. The value may be the identity's client ID or resource ID, but note that
+	// some platforms don't accept resource IDs.
+	ID ManagedIDKind
 
 	// HTTPClient sets the transport for making HTTP requests.
 	// Leave this as nil to use the default HTTP transport.
@@ -46,17 +73,15 @@ type ManagedIdentityCredentialOptions struct {
 // managed identity environments such as Azure VMs, App Service, Azure Functions, Azure CloudShell, among others. More information about configuring managed identities can be found here:
 // https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview
 type ManagedIdentityCredential struct {
-	id     string
+	id     ManagedIDKind
 	client *managedIdentityClient
 }
 
-// NewManagedIdentityCredential creates an instance of the ManagedIdentityCredential capable of authenticating a resource that has a managed identity.
-// id: The ID that corresponds to the user assigned managed identity. Defaults to the identity's client ID. To use another identifier,
-// pass in the value for the identifier here AND choose the correct ID kind to be used in the request by setting ManagedIdentityIDKind in the options.
+// NewManagedIdentityCredential creates a credential instance capable of authenticating an Azure managed identity in any hosting environment
+// supporting managed identities. See https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview for more
+// information about Azure Managed Identity.
 // options: ManagedIdentityCredentialOptions that configure the pipeline for requests sent to Azure Active Directory.
-// More information on user assigned managed identities cam be found here:
-// https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview#how-a-user-assigned-managed-identity-works-with-an-azure-vm
-func NewManagedIdentityCredential(id string, options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
+func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
 	// Create a new Managed Identity Client with default options
 	if options == nil {
 		options = &ManagedIdentityCredentialOptions{}
@@ -72,11 +97,16 @@ func NewManagedIdentityCredential(id string, options *ManagedIdentityCredentialO
 	// Assign the msiType discovered onto the client
 	client.msiType = msiType
 	// check if no clientID is specified then check if it exists in an environment variable
-	if len(id) == 0 {
-		if options.ID == ResourceID {
-			id = os.Getenv("AZURE_RESOURCE_ID")
+	id := options.ID
+	if id == nil {
+		cID := os.Getenv("AZURE_CLIENT_ID")
+		if cID != "" {
+			id = ClientID(cID)
 		} else {
-			id = os.Getenv("AZURE_CLIENT_ID")
+			rID := os.Getenv("AZURE_RESOURCE_ID")
+			if rID != "" {
+				id = ResourceID(rID)
+			}
 		}
 	}
 	return &ManagedIdentityCredential{id: id, client: client}, nil

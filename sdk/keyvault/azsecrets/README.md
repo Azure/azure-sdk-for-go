@@ -6,7 +6,7 @@ Azure Key Vault helps securely store and control access to tokens, passwords, ce
 ## Getting started
 
 ### Install packages
-Install [azure-keyvault-secrets][package_link] and [azure-identity][azure_identity_goget]:
+Install `azsecrets` and [azure-identity][azidentity_goget]:
 ```
 go get -u github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets
 ```
@@ -123,7 +123,7 @@ This section contains code snippets covering common tasks:
 * [List Secrets](#list-secrets "List Secrets")
 
 ### Set a Secret
-[SetSecret](https://aka.ms/azsdk/go/keyvault) creates new secrets and changes the values of existing secrets. If no secret with the given name exists, `SetSecret` creates a new secret with that name and the given value. If the given name is in use, `SetSecret` creates a new version of that secret, with the given value.
+[SetSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets@v0.1.1#Client.SetSecret) creates new secrets and changes the values of existing secrets. If no secret with the given name exists, `SetSecret` creates a new secret with that name and the given value. If the given name is in use, `SetSecret` creates a new version of that secret, with the given value.
 
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -138,7 +138,7 @@ fmt.Printf("Name: %s, Value: %s\n", *resp.ID, *resp.Value)
 ```
 
 ### Retrieve a Secret
-[GetSecret](https://aka.ms/azsdk/go/keyvault) retrieves a secret previously stored in the Key Vault.
+[GetSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets@v0.1.1#Client.GetSecret) retrieves a secret previously stored in the Key Vault.
 
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -153,7 +153,7 @@ fmt.Printf("Name: %s, Value: %s\n", *resp.ID, *resp.Value)
 ```
 
 ### Update Secret metadata
-[UpdateSecretProperties](https://aka.ms/azsdk/go/keyvault) updates a secret's metadata. It cannot change the secret's value; use [SetSecret](#set-a-secret) to set a secret's value.
+`UpdateSecretProperties` updates a secret's metadata. It cannot change the secret's value; use [SetSecret](#set-a-secret) to set a secret's value.
 
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -182,7 +182,7 @@ fmt.Printf("Updated on: %v, Content type: %v, Enabled: %v", *resp.Attributes.Upd
 ```
 
 ### Delete a Secret
-[BeginDeleteSecret](https://aka.ms/azsdk/go/keyvault) requests Key Vault delete a secret, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge (permanently delete) the secret as soon as possible. When [soft-delete][soft_delete] is disabled, `BeginDeleteSecret` itself is permanent.
+[BeginDeleteSecret](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets@v0.1.1#Client.BeginDeleteSecret) requests Key Vault delete a secret, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge (permanently delete) the secret as soon as possible. When [soft-delete][soft_delete] is disabled, `BeginDeleteSecret` itself is permanent.
 
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -193,7 +193,7 @@ final, err := resp.PollUntilDone(context.Background(), 1 * time.Second)
 ```
 
 ### List secrets
-[ListSecrets](https://aka.ms/azsdk/go/keyvault) lists the properties of all of the secrets in the client's vault. This list doesn't include the secret's values.
+[ListSecrets](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets@v0.1.1#Client.ListSecrets) lists the properties of all of the secrets in the client's vault. This list doesn't include the secret's values.
 
 ```golang
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -260,12 +260,14 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_cloud_shell]: https://shell.azure.com/bash
 [azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/core/azure-core#azure-core-library-exceptions
 [azure_identity]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity/
-[azure_identity_goget]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
+[azidentity_goget]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
+[default_cred_ref]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
 [rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
-[reference_docs]: https://aka.ms/azsdk/go/keyvault
+[reference_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets
+[secret_client_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets@v0.1.1#Client
 [secret_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azsecrets/client.go
 [soft_delete]: https://docs.microsoft.com/azure/key-vault/general/soft-delete-overview
 

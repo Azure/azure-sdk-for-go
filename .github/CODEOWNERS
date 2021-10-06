@@ -28,7 +28,13 @@
 /sdk/storage/            @rickwinter @jhendrixMSFT
 
 # PRLabel: %Cosmos
-/sdk/data/azcosmos/        @ealsur @ausfeldt 
+/sdk/data/azcosmos/      @ealsur @ausfeldt 
+
+# PRLabel: %Tables
+/sdk/data/aztables/      @seankane-msft
+
+# PRLabel: %Mgmt
+/sdk/resourcemanager/    @ArcturusZhang @lirenhe
 
 # PRLabel: %Tables
 /sdk/data/aztables           @rickwinter @seankane-msft

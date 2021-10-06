@@ -7,13 +7,19 @@
 package aztemplate
 
 import (
-	"fmt"
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
 func TestOutput(t *testing.T) {
 
-	client := TemplateClient()
+	//options := &ClientOptions{}
 
-	fmt.Println(client.ClientVersion())
+	cred, _ := azidentity.NewDefaultAzureCredential(nil)
+
+	client, _ := NewClient(cred, nil)
+
+	client.SomeServiceAction()
+
 }

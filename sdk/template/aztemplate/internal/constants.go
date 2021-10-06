@@ -4,12 +4,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package aztemplate
+package internal
 
+// Constants to identify the module
 const (
-	// UserAgent is the string to be used in the user agent string when making requests.
-	UserAgent = "aztemplate/" + Version
+	// Module is the module name that shows in telemetry.
+	module = "aztemplate"
 
 	// Version is the semantic version (see http://semver.org) of this module.
-	Version = "v0.1.0"
+	version = "v0.1.0"
 )

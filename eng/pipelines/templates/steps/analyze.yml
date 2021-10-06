@@ -48,11 +48,14 @@ steps:
       $patternMatches = Get-Content ./LICENSE | Select-String -Pattern 'Copyright (\d{4}|\(c\)) Microsoft'
       if ($patternMatches.Length -eq 0) {
         Write-Host "Could not find a LICENSE file"
-        Exit $1
+        $patternMatches = Get-Content ./LICENSE.txt | Select-String -Pattern 'Copyright (\d{4}|\(c\)) Microsoft'
+        if ($patternMatches.Length -eq 0) {
+          Write-Host "Could not find a valid LICENSE.txt file"
+          exit 1
+        }
       }
     displayName: 'License Check'
     condition: succeededOrFailed()
-    failOnStderr: true
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
   - script: |

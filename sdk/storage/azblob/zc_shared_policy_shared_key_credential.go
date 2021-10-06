@@ -196,8 +196,3 @@ func (s *sharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 	}
 	return response, err
 }
-
-// NewAuthenticationPolicy implements the Credential interface on SharedKeyCredential.
-func (c *SharedKeyCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
-	return newSharedKeyCredPolicy(c, options)
-}

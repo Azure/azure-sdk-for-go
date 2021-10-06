@@ -54,8 +54,7 @@ steps:
     - template: /eng/common/testproxy/test-proxy-docker.yml
 
     - pwsh: |
-        Write-Host $env:PROXY_CERT
-        Write-Host $env:AZURE_RECORD_MODE
+        gci env:* | sort-object name
 
         $testDirs = ./eng/scripts/get_test_dirs.ps1 '${{ parameters.ServiceDirectory }}'
         foreach ($td in $testDirs) {

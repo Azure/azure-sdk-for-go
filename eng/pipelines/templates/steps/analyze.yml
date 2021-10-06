@@ -51,7 +51,7 @@ steps:
           Write-Host "LICENSE file is invalid"
           exit 1
         }
-      } else if (Test-Path LICENSE.txt) {
+      } elseif (Test-Path LICENSE.txt) {
         $patternMatches = Get-Content ./LICENSE.txt | Select-String -Pattern 'Copyright (\d{4}|\(c\)) Microsoft'
         if ($patternMatches.Length -eq 0) {
           Write-Host "LICENSE file is invalid"

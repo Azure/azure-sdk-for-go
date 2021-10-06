@@ -54,6 +54,9 @@ steps:
     - template: /eng/common/testproxy/test-proxy-docker.yml
 
     - pwsh: |
+        Write-Host $env:PROXY_CERT
+        Write-Host $env:AZURE_RECORD_MODE
+
         $testDirs = ./eng/scripts/get_test_dirs.ps1 '${{ parameters.ServiceDirectory }}'
         foreach ($td in $testDirs) {
           pushd $td
@@ -72,7 +75,6 @@ steps:
       env:
         GO111MODULE: 'on'
         PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
-        AZURE_RECORD_MODE: 'playback'
         ${{ insert }}: ${{ parameters.EnvVars }}
 
     - pwsh: |

@@ -43,9 +43,13 @@ steps:
     failOnStderr: true
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
-  - script: |
-      echo ensuring $(pwd)/LICENSE file exists
-      grep -L -r --include ./LICENSE -P "Copyright (\d{4}|\(c\)) Microsoft" . | tee >&2
+  - pwsh: |
+      Write-Host "ensuring $(pwd)/LICENSE file exists"
+      $patternMatches = Get-Content ./LICENSE | Select-String -Pattern 'Copyright (\d{4}|\(c\)) Microsoft'
+      if ($patternMatches.Length -eq 0) {
+        Write-Host "Could not find a LICENSE file"
+        Exit $1
+      }
     displayName: 'License Check'
     condition: succeededOrFailed()
     failOnStderr: true

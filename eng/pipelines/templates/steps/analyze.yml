@@ -44,7 +44,7 @@ steps:
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
   - script: |
-      echo scanning copyright headers in $(pwd)
+      echo ensuring $(pwd)/LICENSE file exists
       grep -L -r --include ./LICENSE -P "Copyright (\d{4}|\(c\)) Microsoft" . | tee >&2
     displayName: 'License Check'
     condition: succeededOrFailed()

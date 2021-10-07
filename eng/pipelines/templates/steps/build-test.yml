@@ -110,6 +110,6 @@ steps:
       condition: succeededOrFailed()
       inputs:
         codeCoverageTool: Cobertura
-        summaryFileLocation: '${{parameters.GoWorkspace}}/coverage.xml'
-        additionalCodeCoverageFiles: '${{parameters.GoWorkspace}}/coverage.html'
+        summaryFileLocation: './coverage.xml'
+        additionalCodeCoverageFiles: './coverage.html'
         failIfCoverageEmpty: true

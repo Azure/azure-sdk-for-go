@@ -26,4 +26,4 @@ Get-Content ./coverage.xml
 
 # use internal tool to fail if coverage is too low
 Pop-Location
-go run ../eng/tools/internal/coverage/main.go -serviceDirectory $serviceDirectory
+go run ./eng/tools/internal/coverage/main.go -serviceDirectory $serviceDirectory

@@ -4,7 +4,9 @@ Param(
     [string] $serviceDirectory
 )
 
-$repoRoot = Resolve-Path "$PSScriptRoot/../"
+$repoRoot = Resolve-Path "$PSScriptRoot/../../"
+
+Write-Host "repoRoot $repoRoot"
 
 Write-Host $serviceDirectory
 Push-Location sdk/$serviceDirectory

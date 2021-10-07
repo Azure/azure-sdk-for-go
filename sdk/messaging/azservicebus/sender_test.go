@@ -126,10 +126,10 @@ func Test_Sender_SendMessages(t *testing.T) {
 	defer sender.Close(context.Background())
 
 	err = sender.SendMessages(ctx, []*Message{
-		&Message{
+		{
 			Body: []byte("hello"),
 		},
-		&Message{
+		{
 			Body: []byte("world"),
 		},
 	})

@@ -50,37 +50,17 @@ const rpUnregisteredResp = `{
 	}
 }`
 
-func TestNewDefaultConnection(t *testing.T) {
-	opt := ConnectionOptions{}
-	con := NewDefaultConnection(mockTokenCred{}, &opt)
-	if ep := con.Endpoint(); ep != AzurePublicCloud {
-		t.Fatalf("unexpected endpoint %s", ep)
-	}
-}
-
-func TestNewConnection(t *testing.T) {
-	const customEndpoint = "https://contoso.com/fake/endpoint"
-	con := NewConnection(customEndpoint, mockTokenCred{}, nil)
-	if ep := con.Endpoint(); ep != customEndpoint {
-		t.Fatalf("unexpected endpoint %s", ep)
-	}
-}
-
-func TestNewConnectionWithOptions(t *testing.T) {
+func TestNewPipelineWithOptions(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse()
 	opt := ConnectionOptions{}
 	opt.HTTPClient = srv
-	con := NewConnection(Endpoint(srv.URL()), mockTokenCred{}, &opt)
-	if ep := con.Endpoint(); ep != Endpoint(srv.URL()) {
-		t.Fatalf("unexpected endpoint %s", ep)
-	}
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	resp, err := con.NewPipeline("armtest", "v1.2.3").Do(req)
+	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, &opt).Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -92,7 +72,7 @@ func TestNewConnectionWithOptions(t *testing.T) {
 	}
 }
 
-func TestNewConnectionWithCustomTelemetry(t *testing.T) {
+func TestNewPipelineWithCustomTelemetry(t *testing.T) {
 	const myTelemetry = "something"
 	srv, close := mock.NewServer()
 	defer close()
@@ -100,10 +80,6 @@ func TestNewConnectionWithCustomTelemetry(t *testing.T) {
 	opt := ConnectionOptions{}
 	opt.HTTPClient = srv
 	opt.Telemetry.ApplicationID = myTelemetry
-	con := NewConnection(Endpoint(srv.URL()), mockTokenCred{}, &opt)
-	if ep := con.Endpoint(); ep != Endpoint(srv.URL()) {
-		t.Fatalf("unexpected endpoint %s", ep)
-	}
 	if opt.Telemetry.ApplicationID != myTelemetry {
 		t.Fatalf("telemetry was modified: %s", opt.Telemetry.ApplicationID)
 	}
@@ -111,7 +87,7 @@ func TestNewConnectionWithCustomTelemetry(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	resp, err := con.NewPipeline("armtest", "v1.2.3").Do(req)
+	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, &opt).Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -128,10 +104,7 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	defer close()
 	// initial response that RP is unregistered
 	srv.SetResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
-	con := NewConnection(Endpoint(srv.URL()), mockTokenCred{}, &ConnectionOptions{DisableRPRegistration: true})
-	if ep := con.Endpoint(); ep != Endpoint(srv.URL()) {
-		t.Fatalf("unexpected endpoint %s", ep)
-	}
+	opts := &ConnectionOptions{DisableRPRegistration: true}
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -146,7 +119,7 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	log.SetListener(func(cls log.Classification, msg string) {
 		logEntries++
 	})
-	resp, err := con.NewPipeline("armtest", "v1.2.3").Do(req)
+	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, opts).Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -169,7 +142,7 @@ func (p *countingPolicy) Do(req *policy.Request) (*http.Response, error) {
 	return req.Next()
 }
 
-func TestConnectionWithCustomPolicies(t *testing.T) {
+func TestPipelineWithCustomPolicies(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	// initial response is a failure to trigger retry
@@ -177,16 +150,16 @@ func TestConnectionWithCustomPolicies(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	perCallPolicy := countingPolicy{}
 	perRetryPolicy := countingPolicy{}
-	con := NewConnection(Endpoint(srv.URL()), mockTokenCred{}, &ConnectionOptions{
+	opts := &ConnectionOptions{
 		DisableRPRegistration: true,
 		PerCallPolicies:       []policy.Policy{&perCallPolicy},
 		PerRetryPolicies:      []policy.Policy{&perRetryPolicy},
-	})
+	}
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp, err := con.NewPipeline("armtest", "v1.2.3").Do(req)
+	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, opts).Do(req)
 	if err != nil {
 		t.Fatal(err)
 	}

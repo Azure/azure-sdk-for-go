@@ -64,62 +64,40 @@ type ConnectionOptions struct {
 	PerRetryPolicies []policy.Policy
 }
 
-// Connection is a connection to an Azure Resource Manager endpoint.
-// It contains the base ARM endpoint and a pipeline for making requests.
-type Connection struct {
-	ep   Endpoint
-	cred azcore.TokenCredential
-	opt  ConnectionOptions
-}
-
-// NewDefaultConnection creates an instance of the Connection type using the AzurePublicCloud.
-// Pass nil to accept the default options; this is the same as passing a zero-value options.
-func NewDefaultConnection(cred azcore.TokenCredential, options *ConnectionOptions) *Connection {
-	return NewConnection(AzurePublicCloud, cred, options)
-}
-
-// NewConnection creates an instance of the Connection type with the specified endpoint.
-// Use this when connecting to clouds other than the Azure public cloud (stack/sovereign clouds).
-// Pass nil to accept the default options; this is the same as passing a zero-value options.
-func NewConnection(endpoint Endpoint, cred azcore.TokenCredential, options *ConnectionOptions) *Connection {
+// NewPipeline creates a pipeline from connection options.
+// The telemetry policy, when enabled, will use the specified module and version info.
+func NewPipeline(module, version string, cred azcore.TokenCredential, options *ConnectionOptions) pipeline.Pipeline {
 	if options == nil {
 		options = &ConnectionOptions{}
 	}
-	return &Connection{ep: endpoint, cred: cred, opt: *options}
-}
-
-// Endpoint returns the connection's ARM endpoint.
-func (con *Connection) Endpoint() Endpoint {
-	return con.ep
-}
-
-// NewPipeline creates a pipeline from the connection's options.
-// The telemetry policy, when enabled, will use the specified module and version info.
-func (con *Connection) NewPipeline(module, version string) pipeline.Pipeline {
+	ep := options.Endpoint
+	if len(ep) == 0 {
+		ep = AzurePublicCloud
+	}
 	policies := []policy.Policy{}
-	if !con.opt.Telemetry.Disabled {
-		policies = append(policies, azruntime.NewTelemetryPolicy(module, version, &con.opt.Telemetry))
+	if !options.Telemetry.Disabled {
+		policies = append(policies, azruntime.NewTelemetryPolicy(module, version, &options.Telemetry))
 	}
-	if !con.opt.DisableRPRegistration {
+	if !options.DisableRPRegistration {
 		regRPOpts := armruntime.RegistrationOptions{
-			HTTPClient: con.opt.HTTPClient,
-			Logging:    con.opt.Logging,
-			Retry:      con.opt.Retry,
-			Telemetry:  con.opt.Telemetry,
+			HTTPClient: options.HTTPClient,
+			Logging:    options.Logging,
+			Retry:      options.Retry,
+			Telemetry:  options.Telemetry,
 		}
-		policies = append(policies, armruntime.NewRPRegistrationPolicy(string(con.ep), con.cred, &regRPOpts))
+		policies = append(policies, armruntime.NewRPRegistrationPolicy(string(ep), cred, &regRPOpts))
 	}
-	policies = append(policies, con.opt.PerCallPolicies...)
-	policies = append(policies, azruntime.NewRetryPolicy(&con.opt.Retry))
-	policies = append(policies, con.opt.PerRetryPolicies...)
+	policies = append(policies, options.PerCallPolicies...)
+	policies = append(policies, azruntime.NewRetryPolicy(&options.Retry))
+	policies = append(policies, options.PerRetryPolicies...)
 	policies = append(policies,
-		azruntime.NewBearerTokenPolicy(con.cred, azruntime.AuthenticationOptions{
+		azruntime.NewBearerTokenPolicy(cred, azruntime.AuthenticationOptions{
 			TokenRequest: policy.TokenRequestOptions{
-				Scopes: []string{shared.EndpointToScope(string(con.ep))},
+				Scopes: []string{shared.EndpointToScope(string(ep))},
 			},
-			AuxiliaryTenants: con.opt.AuxiliaryTenants,
+			AuxiliaryTenants: options.AuxiliaryTenants,
 		},
 		),
-		azruntime.NewLogPolicy(&con.opt.Logging))
-	return azruntime.NewPipeline(con.opt.HTTPClient, policies...)
+		azruntime.NewLogPolicy(&options.Logging))
+	return azruntime.NewPipeline(options.HTTPClient, policies...)
 }

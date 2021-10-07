@@ -494,6 +494,9 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 	if !(recordMode == modeRecording || recordMode == modePlayback || recordMode == modeLiveNoRecord) {
 		return fmt.Errorf("AZURE_RECORD_MODE was not understood, options are %s, %s, or %s Received: %v", modeRecording, modePlayback, modeLiveNoRecord, recordMode)
 	}
+	if recordMode == modeLiveNoRecord {
+		return nil
+	}
 	testId := getTestId(pathToRecordings, t)
 
 	url := fmt.Sprintf("%s/%s/start", options.HostScheme(), recordMode)
@@ -524,6 +527,9 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 func StopRecording(t *testing.T, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
+	}
+	if recordMode == modeLiveNoRecord {
+		return nil
 	}
 
 	url := fmt.Sprintf("%v/%v/stop", options.HostScheme(), recordMode)

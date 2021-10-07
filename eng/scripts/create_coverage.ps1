@@ -4,6 +4,8 @@ Param(
     [string] $serviceDirectory
 )
 
+$repoRoot = Resolve-Path "$PSScriptRoot/../"
+
 Write-Host $serviceDirectory
 Push-Location sdk/$serviceDirectory
 
@@ -26,4 +28,8 @@ Get-Content ./coverage.xml
 
 # use internal tool to fail if coverage is too low
 Pop-Location
-go run ./eng/tools/internal/coverage/main.go -serviceDirectory $serviceDirectory
+
+go run $repoRoot/eng/tools/internal/coverage/coverage.go `
+    -config $repoRoot/eng/config.json `
+    -serviceDirectory $serviceDirectory `
+    -searchDirectory $repoRoot

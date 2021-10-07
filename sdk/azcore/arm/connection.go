@@ -36,6 +36,9 @@ type ConnectionOptions struct {
 	// across multiple tenants.
 	AuxiliaryTenants []string
 
+	// Endpoint is the base URL for Azure Resource Manager
+	Endpoint Endpoint
+
 	// HTTPClient sets the transport for making HTTP requests.
 	HTTPClient policy.Transporter
 

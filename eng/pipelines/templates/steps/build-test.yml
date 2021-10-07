@@ -11,6 +11,9 @@ parameters:
   - name:  GoVersion
     type: string
     default: ''
+  - name:  TestProxy
+    type: boolean
+    default: false
   - name:  RunTests
     type: boolean
     default: false
@@ -51,7 +54,8 @@ steps:
       displayName: "Install Coverage and Junit Dependencies"
       workingDirectory: '${{parameters.GoWorkspace}}'
 
-    - template: /eng/common/testproxy/test-proxy-docker.yml
+    - ${{ if eq(parameters.TestProxy, true) }}:
+      - template: /eng/common/testproxy/test-proxy-docker.yml
 
     - pwsh: |
         $testDirs = ./eng/scripts/get_test_dirs.ps1 '${{ parameters.ServiceDirectory }}'
@@ -74,10 +78,13 @@ steps:
         PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
         ${{ insert }}: ${{ parameters.EnvVars }}
 
-    - pwsh: |
-        docker logs ambitious_azsdk_test_proxy
-      displayName: 'Dump Docker logs'
-      condition: succeededOrFailed()
+    - ${{ if eq(parameters.TestProxy, true) }}:
+      - pwsh: |
+          # ambitious_azsdk_test_proxy is the hardcoded container name used
+          # by the test proxy startup script
+          docker logs ambitious_azsdk_test_proxy
+        displayName: 'Dump Test Proxy logs'
+        condition: succeededOrFailed()
 
     - pwsh: ../eng/scripts/create_coverage.ps1 ${{parameters.ServiceDirectory}}
       displayName: 'Generate Coverage XML'

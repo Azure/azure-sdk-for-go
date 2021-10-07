@@ -109,7 +109,7 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 			require.True(t, added)
 		}
 
-		require.NoError(t, sender.SendMessage(context.Background(), batch))
+		require.NoError(t, sender.SendMessageBatch(context.Background(), batch))
 	}()
 
 	processor, err := serviceBusClient.NewProcessorForQueue(

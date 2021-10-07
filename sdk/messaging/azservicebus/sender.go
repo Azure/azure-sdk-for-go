@@ -23,7 +23,7 @@ type (
 	}
 
 	// SendableMessage are sendable using Sender.SendMessage.
-	// Message, MessageBatch implement this interface.
+	// Message implements this interface.
 	SendableMessage interface {
 		toAMQPMessage() *amqp.Message
 		messageType() string
@@ -61,7 +61,7 @@ func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptio
 	return &MessageBatch{maxBytes: maxBytes}, nil
 }
 
-// SendMessage sends a message to a queue or topic.
+// SendMessage sends a SendableMessage (Message) to a queue or topic.
 // Message can be a MessageBatch (created using `Sender.CreateMessageBatch`) or
 // a Message.
 func (s *Sender) SendMessage(ctx context.Context, message SendableMessage) error {
@@ -75,6 +75,21 @@ func (s *Sender) SendMessage(ctx context.Context, message SendableMessage) error
 	}
 
 	return sender.Send(ctx, message.toAMQPMessage())
+}
+
+// SendMessageBatch sends a MessageBatch to a queue or topic.
+// Message batches can be created using `Sender.NewMessageBatch`.
+func (s *Sender) SendMessageBatch(ctx context.Context, batch *MessageBatch) error {
+	ctx, span := s.startProducerSpanFromContext(ctx, fmt.Sprintf(spanNameSendMessageFmt, "batch"))
+	defer span.End()
+
+	sender, _, _, _, err := s.links.Get(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	return sender.Send(ctx, batch.toAMQPMessage())
 }
 
 // SendMessages sends messages to a queue or topic, using a single MessageBatch.
@@ -100,10 +115,12 @@ func (s *Sender) SendMessages(ctx context.Context, messages []*Message) error {
 		}
 	}
 
-	return s.SendMessage(ctx, batch)
+	return s.SendMessageBatch(ctx, batch)
 }
 
 // ScheduleMessage schedules a message to appear on Service Bus Queue/Subscription at a later time.
+// Returns the sequence number of the message that was scheduled. If the message hasn't been
+// delivered you can cancel using `Receiver.CancelScheduleMessage(s)`
 func (s *Sender) ScheduleMessage(ctx context.Context, message SendableMessage, scheduledEnqueueTime time.Time) (int64, error) {
 	sequenceNumbers, err := s.ScheduleMessages(ctx, []SendableMessage{message}, scheduledEnqueueTime)
 
@@ -115,6 +132,8 @@ func (s *Sender) ScheduleMessage(ctx context.Context, message SendableMessage, s
 }
 
 // ScheduleMessages schedules a slice of messages to appear on Service Bus Queue/Subscription at a later time.
+// Returns the sequence numbers of the messages that were scheduled.  Messages that haven't been
+// delivered can be cancelled using `Receiver.CancelScheduleMessage(s)`
 func (s *Sender) ScheduleMessages(ctx context.Context, messages []SendableMessage, scheduledEnqueueTime time.Time) ([]int64, error) {
 	_, _, mgmt, _, err := s.links.Get(ctx)
 

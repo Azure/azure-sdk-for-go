@@ -101,8 +101,3 @@ func (mb *MessageBatch) toAMQPMessage() *amqp.Message {
 
 	return mb.batchEnvelope
 }
-
-// MessageType indicates the type of this message. Used for tracing.
-func (mb *MessageBatch) messageType() string {
-	return "Batch"
-}

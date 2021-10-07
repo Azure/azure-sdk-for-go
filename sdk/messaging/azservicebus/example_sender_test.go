@@ -56,7 +56,7 @@ func ExampleSender_SendMessage_messageBatch() {
 	}
 
 	// now let's send the batch
-	err = sender.SendMessage(context.TODO(), batch)
+	err = sender.SendMessageBatch(context.TODO(), batch)
 	exitOnError("Failed to send message batch", err)
 }
 

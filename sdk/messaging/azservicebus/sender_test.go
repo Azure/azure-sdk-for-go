@@ -40,7 +40,7 @@ func Test_Sender_SendBatchOfTwo(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, added)
 
-	err = sender.SendMessage(ctx, batch)
+	err = sender.SendMessageBatch(ctx, batch)
 	require.NoError(t, err)
 
 	receiver, err := client.NewReceiverForQueue(
@@ -93,7 +93,7 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, added)
 
-	err = sender.SendMessage(context.Background(), batch)
+	err = sender.SendMessageBatch(context.Background(), batch)
 	require.NoError(t, err)
 
 	messages, err := receiver.ReceiveMessages(context.Background(), 1+2, nil)

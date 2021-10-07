@@ -62,8 +62,6 @@ func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptio
 }
 
 // SendMessage sends a SendableMessage (Message) to a queue or topic.
-// Message can be a MessageBatch (created using `Sender.CreateMessageBatch`) or
-// a Message.
 func (s *Sender) SendMessage(ctx context.Context, message SendableMessage) error {
 	ctx, span := s.startProducerSpanFromContext(ctx, fmt.Sprintf(spanNameSendMessageFmt, message.messageType()))
 	defer span.End()

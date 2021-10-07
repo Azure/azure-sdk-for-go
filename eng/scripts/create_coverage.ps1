@@ -5,7 +5,7 @@ Param(
 )
 
 Write-Host $serviceDirectory
-Push-Location $serviceDirectory
+Push-Location sdk/$serviceDirectory
 
 $coverageFiles = [Collections.Generic.List[String]]@()
 Get-ChildItem -recurse -path . -filter coverage.txt | ForEach-Object {

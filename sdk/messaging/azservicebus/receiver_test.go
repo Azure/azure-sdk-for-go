@@ -327,7 +327,7 @@ type badMgmtClient struct {
 	internal.MgmtClient
 }
 
-func (b badMgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
+func (b badMgmtClient) ReceiveDeferred(ctx context.Context, mode internal.ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
 	return nil, errors.New("receive deferred messages failed")
 }
 

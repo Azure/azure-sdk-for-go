@@ -28,3 +28,4 @@ stages:
   parameters:
     ServiceDirectory: 'internal'
     RunTests: true
+    LicenseCheck: false

@@ -58,7 +58,7 @@ steps:
       inputs:
         targetType: 'filePath'
         filePath: ./eng/scripts/run_tests.ps1
-        workingDirectory: '${{ parameters.GoWorkspace }}'
+        # workingDirectory: '${{ parameters.GoWorkspace }}'
         arguments: '${{ parameters.ServiceDirectory }}'
         pwsh: true
       env:

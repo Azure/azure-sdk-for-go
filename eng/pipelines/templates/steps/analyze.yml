@@ -6,12 +6,16 @@ parameters:
   Scope: 'sdk/...'
 
 steps:
-          
+
   - template: /eng/common/pipelines/templates/steps/verify-links.yml
     parameters:
+    ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+      Directory: ''
+      Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
+    ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
       Directory: sdk/${{ parameters.ServiceDirectory }}
-      CheckLinkGuidance: $true
-
+    CheckLinkGuidance: $true
+    
   - script: |
       curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${{parameters.LintVersion}}
       golangci-lint --version

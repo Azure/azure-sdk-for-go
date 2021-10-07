@@ -17,15 +17,15 @@ import (
 
 // ReceiveMode represents the lock style to use for a receiver - either
 // `PeekLock` or `ReceiveAndDelete`
-type ReceiveMode = internal.ReceiveMode
+type ReceiveMode int
 
 const (
 	// PeekLock will lock messages as they are received and can be settled
 	// using the Receiver or Processor's (Complete|Abandon|DeadLetter|Defer)Message
 	// functions.
-	PeekLock ReceiveMode = internal.PeekLock
+	PeekLock ReceiveMode = 0
 	// ReceiveAndDelete will delete messages as they are received.
-	ReceiveAndDelete ReceiveMode = internal.ReceiveAndDelete
+	ReceiveAndDelete ReceiveMode = 1
 )
 
 // SubQueue allows you to target a subqueue of a queue or subscription.
@@ -322,7 +322,7 @@ func (r *Receiver) ReceiveDeferredMessages(ctx context.Context, sequenceNumbers 
 		return nil, err
 	}
 
-	amqpMessages, err := mgmt.ReceiveDeferred(ctx, r.receiveMode, sequenceNumbers)
+	amqpMessages, err := mgmt.ReceiveDeferred(ctx, internal.ReceiveMode(r.receiveMode), sequenceNumbers)
 
 	if err != nil {
 		return nil, err

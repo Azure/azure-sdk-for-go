@@ -318,6 +318,11 @@ func TestReceiverOptions(t *testing.T) {
 	require.EqualValues(t, "topic/Subscriptions/subscription/$Transfer/$DeadLetterQueue", path)
 }
 
+func TestReceiverConstantsSynced(t *testing.T) {
+	require.EqualValues(t, int(internal.PeekLock), int(PeekLock))
+	require.EqualValues(t, int(internal.ReceiveAndDelete), int(ReceiveAndDelete))
+}
+
 type badMgmtClient struct {
 	internal.MgmtClient
 }

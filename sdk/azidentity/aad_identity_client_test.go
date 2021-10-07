@@ -10,33 +10,33 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 func TestAzurePublicCloudParse(t *testing.T) {
-	_, err := url.Parse(AzurePublicCloud)
+	_, err := url.Parse(string(AzurePublicCloud))
 	if err != nil {
 		t.Fatalf("Failed to parse default authority host: %v", err)
 	}
 }
 
 func TestAzureChinaParse(t *testing.T) {
-	_, err := url.Parse(AzureChina)
+	_, err := url.Parse(string(AzureChina))
 	if err != nil {
 		t.Fatalf("Failed to parse AzureChina authority host: %v", err)
 	}
 }
 
 func TestAzureGermanyParse(t *testing.T) {
-	_, err := url.Parse(AzureGermany)
+	_, err := url.Parse(string(AzureGermany))
 	if err != nil {
 		t.Fatalf("Failed to parse AzureGermany authority host: %v", err)
 	}
 }
 
 func TestAzureGovernmentParse(t *testing.T) {
-	_, err := url.Parse(AzureGovernment)
+	_, err := url.Parse(string(AzureGovernment))
 	if err != nil {
 		t.Fatalf("Failed to parse AzureGovernment authority host: %v", err)
 	}
@@ -47,14 +47,12 @@ func TestTelemetryDefaultUserAgent(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := pipelineOptions{
 		HTTPClient: srv,
-		Telemetry:  azcore.DefaultTelemetryOptions(),
-		Retry:      azcore.DefaultRetryOptions(),
 	}
 	client, err := newAADIdentityClient(srv.URL(), options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -65,7 +63,7 @@ func TestTelemetryDefaultUserAgent(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if ua := resp.Request.Header.Get(azcore.HeaderUserAgent); !strings.HasPrefix(ua, UserAgent) {
+	if ua := resp.Request.Header.Get(headerUserAgent); !strings.HasPrefix(ua, "azsdk-go-"+component+"/"+version) {
 		t.Fatalf("unexpected User-Agent %s", ua)
 	}
 }
@@ -77,15 +75,13 @@ func TestTelemetryCustom(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := pipelineOptions{
 		HTTPClient: srv,
-		Telemetry:  azcore.DefaultTelemetryOptions(),
-		Retry:      azcore.DefaultRetryOptions(),
 	}
-	options.Telemetry.Value = customTelemetry
+	options.Telemetry.ApplicationID = customTelemetry
 	client, err := newAADIdentityClient(srv.URL(), options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -96,7 +92,7 @@ func TestTelemetryCustom(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if ua := resp.Request.Header.Get(azcore.HeaderUserAgent); !strings.HasPrefix(ua, customTelemetry+" "+UserAgent) {
+	if ua := resp.Request.Header.Get(headerUserAgent); !strings.HasPrefix(ua, customTelemetry+" "+"azsdk-go-"+component+"/"+version) {
 		t.Fatalf("unexpected User-Agent %s", ua)
 	}
 }

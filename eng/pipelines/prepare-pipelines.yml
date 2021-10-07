@@ -1,0 +1,10 @@
+trigger: none
+
+extends:
+  template: /eng/common/pipelines/templates/steps/prepare-pipelines.yml
+  parameters:
+    Repository: $(Build.Repository.Name)
+    Prefix: go
+    CIConventionOptions: ''
+    # Includes live test variable group 64 for unified pipeline (ci+live tests)
+    UPConventionOptions: '--variablegroup 58 --variablegroup 76 --variablegroup 56 --variablegroup 93 --variablegroup 64'

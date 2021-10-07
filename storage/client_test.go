@@ -1,18 +1,7 @@
 package storage
 
-// Copyright 2017 Microsoft Corporation
-//
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
-//  You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
-//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
 
 import (
 	"bytes"
@@ -353,6 +342,26 @@ func (s *StorageClientSuite) TestIsValidStorageAccount(c *chk.C) {
 
 	for _, tc := range testCases {
 		c.Assert(IsValidStorageAccount(tc.account), chk.Equals, tc.expected)
+	}
+}
+
+func (s *StorageClientSuite) TestIsValidCosmosAccount(c *chk.C) {
+	type test struct {
+		account  string
+		expected bool
+	}
+	testCases := []test{
+		{"name1", true},
+		{"Name2", false},
+		{"really-long-valid-name-less-than-44-chars", true},
+		{"really-long-invalid-name-greater-than-44-chars", false},
+		{"", false},
+		{"concated&name", false},
+		{"formatted name", false},
+	}
+
+	for _, tc := range testCases {
+		c.Assert(IsValidCosmosAccount(tc.account), chk.Equals, tc.expected)
 	}
 }
 

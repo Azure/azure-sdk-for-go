@@ -8,7 +8,13 @@ import (
 	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
+
+// ChainedTokenCredentialOptions contains optional parameters for ChainedTokenCredential
+type ChainedTokenCredentialOptions struct {
+	// placeholder for future options
+}
 
 // ChainedTokenCredential provides a TokenCredential implementation that chains multiple TokenCredential sources to be tried in order
 // and returns the token from the first successful call to GetToken().
@@ -17,7 +23,7 @@ type ChainedTokenCredential struct {
 }
 
 // NewChainedTokenCredential creates an instance of ChainedTokenCredential with the specified TokenCredential sources.
-func NewChainedTokenCredential(sources ...azcore.TokenCredential) (*ChainedTokenCredential, error) {
+func NewChainedTokenCredential(sources []azcore.TokenCredential, options *ChainedTokenCredentialOptions) (*ChainedTokenCredential, error) {
 	if len(sources) == 0 {
 		credErr := &CredentialUnavailableError{credentialType: "Chained Token Credential", message: "Length of sources cannot be 0"}
 		logCredentialError(credErr.credentialType, credErr)
@@ -30,11 +36,13 @@ func NewChainedTokenCredential(sources ...azcore.TokenCredential) (*ChainedToken
 			return nil, credErr
 		}
 	}
-	return &ChainedTokenCredential{sources: sources}, nil
+	cp := make([]azcore.TokenCredential, len(sources))
+	copy(cp, sources)
+	return &ChainedTokenCredential{sources: cp}, nil
 }
 
 // GetToken sequentially calls TokenCredential.GetToken on all the specified sources, returning the token from the first successful call to GetToken().
-func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (token *azcore.AccessToken, err error) {
+func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
 	var errList []*CredentialUnavailableError
 	// loop through all of the credentials provided in sources
 	for _, cred := range c.sources {
@@ -68,11 +76,6 @@ func (c *ChainedTokenCredential) GetToken(ctx context.Context, opts azcore.Token
 	return nil, credErr
 }
 
-// AuthenticationPolicy implements the azcore.Credential interface on ChainedTokenCredential and sets the bearer token
-func (c *ChainedTokenCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
-	return newBearerTokenPolicy(c, options)
-}
-
 // helper function used to chain the error messages of the CredentialUnavailableError slice
 func createChainedErrorMessage(errList []*CredentialUnavailableError) string {
 	msg := ""
@@ -82,3 +85,5 @@ func createChainedErrorMessage(errList []*CredentialUnavailableError) string {
 
 	return msg
 }
+
+var _ azcore.TokenCredential = (*ChainedTokenCredential)(nil)

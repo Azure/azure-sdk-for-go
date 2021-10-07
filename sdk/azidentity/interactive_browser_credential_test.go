@@ -9,13 +9,13 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"golang.org/x/net/http2"
 )
 
 func TestInteractiveBrowserCredential_InvalidTenantID(t *testing.T) {
-	options := DefaultInteractiveBrowserCredentialOptions()
+	options := InteractiveBrowserCredentialOptions{}
 	options.TenantID = badTenantID
 	cred, err := NewInteractiveBrowserCredential(&options)
 	if err == nil {
@@ -35,7 +35,7 @@ func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to create interactive browser credential: %v", err)
 	}
-	if cred.client.authorityHost != AzurePublicCloud {
+	if cred.client.authorityHost != string(AzurePublicCloud) {
 		t.Fatalf("Wrong authority host set. Expected: %s, Received: %s", AzurePublicCloud, cred.client.authorityHost)
 	}
 	if cred.options.ClientID != developerSignOnClientID {
@@ -56,20 +56,20 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	tr.TLSClientConfig.InsecureSkipVerify = true
 	client := &http.Client{Transport: tr}
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := DefaultInteractiveBrowserCredentialOptions()
-	options.AuthorityHost = srv.URL()
+	options := InteractiveBrowserCredentialOptions{}
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = client
 	cred, err := NewInteractiveBrowserCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI string, scopes []string) (*interactiveConfig, error) {
+	authCodeReceiver = func(ctx context.Context, authorityHost string, opts *InteractiveBrowserCredentialOptions, scopes []string) (*interactiveConfig, error) {
 		return &interactiveConfig{
 			authCode:    "12345",
 			redirectURI: srv.URL(),
 		}, nil
 	}
-	tk, err := cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{"https://storage.azure.com/.default"}})
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"https://storage.azure.com/.default"}})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %v", err)
 	}
@@ -88,21 +88,20 @@ func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	tr.TLSClientConfig.InsecureSkipVerify = true
 	client := &http.Client{Transport: tr}
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
-	options := DefaultInteractiveBrowserCredentialOptions()
-	options.ClientSecret = wrongSecret
-	options.AuthorityHost = srv.URL()
+	options := InteractiveBrowserCredentialOptions{}
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = client
 	cred, err := NewInteractiveBrowserCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	authCodeReceiver = func(authorityHost string, tenantID string, clientID string, redirectURI string, scopes []string) (*interactiveConfig, error) {
+	authCodeReceiver = func(ctx context.Context, authorityHost string, opts *InteractiveBrowserCredentialOptions, scopes []string) (*interactiveConfig, error) {
 		return &interactiveConfig{
 			authCode:    "12345",
 			redirectURI: srv.URL(),
 		}, nil
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
@@ -110,29 +109,7 @@ func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	if !errors.As(err, &authFailed) {
 		t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
 	}
-	var respError *AADAuthenticationFailedError
-	if !errors.As(authFailed.Unwrap(), &respError) {
-		t.Fatalf("Expected: AADAuthenticationFailedError, Received: %T", err)
-	}
-	if len(respError.Message) == 0 {
-		t.Fatalf("Did not receive an error message")
-	}
-	if len(respError.Description) == 0 {
-		t.Fatalf("Did not receive an error description")
-	}
-	if len(respError.Timestamp) == 0 {
-		t.Fatalf("Did not receive a timestamp")
-	}
-	if len(respError.TraceID) == 0 {
-		t.Fatalf("Did not receive a TraceID")
-	}
-	if len(respError.CorrelationID) == 0 {
-		t.Fatalf("Did not receive a CorrelationID")
-	}
-	if len(respError.URL) == 0 {
-		t.Fatalf("Did not receive an error URL")
-	}
-	if respError.Response == nil {
-		t.Fatalf("Did not receive an error response")
+	if authFailed.RawResponse() == nil {
+		t.Fatalf("Expected error to include a response")
 	}
 }

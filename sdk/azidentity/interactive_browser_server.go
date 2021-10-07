@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
-	"sync"
 )
 
 const okPage = `
@@ -41,7 +40,7 @@ const failPage = `
 `
 
 type server struct {
-	wg   *sync.WaitGroup
+	done chan struct{}
 	s    *http.Server
 	code string
 	err  error
@@ -50,8 +49,8 @@ type server struct {
 // NewServer creates an object that satisfies the Server interface.
 func newServer() *server {
 	rs := &server{
-		wg: &sync.WaitGroup{},
-		s:  &http.Server{},
+		done: make(chan struct{}),
+		s:    &http.Server{},
 	}
 	return rs
 }
@@ -62,40 +61,55 @@ func (s *server) Start(reqState string) string {
 	port := rand.Intn(600) + 8400
 	s.s.Addr = fmt.Sprintf(":%d", port)
 	s.s.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		defer s.wg.Done()
+		defer func() {
+			s.done <- struct{}{}
+
+			page := okPage
+			if s.err != nil {
+				page = failPage
+			}
+			w.Write([]byte(page)) // nolint:errcheck
+		}()
+
 		qp := r.URL.Query()
-		if respState, ok := qp["state"]; !ok {
-			s.err = errors.New("missing OAuth state")
-			return
-		} else if respState[0] != reqState {
+		if reqState != qp.Get("state") {
 			s.err = errors.New("mismatched OAuth state")
 			return
 		}
-		if err, ok := qp["error"]; ok {
-			w.Write([]byte(failPage))
-			s.err = fmt.Errorf("authentication error: %s; description: %s", err[0], qp.Get("error_description"))
+		if err := qp.Get("error"); err != "" {
+			errMsg := fmt.Sprintf("authentication error: %s", err)
+			if detail := qp.Get("error_description"); detail != "" {
+				errMsg = fmt.Sprintf("%s; description: %s", errMsg, detail)
+			}
+			s.err = fmt.Errorf("%s", errMsg)
 			return
 		}
-		if code, ok := qp["code"]; ok {
-			w.Write([]byte(okPage))
-			s.code = code[0]
-		} else {
+
+		code := qp.Get("code")
+		if code == "" {
 			s.err = errors.New("authorization code missing in query string")
+			return
 		}
+		s.code = code
 	})
-	s.wg.Add(1)
-	go s.s.ListenAndServe()
+	go s.s.ListenAndServe() // nolint:errcheck
 	return fmt.Sprintf("http://localhost:%d", port)
 }
 
 // Stop will shut down the local HTTP server.
 func (s *server) Stop() {
-	s.s.Shutdown(context.Background())
+	close(s.done)
+	s.s.Shutdown(context.Background()) // nolint:errcheck
 }
 
 // WaitForCallback will wait until Azure interactive login has called us back with an authorization code or error.
-func (s *server) WaitForCallback() {
-	s.wg.Wait()
+func (s *server) WaitForCallback(ctx context.Context) error {
+	select {
+	case <-s.done:
+		return nil
+	case <-ctx.Done():
+		return ctx.Err()
+	}
 }
 
 // AuthorizationCode returns the authorization code or error result from the interactive login.

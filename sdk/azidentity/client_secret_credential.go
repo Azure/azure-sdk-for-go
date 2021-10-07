@@ -7,29 +7,24 @@ import (
 	"context"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 // ClientSecretCredentialOptions configures the ClientSecretCredential with optional parameters.
-// Call DefaultClientSecretCredentialOptions() to create an instance populated with default values.
+// All zero-value fields will be initialized with their default values.
 type ClientSecretCredentialOptions struct {
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
-	AuthorityHost string
+	AuthorityHost AuthorityHost
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
-	HTTPClient azcore.Transport
+	HTTPClient policy.Transporter
 	// Retry configures the built-in retry policy behavior
-	Retry azcore.RetryOptions
+	Retry policy.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry azcore.TelemetryOptions
-}
-
-// DefaultClientSecretCredentialOptions returns an instance of ClientSecretCredentialOptions initialized with default values.
-func DefaultClientSecretCredentialOptions() ClientSecretCredentialOptions {
-	return ClientSecretCredentialOptions{
-		Retry:     azcore.DefaultRetryOptions(),
-		Telemetry: azcore.DefaultTelemetryOptions(),
-	}
+	Telemetry policy.TelemetryOptions
+	// Logging configures the built-in logging policy behavior.
+	Logging policy.LogOptions
 }
 
 // ClientSecretCredential enables authentication to Azure Active Directory using a client secret that was generated for an App Registration.  More information on how
@@ -52,14 +47,13 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 		return nil, &CredentialUnavailableError{credentialType: "Client Secret Credential", message: tenantIDValidationErr}
 	}
 	if options == nil {
-		temp := DefaultClientSecretCredentialOptions()
-		options = &temp
+		options = &ClientSecretCredentialOptions{}
 	}
 	authorityHost, err := setAuthorityHost(options.AuthorityHost)
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry})
+	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry, Logging: options.Logging})
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +64,7 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 // ctx: Context used to control the request lifetime.
 // opts: TokenRequestOptions contains the list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
-func (c *ClientSecretCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *ClientSecretCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	tk, err := c.client.authenticate(ctx, c.tenantID, c.clientID, c.clientSecret, opts.Scopes)
 	if err != nil {
 		addGetTokenFailureLogs("Client Secret Credential", err, true)
@@ -78,12 +72,6 @@ func (c *ClientSecretCredential) GetToken(ctx context.Context, opts azcore.Token
 	}
 	logGetTokenSuccess(c, opts)
 	return tk, nil
-}
-
-// AuthenticationPolicy implements the azcore.Credential interface on ClientSecretCredential and calls the Bearer Token policy
-// to get the bearer token.
-func (c *ClientSecretCredential) AuthenticationPolicy(options azcore.AuthenticationPolicyOptions) azcore.Policy {
-	return newBearerTokenPolicy(c, options)
 }
 
 var _ azcore.TokenCredential = (*ClientSecretCredential)(nil)

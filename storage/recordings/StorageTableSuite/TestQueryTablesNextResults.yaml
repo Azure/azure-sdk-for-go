@@ -2,6 +2,43 @@
 version: 1
 interactions:
 - request:
+    body: ""
+    form: {}
+    headers:
+      Accept:
+      - application/json;odata=minimalmetadata
+      Authorization:
+      - SharedKey golangrocksonazure:7FW70upQRuXEddarLhoG1q9YLV7IeeGuipjnvdylwZs=
+      User-Agent:
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
+        table
+      x-ms-date:
+      - Thu, 15 Apr 2021 14:41:07 GMT
+      x-ms-version:
+      - "2018-03-28"
+    url: https://golangrocksonazure.table.core.windows.net/Tables
+    method: GET
+  response:
+    body: '{"odata.metadata":"https://golangrocksonazure.table.core.windows.net/$metadata#Tables","value":[]}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
+      Date:
+      - Thu, 15 Apr 2021 14:41:07 GMT
+      Server:
+      - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
+      X-Content-Type-Options:
+      - nosniff
+      X-Ms-Request-Id:
+      - 2cae7891-d002-009a-6e05-320134000000
+      X-Ms-Version:
+      - "2018-03-28"
+    status: 200 OK
+    code: 200
+    duration: ""
+- request:
     body: |
       {"TableName":"table044storagetablesuitetestque"}
     form: {}
@@ -11,7 +48,7 @@ interactions:
       Accept-Charset:
       - UTF-8
       Authorization:
-      - SharedKey golangrocksonazure:dtcC3wSMuK4W9SYTiGjiH2R7zkevmJsRIdu8aCBqg40=
+      - SharedKey golangrocksonazure:Igl1IRY9OC+0QDu1rWq6+aL350rOT0zJBScIBsjNtxI=
       Content-Length:
       - "49"
       Content-Type:
@@ -19,10 +56,10 @@ interactions:
       Prefer:
       - return-no-content
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         table
       x-ms-date:
-      - Tue, 28 May 2019 22:36:11 GMT
+      - Thu, 15 Apr 2021 14:41:07 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.table.core.windows.net/Tables?timeout=30
@@ -37,7 +74,7 @@ interactions:
       Dataserviceid:
       - https://golangrocksonazure.table.core.windows.net/Tables('table044storagetablesuitetestque')
       Date:
-      - Tue, 28 May 2019 22:36:11 GMT
+      - Thu, 15 Apr 2021 14:41:07 GMT
       Location:
       - https://golangrocksonazure.table.core.windows.net/Tables('table044storagetablesuitetestque')
       Preference-Applied:
@@ -47,7 +84,7 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - ac81105f-6002-0062-66a5-153a2a000000
+      - 2cae7892-d002-009a-6f05-320134000000
       X-Ms-Version:
       - "2018-03-28"
     status: 204 No Content
@@ -63,7 +100,7 @@ interactions:
       Accept-Charset:
       - UTF-8
       Authorization:
-      - SharedKey golangrocksonazure:dtcC3wSMuK4W9SYTiGjiH2R7zkevmJsRIdu8aCBqg40=
+      - SharedKey golangrocksonazure:Igl1IRY9OC+0QDu1rWq6+aL350rOT0zJBScIBsjNtxI=
       Content-Length:
       - "49"
       Content-Type:
@@ -71,10 +108,10 @@ interactions:
       Prefer:
       - return-no-content
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         table
       x-ms-date:
-      - Tue, 28 May 2019 22:36:11 GMT
+      - Thu, 15 Apr 2021 14:41:07 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.table.core.windows.net/Tables?timeout=30
@@ -89,7 +126,7 @@ interactions:
       Dataserviceid:
       - https://golangrocksonazure.table.core.windows.net/Tables('table144storagetablesuitetestque')
       Date:
-      - Tue, 28 May 2019 22:36:11 GMT
+      - Thu, 15 Apr 2021 14:41:07 GMT
       Location:
       - https://golangrocksonazure.table.core.windows.net/Tables('table144storagetablesuitetestque')
       Preference-Applied:
@@ -99,7 +136,7 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - ac811063-6002-0062-69a5-153a2a000000
+      - 2cae7897-d002-009a-7305-320134000000
       X-Ms-Version:
       - "2018-03-28"
     status: 204 No Content
@@ -115,7 +152,7 @@ interactions:
       Accept-Charset:
       - UTF-8
       Authorization:
-      - SharedKey golangrocksonazure:dtcC3wSMuK4W9SYTiGjiH2R7zkevmJsRIdu8aCBqg40=
+      - SharedKey golangrocksonazure:Igl1IRY9OC+0QDu1rWq6+aL350rOT0zJBScIBsjNtxI=
       Content-Length:
       - "49"
       Content-Type:
@@ -123,10 +160,10 @@ interactions:
       Prefer:
       - return-no-content
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         table
       x-ms-date:
-      - Tue, 28 May 2019 22:36:11 GMT
+      - Thu, 15 Apr 2021 14:41:07 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.table.core.windows.net/Tables?timeout=30
@@ -141,7 +178,7 @@ interactions:
       Dataserviceid:
       - https://golangrocksonazure.table.core.windows.net/Tables('table244storagetablesuitetestque')
       Date:
-      - Tue, 28 May 2019 22:36:11 GMT
+      - Thu, 15 Apr 2021 14:41:07 GMT
       Location:
       - https://golangrocksonazure.table.core.windows.net/Tables('table244storagetablesuitetestque')
       Preference-Applied:
@@ -151,7 +188,7 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - ac811068-6002-0062-6da5-153a2a000000
+      - 2cae78a2-d002-009a-7d05-320134000000
       X-Ms-Version:
       - "2018-03-28"
     status: 204 No Content
@@ -164,12 +201,12 @@ interactions:
       Accept:
       - application/json;odata=minimalmetadata
       Authorization:
-      - SharedKey golangrocksonazure:6gS0bWPDwrA0JXnsI4IjJWlde4j9O/QgI5Z3JAKW7ks=
+      - SharedKey golangrocksonazure:7FW70upQRuXEddarLhoG1q9YLV7IeeGuipjnvdylwZs=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         table
       x-ms-date:
-      - Tue, 28 May 2019 22:36:11 GMT
+      - Thu, 15 Apr 2021 14:41:07 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.table.core.windows.net/Tables?%24top=2
@@ -182,15 +219,15 @@ interactions:
       Content-Type:
       - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
       Date:
-      - Tue, 28 May 2019 22:36:11 GMT
+      - Thu, 15 Apr 2021 14:41:07 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Continuation-Nexttablename:
-      - 1!68!dGFibGUyNDRzdG9yYWdldGFibGVzdWl0ZXRlc3RxdWUBMDFkNTE1YTVjMDQ1YmI5Ng--
+      - 1!68!dGFibGUyNDRzdG9yYWdldGFibGVzdWl0ZXRlc3RxdWUBMDFkNzMyMDU1ZWUwOGE1Mw--
       X-Ms-Request-Id:
-      - ac81106b-6002-0062-6fa5-153a2a000000
+      - 2cae78b3-d002-009a-0d05-320134000000
       X-Ms-Version:
       - "2018-03-28"
     status: 200 OK
@@ -203,15 +240,15 @@ interactions:
       Accept:
       - application/json;odata=minimalmetadata
       Authorization:
-      - SharedKey golangrocksonazure:6gS0bWPDwrA0JXnsI4IjJWlde4j9O/QgI5Z3JAKW7ks=
+      - SharedKey golangrocksonazure:7FW70upQRuXEddarLhoG1q9YLV7IeeGuipjnvdylwZs=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         table
       x-ms-date:
-      - Tue, 28 May 2019 22:36:11 GMT
+      - Thu, 15 Apr 2021 14:41:07 GMT
       x-ms-version:
       - "2018-03-28"
-    url: https://golangrocksonazure.table.core.windows.net/Tables?%24top=2&NextTableName=1%2168%21dGFibGUyNDRzdG9yYWdldGFibGVzdWl0ZXRlc3RxdWUBMDFkNTE1YTVjMDQ1YmI5Ng--
+    url: https://golangrocksonazure.table.core.windows.net/Tables?%24top=2&NextTableName=1%2168%21dGFibGUyNDRzdG9yYWdldGFibGVzdWl0ZXRlc3RxdWUBMDFkNzMyMDU1ZWUwOGE1Mw--
     method: GET
   response:
     body: '{"odata.metadata":"https://golangrocksonazure.table.core.windows.net/$metadata#Tables","value":[{"TableName":"table244storagetablesuitetestque"}]}'
@@ -221,13 +258,13 @@ interactions:
       Content-Type:
       - application/json;odata=minimalmetadata;streaming=true;charset=utf-8
       Date:
-      - Tue, 28 May 2019 22:36:11 GMT
+      - Thu, 15 Apr 2021 14:41:07 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - ac81106f-6002-0062-73a5-153a2a000000
+      - 2cae78b6-d002-009a-1005-320134000000
       X-Ms-Version:
       - "2018-03-28"
     status: 200 OK
@@ -240,14 +277,14 @@ interactions:
       Accept:
       - application/json;odata=nometadata
       Authorization:
-      - SharedKey golangrocksonazure:vSd6MTNy4g7guk1Q38T2Xzw/dSit8wg1S0Jz9mJFVaM=
+      - SharedKey golangrocksonazure:N7HXWpjLj1308QU0lIc83bGEjcSy+16nCcuKMtbDRYs=
       Prefer:
       - return-no-content
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         table
       x-ms-date:
-      - Tue, 28 May 2019 22:36:11 GMT
+      - Thu, 15 Apr 2021 14:41:07 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.table.core.windows.net/Tables%28%27table244storagetablesuitetestque%27%29?timeout=30
@@ -260,13 +297,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:36:11 GMT
+      - Thu, 15 Apr 2021 14:41:07 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - ac811071-6002-0062-75a5-153a2a000000
+      - 2cae78bc-d002-009a-1605-320134000000
       X-Ms-Version:
       - "2018-03-28"
     status: 204 No Content
@@ -279,14 +316,14 @@ interactions:
       Accept:
       - application/json;odata=nometadata
       Authorization:
-      - SharedKey golangrocksonazure:UeCJbKHYq8Wt63guUoHnPi9G9bFxdg6EAvrQ14kTh30=
+      - SharedKey golangrocksonazure:tC8QP0UdmBvE8I6UuqqP3wuBCZQ9WbZ1DnaBvOdkOdQ=
       Prefer:
       - return-no-content
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         table
       x-ms-date:
-      - Tue, 28 May 2019 22:36:11 GMT
+      - Thu, 15 Apr 2021 14:41:07 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.table.core.windows.net/Tables%28%27table144storagetablesuitetestque%27%29?timeout=30
@@ -299,13 +336,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:36:11 GMT
+      - Thu, 15 Apr 2021 14:41:07 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - ac811074-6002-0062-78a5-153a2a000000
+      - 2cae78bf-d002-009a-1905-320134000000
       X-Ms-Version:
       - "2018-03-28"
     status: 204 No Content
@@ -318,14 +355,14 @@ interactions:
       Accept:
       - application/json;odata=nometadata
       Authorization:
-      - SharedKey golangrocksonazure:uYibBpzhed08WIUbzjGsTzm3qcFEc0uyZgkqcKQEbh8=
+      - SharedKey golangrocksonazure:gHw9sslzG1rc+L1IsN4csYk8OUHToenXlI/v5Zr1MUM=
       Prefer:
       - return-no-content
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         table
       x-ms-date:
-      - Tue, 28 May 2019 22:36:11 GMT
+      - Thu, 15 Apr 2021 14:41:07 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.table.core.windows.net/Tables%28%27table044storagetablesuitetestque%27%29?timeout=30
@@ -338,13 +375,13 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:36:11 GMT
+      - Thu, 15 Apr 2021 14:41:07 GMT
       Server:
       - Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0
       X-Content-Type-Options:
       - nosniff
       X-Ms-Request-Id:
-      - ac811075-6002-0062-79a5-153a2a000000
+      - 2cae78c2-d002-009a-1c05-320134000000
       X-Ms-Version:
       - "2018-03-28"
     status: 204 No Content

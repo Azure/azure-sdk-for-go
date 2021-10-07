@@ -11,16 +11,17 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 const (
-	testAuthCode = "12345"
+	testAuthCode    = "12345"
+	testRedirectURI = "http://localhost"
 )
 
 func TestAuthorizationCodeCredential_InvalidTenantID(t *testing.T) {
-	cred, err := NewAuthorizationCodeCredential(badTenantID, clientID, testAuthCode, nil)
+	cred, err := NewAuthorizationCodeCredential(badTenantID, clientID, testAuthCode, testRedirectURI, nil)
 	if err == nil {
 		t.Fatal("Expected an error but received none")
 	}
@@ -34,18 +35,18 @@ func TestAuthorizationCodeCredential_InvalidTenantID(t *testing.T) {
 }
 
 func TestAuthorizationCodeCredential_CreateAuthRequestSuccess(t *testing.T) {
-	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, nil)
+	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, testRedirectURI, nil)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	req, err := cred.client.createAuthorizationCodeAuthRequest(context.Background(), cred.tenantID, cred.clientID, cred.authCode, cred.clientSecret, []string{scope})
+	req, err := cred.client.createAuthorizationCodeAuthRequest(context.Background(), cred.tenantID, cred.clientID, cred.authCode, cred.clientSecret, "", cred.redirectURI, []string{scope})
 	if err != nil {
 		t.Fatalf("Unexpectedly received an error: %v", err)
 	}
-	if req.Request.Header.Get(azcore.HeaderContentType) != azcore.HeaderURLEncoded {
+	if req.Raw().Header.Get(headerContentType) != headerURLEncoded {
 		t.Fatal("Unexpected value for Content-Type header")
 	}
-	body, err := ioutil.ReadAll(req.Request.Body)
+	body, err := ioutil.ReadAll(req.Raw().Body)
 	if err != nil {
 		t.Fatal("Unable to read request body")
 	}
@@ -63,10 +64,13 @@ func TestAuthorizationCodeCredential_CreateAuthRequestSuccess(t *testing.T) {
 	if reqQueryParams[qpCode][0] != testAuthCode {
 		t.Fatal("Unexpected authorization code")
 	}
-	if req.Request.URL.Host != defaultTestAuthorityHost {
+	if reqQueryParams[qpRedirectURI][0] != testRedirectURI {
+		t.Fatal("Unexpected redirectURI")
+	}
+	if req.Raw().URL.Host != defaultTestAuthorityHost {
 		t.Fatal("Unexpected default authority host")
 	}
-	if req.Request.URL.Scheme != "https" {
+	if req.Raw().URL.Scheme != "https" {
 		t.Fatal("Wrong request scheme")
 	}
 }
@@ -75,15 +79,15 @@ func TestAuthorizationCodeCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := DefaultAuthorizationCodeCredentialOptions()
+	options := AuthorizationCodeCredentialOptions{}
 	options.ClientSecret = secret
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
-	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, &options)
+	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, testRedirectURI, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %v", err)
 	}
@@ -93,48 +97,24 @@ func TestAuthorizationCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
-	options := DefaultAuthorizationCodeCredentialOptions()
+	options := AuthorizationCodeCredentialOptions{}
 	options.ClientSecret = secret
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
-	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, &options)
+	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, testRedirectURI, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
 	var authFailed *AuthenticationFailedError
 	if !errors.As(err, &authFailed) {
 		t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
-	} else {
-		var respError *AADAuthenticationFailedError
-		if !errors.As(authFailed.Unwrap(), &respError) {
-			t.Fatalf("Expected: AADAuthenticationFailedError, Received: %T", err)
-		} else {
-			if len(respError.Message) == 0 {
-				t.Fatalf("Did not receive an error message")
-			}
-			if len(respError.Description) == 0 {
-				t.Fatalf("Did not receive an error description")
-			}
-			if len(respError.Timestamp) == 0 {
-				t.Fatalf("Did not receive a timestamp")
-			}
-			if len(respError.TraceID) == 0 {
-				t.Fatalf("Did not receive a TraceID")
-			}
-			if len(respError.CorrelationID) == 0 {
-				t.Fatalf("Did not receive a CorrelationID")
-			}
-			if len(respError.URL) == 0 {
-				t.Fatalf("Did not receive an error URL")
-			}
-			if respError.Response == nil {
-				t.Fatalf("Did not receive an error response")
-			}
-		}
+	}
+	if authFailed.RawResponse() == nil {
+		t.Fatalf("Expected error to include a response")
 	}
 }
 
@@ -142,15 +122,15 @@ func TestAuthorizationCodeCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
-	options := DefaultAuthorizationCodeCredentialOptions()
+	options := AuthorizationCodeCredentialOptions{}
 	options.ClientSecret = secret
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
-	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, &options)
+	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, testRedirectURI, &options)
 	if err != nil {
 		t.Fatalf("Failed to create the credential")
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected a JSON marshal error but received nil")
 	}

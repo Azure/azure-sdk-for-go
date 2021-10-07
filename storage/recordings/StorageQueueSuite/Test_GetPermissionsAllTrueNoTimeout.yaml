@@ -6,12 +6,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:InJUrxblYycL9Hbv/R/Pky8WnaiEzp/TWM1MjqbwQjg=
+      - SharedKey golangrocksonazure:93lNoAU+p0onT5YuIaHgHQO/Qe7g4mvp/uBI9ATSEX0=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         queue
       x-ms-date:
-      - Tue, 28 May 2019 22:36:09 GMT
+      - Tue, 13 Apr 2021 15:57:54 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.queue.core.windows.net/queue-153storagequeuesuitetestgetpermissionsalltruenotimeout
@@ -22,11 +22,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:36:08 GMT
+      - Tue, 13 Apr 2021 15:57:53 GMT
       Server:
       - Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - c47a9fc1-a003-0042-27a5-15418d000000
+      - cfe7bc58-a003-005b-337d-30a6d6000000
       X-Ms-Version:
       - "2018-03-28"
     status: 201 Created
@@ -37,14 +37,14 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:DBwNKDoym1Ue/Kho0fg2FCVv9CvM/g+MxwShn/d3qPk=
+      - SharedKey golangrocksonazure:rvjH26eAeHOPq35DhYoDnGg4MgPxgORm4i/9pz2VmQQ=
       Content-Length:
       - "233"
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         queue
       x-ms-date:
-      - Tue, 28 May 2019 22:36:09 GMT
+      - Tue, 13 Apr 2021 15:57:54 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.queue.core.windows.net/queue-153storagequeuesuitetestgetpermissionsalltruenotimeout?comp=acl
@@ -55,11 +55,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:36:08 GMT
+      - Tue, 13 Apr 2021 15:57:53 GMT
       Server:
       - Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - c47a9fc6-a003-0042-2ba5-15418d000000
+      - cfe7bc68-a003-005b-427d-30a6d6000000
       X-Ms-Version:
       - "2018-03-28"
     status: 204 No Content
@@ -70,12 +70,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:cpQYt92cRQZJ4Lz9NTnyIZ2E+ErgbQQAa+XDg3NDa/w=
+      - SharedKey golangrocksonazure:sk8EOrDbOdohGqpmGYA6tmDms8j6crclGmVeiTnYPN0=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         queue
       x-ms-date:
-      - Tue, 28 May 2019 22:36:09 GMT
+      - Tue, 13 Apr 2021 15:57:54 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.queue.core.windows.net/queue-153storagequeuesuitetestgetpermissionsalltruenotimeout?comp=acl
@@ -88,11 +88,11 @@ interactions:
       Content-Type:
       - application/xml
       Date:
-      - Tue, 28 May 2019 22:36:08 GMT
+      - Tue, 13 Apr 2021 15:57:53 GMT
       Server:
       - Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - c47aa003-a003-0042-63a5-15418d000000
+      - cfe7bcaf-a003-005b-087d-30a6d6000000
       X-Ms-Version:
       - "2018-03-28"
     status: 200 OK
@@ -103,12 +103,12 @@ interactions:
     form: {}
     headers:
       Authorization:
-      - SharedKey golangrocksonazure:KZ4FQGPCjM2RWxmc74xjfIDdGCPt4u20IcQw1WRuI1A=
+      - SharedKey golangrocksonazure:1G0nLy7EFOz2ek4iI5q+T3oZZxbpXBlkFCLb6LO4ceE=
       User-Agent:
-      - Go/go1.12.4 (amd64-windows) azure-storage-go/latest api-version/2018-03-28
+      - Go/go1.15.1 (amd64-windows) azure-storage-go/v52.6.0 api-version/2018-03-28
         queue
       x-ms-date:
-      - Tue, 28 May 2019 22:36:09 GMT
+      - Tue, 13 Apr 2021 15:57:54 GMT
       x-ms-version:
       - "2018-03-28"
     url: https://golangrocksonazure.queue.core.windows.net/queue-153storagequeuesuitetestgetpermissionsalltruenotimeout
@@ -119,11 +119,11 @@ interactions:
       Content-Length:
       - "0"
       Date:
-      - Tue, 28 May 2019 22:36:08 GMT
+      - Tue, 13 Apr 2021 15:57:53 GMT
       Server:
       - Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0
       X-Ms-Request-Id:
-      - c47aa014-a003-0042-74a5-15418d000000
+      - cfe7bcbd-a003-005b-167d-30a6d6000000
       X-Ms-Version:
       - "2018-03-28"
     status: 204 No Content

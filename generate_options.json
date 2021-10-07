@@ -1,15 +1,15 @@
 {
   "autorestArguments": [
-    "--use=@microsoft.azure/autorest.go@~2.1.157",
+    "--use=@microsoft.azure/autorest.go@2.1.187",
     "--go",
     "--verbose",
     "--go-sdk-folder=.",
     "--multiapi",
     "--use-onever",
-    "--preview-chk",
-    "--version=V2"
+    "--version=V2",
+    "--go.license-header=MICROSOFT_MIT_NO_VERSION"
   ],
-  "afterScripts": [
-    "gofmt -w ./services/"
+  "additionalOptions": [
+    "--enum-prefix"
   ]
 }

@@ -11,7 +11,7 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -22,7 +22,7 @@ const (
 	secret                   = "secret"
 	wrongSecret              = "wrong_secret"
 	tokenValue               = "new_token"
-	scope                    = "http://storage.azure.com/.default"
+	scope                    = "https://storage.azure.com/.default"
 	defaultTestAuthorityHost = "login.microsoftonline.com"
 )
 
@@ -49,10 +49,10 @@ func TestClientSecretCredential_CreateAuthRequestSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpectedly received an error: %v", err)
 	}
-	if req.Request.Header.Get(azcore.HeaderContentType) != azcore.HeaderURLEncoded {
+	if req.Raw().Header.Get(headerContentType) != headerURLEncoded {
 		t.Fatalf("Unexpected value for Content-Type header")
 	}
-	body, err := ioutil.ReadAll(req.Request.Body)
+	body, err := ioutil.ReadAll(req.Raw().Body)
 	if err != nil {
 		t.Fatalf("Unable to read request body")
 	}
@@ -70,10 +70,10 @@ func TestClientSecretCredential_CreateAuthRequestSuccess(t *testing.T) {
 	if reqQueryParams[qpScope][0] != scope {
 		t.Fatalf("Unexpected scope in scope header")
 	}
-	if req.Request.URL.Host != defaultTestAuthorityHost {
+	if req.Raw().URL.Host != defaultTestAuthorityHost {
 		t.Fatalf("Unexpected default authority host")
 	}
-	if req.Request.URL.Scheme != "https" {
+	if req.Raw().URL.Scheme != "https" {
 		t.Fatalf("Wrong request scheme")
 	}
 }
@@ -82,14 +82,14 @@ func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := DefaultClientSecretCredentialOptions()
-	options.AuthorityHost = srv.URL()
+	options := ClientSecretCredentialOptions{}
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %v", err)
 	}
@@ -99,47 +99,23 @@ func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
-	options := DefaultClientSecretCredentialOptions()
-	options.AuthorityHost = srv.URL()
+	options := ClientSecretCredentialOptions{}
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
 	var authFailed *AuthenticationFailedError
 	if !errors.As(err, &authFailed) {
 		t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
-	} else {
-		var respError *AADAuthenticationFailedError
-		if !errors.As(authFailed.Unwrap(), &respError) {
-			t.Fatalf("Expected: AADAuthenticationFailedError, Received: %T", err)
-		} else {
-			if len(respError.Message) == 0 {
-				t.Fatalf("Did not receive an error message")
-			}
-			if len(respError.Description) == 0 {
-				t.Fatalf("Did not receive an error description")
-			}
-			if len(respError.Timestamp) == 0 {
-				t.Fatalf("Did not receive a timestamp")
-			}
-			if len(respError.TraceID) == 0 {
-				t.Fatalf("Did not receive a TraceID")
-			}
-			if len(respError.CorrelationID) == 0 {
-				t.Fatalf("Did not receive a CorrelationID")
-			}
-			if len(respError.URL) == 0 {
-				t.Fatalf("Did not receive an error URL")
-			}
-			if respError.Response == nil {
-				t.Fatalf("Did not receive an error response")
-			}
-		}
+	}
+	if authFailed.RawResponse() == nil {
+		t.Fatalf("Expected error to include a response")
 	}
 }
 
@@ -147,14 +123,14 @@ func TestClientSecretCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
-	options := DefaultClientSecretCredentialOptions()
-	options.AuthorityHost = srv.URL()
+	options := ClientSecretCredentialOptions{}
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {
 		t.Fatalf("Failed to create the credential")
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected a JSON marshal error but received nil")
 	}

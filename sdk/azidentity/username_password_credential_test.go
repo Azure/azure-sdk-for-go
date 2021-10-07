@@ -11,7 +11,8 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -38,10 +39,10 @@ func TestUsernamePasswordCredential_CreateAuthRequestSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpectedly received an error: %v", err)
 	}
-	if req.Request.Header.Get(azcore.HeaderContentType) != azcore.HeaderURLEncoded {
+	if req.Raw().Header.Get(headerContentType) != headerURLEncoded {
 		t.Fatalf("Unexpected value for Content-Type header")
 	}
-	body, err := ioutil.ReadAll(req.Request.Body)
+	body, err := ioutil.ReadAll(req.Raw().Body)
 	if err != nil {
 		t.Fatalf("Unable to read request body")
 	}
@@ -68,10 +69,10 @@ func TestUsernamePasswordCredential_CreateAuthRequestSuccess(t *testing.T) {
 	if reqQueryParams[qpScope][0] != scope {
 		t.Fatalf("Unexpected scope in scope header")
 	}
-	if req.Request.URL.Host != defaultTestAuthorityHost {
+	if req.Raw().URL.Host != defaultTestAuthorityHost {
 		t.Fatalf("Unexpected default authority host")
 	}
-	if req.Request.URL.Scheme != "https" {
+	if req.Raw().URL.Scheme != "https" {
 		t.Fatalf("Wrong request scheme")
 	}
 }
@@ -80,14 +81,14 @@ func TestUsernamePasswordCredential_GetTokenSuccess(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := DefaultUsernamePasswordCredentialOptions()
-	options.AuthorityHost = srv.URL()
+	options := UsernamePasswordCredentialOptions{}
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
@@ -97,14 +98,14 @@ func TestUsernamePasswordCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	options := DefaultUsernamePasswordCredentialOptions()
-	options.AuthorityHost = srv.URL()
+	options := UsernamePasswordCredentialOptions{}
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "wrong_password", &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
@@ -115,15 +116,15 @@ func TestBearerPolicy_UsernamePasswordCredential(t *testing.T) {
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-	options := DefaultUsernamePasswordCredentialOptions()
-	options.AuthorityHost = srv.URL()
+	options := UsernamePasswordCredentialOptions{}
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
 	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
 	pipeline := defaultTestPipeline(srv, cred, scope)
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}

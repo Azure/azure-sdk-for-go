@@ -26,7 +26,8 @@ gocov convert ./mergedCoverage.txt > ./coverage.json
 Get-Content ./coverage.json | gocov-xml > ./coverage.xml
 Get-Content ./coverage.json | gocov-html > ./coverage.html
 
-Get-Content ./coverage.xml
+Move-Item ./coverage.xml $repoRoot
+Move-Item ./coverage.html $repoRoot
 
 # use internal tool to fail if coverage is too low
 Pop-Location

@@ -22,7 +22,7 @@ type (
 		links          internal.AMQPLinks
 	}
 
-	// SendableMessage are sendable using Sender.SendMessage.
+	// SendableMessage can be sent using `Sender.SendMessage` or `Sender.SendMessages`.
 	// Message implements this interface.
 	SendableMessage interface {
 		toAMQPMessage() *amqp.Message

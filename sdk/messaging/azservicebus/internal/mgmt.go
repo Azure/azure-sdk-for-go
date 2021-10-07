@@ -51,6 +51,9 @@ type MgmtClient interface {
 	SendDisposition(ctx context.Context, lockToken *amqp.UUID, state Disposition) error
 	ReceiveDeferred(ctx context.Context, mode ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error)
 	PeekMessages(ctx context.Context, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error)
+
+	ScheduleMessages(ctx context.Context, enqueueTime time.Time, messages ...*amqp.Message) ([]int64, error)
+	CancelScheduled(ctx context.Context, seq ...int64) error
 }
 
 func newMgmtClient(ctx context.Context, links AMQPLinks, ns NamespaceForMgmtClient) (MgmtClient, error) {

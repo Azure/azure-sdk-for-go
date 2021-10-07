@@ -445,7 +445,7 @@ var recordMode = os.Getenv("AZURE_RECORD_MODE")
 const (
 	modeRecording      = "record"
 	modePlayback       = "playback"
-	modeLiveNoRecord   = "live-no-record"
+      modeLiveNoRecord   = "live"
 	baseProxyURLSecure = "localhost:5001"
 	baseProxyURL       = "localhost:5000"
 	IdHeader           = "x-recording-id"

@@ -219,7 +219,7 @@ func (b BlobClient) GetTags(ctx context.Context, options *GetTagsBlobOptions) (B
 }
 
 // GetSASToken is a convenience method for generating a SAS token for the currently pointed at blob.
-// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
 func (b BlobClient) GetSASToken(permissions BlobSASPermissions, start time.Time, expiry time.Time) (SASQueryParameters, error) {
 	urlParts := NewBlobURLParts(b.URL())
 

@@ -6,10 +6,11 @@ package azblob
 import (
 	"context"
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -217,7 +218,7 @@ func (s ServiceClient) CanGetAccountSASToken() bool {
 }
 
 // GetSASToken is a convenience method for generating a SAS token for the currently pointed at account.
-// It can only be used if the supplied azcore.Credential during creation was a SharedKeyCredential.
+// It can only be used if the credential supplied during creation was a SharedKeyCredential.
 // This validity can be checked with CanGetAccountSASToken().
 func (s ServiceClient) GetSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, services AccountSASServices, start time.Time, expiry time.Time) (string, error) {
 	cred, ok := s.cred.(*SharedKeyCredential)

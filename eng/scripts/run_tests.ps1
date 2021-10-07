@@ -4,8 +4,8 @@ Param(
     [string] $serviceDirectory
 )
 
-Write-Host "Finding test directories in 'sdk/$serviceDir'"
-$testDirs = & $PSScriptRoot/get_test_dirs.ps1 -serviceDir $serviceDir
+Write-Host "Finding test directories in 'sdk/$serviceDirectory'"
+$testDirs = & $PSScriptRoot/get_test_dirs.ps1 -serviceDir $serviceDirectory
 Write-Host $testDirs
 
 foreach ($td in $testDirs) {
@@ -23,3 +23,7 @@ foreach ($td in $testDirs) {
         Remove-Item coverage.txt
     }
 }
+
+# Run the coverage step
+
+# & $PSSCRIPTROOT/create_coverage.ps1 -serviceDir $serviceDirectory

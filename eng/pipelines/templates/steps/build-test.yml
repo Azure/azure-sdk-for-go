@@ -46,7 +46,7 @@ steps:
         go install github.com/jstemmer/go-junit-report@v0.9.1
         go install github.com/axw/gocov/gocov@v1.0.0
         go install github.com/AlekSi/gocov-xml@v1.0.0
-        go install github.com/matm/gocov-html@v1.1
+        go install github.com/matm/gocov-html@v0.0.0-20200509184451-71874e2e203b
         go install github.com/wadey/gocovmerge@v0.0.0-20160331181800-b5bfa59ec0ad
       displayName: "Install Coverage and Junit Dependencies"
       workingDirectory: '${{parameters.GoWorkspace}}'

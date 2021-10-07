@@ -20,15 +20,19 @@ The redesign for the API surface of Service Bus involves changing the way that c
 
 One big change is that the top level "client" is is now [Client](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#Client), not `Namespace`:
 
-Older code:
+Previous code:
 
 ```go
+// previous code
+
 ns, err := servicebus.NewNamespace(servicebus.NamespaceWithConnectionString())
 ```
 
 New (using `azservicebus`):
 
 ```go
+// new code
+
 client, err = azservicebus.NewClientWithConnectionString(connectionString, nil)
 ```
 
@@ -72,8 +76,6 @@ The `Processor` replaces the `Listen` functions on the previous Receiver type th
 The Processor will only exit when you call `Close`.
 
 ```go
-// new code
-
 // NOTE: there is also NewProcessorForSubscription for subscriptions.
 processor, err = client.NewProcessorForQueue(
   queueName,
@@ -102,8 +104,6 @@ Receivers allow you to request messages in batches, or easily receive a single m
 for programs that need more control over when messages are received and when they are processed.
 
 ```go
-// previous code
-
 receiver, err := client.NewReceiverForQueue(queue)
 // or for a subscription
 receiver, err := client.NewReceiverForSubscription(topicName, subscriptionName)
@@ -132,6 +132,7 @@ Previously, you created a receiver through an entity struct, like Queue or Subsc
 
 ```go
 // previous code
+
 queue, err := ns.NewQueue()
 deadLetterReceiver, err := queue.NewDeadLetterReceiver()
 
@@ -149,6 +150,7 @@ Now, in `azservicebus`:
 
 ```go
 // new code
+
 receiver, err = client.NewReceiverForQueue(
   queueName,
   &azservicebus.ReceiverOptions{
@@ -177,6 +179,8 @@ Message settlement functions have moved to the `Receiver`, rather than being on 
 Previously:
 
 ```go
+// previous code
+
 receiver.Listen(ctx, servicebus.HandlerFunc(func(c context.Context, m *servicebus.Message) error {
   m.Complete(ctx)
   return nil
@@ -186,6 +190,8 @@ receiver.Listen(ctx, servicebus.HandlerFunc(func(c context.Context, m *servicebu
 Now, using `azservicebus`:
 
 ```go
+// new code
+
 // with the Processor
 processor.Start(ctx, func(msg *azservicebus.ReceivedMessage) {
   processor.CompleteMessage(ctx, msg)

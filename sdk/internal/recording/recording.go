@@ -603,7 +603,7 @@ func LiveOnly(t *testing.T) {
 // Function for sleeping during a test for `duration` seconds. This method will only execute when
 // AZURE_RECORD_MODE = "record", if a test is running in playback this will be a noop.
 func Sleep(duration time.Duration) {
-	if GetRecordMode() == modeRecording {
+	if GetRecordMode() != modePlayback {
 		time.Sleep(duration)
 	}
 }

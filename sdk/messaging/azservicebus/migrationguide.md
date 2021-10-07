@@ -68,7 +68,7 @@ sender.SendMessage(ctx, batch)
 ### Processing and receiving messages
 
 Receiving has split into two types:
-- the [Processor](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#Processor), for continuously streaming messages a user provided callback (similar to `Listen`).
+- the [Processor](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#Processor), for continuously streaming messages to a user provided callback (similar to `Listen`).
 - the [Receiver](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#Receiver), for receiving of messages in batches.
 
 The `Processor` replaces the `Listen` functions on the previous Receiver type that could be created from a `Queue` or `Subscription`. It also adds in more robust error handling, which means that previous errors (like a link detaching) do not cause the Processor to exit. 

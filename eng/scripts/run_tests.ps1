@@ -23,7 +23,3 @@ foreach ($td in $testDirs) {
         Remove-Item coverage.txt
     }
 }
-
-# Run the coverage step
-
-# & $PSSCRIPTROOT/create_coverage.ps1 -serviceDir $serviceDirectory

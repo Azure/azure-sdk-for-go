@@ -87,7 +87,7 @@ jobs:
           GoVersion: $(GoVersion)
           RunTests: true
           EnvVars:
-            AZURE_RECORD_MODE: 'live-no-record'
+            AZURE_RECORD_MODE: 'live'
 
       - ${{ parameters.PostSteps }}
 

@@ -445,6 +445,7 @@ var recordMode = os.Getenv("AZURE_RECORD_MODE")
 const (
 	modeRecording      = "record"
 	modePlayback       = "playback"
+	modeLiveNoRecord   = "live-no-record"
 	baseProxyURLSecure = "localhost:5001"
 	baseProxyURL       = "localhost:5000"
 	IdHeader           = "x-recording-id"
@@ -490,8 +491,8 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 	if options == nil {
 		options = defaultOptions()
 	}
-	if !(recordMode == modeRecording || recordMode == modePlayback) {
-		return fmt.Errorf("AZURE_RECORD_MODE was not understood, options are %s or %s Received: %v", modeRecording, modePlayback, recordMode)
+	if !(recordMode == modeRecording || recordMode == modePlayback || recordMode == modeLiveNoRecord) {
+		return fmt.Errorf("AZURE_RECORD_MODE was not understood, options are %s, %s, or %s Received: %v", modeRecording, modePlayback, modeLiveNoRecord, recordMode)
 	}
 	testId := getTestId(pathToRecordings, t)
 

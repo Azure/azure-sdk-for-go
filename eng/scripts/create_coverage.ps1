@@ -4,6 +4,8 @@ Param(
     [string] $serviceDirectory
 )
 
+$repoRoot = Resolve-Path "$PSScriptRoot/../../"
+
 Write-Host $serviceDirectory
 Push-Location $serviceDirectory
 
@@ -24,4 +26,8 @@ Get-Content ./coverage.json | gocov-html > ./coverage.html
 
 # use internal tool to fail if coverage is too low
 Pop-Location
-go run ../eng/tools/internal/coverage/main.go  -serviceDirectory $serviceDirectory
+
+go run $repoRoot/eng/tools/internal/coverage/coverage.go `
+    -config $repoRoot/eng/config.json `
+    -serviceDirectory $serviceDirectory `
+    -searchDirectory $repoRoot

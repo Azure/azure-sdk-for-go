@@ -18,7 +18,7 @@ The redesign for the API surface of Service Bus involves changing the way that c
 
 ### Namespace to Client migration
 
-One big change is that the top level "client" is is now [Client](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#Client), not `Namespace`:
+One big change is that the top level "client" is now [Client](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#Client), not `Namespace`:
 
 Previous code:
 

@@ -87,7 +87,7 @@ func createClient(t *testing.T) (*Client, error) {
 	_ = options
 
 	var cred azcore.TokenCredential
-	if recording.GetRecordMode() == "record" {
+	if recording.GetRecordMode() != recording.PlaybackMode {
 		tenantId := lookupEnvVar("AZSECRETS_TENANT_ID")
 		clientId := lookupEnvVar("AZSECRETS_CLIENT_ID")
 		clientSecret := lookupEnvVar("AZSECRETS_CLIENT_SECRET")

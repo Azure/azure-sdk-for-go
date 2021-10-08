@@ -59,6 +59,7 @@
 
 ### Other Changes
 * `NewDefaultAzureCredential()` returns `*DefaultAzureCredential` instead of `*ChainedTokenCredential`
+* Added `TenantID` field to `DefaultAzureCredentialOptions` and `AzureCLICredentialOptions`
 
 ## 0.11.0 (2021-09-08)
 ### Breaking Changes

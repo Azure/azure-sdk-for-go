@@ -23,6 +23,9 @@ type DefaultAzureCredentialOptions struct {
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost AuthorityHost
+	// TenantID identifies the tenant the Azure CLI should authenticate in.
+	// Defaults to the CLI's default tenant, which is typically the home tenant of the user logged in to the CLI.
+	TenantID string
 }
 
 // DefaultAzureCredential is a default credential chain for applications that will be deployed to Azure.
@@ -62,7 +65,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		errMsg += err.Error()
 	}
 
-	cliCred, err := NewAzureCLICredential(nil)
+	cliCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TenantID: options.TenantID})
 	if err == nil {
 		creds = append(creds, cliCred)
 	} else {

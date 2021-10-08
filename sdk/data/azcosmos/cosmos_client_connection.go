@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
@@ -22,7 +21,7 @@ type cosmosClientConnection struct {
 
 // newConnection creates an instance of the connection type with the specified endpoint.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
-func newCosmosClientConnection(endpoint string, cred azcore.Credential, options *CosmosClientOptions) *cosmosClientConnection {
+func newCosmosClientConnection(endpoint string, cred *SharedKeyCredential, options *CosmosClientOptions) *cosmosClientConnection {
 	policies := []policy.Policy{
 		azruntime.NewTelemetryPolicy("azcosmos", serviceLibVersion, &options.Telemetry),
 	}
@@ -30,7 +29,7 @@ func newCosmosClientConnection(endpoint string, cred azcore.Credential, options 
 	policies = append(policies, azruntime.NewRetryPolicy(&options.Retry))
 	policies = append(policies, options.PerRetryPolicies...)
 	policies = append(policies, options.getSDKInternalPolicies()...)
-	policies = append(policies, cred.NewAuthenticationPolicy(azruntime.AuthenticationOptions{}))
+	policies = append(policies, newSharedKeyCredPolicy(cred))
 	policies = append(policies, azruntime.NewLogPolicy(&options.Logging))
 	return &cosmosClientConnection{endpoint: endpoint, Pipeline: azruntime.NewPipeline(options.HTTPClient, policies...)}
 }

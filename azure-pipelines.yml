@@ -5,12 +5,14 @@ trigger:
     exclude:
     - sdk/
     - eng/tools/
+    - eng/config.json
 
 pr:
   paths:
     exclude:
     - sdk/
     - eng/tools/
+    - eng/config.json
 
 jobs:
   - job: Build_Test
@@ -31,8 +33,8 @@ jobs:
       sdkPath: '$(GOPATH)/src/github.com/$(build.repository.name)'
       GO111MODULE: 'off'
       IGNORE_BREAKING_CHANGES: true
-      go.list.filter: '| grep -v vendor | grep -v azure-sdk-for-go/sdk | grep -v azure-sdk-for-go/eng'
-      go.test.filter: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./tools -prune'
+      go.list.filter: 'profiles services storage'
+      go.test.filter: '-path ./vendor -prune -o -path ./sdk -prune -o -path ./eng -prune'
 
     steps:
     - task: GoTool@0
@@ -59,11 +61,19 @@ jobs:
       workingDirectory: '$(sdkPath)'
       displayName: 'Install Dependencies'
 
-    - script: go vet -v $(go list ./... $(go.list.filter))
+    - script: |
+        for dd in $(go.list.filter); do
+          cd $(sdkPath)/$dd
+          go vet -v ./...
+        done
       workingDirectory: '$(sdkPath)'
       displayName: 'Vet'
 
-    - script: go build -v $(go list ./... $(go.list.filter))
+    - script: |
+        for dd in $(go.list.filter); do
+          cd $(sdkPath)/$dd
+          go build -v ./...
+        done
       workingDirectory: '$(sdkPath)'
       displayName: 'Build'
 

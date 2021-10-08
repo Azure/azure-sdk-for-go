@@ -43,32 +43,23 @@ steps:
 
   - ${{ if eq(parameters.RunTests, 'true') }}:
     - pwsh: |
-        go get github.com/jstemmer/go-junit-report
-        go get github.com/axw/gocov/gocov
-        go get github.com/AlekSi/gocov-xml
-        go get github.com/matm/gocov-html
-        go get -u github.com/wadey/gocovmerge
+        go install github.com/jstemmer/go-junit-report@v0.9.1
+        go install github.com/axw/gocov/gocov@v1.0.0
+        go install github.com/AlekSi/gocov-xml@v1.0.0
+        go install github.com/matm/gocov-html@v0.0.0-20200509184451-71874e2e203b
+        go install github.com/wadey/gocovmerge@v0.0.0-20160331181800-b5bfa59ec0ad
       displayName: "Install Coverage and Junit Dependencies"
       workingDirectory: '${{parameters.GoWorkspace}}'
 
     - template: /eng/common/testproxy/test-proxy-docker.yml
 
-    - pwsh: |
-        $testDirs = ./eng/scripts/get_test_dirs.ps1 '${{ parameters.ServiceDirectory }}'
-        foreach ($td in $testDirs) {
-          pushd $td
-          Write-Host "##[command]Executing 'go test -run "^Test" -v -coverprofile coverage.txt .' in $td"
-          go test -run "^Test" -v -coverprofile coverage.txt . | Tee-Object -FilePath outfile.txt
-          if ($LASTEXITCODE) { exit $LASTEXITCODE }
-          cat outfile.txt | go-junit-report > report.xml
-          # if no tests were actually run (e.g. examples) delete the coverage file so it's omitted from the coverage report
-          if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simplematch -quiet) {
-            Write-Host "##[command]Deleting empty coverage file"
-            rm coverage.txt
-          }
-        }
+    - task: PowerShell@2
       displayName: 'Run Tests'
-      workingDirectory: '${{parameters.GoWorkspace}}'
+      inputs:
+        targetType: 'filePath'
+        filePath: ./eng/scripts/run_tests.ps1
+        arguments: '${{ parameters.ServiceDirectory }}'
+        pwsh: true
       env:
         GO111MODULE: 'on'
         PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
@@ -79,9 +70,8 @@ steps:
       displayName: 'Dump Docker logs'
       condition: succeededOrFailed()
 
-    - pwsh: ../eng/scripts/create_coverage.ps1 ${{parameters.ServiceDirectory}}
+    - pwsh: ./eng/scripts/create_coverage.ps1 ${{parameters.ServiceDirectory}}
       displayName: 'Generate Coverage XML'
-      workingDirectory: '${{parameters.GoWorkspace}}sdk'
       env:
         GO111MODULE: 'off'
 
@@ -97,6 +87,6 @@ steps:
       condition: succeededOrFailed()
       inputs:
         codeCoverageTool: Cobertura
-        summaryFileLocation: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/coverage.xml'
-        additionalCodeCoverageFiles: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/coverage.html'
+        summaryFileLocation: './coverage.xml'
+        additionalCodeCoverageFiles: './coverage.html'
         failIfCoverageEmpty: true

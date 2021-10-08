@@ -551,6 +551,27 @@ type SharedGalleryImageVersionsClientAPI interface {
 
 var _ SharedGalleryImageVersionsClientAPI = (*compute.SharedGalleryImageVersionsClient)(nil)
 
+// CommunityGalleriesClientAPI contains the set of methods on the CommunityGalleriesClient type.
+type CommunityGalleriesClientAPI interface {
+	Get(ctx context.Context, location string, publicGalleryName string) (result compute.CommunityGallery, err error)
+}
+
+var _ CommunityGalleriesClientAPI = (*compute.CommunityGalleriesClient)(nil)
+
+// CommunityGalleryImagesClientAPI contains the set of methods on the CommunityGalleryImagesClient type.
+type CommunityGalleryImagesClientAPI interface {
+	Get(ctx context.Context, location string, publicGalleryName string, galleryImageName string) (result compute.CommunityGalleryImage, err error)
+}
+
+var _ CommunityGalleryImagesClientAPI = (*compute.CommunityGalleryImagesClient)(nil)
+
+// CommunityGalleryImageVersionsClientAPI contains the set of methods on the CommunityGalleryImageVersionsClient type.
+type CommunityGalleryImageVersionsClientAPI interface {
+	Get(ctx context.Context, location string, publicGalleryName string, galleryImageName string, galleryImageVersionName string) (result compute.CommunityGalleryImageVersion, err error)
+}
+
+var _ CommunityGalleryImageVersionsClientAPI = (*compute.CommunityGalleryImageVersionsClient)(nil)
+
 // CloudServiceRoleInstancesClientAPI contains the set of methods on the CloudServiceRoleInstancesClient type.
 type CloudServiceRoleInstancesClientAPI interface {
 	Delete(ctx context.Context, roleInstanceName string, resourceGroupName string, cloudServiceName string) (result compute.CloudServiceRoleInstancesDeleteFuture, err error)

@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## `v58.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/hybridkubernetes/mgmt/2021-10-01/hybridkubernetes`
+- `github.com/Azure/azure-sdk-for-go/services/logz/mgmt/2020-10-01/logz`
+- `github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2021-09-01/storagecache`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-07-01/compute` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/compute/mgmt/2021-07-01/compute/CHANGELOG.md) |
+
 ## `v58.0.0`
 
 ### New Packages
@@ -11,8 +25,8 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-12-01/compute` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/compute/mgmt/2020-12-01/compute/CHANGELOG.md) |
-| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2021-07-01/features` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/resources/mgmt/2021-07-01/features/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-12-01/compute` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v58.0.0/services/compute/mgmt/2020-12-01/compute/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2021-07-01/features` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v58.0.0/services/resources/mgmt/2021-07-01/features/CHANGELOG.md) |
 
 ## `v57.4.0`
 

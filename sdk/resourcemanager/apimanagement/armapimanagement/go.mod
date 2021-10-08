@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/apimanagement/armapimanagement
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement
 
 go 1.16
 

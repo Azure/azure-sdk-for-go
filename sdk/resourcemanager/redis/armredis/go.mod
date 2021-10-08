@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/redis/armredis
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis
 
 go 1.16
 

@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/containerservice/armcontainerservice
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservice/armcontainerservice
 
 go 1.16
 

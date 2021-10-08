@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/agrifood/armagrifood
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood
 
 go 1.16
 

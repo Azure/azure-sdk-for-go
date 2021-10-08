@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/web/armweb
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/web/armweb
 
 go 1.16
 

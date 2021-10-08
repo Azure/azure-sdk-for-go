@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/eventgrid/armeventgrid
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid
 
 go 1.16
 

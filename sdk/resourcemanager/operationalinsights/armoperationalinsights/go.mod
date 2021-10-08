@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/operationalinsights/armoperationalinsights
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights
 
 go 1.16
 

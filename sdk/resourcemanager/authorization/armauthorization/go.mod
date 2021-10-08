@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/authorization/armauthorization
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/authorization/armauthorization
 
 go 1.16
 

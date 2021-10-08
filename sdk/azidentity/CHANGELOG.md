@@ -57,6 +57,8 @@
 * `AuthenticationFailedError.RawResponse()` returns the HTTP response motivating the error,
   if available
 
+### Other Changes
+* `NewDefaultAzureCredential()` returns `*DefaultAzureCredential` instead of `*ChainedTokenCredential`
 
 ## 0.11.0 (2021-09-08)
 ### Breaking Changes

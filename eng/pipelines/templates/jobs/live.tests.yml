@@ -77,7 +77,7 @@ jobs:
           version: '$(GoVersion)'
         displayName: "Select Go Version"
 
-      - template: ../steps/create-go-workspace
+      - template: ../steps/create-go-workspace.yml
 
       - template: ../steps/build-test.yml
         parameters:

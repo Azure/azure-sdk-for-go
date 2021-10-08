@@ -65,6 +65,9 @@ parameters:
   - name: EnvVars
     type: object
     default: {}
+  - name: LicenseCheck
+    type: bool
+    default: true
 
 
 stages:
@@ -143,6 +146,7 @@ stages:
           GoWorkspace: $(GO_WORKSPACE_PATH)
           LintVersion: $(GoLintCLIVersion)
           NonShipping: ${{ parameters.NonShipping }}
+          LicenseCheck: ${{ parameters.LicenseCheck }}
 
   # Run live tests for internal only, not public CI builds. This can be triggered manually for via an `/azp run` comment.
   - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:

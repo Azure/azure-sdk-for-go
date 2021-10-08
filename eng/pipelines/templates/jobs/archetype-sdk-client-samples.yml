@@ -39,12 +39,11 @@ stages:
           version: '$(go.version)'
         displayName: "Select Go Version"
 
-      - template: ../steps/create-go-workspace.yml
+      # - template: ../steps/create-go-workspace.yml
 
       - template: ../steps/build-test.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          GoWorkspace: $(GO_WORKSPACE_PATH)
           Image: $(vm.image)
           GoVersion: $(go.version)
 
@@ -61,12 +60,11 @@ stages:
           version: '1.17'
         displayName: "Select Go Version"
 
-      - template: ../steps/create-go-workspace.yml
+      # - template: ../steps/create-go-workspace.yml
 
       - template: ../steps/analyze.yml
         parameters:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          GoWorkspace: $(GO_WORKSPACE_PATH)
           LintVersion: $(GoLintCLIVersion)
 
 # Below stage won't work until the release stage is added/necessary.

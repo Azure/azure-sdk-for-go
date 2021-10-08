@@ -293,9 +293,6 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
-
-	require.Equal(t, data.Entries[0].RequestHeaders["testproxy-header"], "Sanitized")
-	require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "Sanitized")
 }
 
 func TestBodyKeySanitizer(t *testing.T) {
@@ -461,9 +458,6 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
-
-	require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "")
-	require.Equal(t, data.Entries[0].RequestHeaders["complexregexremove"], "")
 }
 
 func TestContinuationSanitizer(t *testing.T) {
@@ -530,8 +524,6 @@ func TestContinuationSanitizer(t *testing.T) {
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
-
-	require.Equal(t, data.Entries[0].RequestHeaders["Location"], data.Entries[0].RequestHeaders["Location"])
 }
 
 func TestGeneralRegexSanitizer(t *testing.T) {
@@ -580,10 +572,6 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
-
-	// Header should be there because all sanitizers were removed
-	fmt.Println(data.Entries[0].ResponseBody)
-	// require.NotContains(t, string(data.Entries[0].ResponseBody), "invalid")
 }
 
 func TestOAuthResponseSanitizer(t *testing.T) {
@@ -681,8 +669,6 @@ func TestUriSubscriptionIdSanitizer(t *testing.T) {
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
-
-	require.Equal(t, data.Entries[0].RequestUri, "https://management.azure.com/")
 }
 
 func TestResetSanitizers(t *testing.T) {
@@ -738,7 +724,4 @@ func TestResetSanitizers(t *testing.T) {
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
-
-	// Header should be there because all sanitizers were removed
-	require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "https://fakeaccount.blob.core.windows.net")
 }

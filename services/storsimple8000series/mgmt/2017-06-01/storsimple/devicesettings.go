@@ -65,7 +65,7 @@ func (client DeviceSettingsClient) CreateOrUpdateAlertSettings(ctx context.Conte
 
 	result, err = client.CreateOrUpdateAlertSettingsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "CreateOrUpdateAlertSettings", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "CreateOrUpdateAlertSettings", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -100,6 +100,7 @@ func (client DeviceSettingsClient) CreateOrUpdateAlertSettingsPreparer(ctx conte
 // http.Response Body if it receives an error.
 func (client DeviceSettingsClient) CreateOrUpdateAlertSettingsSender(req *http.Request) (future DeviceSettingsCreateOrUpdateAlertSettingsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -158,7 +159,7 @@ func (client DeviceSettingsClient) CreateOrUpdateTimeSettings(ctx context.Contex
 
 	result, err = client.CreateOrUpdateTimeSettingsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "CreateOrUpdateTimeSettings", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "CreateOrUpdateTimeSettings", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -193,6 +194,7 @@ func (client DeviceSettingsClient) CreateOrUpdateTimeSettingsPreparer(ctx contex
 // http.Response Body if it receives an error.
 func (client DeviceSettingsClient) CreateOrUpdateTimeSettingsSender(req *http.Request) (future DeviceSettingsCreateOrUpdateTimeSettingsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -587,7 +589,7 @@ func (client DeviceSettingsClient) SyncRemotemanagementCertificate(ctx context.C
 
 	result, err = client.SyncRemotemanagementCertificateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "SyncRemotemanagementCertificate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "SyncRemotemanagementCertificate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -620,6 +622,7 @@ func (client DeviceSettingsClient) SyncRemotemanagementCertificatePreparer(ctx c
 // http.Response Body if it receives an error.
 func (client DeviceSettingsClient) SyncRemotemanagementCertificateSender(req *http.Request) (future DeviceSettingsSyncRemotemanagementCertificateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -674,7 +677,7 @@ func (client DeviceSettingsClient) UpdateNetworkSettings(ctx context.Context, de
 
 	result, err = client.UpdateNetworkSettingsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "UpdateNetworkSettings", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "UpdateNetworkSettings", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -709,6 +712,7 @@ func (client DeviceSettingsClient) UpdateNetworkSettingsPreparer(ctx context.Con
 // http.Response Body if it receives an error.
 func (client DeviceSettingsClient) UpdateNetworkSettingsSender(req *http.Request) (future DeviceSettingsUpdateNetworkSettingsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -764,7 +768,7 @@ func (client DeviceSettingsClient) UpdateSecuritySettings(ctx context.Context, d
 
 	result, err = client.UpdateSecuritySettingsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "UpdateSecuritySettings", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.DeviceSettingsClient", "UpdateSecuritySettings", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -799,6 +803,7 @@ func (client DeviceSettingsClient) UpdateSecuritySettingsPreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client DeviceSettingsClient) UpdateSecuritySettingsSender(req *http.Request) (future DeviceSettingsUpdateSecuritySettingsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

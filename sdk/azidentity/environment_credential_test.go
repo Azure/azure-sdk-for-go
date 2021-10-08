@@ -122,7 +122,7 @@ func TestEnvironmentCredential_ClientCertificatePathSet(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
 	}
-	err = os.Setenv("AZURE_CLIENT_CERTIFICATE_PATH", certificatePath)
+	err = os.Setenv("AZURE_CLIENT_CERTIFICATE_PATH", "testdata/certificate.pem")
 	if err != nil {
 		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
 	}

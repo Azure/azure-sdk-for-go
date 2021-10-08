@@ -27,6 +27,14 @@ type ResourceClientAPI interface {
 
 var _ ResourceClientAPI = (*netapp.ResourceClient)(nil)
 
+// ResourceQuotaLimitsClientAPI contains the set of methods on the ResourceQuotaLimitsClient type.
+type ResourceQuotaLimitsClientAPI interface {
+	Get(ctx context.Context, location string, quotaLimitName string) (result netapp.SubscriptionQuotaItem, err error)
+	List(ctx context.Context, location string) (result netapp.SubscriptionQuotaItemList, err error)
+}
+
+var _ ResourceQuotaLimitsClientAPI = (*netapp.ResourceQuotaLimitsClient)(nil)
+
 // AccountsClientAPI contains the set of methods on the AccountsClient type.
 type AccountsClientAPI interface {
 	CreateOrUpdate(ctx context.Context, body netapp.Account, resourceGroupName string, accountName string) (result netapp.AccountsCreateOrUpdateFuture, err error)

@@ -361,7 +361,7 @@ func (client Client) Merge(ctx context.Context, reservationOrderID string, body 
 
 	result, err = client.MergeSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.Client", "Merge", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.Client", "Merge", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -393,6 +393,7 @@ func (client Client) MergePreparer(ctx context.Context, reservationOrderID strin
 // http.Response Body if it receives an error.
 func (client Client) MergeSender(req *http.Request) (future ReservationMergeFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -410,7 +411,7 @@ func (client Client) MergeResponder(resp *http.Response) (result ListResponse, e
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -439,7 +440,7 @@ func (client Client) Split(ctx context.Context, reservationOrderID string, body 
 
 	result, err = client.SplitSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.Client", "Split", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.Client", "Split", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -471,6 +472,7 @@ func (client Client) SplitPreparer(ctx context.Context, reservationOrderID strin
 // http.Response Body if it receives an error.
 func (client Client) SplitSender(req *http.Request) (future SplitFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -488,7 +490,7 @@ func (client Client) SplitResponder(resp *http.Response) (result ListResponse, e
 	err = autorest.Respond(
 		resp,
 		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
-		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByUnmarshallingJSON(&result.Value),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
 	return
@@ -518,7 +520,7 @@ func (client Client) Update(ctx context.Context, reservationOrderID string, rese
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.Client", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.Client", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -551,6 +553,7 @@ func (client Client) UpdatePreparer(ctx context.Context, reservationOrderID stri
 // http.Response Body if it receives an error.
 func (client Client) UpdateSender(req *http.Request) (future ReservationUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

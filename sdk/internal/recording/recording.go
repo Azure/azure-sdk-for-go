@@ -443,8 +443,9 @@ var modeMap = map[RecordMode]recorder.Mode{
 var recordMode = os.Getenv("AZURE_RECORD_MODE")
 
 const (
-	modeRecording      = "record"
-	modePlayback       = "playback"
+	RecordingMode      = "record"
+	PlaybackMode       = "playback"
+	LiveMode           = "live"
 	baseProxyURLSecure = "localhost:5001"
 	baseProxyURL       = "localhost:5000"
 	IdHeader           = "x-recording-id"
@@ -494,8 +495,11 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 	if options == nil {
 		options = defaultOptions()
 	}
-	if !(recordMode == modeRecording || recordMode == modePlayback) {
-		return fmt.Errorf("AZURE_RECORD_MODE was not understood, options are %s or %s Received: %v", modeRecording, modePlayback, recordMode)
+	if !(recordMode == RecordingMode || recordMode == PlaybackMode || recordMode == LiveMode) {
+		return fmt.Errorf("AZURE_RECORD_MODE was not understood, options are %s, %s, or %s Received: %v", RecordingMode, PlaybackMode, LiveMode, recordMode)
+	}
+	if recordMode == LiveMode {
+		return nil
 	}
 
 	if testStruct, ok := testSuite[t.Name()]; ok {
@@ -538,6 +542,9 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 func StopRecording(t *testing.T, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
+	}
+	if recordMode == LiveMode {
+		return nil
 	}
 
 	if testStruct, ok := testSuite[t.Name()]; ok {
@@ -601,7 +608,7 @@ func (o *RecordingOptions) Init() {
 
 // This looks up an environment variable and if it is not found, returns the recordedValue
 func GetEnvVariable(t *testing.T, varName string, recordedValue string) string {
-	if GetRecordMode() == modePlayback {
+	if GetRecordMode() == PlaybackMode {
 		return recordedValue
 	}
 	val, ok := os.LookupEnv(varName)
@@ -619,7 +626,7 @@ func LiveOnly(t *testing.T) {
 	} else {
 		testSuite[t.Name()] = recordedTest{liveOnly: true}
 	}
-	if GetRecordMode() != modeRecording {
+	if GetRecordMode() == PlaybackMode {
 		t.Skip("Live Test Only")
 	}
 }
@@ -627,7 +634,7 @@ func LiveOnly(t *testing.T) {
 // Function for sleeping during a test for `duration` seconds. This method will only execute when
 // AZURE_RECORD_MODE = "record", if a test is running in playback this will be a noop.
 func Sleep(duration time.Duration) {
-	if GetRecordMode() == modeRecording {
+	if GetRecordMode() != PlaybackMode {
 		time.Sleep(duration)
 	}
 }

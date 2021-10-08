@@ -73,7 +73,7 @@ func (client VolumesClient) AuthorizeReplication(ctx context.Context, resourceGr
 
 	result, err = client.AuthorizeReplicationSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "AuthorizeReplication", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "AuthorizeReplication", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -109,6 +109,7 @@ func (client VolumesClient) AuthorizeReplicationPreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client VolumesClient) AuthorizeReplicationSender(req *http.Request) (future VolumesAuthorizeReplicationFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -173,7 +174,7 @@ func (client VolumesClient) BreakReplication(ctx context.Context, resourceGroupN
 
 	result, err = client.BreakReplicationSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "BreakReplication", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "BreakReplication", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -212,6 +213,7 @@ func (client VolumesClient) BreakReplicationPreparer(ctx context.Context, resour
 // http.Response Body if it receives an error.
 func (client VolumesClient) BreakReplicationSender(req *http.Request) (future VolumesBreakReplicationFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -281,6 +283,11 @@ func (client VolumesClient) CreateOrUpdate(ctx context.Context, body Volume, res
 								{Target: "body.VolumeProperties.BackupID", Name: validation.Pattern, Rule: `^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}|(\\?([^\/]*[\/])*)([^\/]+)$`, Chain: nil},
 							}},
 						{Target: "body.VolumeProperties.SubnetID", Name: validation.Null, Rule: true, Chain: nil},
+						{Target: "body.VolumeProperties.NetworkSiblingSetID", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "body.VolumeProperties.NetworkSiblingSetID", Name: validation.MaxLength, Rule: 36, Chain: nil},
+								{Target: "body.VolumeProperties.NetworkSiblingSetID", Name: validation.MinLength, Rule: 36, Chain: nil},
+								{Target: "body.VolumeProperties.NetworkSiblingSetID", Name: validation.Pattern, Rule: `^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$`, Chain: nil},
+							}},
 						{Target: "body.VolumeProperties.DataProtection", Name: validation.Null, Rule: false,
 							Chain: []validation.Constraint{{Target: "body.VolumeProperties.DataProtection.Replication", Name: validation.Null, Rule: false,
 								Chain: []validation.Constraint{{Target: "body.VolumeProperties.DataProtection.Replication.RemoteVolumeResourceID", Name: validation.Null, Rule: true, Chain: nil}}},
@@ -321,7 +328,7 @@ func (client VolumesClient) CreateOrUpdate(ctx context.Context, body Volume, res
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -361,6 +368,7 @@ func (client VolumesClient) CreateOrUpdatePreparer(ctx context.Context, body Vol
 // http.Response Body if it receives an error.
 func (client VolumesClient) CreateOrUpdateSender(req *http.Request) (future VolumesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -425,7 +433,7 @@ func (client VolumesClient) Delete(ctx context.Context, resourceGroupName string
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -459,6 +467,7 @@ func (client VolumesClient) DeletePreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client VolumesClient) DeleteSender(req *http.Request) (future VolumesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -523,7 +532,7 @@ func (client VolumesClient) DeleteReplication(ctx context.Context, resourceGroup
 
 	result, err = client.DeleteReplicationSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "DeleteReplication", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "DeleteReplication", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -557,6 +566,7 @@ func (client VolumesClient) DeleteReplicationPreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client VolumesClient) DeleteReplicationSender(req *http.Request) (future VolumesDeleteReplicationFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -851,7 +861,7 @@ func (client VolumesClient) PoolChange(ctx context.Context, resourceGroupName st
 
 	result, err = client.PoolChangeSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "PoolChange", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "PoolChange", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -887,6 +897,7 @@ func (client VolumesClient) PoolChangePreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client VolumesClient) PoolChangeSender(req *http.Request) (future VolumesPoolChangeFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -950,7 +961,7 @@ func (client VolumesClient) ReInitializeReplication(ctx context.Context, resourc
 
 	result, err = client.ReInitializeReplicationSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "ReInitializeReplication", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "ReInitializeReplication", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -984,6 +995,7 @@ func (client VolumesClient) ReInitializeReplicationPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client VolumesClient) ReInitializeReplicationSender(req *http.Request) (future VolumesReInitializeReplicationFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1144,7 +1156,7 @@ func (client VolumesClient) ResyncReplication(ctx context.Context, resourceGroup
 
 	result, err = client.ResyncReplicationSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "ResyncReplication", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "ResyncReplication", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1178,6 +1190,7 @@ func (client VolumesClient) ResyncReplicationPreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client VolumesClient) ResyncReplicationSender(req *http.Request) (future VolumesResyncReplicationFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1242,7 +1255,7 @@ func (client VolumesClient) Revert(ctx context.Context, resourceGroupName string
 
 	result, err = client.RevertSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "Revert", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "Revert", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1278,6 +1291,7 @@ func (client VolumesClient) RevertPreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client VolumesClient) RevertSender(req *http.Request) (future VolumesRevertFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -1342,7 +1356,7 @@ func (client VolumesClient) Update(ctx context.Context, body VolumePatch, resour
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1381,6 +1395,7 @@ func (client VolumesClient) UpdatePreparer(ctx context.Context, body VolumePatch
 // http.Response Body if it receives an error.
 func (client VolumesClient) UpdateSender(req *http.Request) (future VolumesUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

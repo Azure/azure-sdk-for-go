@@ -65,7 +65,7 @@ func (client VirtualMachineImageTemplateClient) CreateOrUpdate(ctx context.Conte
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -99,6 +99,7 @@ func (client VirtualMachineImageTemplateClient) CreateOrUpdatePreparer(ctx conte
 // http.Response Body if it receives an error.
 func (client VirtualMachineImageTemplateClient) CreateOrUpdateSender(req *http.Request) (future VirtualMachineImageTemplateCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -151,7 +152,7 @@ func (client VirtualMachineImageTemplateClient) Delete(ctx context.Context, reso
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -183,6 +184,7 @@ func (client VirtualMachineImageTemplateClient) DeletePreparer(ctx context.Conte
 // http.Response Body if it receives an error.
 func (client VirtualMachineImageTemplateClient) DeleteSender(req *http.Request) (future VirtualMachineImageTemplateDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -755,7 +757,7 @@ func (client VirtualMachineImageTemplateClient) Run(ctx context.Context, resourc
 
 	result, err = client.RunSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "Run", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "virtualmachineimagebuilder.VirtualMachineImageTemplateClient", "Run", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -787,6 +789,7 @@ func (client VirtualMachineImageTemplateClient) RunPreparer(ctx context.Context,
 // http.Response Body if it receives an error.
 func (client VirtualMachineImageTemplateClient) RunSender(req *http.Request) (future VirtualMachineImageTemplateRunFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

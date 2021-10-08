@@ -76,7 +76,7 @@ func (client KpiClient) CreateOrUpdate(ctx context.Context, resourceGroupName st
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -111,6 +111,7 @@ func (client KpiClient) CreateOrUpdatePreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client KpiClient) CreateOrUpdateSender(req *http.Request) (future KpiCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -158,7 +159,7 @@ func (client KpiClient) Delete(ctx context.Context, resourceGroupName string, hu
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "customerinsights.KpiClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -191,6 +192,7 @@ func (client KpiClient) DeletePreparer(ctx context.Context, resourceGroupName st
 // http.Response Body if it receives an error.
 func (client KpiClient) DeleteSender(req *http.Request) (future KpiDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

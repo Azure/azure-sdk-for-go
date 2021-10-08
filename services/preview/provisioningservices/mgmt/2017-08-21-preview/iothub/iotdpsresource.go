@@ -146,7 +146,7 @@ func (client IotDpsResourceClient) CreateOrUpdate(ctx context.Context, resourceG
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -180,6 +180,7 @@ func (client IotDpsResourceClient) CreateOrUpdatePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client IotDpsResourceClient) CreateOrUpdateSender(req *http.Request) (future IotDpsResourceCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -226,7 +227,7 @@ func (client IotDpsResourceClient) Delete(ctx context.Context, provisioningServi
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "iothub.IotDpsResourceClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -258,6 +259,7 @@ func (client IotDpsResourceClient) DeletePreparer(ctx context.Context, provision
 // http.Response Body if it receives an error.
 func (client IotDpsResourceClient) DeleteSender(req *http.Request) (future IotDpsResourceDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

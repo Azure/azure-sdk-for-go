@@ -15,28 +15,28 @@ import (
 )
 
 func TestAzurePublicCloudParse(t *testing.T) {
-	_, err := url.Parse(AzurePublicCloud)
+	_, err := url.Parse(string(AzurePublicCloud))
 	if err != nil {
 		t.Fatalf("Failed to parse default authority host: %v", err)
 	}
 }
 
 func TestAzureChinaParse(t *testing.T) {
-	_, err := url.Parse(AzureChina)
+	_, err := url.Parse(string(AzureChina))
 	if err != nil {
 		t.Fatalf("Failed to parse AzureChina authority host: %v", err)
 	}
 }
 
 func TestAzureGermanyParse(t *testing.T) {
-	_, err := url.Parse(AzureGermany)
+	_, err := url.Parse(string(AzureGermany))
 	if err != nil {
 		t.Fatalf("Failed to parse AzureGermany authority host: %v", err)
 	}
 }
 
 func TestAzureGovernmentParse(t *testing.T) {
-	_, err := url.Parse(AzureGovernment)
+	_, err := url.Parse(string(AzureGovernment))
 	if err != nil {
 		t.Fatalf("Failed to parse AzureGovernment authority host: %v", err)
 	}

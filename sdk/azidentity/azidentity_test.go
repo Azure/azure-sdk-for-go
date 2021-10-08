@@ -4,35 +4,59 @@
 package azidentity
 
 import (
-	"net/url"
 	"os"
 	"testing"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
+// constants used throughout this package
+const (
+	accessTokenRespError     = `{"error": "invalid_client","error_description": "Invalid client secret is provided.","error_codes": [0],"timestamp": "2019-12-01 19:00:00Z","trace_id": "2d091b0","correlation_id": "a999","error_uri": "https://login.contoso.com/error?code=0"}`
+	accessTokenRespSuccess   = `{"access_token": "` + tokenValue + `", "expires_in": 3600}`
+	accessTokenRespMalformed = `{"access_token": 0, "expires_in": 3600}`
+)
+
+func defaultTestPipeline(srv policy.Transporter, cred azcore.TokenCredential, scope string) runtime.Pipeline {
+	retryOpts := policy.RetryOptions{
+		MaxRetryDelay: 500 * time.Millisecond,
+		RetryDelay:    50 * time.Millisecond,
+	}
+	return runtime.NewPipeline(
+		srv,
+		runtime.NewRetryPolicy(&retryOpts),
+		runtime.NewBearerTokenPolicy(cred, runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: []string{scope}}}),
+		runtime.NewLogPolicy(nil))
+}
+
+// constants for this file
 const (
 	envHostString    = "https://mock.com/"
 	customHostString = "https://custommock.com/"
 )
 
-func Test_AuthorityHost_Parse(t *testing.T) {
-	_, err := url.Parse(AzurePublicCloud)
+// Set AZURE_AUTHORITY_HOST for the duration of a test. Restore its prior value
+// after the test completes. Prevents tests which set the variable from breaking live
+// tests in sovereign clouds. Obviated by 1.17's T.Setenv
+func setEnvAuthorityHost(host string, t *testing.T) {
+	originalHost := os.Getenv("AZURE_AUTHORITY_HOST")
+	err := os.Setenv("AZURE_AUTHORITY_HOST", host)
 	if err != nil {
-		t.Fatalf("Failed to parse default authority host: %v", err)
+		t.Fatalf("Unexpected error setting AZURE_AUTHORITY_HOST: %v", err)
 	}
+	t.Cleanup(func() {
+		err = os.Setenv("AZURE_AUTHORITY_HOST", originalHost)
+		if err != nil {
+			t.Fatalf("Unexpected error resetting AZURE_AUTHORITY_HOST: %v", err)
+		}
+	})
 }
 
 func Test_SetEnvAuthorityHost(t *testing.T) {
-	err := os.Setenv("AZURE_AUTHORITY_HOST", envHostString)
-	defer func() {
-		// Unset that host environment variable to avoid other tests failed.
-		err = os.Unsetenv("AZURE_AUTHORITY_HOST")
-		if err != nil {
-			t.Fatalf("Unexpected error when unset environment variable: %v", err)
-		}
-	}()
-	if err != nil {
-		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
-	}
+	setEnvAuthorityHost(envHostString, t)
 	authorityHost, err := setAuthorityHost("")
 	if err != nil {
 		t.Fatal(err)
@@ -43,17 +67,7 @@ func Test_SetEnvAuthorityHost(t *testing.T) {
 }
 
 func Test_CustomAuthorityHost(t *testing.T) {
-	err := os.Setenv("AZURE_AUTHORITY_HOST", envHostString)
-	defer func() {
-		// Unset that host environment variable to avoid other tests failed.
-		err = os.Unsetenv("AZURE_AUTHORITY_HOST")
-		if err != nil {
-			t.Fatalf("Unexpected error when unset environment variable: %v", err)
-		}
-	}()
-	if err != nil {
-		t.Fatalf("Unexpected error when initializing environment variables: %v", err)
-	}
+	setEnvAuthorityHost(envHostString, t)
 	authorityHost, err := setAuthorityHost(customHostString)
 	if err != nil {
 		t.Fatal(err)
@@ -65,46 +79,18 @@ func Test_CustomAuthorityHost(t *testing.T) {
 }
 
 func Test_DefaultAuthorityHost(t *testing.T) {
+	setEnvAuthorityHost("", t)
 	authorityHost, err := setAuthorityHost("")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if authorityHost != AzurePublicCloud {
+	if authorityHost != string(AzurePublicCloud) {
 		t.Fatalf("Unexpected host when set default AuthorityHost: %v", authorityHost)
 	}
 }
 
-func Test_AzureGermanyAuthorityHost(t *testing.T) {
-	authorityHost, err := setAuthorityHost(AzureGermany)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if authorityHost != AzureGermany {
-		t.Fatalf("Did not retrieve expected authority host string")
-	}
-}
-
-func Test_AzureChinaAuthorityHost(t *testing.T) {
-	authorityHost, err := setAuthorityHost(AzureChina)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if authorityHost != AzureChina {
-		t.Fatalf("Did not retrieve expected authority host string")
-	}
-}
-
-func Test_AzureGovernmentAuthorityHost(t *testing.T) {
-	authorityHost, err := setAuthorityHost(AzureGovernment)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if authorityHost != AzureGovernment {
-		t.Fatalf("Did not retrieve expected authority host string")
-	}
-}
-
 func Test_NonHTTPSAuthorityHost(t *testing.T) {
+	setEnvAuthorityHost("", t)
 	authorityHost, err := setAuthorityHost("http://foo.com")
 	if err == nil {
 		t.Fatal("Expected an error but did not receive one.")

@@ -57,7 +57,7 @@ func (client TransactionNodesClient) Create(ctx context.Context, blockchainMembe
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -95,6 +95,7 @@ func (client TransactionNodesClient) CreatePreparer(ctx context.Context, blockch
 // http.Response Body if it receives an error.
 func (client TransactionNodesClient) CreateSender(req *http.Request) (future TransactionNodesCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -143,7 +144,7 @@ func (client TransactionNodesClient) Delete(ctx context.Context, blockchainMembe
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "blockchain.TransactionNodesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -176,6 +177,7 @@ func (client TransactionNodesClient) DeletePreparer(ctx context.Context, blockch
 // http.Response Body if it receives an error.
 func (client TransactionNodesClient) DeleteSender(req *http.Request) (future TransactionNodesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

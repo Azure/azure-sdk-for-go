@@ -62,7 +62,7 @@ func (client ProfilesClient) Create(ctx context.Context, profileName string, pro
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -96,6 +96,7 @@ func (client ProfilesClient) CreatePreparer(ctx context.Context, profileName str
 // http.Response Body if it receives an error.
 func (client ProfilesClient) CreateSender(req *http.Request) (future ProfilesCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -142,7 +143,7 @@ func (client ProfilesClient) DeleteIfExists(ctx context.Context, profileName str
 
 	result, err = client.DeleteIfExistsSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "DeleteIfExists", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "DeleteIfExists", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -174,6 +175,7 @@ func (client ProfilesClient) DeleteIfExistsPreparer(ctx context.Context, profile
 // http.Response Body if it receives an error.
 func (client ProfilesClient) DeleteIfExistsSender(req *http.Request) (future ProfilesDeleteIfExistsFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -517,7 +519,7 @@ func (client ProfilesClient) Update(ctx context.Context, profileName string, pro
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "cdn.ProfilesClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -551,6 +553,7 @@ func (client ProfilesClient) UpdatePreparer(ctx context.Context, profileName str
 // http.Response Body if it receives an error.
 func (client ProfilesClient) UpdateSender(req *http.Request) (future ProfilesUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

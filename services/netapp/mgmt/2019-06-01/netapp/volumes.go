@@ -90,7 +90,7 @@ func (client VolumesClient) CreateOrUpdate(ctx context.Context, body Volume, res
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -129,6 +129,7 @@ func (client VolumesClient) CreateOrUpdatePreparer(ctx context.Context, body Vol
 // http.Response Body if it receives an error.
 func (client VolumesClient) CreateOrUpdateSender(req *http.Request) (future VolumesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -185,7 +186,7 @@ func (client VolumesClient) Delete(ctx context.Context, resourceGroupName string
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.VolumesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -219,6 +220,7 @@ func (client VolumesClient) DeletePreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client VolumesClient) DeleteSender(req *http.Request) (future VolumesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

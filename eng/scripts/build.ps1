@@ -1,97 +1,104 @@
 #Requires -Version 7.0
-param([string]$filter, [switch]$clean, [switch]$vet, [switch]$generate, [switch]$skipBuild, [switch]$cleanGenerated, [switch]$format, [switch]$tidy, [string]$config = "autorest.md", [string]$outputFolder)
+param(
+    [string]$filter,
+    [switch]$clean,
+    [switch]$vet,
+    [switch]$generate,
+    [switch]$skipBuild,
+    [switch]$cleanGenerated,
+    [switch]$format,
+    [switch]$tidy,
+    [string]$config = "autorest.md",
+    [string]$goExtension = "@autorest/go@4.0.0-preview.28",
+    [string]$outputFolder
+)
 
-. $PSScriptRoot/meta_generation.ps1
-. $PSScriptRoot/get_module_dirs.ps1
+. (Join-Path $PSScriptRoot .. common scripts common.ps1)
 
-
-function Process-Sdk () {
+function Process-Sdk ()
+{
     $currentDirectory = Get-Location
-    if ($clean) {
+    if ($clean)
+    {
         Write-Host "##[command]Executing go clean -v ./... in " $currentDirectory
         go clean -v ./...
         if ($LASTEXITCODE) { exit $LASTEXITCODE }
     }
 
-    if ($cleanGenerated) {
+    if ($cleanGenerated)
+    {
         Write-Host "##[command]Cleaning auto-generated files in" $currentDirectory
         Remove-Item "zz_generated_*"
     }
 
-    if ($generate) {
+    if ($generate)
+    {
         Write-Host "##[command]Executing autorest.go in " $currentDirectory
         $autorestPath = "./" + $config
-
-        if (ShouldGenerate-AutorestConfig $autorestPath) {
-            Generate-AutorestConfig $autorestPath
-            $removeAutorestFile = $true
-        }
-
-        $autorestVersion = "@autorest/go@4.0.0-preview.27"
-        if ($outputFolder -eq '') {
+        
+        if ($outputFolder -eq '')
+        {
             $outputFolder = $currentDirectory
         }
-        autorest --use=$autorestVersion --go --track2 --go-sdk-folder=$root --output-folder=$outputFolder --file-prefix="zz_generated_" --clear-output-folder=false $autorestPath
-        if ($LASTEXITCODE) {
+        autorest --use=$goExtension --go --track2 --output-folder=$outputFolder --file-prefix="zz_generated_" --clear-output-folder=false $autorestPath
+        if ($LASTEXITCODE)
+        {
             Write-Host "##[error]Error running autorest.go"
             exit $LASTEXITCODE
         }
-        if ($removeAutorestFile) {
-            Remove-Item $autorestPath
-        }
     }
 
-    if ($format) {
+    if ($format)
+    {
         Write-Host "##[command]Executing gofmt -s -w . in " $currentDirectory
         gofmt -s -w .
-        if ($LASTEXITCODE) {exit $LASTEXITCODE}
+        if ($LASTEXITCODE) { exit $LASTEXITCODE }
     }
 
-    if ($tidy) {
+    if ($tidy)
+    {
         Write-Host "##[command]Executing go mod tidy in " $currentDirectory
         go mod tidy
-        if ($LASTEXITCODE) {exit $LASTEXITCODE}
+        if ($LASTEXITCODE) { exit $LASTEXITCODE }
     }
 
-    if (!$skipBuild) {
+    if (!$skipBuild)
+    {
         Write-Host "##[command]Executing go build -x -v ./... in " $currentDirectory
         go build -x -v ./...
         Write-Host "##[command]Build Complete!"
-        if ($LASTEXITCODE) {exit $LASTEXITCODE}
+        if ($LASTEXITCODE) { exit $LASTEXITCODE }
     }
 
-    if ($vet) {
+    if ($vet)
+    {
         Write-Host "##[command]Executing go vet ./... in " $currentDirectory
         go vet ./...
     }
-
 }
 
-$startingDirectory = Get-Location
-$root = Resolve-Path ($PSScriptRoot + "/../..")
-Set-Location $root
-$sdks = @{};
+try
+{
+    $startingDirectory = Get-Location
 
-foreach ($sdk in (Get-ModuleDirs 'sdk/')) {
-    $name = $sdk | split-path -leaf
-    $sdks[$name] = @{
-        'path' = $sdk;
+    $sdks = Get-AllPackageInfoFromRepo $filter
+
+    foreach ($sdk in $sdks)
+    {
+        Push-Location $sdk.DirectoryPath
+        Process-Sdk
+        Pop-Location
     }
-}
 
-$keys = $sdks.Keys | Sort-Object;
-if (![string]::IsNullOrWhiteSpace($filter)) {
-    Write-Host "Using filter: $filter"
-    $keys = $keys.Where( { $_ -match $filter })
-}
-
-try {
-    $keys | ForEach-Object { $sdks[$_] } | ForEach-Object {
-        Push-Location $_.path
+    if ($sdks.Count -eq 0 -and $filter -and (Test-Path -Path (Join-Path $RepoRoot "sdk" $filter)))
+    {
+        Write-Host "Cannot find go module under $filter, try to build in $(Join-Path $RepoRoot "sdk" $filter)"
+        Push-Location (Join-Path $RepoRoot "sdk" $filter)
         Process-Sdk
         Pop-Location
     }
 }
-finally {
+finally
+{
     Set-Location $startingDirectory
 }

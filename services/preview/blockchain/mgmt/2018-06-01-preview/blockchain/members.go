@@ -55,7 +55,7 @@ func (client MembersClient) Create(ctx context.Context, blockchainMemberName str
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -92,6 +92,7 @@ func (client MembersClient) CreatePreparer(ctx context.Context, blockchainMember
 // http.Response Body if it receives an error.
 func (client MembersClient) CreateSender(req *http.Request) (future MembersCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -139,7 +140,7 @@ func (client MembersClient) Delete(ctx context.Context, blockchainMemberName str
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "blockchain.MembersClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -171,6 +172,7 @@ func (client MembersClient) DeletePreparer(ctx context.Context, blockchainMember
 // http.Response Body if it receives an error.
 func (client MembersClient) DeleteSender(req *http.Request) (future MembersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

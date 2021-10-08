@@ -149,7 +149,7 @@ func (client DedicatedCloudServicesClient) Delete(ctx context.Context, resourceG
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "vmwarecloudsimple.DedicatedCloudServicesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -181,6 +181,7 @@ func (client DedicatedCloudServicesClient) DeletePreparer(ctx context.Context, r
 // http.Response Body if it receives an error.
 func (client DedicatedCloudServicesClient) DeleteSender(req *http.Request) (future DedicatedCloudServicesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

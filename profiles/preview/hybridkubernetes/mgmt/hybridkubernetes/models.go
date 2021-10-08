@@ -12,29 +12,36 @@ package hybridkubernetes
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/hybridkubernetes/mgmt/2021-03-01/hybridkubernetes"
+	original "github.com/Azure/azure-sdk-for-go/services/hybridkubernetes/mgmt/2021-10-01/hybridkubernetes"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type AuthenticationMethod = original.AuthenticationMethod
+
+const (
+	AuthenticationMethodAAD   AuthenticationMethod = original.AuthenticationMethodAAD
+	AuthenticationMethodToken AuthenticationMethod = original.AuthenticationMethodToken
+)
+
 type ConnectivityStatus = original.ConnectivityStatus
 
 const (
-	Connected  ConnectivityStatus = original.Connected
-	Connecting ConnectivityStatus = original.Connecting
-	Expired    ConnectivityStatus = original.Expired
-	Offline    ConnectivityStatus = original.Offline
+	ConnectivityStatusConnected  ConnectivityStatus = original.ConnectivityStatusConnected
+	ConnectivityStatusConnecting ConnectivityStatus = original.ConnectivityStatusConnecting
+	ConnectivityStatusExpired    ConnectivityStatus = original.ConnectivityStatusExpired
+	ConnectivityStatusOffline    ConnectivityStatus = original.ConnectivityStatusOffline
 )
 
 type CreatedByType = original.CreatedByType
 
 const (
-	Application     CreatedByType = original.Application
-	Key             CreatedByType = original.Key
-	ManagedIdentity CreatedByType = original.ManagedIdentity
-	User            CreatedByType = original.User
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type LastModifiedByType = original.LastModifiedByType
@@ -49,20 +56,20 @@ const (
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Accepted     ProvisioningState = original.Accepted
-	Canceled     ProvisioningState = original.Canceled
-	Deleting     ProvisioningState = original.Deleting
-	Failed       ProvisioningState = original.Failed
-	Provisioning ProvisioningState = original.Provisioning
-	Succeeded    ProvisioningState = original.Succeeded
-	Updating     ProvisioningState = original.Updating
+	ProvisioningStateAccepted     ProvisioningState = original.ProvisioningStateAccepted
+	ProvisioningStateCanceled     ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateDeleting     ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed       ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateProvisioning ProvisioningState = original.ProvisioningStateProvisioning
+	ProvisioningStateSucceeded    ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUpdating     ProvisioningState = original.ProvisioningStateUpdating
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
 
 const (
-	None           ResourceIdentityType = original.None
-	SystemAssigned ResourceIdentityType = original.SystemAssigned
+	ResourceIdentityTypeNone           ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
 )
 
 type AzureEntityResource = original.AzureEntityResource
@@ -77,9 +84,13 @@ type ConnectedClusterListIterator = original.ConnectedClusterListIterator
 type ConnectedClusterListPage = original.ConnectedClusterListPage
 type ConnectedClusterPatch = original.ConnectedClusterPatch
 type ConnectedClusterProperties = original.ConnectedClusterProperties
+type CredentialResult = original.CredentialResult
+type CredentialResults = original.CredentialResults
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
+type HybridConnectionConfig = original.HybridConnectionConfig
+type ListClusterUserCredentialProperties = original.ListClusterUserCredentialProperties
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationList = original.OperationList
@@ -120,6 +131,9 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
+}
+func PossibleAuthenticationMethodValues() []AuthenticationMethod {
+	return original.PossibleAuthenticationMethodValues()
 }
 func PossibleConnectivityStatusValues() []ConnectivityStatus {
 	return original.PossibleConnectivityStatusValues()

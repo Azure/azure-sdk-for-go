@@ -5,7 +5,9 @@ package azservicebus
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/go-amqp"
@@ -20,8 +22,8 @@ type (
 		links          internal.AMQPLinks
 	}
 
-	// SendableMessage are sendable using Sender.SendMessage.
-	// Message, MessageBatch implement this interface.
+	// SendableMessage can be sent using `Sender.SendMessage` or `Sender.SendMessages`.
+	// Message implements this interface.
 	SendableMessage interface {
 		toAMQPMessage() *amqp.Message
 		messageType() string
@@ -59,9 +61,7 @@ func (s *Sender) NewMessageBatch(ctx context.Context, options *MessageBatchOptio
 	return &MessageBatch{maxBytes: maxBytes}, nil
 }
 
-// SendMessage sends a message to a queue or topic.
-// Message can be a MessageBatch (created using `Sender.CreateMessageBatch`) or
-// a Message.
+// SendMessage sends a SendableMessage (Message) to a queue or topic.
 func (s *Sender) SendMessage(ctx context.Context, message SendableMessage) error {
 	ctx, span := s.startProducerSpanFromContext(ctx, fmt.Sprintf(spanNameSendMessageFmt, message.messageType()))
 	defer span.End()
@@ -73,6 +73,101 @@ func (s *Sender) SendMessage(ctx context.Context, message SendableMessage) error
 	}
 
 	return sender.Send(ctx, message.toAMQPMessage())
+}
+
+// SendMessageBatch sends a MessageBatch to a queue or topic.
+// Message batches can be created using `Sender.NewMessageBatch`.
+func (s *Sender) SendMessageBatch(ctx context.Context, batch *MessageBatch) error {
+	ctx, span := s.startProducerSpanFromContext(ctx, fmt.Sprintf(spanNameSendMessageFmt, "batch"))
+	defer span.End()
+
+	sender, _, _, _, err := s.links.Get(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	return sender.Send(ctx, batch.toAMQPMessage())
+}
+
+// SendMessages sends messages to a queue or topic, using a single MessageBatch.
+// If the messages cannot fit into a single MessageBatch this function will fail.
+func (s *Sender) SendMessages(ctx context.Context, messages []*Message) error {
+	batch, err := s.NewMessageBatch(ctx, nil)
+
+	if err != nil {
+		return err
+	}
+
+	for _, m := range messages {
+		added, err := batch.Add(m)
+
+		if err != nil {
+			return err
+		}
+
+		if !added {
+			// to avoid partial failure scenarios we just bail if the messages are too large to fit
+			// into a single batch.
+			return errors.New("Messages were too big to fit in a single batch. Remove some messages and try again or create your own batch using Sender.NewMessageBatch(), which gives more fine-grained control.")
+		}
+	}
+
+	return s.SendMessageBatch(ctx, batch)
+}
+
+// ScheduleMessage schedules a message to appear on Service Bus Queue/Subscription at a later time.
+// Returns the sequence number of the message that was scheduled. If the message hasn't been
+// delivered you can cancel using `Receiver.CancelScheduleMessage(s)`
+func (s *Sender) ScheduleMessage(ctx context.Context, message SendableMessage, scheduledEnqueueTime time.Time) (int64, error) {
+	sequenceNumbers, err := s.ScheduleMessages(ctx, []SendableMessage{message}, scheduledEnqueueTime)
+
+	if err != nil {
+		return 0, err
+	}
+
+	return sequenceNumbers[0], nil
+}
+
+// ScheduleMessages schedules a slice of messages to appear on Service Bus Queue/Subscription at a later time.
+// Returns the sequence numbers of the messages that were scheduled.  Messages that haven't been
+// delivered can be cancelled using `Receiver.CancelScheduleMessage(s)`
+func (s *Sender) ScheduleMessages(ctx context.Context, messages []SendableMessage, scheduledEnqueueTime time.Time) ([]int64, error) {
+	_, _, mgmt, _, err := s.links.Get(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var amqpMessages []*amqp.Message
+
+	for _, m := range messages {
+		amqpMessages = append(amqpMessages, m.toAMQPMessage())
+	}
+
+	return mgmt.ScheduleMessages(ctx, scheduledEnqueueTime, amqpMessages...)
+}
+
+// CancelScheduledMessage cancels a message that was scheduled.
+func (s *Sender) CancelScheduledMessage(ctx context.Context, sequenceNumber int64) error {
+	_, _, mgmt, _, err := s.links.Get(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	return mgmt.CancelScheduled(ctx, sequenceNumber)
+}
+
+// CancelScheduledMessages cancels multiple messages that were scheduled.
+func (s *Sender) CancelScheduledMessages(ctx context.Context, sequenceNumber []int64) error {
+	_, _, mgmt, _, err := s.links.Get(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	return mgmt.CancelScheduled(ctx, sequenceNumber...)
 }
 
 // Close permanently closes the Sender.

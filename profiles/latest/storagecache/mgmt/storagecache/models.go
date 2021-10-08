@@ -12,7 +12,7 @@ package storagecache
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2021-05-01/storagecache"
+	original "github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2021-09-01/storagecache"
 )
 
 const (
@@ -92,6 +92,15 @@ const (
 	NfsAccessRuleScopeDefault NfsAccessRuleScope = original.NfsAccessRuleScopeDefault
 	NfsAccessRuleScopeHost    NfsAccessRuleScope = original.NfsAccessRuleScopeHost
 	NfsAccessRuleScopeNetwork NfsAccessRuleScope = original.NfsAccessRuleScopeNetwork
+)
+
+type OperationalStateType = original.OperationalStateType
+
+const (
+	OperationalStateTypeBusy      OperationalStateType = original.OperationalStateTypeBusy
+	OperationalStateTypeFlushing  OperationalStateType = original.OperationalStateTypeFlushing
+	OperationalStateTypeReady     OperationalStateType = original.OperationalStateTypeReady
+	OperationalStateTypeSuspended OperationalStateType = original.OperationalStateTypeSuspended
 )
 
 type ProvisioningStateType = original.ProvisioningStateType
@@ -322,6 +331,9 @@ func PossibleNfsAccessRuleAccessValues() []NfsAccessRuleAccess {
 }
 func PossibleNfsAccessRuleScopeValues() []NfsAccessRuleScope {
 	return original.PossibleNfsAccessRuleScopeValues()
+}
+func PossibleOperationalStateTypeValues() []OperationalStateType {
+	return original.PossibleOperationalStateTypeValues()
 }
 func PossibleProvisioningStateTypeValues() []ProvisioningStateType {
 	return original.PossibleProvisioningStateTypeValues()

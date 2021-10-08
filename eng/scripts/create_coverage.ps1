@@ -4,8 +4,12 @@ Param(
     [string] $serviceDirectory
 )
 
+$repoRoot = Resolve-Path "$PSScriptRoot/../../"
+
+Write-Host "repoRoot $repoRoot"
+
 Write-Host $serviceDirectory
-Push-Location $serviceDirectory
+Push-Location sdk/$serviceDirectory
 
 $coverageFiles = [Collections.Generic.List[String]]@()
 Get-ChildItem -recurse -path . -filter coverage.txt | ForEach-Object {
@@ -22,6 +26,13 @@ gocov convert ./mergedCoverage.txt > ./coverage.json
 Get-Content ./coverage.json | gocov-xml > ./coverage.xml
 Get-Content ./coverage.json | gocov-html > ./coverage.html
 
+Move-Item ./coverage.xml $repoRoot
+Move-Item ./coverage.html $repoRoot
+
 # use internal tool to fail if coverage is too low
 Pop-Location
-go run ../eng/tools/internal/coverage/main.go  -serviceDirectory $serviceDirectory
+
+go run $repoRoot/eng/tools/internal/coverage/coverage.go `
+    -config $repoRoot/eng/config.json `
+    -serviceDirectory $serviceDirectory `
+    -searchDirectory $repoRoot

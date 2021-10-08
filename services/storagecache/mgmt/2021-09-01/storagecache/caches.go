@@ -35,7 +35,7 @@ func NewCachesClientWithBaseURI(baseURI string, subscriptionID string) CachesCli
 // CreateOrUpdate create or update a Cache.
 // Parameters:
 // resourceGroupName - target resource group.
-// cacheName - name of Cache. Length of name must be not greater than 80 and chars must be in list of
+// cacheName - name of Cache. Length of name must not be greater than 80 and chars must be from the
 // [-0-9a-zA-Z_] char class.
 // cache - object containing the user-selectable properties of the new Cache. If read-only properties are
 // included, they must match the existing values of those properties.
@@ -68,6 +68,19 @@ func (client CachesClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 									{Target: "cache.CacheProperties.EncryptionSettings.KeyEncryptionKey.SourceVault", Name: validation.Null, Rule: true, Chain: nil},
 								}},
 							}},
+						{Target: "cache.CacheProperties.DirectoryServicesSettings", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "cache.CacheProperties.DirectoryServicesSettings.ActiveDirectory", Name: validation.Null, Rule: false,
+								Chain: []validation.Constraint{{Target: "cache.CacheProperties.DirectoryServicesSettings.ActiveDirectory.PrimaryDNSIPAddress", Name: validation.Null, Rule: true, Chain: nil},
+									{Target: "cache.CacheProperties.DirectoryServicesSettings.ActiveDirectory.DomainName", Name: validation.Null, Rule: true, Chain: nil},
+									{Target: "cache.CacheProperties.DirectoryServicesSettings.ActiveDirectory.DomainNetBiosName", Name: validation.Null, Rule: true, Chain: nil},
+									{Target: "cache.CacheProperties.DirectoryServicesSettings.ActiveDirectory.CacheNetBiosName", Name: validation.Null, Rule: true,
+										Chain: []validation.Constraint{{Target: "cache.CacheProperties.DirectoryServicesSettings.ActiveDirectory.CacheNetBiosName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z]{1,15}$`, Chain: nil}}},
+									{Target: "cache.CacheProperties.DirectoryServicesSettings.ActiveDirectory.Credentials", Name: validation.Null, Rule: false,
+										Chain: []validation.Constraint{{Target: "cache.CacheProperties.DirectoryServicesSettings.ActiveDirectory.Credentials.Username", Name: validation.Null, Rule: true, Chain: nil},
+											{Target: "cache.CacheProperties.DirectoryServicesSettings.ActiveDirectory.Credentials.Password", Name: validation.Null, Rule: true, Chain: nil},
+										}},
+								}},
+							}},
 					}},
 				}}}}}); err != nil {
 		return result, validation.NewError("storagecache.CachesClient", "CreateOrUpdate", err.Error())
@@ -96,7 +109,7 @@ func (client CachesClient) CreateOrUpdatePreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01"
+	const APIVersion = "2021-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -146,10 +159,95 @@ func (client CachesClient) CreateOrUpdateResponder(resp *http.Response) (result 
 	return
 }
 
+// DebugInfo tells a Cache to write generate debug info for support to process.
+// Parameters:
+// resourceGroupName - target resource group.
+// cacheName - name of Cache. Length of name must not be greater than 80 and chars must be from the
+// [-0-9a-zA-Z_] char class.
+func (client CachesClient) DebugInfo(ctx context.Context, resourceGroupName string, cacheName string) (result CachesDebugInfoFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/CachesClient.DebugInfo")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: cacheName,
+			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,80}$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storagecache.CachesClient", "DebugInfo", err.Error())
+	}
+
+	req, err := client.DebugInfoPreparer(ctx, resourceGroupName, cacheName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagecache.CachesClient", "DebugInfo", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.DebugInfoSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagecache.CachesClient", "DebugInfo", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// DebugInfoPreparer prepares the DebugInfo request.
+func (client CachesClient) DebugInfoPreparer(ctx context.Context, resourceGroupName string, cacheName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"cacheName":         autorest.Encode("path", cacheName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/debugInfo", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DebugInfoSender sends the DebugInfo request. The method will close the
+// http.Response Body if it receives an error.
+func (client CachesClient) DebugInfoSender(req *http.Request) (future CachesDebugInfoFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// DebugInfoResponder handles the response to the DebugInfo request. The method always
+// closes the http.Response Body.
+func (client CachesClient) DebugInfoResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted, http.StatusNoContent),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Delete schedules a Cache for deletion.
 // Parameters:
 // resourceGroupName - target resource group.
-// cacheName - name of Cache. Length of name must be not greater than 80 and chars must be in list of
+// cacheName - name of Cache. Length of name must not be greater than 80 and chars must be from the
 // [-0-9a-zA-Z_] char class.
 func (client CachesClient) Delete(ctx context.Context, resourceGroupName string, cacheName string) (result CachesDeleteFuture, err error) {
 	if tracing.IsEnabled() {
@@ -191,7 +289,7 @@ func (client CachesClient) DeletePreparer(ctx context.Context, resourceGroupName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01"
+	const APIVersion = "2021-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -235,7 +333,7 @@ func (client CachesClient) DeleteResponder(resp *http.Response) (result autorest
 // returned until the flush is complete.
 // Parameters:
 // resourceGroupName - target resource group.
-// cacheName - name of Cache. Length of name must be not greater than 80 and chars must be in list of
+// cacheName - name of Cache. Length of name must not be greater than 80 and chars must be from the
 // [-0-9a-zA-Z_] char class.
 func (client CachesClient) Flush(ctx context.Context, resourceGroupName string, cacheName string) (result CachesFlushFuture, err error) {
 	if tracing.IsEnabled() {
@@ -277,7 +375,7 @@ func (client CachesClient) FlushPreparer(ctx context.Context, resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01"
+	const APIVersion = "2021-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -320,7 +418,7 @@ func (client CachesClient) FlushResponder(resp *http.Response) (result autorest.
 // Get returns a Cache.
 // Parameters:
 // resourceGroupName - target resource group.
-// cacheName - name of Cache. Length of name must be not greater than 80 and chars must be in list of
+// cacheName - name of Cache. Length of name must not be greater than 80 and chars must be from the
 // [-0-9a-zA-Z_] char class.
 func (client CachesClient) Get(ctx context.Context, resourceGroupName string, cacheName string) (result Cache, err error) {
 	if tracing.IsEnabled() {
@@ -369,7 +467,7 @@ func (client CachesClient) GetPreparer(ctx context.Context, resourceGroupName st
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01"
+	const APIVersion = "2021-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -445,7 +543,7 @@ func (client CachesClient) ListPreparer(ctx context.Context) (*http.Request, err
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01"
+	const APIVersion = "2021-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -561,7 +659,7 @@ func (client CachesClient) ListByResourceGroupPreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01"
+	const APIVersion = "2021-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -632,7 +730,7 @@ func (client CachesClient) ListByResourceGroupComplete(ctx context.Context, reso
 // Start tells a Stopped state Cache to transition to Active state.
 // Parameters:
 // resourceGroupName - target resource group.
-// cacheName - name of Cache. Length of name must be not greater than 80 and chars must be in list of
+// cacheName - name of Cache. Length of name must not be greater than 80 and chars must be from the
 // [-0-9a-zA-Z_] char class.
 func (client CachesClient) Start(ctx context.Context, resourceGroupName string, cacheName string) (result CachesStartFuture, err error) {
 	if tracing.IsEnabled() {
@@ -674,7 +772,7 @@ func (client CachesClient) StartPreparer(ctx context.Context, resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01"
+	const APIVersion = "2021-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -717,7 +815,7 @@ func (client CachesClient) StartResponder(resp *http.Response) (result autorest.
 // Stop tells an Active Cache to transition to Stopped state.
 // Parameters:
 // resourceGroupName - target resource group.
-// cacheName - name of Cache. Length of name must be not greater than 80 and chars must be in list of
+// cacheName - name of Cache. Length of name must not be greater than 80 and chars must be from the
 // [-0-9a-zA-Z_] char class.
 func (client CachesClient) Stop(ctx context.Context, resourceGroupName string, cacheName string) (result CachesStopFuture, err error) {
 	if tracing.IsEnabled() {
@@ -759,7 +857,7 @@ func (client CachesClient) StopPreparer(ctx context.Context, resourceGroupName s
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01"
+	const APIVersion = "2021-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -802,7 +900,7 @@ func (client CachesClient) StopResponder(resp *http.Response) (result autorest.R
 // Update update a Cache instance.
 // Parameters:
 // resourceGroupName - target resource group.
-// cacheName - name of Cache. Length of name must be not greater than 80 and chars must be in list of
+// cacheName - name of Cache. Length of name must not be greater than 80 and chars must be from the
 // [-0-9a-zA-Z_] char class.
 // cache - object containing the user-selectable properties of the Cache. If read-only properties are included,
 // they must match the existing values of those properties.
@@ -853,7 +951,7 @@ func (client CachesClient) UpdatePreparer(ctx context.Context, resourceGroupName
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01"
+	const APIVersion = "2021-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -896,7 +994,7 @@ func (client CachesClient) UpdateResponder(resp *http.Response) (result Cache, e
 // UpgradeFirmware upgrade a Cache's firmware if a new version is available. Otherwise, this operation has no effect.
 // Parameters:
 // resourceGroupName - target resource group.
-// cacheName - name of Cache. Length of name must be not greater than 80 and chars must be in list of
+// cacheName - name of Cache. Length of name must not be greater than 80 and chars must be from the
 // [-0-9a-zA-Z_] char class.
 func (client CachesClient) UpgradeFirmware(ctx context.Context, resourceGroupName string, cacheName string) (result CachesUpgradeFirmwareFuture, err error) {
 	if tracing.IsEnabled() {
@@ -938,7 +1036,7 @@ func (client CachesClient) UpgradeFirmwarePreparer(ctx context.Context, resource
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01"
+	const APIVersion = "2021-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

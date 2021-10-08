@@ -37,10 +37,9 @@ func NewStorageTargetsClientWithBaseURI(baseURI string, subscriptionID string) S
 // unhealthy, the actual creation/modification of the Storage Target may be delayed until the Cache is healthy again.
 // Parameters:
 // resourceGroupName - target resource group.
-// cacheName - name of Cache. Length of name must be not greater than 80 and chars must be in list of
+// cacheName - name of Cache. Length of name must not be greater than 80 and chars must be from the
 // [-0-9a-zA-Z_] char class.
-// storageTargetName - name of the Storage Target. Length of name must be not greater than 80 and chars must be
-// in list of [-0-9a-zA-Z_] char class.
+// storageTargetName - name of Storage Target.
 // storagetarget - object containing the definition of a Storage Target.
 func (client StorageTargetsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, storagetarget *StorageTarget) (result StorageTargetsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
@@ -57,7 +56,16 @@ func (client StorageTargetsClient) CreateOrUpdate(ctx context.Context, resourceG
 		{TargetValue: cacheName,
 			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,80}$`, Chain: nil}}},
 		{TargetValue: storageTargetName,
-			Constraints: []validation.Constraint{{Target: "storageTargetName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,80}$`, Chain: nil}}}}); err != nil {
+			Constraints: []validation.Constraint{{Target: "storageTargetName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,80}$`, Chain: nil}}},
+		{TargetValue: storagetarget,
+			Constraints: []validation.Constraint{{Target: "storagetarget", Name: validation.Null, Rule: false,
+				Chain: []validation.Constraint{{Target: "storagetarget.StorageTargetProperties", Name: validation.Null, Rule: false,
+					Chain: []validation.Constraint{{Target: "storagetarget.StorageTargetProperties.Nfs3", Name: validation.Null, Rule: false,
+						Chain: []validation.Constraint{{Target: "storagetarget.StorageTargetProperties.Nfs3.Target", Name: validation.Null, Rule: false,
+							Chain: []validation.Constraint{{Target: "storagetarget.StorageTargetProperties.Nfs3.Target", Name: validation.Pattern, Rule: `^[-.,0-9a-zA-Z]+$`, Chain: nil}}},
+						}},
+					}},
+				}}}}}); err != nil {
 		return result, validation.NewError("storagecache.StorageTargetsClient", "CreateOrUpdate", err.Error())
 	}
 
@@ -85,7 +93,7 @@ func (client StorageTargetsClient) CreateOrUpdatePreparer(ctx context.Context, r
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01"
+	const APIVersion = "2021-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -137,10 +145,12 @@ func (client StorageTargetsClient) CreateOrUpdateResponder(resp *http.Response) 
 // deleted.
 // Parameters:
 // resourceGroupName - target resource group.
-// cacheName - name of Cache. Length of name must be not greater than 80 and chars must be in list of
+// cacheName - name of Cache. Length of name must not be greater than 80 and chars must be from the
 // [-0-9a-zA-Z_] char class.
 // storageTargetName - name of Storage Target.
-func (client StorageTargetsClient) Delete(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string) (result StorageTargetsDeleteFuture, err error) {
+// force - boolean value requesting the force delete operation for a storage target. Force delete discards
+// unwritten-data in the cache instead of flushing it to back-end storage.
+func (client StorageTargetsClient) Delete(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, force string) (result StorageTargetsDeleteFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/StorageTargetsClient.Delete")
 		defer func() {
@@ -159,7 +169,7 @@ func (client StorageTargetsClient) Delete(ctx context.Context, resourceGroupName
 		return result, validation.NewError("storagecache.StorageTargetsClient", "Delete", err.Error())
 	}
 
-	req, err := client.DeletePreparer(ctx, resourceGroupName, cacheName, storageTargetName)
+	req, err := client.DeletePreparer(ctx, resourceGroupName, cacheName, storageTargetName, force)
 	if err != nil {
 		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsClient", "Delete", nil, "Failure preparing request")
 		return
@@ -175,7 +185,7 @@ func (client StorageTargetsClient) Delete(ctx context.Context, resourceGroupName
 }
 
 // DeletePreparer prepares the Delete request.
-func (client StorageTargetsClient) DeletePreparer(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string) (*http.Request, error) {
+func (client StorageTargetsClient) DeletePreparer(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, force string) (*http.Request, error) {
 	pathParameters := map[string]interface{}{
 		"cacheName":         autorest.Encode("path", cacheName),
 		"resourceGroupName": autorest.Encode("path", resourceGroupName),
@@ -183,9 +193,12 @@ func (client StorageTargetsClient) DeletePreparer(ctx context.Context, resourceG
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01"
+	const APIVersion = "2021-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
+	}
+	if len(force) > 0 {
+		queryParameters["force"] = autorest.Encode("query", force)
 	}
 
 	preparer := autorest.CreatePreparer(
@@ -223,13 +236,101 @@ func (client StorageTargetsClient) DeleteResponder(resp *http.Response) (result 
 	return
 }
 
+// DNSRefresh tells a storage target to refresh its DNS information.
+// Parameters:
+// resourceGroupName - target resource group.
+// cacheName - name of Cache. Length of name must not be greater than 80 and chars must be from the
+// [-0-9a-zA-Z_] char class.
+// storageTargetName - name of Storage Target.
+func (client StorageTargetsClient) DNSRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string) (result StorageTargetsDNSRefreshFuture, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/StorageTargetsClient.DNSRefresh")
+		defer func() {
+			sc := -1
+			if result.FutureAPI != nil && result.FutureAPI.Response() != nil {
+				sc = result.FutureAPI.Response().StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: cacheName,
+			Constraints: []validation.Constraint{{Target: "cacheName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,80}$`, Chain: nil}}},
+		{TargetValue: storageTargetName,
+			Constraints: []validation.Constraint{{Target: "storageTargetName", Name: validation.Pattern, Rule: `^[-0-9a-zA-Z_]{1,80}$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storagecache.StorageTargetsClient", "DNSRefresh", err.Error())
+	}
+
+	req, err := client.DNSRefreshPreparer(ctx, resourceGroupName, cacheName, storageTargetName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsClient", "DNSRefresh", nil, "Failure preparing request")
+		return
+	}
+
+	result, err = client.DNSRefreshSender(req)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagecache.StorageTargetsClient", "DNSRefresh", result.Response(), "Failure sending request")
+		return
+	}
+
+	return
+}
+
+// DNSRefreshPreparer prepares the DNSRefresh request.
+func (client StorageTargetsClient) DNSRefreshPreparer(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"cacheName":         autorest.Encode("path", cacheName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"storageTargetName": autorest.Encode("path", storageTargetName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-09-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsPost(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/dnsRefresh", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// DNSRefreshSender sends the DNSRefresh request. The method will close the
+// http.Response Body if it receives an error.
+func (client StorageTargetsClient) DNSRefreshSender(req *http.Request) (future StorageTargetsDNSRefreshFuture, err error) {
+	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
+	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
+	if err != nil {
+		return
+	}
+	var azf azure.Future
+	azf, err = azure.NewFutureFromResponse(resp)
+	future.FutureAPI = &azf
+	future.Result = future.result
+	return
+}
+
+// DNSRefreshResponder handles the response to the DNSRefresh request. The method always
+// closes the http.Response Body.
+func (client StorageTargetsClient) DNSRefreshResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusAccepted),
+		autorest.ByClosing())
+	result.Response = resp
+	return
+}
+
 // Get returns a Storage Target from a Cache.
 // Parameters:
 // resourceGroupName - target resource group.
-// cacheName - name of Cache. Length of name must be not greater than 80 and chars must be in list of
+// cacheName - name of Cache. Length of name must not be greater than 80 and chars must be from the
 // [-0-9a-zA-Z_] char class.
-// storageTargetName - name of the Storage Target. Length of name must be not greater than 80 and chars must be
-// in list of [-0-9a-zA-Z_] char class.
+// storageTargetName - name of Storage Target.
 func (client StorageTargetsClient) Get(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string) (result StorageTarget, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/StorageTargetsClient.Get")
@@ -280,7 +381,7 @@ func (client StorageTargetsClient) GetPreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01"
+	const APIVersion = "2021-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -314,7 +415,7 @@ func (client StorageTargetsClient) GetResponder(resp *http.Response) (result Sto
 // ListByCache returns a list of Storage Targets for the specified Cache.
 // Parameters:
 // resourceGroupName - target resource group.
-// cacheName - name of Cache. Length of name must be not greater than 80 and chars must be in list of
+// cacheName - name of Cache. Length of name must not be greater than 80 and chars must be from the
 // [-0-9a-zA-Z_] char class.
 func (client StorageTargetsClient) ListByCache(ctx context.Context, resourceGroupName string, cacheName string) (result StorageTargetsResultPage, err error) {
 	if tracing.IsEnabled() {
@@ -368,7 +469,7 @@ func (client StorageTargetsClient) ListByCachePreparer(ctx context.Context, reso
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-03-01"
+	const APIVersion = "2021-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

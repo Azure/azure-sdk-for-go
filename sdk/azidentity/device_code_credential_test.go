@@ -221,7 +221,7 @@ func TestDeviceCodeCredential_GetTokenAuthorizationPending(t *testing.T) {
 	options.TenantID = tenantID
 	options.HTTPClient = srv
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.UserPrompt = func(DeviceCodeMessage) {}
+	options.UserPrompt = func(context.Context, DeviceCodeMessage) error {return nil}
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -243,7 +243,7 @@ func TestDeviceCodeCredential_GetTokenExpiredToken(t *testing.T) {
 	options.TenantID = tenantID
 	options.HTTPClient = srv
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.UserPrompt = func(DeviceCodeMessage) {}
+	options.UserPrompt = func(context.Context, DeviceCodeMessage) error {return nil}
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -290,7 +290,7 @@ func TestDeviceCodeCredential_GetTokenWithRefreshTokenSuccess(t *testing.T) {
 	options.TenantID = tenantID
 	options.HTTPClient = srv
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.UserPrompt = func(DeviceCodeMessage) {}
+	options.UserPrompt = func(context.Context, DeviceCodeMessage) error {return nil}
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -316,7 +316,7 @@ func TestBearerPolicy_DeviceCodeCredential(t *testing.T) {
 	options.TenantID = tenantID
 	options.HTTPClient = srv
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.UserPrompt = func(DeviceCodeMessage) {}
+	options.UserPrompt = func(context.Context, DeviceCodeMessage) error {return nil}
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)

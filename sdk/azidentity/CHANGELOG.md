@@ -46,6 +46,7 @@
   opts := &ManagedIdentityCredentialOptions{ID: resID}
   cred, err := NewManagedIdentityCredential(opts)
   ```
+* `DeviceCodeCredentialOptions.UserPrompt` has a new type: `func(context.Context, DeviceCodeMessage) error`
 
 ### Features Added
 * Added connection configuration options to `DefaultAzureCredentialOptions`

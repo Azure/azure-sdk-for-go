@@ -4,8 +4,10 @@
 package azidentity
 
 import (
+	"context"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 const (
@@ -23,13 +25,19 @@ type DefaultAzureCredentialOptions struct {
 	AuthorityHost AuthorityHost
 }
 
-// NewDefaultAzureCredential provides a default ChainedTokenCredential configuration for applications that will be deployed to Azure.  The following credential
-// types will be tried, in the following order:
+// DefaultAzureCredential is a default credential chain for applications that will be deployed to Azure.
+// It combines credentials suitable for deployed applications with credentials suitable in local development.
+// It attempts to authenticate with each of these credential types, in the following order:
 // - EnvironmentCredential
 // - ManagedIdentityCredential
 // - AzureCLICredential
-// Consult the documentation for these credential types for more information on how they attempt authentication.
-func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*ChainedTokenCredential, error) {
+// Consult the documentation for these credential types for more information on how they authenticate.
+type DefaultAzureCredential struct {
+	chain *ChainedTokenCredential
+}
+
+// NewDefaultAzureCredential creates a default credential chain for applications that will be deployed to Azure.
+func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*DefaultAzureCredential, error) {
 	var creds []azcore.TokenCredential
 	errMsg := ""
 
@@ -67,6 +75,14 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Chained
 		logCredentialError(err.credentialType, err)
 		return nil, err
 	}
-	log.Write(EventCredential, "Azure Identity => NewDefaultAzureCredential() invoking NewChainedTokenCredential()")
-	return NewChainedTokenCredential(creds, nil)
+	chain, err := NewChainedTokenCredential(creds, nil)
+	if err != nil {
+		return nil, err
+	}
+	return &DefaultAzureCredential{chain: chain}, nil
+}
+
+// GetToken attempts to acquire a token from each of the default chain's credentials, stopping when one provides a token.
+func (c *DefaultAzureCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (token *azcore.AccessToken, err error) {
+	return c.chain.GetToken(ctx, opts)
 }

@@ -118,6 +118,7 @@ type DiskCreateOption = original.DiskCreateOption
 const (
 	DiskCreateOptionAttach    DiskCreateOption = original.DiskCreateOptionAttach
 	DiskCreateOptionCopy      DiskCreateOption = original.DiskCreateOptionCopy
+	DiskCreateOptionCopyStart DiskCreateOption = original.DiskCreateOptionCopyStart
 	DiskCreateOptionEmpty     DiskCreateOption = original.DiskCreateOptionEmpty
 	DiskCreateOptionFromImage DiskCreateOption = original.DiskCreateOptionFromImage
 	DiskCreateOptionImport    DiskCreateOption = original.DiskCreateOptionImport
@@ -169,12 +170,14 @@ const (
 type DiskState = original.DiskState
 
 const (
-	DiskStateActiveSAS     DiskState = original.DiskStateActiveSAS
-	DiskStateActiveUpload  DiskState = original.DiskStateActiveUpload
-	DiskStateAttached      DiskState = original.DiskStateAttached
-	DiskStateReadyToUpload DiskState = original.DiskStateReadyToUpload
-	DiskStateReserved      DiskState = original.DiskStateReserved
-	DiskStateUnattached    DiskState = original.DiskStateUnattached
+	DiskStateActiveSAS       DiskState = original.DiskStateActiveSAS
+	DiskStateActiveSASFrozen DiskState = original.DiskStateActiveSASFrozen
+	DiskStateActiveUpload    DiskState = original.DiskStateActiveUpload
+	DiskStateAttached        DiskState = original.DiskStateAttached
+	DiskStateFrozen          DiskState = original.DiskStateFrozen
+	DiskStateReadyToUpload   DiskState = original.DiskStateReadyToUpload
+	DiskStateReserved        DiskState = original.DiskStateReserved
+	DiskStateUnattached      DiskState = original.DiskStateUnattached
 )
 
 type DiskStorageAccountTypes = original.DiskStorageAccountTypes
@@ -513,6 +516,13 @@ type PublicIPAllocationMethod = original.PublicIPAllocationMethod
 const (
 	PublicIPAllocationMethodDynamic PublicIPAllocationMethod = original.PublicIPAllocationMethodDynamic
 	PublicIPAllocationMethodStatic  PublicIPAllocationMethod = original.PublicIPAllocationMethodStatic
+)
+
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
 )
 
 type ReplicationMode = original.ReplicationMode
@@ -1048,6 +1058,15 @@ type CloudServicesStartFuture = original.CloudServicesStartFuture
 type CloudServicesUpdateDomainClient = original.CloudServicesUpdateDomainClient
 type CloudServicesUpdateDomainWalkUpdateDomainFuture = original.CloudServicesUpdateDomainWalkUpdateDomainFuture
 type CloudServicesUpdateFuture = original.CloudServicesUpdateFuture
+type CommunityGalleriesClient = original.CommunityGalleriesClient
+type CommunityGallery = original.CommunityGallery
+type CommunityGalleryIdentifier = original.CommunityGalleryIdentifier
+type CommunityGalleryImage = original.CommunityGalleryImage
+type CommunityGalleryImageProperties = original.CommunityGalleryImageProperties
+type CommunityGalleryImageVersion = original.CommunityGalleryImageVersion
+type CommunityGalleryImageVersionProperties = original.CommunityGalleryImageVersionProperties
+type CommunityGalleryImageVersionsClient = original.CommunityGalleryImageVersionsClient
+type CommunityGalleryImagesClient = original.CommunityGalleryImagesClient
 type CreationData = original.CreationData
 type DataDisk = original.DataDisk
 type DataDiskImage = original.DataDiskImage
@@ -1275,6 +1294,7 @@ type OrchestrationServiceStateInput = original.OrchestrationServiceStateInput
 type OrchestrationServiceSummary = original.OrchestrationServiceSummary
 type PatchInstallationDetail = original.PatchInstallationDetail
 type PatchSettings = original.PatchSettings
+type PirCommunityGalleryResource = original.PirCommunityGalleryResource
 type PirResource = original.PirResource
 type PirSharedGalleryResource = original.PirSharedGalleryResource
 type Plan = original.Plan
@@ -1425,6 +1445,7 @@ type StorageProfile = original.StorageProfile
 type SubResource = original.SubResource
 type SubResourceReadOnly = original.SubResourceReadOnly
 type SubResourceWithColocationStatus = original.SubResourceWithColocationStatus
+type SupportedCapabilities = original.SupportedCapabilities
 type TargetRegion = original.TargetRegion
 type TerminateNotificationProfile = original.TerminateNotificationProfile
 type ThrottledRequestsInput = original.ThrottledRequestsInput
@@ -1731,6 +1752,24 @@ func NewCloudServicesUpdateDomainClient(subscriptionID string) CloudServicesUpda
 }
 func NewCloudServicesUpdateDomainClientWithBaseURI(baseURI string, subscriptionID string) CloudServicesUpdateDomainClient {
 	return original.NewCloudServicesUpdateDomainClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCommunityGalleriesClient(subscriptionID string) CommunityGalleriesClient {
+	return original.NewCommunityGalleriesClient(subscriptionID)
+}
+func NewCommunityGalleriesClientWithBaseURI(baseURI string, subscriptionID string) CommunityGalleriesClient {
+	return original.NewCommunityGalleriesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCommunityGalleryImageVersionsClient(subscriptionID string) CommunityGalleryImageVersionsClient {
+	return original.NewCommunityGalleryImageVersionsClient(subscriptionID)
+}
+func NewCommunityGalleryImageVersionsClientWithBaseURI(baseURI string, subscriptionID string) CommunityGalleryImageVersionsClient {
+	return original.NewCommunityGalleryImageVersionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewCommunityGalleryImagesClient(subscriptionID string) CommunityGalleryImagesClient {
+	return original.NewCommunityGalleryImagesClient(subscriptionID)
+}
+func NewCommunityGalleryImagesClientWithBaseURI(baseURI string, subscriptionID string) CommunityGalleryImagesClient {
+	return original.NewCommunityGalleryImagesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewDedicatedHostGroupListResultIterator(page DedicatedHostGroupListResultPage) DedicatedHostGroupListResultIterator {
 	return original.NewDedicatedHostGroupListResultIterator(page)
@@ -2370,6 +2409,9 @@ func PossiblePublicIPAddressSkuTierValues() []PublicIPAddressSkuTier {
 }
 func PossiblePublicIPAllocationMethodValues() []PublicIPAllocationMethod {
 	return original.PossiblePublicIPAllocationMethodValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
 }
 func PossibleReplicationModeValues() []ReplicationMode {
 	return original.PossibleReplicationModeValues()

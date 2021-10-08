@@ -44,6 +44,25 @@ func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
 	return []ClusterProvisioningState{ClusterProvisioningStateCanceled, ClusterProvisioningStateDeleting, ClusterProvisioningStateFailed, ClusterProvisioningStateInProgress, ClusterProvisioningStateSucceeded}
 }
 
+// CreatedByType enumerates the values for created by type.
+type CreatedByType string
+
+const (
+	// CreatedByTypeApplication ...
+	CreatedByTypeApplication CreatedByType = "Application"
+	// CreatedByTypeKey ...
+	CreatedByTypeKey CreatedByType = "Key"
+	// CreatedByTypeManagedIdentity ...
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	// CreatedByTypeUser ...
+	CreatedByTypeUser CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns an array of possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{CreatedByTypeApplication, CreatedByTypeKey, CreatedByTypeManagedIdentity, CreatedByTypeUser}
+}
+
 // DaysOfWeek enumerates the values for days of week.
 type DaysOfWeek string
 
@@ -133,6 +152,45 @@ func PossibleOSTypeValues() []OSType {
 	return []OSType{Linux, Windows}
 }
 
+// PrivateEndpointConnectionProvisioningState enumerates the values for private endpoint connection
+// provisioning state.
+type PrivateEndpointConnectionProvisioningState string
+
+const (
+	// PrivateEndpointConnectionProvisioningStateCanceled ...
+	PrivateEndpointConnectionProvisioningStateCanceled PrivateEndpointConnectionProvisioningState = "Canceled"
+	// PrivateEndpointConnectionProvisioningStateDeleting ...
+	PrivateEndpointConnectionProvisioningStateDeleting PrivateEndpointConnectionProvisioningState = "Deleting"
+	// PrivateEndpointConnectionProvisioningStateFailed ...
+	PrivateEndpointConnectionProvisioningStateFailed PrivateEndpointConnectionProvisioningState = "Failed"
+	// PrivateEndpointConnectionProvisioningStateInProgress ...
+	PrivateEndpointConnectionProvisioningStateInProgress PrivateEndpointConnectionProvisioningState = "InProgress"
+	// PrivateEndpointConnectionProvisioningStateSucceeded ...
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
+	// PrivateEndpointConnectionProvisioningStateUpdating ...
+	PrivateEndpointConnectionProvisioningStateUpdating PrivateEndpointConnectionProvisioningState = "Updating"
+)
+
+// PossiblePrivateEndpointConnectionProvisioningStateValues returns an array of possible values for the PrivateEndpointConnectionProvisioningState const type.
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return []PrivateEndpointConnectionProvisioningState{PrivateEndpointConnectionProvisioningStateCanceled, PrivateEndpointConnectionProvisioningStateDeleting, PrivateEndpointConnectionProvisioningStateFailed, PrivateEndpointConnectionProvisioningStateInProgress, PrivateEndpointConnectionProvisioningStateSucceeded, PrivateEndpointConnectionProvisioningStateUpdating}
+}
+
+// PrivateIPAllocationMethod enumerates the values for private ip allocation method.
+type PrivateIPAllocationMethod string
+
+const (
+	// Dynamic ...
+	Dynamic PrivateIPAllocationMethod = "dynamic"
+	// Static ...
+	Static PrivateIPAllocationMethod = "static"
+)
+
+// PossiblePrivateIPAllocationMethodValues returns an array of possible values for the PrivateIPAllocationMethod const type.
+func PossiblePrivateIPAllocationMethodValues() []PrivateIPAllocationMethod {
+	return []PrivateIPAllocationMethod{Dynamic, Static}
+}
+
 // PrivateLink enumerates the values for private link.
 type PrivateLink string
 
@@ -146,6 +204,47 @@ const (
 // PossiblePrivateLinkValues returns an array of possible values for the PrivateLink const type.
 func PossiblePrivateLinkValues() []PrivateLink {
 	return []PrivateLink{Disabled, Enabled}
+}
+
+// PrivateLinkConfigurationProvisioningState enumerates the values for private link configuration provisioning
+// state.
+type PrivateLinkConfigurationProvisioningState string
+
+const (
+	// PrivateLinkConfigurationProvisioningStateCanceled ...
+	PrivateLinkConfigurationProvisioningStateCanceled PrivateLinkConfigurationProvisioningState = "Canceled"
+	// PrivateLinkConfigurationProvisioningStateDeleting ...
+	PrivateLinkConfigurationProvisioningStateDeleting PrivateLinkConfigurationProvisioningState = "Deleting"
+	// PrivateLinkConfigurationProvisioningStateFailed ...
+	PrivateLinkConfigurationProvisioningStateFailed PrivateLinkConfigurationProvisioningState = "Failed"
+	// PrivateLinkConfigurationProvisioningStateInProgress ...
+	PrivateLinkConfigurationProvisioningStateInProgress PrivateLinkConfigurationProvisioningState = "InProgress"
+	// PrivateLinkConfigurationProvisioningStateSucceeded ...
+	PrivateLinkConfigurationProvisioningStateSucceeded PrivateLinkConfigurationProvisioningState = "Succeeded"
+)
+
+// PossiblePrivateLinkConfigurationProvisioningStateValues returns an array of possible values for the PrivateLinkConfigurationProvisioningState const type.
+func PossiblePrivateLinkConfigurationProvisioningStateValues() []PrivateLinkConfigurationProvisioningState {
+	return []PrivateLinkConfigurationProvisioningState{PrivateLinkConfigurationProvisioningStateCanceled, PrivateLinkConfigurationProvisioningStateDeleting, PrivateLinkConfigurationProvisioningStateFailed, PrivateLinkConfigurationProvisioningStateInProgress, PrivateLinkConfigurationProvisioningStateSucceeded}
+}
+
+// PrivateLinkServiceConnectionStatus enumerates the values for private link service connection status.
+type PrivateLinkServiceConnectionStatus string
+
+const (
+	// Approved ...
+	Approved PrivateLinkServiceConnectionStatus = "Approved"
+	// Pending ...
+	Pending PrivateLinkServiceConnectionStatus = "Pending"
+	// Rejected ...
+	Rejected PrivateLinkServiceConnectionStatus = "Rejected"
+	// Removed ...
+	Removed PrivateLinkServiceConnectionStatus = "Removed"
+)
+
+// PossiblePrivateLinkServiceConnectionStatusValues returns an array of possible values for the PrivateLinkServiceConnectionStatus const type.
+func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConnectionStatus {
+	return []PrivateLinkServiceConnectionStatus{Approved, Pending, Rejected, Removed}
 }
 
 // ResourceIdentityType enumerates the values for resource identity type.

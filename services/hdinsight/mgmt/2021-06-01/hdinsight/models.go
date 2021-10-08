@@ -11,13 +11,14 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/hdinsight/mgmt/2015-03-01-preview/hdinsight"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/hdinsight/mgmt/2021-06-01/hdinsight"
 
 // AaddsResourceDetails the Azure active directory domain service resource details.
 type AaddsResourceDetails struct {
@@ -46,11 +47,13 @@ type Application struct {
 	Tags map[string]*string `json:"tags"`
 	// Properties - The properties of the application.
 	Properties *ApplicationProperties `json:"properties,omitempty"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource.
+	// SystemData - READ-ONLY
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -313,6 +316,8 @@ type ApplicationProperties struct {
 	CreatedDate *string `json:"createdDate,omitempty"`
 	// MarketplaceIdentifier - READ-ONLY; The marketplace identifier.
 	MarketplaceIdentifier *string `json:"marketplaceIdentifier,omitempty"`
+	// PrivateLinkConfigurations - The private link configurations.
+	PrivateLinkConfigurations *[]PrivateLinkConfiguration `json:"privateLinkConfigurations,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ApplicationProperties.
@@ -338,6 +343,9 @@ func (ap ApplicationProperties) MarshalJSON() ([]byte, error) {
 	}
 	if ap.Errors != nil {
 		objectMap["errors"] = ap.Errors
+	}
+	if ap.PrivateLinkConfigurations != nil {
+		objectMap["privateLinkConfigurations"] = ap.PrivateLinkConfigurations
 	}
 	return json.Marshal(objectMap)
 }
@@ -480,6 +488,24 @@ type AutoscaleTimeAndCapacity struct {
 	MaxInstanceCount *int32 `json:"maxInstanceCount,omitempty"`
 }
 
+// AzureEntityResource the resource model definition for an Azure Resource Manager resource with an etag.
+type AzureEntityResource struct {
+	// Etag - READ-ONLY; Resource Etag.
+	Etag *string `json:"etag,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for AzureEntityResource.
+func (aer AzureEntityResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
 // AzureMonitorRequest the azure monitor parameters.
 type AzureMonitorRequest struct {
 	// WorkspaceID - The Log Analytics workspace ID.
@@ -593,10 +619,6 @@ type CapabilitiesResult struct {
 	Versions map[string]*VersionsCapability `json:"versions"`
 	// Regions - The virtual machine size compatibility features.
 	Regions map[string]*RegionsCapability `json:"regions"`
-	// Vmsizes - The virtual machine sizes.
-	Vmsizes map[string]*VMSizesCapability `json:"vmsizes"`
-	// VmsizeFilters - The virtual machine size compatibility filters.
-	VmsizeFilters *[]VMSizeCompatibilityFilter `json:"vmsize_filters,omitempty"`
 	// Features - The capability features.
 	Features *[]string `json:"features,omitempty"`
 	// Quota - The quota capability.
@@ -611,12 +633,6 @@ func (cr CapabilitiesResult) MarshalJSON() ([]byte, error) {
 	}
 	if cr.Regions != nil {
 		objectMap["regions"] = cr.Regions
-	}
-	if cr.Vmsizes != nil {
-		objectMap["vmsizes"] = cr.Vmsizes
-	}
-	if cr.VmsizeFilters != nil {
-		objectMap["vmsize_filters"] = cr.VmsizeFilters
 	}
 	if cr.Features != nil {
 		objectMap["features"] = cr.Features
@@ -640,19 +656,23 @@ type Cluster struct {
 	autorest.Response `json:"-"`
 	// Etag - The ETag for the resource
 	Etag *string `json:"etag,omitempty"`
+	// Zones - The availability zones.
+	Zones *[]string `json:"zones,omitempty"`
 	// Properties - The properties of the cluster.
 	Properties *ClusterGetProperties `json:"properties,omitempty"`
 	// Identity - The identity of the cluster, if configured.
 	Identity *ClusterIdentity `json:"identity,omitempty"`
-	// Location - The Azure Region where the resource lives
-	Location *string `json:"location,omitempty"`
+	// SystemData - READ-ONLY
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource.
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -662,17 +682,20 @@ func (c Cluster) MarshalJSON() ([]byte, error) {
 	if c.Etag != nil {
 		objectMap["etag"] = c.Etag
 	}
+	if c.Zones != nil {
+		objectMap["zones"] = c.Zones
+	}
 	if c.Properties != nil {
 		objectMap["properties"] = c.Properties
 	}
 	if c.Identity != nil {
 		objectMap["identity"] = c.Identity
 	}
-	if c.Location != nil {
-		objectMap["location"] = c.Location
-	}
 	if c.Tags != nil {
 		objectMap["tags"] = c.Tags
+	}
+	if c.Location != nil {
+		objectMap["location"] = c.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -699,6 +722,8 @@ type ClusterCreateParametersExtended struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - The resource tags.
 	Tags map[string]*string `json:"tags"`
+	// Zones - The availability zones.
+	Zones *[]string `json:"zones,omitempty"`
 	// Properties - The cluster create parameters.
 	Properties *ClusterCreateProperties `json:"properties,omitempty"`
 	// Identity - The identity of the cluster, if configured.
@@ -713,6 +738,9 @@ func (ccpe ClusterCreateParametersExtended) MarshalJSON() ([]byte, error) {
 	}
 	if ccpe.Tags != nil {
 		objectMap["tags"] = ccpe.Tags
+	}
+	if ccpe.Zones != nil {
+		objectMap["zones"] = ccpe.Zones
 	}
 	if ccpe.Properties != nil {
 		objectMap["properties"] = ccpe.Properties
@@ -751,6 +779,8 @@ type ClusterCreateProperties struct {
 	NetworkProperties *NetworkProperties `json:"networkProperties,omitempty"`
 	// ComputeIsolationProperties - The compute isolation properties.
 	ComputeIsolationProperties *ComputeIsolationProperties `json:"computeIsolationProperties,omitempty"`
+	// PrivateLinkConfigurations - The private link configurations.
+	PrivateLinkConfigurations *[]PrivateLinkConfiguration `json:"privateLinkConfigurations,omitempty"`
 }
 
 // ClusterCreateRequestValidationParameters the cluster create request specification.
@@ -767,6 +797,8 @@ type ClusterCreateRequestValidationParameters struct {
 	Location *string `json:"location,omitempty"`
 	// Tags - The resource tags.
 	Tags map[string]*string `json:"tags"`
+	// Zones - The availability zones.
+	Zones *[]string `json:"zones,omitempty"`
 	// Properties - The cluster create parameters.
 	Properties *ClusterCreateProperties `json:"properties,omitempty"`
 	// Identity - The identity of the cluster, if configured.
@@ -793,6 +825,9 @@ func (ccrvp ClusterCreateRequestValidationParameters) MarshalJSON() ([]byte, err
 	}
 	if ccrvp.Tags != nil {
 		objectMap["tags"] = ccrvp.Tags
+	}
+	if ccrvp.Zones != nil {
+		objectMap["zones"] = ccrvp.Zones
 	}
 	if ccrvp.Properties != nil {
 		objectMap["properties"] = ccrvp.Properties
@@ -902,6 +937,85 @@ type ClusterGetProperties struct {
 	NetworkProperties *NetworkProperties `json:"networkProperties,omitempty"`
 	// ComputeIsolationProperties - The compute isolation properties.
 	ComputeIsolationProperties *ComputeIsolationProperties `json:"computeIsolationProperties,omitempty"`
+	// PrivateLinkConfigurations - The private link configurations.
+	PrivateLinkConfigurations *[]PrivateLinkConfiguration `json:"privateLinkConfigurations,omitempty"`
+	// PrivateEndpointConnections - READ-ONLY; The list of private endpoint connections.
+	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for ClusterGetProperties.
+func (cgp ClusterGetProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if cgp.ClusterVersion != nil {
+		objectMap["clusterVersion"] = cgp.ClusterVersion
+	}
+	if cgp.ClusterHdpVersion != nil {
+		objectMap["clusterHdpVersion"] = cgp.ClusterHdpVersion
+	}
+	if cgp.OsType != "" {
+		objectMap["osType"] = cgp.OsType
+	}
+	if cgp.Tier != "" {
+		objectMap["tier"] = cgp.Tier
+	}
+	if cgp.ClusterID != nil {
+		objectMap["clusterId"] = cgp.ClusterID
+	}
+	if cgp.ClusterDefinition != nil {
+		objectMap["clusterDefinition"] = cgp.ClusterDefinition
+	}
+	if cgp.KafkaRestProperties != nil {
+		objectMap["kafkaRestProperties"] = cgp.KafkaRestProperties
+	}
+	if cgp.SecurityProfile != nil {
+		objectMap["securityProfile"] = cgp.SecurityProfile
+	}
+	if cgp.ComputeProfile != nil {
+		objectMap["computeProfile"] = cgp.ComputeProfile
+	}
+	if cgp.ProvisioningState != "" {
+		objectMap["provisioningState"] = cgp.ProvisioningState
+	}
+	if cgp.CreatedDate != nil {
+		objectMap["createdDate"] = cgp.CreatedDate
+	}
+	if cgp.ClusterState != nil {
+		objectMap["clusterState"] = cgp.ClusterState
+	}
+	if cgp.QuotaInfo != nil {
+		objectMap["quotaInfo"] = cgp.QuotaInfo
+	}
+	if cgp.Errors != nil {
+		objectMap["errors"] = cgp.Errors
+	}
+	if cgp.ConnectivityEndpoints != nil {
+		objectMap["connectivityEndpoints"] = cgp.ConnectivityEndpoints
+	}
+	if cgp.DiskEncryptionProperties != nil {
+		objectMap["diskEncryptionProperties"] = cgp.DiskEncryptionProperties
+	}
+	if cgp.EncryptionInTransitProperties != nil {
+		objectMap["encryptionInTransitProperties"] = cgp.EncryptionInTransitProperties
+	}
+	if cgp.StorageProfile != nil {
+		objectMap["storageProfile"] = cgp.StorageProfile
+	}
+	if cgp.MinSupportedTLSVersion != nil {
+		objectMap["minSupportedTlsVersion"] = cgp.MinSupportedTLSVersion
+	}
+	if cgp.ExcludedServicesConfig != nil {
+		objectMap["excludedServicesConfig"] = cgp.ExcludedServicesConfig
+	}
+	if cgp.NetworkProperties != nil {
+		objectMap["networkProperties"] = cgp.NetworkProperties
+	}
+	if cgp.ComputeIsolationProperties != nil {
+		objectMap["computeIsolationProperties"] = cgp.ComputeIsolationProperties
+	}
+	if cgp.PrivateLinkConfigurations != nil {
+		objectMap["privateLinkConfigurations"] = cgp.PrivateLinkConfigurations
+	}
+	return json.Marshal(objectMap)
 }
 
 // ClusterIdentity identity for the cluster.
@@ -913,7 +1027,7 @@ type ClusterIdentity struct {
 	// Type - The type of identity used for the cluster. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user assigned identities. Possible values include: 'SystemAssigned', 'UserAssigned', 'SystemAssignedUserAssigned', 'None'
 	Type ResourceIdentityType `json:"type,omitempty"`
 	// UserAssignedIdentities - The list of user identities associated with the cluster. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*ClusterIdentityUserAssignedIdentitiesValue `json:"userAssignedIdentities"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities"`
 }
 
 // MarshalJSON is the custom marshaler for ClusterIdentity.
@@ -924,25 +1038,6 @@ func (ci ClusterIdentity) MarshalJSON() ([]byte, error) {
 	}
 	if ci.UserAssignedIdentities != nil {
 		objectMap["userAssignedIdentities"] = ci.UserAssignedIdentities
-	}
-	return json.Marshal(objectMap)
-}
-
-// ClusterIdentityUserAssignedIdentitiesValue ...
-type ClusterIdentityUserAssignedIdentitiesValue struct {
-	// PrincipalID - READ-ONLY; The principal id of user assigned identity.
-	PrincipalID *string `json:"principalId,omitempty"`
-	// ClientID - READ-ONLY; The client id of user assigned identity.
-	ClientID *string `json:"clientId,omitempty"`
-	// TenantID - The tenant id of user assigned identity.
-	TenantID *string `json:"tenantId,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ClusterIdentityUserAssignedIdentitiesValue.
-func (ciAiv ClusterIdentityUserAssignedIdentitiesValue) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if ciAiv.TenantID != nil {
-		objectMap["tenantId"] = ciAiv.TenantID
 	}
 	return json.Marshal(objectMap)
 }
@@ -1130,20 +1225,6 @@ func NewClusterListResultPage(cur ClusterListResult, getNextPage func(context.Co
 		fn:  getNextPage,
 		clr: cur,
 	}
-}
-
-// ClusterListRuntimeScriptActionDetailResult the list runtime script action detail response.
-type ClusterListRuntimeScriptActionDetailResult struct {
-	// Value - READ-ONLY; The list of persisted script action details for the cluster.
-	Value *[]RuntimeScriptActionDetail `json:"value,omitempty"`
-	// NextLink - READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for ClusterListRuntimeScriptActionDetailResult.
-func (clrsadr ClusterListRuntimeScriptActionDetailResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
 }
 
 // ClusterMonitoringRequest the cluster monitor parameters.
@@ -1646,7 +1727,7 @@ type ExecuteScriptActionParameters struct {
 	PersistOnSuccess *bool `json:"persistOnSuccess,omitempty"`
 }
 
-// Extension cluster monitoring extensions
+// Extension cluster monitoring extensions.
 type Extension struct {
 	// WorkspaceID - The workspace ID for the cluster monitoring extension.
 	WorkspaceID *string `json:"workspaceId,omitempty"`
@@ -1654,17 +1735,17 @@ type Extension struct {
 	PrimaryKey *string `json:"primaryKey,omitempty"`
 }
 
-// ExtensionCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// ExtensionsCreateFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ExtensionCreateFuture struct {
+type ExtensionsCreateFuture struct {
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
-	Result func(ExtensionClient) (autorest.Response, error)
+	Result func(ExtensionsClient) (autorest.Response, error)
 }
 
 // UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *ExtensionCreateFuture) UnmarshalJSON(body []byte) error {
+func (future *ExtensionsCreateFuture) UnmarshalJSON(body []byte) error {
 	var azFuture azure.Future
 	if err := json.Unmarshal(body, &azFuture); err != nil {
 		return err
@@ -1674,34 +1755,34 @@ func (future *ExtensionCreateFuture) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// result is the default implementation for ExtensionCreateFuture.Result.
-func (future *ExtensionCreateFuture) result(client ExtensionClient) (ar autorest.Response, err error) {
+// result is the default implementation for ExtensionsCreateFuture.Result.
+func (future *ExtensionsCreateFuture) result(client ExtensionsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionCreateFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsCreateFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
 		ar.Response = future.Response()
-		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionCreateFuture")
+		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionsCreateFuture")
 		return
 	}
 	ar.Response = future.Response()
 	return
 }
 
-// ExtensionDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// ExtensionsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
 // operation.
-type ExtensionDeleteFuture struct {
+type ExtensionsDeleteFuture struct {
 	azure.FutureAPI
 	// Result returns the result of the asynchronous operation.
 	// If the operation has not completed it will return an error.
-	Result func(ExtensionClient) (autorest.Response, error)
+	Result func(ExtensionsClient) (autorest.Response, error)
 }
 
 // UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *ExtensionDeleteFuture) UnmarshalJSON(body []byte) error {
+func (future *ExtensionsDeleteFuture) UnmarshalJSON(body []byte) error {
 	var azFuture azure.Future
 	if err := json.Unmarshal(body, &azFuture); err != nil {
 		return err
@@ -1711,91 +1792,17 @@ func (future *ExtensionDeleteFuture) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// result is the default implementation for ExtensionDeleteFuture.Result.
-func (future *ExtensionDeleteFuture) result(client ExtensionClient) (ar autorest.Response, err error) {
+// result is the default implementation for ExtensionsDeleteFuture.Result.
+func (future *ExtensionsDeleteFuture) result(client ExtensionsClient) (ar autorest.Response, err error) {
 	var done bool
 	done, err = future.DoneWithContext(context.Background(), client)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionDeleteFuture", "Result", future.Response(), "Polling failure")
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsDeleteFuture", "Result", future.Response(), "Polling failure")
 		return
 	}
 	if !done {
 		ar.Response = future.Response()
-		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionDeleteFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
-// ExtensionDisableMonitoringFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ExtensionDisableMonitoringFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(ExtensionClient) (autorest.Response, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *ExtensionDisableMonitoringFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for ExtensionDisableMonitoringFuture.Result.
-func (future *ExtensionDisableMonitoringFuture) result(client ExtensionClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionDisableMonitoringFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		ar.Response = future.Response()
-		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionDisableMonitoringFuture")
-		return
-	}
-	ar.Response = future.Response()
-	return
-}
-
-// ExtensionEnableMonitoringFuture an abstraction for monitoring and retrieving the results of a
-// long-running operation.
-type ExtensionEnableMonitoringFuture struct {
-	azure.FutureAPI
-	// Result returns the result of the asynchronous operation.
-	// If the operation has not completed it will return an error.
-	Result func(ExtensionClient) (autorest.Response, error)
-}
-
-// UnmarshalJSON is the custom unmarshaller for CreateFuture.
-func (future *ExtensionEnableMonitoringFuture) UnmarshalJSON(body []byte) error {
-	var azFuture azure.Future
-	if err := json.Unmarshal(body, &azFuture); err != nil {
-		return err
-	}
-	future.FutureAPI = &azFuture
-	future.Result = future.result
-	return nil
-}
-
-// result is the default implementation for ExtensionEnableMonitoringFuture.Result.
-func (future *ExtensionEnableMonitoringFuture) result(client ExtensionClient) (ar autorest.Response, err error) {
-	var done bool
-	done, err = future.DoneWithContext(context.Background(), client)
-	if err != nil {
-		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionEnableMonitoringFuture", "Result", future.Response(), "Polling failure")
-		return
-	}
-	if !done {
-		ar.Response = future.Response()
-		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionEnableMonitoringFuture")
+		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionsDeleteFuture")
 		return
 	}
 	ar.Response = future.Response()
@@ -1839,6 +1846,43 @@ func (future *ExtensionsDisableAzureMonitorFuture) result(client ExtensionsClien
 	return
 }
 
+// ExtensionsDisableMonitoringFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ExtensionsDisableMonitoringFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ExtensionsClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ExtensionsDisableMonitoringFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ExtensionsDisableMonitoringFuture.Result.
+func (future *ExtensionsDisableMonitoringFuture) result(client ExtensionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsDisableMonitoringFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionsDisableMonitoringFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // ExtensionsEnableAzureMonitorFuture an abstraction for monitoring and retrieving the results of a
 // long-running operation.
 type ExtensionsEnableAzureMonitorFuture struct {
@@ -1876,6 +1920,43 @@ func (future *ExtensionsEnableAzureMonitorFuture) result(client ExtensionsClient
 	return
 }
 
+// ExtensionsEnableMonitoringFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type ExtensionsEnableMonitoringFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(ExtensionsClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *ExtensionsEnableMonitoringFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for ExtensionsEnableMonitoringFuture.Result.
+func (future *ExtensionsEnableMonitoringFuture) result(client ExtensionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.ExtensionsEnableMonitoringFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("hdinsight.ExtensionsEnableMonitoringFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
 // GatewaySettings gateway settings.
 type GatewaySettings struct {
 	autorest.Response `json:"-"`
@@ -1907,6 +1988,113 @@ type HostInfo struct {
 	Fqdn *string `json:"fqdn,omitempty"`
 	// EffectiveDiskEncryptionKeyURL - The effective disk encryption key URL used by the host
 	EffectiveDiskEncryptionKeyURL *string `json:"effectiveDiskEncryptionKeyUrl,omitempty"`
+}
+
+// IPConfiguration the ip configurations for the private link service.
+type IPConfiguration struct {
+	// ID - READ-ONLY; The private link IP configuration id.
+	ID *string `json:"id,omitempty"`
+	// Name - The name of private link IP configuration.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the private link IP configuration.
+	Type *string `json:"type,omitempty"`
+	// IPConfigurationProperties - The private link ip configuration properties.
+	*IPConfigurationProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IPConfiguration.
+func (ic IPConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ic.Name != nil {
+		objectMap["name"] = ic.Name
+	}
+	if ic.IPConfigurationProperties != nil {
+		objectMap["properties"] = ic.IPConfigurationProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for IPConfiguration struct.
+func (ic *IPConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				ic.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ic.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ic.Type = &typeVar
+			}
+		case "properties":
+			if v != nil {
+				var IPConfigurationProperties IPConfigurationProperties
+				err = json.Unmarshal(*v, &IPConfigurationProperties)
+				if err != nil {
+					return err
+				}
+				ic.IPConfigurationProperties = &IPConfigurationProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// IPConfigurationProperties the private link ip configuration properties.
+type IPConfigurationProperties struct {
+	// ProvisioningState - READ-ONLY; The private link configuration provisioning state, which only appears in the response. Possible values include: 'PrivateLinkConfigurationProvisioningStateInProgress', 'PrivateLinkConfigurationProvisioningStateFailed', 'PrivateLinkConfigurationProvisioningStateSucceeded', 'PrivateLinkConfigurationProvisioningStateCanceled', 'PrivateLinkConfigurationProvisioningStateDeleting'
+	ProvisioningState PrivateLinkConfigurationProvisioningState `json:"provisioningState,omitempty"`
+	// Primary - Indicates whether this IP configuration is primary for the corresponding NIC.
+	Primary *bool `json:"primary,omitempty"`
+	// PrivateIPAddress - The IP address.
+	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
+	// PrivateIPAllocationMethod - The method that private IP address is allocated. Possible values include: 'Dynamic', 'Static'
+	PrivateIPAllocationMethod PrivateIPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
+	// Subnet - The subnet resource id.
+	Subnet *ResourceID `json:"subnet,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IPConfigurationProperties.
+func (icp IPConfigurationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if icp.Primary != nil {
+		objectMap["primary"] = icp.Primary
+	}
+	if icp.PrivateIPAddress != nil {
+		objectMap["privateIPAddress"] = icp.PrivateIPAddress
+	}
+	if icp.PrivateIPAllocationMethod != "" {
+		objectMap["privateIPAllocationMethod"] = icp.PrivateIPAllocationMethod
+	}
+	if icp.Subnet != nil {
+		objectMap["subnet"] = icp.Subnet
+	}
+	return json.Marshal(objectMap)
 }
 
 // KafkaRestProperties the kafka rest proxy configuration which contains AAD security group information.
@@ -2031,7 +2219,7 @@ type NetworkProperties struct {
 type Operation struct {
 	// Name - The operation name: {provider}/{resource}/{operation}
 	Name *string `json:"name,omitempty"`
-	// Display - The object that represents the operation.
+	// Display - The display of operation.
 	Display *OperationDisplay `json:"display,omitempty"`
 	// Properties - The operation properties.
 	Properties *OperationProperties `json:"properties,omitempty"`
@@ -2221,14 +2409,591 @@ type OsProfile struct {
 	LinuxOperatingSystemProfile *LinuxOperatingSystemProfile `json:"linuxOperatingSystemProfile,omitempty"`
 }
 
-// ProxyResource the resource model definition for a ARM proxy resource. It will have everything other than
-// required location and tags
-type ProxyResource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource.
+// PrivateEndpoint the private endpoint.
+type PrivateEndpoint struct {
+	// ID - The private endpoint id.
+	ID *string `json:"id,omitempty"`
+}
+
+// PrivateEndpointConnection the private endpoint connection.
+type PrivateEndpointConnection struct {
+	autorest.Response `json:"-"`
+	// PrivateEndpointConnectionProperties - The private endpoint connection properties.
+	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpointConnection.
+func (pec PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pec.PrivateEndpointConnectionProperties != nil {
+		objectMap["properties"] = pec.PrivateEndpointConnectionProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PrivateEndpointConnection struct.
+func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var privateEndpointConnectionProperties PrivateEndpointConnectionProperties
+				err = json.Unmarshal(*v, &privateEndpointConnectionProperties)
+				if err != nil {
+					return err
+				}
+				pec.PrivateEndpointConnectionProperties = &privateEndpointConnectionProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				pec.SystemData = &systemData
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pec.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pec.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pec.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// PrivateEndpointConnectionListResult the list private endpoint connections response.
+type PrivateEndpointConnectionListResult struct {
+	autorest.Response `json:"-"`
+	// Value - The list of private endpoint connections.
+	Value *[]PrivateEndpointConnection `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The link (url) to the next page of results.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpointConnectionListResult.
+func (peclr PrivateEndpointConnectionListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if peclr.Value != nil {
+		objectMap["value"] = peclr.Value
+	}
+	return json.Marshal(objectMap)
+}
+
+// PrivateEndpointConnectionListResultIterator provides access to a complete listing of
+// PrivateEndpointConnection values.
+type PrivateEndpointConnectionListResultIterator struct {
+	i    int
+	page PrivateEndpointConnectionListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PrivateEndpointConnectionListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PrivateEndpointConnectionListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PrivateEndpointConnectionListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PrivateEndpointConnectionListResultIterator) Response() PrivateEndpointConnectionListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PrivateEndpointConnectionListResultIterator) Value() PrivateEndpointConnection {
+	if !iter.page.NotDone() {
+		return PrivateEndpointConnection{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PrivateEndpointConnectionListResultIterator type.
+func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
+	return PrivateEndpointConnectionListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (peclr PrivateEndpointConnectionListResult) IsEmpty() bool {
+	return peclr.Value == nil || len(*peclr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (peclr PrivateEndpointConnectionListResult) hasNextLink() bool {
+	return peclr.NextLink != nil && len(*peclr.NextLink) != 0
+}
+
+// privateEndpointConnectionListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (peclr PrivateEndpointConnectionListResult) privateEndpointConnectionListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !peclr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(peclr.NextLink)))
+}
+
+// PrivateEndpointConnectionListResultPage contains a page of PrivateEndpointConnection values.
+type PrivateEndpointConnectionListResultPage struct {
+	fn    func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)
+	peclr PrivateEndpointConnectionListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PrivateEndpointConnectionListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.peclr)
+		if err != nil {
+			return err
+		}
+		page.peclr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PrivateEndpointConnectionListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PrivateEndpointConnectionListResultPage) NotDone() bool {
+	return !page.peclr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PrivateEndpointConnectionListResultPage) Response() PrivateEndpointConnectionListResult {
+	return page.peclr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PrivateEndpointConnectionListResultPage) Values() []PrivateEndpointConnection {
+	if page.peclr.IsEmpty() {
+		return nil
+	}
+	return *page.peclr.Value
+}
+
+// Creates a new instance of the PrivateEndpointConnectionListResultPage type.
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return PrivateEndpointConnectionListResultPage{
+		fn:    getNextPage,
+		peclr: cur,
+	}
+}
+
+// PrivateEndpointConnectionProperties the private endpoint connection properties.
+type PrivateEndpointConnectionProperties struct {
+	// PrivateEndpoint - READ-ONLY; The private endpoint of the private endpoint connection
+	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	// PrivateLinkServiceConnectionState - The private link service connection state.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	// LinkIdentifier - READ-ONLY; The link identifier.
+	LinkIdentifier *string `json:"linkIdentifier,omitempty"`
+	// ProvisioningState - READ-ONLY; The provisioning state, which only appears in the response. Possible values include: 'PrivateEndpointConnectionProvisioningStateInProgress', 'PrivateEndpointConnectionProvisioningStateUpdating', 'PrivateEndpointConnectionProvisioningStateFailed', 'PrivateEndpointConnectionProvisioningStateSucceeded', 'PrivateEndpointConnectionProvisioningStateCanceled', 'PrivateEndpointConnectionProvisioningStateDeleting'
+	ProvisioningState PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpointConnectionProperties.
+func (pecp PrivateEndpointConnectionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pecp.PrivateLinkServiceConnectionState != nil {
+		objectMap["privateLinkServiceConnectionState"] = pecp.PrivateLinkServiceConnectionState
+	}
+	return json.Marshal(objectMap)
+}
+
+// PrivateEndpointConnectionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type PrivateEndpointConnectionsCreateOrUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PrivateEndpointConnectionsClient) (PrivateEndpointConnection, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *PrivateEndpointConnectionsCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for PrivateEndpointConnectionsCreateOrUpdateFuture.Result.
+func (future *PrivateEndpointConnectionsCreateOrUpdateFuture) result(client PrivateEndpointConnectionsClient) (pec PrivateEndpointConnection, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.PrivateEndpointConnectionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		pec.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("hdinsight.PrivateEndpointConnectionsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if pec.Response.Response, err = future.GetResult(sender); err == nil && pec.Response.Response.StatusCode != http.StatusNoContent {
+		pec, err = client.CreateOrUpdateResponder(pec.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "hdinsight.PrivateEndpointConnectionsCreateOrUpdateFuture", "Result", pec.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// PrivateEndpointConnectionsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type PrivateEndpointConnectionsDeleteFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PrivateEndpointConnectionsClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *PrivateEndpointConnectionsDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for PrivateEndpointConnectionsDeleteFuture.Result.
+func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpointConnectionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "hdinsight.PrivateEndpointConnectionsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("hdinsight.PrivateEndpointConnectionsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// PrivateLinkConfiguration the private link configuration.
+type PrivateLinkConfiguration struct {
+	// ID - READ-ONLY; The private link configuration id.
+	ID *string `json:"id,omitempty"`
+	// Name - The name of private link configuration.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the private link configuration.
+	Type *string `json:"type,omitempty"`
+	// PrivateLinkConfigurationProperties - The private link configuration properties.
+	*PrivateLinkConfigurationProperties `json:"properties,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateLinkConfiguration.
+func (plc PrivateLinkConfiguration) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if plc.Name != nil {
+		objectMap["name"] = plc.Name
+	}
+	if plc.PrivateLinkConfigurationProperties != nil {
+		objectMap["properties"] = plc.PrivateLinkConfigurationProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PrivateLinkConfiguration struct.
+func (plc *PrivateLinkConfiguration) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				plc.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				plc.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				plc.Type = &typeVar
+			}
+		case "properties":
+			if v != nil {
+				var privateLinkConfigurationProperties PrivateLinkConfigurationProperties
+				err = json.Unmarshal(*v, &privateLinkConfigurationProperties)
+				if err != nil {
+					return err
+				}
+				plc.PrivateLinkConfigurationProperties = &privateLinkConfigurationProperties
+			}
+		}
+	}
+
+	return nil
+}
+
+// PrivateLinkConfigurationProperties the private link configuration properties.
+type PrivateLinkConfigurationProperties struct {
+	// GroupID - The HDInsight private linkable sub-resource name to apply the private link configuration to. For example, 'headnode', 'gateway', 'edgenode'.
+	GroupID *string `json:"groupId,omitempty"`
+	// ProvisioningState - READ-ONLY; The private link configuration provisioning state, which only appears in the response. Possible values include: 'PrivateLinkConfigurationProvisioningStateInProgress', 'PrivateLinkConfigurationProvisioningStateFailed', 'PrivateLinkConfigurationProvisioningStateSucceeded', 'PrivateLinkConfigurationProvisioningStateCanceled', 'PrivateLinkConfigurationProvisioningStateDeleting'
+	ProvisioningState PrivateLinkConfigurationProvisioningState `json:"provisioningState,omitempty"`
+	// IPConfigurations - The IP configurations for the private link service.
+	IPConfigurations *[]IPConfiguration `json:"ipConfigurations,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateLinkConfigurationProperties.
+func (plcp PrivateLinkConfigurationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if plcp.GroupID != nil {
+		objectMap["groupId"] = plcp.GroupID
+	}
+	if plcp.IPConfigurations != nil {
+		objectMap["ipConfigurations"] = plcp.IPConfigurations
+	}
+	return json.Marshal(objectMap)
+}
+
+// PrivateLinkResource a private link resource
+type PrivateLinkResource struct {
+	autorest.Response `json:"-"`
+	// PrivateLinkResourceProperties - Resource properties.
+	*PrivateLinkResourceProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateLinkResource.
+func (plr PrivateLinkResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if plr.PrivateLinkResourceProperties != nil {
+		objectMap["properties"] = plr.PrivateLinkResourceProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PrivateLinkResource struct.
+func (plr *PrivateLinkResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var privateLinkResourceProperties PrivateLinkResourceProperties
+				err = json.Unmarshal(*v, &privateLinkResourceProperties)
+				if err != nil {
+					return err
+				}
+				plr.PrivateLinkResourceProperties = &privateLinkResourceProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				plr.SystemData = &systemData
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				plr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				plr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				plr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// PrivateLinkResourceListResult a list of private link resources
+type PrivateLinkResourceListResult struct {
+	autorest.Response `json:"-"`
+	// Value - Array of private link resources
+	Value *[]PrivateLinkResource `json:"value,omitempty"`
+}
+
+// PrivateLinkResourceProperties properties of a private link resource.
+type PrivateLinkResourceProperties struct {
+	// GroupID - READ-ONLY; The private link resource group id.
+	GroupID *string `json:"groupId,omitempty"`
+	// RequiredMembers - READ-ONLY; The private link resource required member names.
+	RequiredMembers *[]string `json:"requiredMembers,omitempty"`
+	// RequiredZoneNames - The private link resource Private link DNS zone name.
+	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateLinkResourceProperties.
+func (plrp PrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if plrp.RequiredZoneNames != nil {
+		objectMap["requiredZoneNames"] = plrp.RequiredZoneNames
+	}
+	return json.Marshal(objectMap)
+}
+
+// PrivateLinkServiceConnectionState the private link service connection state.
+type PrivateLinkServiceConnectionState struct {
+	// Status - The concrete private link service connection. Possible values include: 'Approved', 'Rejected', 'Pending', 'Removed'
+	Status PrivateLinkServiceConnectionStatus `json:"status,omitempty"`
+	// Description - The optional description of the status.
+	Description *string `json:"description,omitempty"`
+	// ActionsRequired - Whether there is further actions.
+	ActionsRequired *string `json:"actionsRequired,omitempty"`
+}
+
+// ProxyResource the resource model definition for a Azure Resource Manager proxy resource. It will not
+// have tags and a location
+type ProxyResource struct {
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2241,9 +3006,9 @@ func (pr ProxyResource) MarshalJSON() ([]byte, error) {
 // QuotaCapability the regional quota capability.
 type QuotaCapability struct {
 	// CoresUsed - The number of cores used in the subscription.
-	CoresUsed *int64 `json:"cores_used,omitempty"`
+	CoresUsed *int64 `json:"coresUsed,omitempty"`
 	// MaxCoresAllowed - The number of cores that the subscription allowed.
-	MaxCoresAllowed *int64 `json:"max_cores_allowed,omitempty"`
+	MaxCoresAllowed *int64 `json:"maxCoresAllowed,omitempty"`
 	// RegionalQuotas - The list of region quota capabilities.
 	RegionalQuotas *[]RegionalQuotaCapability `json:"regionalQuotas,omitempty"`
 }
@@ -2257,11 +3022,11 @@ type QuotaInfo struct {
 // RegionalQuotaCapability the regional quota capacity.
 type RegionalQuotaCapability struct {
 	// RegionName - The region name.
-	RegionName *string `json:"region_name,omitempty"`
+	RegionName *string `json:"regionName,omitempty"`
 	// CoresUsed - The number of cores used in the region.
-	CoresUsed *int64 `json:"cores_used,omitempty"`
+	CoresUsed *int64 `json:"coresUsed,omitempty"`
 	// CoresAvailable - The number of cores available in the region.
-	CoresAvailable *int64 `json:"cores_available,omitempty"`
+	CoresAvailable *int64 `json:"coresAvailable,omitempty"`
 }
 
 // RegionsCapability the regions capability.
@@ -2270,13 +3035,13 @@ type RegionsCapability struct {
 	Available *[]string `json:"available,omitempty"`
 }
 
-// Resource the core properties of ARM resources
+// Resource common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
-	// ID - READ-ONLY; Fully qualified resource Id for the resource.
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
@@ -2284,6 +3049,12 @@ type Resource struct {
 func (r Resource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
+}
+
+// ResourceID the azure resource id.
+type ResourceID struct {
+	// ID - The azure resource id.
+	ID *string `json:"id,omitempty"`
 }
 
 // Role describes a role on the cluster.
@@ -2846,28 +3617,45 @@ type StorageProfile struct {
 	Storageaccounts *[]StorageAccount `json:"storageaccounts,omitempty"`
 }
 
-// TrackedResource the resource model definition for a ARM tracked top level resource
+// SystemData metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// CreatedBy - The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'CreatedByTypeUser', 'CreatedByTypeApplication', 'CreatedByTypeManagedIdentity', 'CreatedByTypeKey'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'CreatedByTypeUser', 'CreatedByTypeApplication', 'CreatedByTypeManagedIdentity', 'CreatedByTypeKey'
+	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
+}
+
+// TrackedResource the resource model definition for an Azure Resource Manager tracked top level resource
+// which has 'tags' and a 'location'
 type TrackedResource struct {
-	// Location - The Azure Region where the resource lives
-	Location *string `json:"location,omitempty"`
 	// Tags - Resource tags.
 	Tags map[string]*string `json:"tags"`
-	// ID - READ-ONLY; Fully qualified resource Id for the resource.
+	// Location - The geo-location where the resource lives
+	Location *string `json:"location,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
 	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource.
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string `json:"type,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for TrackedResource.
 func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	if tr.Location != nil {
-		objectMap["location"] = tr.Location
-	}
 	if tr.Tags != nil {
 		objectMap["tags"] = tr.Tags
+	}
+	if tr.Location != nil {
+		objectMap["location"] = tr.Location
 	}
 	return json.Marshal(objectMap)
 }
@@ -2909,6 +3697,25 @@ type UsagesListResult struct {
 	autorest.Response `json:"-"`
 	// Value - The list of usages.
 	Value *[]Usage `json:"value,omitempty"`
+}
+
+// UserAssignedIdentity the User Assigned Identity
+type UserAssignedIdentity struct {
+	// PrincipalID - READ-ONLY; The principal id of user assigned identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// ClientID - READ-ONLY; The client id of user assigned identity.
+	ClientID *string `json:"clientId,omitempty"`
+	// TenantID - The tenant id of user assigned identity.
+	TenantID *string `json:"tenantId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for UserAssignedIdentity.
+func (uai UserAssignedIdentity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if uai.TenantID != nil {
+		objectMap["tenantId"] = uai.TenantID
+	}
+	return json.Marshal(objectMap)
 }
 
 // ValidationErrorInfo the validation error information.
@@ -3004,28 +3811,6 @@ type VirtualNetworkProfile struct {
 	Subnet *string `json:"subnet,omitempty"`
 }
 
-// VMSizeCompatibilityFilter the virtual machine type compatibility filter.
-type VMSizeCompatibilityFilter struct {
-	// FilterMode - The mode for the filter.
-	FilterMode *string `json:"FilterMode,omitempty"`
-	// Regions - The list of regions.
-	Regions *[]string `json:"Regions,omitempty"`
-	// ClusterFlavors - The list of cluster types available.
-	ClusterFlavors *[]string `json:"ClusterFlavors,omitempty"`
-	// NodeTypes - The list of node types.
-	NodeTypes *[]string `json:"NodeTypes,omitempty"`
-	// ClusterVersions - The list of cluster versions.
-	ClusterVersions *[]string `json:"ClusterVersions,omitempty"`
-	// OsType - The list of OS types.
-	OsType *[]string `json:"OsType,omitempty"`
-	// VMSizes - The list of virtual machine sizes.
-	VMSizes *[]string `json:"VMSizes,omitempty"`
-	// ESPApplied - Whether apply for ESP cluster. 'true' means only for ESP, 'false' means only for non-ESP, null or empty string or others mean for both.
-	ESPApplied *string `json:"ESPApplied,omitempty"`
-	// ComputeIsolationSupported - Whether support compute isolation. 'true' means only for ComputeIsolationEnabled, 'false' means only for regular cluster.
-	ComputeIsolationSupported *string `json:"ComputeIsolationSupported,omitempty"`
-}
-
 // VMSizeCompatibilityFilterV2 this class represent a single filter object that defines a multidimensional
 // set. The dimensions of this set are Regions, ClusterFlavors, NodeTypes and ClusterVersions. The
 // constraint should be defined based on the following: FilterMode (Exclude vs Include), VMSizes (the vm
@@ -3046,6 +3831,10 @@ type VMSizeCompatibilityFilterV2 struct {
 	OsType *[]OSType `json:"osType,omitempty"`
 	// VMSizes - The list of virtual machine sizes to include or exclude.
 	VMSizes *[]string `json:"vmSizes,omitempty"`
+	// EspApplied - Whether apply for ESP cluster. 'true' means only for ESP, 'false' means only for non-ESP, null or empty string or others mean for both.
+	EspApplied *string `json:"espApplied,omitempty"`
+	// ComputeIsolationSupported - Whether support compute isolation. 'true' means only for ComputeIsolationEnabled, 'false' means only for regular cluster.
+	ComputeIsolationSupported *string `json:"computeIsolationSupported,omitempty"`
 }
 
 // VMSizeProperty the vm size property
@@ -3070,10 +3859,4 @@ type VMSizeProperty struct {
 	VirtualMachineResourceDiskSizeInMb *int64 `json:"virtualMachineResourceDiskSizeInMb,omitempty"`
 	// WebWorkerResourceDiskSizeInMb - The web worker resource disk size whose unit is MB of the vm size.
 	WebWorkerResourceDiskSizeInMb *int64 `json:"webWorkerResourceDiskSizeInMb,omitempty"`
-}
-
-// VMSizesCapability the virtual machine sizes capability.
-type VMSizesCapability struct {
-	// Available - The list of virtual machine size capabilities.
-	Available *[]string `json:"available,omitempty"`
 }

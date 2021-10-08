@@ -595,7 +595,7 @@ func GetEnvVariable(t *testing.T, varName string, recordedValue string) string {
 }
 
 func LiveOnly(t *testing.T) {
-	if GetRecordMode() != RecordingMode {
+	if GetRecordMode() == PlaybackMode {
 		t.Skip("Live Test Only")
 	}
 }

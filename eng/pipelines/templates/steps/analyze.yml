@@ -1,7 +1,6 @@
 # This step is designed to work against linux only
 parameters:
   ServiceDirectory: ''
-  GoWorkspace: ''
   LintVersion: ''
   NonShipping: false
   LicenseCheck: true
@@ -20,7 +19,7 @@ steps:
       foreach ($md in $modDirs) {
         pushd $md
         Write-Host "##[command]Executing golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml in $md"
-        golangci-lint run -c ${{parameters.GoWorkspace}}eng/.golangci.yml
+        golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml
       }
     displayName: 'Lint'
     failOnStderr: false

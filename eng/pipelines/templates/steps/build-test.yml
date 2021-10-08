@@ -2,9 +2,6 @@ parameters:
   - name:  ServiceDirectory
     type: string
     default: ''
-  - name:  GoWorkspace
-    type: string
-    default: ''
   - name:  Image
     type: string
     default: ''

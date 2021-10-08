@@ -70,7 +70,7 @@ func (client VNetPeeringClient) CreateOrUpdate(ctx context.Context, virtualNetwo
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databricks.VNetPeeringClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databricks.VNetPeeringClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -108,6 +108,7 @@ func (client VNetPeeringClient) CreateOrUpdatePreparer(ctx context.Context, virt
 // http.Response Body if it receives an error.
 func (client VNetPeeringClient) CreateOrUpdateSender(req *http.Request) (future VNetPeeringCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -166,7 +167,7 @@ func (client VNetPeeringClient) Delete(ctx context.Context, resourceGroupName st
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "databricks.VNetPeeringClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "databricks.VNetPeeringClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -199,6 +200,7 @@ func (client VNetPeeringClient) DeletePreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client VNetPeeringClient) DeleteSender(req *http.Request) (future VNetPeeringDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

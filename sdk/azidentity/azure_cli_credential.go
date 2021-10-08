@@ -17,7 +17,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // used by tests to fake invoking the CLI
@@ -68,11 +67,6 @@ func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequ
 	}
 	logGetTokenSuccess(c, opts)
 	return at, nil
-}
-
-// NewAuthenticationPolicy implements the azcore.Credential interface on AzureCLICredential.
-func (c *AzureCLICredential) NewAuthenticationPolicy(options azruntime.AuthenticationOptions) policy.Policy {
-	return newBearerTokenPolicy(c, options)
 }
 
 const timeoutCLIRequest = 10000 * time.Millisecond

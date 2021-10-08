@@ -54,7 +54,7 @@ func (client CrossRegionRestoreClient) Trigger(ctx context.Context, azureRegion 
 
 	result, err = client.TriggerSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.CrossRegionRestoreClient", "Trigger", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "backup.CrossRegionRestoreClient", "Trigger", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -87,6 +87,7 @@ func (client CrossRegionRestoreClient) TriggerPreparer(ctx context.Context, azur
 // http.Response Body if it receives an error.
 func (client CrossRegionRestoreClient) TriggerSender(req *http.Request) (future CrossRegionRestoreTriggerFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

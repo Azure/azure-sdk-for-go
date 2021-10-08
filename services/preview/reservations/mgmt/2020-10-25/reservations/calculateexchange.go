@@ -53,7 +53,7 @@ func (client CalculateExchangeClient) Post(ctx context.Context, body CalculateEx
 
 	result, err = client.PostSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "reservations.CalculateExchangeClient", "Post", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "reservations.CalculateExchangeClient", "Post", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -81,6 +81,7 @@ func (client CalculateExchangeClient) PostPreparer(ctx context.Context, body Cal
 // http.Response Body if it receives an error.
 func (client CalculateExchangeClient) PostSender(req *http.Request) (future CalculateExchangePostFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

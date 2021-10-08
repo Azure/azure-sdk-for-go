@@ -8,7 +8,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AuthorizationCodeCredentialOptions contain optional parameters that can be used to configure the AuthorizationCodeCredential.
@@ -18,7 +17,7 @@ type AuthorizationCodeCredentialOptions struct {
 	ClientSecret string
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
-	AuthorityHost string
+	AuthorityHost AuthorityHost
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
 	HTTPClient policy.Transporter
@@ -78,11 +77,6 @@ func (c *AuthorizationCodeCredential) GetToken(ctx context.Context, opts policy.
 	}
 	logGetTokenSuccess(c, opts)
 	return tk, nil
-}
-
-// NewAuthenticationPolicy implements the azcore.Credential interface on AuthorizationCodeCredential.
-func (c *AuthorizationCodeCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
-	return newBearerTokenPolicy(c, options)
 }
 
 var _ azcore.TokenCredential = (*AuthorizationCodeCredential)(nil)

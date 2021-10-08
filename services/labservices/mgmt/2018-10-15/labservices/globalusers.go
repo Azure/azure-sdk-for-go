@@ -612,7 +612,7 @@ func (client GlobalUsersClient) ResetPassword(ctx context.Context, userName stri
 
 	result, err = client.ResetPasswordSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "ResetPassword", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "ResetPassword", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -644,6 +644,7 @@ func (client GlobalUsersClient) ResetPasswordPreparer(ctx context.Context, userN
 // http.Response Body if it receives an error.
 func (client GlobalUsersClient) ResetPasswordSender(req *http.Request) (future GlobalUsersResetPasswordFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -697,7 +698,7 @@ func (client GlobalUsersClient) StartEnvironment(ctx context.Context, userName s
 
 	result, err = client.StartEnvironmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "StartEnvironment", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "StartEnvironment", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -729,6 +730,7 @@ func (client GlobalUsersClient) StartEnvironmentPreparer(ctx context.Context, us
 // http.Response Body if it receives an error.
 func (client GlobalUsersClient) StartEnvironmentSender(req *http.Request) (future GlobalUsersStartEnvironmentFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return
@@ -782,7 +784,7 @@ func (client GlobalUsersClient) StopEnvironment(ctx context.Context, userName st
 
 	result, err = client.StopEnvironmentSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "StopEnvironment", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.GlobalUsersClient", "StopEnvironment", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -814,6 +816,7 @@ func (client GlobalUsersClient) StopEnvironmentPreparer(ctx context.Context, use
 // http.Response Body if it receives an error.
 func (client GlobalUsersClient) StopEnvironmentSender(req *http.Request) (future GlobalUsersStopEnvironmentFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
 	if err != nil {
 		return

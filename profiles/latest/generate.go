@@ -3,4 +3,4 @@
 
 package latest
 
-//go:generate go run ../../tools/profileBuilder/main.go latest --clear-output --name latest --root ../../services --output-location ./
+//go:generate go run ../../eng/tools/profileBuilder/main.go latest --clear-output --name latest --root ../../services --output-location ./

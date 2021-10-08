@@ -54,7 +54,7 @@ func (client SapMonitorsClient) Create(ctx context.Context, resourceGroupName st
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -88,6 +88,7 @@ func (client SapMonitorsClient) CreatePreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client SapMonitorsClient) CreateSender(req *http.Request) (future SapMonitorsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -134,7 +135,7 @@ func (client SapMonitorsClient) Delete(ctx context.Context, resourceGroupName st
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hanaonazure.SapMonitorsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -166,6 +167,7 @@ func (client SapMonitorsClient) DeletePreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client SapMonitorsClient) DeleteSender(req *http.Request) (future SapMonitorsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

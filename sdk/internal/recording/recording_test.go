@@ -519,7 +519,7 @@ type Entry struct {
 
 func TestLiveModeOnly(t *testing.T) {
 	LiveOnly(t)
-	if GetRecordMode() == modePlayback {
+	if GetRecordMode() == PlaybackMode {
 		t.Fatalf("Test should not run in playback")
 	}
 }
@@ -528,7 +528,7 @@ func TestSleep(t *testing.T) {
 	start := time.Now()
 	Sleep(time.Second * 5)
 	duration := time.Since(start)
-	if GetRecordMode() == modePlayback {
+	if GetRecordMode() == PlaybackMode {
 		if duration > (time.Second * 1) {
 			t.Fatalf("Sleep took longer than five seconds")
 		}

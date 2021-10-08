@@ -68,7 +68,7 @@ func (client DataStoresClient) CreateOrUpdate(ctx context.Context, dataStoreName
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.DataStoresClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybriddata.DataStoresClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -103,6 +103,7 @@ func (client DataStoresClient) CreateOrUpdatePreparer(ctx context.Context, dataS
 // http.Response Body if it receives an error.
 func (client DataStoresClient) CreateOrUpdateSender(req *http.Request) (future DataStoresCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -159,7 +160,7 @@ func (client DataStoresClient) Delete(ctx context.Context, dataStoreName string,
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "hybriddata.DataStoresClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "hybriddata.DataStoresClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -192,6 +193,7 @@ func (client DataStoresClient) DeletePreparer(ctx context.Context, dataStoreName
 // http.Response Body if it receives an error.
 func (client DataStoresClient) DeleteSender(req *http.Request) (future DataStoresDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

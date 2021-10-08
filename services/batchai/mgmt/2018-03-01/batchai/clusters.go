@@ -108,7 +108,7 @@ func (client ClustersClient) Create(ctx context.Context, resourceGroupName strin
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -142,6 +142,7 @@ func (client ClustersClient) CreatePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client ClustersClient) CreateSender(req *http.Request) (future ClustersCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -200,7 +201,7 @@ func (client ClustersClient) Delete(ctx context.Context, resourceGroupName strin
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.ClustersClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -232,6 +233,7 @@ func (client ClustersClient) DeletePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client ClustersClient) DeleteSender(req *http.Request) (future ClustersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

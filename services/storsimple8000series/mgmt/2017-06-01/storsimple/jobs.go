@@ -63,7 +63,7 @@ func (client JobsClient) Cancel(ctx context.Context, deviceName string, jobName 
 
 	result, err = client.CancelSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.JobsClient", "Cancel", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.JobsClient", "Cancel", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -97,6 +97,7 @@ func (client JobsClient) CancelPreparer(ctx context.Context, deviceName string, 
 // http.Response Body if it receives an error.
 func (client JobsClient) CancelSender(req *http.Request) (future JobsCancelFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

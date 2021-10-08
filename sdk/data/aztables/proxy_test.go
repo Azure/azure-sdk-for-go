@@ -36,15 +36,16 @@ func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Poli
 }
 
 func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-	originalURLHost := req.Raw().URL.Host
-	req.Raw().URL.Scheme = "https"
-	req.Raw().URL.Host = p.options.Host
-	req.Raw().Host = p.options.Host
+	if recording.GetRecordMode() != recording.LiveMode {
+		originalURLHost := req.Raw().URL.Host
+		req.Raw().URL.Scheme = "https"
+		req.Raw().URL.Host = p.options.Host
+		req.Raw().Host = p.options.Host
 
-	req.Raw().Header.Set(recording.UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.Scheme, originalURLHost))
-	req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
-	req.Raw().Header.Set(recording.IdHeader, recording.GetRecordingId(p.t))
-
+		req.Raw().Header.Set(recording.UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.Scheme, originalURLHost))
+		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
+		req.Raw().Header.Set(recording.IdHeader, recording.GetRecordingId(p.t))
+	}
 	return req.Next()
 }
 
@@ -84,8 +85,8 @@ func createClientForRecording(t *testing.T, tableName string, serviceURL string,
 	require.NoError(t, err)
 
 	options := &ClientOptions{
-		PerCallOptions: []policy.Policy{p},
-		Transporter:    client,
+		PerCallPolicies: []policy.Policy{p},
+		Transport:       client,
 	}
 	if !strings.HasSuffix(serviceURL, "/") && tableName != "" {
 		serviceURL += "/"
@@ -101,8 +102,8 @@ func createServiceClientForRecording(t *testing.T, serviceURL string, cred azcor
 	require.NoError(t, err)
 
 	options := &ClientOptions{
-		PerCallOptions: []policy.Policy{p},
-		Transporter:    client,
+		PerCallPolicies: []policy.Policy{p},
+		Transport:       client,
 	}
 	return NewServiceClient(serviceURL, cred, options)
 }

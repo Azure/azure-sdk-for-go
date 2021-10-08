@@ -68,7 +68,7 @@ func (client AzureADOnlyAuthenticationsClient) Create(ctx context.Context, resou
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "synapse.AzureADOnlyAuthenticationsClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "synapse.AzureADOnlyAuthenticationsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -103,6 +103,7 @@ func (client AzureADOnlyAuthenticationsClient) CreatePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client AzureADOnlyAuthenticationsClient) CreateSender(req *http.Request) (future AzureADOnlyAuthenticationsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

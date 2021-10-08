@@ -75,7 +75,7 @@ func (client DatastoresClient) CreateOrUpdate(ctx context.Context, resourceGroup
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.DatastoresClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.DatastoresClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -111,6 +111,7 @@ func (client DatastoresClient) CreateOrUpdatePreparer(ctx context.Context, resou
 // http.Response Body if it receives an error.
 func (client DatastoresClient) CreateOrUpdateSender(req *http.Request) (future DatastoresCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -168,7 +169,7 @@ func (client DatastoresClient) Delete(ctx context.Context, resourceGroupName str
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "avs.DatastoresClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "avs.DatastoresClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -202,6 +203,7 @@ func (client DatastoresClient) DeletePreparer(ctx context.Context, resourceGroup
 // http.Response Body if it receives an error.
 func (client DatastoresClient) DeleteSender(req *http.Request) (future DatastoresDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

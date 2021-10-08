@@ -56,7 +56,7 @@ type transactionError struct {
 	rawResponse *http.Response
 	statusCode  int
 	errorCode   string
-	odataError  oDataError `json:"odata.error"` //nolint
+	odataError  oDataError
 }
 
 func (t *transactionError) StatusCode() int {

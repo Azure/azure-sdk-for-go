@@ -54,8 +54,7 @@ func (client CloudEndpointsClient) Create(ctx context.Context, resourceGroupName
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.CloudEndpointsClient", "Create", err.Error())
 	}
 
@@ -149,8 +148,7 @@ func (client CloudEndpointsClient) Delete(ctx context.Context, resourceGroupName
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.CloudEndpointsClient", "Delete", err.Error())
 	}
 
@@ -241,8 +239,7 @@ func (client CloudEndpointsClient) Get(ctx context.Context, resourceGroupName st
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.CloudEndpointsClient", "Get", err.Error())
 	}
 
@@ -330,8 +327,7 @@ func (client CloudEndpointsClient) ListBySyncGroup(ctx context.Context, resource
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.CloudEndpointsClient", "ListBySyncGroup", err.Error())
 	}
 
@@ -420,8 +416,7 @@ func (client CloudEndpointsClient) PostBackup(ctx context.Context, resourceGroup
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.CloudEndpointsClient", "PostBackup", err.Error())
 	}
 
@@ -516,8 +511,7 @@ func (client CloudEndpointsClient) PostRestore(ctx context.Context, resourceGrou
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.CloudEndpointsClient", "PostRestore", err.Error())
 	}
 
@@ -611,8 +605,7 @@ func (client CloudEndpointsClient) PreBackup(ctx context.Context, resourceGroupN
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.CloudEndpointsClient", "PreBackup", err.Error())
 	}
 
@@ -706,8 +699,7 @@ func (client CloudEndpointsClient) PreRestore(ctx context.Context, resourceGroup
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.CloudEndpointsClient", "PreRestore", err.Error())
 	}
 
@@ -800,8 +792,7 @@ func (client CloudEndpointsClient) Restoreheartbeat(ctx context.Context, resourc
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.CloudEndpointsClient", "Restoreheartbeat", err.Error())
 	}
 
@@ -891,8 +882,7 @@ func (client CloudEndpointsClient) TriggerChangeDetection(ctx context.Context, r
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.CloudEndpointsClient", "TriggerChangeDetection", err.Error())
 	}
 

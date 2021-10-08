@@ -194,6 +194,25 @@ func PossibleReasonValues() []Reason {
 	return []Reason{Deleted, Registered, Suspended, Unregistered, Warned}
 }
 
+// RegisteredServerAgentVersionStatus enumerates the values for registered server agent version status.
+type RegisteredServerAgentVersionStatus string
+
+const (
+	// Blocked ...
+	Blocked RegisteredServerAgentVersionStatus = "Blocked"
+	// Expired ...
+	Expired RegisteredServerAgentVersionStatus = "Expired"
+	// NearExpiry ...
+	NearExpiry RegisteredServerAgentVersionStatus = "NearExpiry"
+	// Ok ...
+	Ok RegisteredServerAgentVersionStatus = "Ok"
+)
+
+// PossibleRegisteredServerAgentVersionStatusValues returns an array of possible values for the RegisteredServerAgentVersionStatus const type.
+func PossibleRegisteredServerAgentVersionStatusValues() []RegisteredServerAgentVersionStatus {
+	return []RegisteredServerAgentVersionStatus{Blocked, Expired, NearExpiry, Ok}
+}
+
 // ServerEndpointCloudTieringHealthState enumerates the values for server endpoint cloud tiering health state.
 type ServerEndpointCloudTieringHealthState string
 
@@ -265,6 +284,27 @@ const (
 // PossibleServerEndpointSyncHealthStateValues returns an array of possible values for the ServerEndpointSyncHealthState const type.
 func PossibleServerEndpointSyncHealthStateValues() []ServerEndpointSyncHealthState {
 	return []ServerEndpointSyncHealthState{ServerEndpointSyncHealthStateError, ServerEndpointSyncHealthStateHealthy, ServerEndpointSyncHealthStateNoActivity, ServerEndpointSyncHealthStateSyncBlockedForChangeDetectionPostRestore, ServerEndpointSyncHealthStateSyncBlockedForRestore}
+}
+
+// ServerEndpointSyncMode enumerates the values for server endpoint sync mode.
+type ServerEndpointSyncMode string
+
+const (
+	// InitialFullDownload ...
+	InitialFullDownload ServerEndpointSyncMode = "InitialFullDownload"
+	// InitialUpload ...
+	InitialUpload ServerEndpointSyncMode = "InitialUpload"
+	// NamespaceDownload ...
+	NamespaceDownload ServerEndpointSyncMode = "NamespaceDownload"
+	// Regular ...
+	Regular ServerEndpointSyncMode = "Regular"
+	// SnapshotUpload ...
+	SnapshotUpload ServerEndpointSyncMode = "SnapshotUpload"
+)
+
+// PossibleServerEndpointSyncModeValues returns an array of possible values for the ServerEndpointSyncMode const type.
+func PossibleServerEndpointSyncModeValues() []ServerEndpointSyncMode {
+	return []ServerEndpointSyncMode{InitialFullDownload, InitialUpload, NamespaceDownload, Regular, SnapshotUpload}
 }
 
 // WorkflowStatus enumerates the values for workflow status.

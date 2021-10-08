@@ -53,8 +53,7 @@ func (client PrivateEndpointConnectionsClient) Create(ctx context.Context, resou
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: properties,
@@ -150,8 +149,7 @@ func (client PrivateEndpointConnectionsClient) Delete(ctx context.Context, resou
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.PrivateEndpointConnectionsClient", "Delete", err.Error())
@@ -241,8 +239,7 @@ func (client PrivateEndpointConnectionsClient) Get(ctx context.Context, resource
 	if err := validation.Validate([]validation.Validation{
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: client.SubscriptionID,
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.PrivateEndpointConnectionsClient", "Get", err.Error())
@@ -330,8 +327,7 @@ func (client PrivateEndpointConnectionsClient) ListByStorageSyncService(ctx cont
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.PrivateEndpointConnectionsClient", "ListByStorageSyncService", err.Error())
 	}
 

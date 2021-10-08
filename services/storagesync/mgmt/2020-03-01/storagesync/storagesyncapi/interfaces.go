@@ -12,6 +12,13 @@ import (
 	"github.com/Azure/go-autorest/autorest"
 )
 
+// BaseClientAPI contains the set of methods on the BaseClient type.
+type BaseClientAPI interface {
+	LocationOperationStatusMethod(ctx context.Context, locationName string, operationID string) (result storagesync.LocationOperationStatus, err error)
+}
+
+var _ BaseClientAPI = (*storagesync.BaseClient)(nil)
+
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {
 	List(ctx context.Context) (result storagesync.OperationEntityListResultPage, err error)

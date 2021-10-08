@@ -1,5 +1,5 @@
 {
-  "commit": "3c764635e7d442b3e74caf593029fcd440b3ef82",
+  "commit": "a90c57a07779ab3ffd7d42ccf194a024e55b3bfb",
   "readme": "/_/azure-rest-api-specs/specification/storagesync/resource-manager/readme.md",
   "tag": "package-2019-06-01",
   "use": "@microsoft.azure/autorest.go@2.1.187",

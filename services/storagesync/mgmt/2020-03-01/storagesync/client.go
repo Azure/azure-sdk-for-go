@@ -10,7 +10,12 @@ package storagesync
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 
 import (
+	"context"
 	"github.com/Azure/go-autorest/autorest"
+	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
+	"github.com/Azure/go-autorest/tracing"
+	"net/http"
 )
 
 const (
@@ -38,4 +43,86 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 		BaseURI:        baseURI,
 		SubscriptionID: subscriptionID,
 	}
+}
+
+// LocationOperationStatusMethod get Operation status
+// Parameters:
+// locationName - the desired region to obtain information from.
+// operationID - operation Id
+func (client BaseClient) LocationOperationStatusMethod(ctx context.Context, locationName string, operationID string) (result LocationOperationStatus, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/BaseClient.LocationOperationStatusMethod")
+		defer func() {
+			sc := -1
+			if result.Response.Response != nil {
+				sc = result.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("storagesync.BaseClient", "LocationOperationStatusMethod", err.Error())
+	}
+
+	req, err := client.LocationOperationStatusMethodPreparer(ctx, locationName, operationID)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagesync.BaseClient", "LocationOperationStatusMethod", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.LocationOperationStatusMethodSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "storagesync.BaseClient", "LocationOperationStatusMethod", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.LocationOperationStatusMethodResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "storagesync.BaseClient", "LocationOperationStatusMethod", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// LocationOperationStatusMethodPreparer prepares the LocationOperationStatusMethod request.
+func (client BaseClient) LocationOperationStatusMethodPreparer(ctx context.Context, locationName string, operationID string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"locationName":   autorest.Encode("path", locationName),
+		"operationId":    autorest.Encode("path", operationID),
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-03-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.StorageSync/locations/{locationName}/operations/{operationId}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// LocationOperationStatusMethodSender sends the LocationOperationStatusMethod request. The method will close the
+// http.Response Body if it receives an error.
+func (client BaseClient) LocationOperationStatusMethodSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// LocationOperationStatusMethodResponder handles the response to the LocationOperationStatusMethod request. The method always
+// closes the http.Response Body.
+func (client BaseClient) LocationOperationStatusMethodResponder(resp *http.Response) (result LocationOperationStatus, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
 }

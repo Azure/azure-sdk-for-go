@@ -54,8 +54,7 @@ func (client ServerEndpointsClient) Create(ctx context.Context, resourceGroupNam
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: parameters,
 			Constraints: []validation.Constraint{{Target: "parameters.ServerEndpointCreateParametersProperties", Name: validation.Null, Rule: false,
 				Chain: []validation.Constraint{{Target: "parameters.ServerEndpointCreateParametersProperties.VolumeFreeSpacePercent", Name: validation.Null, Rule: false,
@@ -156,8 +155,7 @@ func (client ServerEndpointsClient) Delete(ctx context.Context, resourceGroupNam
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.ServerEndpointsClient", "Delete", err.Error())
 	}
 
@@ -248,8 +246,7 @@ func (client ServerEndpointsClient) Get(ctx context.Context, resourceGroupName s
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.ServerEndpointsClient", "Get", err.Error())
 	}
 
@@ -337,8 +334,7 @@ func (client ServerEndpointsClient) ListBySyncGroup(ctx context.Context, resourc
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.ServerEndpointsClient", "ListBySyncGroup", err.Error())
 	}
 
@@ -427,8 +423,7 @@ func (client ServerEndpointsClient) RecallAction(ctx context.Context, resourceGr
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.ServerEndpointsClient", "RecallAction", err.Error())
 	}
 
@@ -522,8 +517,7 @@ func (client ServerEndpointsClient) Update(ctx context.Context, resourceGroupNam
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("storagesync.ServerEndpointsClient", "Update", err.Error())
 	}
 

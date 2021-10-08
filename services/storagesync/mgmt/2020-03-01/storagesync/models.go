@@ -30,6 +30,8 @@ type APIError struct {
 	Target *string `json:"target,omitempty"`
 	// Details - Error details of the given entry.
 	Details *ErrorDetails `json:"details,omitempty"`
+	// InnerError - Inner error details of the given entry.
+	InnerError *InnerErrorDetails `json:"innerError,omitempty"`
 }
 
 // AzureEntityResource the resource model definition for an Azure Resource Manager resource with an etag.
@@ -670,6 +672,16 @@ type ErrorDetails struct {
 	Message *string `json:"message,omitempty"`
 	// Target - Target of the given entry.
 	Target *string `json:"target,omitempty"`
+	// RequestURI - Request URI of the given entry.
+	RequestURI *string `json:"requestUri,omitempty"`
+	// ExceptionType - Exception type of the given entry.
+	ExceptionType *string `json:"exceptionType,omitempty"`
+	// HTTPMethod - HTTP method of the given entry.
+	HTTPMethod *string `json:"httpMethod,omitempty"`
+	// HashedMessage - Hashed message of the given entry.
+	HashedMessage *string `json:"hashedMessage,omitempty"`
+	// HTTPErrorCode - HTTP error code of the given entry.
+	HTTPErrorCode *string `json:"httpErrorCode,omitempty"`
 }
 
 // FilesNotTieringError files not tiering error object
@@ -682,6 +694,43 @@ type FilesNotTieringError struct {
 
 // MarshalJSON is the custom marshaler for FilesNotTieringError.
 func (fnte FilesNotTieringError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// InnerErrorDetails error Details object.
+type InnerErrorDetails struct {
+	// CallStack - Call stack of the error.
+	CallStack *string `json:"callStack,omitempty"`
+	// Message - Error message of the error.
+	Message *string `json:"message,omitempty"`
+	// InnerException - Exception of the inner error.
+	InnerException *string `json:"innerException,omitempty"`
+	// InnerExceptionCallStack - Call stack of the inner error.
+	InnerExceptionCallStack *string `json:"innerExceptionCallStack,omitempty"`
+}
+
+// LocationOperationStatus operation status object
+type LocationOperationStatus struct {
+	autorest.Response `json:"-"`
+	// ID - READ-ONLY; Operation resource Id
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Operation Id
+	Name *string `json:"name,omitempty"`
+	// Status - READ-ONLY; Operation status
+	Status *string `json:"status,omitempty"`
+	// StartTime - READ-ONLY; Start time of the operation
+	StartTime *date.Time `json:"startTime,omitempty"`
+	// EndTime - READ-ONLY; End time of the operation
+	EndTime *date.Time `json:"endTime,omitempty"`
+	// Error - READ-ONLY; Error details.
+	Error *APIError `json:"error,omitempty"`
+	// PercentComplete - READ-ONLY; Percent complete.
+	PercentComplete *int32 `json:"percentComplete,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for LocationOperationStatus.
+func (los LocationOperationStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	return json.Marshal(objectMap)
 }
@@ -718,6 +767,8 @@ type OperationEntity struct {
 	Display *OperationDisplayInfo `json:"display,omitempty"`
 	// Origin - The origin.
 	Origin *string `json:"origin,omitempty"`
+	// Properties - Properties of the operations resource.
+	Properties *OperationProperties `json:"properties,omitempty"`
 }
 
 // OperationEntityListResult the list of storage sync operations.
@@ -877,6 +928,46 @@ func NewOperationEntityListResultPage(cur OperationEntityListResult, getNextPage
 		fn:   getNextPage,
 		oelr: cur,
 	}
+}
+
+// OperationProperties properties of the operations resource.
+type OperationProperties struct {
+	// ServiceSpecification - Service specification for the operations resource.
+	ServiceSpecification *OperationResourceServiceSpecification `json:"serviceSpecification,omitempty"`
+}
+
+// OperationResourceMetricSpecification operation Display Resource object.
+type OperationResourceMetricSpecification struct {
+	// Name - Name of the metric.
+	Name *string `json:"name,omitempty"`
+	// DisplayName - Display name for the metric.
+	DisplayName *string `json:"displayName,omitempty"`
+	// DisplayDescription - Display description for the metric.
+	DisplayDescription *string `json:"displayDescription,omitempty"`
+	// Unit - Unit for the metric.
+	Unit *string `json:"unit,omitempty"`
+	// AggregationType - Aggregation type for the metric.
+	AggregationType *string `json:"aggregationType,omitempty"`
+	// FillGapWithZero - Fill gaps in the metric with zero.
+	FillGapWithZero *bool `json:"fillGapWithZero,omitempty"`
+	// Dimensions - Dimensions for the metric specification.
+	Dimensions *[]OperationResourceMetricSpecificationDimension `json:"dimensions,omitempty"`
+}
+
+// OperationResourceMetricSpecificationDimension operationResourceMetricSpecificationDimension object.
+type OperationResourceMetricSpecificationDimension struct {
+	// Name - Name of the dimension.
+	Name *string `json:"name,omitempty"`
+	// DisplayName - Display name of the dimensions.
+	DisplayName *string `json:"displayName,omitempty"`
+	// ToBeExportedForShoebox - Indicates metric should be exported for Shoebox.
+	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
+}
+
+// OperationResourceServiceSpecification service specification.
+type OperationResourceServiceSpecification struct {
+	// MetricSpecifications - List of metric specifications.
+	MetricSpecifications *[]OperationResourceMetricSpecification `json:"metricSpecifications,omitempty"`
 }
 
 // OperationStatus operation status object
@@ -1491,6 +1582,10 @@ type RegisteredServerProperties struct {
 	ServerCertificate *string `json:"serverCertificate,omitempty"`
 	// AgentVersion - Registered Server Agent Version
 	AgentVersion *string `json:"agentVersion,omitempty"`
+	// AgentVersionStatus - READ-ONLY; Registered Server Agent Version Status. Possible values include: 'Ok', 'NearExpiry', 'Expired', 'Blocked'
+	AgentVersionStatus RegisteredServerAgentVersionStatus `json:"agentVersionStatus,omitempty"`
+	// AgentVersionExpirationDate - READ-ONLY; Registered Server Agent Version Expiration Date
+	AgentVersionExpirationDate *date.Time `json:"agentVersionExpirationDate,omitempty"`
 	// ServerOSVersion - Registered Server OS Version
 	ServerOSVersion *string `json:"serverOSVersion,omitempty"`
 	// ServerManagementErrorCode - Registered Server Management Error Code
@@ -1527,6 +1622,72 @@ type RegisteredServerProperties struct {
 	MonitoringEndpointURI *string `json:"monitoringEndpointUri,omitempty"`
 	// MonitoringConfiguration - Monitoring Configuration
 	MonitoringConfiguration *string `json:"monitoringConfiguration,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for RegisteredServerProperties.
+func (rsp RegisteredServerProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if rsp.ServerCertificate != nil {
+		objectMap["serverCertificate"] = rsp.ServerCertificate
+	}
+	if rsp.AgentVersion != nil {
+		objectMap["agentVersion"] = rsp.AgentVersion
+	}
+	if rsp.ServerOSVersion != nil {
+		objectMap["serverOSVersion"] = rsp.ServerOSVersion
+	}
+	if rsp.ServerManagementErrorCode != nil {
+		objectMap["serverManagementErrorCode"] = rsp.ServerManagementErrorCode
+	}
+	if rsp.LastHeartBeat != nil {
+		objectMap["lastHeartBeat"] = rsp.LastHeartBeat
+	}
+	if rsp.ProvisioningState != nil {
+		objectMap["provisioningState"] = rsp.ProvisioningState
+	}
+	if rsp.ServerRole != nil {
+		objectMap["serverRole"] = rsp.ServerRole
+	}
+	if rsp.ClusterID != nil {
+		objectMap["clusterId"] = rsp.ClusterID
+	}
+	if rsp.ClusterName != nil {
+		objectMap["clusterName"] = rsp.ClusterName
+	}
+	if rsp.ServerID != nil {
+		objectMap["serverId"] = rsp.ServerID
+	}
+	if rsp.StorageSyncServiceUID != nil {
+		objectMap["storageSyncServiceUid"] = rsp.StorageSyncServiceUID
+	}
+	if rsp.LastWorkflowID != nil {
+		objectMap["lastWorkflowId"] = rsp.LastWorkflowID
+	}
+	if rsp.LastOperationName != nil {
+		objectMap["lastOperationName"] = rsp.LastOperationName
+	}
+	if rsp.DiscoveryEndpointURI != nil {
+		objectMap["discoveryEndpointUri"] = rsp.DiscoveryEndpointURI
+	}
+	if rsp.ResourceLocation != nil {
+		objectMap["resourceLocation"] = rsp.ResourceLocation
+	}
+	if rsp.ServiceLocation != nil {
+		objectMap["serviceLocation"] = rsp.ServiceLocation
+	}
+	if rsp.FriendlyName != nil {
+		objectMap["friendlyName"] = rsp.FriendlyName
+	}
+	if rsp.ManagementEndpointURI != nil {
+		objectMap["managementEndpointUri"] = rsp.ManagementEndpointURI
+	}
+	if rsp.MonitoringEndpointURI != nil {
+		objectMap["monitoringEndpointUri"] = rsp.MonitoringEndpointURI
+	}
+	if rsp.MonitoringConfiguration != nil {
+		objectMap["monitoringConfiguration"] = rsp.MonitoringConfiguration
+	}
+	return json.Marshal(objectMap)
 }
 
 // RegisteredServersCreateFuture an abstraction for monitoring and retrieving the results of a long-running
@@ -2180,6 +2341,8 @@ type ServerEndpointSyncActivityStatus struct {
 	AppliedBytes *int64 `json:"appliedBytes,omitempty"`
 	// TotalBytes - READ-ONLY; Total bytes (if available)
 	TotalBytes *int64 `json:"totalBytes,omitempty"`
+	// SyncMode - READ-ONLY; Sync mode. Possible values include: 'Regular', 'NamespaceDownload', 'InitialUpload', 'SnapshotUpload', 'InitialFullDownload'
+	SyncMode ServerEndpointSyncMode `json:"syncMode,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ServerEndpointSyncActivityStatus.
@@ -2204,6 +2367,8 @@ type ServerEndpointSyncSessionStatus struct {
 	TransientFilesNotSyncingCount *int64 `json:"transientFilesNotSyncingCount,omitempty"`
 	// FilesNotSyncingErrors - READ-ONLY; Array of per-item errors coming from the last sync session.
 	FilesNotSyncingErrors *[]ServerEndpointFilesNotSyncingError `json:"filesNotSyncingErrors,omitempty"`
+	// LastSyncMode - READ-ONLY; Sync mode. Possible values include: 'Regular', 'NamespaceDownload', 'InitialUpload', 'SnapshotUpload', 'InitialFullDownload'
+	LastSyncMode ServerEndpointSyncMode `json:"lastSyncMode,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for ServerEndpointSyncSessionStatus.

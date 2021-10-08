@@ -10,7 +10,7 @@ After going through a minimal architects board review and preparing your package
 - [] Verify all links are non-localized (no "en-us" in links)
 - [] Check the package manager link goes to the correct package
 - [] Verify Samples
-- [] Verify samples are visible in the [sample browser](https://docs.microsoft.com/en-us/samples/browse/)
+- [] Verify samples are visible in the [sample browser](https://docs.microsoft.com/samples/browse/)
 - [] Verify release notes follow [general guidelines](https://azure.github.io/azure-sdk/policies_releasenotes.html)
 - [] Verify troubleshooting section of README contains information about how to enable logging
 - [] Verify CHANGELOG follows [current guidance](https://azure.github.io/azure-sdk/policies_releases.html#changelog-guidance)

@@ -4,6 +4,7 @@ parameters:
   GoWorkspace: ''
   LintVersion: ''
   NonShipping: false
+  LicenseCheck: true
 
 
 steps:
@@ -43,13 +44,22 @@ steps:
     failOnStderr: true
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
-  - script: |
-      echo ensuring $(pwd)/LICENSE file exists
-      grep -L -r --include ./LICENSE -P "Copyright (\d{4}|\(c\)) Microsoft" . | tee >&2
-    displayName: 'License Check'
-    condition: succeededOrFailed()
-    failOnStderr: true
-    workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
+  - ${{ if eq(parameters.LicenseCheck, 'true') }}:
+    - pwsh: |
+        Write-Host "ensuring $(pwd)/LICENSE.txt file exists"
+        if (Test-Path LICENSE.txt) {
+          $patternMatches = Get-Content ./LICENSE.txt | Select-String -Pattern 'Copyright (\d{4}|\(c\)) Microsoft'
+          if ($patternMatches.Length -eq 0) {
+            Write-Host "LICENSE.txt file is invalid"
+            exit 1
+          }
+        } else {
+          Write-Host "Could not find a LICENSE.txt file"
+          exit 1
+        }
+      displayName: 'LICENSE.txt Check'
+      condition: succeededOrFailed()
+      workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
   - script: |
       echo Check source file formatting in $(pwd)

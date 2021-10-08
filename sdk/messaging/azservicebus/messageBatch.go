@@ -39,7 +39,7 @@ func newMessageBatch(maxBytes int) *MessageBatch {
 // (true, nil) if the message was added.
 // (false, nil) if the message was too large to fit into the batch.
 // (false, err) if an error occurs when adding the message.
-func (mb *MessageBatch) Add(m *Message) (bool, error) {
+func (mb *MessageBatch) Add(m SendableMessage) (bool, error) {
 	msg := m.toAMQPMessage()
 
 	if msg.Properties.MessageID == nil || msg.Properties.MessageID == "" {
@@ -100,9 +100,4 @@ func (mb *MessageBatch) toAMQPMessage() *amqp.Message {
 	copy(mb.batchEnvelope.Data, mb.marshaledMessages)
 
 	return mb.batchEnvelope
-}
-
-// MessageType indicates the type of this message. Used for tracing.
-func (mb *MessageBatch) messageType() string {
-	return "Batch"
 }

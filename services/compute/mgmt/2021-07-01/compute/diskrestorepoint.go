@@ -36,11 +36,8 @@ func NewDiskRestorePointClientWithBaseURI(baseURI string, subscriptionID string)
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // restorePointCollectionName - the name of the restore point collection that the disk restore point belongs.
-// Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-// VMRestorePointName - the name of the vm restore point that the disk disk restore point belongs. Supported
-// characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-// diskRestorePointName - the name of the disk restore point created. Supported characters for the name are
-// a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+// VMRestorePointName - the name of the vm restore point that the disk disk restore point belongs.
+// diskRestorePointName - the name of the disk restore point created.
 func (client DiskRestorePointClient) Get(ctx context.Context, resourceGroupName string, restorePointCollectionName string, VMRestorePointName string, diskRestorePointName string) (result DiskRestorePoint, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DiskRestorePointClient.Get")
@@ -84,7 +81,7 @@ func (client DiskRestorePointClient) GetPreparer(ctx context.Context, resourceGr
 		"vmRestorePointName":         autorest.Encode("path", VMRestorePointName),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -119,11 +116,8 @@ func (client DiskRestorePointClient) GetResponder(resp *http.Response) (result D
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // restorePointCollectionName - the name of the restore point collection that the disk restore point belongs.
-// Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-// VMRestorePointName - the name of the vm restore point that the disk disk restore point belongs. Supported
-// characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-// diskRestorePointName - the name of the disk restore point created. Supported characters for the name are
-// a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+// VMRestorePointName - the name of the vm restore point that the disk disk restore point belongs.
+// diskRestorePointName - the name of the disk restore point created.
 // grantAccessData - access data object supplied in the body of the get disk access operation.
 func (client DiskRestorePointClient) GrantAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, VMRestorePointName string, diskRestorePointName string, grantAccessData GrantAccessData) (result DiskRestorePointGrantAccessFuture, err error) {
 	if tracing.IsEnabled() {
@@ -167,7 +161,7 @@ func (client DiskRestorePointClient) GrantAccessPreparer(ctx context.Context, re
 		"vmRestorePointName":         autorest.Encode("path", VMRestorePointName),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -214,9 +208,7 @@ func (client DiskRestorePointClient) GrantAccessResponder(resp *http.Response) (
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // restorePointCollectionName - the name of the restore point collection that the disk restore point belongs.
-// Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-// VMRestorePointName - the name of the vm restore point that the disk disk restore point belongs. Supported
-// characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+// VMRestorePointName - the name of the vm restore point that the disk disk restore point belongs.
 func (client DiskRestorePointClient) ListByRestorePoint(ctx context.Context, resourceGroupName string, restorePointCollectionName string, VMRestorePointName string) (result DiskRestorePointListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DiskRestorePointClient.ListByRestorePoint")
@@ -264,7 +256,7 @@ func (client DiskRestorePointClient) ListByRestorePointPreparer(ctx context.Cont
 		"vmRestorePointName":         autorest.Encode("path", VMRestorePointName),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -336,11 +328,8 @@ func (client DiskRestorePointClient) ListByRestorePointComplete(ctx context.Cont
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // restorePointCollectionName - the name of the restore point collection that the disk restore point belongs.
-// Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-// VMRestorePointName - the name of the vm restore point that the disk disk restore point belongs. Supported
-// characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-// diskRestorePointName - the name of the disk restore point created. Supported characters for the name are
-// a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+// VMRestorePointName - the name of the vm restore point that the disk disk restore point belongs.
+// diskRestorePointName - the name of the disk restore point created.
 func (client DiskRestorePointClient) RevokeAccess(ctx context.Context, resourceGroupName string, restorePointCollectionName string, VMRestorePointName string, diskRestorePointName string) (result DiskRestorePointRevokeAccessFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/DiskRestorePointClient.RevokeAccess")
@@ -377,7 +366,7 @@ func (client DiskRestorePointClient) RevokeAccessPreparer(ctx context.Context, r
 		"vmRestorePointName":         autorest.Encode("path", VMRestorePointName),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

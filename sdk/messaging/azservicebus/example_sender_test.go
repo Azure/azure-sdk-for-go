@@ -6,6 +6,7 @@ package azservicebus_test
 import (
 	"context"
 	"log"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 )
@@ -13,6 +14,8 @@ import (
 func ExampleClient_NewSender() {
 	sender, err = client.NewSender(queueName) // or topicName
 	exitOnError("Failed to create sender", err)
+
+	// Output:
 }
 
 func ExampleSender_SendMessage_message() {
@@ -25,12 +28,6 @@ func ExampleSender_SendMessage_message() {
 }
 
 func ExampleSender_SendMessage_messageBatch() {
-	client, err := azservicebus.NewClientWithConnectionString(connectionString, nil)
-	exitOnError("Failed to create client", err)
-
-	sender, err := client.NewSender(queueName)
-	exitOnError("Failed to create sender", err)
-
 	batch, err := sender.NewMessageBatch(context.TODO(), nil)
 	exitOnError("Failed to create message batch", err)
 
@@ -59,6 +56,37 @@ func ExampleSender_SendMessage_messageBatch() {
 	}
 
 	// now let's send the batch
-	err = sender.SendMessage(context.TODO(), batch)
+	err = sender.SendMessageBatch(context.TODO(), batch)
 	exitOnError("Failed to send message batch", err)
+}
+
+func ExampleSender_ScheduleMessages() {
+	// there are two ways of scheduling messages:
+	// 1. Using the `Sender.ScheduleMessages()` function.
+	// 2. Setting the `Message.ScheduledEnqueueTime` field on a message.
+
+	// schedule the message to be delivered in an hour.
+	sequenceNumbers, err := sender.ScheduleMessages(context.TODO(),
+		[]azservicebus.SendableMessage{
+			&azservicebus.Message{Body: []byte("hello world")},
+		}, time.Now().Add(time.Hour))
+	exitOnError("Failed to schedule messages", err)
+
+	err = sender.CancelScheduledMessages(context.TODO(), sequenceNumbers)
+	exitOnError("Failed to cancel scheduled messages", err)
+
+	// or you can set the `ScheduledEnqueueTime` field on a message when you send it
+	future := time.Now().Add(time.Hour)
+
+	err = sender.SendMessages(context.TODO(),
+		[]*azservicebus.Message{
+			{
+				Body: []byte("hello world"),
+				// schedule the message to be delivered in an hour.
+				ScheduledEnqueueTime: &future,
+			},
+		})
+	exitOnError("Failed to schedule messages using SendMessages", err)
+
+	// Output:
 }

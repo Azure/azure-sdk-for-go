@@ -35,7 +35,7 @@ func NewDisksClientWithBaseURI(baseURI string, subscriptionID string) DisksClien
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // diskName - the name of the managed disk that is being created. The name can't be changed after the disk is
-// created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80
+// created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum name length is 80
 // characters.
 // disk - disk object supplied in the body of the Put disk operation.
 func (client DisksClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, diskName string, disk Disk) (result DisksCreateOrUpdateFuture, err error) {
@@ -92,7 +92,7 @@ func (client DisksClient) CreateOrUpdatePreparer(ctx context.Context, resourceGr
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -141,7 +141,7 @@ func (client DisksClient) CreateOrUpdateResponder(resp *http.Response) (result D
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // diskName - the name of the managed disk that is being created. The name can't be changed after the disk is
-// created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80
+// created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum name length is 80
 // characters.
 func (client DisksClient) Delete(ctx context.Context, resourceGroupName string, diskName string) (result DisksDeleteFuture, err error) {
 	if tracing.IsEnabled() {
@@ -177,7 +177,7 @@ func (client DisksClient) DeletePreparer(ctx context.Context, resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -221,7 +221,7 @@ func (client DisksClient) DeleteResponder(resp *http.Response) (result autorest.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // diskName - the name of the managed disk that is being created. The name can't be changed after the disk is
-// created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80
+// created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum name length is 80
 // characters.
 func (client DisksClient) Get(ctx context.Context, resourceGroupName string, diskName string) (result Disk, err error) {
 	if tracing.IsEnabled() {
@@ -264,7 +264,7 @@ func (client DisksClient) GetPreparer(ctx context.Context, resourceGroupName str
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -299,7 +299,7 @@ func (client DisksClient) GetResponder(resp *http.Response) (result Disk, err er
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // diskName - the name of the managed disk that is being created. The name can't be changed after the disk is
-// created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80
+// created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum name length is 80
 // characters.
 // grantAccessData - access data object supplied in the body of the get disk access operation.
 func (client DisksClient) GrantAccess(ctx context.Context, resourceGroupName string, diskName string, grantAccessData GrantAccessData) (result DisksGrantAccessFuture, err error) {
@@ -342,7 +342,7 @@ func (client DisksClient) GrantAccessPreparer(ctx context.Context, resourceGroup
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -430,7 +430,7 @@ func (client DisksClient) ListPreparer(ctx context.Context) (*http.Request, erro
 		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -546,7 +546,7 @@ func (client DisksClient) ListByResourceGroupPreparer(ctx context.Context, resou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -618,7 +618,7 @@ func (client DisksClient) ListByResourceGroupComplete(ctx context.Context, resou
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // diskName - the name of the managed disk that is being created. The name can't be changed after the disk is
-// created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80
+// created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum name length is 80
 // characters.
 func (client DisksClient) RevokeAccess(ctx context.Context, resourceGroupName string, diskName string) (result DisksRevokeAccessFuture, err error) {
 	if tracing.IsEnabled() {
@@ -654,7 +654,7 @@ func (client DisksClient) RevokeAccessPreparer(ctx context.Context, resourceGrou
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -698,7 +698,7 @@ func (client DisksClient) RevokeAccessResponder(resp *http.Response) (result aut
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // diskName - the name of the managed disk that is being created. The name can't be changed after the disk is
-// created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80
+// created. Supported characters for the name are a-z, A-Z, 0-9, _ and -. The maximum name length is 80
 // characters.
 // disk - disk object supplied in the body of the Patch disk operation.
 func (client DisksClient) Update(ctx context.Context, resourceGroupName string, diskName string, disk DiskUpdate) (result DisksUpdateFuture, err error) {
@@ -735,7 +735,7 @@ func (client DisksClient) UpdatePreparer(ctx context.Context, resourceGroupName 
 		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2020-12-01"
+	const APIVersion = "2021-04-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

@@ -38,6 +38,7 @@ func ExampleClient_NewProcessorForQueue() {
 			ManualComplete:     false,
 		},
 	)
+
 	exitOnError("Failed to create Processor", err)
 }
 

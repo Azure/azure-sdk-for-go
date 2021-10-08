@@ -7,6 +7,7 @@ import (
 	"context"
 	"sort"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
@@ -39,7 +40,7 @@ func Test_Sender_SendBatchOfTwo(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, added)
 
-	err = sender.SendMessage(ctx, batch)
+	err = sender.SendMessageBatch(ctx, batch)
 	require.NoError(t, err)
 
 	receiver, err := client.NewReceiverForQueue(
@@ -92,7 +93,7 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 	require.NoError(t, err)
 	require.True(t, added)
 
-	err = sender.SendMessage(context.Background(), batch)
+	err = sender.SendMessageBatch(context.Background(), batch)
 	require.NoError(t, err)
 
 	messages, err := receiver.ReceiveMessages(context.Background(), 1+2, nil)
@@ -105,6 +106,100 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 	require.EqualValues(t, "partitionKey1", *messages[0].PartitionKey)
 	require.EqualValues(t, "partitionKey1", *messages[1].PartitionKey)
 	require.EqualValues(t, "partitionKey1", *messages[2].PartitionKey)
+}
+
+func Test_Sender_SendMessages(t *testing.T) {
+	ctx := context.Background()
+
+	client, cleanup, queueName := setupLiveTest(t, &internal.QueueDescription{
+		EnablePartitioning: to.BoolPtr(true),
+	})
+	defer cleanup()
+
+	receiver, err := client.NewReceiverForQueue(
+		queueName, &ReceiverOptions{ReceiveMode: ReceiveAndDelete})
+	require.NoError(t, err)
+	defer receiver.Close(context.Background())
+
+	sender, err := client.NewSender(queueName)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
+
+	err = sender.SendMessages(ctx, []*Message{
+		{
+			Body: []byte("hello"),
+		},
+		{
+			Body: []byte("world"),
+		},
+	})
+
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(ctx, 2, nil)
+	require.NoError(t, err)
+
+	require.EqualValues(t, []string{"hello", "world"}, getSortedBodies(messages))
+}
+
+func Test_Sender_ScheduleMessages(t *testing.T) {
+	ctx := context.Background()
+
+	client, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	receiver, err := client.NewReceiverForQueue(
+		queueName, &ReceiverOptions{ReceiveMode: ReceiveAndDelete})
+	require.NoError(t, err)
+	defer receiver.Close(context.Background())
+
+	sender, err := client.NewSender(queueName)
+	require.NoError(t, err)
+	defer sender.Close(context.Background())
+
+	now := time.Now()
+	nearFuture := now.Add(10 * time.Second)
+
+	// there are two ways to schedule a message - you can use the
+	// `ScheduleMessages` API (in which case you get a sequence number that
+	// you can use with CancelScheduledMessage(s)) or you can set the
+	// `Scheduled`
+
+	sequenceNumbers, err := sender.ScheduleMessages(ctx,
+		[]SendableMessage{
+			&Message{Body: []byte("To the future (that will be cancelled!)")},
+			&Message{Body: []byte("To the future (not cancelled)")},
+		},
+		nearFuture)
+
+	require.NoError(t, err)
+	require.EqualValues(t, 2, len(sequenceNumbers))
+
+	err = sender.SendMessage(ctx,
+		&Message{
+			Body:                 []byte("To the future (scheduled using the field)"),
+			ScheduledEnqueueTime: &nearFuture,
+		})
+
+	require.NoError(t, err)
+
+	// cancel one of the ones scheduled using `ScheduleMessages`
+	err = sender.CancelScheduledMessages(ctx, []int64{sequenceNumbers[0]})
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(ctx, 2, nil)
+	require.NoError(t, err)
+
+	// we cancelled one of the messages so it won't get enqueued (this is the one that survived)
+	require.EqualValues(t, []string{"To the future (not cancelled)", "To the future (scheduled using the field)"}, getSortedBodies(messages))
+
+	for _, m := range messages {
+		// and the scheduled enqueue time should match what we set pretty closely.
+		diff := m.ScheduledEnqueueTime.Sub(nearFuture.UTC())
+
+		// add a little wiggle room, but the scheduled time and the time we set when we scheduled it.
+		require.LessOrEqual(t, diff, time.Second, "The requested scheduled time and the actual scheduled time should be close [%s]", m.ScheduledEnqueueTime)
+	}
 }
 
 func getSortedBodies(messages []*ReceivedMessage) []string {

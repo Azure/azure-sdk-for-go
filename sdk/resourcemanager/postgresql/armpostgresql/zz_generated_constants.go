@@ -13,48 +13,23 @@ const (
 	version = "v0.1.0"
 )
 
-// ConfigurationDataType - Data type of the configuration.
-type ConfigurationDataType string
-
-const (
-	ConfigurationDataTypeBoolean     ConfigurationDataType = "Boolean"
-	ConfigurationDataTypeEnumeration ConfigurationDataType = "Enumeration"
-	ConfigurationDataTypeInteger     ConfigurationDataType = "Integer"
-	ConfigurationDataTypeNumeric     ConfigurationDataType = "Numeric"
-)
-
-// PossibleConfigurationDataTypeValues returns the possible values for the ConfigurationDataType const type.
-func PossibleConfigurationDataTypeValues() []ConfigurationDataType {
-	return []ConfigurationDataType{
-		ConfigurationDataTypeBoolean,
-		ConfigurationDataTypeEnumeration,
-		ConfigurationDataTypeInteger,
-		ConfigurationDataTypeNumeric,
-	}
-}
-
-// ToPtr returns a *ConfigurationDataType pointing to the current value.
-func (c ConfigurationDataType) ToPtr() *ConfigurationDataType {
-	return &c
-}
-
-// CreateMode - The mode to create a new PostgreSQL server.
+// CreateMode - The mode to create a new server.
 type CreateMode string
 
 const (
-	CreateModeCreate             CreateMode = "Create"
 	CreateModeDefault            CreateMode = "Default"
+	CreateModeGeoRestore         CreateMode = "GeoRestore"
 	CreateModePointInTimeRestore CreateMode = "PointInTimeRestore"
-	CreateModeUpdate             CreateMode = "Update"
+	CreateModeReplica            CreateMode = "Replica"
 )
 
 // PossibleCreateModeValues returns the possible values for the CreateMode const type.
 func PossibleCreateModeValues() []CreateMode {
 	return []CreateMode{
-		CreateModeCreate,
 		CreateModeDefault,
+		CreateModeGeoRestore,
 		CreateModePointInTimeRestore,
-		CreateModeUpdate,
+		CreateModeReplica,
 	}
 }
 
@@ -63,116 +38,93 @@ func (c CreateMode) ToPtr() *CreateMode {
 	return &c
 }
 
-// CreateModeForUpdate - The mode to update a new PostgreSQL server.
-type CreateModeForUpdate string
+// GeoRedundantBackup - Enable Geo-redundant or not for server backup.
+type GeoRedundantBackup string
 
 const (
-	CreateModeForUpdateDefault CreateModeForUpdate = "Default"
-	CreateModeForUpdateUpdate  CreateModeForUpdate = "Update"
+	GeoRedundantBackupDisabled GeoRedundantBackup = "Disabled"
+	GeoRedundantBackupEnabled  GeoRedundantBackup = "Enabled"
 )
 
-// PossibleCreateModeForUpdateValues returns the possible values for the CreateModeForUpdate const type.
-func PossibleCreateModeForUpdateValues() []CreateModeForUpdate {
-	return []CreateModeForUpdate{
-		CreateModeForUpdateDefault,
-		CreateModeForUpdateUpdate,
+// PossibleGeoRedundantBackupValues returns the possible values for the GeoRedundantBackup const type.
+func PossibleGeoRedundantBackupValues() []GeoRedundantBackup {
+	return []GeoRedundantBackup{
+		GeoRedundantBackupDisabled,
+		GeoRedundantBackupEnabled,
 	}
 }
 
-// ToPtr returns a *CreateModeForUpdate pointing to the current value.
-func (c CreateModeForUpdate) ToPtr() *CreateModeForUpdate {
+// ToPtr returns a *GeoRedundantBackup pointing to the current value.
+func (c GeoRedundantBackup) ToPtr() *GeoRedundantBackup {
 	return &c
 }
 
-// CreatedByType - The type of identity that created the resource.
-type CreatedByType string
+// IdentityType - The identity type. Set this to 'SystemAssigned' in order to automatically create and assign an Azure Active Directory principal for the
+// resource.
+type IdentityType string
 
 const (
-	CreatedByTypeApplication     CreatedByType = "Application"
-	CreatedByTypeKey             CreatedByType = "Key"
-	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
-	CreatedByTypeUser            CreatedByType = "User"
+	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
 )
 
-// PossibleCreatedByTypeValues returns the possible values for the CreatedByType const type.
-func PossibleCreatedByTypeValues() []CreatedByType {
-	return []CreatedByType{
-		CreatedByTypeApplication,
-		CreatedByTypeKey,
-		CreatedByTypeManagedIdentity,
-		CreatedByTypeUser,
+// PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
+func PossibleIdentityTypeValues() []IdentityType {
+	return []IdentityType{
+		IdentityTypeSystemAssigned,
 	}
 }
 
-// ToPtr returns a *CreatedByType pointing to the current value.
-func (c CreatedByType) ToPtr() *CreatedByType {
+// ToPtr returns a *IdentityType pointing to the current value.
+func (c IdentityType) ToPtr() *IdentityType {
 	return &c
 }
 
-// FailoverMode - Failover mode.
-type FailoverMode string
+// InfrastructureEncryption - Add a second layer of encryption for your data using new encryption algorithm which gives additional data protection. Value
+// is optional but if passed in, must be 'Disabled' or 'Enabled'.
+type InfrastructureEncryption string
 
 const (
-	FailoverModeForcedFailover    FailoverMode = "ForcedFailover"
-	FailoverModeForcedSwitchover  FailoverMode = "ForcedSwitchover"
-	FailoverModePlannedFailover   FailoverMode = "PlannedFailover"
-	FailoverModePlannedSwitchover FailoverMode = "PlannedSwitchover"
+	// InfrastructureEncryptionDisabled - Additional (2nd) layer of encryption for data at rest
+	InfrastructureEncryptionDisabled InfrastructureEncryption = "Disabled"
+	// InfrastructureEncryptionEnabled - Default value for single layer of encryption for data at rest.
+	InfrastructureEncryptionEnabled InfrastructureEncryption = "Enabled"
 )
 
-// PossibleFailoverModeValues returns the possible values for the FailoverMode const type.
-func PossibleFailoverModeValues() []FailoverMode {
-	return []FailoverMode{
-		FailoverModeForcedFailover,
-		FailoverModeForcedSwitchover,
-		FailoverModePlannedFailover,
-		FailoverModePlannedSwitchover,
+// PossibleInfrastructureEncryptionValues returns the possible values for the InfrastructureEncryption const type.
+func PossibleInfrastructureEncryptionValues() []InfrastructureEncryption {
+	return []InfrastructureEncryption{
+		InfrastructureEncryptionDisabled,
+		InfrastructureEncryptionEnabled,
 	}
 }
 
-// ToPtr returns a *FailoverMode pointing to the current value.
-func (c FailoverMode) ToPtr() *FailoverMode {
+// ToPtr returns a *InfrastructureEncryption pointing to the current value.
+func (c InfrastructureEncryption) ToPtr() *InfrastructureEncryption {
 	return &c
 }
 
-// GeoRedundantBackupEnum - A value indicating whether Geo-Redundant backup is enabled on the server.
-type GeoRedundantBackupEnum string
+// MinimalTLSVersionEnum - Enforce a minimal Tls version for the server.
+type MinimalTLSVersionEnum string
 
 const (
-	GeoRedundantBackupEnumDisabled GeoRedundantBackupEnum = "Disabled"
-	GeoRedundantBackupEnumEnabled  GeoRedundantBackupEnum = "Enabled"
+	MinimalTLSVersionEnumTLS10                  MinimalTLSVersionEnum = "TLS1_0"
+	MinimalTLSVersionEnumTLS11                  MinimalTLSVersionEnum = "TLS1_1"
+	MinimalTLSVersionEnumTLS12                  MinimalTLSVersionEnum = "TLS1_2"
+	MinimalTLSVersionEnumTLSEnforcementDisabled MinimalTLSVersionEnum = "TLSEnforcementDisabled"
 )
 
-// PossibleGeoRedundantBackupEnumValues returns the possible values for the GeoRedundantBackupEnum const type.
-func PossibleGeoRedundantBackupEnumValues() []GeoRedundantBackupEnum {
-	return []GeoRedundantBackupEnum{
-		GeoRedundantBackupEnumDisabled,
-		GeoRedundantBackupEnumEnabled,
+// PossibleMinimalTLSVersionEnumValues returns the possible values for the MinimalTLSVersionEnum const type.
+func PossibleMinimalTLSVersionEnumValues() []MinimalTLSVersionEnum {
+	return []MinimalTLSVersionEnum{
+		MinimalTLSVersionEnumTLS10,
+		MinimalTLSVersionEnumTLS11,
+		MinimalTLSVersionEnumTLS12,
+		MinimalTLSVersionEnumTLSEnforcementDisabled,
 	}
 }
 
-// ToPtr returns a *GeoRedundantBackupEnum pointing to the current value.
-func (c GeoRedundantBackupEnum) ToPtr() *GeoRedundantBackupEnum {
-	return &c
-}
-
-// HighAvailabilityMode - The HA mode for the server.
-type HighAvailabilityMode string
-
-const (
-	HighAvailabilityModeDisabled      HighAvailabilityMode = "Disabled"
-	HighAvailabilityModeZoneRedundant HighAvailabilityMode = "ZoneRedundant"
-)
-
-// PossibleHighAvailabilityModeValues returns the possible values for the HighAvailabilityMode const type.
-func PossibleHighAvailabilityModeValues() []HighAvailabilityMode {
-	return []HighAvailabilityMode{
-		HighAvailabilityModeDisabled,
-		HighAvailabilityModeZoneRedundant,
-	}
-}
-
-// ToPtr returns a *HighAvailabilityMode pointing to the current value.
-func (c HighAvailabilityMode) ToPtr() *HighAvailabilityMode {
+// ToPtr returns a *MinimalTLSVersionEnum pointing to the current value.
+func (c MinimalTLSVersionEnum) ToPtr() *MinimalTLSVersionEnum {
 	return &c
 }
 
@@ -199,11 +151,103 @@ func (c OperationOrigin) ToPtr() *OperationOrigin {
 	return &c
 }
 
-// SKUTier - The tier of the particular SKU, e.g. Burstable.
+// PrivateEndpointProvisioningState - State of the private endpoint connection.
+type PrivateEndpointProvisioningState string
+
+const (
+	PrivateEndpointProvisioningStateApproving PrivateEndpointProvisioningState = "Approving"
+	PrivateEndpointProvisioningStateDropping  PrivateEndpointProvisioningState = "Dropping"
+	PrivateEndpointProvisioningStateFailed    PrivateEndpointProvisioningState = "Failed"
+	PrivateEndpointProvisioningStateReady     PrivateEndpointProvisioningState = "Ready"
+	PrivateEndpointProvisioningStateRejecting PrivateEndpointProvisioningState = "Rejecting"
+)
+
+// PossiblePrivateEndpointProvisioningStateValues returns the possible values for the PrivateEndpointProvisioningState const type.
+func PossiblePrivateEndpointProvisioningStateValues() []PrivateEndpointProvisioningState {
+	return []PrivateEndpointProvisioningState{
+		PrivateEndpointProvisioningStateApproving,
+		PrivateEndpointProvisioningStateDropping,
+		PrivateEndpointProvisioningStateFailed,
+		PrivateEndpointProvisioningStateReady,
+		PrivateEndpointProvisioningStateRejecting,
+	}
+}
+
+// ToPtr returns a *PrivateEndpointProvisioningState pointing to the current value.
+func (c PrivateEndpointProvisioningState) ToPtr() *PrivateEndpointProvisioningState {
+	return &c
+}
+
+// PrivateLinkServiceConnectionStateActionsRequire - The actions required for private link service connection.
+type PrivateLinkServiceConnectionStateActionsRequire string
+
+const (
+	PrivateLinkServiceConnectionStateActionsRequireNone PrivateLinkServiceConnectionStateActionsRequire = "None"
+)
+
+// PossiblePrivateLinkServiceConnectionStateActionsRequireValues returns the possible values for the PrivateLinkServiceConnectionStateActionsRequire const type.
+func PossiblePrivateLinkServiceConnectionStateActionsRequireValues() []PrivateLinkServiceConnectionStateActionsRequire {
+	return []PrivateLinkServiceConnectionStateActionsRequire{
+		PrivateLinkServiceConnectionStateActionsRequireNone,
+	}
+}
+
+// ToPtr returns a *PrivateLinkServiceConnectionStateActionsRequire pointing to the current value.
+func (c PrivateLinkServiceConnectionStateActionsRequire) ToPtr() *PrivateLinkServiceConnectionStateActionsRequire {
+	return &c
+}
+
+// PrivateLinkServiceConnectionStateStatus - The private link service connection status.
+type PrivateLinkServiceConnectionStateStatus string
+
+const (
+	PrivateLinkServiceConnectionStateStatusApproved     PrivateLinkServiceConnectionStateStatus = "Approved"
+	PrivateLinkServiceConnectionStateStatusDisconnected PrivateLinkServiceConnectionStateStatus = "Disconnected"
+	PrivateLinkServiceConnectionStateStatusPending      PrivateLinkServiceConnectionStateStatus = "Pending"
+	PrivateLinkServiceConnectionStateStatusRejected     PrivateLinkServiceConnectionStateStatus = "Rejected"
+)
+
+// PossiblePrivateLinkServiceConnectionStateStatusValues returns the possible values for the PrivateLinkServiceConnectionStateStatus const type.
+func PossiblePrivateLinkServiceConnectionStateStatusValues() []PrivateLinkServiceConnectionStateStatus {
+	return []PrivateLinkServiceConnectionStateStatus{
+		PrivateLinkServiceConnectionStateStatusApproved,
+		PrivateLinkServiceConnectionStateStatusDisconnected,
+		PrivateLinkServiceConnectionStateStatusPending,
+		PrivateLinkServiceConnectionStateStatusRejected,
+	}
+}
+
+// ToPtr returns a *PrivateLinkServiceConnectionStateStatus pointing to the current value.
+func (c PrivateLinkServiceConnectionStateStatus) ToPtr() *PrivateLinkServiceConnectionStateStatus {
+	return &c
+}
+
+// PublicNetworkAccessEnum - Whether or not public network access is allowed for this server. Value is optional but if passed in, must be 'Enabled' or 'Disabled'
+type PublicNetworkAccessEnum string
+
+const (
+	PublicNetworkAccessEnumDisabled PublicNetworkAccessEnum = "Disabled"
+	PublicNetworkAccessEnumEnabled  PublicNetworkAccessEnum = "Enabled"
+)
+
+// PossiblePublicNetworkAccessEnumValues returns the possible values for the PublicNetworkAccessEnum const type.
+func PossiblePublicNetworkAccessEnumValues() []PublicNetworkAccessEnum {
+	return []PublicNetworkAccessEnum{
+		PublicNetworkAccessEnumDisabled,
+		PublicNetworkAccessEnumEnabled,
+	}
+}
+
+// ToPtr returns a *PublicNetworkAccessEnum pointing to the current value.
+func (c PublicNetworkAccessEnum) ToPtr() *PublicNetworkAccessEnum {
+	return &c
+}
+
+// SKUTier - The tier of the particular SKU, e.g. Basic.
 type SKUTier string
 
 const (
-	SKUTierBurstable       SKUTier = "Burstable"
+	SKUTierBasic           SKUTier = "Basic"
 	SKUTierGeneralPurpose  SKUTier = "GeneralPurpose"
 	SKUTierMemoryOptimized SKUTier = "MemoryOptimized"
 )
@@ -211,7 +255,7 @@ const (
 // PossibleSKUTierValues returns the possible values for the SKUTier const type.
 func PossibleSKUTierValues() []SKUTier {
 	return []SKUTier{
-		SKUTierBurstable,
+		SKUTierBasic,
 		SKUTierGeneralPurpose,
 		SKUTierMemoryOptimized,
 	}
@@ -222,53 +266,82 @@ func (c SKUTier) ToPtr() *SKUTier {
 	return &c
 }
 
-// ServerHAState - A state of a HA server that is visible to user.
-type ServerHAState string
+// SSLEnforcementEnum - Enable ssl enforcement or not when connect to server.
+type SSLEnforcementEnum string
 
 const (
-	ServerHAStateCreatingStandby ServerHAState = "CreatingStandby"
-	ServerHAStateFailingOver     ServerHAState = "FailingOver"
-	ServerHAStateHealthy         ServerHAState = "Healthy"
-	ServerHAStateNotEnabled      ServerHAState = "NotEnabled"
-	ServerHAStateRemovingStandby ServerHAState = "RemovingStandby"
-	ServerHAStateReplicatingData ServerHAState = "ReplicatingData"
+	SSLEnforcementEnumEnabled  SSLEnforcementEnum = "Enabled"
+	SSLEnforcementEnumDisabled SSLEnforcementEnum = "Disabled"
 )
 
-// PossibleServerHAStateValues returns the possible values for the ServerHAState const type.
-func PossibleServerHAStateValues() []ServerHAState {
-	return []ServerHAState{
-		ServerHAStateCreatingStandby,
-		ServerHAStateFailingOver,
-		ServerHAStateHealthy,
-		ServerHAStateNotEnabled,
-		ServerHAStateRemovingStandby,
-		ServerHAStateReplicatingData,
+// PossibleSSLEnforcementEnumValues returns the possible values for the SSLEnforcementEnum const type.
+func PossibleSSLEnforcementEnumValues() []SSLEnforcementEnum {
+	return []SSLEnforcementEnum{
+		SSLEnforcementEnumEnabled,
+		SSLEnforcementEnumDisabled,
 	}
 }
 
-// ToPtr returns a *ServerHAState pointing to the current value.
-func (c ServerHAState) ToPtr() *ServerHAState {
+// ToPtr returns a *SSLEnforcementEnum pointing to the current value.
+func (c SSLEnforcementEnum) ToPtr() *SSLEnforcementEnum {
 	return &c
 }
 
-// ServerPublicNetworkAccessState - public network access is enabled or not
-type ServerPublicNetworkAccessState string
+type SecurityAlertPolicyName string
 
 const (
-	ServerPublicNetworkAccessStateDisabled ServerPublicNetworkAccessState = "Disabled"
-	ServerPublicNetworkAccessStateEnabled  ServerPublicNetworkAccessState = "Enabled"
+	SecurityAlertPolicyNameDefault SecurityAlertPolicyName = "Default"
 )
 
-// PossibleServerPublicNetworkAccessStateValues returns the possible values for the ServerPublicNetworkAccessState const type.
-func PossibleServerPublicNetworkAccessStateValues() []ServerPublicNetworkAccessState {
-	return []ServerPublicNetworkAccessState{
-		ServerPublicNetworkAccessStateDisabled,
-		ServerPublicNetworkAccessStateEnabled,
+// PossibleSecurityAlertPolicyNameValues returns the possible values for the SecurityAlertPolicyName const type.
+func PossibleSecurityAlertPolicyNameValues() []SecurityAlertPolicyName {
+	return []SecurityAlertPolicyName{
+		SecurityAlertPolicyNameDefault,
 	}
 }
 
-// ToPtr returns a *ServerPublicNetworkAccessState pointing to the current value.
-func (c ServerPublicNetworkAccessState) ToPtr() *ServerPublicNetworkAccessState {
+// ToPtr returns a *SecurityAlertPolicyName pointing to the current value.
+func (c SecurityAlertPolicyName) ToPtr() *SecurityAlertPolicyName {
+	return &c
+}
+
+// ServerKeyType - The key type like 'AzureKeyVault'.
+type ServerKeyType string
+
+const (
+	ServerKeyTypeAzureKeyVault ServerKeyType = "AzureKeyVault"
+)
+
+// PossibleServerKeyTypeValues returns the possible values for the ServerKeyType const type.
+func PossibleServerKeyTypeValues() []ServerKeyType {
+	return []ServerKeyType{
+		ServerKeyTypeAzureKeyVault,
+	}
+}
+
+// ToPtr returns a *ServerKeyType pointing to the current value.
+func (c ServerKeyType) ToPtr() *ServerKeyType {
+	return &c
+}
+
+// ServerSecurityAlertPolicyState - Specifies the state of the policy, whether it is enabled or disabled.
+type ServerSecurityAlertPolicyState string
+
+const (
+	ServerSecurityAlertPolicyStateEnabled  ServerSecurityAlertPolicyState = "Enabled"
+	ServerSecurityAlertPolicyStateDisabled ServerSecurityAlertPolicyState = "Disabled"
+)
+
+// PossibleServerSecurityAlertPolicyStateValues returns the possible values for the ServerSecurityAlertPolicyState const type.
+func PossibleServerSecurityAlertPolicyStateValues() []ServerSecurityAlertPolicyState {
+	return []ServerSecurityAlertPolicyState{
+		ServerSecurityAlertPolicyStateEnabled,
+		ServerSecurityAlertPolicyStateDisabled,
+	}
+}
+
+// ToPtr returns a *ServerSecurityAlertPolicyState pointing to the current value.
+func (c ServerSecurityAlertPolicyState) ToPtr() *ServerSecurityAlertPolicyState {
 	return &c
 }
 
@@ -276,13 +349,10 @@ func (c ServerPublicNetworkAccessState) ToPtr() *ServerPublicNetworkAccessState 
 type ServerState string
 
 const (
-	ServerStateDisabled ServerState = "Disabled"
-	ServerStateDropping ServerState = "Dropping"
-	ServerStateReady    ServerState = "Ready"
-	ServerStateStarting ServerState = "Starting"
-	ServerStateStopped  ServerState = "Stopped"
-	ServerStateStopping ServerState = "Stopping"
-	ServerStateUpdating ServerState = "Updating"
+	ServerStateDisabled     ServerState = "Disabled"
+	ServerStateDropping     ServerState = "Dropping"
+	ServerStateInaccessible ServerState = "Inaccessible"
+	ServerStateReady        ServerState = "Ready"
 )
 
 // PossibleServerStateValues returns the possible values for the ServerState const type.
@@ -290,11 +360,8 @@ func PossibleServerStateValues() []ServerState {
 	return []ServerState{
 		ServerStateDisabled,
 		ServerStateDropping,
+		ServerStateInaccessible,
 		ServerStateReady,
-		ServerStateStarting,
-		ServerStateStopped,
-		ServerStateStopping,
-		ServerStateUpdating,
 	}
 }
 
@@ -307,21 +374,75 @@ func (c ServerState) ToPtr() *ServerState {
 type ServerVersion string
 
 const (
-	ServerVersionEleven   ServerVersion = "11"
-	ServerVersionThirteen ServerVersion = "13"
-	ServerVersionTwelve   ServerVersion = "12"
+	ServerVersionEleven ServerVersion = "11"
+	ServerVersionNine5  ServerVersion = "9.5"
+	ServerVersionNine6  ServerVersion = "9.6"
+	ServerVersionTen    ServerVersion = "10"
+	ServerVersionTen0   ServerVersion = "10.0"
+	ServerVersionTen2   ServerVersion = "10.2"
 )
 
 // PossibleServerVersionValues returns the possible values for the ServerVersion const type.
 func PossibleServerVersionValues() []ServerVersion {
 	return []ServerVersion{
 		ServerVersionEleven,
-		ServerVersionThirteen,
-		ServerVersionTwelve,
+		ServerVersionNine5,
+		ServerVersionNine6,
+		ServerVersionTen,
+		ServerVersionTen0,
+		ServerVersionTen2,
 	}
 }
 
 // ToPtr returns a *ServerVersion pointing to the current value.
 func (c ServerVersion) ToPtr() *ServerVersion {
+	return &c
+}
+
+// StorageAutogrow - Enable Storage Auto Grow.
+type StorageAutogrow string
+
+const (
+	StorageAutogrowDisabled StorageAutogrow = "Disabled"
+	StorageAutogrowEnabled  StorageAutogrow = "Enabled"
+)
+
+// PossibleStorageAutogrowValues returns the possible values for the StorageAutogrow const type.
+func PossibleStorageAutogrowValues() []StorageAutogrow {
+	return []StorageAutogrow{
+		StorageAutogrowDisabled,
+		StorageAutogrowEnabled,
+	}
+}
+
+// ToPtr returns a *StorageAutogrow pointing to the current value.
+func (c StorageAutogrow) ToPtr() *StorageAutogrow {
+	return &c
+}
+
+// VirtualNetworkRuleState - Virtual Network Rule State
+type VirtualNetworkRuleState string
+
+const (
+	VirtualNetworkRuleStateDeleting     VirtualNetworkRuleState = "Deleting"
+	VirtualNetworkRuleStateInProgress   VirtualNetworkRuleState = "InProgress"
+	VirtualNetworkRuleStateInitializing VirtualNetworkRuleState = "Initializing"
+	VirtualNetworkRuleStateReady        VirtualNetworkRuleState = "Ready"
+	VirtualNetworkRuleStateUnknown      VirtualNetworkRuleState = "Unknown"
+)
+
+// PossibleVirtualNetworkRuleStateValues returns the possible values for the VirtualNetworkRuleState const type.
+func PossibleVirtualNetworkRuleStateValues() []VirtualNetworkRuleState {
+	return []VirtualNetworkRuleState{
+		VirtualNetworkRuleStateDeleting,
+		VirtualNetworkRuleStateInProgress,
+		VirtualNetworkRuleStateInitializing,
+		VirtualNetworkRuleStateReady,
+		VirtualNetworkRuleStateUnknown,
+	}
+}
+
+// ToPtr returns a *VirtualNetworkRuleState pointing to the current value.
+func (c VirtualNetworkRuleState) ToPtr() *VirtualNetworkRuleState {
 	return &c
 }

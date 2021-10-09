@@ -1,3 +1,4 @@
+// Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood instead.
 module github.com/Azure/azure-sdk-for-go/sdk/agrifood/armagrifood
 
 go 1.16
@@ -7,5 +8,5 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.19.0
 )
 
-//To better align with the Azure SDK guidelines (https://azure.github.io/azure-sdk/general_introduction.html), we have decided to change the module path to "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood". Therefore, we are deprecating the old module path (which is "github.com/Azure/azure-sdk-for-go/sdk/agrifood/armagrifood") to avoid confusion.
-retract [v0.1.0,v0.1.1]
+// use github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/agrifood/armagrifood instead.
+retract [v0.1.0, v0.1.1]

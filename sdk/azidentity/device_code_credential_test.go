@@ -339,7 +339,8 @@ func TestDeviceCodeCredential_UserPrompt(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	called := false
-	expectedCtx := context.WithValue(context.Background(), "", "")
+	key := "key"
+	val := "value"
 	options := DeviceCodeCredentialOptions{
 		AuthorityHost: AuthorityHost(srv.URL()),
 		ClientID:      clientID,
@@ -347,7 +348,7 @@ func TestDeviceCodeCredential_UserPrompt(t *testing.T) {
 		TenantID:      tenantID,
 		UserPrompt: func(ctx context.Context, m DeviceCodeMessage) error {
 			called = true
-			if ctx != expectedCtx {
+			if ctx.Value(key) != val {
 				return errors.New("UserPrompt received unexpected Context")
 			}
 			return nil
@@ -357,7 +358,8 @@ func TestDeviceCodeCredential_UserPrompt(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unable to create credential: %v", err)
 	}
-	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
+	ctx := context.WithValue(context.Background(), key, val)
+	_, err = cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}

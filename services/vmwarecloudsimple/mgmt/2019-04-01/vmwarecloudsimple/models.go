@@ -954,7 +954,7 @@ type DedicatedCloudNodeProperties struct {
 	// CloudRackName - READ-ONLY; VMWare Cloud Rack Name
 	CloudRackName *string `json:"cloudRackName,omitempty"`
 	// Created - READ-ONLY; date time the resource was created
-	Created interface{} `json:"created,omitempty"`
+	Created *date.Time `json:"created,omitempty"`
 	// NodesCount - count of nodes to create
 	NodesCount *int32 `json:"nodesCount,omitempty"`
 	// PlacementGroupID - Placement Group id, e.g. "n1"
@@ -1036,12 +1036,12 @@ func (dcnp *DedicatedCloudNodeProperties) UnmarshalJSON(body []byte) error {
 			}
 		case "created":
 			if v != nil {
-				var created interface{}
+				var created date.Time
 				err = json.Unmarshal(*v, &created)
 				if err != nil {
 					return err
 				}
-				dcnp.Created = created
+				dcnp.Created = &created
 			}
 		case "nodesCount":
 			if v != nil {

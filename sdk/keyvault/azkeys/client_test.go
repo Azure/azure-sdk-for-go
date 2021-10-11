@@ -56,11 +56,11 @@ func TestCreateKeyRSA(t *testing.T) {
 	key, err := createRandomName(t, "secret")
 	require.NoError(t, err)
 
-	resp, err := client.CreateKey(ctx, key, JSONWebKeyTypeRSA, nil)
+	resp, err := client.CreateKey(ctx, key, RSA, nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp.Key)
 
-	resp, err = client.CreateKey(ctx, key, JSONWebKeyTypeRSAHSM, nil)
+	resp, err = client.CreateKey(ctx, key, RSAHSM, nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp.Key)
 }
@@ -109,7 +109,7 @@ func TestListKeys(t *testing.T) {
 		key, err := createRandomName(t, fmt.Sprintf("secret-%d", i))
 		require.NoError(t, err)
 
-		_, err = client.CreateKey(ctx, key, JSONWebKeyTypeRSA, nil)
+		_, err = client.CreateKey(ctx, key, RSA, nil)
 		require.NoError(t, err)
 	}
 
@@ -124,4 +124,22 @@ func TestListKeys(t *testing.T) {
 
 	require.NoError(t, pager.Err())
 	require.GreaterOrEqual(t, count, 4)
+}
+
+func TestGetKey(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	key, err := createRandomName(t, "secret")
+	require.NoError(t, err)
+
+	_, err = client.CreateKey(ctx, key, RSA, nil)
+	require.NoError(t, err)
+
+	resp, err := client.GetKey(ctx, key, nil)
+	require.NoError(t, err)
+	require.NotNil(t, resp.Key)
 }

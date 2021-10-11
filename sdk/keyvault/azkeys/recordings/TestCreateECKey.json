@@ -14,7 +14,7 @@
         "Content-Length": "12",
         "Content-Type": "application/json",
         "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 11 Oct 2021 14:30:31 GMT"
+        "x-ms-date": "Mon, 11 Oct 2021 17:21:20 GMT"
       },
       "RequestBody": {
         "kty": "EC"
@@ -24,7 +24,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "400",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 11 Oct 2021 14:30:32 GMT",
+        "Date": "Mon, 11 Oct 2021 17:21:21 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -32,25 +32,25 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.25.62;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.132.3",
-        "x-ms-request-id": "84be9007-f0d0-4dbf-93ec-2be3ecd0ee54",
+        "x-ms-request-id": "776e75ad-e393-4257-a373-db2e3ee09d6a",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://seankane.vault.azure.net/keys/secret1379313432/1d0aa42c286b41cf83d3a272c18e13a5",
+          "kid": "https://seankane.vault.azure.net/keys/secret1379313432/7070f4745c154da18a1aabd6505ba608",
           "kty": "EC",
           "key_ops": [
             "sign",
             "verify"
           ],
           "crv": "P-256",
-          "x": "OVvMFsHnhMEEPE63ABIZEgCnw8pyjLqHkenZBi4nzeE",
-          "y": "D9IaqJKcPFwOjpL5vxytUjw6s3F6HUpXArZvK9AiuE4"
+          "x": "HayHLBybai2mJXSfnTH3InYvj4IlypY1FtF4dsYpIbg",
+          "y": "8qi_P4akgehf36kZT0fXezBMqI_6rHeCR6Sg_UmchaI"
         },
         "attributes": {
           "enabled": true,
-          "created": 1633962632,
-          "updated": 1633962632,
+          "created": 1633972881,
+          "updated": 1633972881,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
         }

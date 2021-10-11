@@ -98,7 +98,7 @@ func (c *CreateKeyOptions) toGenerated() *internal.KeyVaultClientCreateKeyOption
 	return &internal.KeyVaultClientCreateKeyOptions{}
 }
 
-func (c *CreateKeyOptions) toKeyCreateParameters(keyType JSONWebKeyType) internal.KeyCreateParameters {
+func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) internal.KeyCreateParameters {
 	return internal.KeyCreateParameters{
 		Kty:            keyType.toGenerated(),
 		Curve:          c.Curve,
@@ -122,14 +122,14 @@ func createKeyResponseFromGenerated(g internal.KeyVaultClientCreateKeyResponse) 
 		RawResponse: g.RawResponse,
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(g.Attributes),
-			Key:        jsonWebKeyToGenerated(g.Key),
+			Key:        jsonWebKeyFromGenerated(g.Key),
 			Tags:       g.Tags,
 			Managed:    g.Managed,
 		},
 	}
 }
 
-func (c *Client) CreateKey(ctx context.Context, name string, keyType JSONWebKeyType, options *CreateKeyOptions) (CreateKeyResponse, error) {
+func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, options *CreateKeyOptions) (CreateKeyResponse, error) {
 	if options == nil {
 		options = &CreateKeyOptions{}
 	}
@@ -163,7 +163,7 @@ type CreateECKeyOptions struct {
 	HardwareProtected bool
 }
 
-func (c *CreateECKeyOptions) toKeyCreateParameters(keyType JSONWebKeyType) internal.KeyCreateParameters {
+func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) internal.KeyCreateParameters {
 	return internal.KeyCreateParameters{
 		Kty:            keyType.toGenerated(),
 		Curve:          c.Curve,
@@ -186,7 +186,7 @@ func createECKeyResponseFromGenerated(g internal.KeyVaultClientCreateKeyResponse
 		RawResponse: g.RawResponse,
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(g.Attributes),
-			Key:        jsonWebKeyToGenerated(g.Key),
+			Key:        jsonWebKeyFromGenerated(g.Key),
 			Tags:       g.Tags,
 			Managed:    g.Managed,
 		},
@@ -194,10 +194,10 @@ func createECKeyResponseFromGenerated(g internal.KeyVaultClientCreateKeyResponse
 }
 
 func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateECKeyOptions) (CreateECKeyResponse, error) {
-	keyType := JSONWebKeyTypeEC
+	keyType := EC
 
 	if options != nil && options.HardwareProtected {
-		keyType = JSONWebKeyTypeECHSM
+		keyType = ECHSM
 	} else if options == nil {
 		options = &CreateECKeyOptions{}
 	}
@@ -231,7 +231,7 @@ type CreateOCTKeyOptions struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-func (c *CreateOCTKeyOptions) toKeyCreateParameters(keyType JSONWebKeyType) internal.KeyCreateParameters {
+func (c *CreateOCTKeyOptions) toKeyCreateParameters(keyType KeyType) internal.KeyCreateParameters {
 	return internal.KeyCreateParameters{
 		Kty:            keyType.toGenerated(),
 		Curve:          c.Curve,
@@ -254,7 +254,7 @@ func createOCTKeyResponseFromGenerated(i internal.KeyVaultClientCreateKeyRespons
 		RawResponse: i.RawResponse,
 		KeyBundle: KeyBundle{
 			Attributes: keyAttributesFromGenerated(i.Attributes),
-			Key:        jsonWebKeyToGenerated(i.Key),
+			Key:        jsonWebKeyFromGenerated(i.Key),
 			Tags:       i.Tags,
 			Managed:    i.Managed,
 		},
@@ -262,10 +262,10 @@ func createOCTKeyResponseFromGenerated(i internal.KeyVaultClientCreateKeyRespons
 }
 
 func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateOCTKeyOptions) (CreateOCTKeyResponse, error) {
-	keyType := JSONWebKeyTypeOct
+	keyType := Oct
 
 	if options != nil && options.HardwareProtected {
-		keyType = JSONWebKeyTypeOctHSM
+		keyType = OctHSM
 	} else if options == nil {
 		options = &CreateOCTKeyOptions{}
 	}
@@ -343,3 +343,84 @@ func (c *Client) ListKeys(options *ListKeysOptions) ListKeysPager {
 		genPager: *p,
 	}
 }
+
+type GetKeyOptions struct {
+	Version string
+}
+
+type GetKeyResponse struct {
+	KeyBundle
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func getKeyResponseFromGenerated(i internal.KeyVaultClientGetKeyResponse) GetKeyResponse {
+	return GetKeyResponse{
+		RawResponse: i.RawResponse,
+		KeyBundle: KeyBundle{
+			Attributes: keyAttributesFromGenerated(i.Attributes),
+			Key:        jsonWebKeyFromGenerated(i.Key),
+			Tags:       i.Tags,
+			Managed:    i.Managed,
+		},
+	}
+}
+
+func (c *Client) GetKey(ctx context.Context, keyName string, options *GetKeyOptions) (GetKeyResponse, error) {
+	if options == nil {
+		options = &GetKeyOptions{}
+	}
+
+	resp, err := c.kvClient.GetKey(ctx, c.vaultUrl, keyName, options.Version, &internal.KeyVaultClientGetKeyOptions{})
+	if err != nil {
+		return GetKeyResponse{}, err
+	}
+
+	return getKeyResponseFromGenerated(resp), err
+}
+
+/*
+type DeleteKeyPoller interface {
+	// Done returns true if the LRO has reached a terminal state
+	Done() bool
+
+	// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
+	// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
+	// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
+	Poll(context.Context) (*http.Response, error)
+
+	// FinalResponse returns the final response after the operations has finished
+	FinalResponse(context.Context) (DeleteKeyResponse, error)
+}
+
+type DeleteKeyPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error occurs
+	PollUntilDone func(context.Context, time.Duration) (DeleteKeyResponse, error)
+
+	// Poller contains an initialized WidgetPoller
+	Poller DeleteKeyPoller
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+type DeleteKeyResponse struct{}
+
+type BeginDeleteKeyOptions struct{}
+
+func (b *BeginDeleteKeyOptions) toGenerated() *internal.KeyVaultClientDeleteKeyOptions {
+	return &internal.KeyVaultClientDeleteKeyOptions{}
+}
+
+func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *BeginDeleteKeyOptions) (DeleteKeyPollerResponse, error) {
+	if options == nil {
+		options = &BeginDeleteKeyOptions{}
+	}
+
+	resp, err := c.kvClient.DeleteKey(ctx, c.vaultUrl, keyName, options.toGenerated())
+	if err != nil {
+		return DeleteKeyPollerResponse{}, err
+	}
+	_ = resp
+}
+*/

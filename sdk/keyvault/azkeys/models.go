@@ -100,7 +100,7 @@ type JSONWebKey struct {
 	Kid *string `json:"kid,omitempty"`
 
 	// JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-	Kty *JSONWebKeyType `json:"kty,omitempty"`
+	Kty *KeyType `json:"kty,omitempty"`
 
 	// RSA modulus.
 	N []byte `json:"n,omitempty"`
@@ -124,7 +124,8 @@ type JSONWebKey struct {
 	Y []byte `json:"y,omitempty"`
 }
 
-func jsonWebKeyToGenerated(i *internal.JSONWebKey) *JSONWebKey {
+// converts internal.JSONWebKey to publicly exposed version
+func jsonWebKeyFromGenerated(i *internal.JSONWebKey) *JSONWebKey {
 	if i == nil {
 		return &JSONWebKey{}
 	}
@@ -138,7 +139,7 @@ func jsonWebKeyToGenerated(i *internal.JSONWebKey) *JSONWebKey {
 		K:      i.K,
 		KeyOps: i.KeyOps,
 		Kid:    i.Kid,
-		Kty:    (*JSONWebKeyType)(i.Kty),
+		Kty:    (*KeyType)(i.Kty),
 		N:      i.N,
 		P:      i.P,
 		Q:      i.Q,
@@ -149,30 +150,30 @@ func jsonWebKeyToGenerated(i *internal.JSONWebKey) *JSONWebKey {
 	}
 }
 
-// JSONWebKeyType - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-type JSONWebKeyType string
+// KeyType - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
+type KeyType string
 
 const (
-	// JSONWebKeyTypeEC - Elliptic Curve.
-	JSONWebKeyTypeEC JSONWebKeyType = "EC"
+	// EC - Elliptic Curve.
+	EC KeyType = "EC"
 
-	// JSONWebKeyTypeECHSM - Elliptic Curve with a private key which is not exportable from the HSM.
-	JSONWebKeyTypeECHSM JSONWebKeyType = "EC-HSM"
+	// ECHSM - Elliptic Curve with a private key which is not exportable from the HSM.
+	ECHSM KeyType = "EC-HSM"
 
-	// JSONWebKeyTypeOct - Octet sequence (used to represent symmetric keys)
-	JSONWebKeyTypeOct JSONWebKeyType = "oct"
+	// Oct - Octet sequence (used to represent symmetric keys)
+	Oct KeyType = "oct"
 
-	// JSONWebKeyTypeOctHSM - Octet sequence (used to represent symmetric keys) which is not exportable from the HSM.
-	JSONWebKeyTypeOctHSM JSONWebKeyType = "oct-HSM"
+	// OctHSM - Octet sequence (used to represent symmetric keys) which is not exportable from the HSM.
+	OctHSM KeyType = "oct-HSM"
 
-	// JSONWebKeyTypeRSA - RSA (https://tools.ietf.org/html/rfc3447)
-	JSONWebKeyTypeRSA JSONWebKeyType = "RSA"
+	// RSA - RSA (https://tools.ietf.org/html/rfc3447)
+	RSA KeyType = "RSA"
 
-	// JSONWebKeyTypeRSAHSM - RSA with a private key which is not exportable from the HSM.
-	JSONWebKeyTypeRSAHSM JSONWebKeyType = "RSA-HSM"
+	// RSAHSM - RSA with a private key which is not exportable from the HSM.
+	RSAHSM KeyType = "RSA-HSM"
 )
 
-func (j JSONWebKeyType) toGenerated() *internal.JSONWebKeyType {
+func (j KeyType) toGenerated() *internal.JSONWebKeyType {
 	return internal.JSONWebKeyType(j).ToPtr()
 }
 

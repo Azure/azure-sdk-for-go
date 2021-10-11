@@ -209,3 +209,137 @@ func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateEC
 
 	return createECKeyResponseFromGenerated(resp), nil
 }
+
+type CreateOCTKeyOptions struct {
+	// Hardware Protected OCT Key
+	HardwareProtected bool
+
+	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
+	Curve *internal.JSONWebKeyCurveName `json:"crv,omitempty"`
+
+	// The attributes of a key managed by the key vault service.
+	KeyAttributes *internal.KeyAttributes         `json:"attributes,omitempty"`
+	KeyOps        []*internal.JSONWebKeyOperation `json:"key_ops,omitempty"`
+
+	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
+	KeySize *int32 `json:"key_size,omitempty"`
+
+	// The public exponent for a RSA key.
+	PublicExponent *int32 `json:"public_exponent,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+func (c *CreateOCTKeyOptions) toKeyCreateParameters(keyType JSONWebKeyType) internal.KeyCreateParameters {
+	return internal.KeyCreateParameters{
+		Kty:            keyType.toGenerated(),
+		Curve:          c.Curve,
+		KeyAttributes:  c.KeyAttributes,
+		KeyOps:         c.KeyOps,
+		KeySize:        c.KeySize,
+		PublicExponent: c.PublicExponent,
+		Tags:           c.Tags,
+	}
+}
+
+type CreateOCTKeyResponse struct {
+	KeyBundle
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func createOCTKeyResponseFromGenerated(i internal.KeyVaultClientCreateKeyResponse) CreateOCTKeyResponse {
+	return CreateOCTKeyResponse{
+		RawResponse: i.RawResponse,
+		KeyBundle: KeyBundle{
+			Attributes: keyAttributesFromGenerated(i.Attributes),
+			Key:        jsonWebKeyToGenerated(i.Key),
+			Tags:       i.Tags,
+			Managed:    i.Managed,
+		},
+	}
+}
+
+func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateOCTKeyOptions) (CreateOCTKeyResponse, error) {
+	keyType := JSONWebKeyTypeOct
+
+	if options != nil && options.HardwareProtected {
+		keyType = JSONWebKeyTypeOctHSM
+	} else if options == nil {
+		options = &CreateOCTKeyOptions{}
+	}
+
+	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &internal.KeyVaultClientCreateKeyOptions{})
+
+	return createOCTKeyResponseFromGenerated(resp), err
+}
+
+type ListKeysPager interface {
+	// PageResponse returns the current ListSecretsPage
+	PageResponse() ListKeysPage
+
+	// Err returns true if there is another page of data available, false if not
+	Err() error
+
+	// NextPage returns true if there is another page of data available, false if not
+	NextPage(context.Context) bool
+}
+
+type listKeysPager struct {
+	genPager internal.KeyVaultClientGetKeysPager
+	err      error
+}
+
+func (l *listKeysPager) PageResponse() ListKeysPage {
+	return listSecretsPageFromGenerated(l.genPager.PageResponse())
+}
+
+func (l *listKeysPager) Err() error {
+	return l.err
+}
+
+func (l *listKeysPager) NextPage(ctx context.Context) bool {
+	return l.genPager.NextPage(ctx)
+}
+
+type ListKeysOptions struct {
+	MaxResults *int32
+}
+
+func (l ListKeysOptions) toGenerated() *internal.KeyVaultClientGetKeysOptions {
+	return &internal.KeyVaultClientGetKeysOptions{Maxresults: l.MaxResults}
+}
+
+type ListKeysPage struct {
+	// READ-ONLY; The URL to get the next set of keys.
+	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+
+	// READ-ONLY; A response message containing a list of keys in the key vault along with a link to the next page of keys.
+	Keys []*KeyItem `json:"value,omitempty" azure:"ro"`
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func listSecretsPageFromGenerated(i internal.KeyVaultClientGetKeysResponse) ListKeysPage {
+	var keys []*KeyItem
+	for _, k := range i.Value {
+		keys = append(keys, keyItemFromGenerated(k))
+	}
+	return ListKeysPage{
+		RawResponse: i.RawResponse,
+		NextLink:    i.NextLink,
+		Keys:        keys,
+	}
+}
+
+func (c *Client) ListKeys(options *ListKeysOptions) ListKeysPager {
+	if options == nil {
+		options = &ListKeysOptions{}
+	}
+	p := c.kvClient.GetKeys(c.vaultUrl, options.toGenerated())
+
+	return &listKeysPager{
+		genPager: *p,
+	}
+}

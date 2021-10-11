@@ -175,3 +175,31 @@ const (
 func (j JSONWebKeyType) toGenerated() *internal.JSONWebKeyType {
 	return internal.JSONWebKeyType(j).ToPtr()
 }
+
+// KeyItem - The key item containing key metadata.
+type KeyItem struct {
+	// The key management attributes.
+	Attributes *KeyAttributes `json:"attributes,omitempty"`
+
+	// Key identifier.
+	Kid *string `json:"kid,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will be true.
+	Managed *bool `json:"managed,omitempty" azure:"ro"`
+}
+
+func keyItemFromGenerated(i *internal.KeyItem) *KeyItem {
+	if i == nil {
+		return nil
+	}
+
+	return &KeyItem{
+		Attributes: keyAttributesFromGenerated(i.Attributes),
+		Kid:        i.Kid,
+		Tags:       i.Tags,
+		Managed:    i.Managed,
+	}
+}

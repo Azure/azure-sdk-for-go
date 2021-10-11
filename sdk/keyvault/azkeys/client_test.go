@@ -8,9 +8,11 @@ package azkeys
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -76,8 +78,50 @@ func TestCreateECKey(t *testing.T) {
 	resp, err := client.CreateECKey(ctx, key, nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp.Key)
+}
 
-	resp, err = client.CreateECKey(ctx, key, nil)
+func TestCreateOCTKey(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	key, err := createRandomName(t, "secret")
+	require.NoError(t, err)
+
+	// _, err = client.CreateKey(ctx, key, JSONWebKeyTypeOct, nil)
+	// require.NoError(t, err)
+
+	resp, err := client.CreateOCTKey(ctx, key, &CreateOCTKeyOptions{KeySize: to.Int32Ptr(256)})
 	require.NoError(t, err)
 	require.NotNil(t, resp.Key)
+}
+
+func TestListKeys(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	for i := 0; i < 4; i++ {
+		key, err := createRandomName(t, fmt.Sprintf("secret-%d", i))
+		require.NoError(t, err)
+
+		_, err = client.CreateKey(ctx, key, JSONWebKeyTypeRSA, nil)
+		require.NoError(t, err)
+	}
+
+	pager := client.ListKeys(nil)
+	count := 0
+	for pager.NextPage(ctx) {
+		count += len(pager.PageResponse().Keys)
+		for _, key := range pager.PageResponse().Keys {
+			require.NotNil(t, key)
+		}
+	}
+
+	require.NoError(t, pager.Err())
+	require.GreaterOrEqual(t, count, 4)
 }

@@ -633,7 +633,7 @@ type DedicatedCapacityAdministrators struct {
 type DedicatedCapacityMutableProperties struct {
 	// Administration - A collection of Dedicated capacity administrators
 	Administration *DedicatedCapacityAdministrators `json:"administration,omitempty"`
-	// Mode - The capacity mode. Possible values include: 'ModeGen1', 'ModeGen2'
+	// Mode - Specifies the generation of the Power BI Embedded capacity. If no value is specified, the default value 'Gen2' is used. [Learn More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2). Possible values include: 'ModeGen1', 'ModeGen2'
 	Mode Mode `json:"mode,omitempty"`
 }
 
@@ -645,7 +645,7 @@ type DedicatedCapacityProperties struct {
 	ProvisioningState CapacityProvisioningState `json:"provisioningState,omitempty"`
 	// Administration - A collection of Dedicated capacity administrators
 	Administration *DedicatedCapacityAdministrators `json:"administration,omitempty"`
-	// Mode - The capacity mode. Possible values include: 'ModeGen1', 'ModeGen2'
+	// Mode - Specifies the generation of the Power BI Embedded capacity. If no value is specified, the default value 'Gen2' is used. [Learn More](https://docs.microsoft.com/power-bi/developer/embedded/power-bi-embedded-generation-2). Possible values include: 'ModeGen1', 'ModeGen2'
 	Mode Mode `json:"mode,omitempty"`
 }
 

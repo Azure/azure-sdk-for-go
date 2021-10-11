@@ -368,6 +368,17 @@ type DedicatedCapacityAdministrators struct {
 type DedicatedCapacityMutableProperties struct {
 	// Administration - A collection of Dedicated capacity administrators
 	Administration *DedicatedCapacityAdministrators `json:"administration,omitempty"`
+	// Mode - READ-ONLY; The capacity mode.
+	Mode *string `json:"mode,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DedicatedCapacityMutableProperties.
+func (dcmp DedicatedCapacityMutableProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dcmp.Administration != nil {
+		objectMap["administration"] = dcmp.Administration
+	}
+	return json.Marshal(objectMap)
 }
 
 // DedicatedCapacityProperties properties of Dedicated Capacity resource.
@@ -378,6 +389,8 @@ type DedicatedCapacityProperties struct {
 	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
 	// Administration - A collection of Dedicated capacity administrators
 	Administration *DedicatedCapacityAdministrators `json:"administration,omitempty"`
+	// Mode - READ-ONLY; The capacity mode.
+	Mode *string `json:"mode,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DedicatedCapacityProperties.
@@ -458,6 +471,12 @@ func (dcup *DedicatedCapacityUpdateParameters) UnmarshalJSON(body []byte) error 
 
 // ErrorResponse describes the format of Error response.
 type ErrorResponse struct {
+	// Error - The error object
+	Error *ErrorResponseError `json:"error,omitempty"`
+}
+
+// ErrorResponseError the error object
+type ErrorResponseError struct {
 	// Code - Error code
 	Code *string `json:"code,omitempty"`
 	// Message - Error message indicating why the operation failed.

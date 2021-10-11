@@ -204,3 +204,16 @@ func keyItemFromGenerated(i *internal.KeyItem) *KeyItem {
 		Managed:    i.Managed,
 	}
 }
+
+// DeletedKeyBundle - A DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info
+type DeletedKeyBundle struct {
+	KeyBundle
+	// The url of the recovery object, used to identify and recover the deleted key.
+	RecoveryID *string `json:"recoveryId,omitempty"`
+
+	// READ-ONLY; The time when the key was deleted, in UTC
+	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time when the key is scheduled to be purged, in UTC
+	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
+}

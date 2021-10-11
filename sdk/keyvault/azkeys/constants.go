@@ -67,7 +67,7 @@ const (
 	P384 JSONWebKeyCurveName = "P-384"
 
 	// P521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
-	eP521 JSONWebKeyCurveName = "P-521"
+	P521 JSONWebKeyCurveName = "P-521"
 )
 
 // ToPtr returns a *JSONWebKeyCurveName pointing to the current value.

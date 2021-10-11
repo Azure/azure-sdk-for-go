@@ -8,7 +8,9 @@ package azkeys
 
 import (
 	"context"
+	"errors"
 	"net/http"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -379,7 +381,103 @@ func (c *Client) GetKey(ctx context.Context, keyName string, options *GetKeyOpti
 	return getKeyResponseFromGenerated(resp), err
 }
 
-/*
+type GetDeletedKeyOptions struct{}
+
+func (g GetDeletedKeyOptions) toGenerated() *internal.KeyVaultClientGetDeletedKeyOptions {
+	return &internal.KeyVaultClientGetDeletedKeyOptions{}
+}
+
+type GetDeletedKeyResponse struct {
+	DeletedKeyBundle
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func getDeletedKeyResponseFromGenerated(i internal.KeyVaultClientGetDeletedKeyResponse) GetDeletedKeyResponse {
+	return GetDeletedKeyResponse{
+		RawResponse: i.RawResponse,
+		DeletedKeyBundle: DeletedKeyBundle{
+			KeyBundle: KeyBundle{
+				Attributes: keyAttributesFromGenerated(i.Attributes),
+				Key:        jsonWebKeyFromGenerated(i.Key),
+				Tags:       i.Tags,
+				Managed:    i.Managed,
+			},
+			RecoveryID:         i.RecoveryID,
+			DeletedDate:        i.DeletedDate,
+			ScheduledPurgeDate: i.ScheduledPurgeDate,
+		},
+	}
+}
+
+func (c *Client) GetDeletedKey(ctx context.Context, keyName string, options *GetDeletedKeyOptions) (GetDeletedKeyResponse, error) {
+	if options == nil {
+		options = &GetDeletedKeyOptions{}
+	}
+
+	resp, err := c.kvClient.GetDeletedKey(ctx, c.vaultUrl, keyName, options.toGenerated())
+	if err != nil {
+		return GetDeletedKeyResponse{}, err
+	}
+
+	return getDeletedKeyResponseFromGenerated(resp), nil
+}
+
+// PurgeDeletedKeyOptions is the struct for any future options for Client.PurgeDeletedSecret.
+type PurgeDeletedKeyOptions struct{}
+
+func (p *PurgeDeletedKeyOptions) toGenerated() *internal.KeyVaultClientPurgeDeletedKeyOptions {
+	return &internal.KeyVaultClientPurgeDeletedKeyOptions{}
+}
+
+// PurgeDeletedKeyResponse contains the response from method Client.PurgeDeletedSecret.
+type PurgeDeletedKeyResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// Converts the generated response to the publicly exposed version.
+func purgeDeletedKeyResponseFromGenerated(i internal.KeyVaultClientPurgeDeletedKeyResponse) PurgeDeletedKeyResponse {
+	return PurgeDeletedKeyResponse{
+		RawResponse: i.RawResponse,
+	}
+}
+
+// PurgeDeletedKey deletes the specified secret. The purge deleted secret operation removes the secret permanently, without the possibility of recovery.
+// This operation can only be enabled on a soft-delete enabled vault. This operation requires the secrets/purge permission.
+func (c *Client) PurgeDeletedKey(ctx context.Context, secretName string, options *PurgeDeletedKeyOptions) (PurgeDeletedKeyResponse, error) {
+	if options == nil {
+		options = &PurgeDeletedKeyOptions{}
+	}
+	resp, err := c.kvClient.PurgeDeletedKey(ctx, c.vaultUrl, secretName, options.toGenerated())
+	return purgeDeletedKeyResponseFromGenerated(resp), err
+}
+
+// DeletedKeyResponse contains the response for a Client.BeginDeleteKey operation.
+type DeleteKeyResponse struct {
+	DeletedKeyBundle
+	// RawResponse holds the underlying HTTP response
+	RawResponse *http.Response
+}
+
+func deleteKeyResponseFromGenerated(i *internal.KeyVaultClientDeleteKeyResponse) *DeleteKeyResponse {
+	if i == nil {
+		return nil
+	}
+	return &DeleteKeyResponse{
+		RawResponse: i.RawResponse,
+	}
+}
+
+// BeginDeleteKeyOptions contains the optional parameters for the Client.BeginDeleteKey method.
+type BeginDeleteKeyOptions struct{}
+
+// convert public options to generated options struct
+func (b *BeginDeleteKeyOptions) toGenerated() *internal.KeyVaultClientDeleteKeyOptions {
+	return &internal.KeyVaultClientDeleteKeyOptions{}
+}
+
+// DeleteKeyPoller is the interface for the Client.DeleteKey operation.
 type DeleteKeyPoller interface {
 	// Done returns true if the LRO has reached a terminal state
 	Done() bool
@@ -393,7 +491,60 @@ type DeleteKeyPoller interface {
 	FinalResponse(context.Context) (DeleteKeyResponse, error)
 }
 
-type DeleteKeyPollerResponse struct {
+// The poller returned by the Client.StartDeleteSecret operation
+type startDeleteKeyPoller struct {
+	keyName        string // This is the secret to Poll for in GetDeletedSecret
+	vaultUrl       string
+	client         *internal.KeyVaultClient
+	deleteResponse internal.KeyVaultClientDeleteKeyResponse
+	lastResponse   internal.KeyVaultClientGetDeletedKeyResponse
+	RawResponse    *http.Response
+}
+
+// Done returns true if the LRO has reached a terminal state
+func (s *startDeleteKeyPoller) Done() bool {
+	return s.lastResponse.RawResponse != nil
+}
+
+// Poll fetches the latest state of the LRO. It returns an HTTP response or error.(
+// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
+// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.)
+func (s *startDeleteKeyPoller) Poll(ctx context.Context) (*http.Response, error) {
+	resp, err := s.client.GetDeletedKey(ctx, s.vaultUrl, s.keyName, nil)
+	if err == nil {
+		// Service recognizes DeletedSecret, operation is done
+		s.lastResponse = resp
+		return resp.RawResponse, nil
+	} else if err != nil {
+		return s.deleteResponse.RawResponse, nil
+	}
+	s.lastResponse = resp
+	return resp.RawResponse, nil
+}
+
+// FinalResponse returns the final response after the operations has finished
+func (s *startDeleteKeyPoller) FinalResponse(ctx context.Context) (DeleteKeyResponse, error) {
+	return *deleteKeyResponseFromGenerated(&s.deleteResponse), nil
+}
+
+// pollUntilDone continually calls the Poll operation until the operation is completed. In between each
+// Poll is a wait determined by the t parameter.
+func (s *startDeleteKeyPoller) pollUntilDone(ctx context.Context, t time.Duration) (DeleteKeyResponse, error) {
+	for {
+		resp, err := s.Poll(ctx)
+		if err != nil {
+			return DeleteKeyResponse{}, err
+		}
+		s.RawResponse = resp
+		if s.Done() {
+			break
+		}
+		time.Sleep(t)
+	}
+	return DeleteKeyResponse{}, nil
+}
+
+type DeleteSecretPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error occurs
 	PollUntilDone func(context.Context, time.Duration) (DeleteKeyResponse, error)
 
@@ -404,23 +555,38 @@ type DeleteKeyPollerResponse struct {
 	RawResponse *http.Response
 }
 
-type DeleteKeyResponse struct{}
-
-type BeginDeleteKeyOptions struct{}
-
-func (b *BeginDeleteKeyOptions) toGenerated() *internal.KeyVaultClientDeleteKeyOptions {
-	return &internal.KeyVaultClientDeleteKeyOptions{}
-}
-
-func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *BeginDeleteKeyOptions) (DeleteKeyPollerResponse, error) {
+// BeginDeleteKey deletes a secret from the keyvault. Delete cannot be applied to an individual version of a secret. This operation
+// requires the secrets/delete permission. This response contains a Poller struct that can be used to Poll for a response, or the
+// response PollUntilDone function can be used to poll until completion.
+func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *BeginDeleteKeyOptions) (DeleteSecretPollerResponse, error) {
+	// TODO: this is kvSecretClient.DeleteSecret and a GetDeletedSecret under the hood for the polling version
 	if options == nil {
 		options = &BeginDeleteKeyOptions{}
 	}
-
 	resp, err := c.kvClient.DeleteKey(ctx, c.vaultUrl, keyName, options.toGenerated())
 	if err != nil {
-		return DeleteKeyPollerResponse{}, err
+		return DeleteSecretPollerResponse{}, err
 	}
-	_ = resp
+
+	getResp, err := c.kvClient.GetDeletedKey(ctx, c.vaultUrl, keyName, nil)
+	var httpErr azcore.HTTPResponse
+	if errors.As(err, &httpErr) {
+		if httpErr.RawResponse().StatusCode != http.StatusNotFound {
+			return DeleteSecretPollerResponse{}, err
+		}
+	}
+
+	s := &startDeleteKeyPoller{
+		vaultUrl:       c.vaultUrl,
+		keyName:        keyName,
+		client:         c.kvClient,
+		deleteResponse: resp,
+		lastResponse:   getResp,
+	}
+
+	return DeleteSecretPollerResponse{
+		Poller:        s,
+		RawResponse:   resp.RawResponse,
+		PollUntilDone: s.pollUntilDone,
+	}, nil
 }
-*/

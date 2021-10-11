@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
@@ -142,4 +143,41 @@ func TestGetKey(t *testing.T) {
 	resp, err := client.GetKey(ctx, key, nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp.Key)
+}
+
+func TestDeleteKey(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	key, err := createRandomName(t, "secret10")
+	require.NoError(t, err)
+
+	_, err = client.CreateKey(ctx, key, RSA, nil)
+	require.NoError(t, err)
+
+	resp, err := client.BeginDeleteKey(ctx, key, nil)
+	require.NoError(t, err)
+	_, err = resp.PollUntilDone(ctx, 1*time.Second)
+	require.Nil(t, err)
+
+	_, err = client.GetKey(ctx, key, nil)
+	require.Error(t, err)
+
+	_, err = client.PurgeDeletedKey(ctx, key, nil)
+	require.NoError(t, err)
+
+	for i := 0; i < 5; i++ {
+		_, err = client.GetDeletedKey(ctx, key, nil)
+		if err != nil {
+			break
+		}
+		require.NoError(t, err)
+		recording.Sleep(time.Second * 2)
+	}
+
+	_, err = client.GetDeletedKey(ctx, key, nil)
+	require.Error(t, err)
 }

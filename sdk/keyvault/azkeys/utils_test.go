@@ -107,16 +107,19 @@ func delay() time.Duration {
 	return 250 * time.Millisecond
 }
 
-// func cleanUpSecret(t *testing.T, client *Client, secret string) {
-// 	resp, err := client.BeginDeleteSecret(context.Background(), secret, nil)
-// 	require.NoError(t, err)
+func cleanUpKey(t *testing.T, client *Client, key string) {
+	resp, err := client.BeginDeleteKey(context.Background(), key, nil)
+	if err != nil {
+		fmt.Println("Could not find key with name ", key)
+		return
+	}
 
-// 	_, err = resp.PollUntilDone(context.Background(), delay())
-// 	require.NoError(t, err)
+	_, err = resp.PollUntilDone(context.Background(), delay())
+	require.NoError(t, err)
 
-// 	_, err = client.PurgeDeletedSecret(context.Background(), secret, nil)
-// 	require.NoError(t, err)
-// }
+	_, err = client.PurgeDeletedKey(context.Background(), key, nil)
+	require.NoError(t, err)
+}
 
 type FakeCredential struct {
 	accountName string

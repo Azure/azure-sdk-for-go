@@ -14,7 +14,7 @@
         "Content-Length": "28",
         "Content-Type": "application/json",
         "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 11 Oct 2021 17:21:21 GMT"
+        "x-ms-date": "Mon, 11 Oct 2021 22:41:11 GMT"
       },
       "RequestBody": {
         "key_size": 256,
@@ -25,7 +25,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "112",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 11 Oct 2021 17:21:21 GMT",
+        "Date": "Mon, 11 Oct 2021 22:41:12 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -33,7 +33,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.25.62;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.132.3",
-        "x-ms-request-id": "7183687f-20fe-4a97-b325-f6d572ed0b62",
+        "x-ms-request-id": "0918d716-f549-46ab-b866-b5a29747dce0",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {

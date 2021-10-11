@@ -64,6 +64,8 @@ func TestCreateKeyRSA(t *testing.T) {
 	resp, err = client.CreateKey(ctx, key, RSAHSM, nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp.Key)
+
+	cleanUpKey(t, client, key)
 }
 
 func TestCreateECKey(t *testing.T) {
@@ -79,6 +81,8 @@ func TestCreateECKey(t *testing.T) {
 	resp, err := client.CreateECKey(ctx, key, nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp.Key)
+
+	cleanUpKey(t, client, key)
 }
 
 func TestCreateOCTKey(t *testing.T) {
@@ -97,6 +101,8 @@ func TestCreateOCTKey(t *testing.T) {
 	resp, err := client.CreateOCTKey(ctx, key, &CreateOCTKeyOptions{KeySize: to.Int32Ptr(256)})
 	require.NoError(t, err)
 	require.NotNil(t, resp.Key)
+
+	cleanUpKey(t, client, key)
 }
 
 func TestListKeys(t *testing.T) {
@@ -125,6 +131,12 @@ func TestListKeys(t *testing.T) {
 
 	require.NoError(t, pager.Err())
 	require.GreaterOrEqual(t, count, 4)
+
+	for i := 0; i < 4; i++ {
+		key, err := createRandomName(t, fmt.Sprintf("secret-%d", i))
+		require.NoError(t, err)
+		cleanUpKey(t, client, key)
+	}
 }
 
 func TestGetKey(t *testing.T) {

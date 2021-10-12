@@ -193,3 +193,22 @@ func TestDeleteKey(t *testing.T) {
 	_, err = client.GetDeletedKey(ctx, key, nil)
 	require.Error(t, err)
 }
+
+func TestBackupKey(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	key, err := createRandomName(t, "key")
+	require.NoError(t, err)
+	defer cleanUpKey(t, client, key)
+
+	_, err = client.CreateKey(ctx, key, RSA, nil)
+	require.NoError(t, err)
+
+	resp, err := client.BackupKey(context.Background(), key, nil)
+	require.NoError(t, err)
+	require.Greater(t, len(resp.Value), 0)
+}

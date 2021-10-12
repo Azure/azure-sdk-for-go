@@ -620,3 +620,36 @@ func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *Be
 		PollUntilDone: s.pollUntilDone,
 	}, nil
 }
+
+type BackupKeyOptions struct{}
+
+func (b BackupKeyOptions) toGenerated() *internal.KeyVaultClientBackupKeyOptions {
+	return &internal.KeyVaultClientBackupKeyOptions{}
+}
+
+type BackupKeyResponse struct {
+	// READ-ONLY; The backup blob containing the backed up key.
+	Value []byte `json:"value,omitempty" azure:"ro"`
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func backupKeyResponseFromGenerated(i internal.KeyVaultClientBackupKeyResponse) BackupKeyResponse {
+	return BackupKeyResponse{
+		RawResponse: i.RawResponse,
+		Value:       i.Value,
+	}
+}
+
+func (c *Client) BackupKey(ctx context.Context, keyName string, options *BackupKeyOptions) (BackupKeyResponse, error) {
+	if options == nil {
+		options = &BackupKeyOptions{}
+	}
+
+	resp, err := c.kvClient.BackupKey(ctx, c.vaultUrl, keyName, options.toGenerated())
+	if err != nil {
+		return BackupKeyResponse{}, err
+	}
+
+	return backupKeyResponseFromGenerated(resp), nil
+}

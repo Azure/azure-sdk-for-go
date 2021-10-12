@@ -1,0 +1,475 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key292313766/create?api-version=7.2",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/keys/key292313766/create?api-version=7.2",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "13",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 12 Oct 2021 15:32:28 GMT"
+      },
+      "RequestBody": {
+        "kty": "RSA"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "685",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 12 Oct 2021 15:32:30 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.132.3",
+        "x-ms-request-id": "5e14479c-dfeb-4150-8e6e-1a15bdf04428",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "key": {
+          "kid": "https://seankane.vault.azure.net/keys/key292313766/7c9787dfe0e0401cb1dd88133b7937fe",
+          "kty": "RSA",
+          "key_ops": [
+            "encrypt",
+            "decrypt",
+            "sign",
+            "verify",
+            "wrapKey",
+            "unwrapKey"
+          ],
+          "n": "6YXPBZM_0gSNxaLjDuP-9dBeROMZX_Ee4_Ui4gRg5DWE-Ks5GTBOPtzRgSOl-Glp3ATTXdYKbGXJXU9tja8ugj4NTW-xCa4TF41G8uLYc_vkRe4WzLhHrim8rguYqfKqGCc6mj12a5rxLYkUjbcsq2m38nlRBvGZamkjcFhAlxNnhnTg60JaswaX82UGZRIvK8UEf0OvnJ9ohfXTDxV61sMfS04QPTfCmwfd9SyHBs2_Ax6RL_7fqOrUxii3QWVluN66JS3vg10do38YIv4pev43b20pjCemETlYNjtpfmz-BXSUrPAZMntVUUA3FlKAyu86aGedBzWmtyaJq4gb2Q",
+          "e": "AQAB"
+        },
+        "attributes": {
+          "enabled": true,
+          "created": 1634052750,
+          "updated": 1634052750,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key292313766/backup?api-version=7.2",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/keys/key292313766/backup?api-version=7.2",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 12 Oct 2021 15:32:29 GMT"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "10414",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 12 Oct 2021 15:32:30 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.132.3",
+        "x-ms-request-id": "94be326c-4734-4c9b-9d1e-8382971b9ce9",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "value": "JkF6dXJlS2V5VmF1bHRLZXlCYWNrdXBWMS5taWNyb3NvZnQuY29tZXlKcmFXUWlPaUl5WVdabU5tRmhNUzAzTm1Ka0xUUTBZVGN0WVRjek5DMDJaalZoWkRCaU5XRTRPVGdpTENKaGJHY2lPaUpTVTBFdFQwRkZVQzB5TlRZaUxDSmxibU1pT2lKQk1qVTJRMEpETFVoVE5URXlJbjAuVkZ0NHZpVEZ5bXRzVk9xVzdGbi13NF85MlF2VE1nZ1RRZW0tcHFiOG85RGxNbXExV2d5cVRzWEF5WUJFLVFZbXYzUW9wckRqd0xQbUItdXRkdmRXdXVpTFhpemJkZDJ2ZUlHSVo3ek1ucDE4TVRkbWtUTkVFMXYySHFlOWkzbm45UW5KcTM5UWc4cWhuZmpxWG5aa19hM095V2F2U25ES21PNFpkQU1pLXQwS2dkWWNKUnlJTHNSQXN4QnpteGhSXzJUcmtwQWpnMGJJdVN4eG5NVmZWa3QzVkVzUVJuZldSWExIRWIyQkg5SExGLWhYSHNobDNaaVNWMGlyMlZKSUxRSDJYa18tVzM3U0QtYlNTQkZjM3l5c0MzbUhKWWwyaFNLWjVQdm9VVk9ENkJrV2lBWlBLTDdaLVJBWEpCMXhMTmFLb1Vjc1UzYTYxNEd5UHJrbHBnLjFTcUx5NEs0NVV6eVJBQmZTUUpxVlEuanNVR3FFdjNpTW1lVTZDUER1QllUaWkyVUduN25fbUFuTTBNRW1YeUJkeGNGNkNXYnl3R2VWR0hVMXQ2UXp2LVozYTdod2lZaDc0SmJHUExBeDZGdTFwd1g5eVJXeEVJbzN4TFFTdG12QkdwTnFNTWR4Tk0wNnk4RFlhYjNjV0hyeGdpdlFJbjFZazQ2RGhjNXBHZ3dDdzhfSndrWXN6bG5WdFFESUE1OHlMbWwzelB0Tkh6S1kxV004QVVrOUswblVkU20taTM1dVVzTGdkMUlJUnQ1NDh5TUlmYU1jSzVWSGhRV0JmcmhYTGxfMFAxZndzWE11WGQxWGZ4Z3BBSVB6bHpwTlk4MUJLejJMU3lkZTdxamRnYWplZndzUHJYYjlVWEhnaTE2QzRuOWJxYTJ0ZkZ0cVpZNGlQa01JUV9YQWtrWUpnendFNDY3QmR4V1ZvVVlhc3YxNHRNQnZ6Z1czWEpyNjVrRE9WeFZndm43V0JZMGpuVDQtY013anZRaWdNX2J0YVBIVnhoRnlwcDc4djlCRlAzeDRqOE41SzFpVzRIOTlpZU5pTklkWDVheEE0MkJ2RG1CT0F1WGIycEJfY1FPekloWmttazBNSGtQdzl4S0poOEZWLUpfUU9qWDBqZ1luWi1ZWi11ZzN5LU5md0lfNkItRHVaaEwtNDNzSVpUblVXaXVycHFqck9LcnRoNV9sQ3hNVi1tdk1YUTFmai1HX0R3TmwydHRTWlJSVEZvWXNNbHRIWVFOdzUtaDNfc1E0MmczRlAwWHZ6MFVfM0VJSFkwMVNNdVdUVjJIejBNTVpNT0hiZ1RndVRWLUtuMUtVeUQ2YmlsVlVjNWthN1p3WVMtZkdYemVVTUNVX093bnBhLTVKSTBaQjFRTFE1a3haTWstSVRxc2lmUnNKTllESk80NUE5aEU3YVgxSVpmQXVjWWZURWM1b0w3N09jOFMyU1pFSDFqYW5mcWNuUzlzTUt2d2ViNnZvVGRNN2I2S2pIaEx2OFhOdFlmWjVWd2xRa21jU1cwTGxtT0VpeUswT3MteElmcU5JWExYT0NJTGJfY19wS1J6RWhZVG4xR0dtQzlkbGZyT1c3V2p0RnY0eFZ4UnY0SEp0RkNEY2lOb1ZQeTRuSkR5Sng4bVBnaGFpcGs3bUVkMDFxbmxrbWdBX1hXUEd6dDdSaWxIREsxQmtYZEtYWWJQeFI0bWJyUGpteXpESGtQUU5OWnZleFZYNE9aaTlzV1FkYW9fRDJBazJIUmlHWWtvR1lEVzRKS0JXa3Q5MjVJT2VPMWxrV2RGU2JweEhxNW5NLXU1cHE3elFLNWNiZ01nVVpiaUNsZ0tmVG9QWjBLcDRZa2dHYjVLNWdFQUVMdGlLMFdBazFDNUtfN0J1UWg4V09hSnFVRHl6OUNTLVl4Z2IyaTdkbTBQZjlnV0dKcGhkSU1JaVlaYlJaMXFuNloxVTh1OFJ5LXdJRDlFUFRpYkZJbVY5VG1vMThiaVFLWElMd3BjY3VyMENhRnpTRVpMVVcwNExNaFh4VUUycHRoQXNLc3cydFBsZURmWGpyemJkS3NVSTE0V1dqTU5MSV9XajRiSjE4RTlsWUI1c2ZYdUlRNzdsZXVIUklPZ2lSS1ppZm92OU50RnJQTFB6SFpqdXlLS1hHQ211aGJPbUxMNTdNUDlWMDRSbUlJOE81XzBLaktLSGtiYy11enRRbFpySVZFQXoydDhUWm9GbXJHR01uU2hSUHhLazk0ZVBJNGtXMHg2ZVR3UmJtTHFrMTQ2T0t1LW5GMmZBdmgxU1EzOTN0eDJ2Q0tnLUpRS1VyR2tMaEY0TlB0N1VVWmNuWjlsaEFMNjYtdnNBNzFxcXBiaU1WeFJzQUNXSEFTTC1OemFtTUhYSE5vTFpxb01pam9rWTVmazduajJwWnlfOVJ6SVBDckc1NjE4eVNuU0Z3R0RXQ3FmZ2JuaWhMSmhSZEhWSExxdkNCSTloM1NPQmZ2VzE0T1U5NzBZWldGUlJGNVJEQmhMWHdzalVCMHFVOGllNnVJZUlWNFNYT2JudFZObF80SWNpck9Wb1dzSkw3cjdxRVdSeVB2QS1Ud1NhZ1cwLVp2SENvWTViQjN0cXBwTmFSNU5HN2Q0c04ybDV5aWl0VXNPY2hSQTM3ZDZIeUQxRDMzaG5yRDNEQ3BIZkRIWDB4TDctQmtaVG5iT0ZoeTNCU3k2WkRwZmg2YTh0algwM3licUhUcVlsLWNHLXhCdjNPak1WSlFSUUtvdHg2dkp2M1U4Y2JiOXZ4XzZYTmtFSVh0TVF4QUJMY0N4QU81WW5xbk40OUluVDlxVHpnNVdndzJCb3V2ZjE4YnpCZjRkX1VqR28yM1RsT1hWWnBCUnZEMUdaTkRJWXhnN3dlekk1UXBsY3VfTGVVTUNycmJEV19XYTgydEpHZlFWT3JvbGNJTFBvUlFDUUVzYkpwMWNSbk41ZjdQV1NxazE2bHZKejRtTnVibmgtWldPTGF0ZjBMTkhrUDdWalc5cG9nRzBvdzJPZ185V1NueGFyNkw2X0NsNDUyNlBSUzJlRFZ4WUh1cnVJbTJhZmlLYUpmS1dQclViZzBSZkFxLXU0eDV5cGZ5YmExSUpyN1NOUlVRNzdCQy1LMUN3amlXa0kwZXl1cFZyaEVjcHpWU1BVM1ZvTmdFcjNEYXQxNjhybXFWZG5zV1JUeVhrWmItazdJQXJZRHRCaE5ydDVjVWZjc2paNkxtWkRqV29FeV9zdUZJUFBveDJtb1NHYThJbEQ0YzA1TzcyNFp1M0xxUC01YmFhRkRnNWE5OHR2SXZEa2ZtdlJPWHdTRnliZm1mR2htWC1yMDU0dHk1ZUdKbkZaQS1kckFGNDNrR29jalRXbDk0MTBzTFJveHdqa3JVVFZYeE9XUzhYUDMteWhBXzMwWlM4Z0VibHV6a1N5a19WdndfTVRwcnFFYWV3dEVhT2p5azZ3OE1EUTB4Nm9TVnYtejVINmNHbXZ1ajd0MDBqT1AwRmsySWtkbmg4ZTd3bVA3cWJtT3YtYXFSa1VIdXAwdjk5b1djejA1M1EycUZ4cF9rQmd1ZXNlRXhLRUE5bXJ1SXg4aFdPU3lNbXZlX2ZBcWloZkZUbnBHaGhaU1FNRFhwc0k4Ull4RzAxVXpGZ0lFSmFtemNwYTVIalk3Qzc3SzByZFFMNy03SXAwVUtMRWRpeGJTeE14V1o4WnRhOExyUWozdDE5OTdCRkhXcDlETFJRR3FDbERiYTBCMUNwMUo2Z2l1aG1oSmE2dEdIV2NzV1RpRm1MaGp5cU9Ia2NSNldRcUdhUEhuRTVnM1oxZHhGWXdEQVR1V0loa1RrZnJiQkU2aVZlQ2lDdVE3VmNrRUNsN0tTendYYVVVdWYxMmF2LThreHZLY2x3Ty0wYlhQZ29FN1BmUUJQSlZlVU5zUDIyZ1JCM0FRbzEwNkRMTjNER19DZ2M2QjVFSFVXcXJXRnBuLXA4N1VHNkdmc1BkeGxyLWlUdXprcWlnSWY4Q1VDLVMyY2RtSHZvdzRfS2luX05xUzQ5YUlQV1JwM3BiYV96RFp5ZTdXemNQTEE4YUd5ZDZEdVdRYXJKWHBHcEhWc3ZpSi0tSE9PVkhrekhnQUdnQWFtSnlHX2E1VEUwMjN5MUV2czZYSE1yQXd2SmtZRE14SDNjT1BsZFFjaVRJbm5yMDNmUTFEaFBSMmZ6bGo3czZtTU9PVkxWNGI1Wm91dzc2eXh1MFZHZDl2UzFpU0dtaDJ4REVzRVlFRlRwV1M5ZWtFM3pvMG1zN1pjYXNhc19lS3JHdlBxTzJqZnlPLVg1Zk1PSFVvbDRQMzNPWEN6d1BSbktHX21YOVFIQ0M3UzVWUjdyT01jMmk2OHkwYTkzRWtNS0FFSHJ5LW1Qa1NOSVNYSmVmZlR5aGY0eGVlMGZrczVVRDUzUXdtMXg0ZXBtYkhIYkROY09pT2RKRktKTktvVXlaWjg3cXQ4emdmTE1KZHBROTRfdGZtUmdLWHdoai0tU3cwdzlITnhITkIyak1YN0M2RW5ZalVmXzNhbTdBeTFueG9MWWhGWVYyVDhnNVdHRjlqdGprQk9XRW1jc1RmMnkycWg1QlBjanZpTW8yU2h4VDJfRlpKUHplX3lWTlE4MVFlNzk2Y2gwd0xQUWZUUkY2WXhRcFJ5RnVTeDc5QXFWY3VsV0VNZkdVN0lfTnhjVDlPQlZ0UXA2VTVWd1FncjJvOHB6aUxja3hGaldxTkVwOTZiS3NUQUNCNzdoZFdBTnhGUHBwUnF3bnM3VjQ2Rlo2YnEzakxyWlV2ckJ4NmJQTE5NdkJ3MGd0ai1uNzdKeVFMUnIyLWpDNGUwZ3hxaTJ0RWotdjVRWm1qeDJFalFILThMOTNDVmVsRGtLM0Rna2Q3SlByaVBNcjMxNE5Wb3lIVkNiZERlblZMNXNQeEZIZDk4SGtlVWNSZ3c0RS1oVER3RHlKQXg0a09DeW9CS0hYWjdZVkJWLXA1OFB5YXBXWjJZUVlEeFR3Z2xnT1BzNFlENk9ZUElsRXBkQVJ4RUxNUXVMOWJYSWFnVlVOZmZrYThZU1VJelVYZ3lfMU5xb3Z3RGwxem1ILTkwY1dMcjJBclNBMFlsUWRKQlBiWWVicDltenVUR0NRcHRZazdSV2ZLQnhZWlVfb09hd1RjYlVHSDVXbTNyNmdkUGFGdEtBY0JuMmpoMWw1TElMYVJ0c082X2JkdEVxeXA5d0tEWVJmVG5CZkltSDBvUlFtYkE0d3JNdE45T1FBbTJjOGR3WG9jdkpKS0lkT0h4SzdYcjJZUkVDcVBCaUZIMHoySUVxeFBITmtnTklTWm5iRFV3b254N25Ec3kySVZ6OWxjcXhTZG5rM0JQYWg0RnUwU3Bma0ZXZ0ZsVE43RE1Zd1pwa1BhSTRld1hvbWNMZmU0WER2bXdRYWZfRU04bXdqVDBOdnoxWUJEUHhDXzI0a3RfNFlkdEt2QzhHZFYyMFVXVTZEZ1NvSUdVcng1ZURUWEZJZkdDWGRLZTh4bldHOEw3WDZGeFhKYnFUWHlxNFZWOVVPTTFUak4yb1c1YTNYSkJLZnY0b010V09QMWRWV2N6UFRjbTZCYnd0YXd4aHdSd0JfSGhGVUF0U1FFR1VUc1RiWmFCaWgwSE1pWGxUMl9IVDljNnhyT04wV0tyOG5qSnpXMGxSVElTeVZrUXJISXZGUW10bHNST3hKbHNwMzFlWkdhOC05QldaNVRLdFBhQkdILXlVSk5EekVtVldyWlFvRXpybXNjVGpjcHBxMEplb2xjOWZoUzhOLVJQMmtNTFNzamlEaUlFNVdKY3ZTOUx1Xy1PZ0loanRzU0JNRU5VRW5VOC1WMk9haW1JdE95SjVLZ1JuN1lMZ1B2Z1oxcDRkLVRpUXM1Q3htb3RrOFBRNl9IdUdQWkxVcWtxZnU2U0lGZ29MSDI4ODlySWJfalEyNjJFSTc3blRhWmFnb3lvWkxvM2c3V1dyeGhDbTlsNXBrcUIwR2dsUjRYMnpxTWh4WEloRGZYVHBCa2FXek56WS1tOHAtM3JSZU5lMEFJMkxaMHRPYVpKRXgtQ29JU0ExMmRESktuUm5lY0E0Vzk0NDZpUE9wUFdmZlNJeHVjSjJWY19FY3ZRMUpjd283Ni1kQV9MSEx0ZUp5RWpROVptMWNpWjVncWZjRnZ6dDVFVlFZNk5mWldZd3h2Tng3YzJLaWZ4S3dvWmhJSmZDQklvVFF0OWZ1Z282Tk5ZM1ZsMkE0cDRFR3NvdlNXWVk2bGF2ZEdxdTZncUVIZTBLUnI2aFJTcWhldGpiS09sUnFQQ1NMcXA1Mk5QRHo2M1AxeGh3aHRhS1Q2ZHRvNTFabXFzTUZjTkJKV2MxTUJjWFBkVWtHaEVoZlowUXROUWFOVmJHTU9zOEJUM1VIQXk2VlBTY2ZnenFWTDJZT0FZMEpKMDRUcEI5b01tVWhFUUEwREJiUnhaRDF3YmgtX19Md1BRU1QxUkpRMEx6RlcxZWIxTFZRUUJvZmE5SjVhRzZFek9LRFNOWWtidG9rMFdlakdZbjN0ZXhSVTRLcTBMcEJ6eVJpY3lKQUFqY19XeEY4bzRYcDFnY1pDT1ljLVZiZXRCdUx5YnZOb1RaMmxhbFNpR05IU2ZLbUhuRW5heVNvX0NTYkowY2EzTkF5TjltNkRmek1uWXQ3Z0VPOGxiUWF6ckVQbGRfa0t5T3dWd3cwRTkwTkc4S0pEcG52SUlsaFJlNFZRb1pFRFRYTDdIUEdvQ1hLU1BfM18xZkFPNkVwbWNWcGViUGFKQVJVOXdPQ2E3NElTMl9rbVNnNmR1TGg0NnpxbFdqT1lzZ1lnMkpBYkFDeEVYM2tJUjZEUzFmb01PNFl4UDM1TUo3ZUlEQk12dWFwc0U0TF9JcFVoRlNYNWwycDJKaW9zN2UwOWszVUNZQ1RpX2dZRDB0R2dkR0RXc2tnUW5McXkzbkxyLUZvSHVZcVBHbU1YOGFxTjNYS2R2NkM5N1dxSGpQN0NiNGlNUWlTYlg0TEhITWFLSHFrb1lTVHladEFIYVpaZ1oyTXg4ejJUYTZVclJiSkRYWExTZlRCMWVoVHRRMHVYUnBEa1p6TTV0M2tzS09TSFJxNkVCQk1ya3BudmxwQ3pMNk1SYWlCei1pQkZuMXgxRnRHOE9zVEREVm91dEZaMG93UEJiOXhOZk1xVG5SYi1QM1BGd2lMRnB0THRqWnF5RENfbGRERnlqNzRscEkzOGhLbGxxcEtURWowTmsxcWc4WjZWLXlJVGgtZUVBN1dDcjRUSzhJU0pKSFZhR0kzamo3cVV1SVh4QXhMUUpKVW1zSGs3NmxwTWlJdnp4SGZTaEEzNlAtZjJZb0Z5UDVBNW1VUEZzR2VrQzVaRE5xZW1GdkJNbldtRVlULVIzU1NiNzBvc0NKdER6Q2NEbmpHaDN2dFlXRnl3ZllQd19FY1BTM1Rnb2FHRld0SXJyVktUMDdVeVJ4UzdTY3dmYS0tWjRoY1BNdTFxNjRkZ05qc2k2TW9uR1ZYZXV5N1dqTWMzU0UxZ25zYjZ1VUowdEtEZ3gxa2x3R1VVeWM0eXJ6ODdlR0ZlbmFyQmdwQXMxZ3hEbHdhS0ZDeldfSlh2dWhKdnVncmRHMmJPR3RPVWNWZ0FwWVJUN3hkVnpFTEg4Rk9IQjJlX25XeG11QXJXMDhwY1RFWWhlNlhIeHFzdVVqcHd5Zk1UZzlVT2F5YlhrVGxNb0lDR1UydHJxN19OS3RqeTJwMi1DUWVDU0N1dndLNTM0TWFtbVJ4THdVWWd2bVdZX1R2ZDA2bHFkSnkyZ0p2NkwwYTE5NDd4ZXhDOUpPSVhXc3lFbXBSTFJqb3VGdk1EcmtndzI0RnIyRE12YUVDSDQ1ck5wZWtFSlJ2ZkxXMkFQajNyaFdkTmRhTVNDZXJfOUZyYldhSVhGXzVQVGZkVVU0anFYV2Vjbll2UUV5cXJNZVJxOFdTRDdQVDZzQmdIUFFVNWZTRTQ3UEZNcEthWWxaTlhLTFp3Q0hVOXFSWVlIYUQyV2VrUVB0ZFNsTEZoR3dYVk8wTWE0SG9kYkhUZGVGVVdKUldRMi1Oc0hDMVpRTkhqWDB3cl9taGc5Z1hVakRJYWRBRkVNNmZHNEQxMXJTMXRrSkNnUHU4ZVpaLTYwVUt2eXY0V0xibVU5MTJDRWNlUGZJZ1J1X2xJdGpQRmpqTWhMeklsWDZ5SGtTVUYydUZ0MVBfNklfenlHVTExOG5uMkthZFk1azZwZWZidS1GOTB0YlRuOWZXVk9mNjJ1bW84cTJ2YTduLXFoWUVnOUJNUWNNMEZiR3R5YTVCcHUwSkRLM2w1N1pVNkVlZnB4dWdrMHY5dzRaWGxiVGJXZ1drc1I0ckUtclVha2VMODZKMzdoNzNXSWlwTHd1YnZnZEoxNnJqUU55QWpDWVlISkV3OThOM1hUakNwNHlLLS1fR0doejlqN25wWTcxMGRyVmp4a1BXZmZpdVQtTGppTGp2QWlqWkE4a2s2SUFVN180TnpabFJTUlJTZ1Z2QzdOX1VHNVBsR1Q2ZjFYWDA0MjRlNHJnX3FtOFpwc05iOVNQVEc4UG8yRnpYOEg0X0tDRWUwZE9nQjQ4dmswdEVhV3FsYkpQdUQyMzhvZG0zTkhMbzlic2s5RTJVYUtjbXhwTVBFZUhPNU9qdG15UHNORmRFdFRiZ0JQcjRhMnJBUmNHdUs4YklnRkdQLUlwNWtmN1RLMl9RYkhYS2pMWXFJNnJKMWlHNThMazJONlo1c18yLUxlNHdnZkktaUlhckJYR1l1dm9ZSnNtWGRQU2NQM1pRUGlsZzdPNFVOOFlrcHFDRkdSQ3NLenlJUHE2QkExREZXTUdBbGtubTY0anZlaUtDYzBhSkxLWmlqQ3BMd2REWE1vR0p5bUV3NkJXM0tqdjhNZlQ1T1NQTGhRcUp0NDM4dGVadHZ2d2pwS0ZwLWh1V0tGc0p1T1RFM2RDcDlqT1F1Y19HSUdhbU5uakRVRDJFTHh1Ri04M3VNS3ZFZkpaZE1zRXJrMXB6cWpuWkRlNXpTVERLRnl1TU9XcjRUR0E0MmRxbV9PRWhoNS1Mb19mUFNXTGVpbEtaZkduWjRmcXZGT3hOU194a2wzRDJJZzM5dGhYQThDcS1pclNWVlU5NndUNm5oS28xUFZPVG9na3hwcUxJa3QwczYyVUlWTVV4VnB3UzFNckthaHp5T0RZTTBqWG5BR1BBRGJlVEl6ZnlCczhJQkNOci1yYk5haGZOX1M4U0xrRVRfU1hHTWRIaExMOFQ3alFLbDBwelJwVjg4cEhQR21BVzdKQ2VvZWpWOW9RM0o5alpuVS1UNkYxRnc2UFZHUTZDOV82TUdicXVBMVp1VjNTcXV4V2pyRUR4NWVwWVN6ZkY4R3E1SVQwSDdkSWdRblY1NjFYaEF5dzg4VE1uNGJPSndKVzNVX1ZoY1JXMDctVUR1S1BfNFp1a3lUVVZsXzVwZXFOUTFYSmFSR2NWcTNjWlFKZUR6S1pIY3pXVk9mNjlna01XbWlWblpWQlhFSTdTdDBNbjFxVnh1a2hSZXRpbWJTeWJWekJ2cktLbDBMOGwzZnVfVGttYlFMcXUzamQzZENQSlZxeXk0T3I4eGNpaWZQTE9fQXRFeXppZHBPNG1obUhHZy1hczU3N3hBSHJWajNMc25ZeVJhZ2JiVUFFUHpWSXZZVXQ2UE16RkdiX05CaDFTX2xxZ2Vyb2ZCZmI0cktUS1lnUFViM1RjU2dNTEF6TGRDc1NsaUxNLUJ4M0wxdmlVSnlOTU1OSG1GWTQzUXRSaVNDeVdaWE1iTFVuZTZiQzFzWWlWQ0d6UWQ4NFFhVTVtMlpWVTEtR0lmbkdpQm1tYmtGWlNqcG9Bb1RLb1RQclVXVHgyeXhmLVpEU1FEYmMzZ3BzNDZyVFR2U1hFa1pCLWVWS0J6TXpoQ3hTMjBtRWNmRThtSEp5eVpUcTk4V01kRXFIZkZNNVFhVU1VRTVpYURRd2pwZFRiRFhxQVktWEwzUUtLVVdSX21EU2E2RFFwbVdDYy1HRFRsOHdpTmZhaXpQNzZpVEpBelhIOG1RekpuRVQtUk8uUkN5TGlFRjhMamhESlVHV2NpYnV3YXZYX2dqbmRvZW1lckR3ejM4Sk82Zw"
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/keys/key292313766?api-version=7.2",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "DELETE",
+        ":path": "/keys/key292313766?api-version=7.2",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 12 Oct 2021 15:32:29 GMT"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "815",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 12 Oct 2021 15:32:30 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.132.3",
+        "x-ms-request-id": "62cbec95-80d7-4612-922d-98be8fdc09fb",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "recoveryId": "https://seankane.vault.azure.net/deletedkeys/key292313766",
+        "deletedDate": 1634052750,
+        "scheduledPurgeDate": 1634657550,
+        "key": {
+          "kid": "https://seankane.vault.azure.net/keys/key292313766/7c9787dfe0e0401cb1dd88133b7937fe",
+          "kty": "RSA",
+          "key_ops": [
+            "encrypt",
+            "decrypt",
+            "sign",
+            "verify",
+            "wrapKey",
+            "unwrapKey"
+          ],
+          "n": "6YXPBZM_0gSNxaLjDuP-9dBeROMZX_Ee4_Ui4gRg5DWE-Ks5GTBOPtzRgSOl-Glp3ATTXdYKbGXJXU9tja8ugj4NTW-xCa4TF41G8uLYc_vkRe4WzLhHrim8rguYqfKqGCc6mj12a5rxLYkUjbcsq2m38nlRBvGZamkjcFhAlxNnhnTg60JaswaX82UGZRIvK8UEf0OvnJ9ohfXTDxV61sMfS04QPTfCmwfd9SyHBs2_Ax6RL_7fqOrUxii3QWVluN66JS3vg10do38YIv4pev43b20pjCemETlYNjtpfmz-BXSUrPAZMntVUUA3FlKAyu86aGedBzWmtyaJq4gb2Q",
+          "e": "AQAB"
+        },
+        "attributes": {
+          "enabled": true,
+          "created": 1634052750,
+          "updated": 1634052750,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key292313766?api-version=7.2",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/deletedkeys/key292313766?api-version=7.2",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 12 Oct 2021 15:32:29 GMT"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "80",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 12 Oct 2021 15:32:30 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.132.3",
+        "x-ms-request-id": "88a91a2f-1ded-4d4a-9cce-1d136097cce4",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: key292313766"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key292313766?api-version=7.2",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/deletedkeys/key292313766?api-version=7.2",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 12 Oct 2021 15:32:29 GMT"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "80",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 12 Oct 2021 15:32:30 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.132.3",
+        "x-ms-request-id": "f06f155d-d745-4cdd-ad5e-254bfaca6d10",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: key292313766"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key292313766?api-version=7.2",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/deletedkeys/key292313766?api-version=7.2",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 12 Oct 2021 15:32:30 GMT"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "80",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 12 Oct 2021 15:32:31 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.132.3",
+        "x-ms-request-id": "735c012c-ba33-4b80-afec-f9a5fc3cc832",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: key292313766"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key292313766?api-version=7.2",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/deletedkeys/key292313766?api-version=7.2",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 12 Oct 2021 15:32:30 GMT"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "80",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 12 Oct 2021 15:32:31 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.132.3",
+        "x-ms-request-id": "e037937b-723c-4d96-b2a4-075defbd08d7",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: key292313766"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key292313766?api-version=7.2",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/deletedkeys/key292313766?api-version=7.2",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 12 Oct 2021 15:32:31 GMT"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "80",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 12 Oct 2021 15:32:31 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.132.3",
+        "x-ms-request-id": "ebe52ab2-a66b-4599-8040-402aa8995bd6",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: key292313766"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key292313766?api-version=7.2",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/deletedkeys/key292313766?api-version=7.2",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 12 Oct 2021 15:32:31 GMT"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "80",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 12 Oct 2021 15:32:32 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.132.3",
+        "x-ms-request-id": "f12dd38b-2fdc-45b2-902e-eaa3cf98612d",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: key292313766"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key292313766?api-version=7.2",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/deletedkeys/key292313766?api-version=7.2",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 12 Oct 2021 15:32:31 GMT"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "815",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 12 Oct 2021 15:32:32 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.132.3",
+        "x-ms-request-id": "5a5e8170-d717-44a7-ab99-55556ec85820",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": {
+        "recoveryId": "https://seankane.vault.azure.net/deletedkeys/key292313766",
+        "deletedDate": 1634052750,
+        "scheduledPurgeDate": 1634657550,
+        "key": {
+          "kid": "https://seankane.vault.azure.net/keys/key292313766/7c9787dfe0e0401cb1dd88133b7937fe",
+          "kty": "RSA",
+          "key_ops": [
+            "encrypt",
+            "decrypt",
+            "sign",
+            "verify",
+            "wrapKey",
+            "unwrapKey"
+          ],
+          "n": "6YXPBZM_0gSNxaLjDuP-9dBeROMZX_Ee4_Ui4gRg5DWE-Ks5GTBOPtzRgSOl-Glp3ATTXdYKbGXJXU9tja8ugj4NTW-xCa4TF41G8uLYc_vkRe4WzLhHrim8rguYqfKqGCc6mj12a5rxLYkUjbcsq2m38nlRBvGZamkjcFhAlxNnhnTg60JaswaX82UGZRIvK8UEf0OvnJ9ohfXTDxV61sMfS04QPTfCmwfd9SyHBs2_Ax6RL_7fqOrUxii3QWVluN66JS3vg10do38YIv4pev43b20pjCemETlYNjtpfmz-BXSUrPAZMntVUUA3FlKAyu86aGedBzWmtyaJq4gb2Q",
+          "e": "AQAB"
+        },
+        "attributes": {
+          "enabled": true,
+          "created": 1634052750,
+          "updated": 1634052750,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
+        }
+      }
+    },
+    {
+      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/key292313766?api-version=7.2",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "DELETE",
+        ":path": "/deletedkeys/key292313766?api-version=7.2",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 12 Oct 2021 15:32:31 GMT"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Date": "Tue, 12 Oct 2021 15:32:32 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-service-version": "1.9.132.3",
+        "x-ms-request-id": "77353eef-eb31-42c3-a6e5-9f5f0a3ca0b0",
+        "X-Powered-By": "ASP.NET"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

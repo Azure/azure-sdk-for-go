@@ -212,3 +212,35 @@ func TestBackupKey(t *testing.T) {
 	require.NoError(t, err)
 	require.Greater(t, len(resp.Value), 0)
 }
+
+func TestRecoverDeletedKey(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	key, err := createRandomName(t, "key")
+	require.NoError(t, err)
+
+	_, err = client.CreateRSAKey(context.Background(), key, nil)
+	require.NoError(t, err)
+
+	defer cleanUpKey(t, client, key)
+
+	pollerResp, err := client.BeginDeleteKey(context.Background(), key, nil)
+	require.NoError(t, err)
+
+	_, err = pollerResp.PollUntilDone(context.Background(), delay())
+	require.NoError(t, err)
+
+	resp, err := client.BeginRecoverDeletedKey(context.Background(), key, nil)
+	require.NoError(t, err)
+
+	_, err = resp.PollUntilDone(context.Background(), delay())
+	require.NoError(t, err)
+
+	getResp, err := client.GetKey(context.Background(), key, nil)
+	require.NoError(t, err)
+	require.NotNil(t, getResp.Key)
+}

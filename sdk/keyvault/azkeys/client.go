@@ -653,3 +653,139 @@ func (c *Client) BackupKey(ctx context.Context, keyName string, options *BackupK
 
 	return backupKeyResponseFromGenerated(resp), nil
 }
+
+// RecoverDeletedKeyPoller is the interface for the Client.RecoverDeletedKey operation
+type RecoverDeletedKeyPoller interface {
+	// Done returns true if the LRO has reached a terminal state
+	Done() bool
+
+	// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
+	// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
+	// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
+	Poll(context.Context) (*http.Response, error)
+
+	// FinalResponse returns the final response after the operations has finished
+	FinalResponse(context.Context) (RecoverDeletedKeyResponse, error)
+}
+
+type beginRecoverPoller struct {
+	keyName         string
+	vaultUrl        string
+	client          *internal.KeyVaultClient
+	recoverResponse internal.KeyVaultClientRecoverDeletedKeyResponse
+	lastResponse    internal.KeyVaultClientGetKeyResponse
+	RawResponse     *http.Response
+}
+
+// Done returns true when the polling operation is completed
+func (b *beginRecoverPoller) Done() bool {
+	return b.RawResponse.StatusCode == http.StatusOK
+}
+
+// Poll fetches the latest state of the LRO. It returns an HTTP response or error.
+// If the LRO has completed successfully, the poller's state is updated and the HTTP response is returned.
+// If the LRO has completed with failure or was cancelled, the poller's state is updated and the error is returned.
+func (b *beginRecoverPoller) Poll(ctx context.Context) (*http.Response, error) {
+	resp, err := b.client.GetKey(ctx, b.vaultUrl, b.keyName, "", nil)
+	b.lastResponse = resp
+	var httpErr azcore.HTTPResponse
+	if errors.As(err, &httpErr) {
+		return httpErr.RawResponse(), err
+	}
+	return resp.RawResponse, nil
+}
+
+// FinalResponse returns the final response after the operations has finished
+func (b *beginRecoverPoller) FinalResponse(ctx context.Context) (RecoverDeletedKeyResponse, error) {
+	return recoverDeletedKeyResponseFromGenerated(b.recoverResponse), nil
+}
+
+func (b *beginRecoverPoller) pollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedKeyResponse, error) {
+	for {
+		resp, err := b.Poll(ctx)
+		if err != nil {
+			b.RawResponse = resp
+		}
+		if b.Done() {
+			break
+		}
+		b.RawResponse = resp
+		time.Sleep(t)
+	}
+	return recoverDeletedKeyResponseFromGenerated(b.recoverResponse), nil
+}
+
+// BeginRecoverDeletedKeyOptions contains the optional parameters for the Client.BeginRecoverDeletedKey operation
+type BeginRecoverDeletedKeyOptions struct{}
+
+// Convert the publicly exposed options object to the generated version
+func (b BeginRecoverDeletedKeyOptions) toGenerated() *internal.KeyVaultClientRecoverDeletedKeyOptions {
+	return &internal.KeyVaultClientRecoverDeletedKeyOptions{}
+}
+
+// RecoverDeletedKeyResponse is the response object for the Client.RecoverDeletedKey operation.
+type RecoverDeletedKeyResponse struct {
+	KeyBundle
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// change recover deleted key reponse to the generated version.
+func recoverDeletedKeyResponseFromGenerated(i internal.KeyVaultClientRecoverDeletedKeyResponse) RecoverDeletedKeyResponse {
+	return RecoverDeletedKeyResponse{
+		RawResponse: i.RawResponse,
+		KeyBundle: KeyBundle{
+			Attributes: keyAttributesFromGenerated(i.Attributes),
+			Key:        jsonWebKeyFromGenerated(i.Key),
+			Tags:       i.Tags,
+			Managed:    i.Managed,
+		},
+	}
+}
+
+// RecoverDeletedKeyPollerResponse contains the response of the Client.BeginRecoverDeletedKey operations
+type RecoverDeletedKeyPollerResponse struct {
+	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error occurs
+	PollUntilDone func(context.Context, time.Duration) (RecoverDeletedKeyResponse, error)
+
+	// Poller contains an initialized RecoverDeletedKeyPoller
+	Poller RecoverDeletedKeyPoller
+
+	// RawResponse cotains the underlying HTTP response
+	RawResponse *http.Response
+}
+
+// BeginRecoverDeletedKey recovers the deleted key in the specified vault to the latest version.
+// This operation can only be performed on a soft-delete enabled vault. This operation requires the keys/recover permission.
+func (c *Client) BeginRecoverDeletedKey(ctx context.Context, keyName string, options *BeginRecoverDeletedKeyOptions) (RecoverDeletedKeyPollerResponse, error) {
+	if options == nil {
+		options = &BeginRecoverDeletedKeyOptions{}
+	}
+	resp, err := c.kvClient.RecoverDeletedKey(ctx, c.vaultUrl, keyName, options.toGenerated())
+	if err != nil {
+		return RecoverDeletedKeyPollerResponse{}, err
+	}
+
+	getResp, err := c.kvClient.GetKey(ctx, c.vaultUrl, keyName, "", nil)
+	var httpErr azcore.HTTPResponse
+	if errors.As(err, &httpErr) {
+		if httpErr.RawResponse().StatusCode != http.StatusNotFound {
+			return RecoverDeletedKeyPollerResponse{}, err
+		}
+	}
+
+	b := &beginRecoverPoller{
+		lastResponse:    getResp,
+		keyName:         keyName,
+		client:          c.kvClient,
+		vaultUrl:        c.vaultUrl,
+		recoverResponse: resp,
+		RawResponse:     getResp.RawResponse,
+	}
+
+	return RecoverDeletedKeyPollerResponse{
+		PollUntilDone: b.pollUntilDone,
+		Poller:        b,
+		RawResponse:   getResp.RawResponse,
+	}, nil
+}

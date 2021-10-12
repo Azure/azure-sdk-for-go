@@ -332,14 +332,6 @@ func (suite *serviceBusSuite) deleteAllTaggedTopics(ctx context.Context) {
 	}
 }
 
-func (suite *serviceBusSuite) getNewSasInstance(opts ...NamespaceOption) *Namespace {
-	ns, err := NewNamespace(append(opts, NamespaceWithConnectionString(suite.ConnStr))...)
-	if err != nil {
-		suite.T().Fatal(err)
-	}
-	return ns
-}
-
 var noRetryRetrier = NewBackoffRetrier(struct {
 	MaxRetries int
 	Factor     float64

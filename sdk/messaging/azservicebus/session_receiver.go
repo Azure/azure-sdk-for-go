@@ -6,7 +6,6 @@ package azservicebus
 import (
 	"context"
 	"fmt"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/go-amqp"
@@ -104,9 +103,4 @@ func (sr *SessionReceiver) init(ctx context.Context) error {
 	// initialize the links
 	_, _, _, _, err := sr.amqpLinks.Get(ctx)
 	return err
-}
-
-// TODO: correct name? Also, correct return value?
-func (sr *SessionReceiver) RenewSessionLock() time.Time {
-	panic("RenewSessionLock not implemented")
 }

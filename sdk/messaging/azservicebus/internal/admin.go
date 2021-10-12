@@ -136,6 +136,9 @@ func (m *managementError) String() string {
 	return fmt.Sprintf("Code: %d, Details: %s", m.Code, m.Detail)
 }
 
+// NewEntityManagerWithConnectionString creates an entity manager (a lower level HTTP client
+// for the ATOM endpoint). This is typically wrapped by an entity specific client (like
+// TopicManager, QueueManager or , SubscriptionManager).
 func NewEntityManagerWithConnectionString(connectionString string) (*EntityManager, error) {
 	parsed, err := conn.ParsedConnectionFromStr(connectionString)
 

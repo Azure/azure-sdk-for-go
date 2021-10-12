@@ -142,6 +142,63 @@ func Test_Sender_SendMessages(t *testing.T) {
 	require.EqualValues(t, []string{"hello", "world"}, getSortedBodies(messages))
 }
 
+func Test_Sender_SendMessages_resend(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	ctx := context.Background()
+
+	sender, err := client.NewSender(queueName)
+	require.NoError(t, err)
+
+	peekLockReceiver, err := client.NewReceiverForQueue(queueName, &ReceiverOptions{
+		ReceiveMode: PeekLock,
+	})
+	require.NoError(t, err)
+
+	deletingReceiver, err := client.NewReceiverForQueue(queueName, &ReceiverOptions{
+		ReceiveMode: ReceiveAndDelete,
+	})
+	require.NoError(t, err)
+
+	sendAndReceive := func(receiver *Receiver, complete bool) {
+		msg := &Message{
+			Body: []byte("ResendableMessage"),
+			ApplicationProperties: map[string]interface{}{
+				"Status": "first send",
+			},
+		}
+
+		err = sender.SendMessage(ctx, msg)
+		require.NoError(t, err)
+
+		message, err := receiver.ReceiveMessage(ctx, nil)
+		require.NoError(t, err)
+		require.EqualValues(t, "first send", msg.ApplicationProperties["Status"])
+		require.EqualValues(t, "ResendableMessage", string(msg.Body))
+
+		if complete {
+			require.NoError(t, receiver.CompleteMessage(ctx, message))
+		}
+
+		msg.ApplicationProperties["Status"] = "resend"
+		err = sender.SendMessage(ctx, msg)
+		require.NoError(t, err)
+
+		message, err = receiver.ReceiveMessage(ctx, nil)
+		require.NoError(t, err)
+		require.EqualValues(t, "resend", msg.ApplicationProperties["Status"])
+		require.EqualValues(t, "ResendableMessage", string(msg.Body))
+
+		if complete {
+			require.NoError(t, receiver.CompleteMessage(ctx, message))
+		}
+	}
+
+	sendAndReceive(deletingReceiver, false)
+	sendAndReceive(peekLockReceiver, true)
+}
+
 func Test_Sender_ScheduleMessages(t *testing.T) {
 	ctx := context.Background()
 

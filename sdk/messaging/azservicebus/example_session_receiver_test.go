@@ -14,14 +14,16 @@ import (
 func init() {
 	initExamples()
 
-	sender, err := client.NewSender(exampleSessionQueue)
-	exitOnError("Failed to create sender for session examples", err)
+	if client != nil {
+		sender, err := client.NewSender(exampleSessionQueue)
+		exitOnError("Failed to create sender for session examples", err)
 
-	for i := 0; i < 2; i++ {
-		err = sender.SendMessage(context.Background(), &azservicebus.Message{
-			SessionID: to.StringPtr("Example Session ID"),
-		})
-		exitOnError("Failed to send example message to session", err)
+		for i := 0; i < 2; i++ {
+			err = sender.SendMessage(context.Background(), &azservicebus.Message{
+				SessionID: to.StringPtr("Example Session ID"),
+			})
+			exitOnError("Failed to send example message to session", err)
+		}
 	}
 }
 
@@ -37,8 +39,6 @@ func ExampleClient_AcceptSessionForQueue() {
 	exitOnError("Failed to complete message", err)
 
 	fmt.Printf("Received message from session ID \"%s\" and completed it", *message.SessionID)
-
-	// Output: Received message from session ID "Example Session ID" and completed it
 }
 
 func ExampleClient_AcceptNextSessionForQueue() {
@@ -46,6 +46,4 @@ func ExampleClient_AcceptNextSessionForQueue() {
 	exitOnError("Failed to create session receiver", err)
 
 	fmt.Printf("Session receiver was assigned session ID \"%s\"", sessionReceiver.SessionID())
-
-	// Output: Session receiver was assigned session ID "Example Session ID"
 }

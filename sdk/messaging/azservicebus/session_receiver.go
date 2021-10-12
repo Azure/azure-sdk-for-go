@@ -11,13 +11,12 @@ import (
 	"github.com/Azure/go-amqp"
 )
 
+// SessionReceiver is a Receiver that handles sessions.
 type SessionReceiver struct {
 	*Receiver
 
 	sessionID *string
 }
-
-const sessionFilterName = "com.microsoft:session-filter"
 
 // SessionReceiverOptions contains options for the `Client.AcceptSessionForQueue/Subscription` or `Client.AcceptNextSessionForQueue/Subscription`
 // functions.
@@ -48,6 +47,7 @@ func toReceiverOptions(sropts *SessionReceiverOptions) *ReceiverOptions {
 }
 
 func newSessionReceiver(sessionID *string, ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupOnClose func(), options *ReceiverOptions) (*SessionReceiver, error) {
+	const sessionFilterName = "com.microsoft:session-filter"
 	const code = uint64(0x00000137000000C)
 
 	sessionReceiver := &SessionReceiver{

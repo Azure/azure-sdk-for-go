@@ -177,8 +177,8 @@ func (client *BlobContainersClient) createHandleError(resp *http.Response) error
 // CreateOrUpdateImmutabilityPolicy - Creates or updates an unlocked immutability policy. ETag in If-Match is honored if given but not required for this
 // operation.
 // If the operation fails it returns a generic error.
-func (client *BlobContainersClient) CreateOrUpdateImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, immutabilityPolicyName Enum37, options *BlobContainersCreateOrUpdateImmutabilityPolicyOptions) (BlobContainersCreateOrUpdateImmutabilityPolicyResponse, error) {
-	req, err := client.createOrUpdateImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, immutabilityPolicyName, options)
+func (client *BlobContainersClient) CreateOrUpdateImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersCreateOrUpdateImmutabilityPolicyOptions) (BlobContainersCreateOrUpdateImmutabilityPolicyResponse, error) {
+	req, err := client.createOrUpdateImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return BlobContainersCreateOrUpdateImmutabilityPolicyResponse{}, err
 	}
@@ -193,7 +193,7 @@ func (client *BlobContainersClient) CreateOrUpdateImmutabilityPolicy(ctx context
 }
 
 // createOrUpdateImmutabilityPolicyCreateRequest creates the CreateOrUpdateImmutabilityPolicy request.
-func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, immutabilityPolicyName Enum37, options *BlobContainersCreateOrUpdateImmutabilityPolicyOptions) (*policy.Request, error) {
+func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersCreateOrUpdateImmutabilityPolicyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies/{immutabilityPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -207,10 +207,7 @@ func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyCreateReques
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	if immutabilityPolicyName == "" {
-		return nil, errors.New("parameter immutabilityPolicyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{immutabilityPolicyName}", url.PathEscape(string(immutabilityPolicyName)))
+	urlPath = strings.ReplaceAll(urlPath, "{immutabilityPolicyName}", url.PathEscape("default"))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -318,8 +315,8 @@ func (client *BlobContainersClient) deleteHandleError(resp *http.Response) error
 // If-Match is required for this operation. Deleting a locked immutability
 // policy is not allowed, the only way is to delete the container after deleting all expired blobs inside the policy locked container.
 // If the operation fails it returns a generic error.
-func (client *BlobContainersClient) DeleteImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, immutabilityPolicyName Enum37, ifMatch string, options *BlobContainersDeleteImmutabilityPolicyOptions) (BlobContainersDeleteImmutabilityPolicyResponse, error) {
-	req, err := client.deleteImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, immutabilityPolicyName, ifMatch, options)
+func (client *BlobContainersClient) DeleteImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersDeleteImmutabilityPolicyOptions) (BlobContainersDeleteImmutabilityPolicyResponse, error) {
+	req, err := client.deleteImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, ifMatch, options)
 	if err != nil {
 		return BlobContainersDeleteImmutabilityPolicyResponse{}, err
 	}
@@ -334,7 +331,7 @@ func (client *BlobContainersClient) DeleteImmutabilityPolicy(ctx context.Context
 }
 
 // deleteImmutabilityPolicyCreateRequest creates the DeleteImmutabilityPolicy request.
-func (client *BlobContainersClient) deleteImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, immutabilityPolicyName Enum37, ifMatch string, options *BlobContainersDeleteImmutabilityPolicyOptions) (*policy.Request, error) {
+func (client *BlobContainersClient) deleteImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersDeleteImmutabilityPolicyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies/{immutabilityPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -348,10 +345,7 @@ func (client *BlobContainersClient) deleteImmutabilityPolicyCreateRequest(ctx co
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	if immutabilityPolicyName == "" {
-		return nil, errors.New("parameter immutabilityPolicyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{immutabilityPolicyName}", url.PathEscape(string(immutabilityPolicyName)))
+	urlPath = strings.ReplaceAll(urlPath, "{immutabilityPolicyName}", url.PathEscape("default"))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -538,8 +532,8 @@ func (client *BlobContainersClient) getHandleError(resp *http.Response) error {
 
 // GetImmutabilityPolicy - Gets the existing immutability policy along with the corresponding ETag in response headers and body.
 // If the operation fails it returns a generic error.
-func (client *BlobContainersClient) GetImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, immutabilityPolicyName Enum37, options *BlobContainersGetImmutabilityPolicyOptions) (BlobContainersGetImmutabilityPolicyResponse, error) {
-	req, err := client.getImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, immutabilityPolicyName, options)
+func (client *BlobContainersClient) GetImmutabilityPolicy(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersGetImmutabilityPolicyOptions) (BlobContainersGetImmutabilityPolicyResponse, error) {
+	req, err := client.getImmutabilityPolicyCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
 	if err != nil {
 		return BlobContainersGetImmutabilityPolicyResponse{}, err
 	}
@@ -554,7 +548,7 @@ func (client *BlobContainersClient) GetImmutabilityPolicy(ctx context.Context, r
 }
 
 // getImmutabilityPolicyCreateRequest creates the GetImmutabilityPolicy request.
-func (client *BlobContainersClient) getImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, immutabilityPolicyName Enum37, options *BlobContainersGetImmutabilityPolicyOptions) (*policy.Request, error) {
+func (client *BlobContainersClient) getImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersGetImmutabilityPolicyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies/{immutabilityPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -568,10 +562,7 @@ func (client *BlobContainersClient) getImmutabilityPolicyCreateRequest(ctx conte
 		return nil, errors.New("parameter containerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	if immutabilityPolicyName == "" {
-		return nil, errors.New("parameter immutabilityPolicyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{immutabilityPolicyName}", url.PathEscape(string(immutabilityPolicyName)))
+	urlPath = strings.ReplaceAll(urlPath, "{immutabilityPolicyName}", url.PathEscape("default"))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}

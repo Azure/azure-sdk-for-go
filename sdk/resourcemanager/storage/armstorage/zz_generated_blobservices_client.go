@@ -36,8 +36,8 @@ func NewBlobServicesClient(con *arm.Connection, subscriptionID string) *BlobServ
 // GetServiceProperties - Gets the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource
 // Sharing) rules.
 // If the operation fails it returns a generic error.
-func (client *BlobServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, blobServicesName Enum37, options *BlobServicesGetServicePropertiesOptions) (BlobServicesGetServicePropertiesResponse, error) {
-	req, err := client.getServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, blobServicesName, options)
+func (client *BlobServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesGetServicePropertiesOptions) (BlobServicesGetServicePropertiesResponse, error) {
+	req, err := client.getServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return BlobServicesGetServicePropertiesResponse{}, err
 	}
@@ -52,7 +52,7 @@ func (client *BlobServicesClient) GetServiceProperties(ctx context.Context, reso
 }
 
 // getServicePropertiesCreateRequest creates the GetServiceProperties request.
-func (client *BlobServicesClient) getServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, blobServicesName Enum37, options *BlobServicesGetServicePropertiesOptions) (*policy.Request, error) {
+func (client *BlobServicesClient) getServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *BlobServicesGetServicePropertiesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/{BlobServicesName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -66,10 +66,7 @@ func (client *BlobServicesClient) getServicePropertiesCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if blobServicesName == "" {
-		return nil, errors.New("parameter blobServicesName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{BlobServicesName}", url.PathEscape(string(blobServicesName)))
+	urlPath = strings.ReplaceAll(urlPath, "{BlobServicesName}", url.PathEscape("default"))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
@@ -169,8 +166,8 @@ func (client *BlobServicesClient) listHandleError(resp *http.Response) error {
 // SetServiceProperties - Sets the properties of a storage account’s Blob service, including properties for Storage Analytics and CORS (Cross-Origin Resource
 // Sharing) rules.
 // If the operation fails it returns a generic error.
-func (client *BlobServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, blobServicesName Enum37, parameters BlobServiceProperties, options *BlobServicesSetServicePropertiesOptions) (BlobServicesSetServicePropertiesResponse, error) {
-	req, err := client.setServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, blobServicesName, parameters, options)
+func (client *BlobServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties, options *BlobServicesSetServicePropertiesOptions) (BlobServicesSetServicePropertiesResponse, error) {
+	req, err := client.setServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return BlobServicesSetServicePropertiesResponse{}, err
 	}
@@ -185,7 +182,7 @@ func (client *BlobServicesClient) SetServiceProperties(ctx context.Context, reso
 }
 
 // setServicePropertiesCreateRequest creates the SetServiceProperties request.
-func (client *BlobServicesClient) setServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, blobServicesName Enum37, parameters BlobServiceProperties, options *BlobServicesSetServicePropertiesOptions) (*policy.Request, error) {
+func (client *BlobServicesClient) setServicePropertiesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, parameters BlobServiceProperties, options *BlobServicesSetServicePropertiesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/{BlobServicesName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -199,10 +196,7 @@ func (client *BlobServicesClient) setServicePropertiesCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if blobServicesName == "" {
-		return nil, errors.New("parameter blobServicesName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{BlobServicesName}", url.PathEscape(string(blobServicesName)))
+	urlPath = strings.ReplaceAll(urlPath, "{BlobServicesName}", url.PathEscape("default"))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err

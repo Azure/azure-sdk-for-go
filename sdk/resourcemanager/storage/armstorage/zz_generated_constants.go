@@ -339,24 +339,6 @@ func (c EncryptionScopeState) ToPtr() *EncryptionScopeState {
 	return &c
 }
 
-type Enum37 string
-
-const (
-	Enum37Default Enum37 = "default"
-)
-
-// PossibleEnum37Values returns the possible values for the Enum37 const type.
-func PossibleEnum37Values() []Enum37 {
-	return []Enum37{
-		Enum37Default,
-	}
-}
-
-// ToPtr returns a *Enum37 pointing to the current value.
-func (c Enum37) ToPtr() *Enum37 {
-	return &c
-}
-
 // ExpirationAction - The SAS expiration action. Can only be Log.
 type ExpirationAction string
 

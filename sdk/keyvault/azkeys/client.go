@@ -146,17 +146,7 @@ func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, op
 
 type CreateECKeyOptions struct {
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Curve *internal.JSONWebKeyCurveName `json:"crv,omitempty"`
-
-	// The attributes of a key managed by the key vault service.
-	KeyAttributes *internal.KeyAttributes         `json:"attributes,omitempty"`
-	KeyOps        []*internal.JSONWebKeyOperation `json:"key_ops,omitempty"`
-
-	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
-	KeySize *int32 `json:"key_size,omitempty"`
-
-	// The public exponent for a RSA key.
-	PublicExponent *int32 `json:"public_exponent,omitempty"`
+	CurveName *internal.JSONWebKeyCurveName `json:"crv,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
@@ -167,13 +157,9 @@ type CreateECKeyOptions struct {
 
 func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) internal.KeyCreateParameters {
 	return internal.KeyCreateParameters{
-		Kty:            keyType.toGenerated(),
-		Curve:          c.Curve,
-		KeyAttributes:  c.KeyAttributes,
-		KeyOps:         c.KeyOps,
-		KeySize:        c.KeySize,
-		PublicExponent: c.PublicExponent,
-		Tags:           c.Tags,
+		Kty:   keyType.toGenerated(),
+		Curve: c.CurveName,
+		Tags:  c.Tags,
 	}
 }
 
@@ -216,18 +202,8 @@ type CreateOCTKeyOptions struct {
 	// Hardware Protected OCT Key
 	HardwareProtected bool
 
-	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Curve *internal.JSONWebKeyCurveName `json:"crv,omitempty"`
-
-	// The attributes of a key managed by the key vault service.
-	KeyAttributes *internal.KeyAttributes         `json:"attributes,omitempty"`
-	KeyOps        []*internal.JSONWebKeyOperation `json:"key_ops,omitempty"`
-
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize *int32 `json:"key_size,omitempty"`
-
-	// The public exponent for a RSA key.
-	PublicExponent *int32 `json:"public_exponent,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
@@ -235,13 +211,9 @@ type CreateOCTKeyOptions struct {
 
 func (c *CreateOCTKeyOptions) toKeyCreateParameters(keyType KeyType) internal.KeyCreateParameters {
 	return internal.KeyCreateParameters{
-		Kty:            keyType.toGenerated(),
-		Curve:          c.Curve,
-		KeyAttributes:  c.KeyAttributes,
-		KeyOps:         c.KeyOps,
-		KeySize:        c.KeySize,
-		PublicExponent: c.PublicExponent,
-		Tags:           c.Tags,
+		Kty:     keyType.toGenerated(),
+		KeySize: c.KeySize,
+		Tags:    c.Tags,
 	}
 }
 
@@ -275,6 +247,64 @@ func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateO
 	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &internal.KeyVaultClientCreateKeyOptions{})
 
 	return createOCTKeyResponseFromGenerated(resp), err
+}
+
+type CreateRSAKeyOptions struct {
+	// Hardware Protected OCT Key
+	HardwareProtected bool
+
+	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
+	KeySize *int32 `json:"key_size,omitempty"`
+
+	// The public exponent for a RSA key.
+	PublicExponent *int32 `json:"public_exponent,omitempty"`
+
+	// Application specific metadata in the form of key-value pairs.
+	Tags map[string]*string `json:"tags,omitempty"`
+}
+
+func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) internal.KeyCreateParameters {
+	return internal.KeyCreateParameters{
+		Kty:            k.toGenerated(),
+		KeySize:        c.KeySize,
+		PublicExponent: c.PublicExponent,
+		Tags:           c.Tags,
+	}
+}
+
+type CreateRSAKeyResponse struct {
+	KeyBundle
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func createRSAKeyResponseFromGenerated(i internal.KeyVaultClientCreateKeyResponse) CreateRSAKeyResponse {
+	return CreateRSAKeyResponse{
+		RawResponse: i.RawResponse,
+		KeyBundle: KeyBundle{
+			Attributes: keyAttributesFromGenerated(i.Attributes),
+			Key:        jsonWebKeyFromGenerated(i.Key),
+			Tags:       i.Tags,
+			Managed:    i.Managed,
+		},
+	}
+}
+
+func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateRSAKeyOptions) (CreateRSAKeyResponse, error) {
+	keyType := RSA
+
+	if options != nil && options.HardwareProtected {
+		keyType = RSAHSM
+	} else if options == nil {
+		options = &CreateRSAKeyOptions{}
+	}
+
+	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &internal.KeyVaultClientCreateKeyOptions{})
+	if err != nil {
+		return CreateRSAKeyResponse{}, err
+	}
+
+	return createRSAKeyResponseFromGenerated(resp), nil
 }
 
 type ListKeysPager interface {

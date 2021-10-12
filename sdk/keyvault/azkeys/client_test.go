@@ -54,18 +54,19 @@ func TestCreateKeyRSA(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	key, err := createRandomName(t, "secret")
+	key, err := createRandomName(t, "key")
 	require.NoError(t, err)
 
-	resp, err := client.CreateKey(ctx, key, RSA, nil)
+	resp, err := client.CreateRSAKey(ctx, key, nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp.Key)
 
-	resp, err = client.CreateKey(ctx, key, RSAHSM, nil)
+	resp2, err := client.CreateRSAKey(ctx, key+"hsm", &CreateRSAKeyOptions{HardwareProtected: true})
 	require.NoError(t, err)
-	require.NotNil(t, resp.Key)
+	require.NotNil(t, resp2.Key)
 
 	cleanUpKey(t, client, key)
+	cleanUpKey(t, client, key+"hsm")
 }
 
 func TestCreateECKey(t *testing.T) {
@@ -75,7 +76,7 @@ func TestCreateECKey(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	key, err := createRandomName(t, "secret")
+	key, err := createRandomName(t, "key")
 	require.NoError(t, err)
 
 	resp, err := client.CreateECKey(ctx, key, nil)
@@ -86,19 +87,17 @@ func TestCreateECKey(t *testing.T) {
 }
 
 func TestCreateOCTKey(t *testing.T) {
+	t.Skipf("OCT Key is HSM only")
 	stop := startTest(t)
 	defer stop()
 
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	key, err := createRandomName(t, "secret")
+	key, err := createRandomName(t, "key")
 	require.NoError(t, err)
 
-	// _, err = client.CreateKey(ctx, key, JSONWebKeyTypeOct, nil)
-	// require.NoError(t, err)
-
-	resp, err := client.CreateOCTKey(ctx, key, &CreateOCTKeyOptions{KeySize: to.Int32Ptr(256)})
+	resp, err := client.CreateOCTKey(ctx, key, &CreateOCTKeyOptions{KeySize: to.Int32Ptr(256), HardwareProtected: true})
 	require.NoError(t, err)
 	require.NotNil(t, resp.Key)
 
@@ -113,7 +112,7 @@ func TestListKeys(t *testing.T) {
 	require.NoError(t, err)
 
 	for i := 0; i < 4; i++ {
-		key, err := createRandomName(t, fmt.Sprintf("secret-%d", i))
+		key, err := createRandomName(t, fmt.Sprintf("key-%d", i))
 		require.NoError(t, err)
 
 		_, err = client.CreateKey(ctx, key, RSA, nil)
@@ -133,7 +132,7 @@ func TestListKeys(t *testing.T) {
 	require.GreaterOrEqual(t, count, 4)
 
 	for i := 0; i < 4; i++ {
-		key, err := createRandomName(t, fmt.Sprintf("secret-%d", i))
+		key, err := createRandomName(t, fmt.Sprintf("key-%d", i))
 		require.NoError(t, err)
 		cleanUpKey(t, client, key)
 	}
@@ -146,7 +145,7 @@ func TestGetKey(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	key, err := createRandomName(t, "secret")
+	key, err := createRandomName(t, "key")
 	require.NoError(t, err)
 
 	_, err = client.CreateKey(ctx, key, RSA, nil)
@@ -164,8 +163,9 @@ func TestDeleteKey(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	key, err := createRandomName(t, "secret10")
+	key, err := createRandomName(t, "key")
 	require.NoError(t, err)
+	defer cleanUpKey(t, client, key)
 
 	_, err = client.CreateKey(ctx, key, RSA, nil)
 	require.NoError(t, err)

@@ -29,9 +29,9 @@ const (
 	AzurePublicCloud Endpoint = "https://management.azure.com/"
 )
 
-// ConnectionOptions contains configuration settings for the connection's pipeline.
+// ClientOptions contains configuration settings for a client's pipeline.
 // All zero-value fields will be initialized with their default values.
-type ConnectionOptions struct {
+type ClientOptions struct {
 	// AuxiliaryTenants contains a list of additional tenants to be used to authenticate
 	// across multiple tenants.
 	AuxiliaryTenants []string
@@ -66,9 +66,9 @@ type ConnectionOptions struct {
 
 // NewPipeline creates a pipeline from connection options.
 // The telemetry policy, when enabled, will use the specified module and version info.
-func NewPipeline(module, version string, cred azcore.TokenCredential, options *ConnectionOptions) pipeline.Pipeline {
+func NewPipeline(module, version string, cred azcore.TokenCredential, options *ClientOptions) pipeline.Pipeline {
 	if options == nil {
-		options = &ConnectionOptions{}
+		options = &ClientOptions{}
 	}
 	ep := options.Endpoint
 	if len(ep) == 0 {

@@ -54,7 +54,7 @@ func TestNewPipelineWithOptions(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse()
-	opt := ConnectionOptions{}
+	opt := ClientOptions{}
 	opt.HTTPClient = srv
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
@@ -77,7 +77,7 @@ func TestNewPipelineWithCustomTelemetry(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse()
-	opt := ConnectionOptions{}
+	opt := ClientOptions{}
 	opt.HTTPClient = srv
 	opt.Telemetry.ApplicationID = myTelemetry
 	if opt.Telemetry.ApplicationID != myTelemetry {
@@ -104,7 +104,7 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	defer close()
 	// initial response that RP is unregistered
 	srv.SetResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
-	opts := &ConnectionOptions{DisableRPRegistration: true}
+	opts := &ClientOptions{DisableRPRegistration: true}
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -150,7 +150,7 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	perCallPolicy := countingPolicy{}
 	perRetryPolicy := countingPolicy{}
-	opts := &ConnectionOptions{
+	opts := &ClientOptions{
 		DisableRPRegistration: true,
 		PerCallPolicies:       []policy.Policy{&perCallPolicy},
 		PerRetryPolicies:      []policy.Policy{&perRetryPolicy},

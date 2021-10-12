@@ -20,6 +20,30 @@ type SessionReceiver struct {
 
 const sessionFilterName = "com.microsoft:session-filter"
 
+// SessionReceiverOptions contains options for the `Client.AcceptSessionForQueue/Subscription` or `Client.AcceptNextSessionForQueue/Subscription`
+// functions.
+type SessionReceiverOptions struct {
+	// ReceiveMode controls when a message is deleted from Service Bus.
+	//
+	// `azservicebus.PeekLock` is the default. The message is locked, preventing multiple
+	// receivers from processing the message at once. You control the lock state of the message
+	// using one of the message settlement functions like processor.CompleteMessage(), which removes
+	// it from Service Bus, or processor.AbandonMessage(), which makes it available again.
+	//
+	// `azservicebus.ReceiveAndDelete` causes Service Bus to remove the message as soon
+	// as it's received.
+	//
+	// More information about receive modes:
+	// https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement#settling-receive-operations
+	ReceiveMode ReceiveMode
+}
+
+func toReceiverOptions(sropts *SessionReceiverOptions) *ReceiverOptions {
+	return &ReceiverOptions{
+		ReceiveMode: sropts.ReceiveMode,
+	}
+}
+
 func newSessionReceiver(sessionID *string, ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupOnClose func(), options *ReceiverOptions) (*SessionReceiver, error) {
 	const code = uint64(0x00000137000000C)
 

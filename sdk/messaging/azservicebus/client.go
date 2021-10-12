@@ -189,14 +189,14 @@ func (client *Client) NewSender(queueOrTopic string) (*Sender, error) {
 
 // AcceptSessionForQueue accepts a session from a queue with a specific session ID.
 // NOTE: this receiver is initialized immediately, not lazily.
-func (client *Client) AcceptSessionForQueue(ctx context.Context, queue string, sessionID string, options *ReceiverOptions) (*SessionReceiver, error) {
+func (client *Client) AcceptSessionForQueue(ctx context.Context, queue string, sessionID string, options *SessionReceiverOptions) (*SessionReceiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
 		&sessionID,
 		client.namespace,
 		&entity{Queue: queue},
 		cleanupOnClose,
-		options)
+		toReceiverOptions(options))
 
 	if err != nil {
 		return nil, err
@@ -212,14 +212,14 @@ func (client *Client) AcceptSessionForQueue(ctx context.Context, queue string, s
 
 // AcceptSessionForSubscription accepts a session from a subscription with a specific session ID.
 // NOTE: this receiver is initialized immediately, not lazily.
-func (client *Client) AcceptSessionForSubscription(ctx context.Context, topic string, subscription string, sessionID string, options *ReceiverOptions) (*SessionReceiver, error) {
+func (client *Client) AcceptSessionForSubscription(ctx context.Context, topic string, subscription string, sessionID string, options *SessionReceiverOptions) (*SessionReceiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
 		&sessionID,
 		client.namespace,
 		&entity{Topic: topic, Subscription: subscription},
 		cleanupOnClose,
-		options)
+		toReceiverOptions(options))
 
 	if err != nil {
 		return nil, err
@@ -235,14 +235,14 @@ func (client *Client) AcceptSessionForSubscription(ctx context.Context, topic st
 
 // AcceptNextSessionForQueue accepts the next available session from a queue.
 // NOTE: this receiver is initialized immediately, not lazily.
-func (client *Client) AcceptNextSessionForQueue(ctx context.Context, queue string, options *ReceiverOptions) (*SessionReceiver, error) {
+func (client *Client) AcceptNextSessionForQueue(ctx context.Context, queue string, options *SessionReceiverOptions) (*SessionReceiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
 		nil,
 		client.namespace,
 		&entity{Queue: queue},
 		cleanupOnClose,
-		options)
+		toReceiverOptions(options))
 
 	if err != nil {
 		return nil, err
@@ -258,14 +258,14 @@ func (client *Client) AcceptNextSessionForQueue(ctx context.Context, queue strin
 
 // AcceptNextSessionForSubscription accepts the next available session from a subscription.
 // NOTE: this receiver is initialized immediately, not lazily.
-func (client *Client) AcceptNextSessionForSubscription(ctx context.Context, topic string, subscription string, options *ReceiverOptions) (*SessionReceiver, error) {
+func (client *Client) AcceptNextSessionForSubscription(ctx context.Context, topic string, subscription string, options *SessionReceiverOptions) (*SessionReceiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
 		nil,
 		client.namespace,
 		&entity{Topic: topic, Subscription: subscription},
 		cleanupOnClose,
-		options)
+		toReceiverOptions(options))
 
 	if err != nil {
 		return nil, err

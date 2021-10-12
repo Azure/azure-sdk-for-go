@@ -32,36 +32,17 @@ const (
 // ClientOptions contains configuration settings for a client's pipeline.
 // All zero-value fields will be initialized with their default values.
 type ClientOptions struct {
-	// AuxiliaryTenants contains a list of additional tenants to be used to authenticate
-	// across multiple tenants.
+	azcore.ClientOptions
+
+	// AuxiliaryTenants contains a list of additional tenants for cross-tenant requests.
 	AuxiliaryTenants []string
-
-	// Host is the base URL for Azure Resource Manager
-	Host Endpoint
-
-	// HTTPClient sets the transport for making HTTP requests.
-	HTTPClient policy.Transporter
-
-	// Retry configures the built-in retry policy behavior.
-	Retry policy.RetryOptions
-
-	// Telemetry configures the built-in telemetry policy behavior.
-	Telemetry policy.TelemetryOptions
-
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
 
 	// DisableRPRegistration disables the auto-RP registration policy.
 	// The default value is false.
 	DisableRPRegistration bool
 
-	// PerCallPolicies contains custom policies to inject into the pipeline.
-	// Each policy is executed once per request.
-	PerCallPolicies []policy.Policy
-
-	// PerRetryPolicies contains custom policies to inject into the pipeline.
-	// Each policy is executed once per request, and for each retry request.
-	PerRetryPolicies []policy.Policy
+	// Host is the base URL for Azure Resource Manager.
+	Host Endpoint
 }
 
 // NewPipeline creates a pipeline from connection options.
@@ -80,7 +61,7 @@ func NewPipeline(module, version string, cred azcore.TokenCredential, options *C
 	}
 	if !options.DisableRPRegistration {
 		regRPOpts := armruntime.RegistrationOptions{
-			HTTPClient: options.HTTPClient,
+			HTTPClient: options.Transport,
 			Logging:    options.Logging,
 			Retry:      options.Retry,
 			Telemetry:  options.Telemetry,
@@ -89,7 +70,7 @@ func NewPipeline(module, version string, cred azcore.TokenCredential, options *C
 	}
 	policies = append(policies, options.PerCallPolicies...)
 	policies = append(policies, azruntime.NewRetryPolicy(&options.Retry))
-	policies = append(policies, options.PerRetryPolicies...)
+	policies = append(policies, options.PerTryPolicies...)
 	policies = append(policies,
 		azruntime.NewBearerTokenPolicy(cred, azruntime.AuthenticationOptions{
 			TokenRequest: policy.TokenRequestOptions{
@@ -99,5 +80,5 @@ func NewPipeline(module, version string, cred azcore.TokenCredential, options *C
 		},
 		),
 		azruntime.NewLogPolicy(&options.Logging))
-	return azruntime.NewPipeline(options.HTTPClient, policies...)
+	return azruntime.NewPipeline(options.Transport, policies...)
 }

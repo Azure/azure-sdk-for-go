@@ -55,7 +55,7 @@ func TestNewPipelineWithOptions(t *testing.T) {
 	defer close()
 	srv.AppendResponse()
 	opt := ClientOptions{}
-	opt.HTTPClient = srv
+	opt.Transport = srv
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -78,7 +78,7 @@ func TestNewPipelineWithCustomTelemetry(t *testing.T) {
 	defer close()
 	srv.AppendResponse()
 	opt := ClientOptions{}
-	opt.HTTPClient = srv
+	opt.Transport = srv
 	opt.Telemetry.ApplicationID = myTelemetry
 	if opt.Telemetry.ApplicationID != myTelemetry {
 		t.Fatalf("telemetry was modified: %s", opt.Telemetry.ApplicationID)
@@ -152,8 +152,10 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 	perRetryPolicy := countingPolicy{}
 	opts := &ClientOptions{
 		DisableRPRegistration: true,
-		PerCallPolicies:       []policy.Policy{&perCallPolicy},
-		PerRetryPolicies:      []policy.Policy{&perRetryPolicy},
+		ClientOptions: azcore.ClientOptions{
+			PerCallPolicies: []policy.Policy{&perCallPolicy},
+			PerTryPolicies:  []policy.Policy{&perRetryPolicy},
+		},
 	}
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {

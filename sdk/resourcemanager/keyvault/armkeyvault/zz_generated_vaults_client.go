@@ -357,11 +357,11 @@ func (client *VaultsClient) getDeletedHandleError(resp *http.Response) error {
 
 // List - The List operation gets information about the vaults associated with the subscription.
 // If the operation fails it returns the *CloudError error type.
-func (client *VaultsClient) List(filter Enum16, apiVersion Enum17, options *VaultsListOptions) *VaultsListPager {
+func (client *VaultsClient) List(options *VaultsListOptions) *VaultsListPager {
 	return &VaultsListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, filter, apiVersion, options)
+			return client.listCreateRequest(ctx, options)
 		},
 		advancer: func(ctx context.Context, resp VaultsListResponse) (*policy.Request, error) {
 			return runtime.NewRequest(ctx, http.MethodGet, *resp.ResourceListResult.NextLink)
@@ -370,7 +370,7 @@ func (client *VaultsClient) List(filter Enum16, apiVersion Enum17, options *Vaul
 }
 
 // listCreateRequest creates the List request.
-func (client *VaultsClient) listCreateRequest(ctx context.Context, filter Enum16, apiVersion Enum17, options *VaultsListOptions) (*policy.Request, error) {
+func (client *VaultsClient) listCreateRequest(ctx context.Context, options *VaultsListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resources"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -381,11 +381,11 @@ func (client *VaultsClient) listCreateRequest(ctx context.Context, filter Enum16
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("$filter", string(filter))
+	reqQP.Set("$filter", "resourceType eq 'Microsoft.KeyVault/vaults'")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", string(apiVersion))
+	reqQP.Set("api-version", "2015-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil

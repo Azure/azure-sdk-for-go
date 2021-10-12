@@ -152,42 +152,6 @@ func (c DeletionRecoveryLevel) ToPtr() *DeletionRecoveryLevel {
 	return &c
 }
 
-type Enum16 string
-
-const (
-	Enum16ResourceTypeEqMicrosoftKeyVaultVaults Enum16 = "resourceType eq 'Microsoft.KeyVault/vaults'"
-)
-
-// PossibleEnum16Values returns the possible values for the Enum16 const type.
-func PossibleEnum16Values() []Enum16 {
-	return []Enum16{
-		Enum16ResourceTypeEqMicrosoftKeyVaultVaults,
-	}
-}
-
-// ToPtr returns a *Enum16 pointing to the current value.
-func (c Enum16) ToPtr() *Enum16 {
-	return &c
-}
-
-type Enum17 string
-
-const (
-	Enum17TwoThousandFifteen1101 Enum17 = "2015-11-01"
-)
-
-// PossibleEnum17Values returns the possible values for the Enum17 const type.
-func PossibleEnum17Values() []Enum17 {
-	return []Enum17{
-		Enum17TwoThousandFifteen1101,
-	}
-}
-
-// ToPtr returns a *Enum17 pointing to the current value.
-func (c Enum17) ToPtr() *Enum17 {
-	return &c
-}
-
 // IdentityType - The type of identity.
 type IdentityType string
 

@@ -163,7 +163,7 @@ func ExampleVaultsClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	client := armkeyvault.NewVaultsClient(arm.NewDefaultConnection(cred, nil), "<subscription ID>")
-	pager := client.List(armkeyvault.Enum16ResourceTypeEqMicrosoftKeyVaultVaults,armkeyvault.Enum17TwoThousandFifteen1101,nil)
+	pager := client.List(nil)
 	for pager.NextPage(context.Background()) {
 		resp := pager.PageResponse()
 		if len(resp.ResourceListResult.Value) == 0 {

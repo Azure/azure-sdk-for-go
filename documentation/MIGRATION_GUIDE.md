@@ -1,6 +1,6 @@
-## Guide for migrating to `sdk/**/arm**` from `services/**/mgmt/**`
+## Guide for migrating to `sdk/resourcemanager/**/arm**` from `services/**/mgmt/**`
 
-This document is intended for users that are familiar with an older version of the Azure SDK For Go for management modules (`services/**/mgmt/**`) and wish to migrate their application to the next version of Azure resource management libraries (`sdk/**/arm**`)
+This document is intended for users that are familiar with an older version of the Azure SDK For Go for management modules (`services/**/mgmt/**`) and wish to migrate their application to the next version of Azure resource management libraries (`sdk/resourcemanager/**/arm**`)
 
 **For users new to the Azure SDK For Go for resource management modules, please see the [README for 'sdk/azcore`](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azcore) and the README for every individual package.**
 
@@ -30,7 +30,7 @@ The latest Azure SDK For Go for management modules is using the [Go Modules](htt
 
 In old version (`services/**/mgmt/**`), `autorest.Authorizer` is used in authentication process.
 
-In new version (`sdk/**/arm**`), in order to provide a unified authentication based on Azure Identity for all Azure Go SDKs, the authentication mechanism has been re-designed and improved to offer a simpler interface.
+In new version (`sdk/resourcemanager/**/arm**`), in order to provide a unified authentication based on Azure Identity for all Azure Go SDKs, the authentication mechanism has been re-designed and improved to offer a simpler interface.
 
 To the show the code snippets for the change:
 
@@ -42,7 +42,7 @@ client := resources.NewGroupsClient("<SubscriptionId>")
 client.Authorizer = authorizer
 ```
 
-**Equivalent in new version (`sdk/**/arm**`)**
+**Equivalent in new version (`sdk/resourcemanager/**/arm**`)**
 
 ```go
 credential, err := azidentity.NewClientSecretCredential("<TenantId>", "<ClientId>", "<ClientSecret>", nil)
@@ -56,7 +56,7 @@ For detailed information on the benefits of using the new authentication classes
 
 There are some minor changes in the error handling.
 
-- When there is an error in the SDK request, in the old version (`services/**/mgmt/**`), the return value will all be non-nil, and you can get the raw HTTP response from the response value. In the new version (`sdk/**/arm**`), the first return value will be empty and you need to cast the error to `HTTPResponse` interface to get the raw HTTP response. When the request is successful and there is no error returned, you will need to get the raw HTTP response in `RawResponse` property of the first return value.
+- When there is an error in the SDK request, in the old version (`services/**/mgmt/**`), the return value will all be non-nil, and you can get the raw HTTP response from the response value. In the new version (`sdk/resourcemanager/**/arm**`), the first return value will be empty and you need to cast the error to `HTTPResponse` interface to get the raw HTTP response. When the request is successful and there is no error returned, you will need to get the raw HTTP response in `RawResponse` property of the first return value.
 
 **In old version (`services/**/mgmt/**`)**
 
@@ -67,7 +67,7 @@ if err != nil {
 }
 ```
 
-**Equivalent in new version (`sdk/**/arm**`)**
+**Equivalent in new version (`sdk/resourcemanager/**/arm**`)**
 
 ```go
 resp, err := resourceGroupsClient.CreateOrUpdate(context.Background(), resourceGroupName, resourceGroupParameters, nil)
@@ -80,7 +80,7 @@ if err != nil {
 }
 ```
 
-**When there is no error in new version (`sdk/**/arm**`)**
+**When there is no error in new version (`sdk/resourcemanager/**/arm**`)**
 
 ```go
 resp, err := resourceGroupsClient.CreateOrUpdate(context.Background(), resourceGroupName, resourceGroupParameters, nil)
@@ -117,7 +117,7 @@ if err != nil {
 log.Printf("virtual machine ID: %v", *vm.ID)
 ```
 
-**Equivalent in new version (`sdk/**/arm**`)**
+**Equivalent in new version (`sdk/resourcemanager/**/arm**`)**
 
 ```go
 poller, err := client.BeginCreateOrUpdate(context.Background(), "<resource group name>", "<virtual machine name>", param, nil)
@@ -154,7 +154,7 @@ for p.NotDone() {
 }
 ```
 
-**Equivalent in new version (`sdk/**/arm**`)**
+**Equivalent in new version (`sdk/resourcemanager/**/arm**`)**
 
 ```go
 pager := resourceGroupsClient.List(nil)
@@ -174,7 +174,7 @@ Because of adopting Azure Core which is a shared library across all Azure SDKs, 
 
 In old version (`services/**/mgmt/**`), we use the `(autorest.Client).Sender`, `(autorest.Client).RequestInspector` and `(autorest.Client).ResponseInspector` properties in `github.com/Azure/go-autorest/autorest` module to provide customized interceptor for the HTTP traffic.
 
-In new version (`sdk/**/arm**`), we use `(arm.ConnectionOptions).PerCallPolicies` and `(arm.ConnectionOptions).PerRetryPolicies` in `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` package instead to inject customized policy to the pipeline.
+In new version (`sdk/resourcemanager/**/arm**`), we use `(arm.ConnectionOptions).PerCallPolicies` and `(arm.ConnectionOptions).PerRetryPolicies` in `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` package instead to inject customized policy to the pipeline.
 
 ### Custom HTTP Client
 
@@ -187,7 +187,7 @@ client := resources.NewGroupsClient("<SubscriptionId>")
 client.Sender = &httpClient
 ```
 
-**In new version (`sdk/**/arm**`)**
+**In new version (`sdk/resourcemanager/**/arm**`)**
 
 ```go
 httpClient := NewYourOwnHTTPClient{}

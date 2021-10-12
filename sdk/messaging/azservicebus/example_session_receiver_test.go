@@ -11,8 +11,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 )
 
-var sessionReceiver *azservicebus.SessionReceiver
-
 func init() {
 	initExamples()
 
@@ -27,7 +25,7 @@ func init() {
 	}
 }
 
-func ExampleClient_AcceptSession() {
+func ExampleClient_AcceptSessionForQueue() {
 	sessionReceiver, err := client.AcceptSessionForQueue(context.TODO(), "exampleSessionQueue", "Example Session ID", nil)
 	exitOnError("Failed to create session receiver", err)
 
@@ -43,7 +41,7 @@ func ExampleClient_AcceptSession() {
 	// Output: Received message from session ID "Example Session ID" and completed it
 }
 
-func ExampleClient_AcceptNextSession() {
+func ExampleClient_AcceptNextSessionForQueue() {
 	sessionReceiver, err := client.AcceptNextSessionForQueue(context.TODO(), "exampleSessionQueue", nil)
 	exitOnError("Failed to create session receiver", err)
 

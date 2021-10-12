@@ -36,8 +36,8 @@ func NewExtendedServerBlobAuditingPoliciesClient(con *arm.Connection, subscripti
 
 // BeginCreateOrUpdate - Creates or updates an extended server's blob auditing policy.
 // If the operation fails it returns a generic error.
-func (client *ExtendedServerBlobAuditingPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, blobAuditingPolicyName Enum5, parameters ExtendedServerBlobAuditingPolicy, options *ExtendedServerBlobAuditingPoliciesBeginCreateOrUpdateOptions) (ExtendedServerBlobAuditingPoliciesCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, blobAuditingPolicyName, parameters, options)
+func (client *ExtendedServerBlobAuditingPoliciesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters ExtendedServerBlobAuditingPolicy, options *ExtendedServerBlobAuditingPoliciesBeginCreateOrUpdateOptions) (ExtendedServerBlobAuditingPoliciesCreateOrUpdatePollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, serverName, parameters, options)
 	if err != nil {
 		return ExtendedServerBlobAuditingPoliciesCreateOrUpdatePollerResponse{}, err
 	}
@@ -56,8 +56,8 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) BeginCreateOrUpdate(ctx 
 
 // CreateOrUpdate - Creates or updates an extended server's blob auditing policy.
 // If the operation fails it returns a generic error.
-func (client *ExtendedServerBlobAuditingPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, blobAuditingPolicyName Enum5, parameters ExtendedServerBlobAuditingPolicy, options *ExtendedServerBlobAuditingPoliciesBeginCreateOrUpdateOptions) (*http.Response, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, blobAuditingPolicyName, parameters, options)
+func (client *ExtendedServerBlobAuditingPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, parameters ExtendedServerBlobAuditingPolicy, options *ExtendedServerBlobAuditingPoliciesBeginCreateOrUpdateOptions) (*http.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) createOrUpdate(ctx conte
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ExtendedServerBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, blobAuditingPolicyName Enum5, parameters ExtendedServerBlobAuditingPolicy, options *ExtendedServerBlobAuditingPoliciesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ExtendedServerBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, parameters ExtendedServerBlobAuditingPolicy, options *ExtendedServerBlobAuditingPoliciesBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/extendedAuditingSettings/{blobAuditingPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -82,10 +82,7 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) createOrUpdateCreateRequ
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if blobAuditingPolicyName == "" {
-		return nil, errors.New("parameter blobAuditingPolicyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{blobAuditingPolicyName}", url.PathEscape(string(blobAuditingPolicyName)))
+	urlPath = strings.ReplaceAll(urlPath, "{blobAuditingPolicyName}", url.PathEscape("default"))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -115,8 +112,8 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) createOrUpdateHandleErro
 
 // Get - Gets an extended server's blob auditing policy.
 // If the operation fails it returns a generic error.
-func (client *ExtendedServerBlobAuditingPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, blobAuditingPolicyName Enum5, options *ExtendedServerBlobAuditingPoliciesGetOptions) (ExtendedServerBlobAuditingPoliciesGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, blobAuditingPolicyName, options)
+func (client *ExtendedServerBlobAuditingPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, options *ExtendedServerBlobAuditingPoliciesGetOptions) (ExtendedServerBlobAuditingPoliciesGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, options)
 	if err != nil {
 		return ExtendedServerBlobAuditingPoliciesGetResponse{}, err
 	}
@@ -131,7 +128,7 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) Get(ctx context.Context,
 }
 
 // getCreateRequest creates the Get request.
-func (client *ExtendedServerBlobAuditingPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, blobAuditingPolicyName Enum5, options *ExtendedServerBlobAuditingPoliciesGetOptions) (*policy.Request, error) {
+func (client *ExtendedServerBlobAuditingPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *ExtendedServerBlobAuditingPoliciesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/extendedAuditingSettings/{blobAuditingPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -141,10 +138,7 @@ func (client *ExtendedServerBlobAuditingPoliciesClient) getCreateRequest(ctx con
 		return nil, errors.New("parameter serverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if blobAuditingPolicyName == "" {
-		return nil, errors.New("parameter blobAuditingPolicyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{blobAuditingPolicyName}", url.PathEscape(string(blobAuditingPolicyName)))
+	urlPath = strings.ReplaceAll(urlPath, "{blobAuditingPolicyName}", url.PathEscape("default"))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}

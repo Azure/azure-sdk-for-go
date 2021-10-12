@@ -35,8 +35,8 @@ func NewDatabaseBlobAuditingPoliciesClient(con *arm.Connection, subscriptionID s
 
 // CreateOrUpdate - Creates or updates a database's blob auditing policy.
 // If the operation fails it returns a generic error.
-func (client *DatabaseBlobAuditingPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, blobAuditingPolicyName Enum5, parameters DatabaseBlobAuditingPolicy, options *DatabaseBlobAuditingPoliciesCreateOrUpdateOptions) (DatabaseBlobAuditingPoliciesCreateOrUpdateResponse, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, blobAuditingPolicyName, parameters, options)
+func (client *DatabaseBlobAuditingPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseBlobAuditingPolicy, options *DatabaseBlobAuditingPoliciesCreateOrUpdateOptions) (DatabaseBlobAuditingPoliciesCreateOrUpdateResponse, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serverName, databaseName, parameters, options)
 	if err != nil {
 		return DatabaseBlobAuditingPoliciesCreateOrUpdateResponse{}, err
 	}
@@ -51,7 +51,7 @@ func (client *DatabaseBlobAuditingPoliciesClient) CreateOrUpdate(ctx context.Con
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DatabaseBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, blobAuditingPolicyName Enum5, parameters DatabaseBlobAuditingPolicy, options *DatabaseBlobAuditingPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DatabaseBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters DatabaseBlobAuditingPolicy, options *DatabaseBlobAuditingPoliciesCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingSettings/{blobAuditingPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -65,10 +65,7 @@ func (client *DatabaseBlobAuditingPoliciesClient) createOrUpdateCreateRequest(ct
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	if blobAuditingPolicyName == "" {
-		return nil, errors.New("parameter blobAuditingPolicyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{blobAuditingPolicyName}", url.PathEscape(string(blobAuditingPolicyName)))
+	urlPath = strings.ReplaceAll(urlPath, "{blobAuditingPolicyName}", url.PathEscape("default"))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -107,8 +104,8 @@ func (client *DatabaseBlobAuditingPoliciesClient) createOrUpdateHandleError(resp
 
 // Get - Gets a database's blob auditing policy.
 // If the operation fails it returns a generic error.
-func (client *DatabaseBlobAuditingPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, blobAuditingPolicyName Enum5, options *DatabaseBlobAuditingPoliciesGetOptions) (DatabaseBlobAuditingPoliciesGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, blobAuditingPolicyName, options)
+func (client *DatabaseBlobAuditingPoliciesClient) Get(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseBlobAuditingPoliciesGetOptions) (DatabaseBlobAuditingPoliciesGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
 	if err != nil {
 		return DatabaseBlobAuditingPoliciesGetResponse{}, err
 	}
@@ -123,7 +120,7 @@ func (client *DatabaseBlobAuditingPoliciesClient) Get(ctx context.Context, resou
 }
 
 // getCreateRequest creates the Get request.
-func (client *DatabaseBlobAuditingPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, blobAuditingPolicyName Enum5, options *DatabaseBlobAuditingPoliciesGetOptions) (*policy.Request, error) {
+func (client *DatabaseBlobAuditingPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabaseBlobAuditingPoliciesGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingSettings/{blobAuditingPolicyName}"
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -137,10 +134,7 @@ func (client *DatabaseBlobAuditingPoliciesClient) getCreateRequest(ctx context.C
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	if blobAuditingPolicyName == "" {
-		return nil, errors.New("parameter blobAuditingPolicyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{blobAuditingPolicyName}", url.PathEscape(string(blobAuditingPolicyName)))
+	urlPath = strings.ReplaceAll(urlPath, "{blobAuditingPolicyName}", url.PathEscape("default"))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}

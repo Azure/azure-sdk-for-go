@@ -1011,45 +1011,27 @@ func (c EncryptionProtectorName) ToPtr() *EncryptionProtectorName {
 	return &c
 }
 
-type Enum5 string
+type Enum75 string
 
 const (
-	Enum5Default Enum5 = "default"
+	Enum75All     Enum75 = "All"
+	Enum75Error   Enum75 = "Error"
+	Enum75Success Enum75 = "Success"
+	Enum75Warning Enum75 = "Warning"
 )
 
-// PossibleEnum5Values returns the possible values for the Enum5 const type.
-func PossibleEnum5Values() []Enum5 {
-	return []Enum5{
-		Enum5Default,
+// PossibleEnum75Values returns the possible values for the Enum75 const type.
+func PossibleEnum75Values() []Enum75 {
+	return []Enum75{
+		Enum75All,
+		Enum75Error,
+		Enum75Success,
+		Enum75Warning,
 	}
 }
 
-// ToPtr returns a *Enum5 pointing to the current value.
-func (c Enum5) ToPtr() *Enum5 {
-	return &c
-}
-
-type Enum76 string
-
-const (
-	Enum76All     Enum76 = "All"
-	Enum76Error   Enum76 = "Error"
-	Enum76Success Enum76 = "Success"
-	Enum76Warning Enum76 = "Warning"
-)
-
-// PossibleEnum76Values returns the possible values for the Enum76 const type.
-func PossibleEnum76Values() []Enum76 {
-	return []Enum76{
-		Enum76All,
-		Enum76Error,
-		Enum76Success,
-		Enum76Warning,
-	}
-}
-
-// ToPtr returns a *Enum76 pointing to the current value.
-func (c Enum76) ToPtr() *Enum76 {
+// ToPtr returns a *Enum75 pointing to the current value.
+func (c Enum75) ToPtr() *Enum75 {
 	return &c
 }
 

@@ -274,3 +274,52 @@ func TestUpdateKeyProperties(t *testing.T) {
 	require.Equal(t, *resp.Tags["Tag1"], "Val1")
 	require.NotNil(t, resp.Attributes.Updated)
 }
+
+func TestListDeletedSecrets(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	key, err := createRandomName(t, "key")
+	require.NoError(t, err)
+	_, err = client.CreateRSAKey(context.Background(), key, nil)
+	require.NoError(t, err)
+	defer cleanUpKey(t, client, key)
+
+	pollerResp, err := client.BeginDeleteKey(context.Background(), key, nil)
+	require.NoError(t, err)
+	_, err = pollerResp.PollUntilDone(context.Background(), delay())
+	require.NoError(t, err)
+
+	key, err = createRandomName(t, "key2")
+	require.NoError(t, err)
+	_, err = client.CreateRSAKey(context.Background(), key, nil)
+	require.NoError(t, err)
+	defer cleanUpKey(t, client, key)
+
+	pollerResp, err = client.BeginDeleteKey(context.Background(), key, nil)
+	require.NoError(t, err)
+	_, err = pollerResp.PollUntilDone(context.Background(), delay())
+	require.NoError(t, err)
+
+	key, err = createRandomName(t, "key3")
+	require.NoError(t, err)
+	_, err = client.CreateRSAKey(context.Background(), key, nil)
+	require.NoError(t, err)
+	defer cleanUpKey(t, client, key)
+
+	pollerResp, err = client.BeginDeleteKey(context.Background(), key, nil)
+	require.NoError(t, err)
+	_, err = pollerResp.PollUntilDone(context.Background(), delay())
+	require.NoError(t, err)
+
+	pager := client.ListDeletedSecrets(nil)
+	count := 0
+	for pager.NextPage(ctx) {
+		count += len(pager.PageResponse().DeletedKeys)
+	}
+
+	require.GreaterOrEqual(t, count, 3)
+}

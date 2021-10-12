@@ -231,3 +231,29 @@ type DeletedKeyBundle struct {
 	// READ-ONLY; The time when the key is scheduled to be purged, in UTC
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
+
+// DeletedKeyItem - The deleted key item containing the deleted key metadata and information about deletion.
+type DeletedKeyItem struct {
+	KeyItem
+	// The url of the recovery object, used to identify and recover the deleted key.
+	RecoveryID *string `json:"recoveryId,omitempty"`
+
+	// READ-ONLY; The time when the key was deleted, in UTC
+	DeletedDate *time.Time `json:"deletedDate,omitempty" azure:"ro"`
+
+	// READ-ONLY; The time when the key is scheduled to be purged, in UTC
+	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
+}
+
+func deletedKeyItemFromGenerated(i *internal.DeletedKeyItem) *DeletedKeyItem {
+	if i == nil {
+		return nil
+	}
+
+	return &DeletedKeyItem{
+		RecoveryID:         i.RecoveryID,
+		DeletedDate:        i.DeletedDate,
+		ScheduledPurgeDate: i.ScheduledPurgeDate,
+		KeyItem:            *keyItemFromGenerated(&i.KeyItem),
+	}
+}

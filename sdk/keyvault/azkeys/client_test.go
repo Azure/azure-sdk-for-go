@@ -282,7 +282,7 @@ func TestListDeletedSecrets(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	key, err := createRandomName(t, "key")
+	key, err := createRandomName(t, "key1")
 	require.NoError(t, err)
 	_, err = client.CreateRSAKey(context.Background(), key, nil)
 	require.NoError(t, err)
@@ -293,7 +293,7 @@ func TestListDeletedSecrets(t *testing.T) {
 	_, err = pollerResp.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
 
-	key, err = createRandomName(t, "key2")
+	key, err = createRandomName(t, "key21")
 	require.NoError(t, err)
 	_, err = client.CreateRSAKey(context.Background(), key, nil)
 	require.NoError(t, err)
@@ -304,7 +304,7 @@ func TestListDeletedSecrets(t *testing.T) {
 	_, err = pollerResp.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
 
-	key, err = createRandomName(t, "key3")
+	key, err = createRandomName(t, "key31")
 	require.NoError(t, err)
 	_, err = client.CreateRSAKey(context.Background(), key, nil)
 	require.NoError(t, err)
@@ -315,11 +315,38 @@ func TestListDeletedSecrets(t *testing.T) {
 	_, err = pollerResp.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
 
-	pager := client.ListDeletedSecrets(nil)
+	pager := client.ListDeletedKeys(nil)
 	count := 0
 	for pager.NextPage(ctx) {
 		count += len(pager.PageResponse().DeletedKeys)
 	}
 
 	require.GreaterOrEqual(t, count, 3)
+}
+
+func TestListKeyVersions(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	key, err := createRandomName(t, "key")
+	require.NoError(t, err)
+	_, err = client.CreateRSAKey(context.Background(), key, nil)
+	require.NoError(t, err)
+	defer cleanUpKey(t, client, key)
+
+	for i := 0; i < 5; i++ {
+		_, err = client.CreateRSAKey(context.Background(), key, nil)
+		require.NoError(t, err)
+	}
+
+	pager := client.ListKeyVersions(key, nil)
+	count := 0
+	for pager.NextPage(ctx) {
+		count += len(pager.PageResponse().Keys)
+	}
+
+	require.GreaterOrEqual(t, count, 6)
 }

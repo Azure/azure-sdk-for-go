@@ -36,8 +36,8 @@ type ClientOptions struct {
 	// across multiple tenants.
 	AuxiliaryTenants []string
 
-	// Endpoint is the base URL for Azure Resource Manager
-	Endpoint Endpoint
+	// Host is the base URL for Azure Resource Manager
+	Host Endpoint
 
 	// HTTPClient sets the transport for making HTTP requests.
 	HTTPClient policy.Transporter
@@ -70,7 +70,7 @@ func NewPipeline(module, version string, cred azcore.TokenCredential, options *C
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	ep := options.Endpoint
+	ep := options.Host
 	if len(ep) == 0 {
 		ep = AzurePublicCloud
 	}

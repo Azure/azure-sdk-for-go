@@ -39,6 +39,10 @@ type SessionReceiverOptions struct {
 }
 
 func toReceiverOptions(sropts *SessionReceiverOptions) *ReceiverOptions {
+	if sropts == nil {
+		return nil
+	}
+
 	return &ReceiverOptions{
 		ReceiveMode: sropts.ReceiveMode,
 	}

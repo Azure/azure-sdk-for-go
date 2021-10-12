@@ -45,6 +45,40 @@ func TestSessionReceiver_acceptSession(t *testing.T) {
 	require.EqualValues(t, "session-1", receiver.SessionID())
 }
 
+func TestSessionReceiver_blankSessionIDs(t *testing.T) {
+	t.Skip("Can't run blank session ID test because of issue")
+	// errors while closing links: amqp sender close error: *Error{Condition: amqp:not-allowed, Description: The SessionId was not set on a message, and it cannot be sent to the entity. Entities that have session support enabled can only receive messages that have the SessionId set to a valid value.
+
+	client, cleanup, queueName := setupLiveTest(t, &internal.QueueDescription{
+		RequiresSession: to.BoolPtr(true),
+	})
+	defer cleanup()
+
+	ctx := context.Background()
+
+	// send a message to a specific session
+	sender, err := client.NewSender(queueName)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(ctx, &Message{
+		Body:      []byte("session-based message"),
+		SessionID: to.StringPtr(""),
+	})
+	require.NoError(t, err)
+
+	receiver, err := client.AcceptSessionForQueue(ctx, queueName, "", nil)
+	require.NoError(t, err)
+
+	msg, err := receiver.ReceiveMessage(ctx, nil)
+	require.NoError(t, err)
+
+	require.EqualValues(t, "session-based message", msg.Body)
+	require.EqualValues(t, "", *msg.SessionID)
+	require.NoError(t, receiver.CompleteMessage(ctx, msg))
+
+	require.EqualValues(t, "session-1", receiver.SessionID())
+}
+
 func TestSessionReceiver_acceptSessionButAlreadyLocked(t *testing.T) {
 	client, cleanup, queueName := setupLiveTest(t, &internal.QueueDescription{
 		RequiresSession: to.BoolPtr(true),

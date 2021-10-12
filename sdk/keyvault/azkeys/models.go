@@ -42,6 +42,20 @@ type KeyAttributes struct {
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 }
 
+func (k KeyAttributes) toGenerated() *internal.KeyAttributes {
+	return &internal.KeyAttributes{
+		RecoverableDays: k.RecoverableDays,
+		RecoveryLevel:   recoveryLevelToGenerated(k.RecoveryLevel),
+		Attributes: internal.Attributes{
+			Enabled:   k.Enabled,
+			Expires:   k.Expires,
+			NotBefore: k.NotBefore,
+			Created:   k.Created,
+			Updated:   k.Updated,
+		},
+	}
+}
+
 func keyAttributesFromGenerated(i *internal.KeyAttributes) *KeyAttributes {
 	if i == nil {
 		return &KeyAttributes{}

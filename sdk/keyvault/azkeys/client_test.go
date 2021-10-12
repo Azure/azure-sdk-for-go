@@ -244,3 +244,33 @@ func TestRecoverDeletedKey(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, getResp.Key)
 }
+
+func TestUpdateKeyProperties(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	key, err := createRandomName(t, "key")
+	require.NoError(t, err)
+
+	_, err = client.CreateRSAKey(context.Background(), key, nil)
+	require.NoError(t, err)
+	defer cleanUpKey(t, client, key)
+
+	resp, err := client.UpdateKeyProperties(ctx, key, &UpdateKeyPropertiesOptions{
+		Tags: map[string]*string{
+			"Tag1": to.StringPtr("Val1"),
+		},
+		// KeyAttributes: &KeyAttributes{
+		// 	Attributes: Attributes{
+		// 		Expires: to.TimePtr(time.Now().AddDate(1, 0, 0)),
+		// 	},
+		// },
+	})
+	require.NoError(t, err)
+	require.NotNil(t, resp.Attributes)
+	require.Equal(t, *resp.Tags["Tag1"], "Val1")
+	require.NotNil(t, resp.Attributes.Updated)
+}

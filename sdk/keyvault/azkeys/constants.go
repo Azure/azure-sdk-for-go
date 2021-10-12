@@ -6,6 +6,8 @@
 
 package azkeys
 
+import "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal"
+
 // DeletionRecoveryLevel - Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains 'Purgeable', the
 // certificate can be permanently deleted by a privileged user; otherwise,
 // only the system can purge the certificate, at the end of the retention interval.
@@ -51,6 +53,27 @@ const (
 
 func (d DeletionRecoveryLevel) ToPtr() *DeletionRecoveryLevel {
 	return &d
+}
+
+func recoveryLevelToGenerated(d *DeletionRecoveryLevel) *internal.DeletionRecoveryLevel {
+	if d == nil {
+		return nil
+	}
+	if *d == CustomizedRecoverable {
+		return internal.DeletionRecoveryLevelCustomizedRecoverable.ToPtr()
+	} else if *d == CustomizedRecoverableProtectedSubscription {
+		return internal.DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription.ToPtr()
+	} else if *d == CustomizedRecoverablePurgeable {
+		return internal.DeletionRecoveryLevelCustomizedRecoverablePurgeable.ToPtr()
+	} else if *d == Purgeable {
+		return internal.DeletionRecoveryLevelPurgeable.ToPtr()
+	} else if *d == RecoverableProtectedSubscription {
+		return internal.DeletionRecoveryLevelRecoverableProtectedSubscription.ToPtr()
+	} else if *d == Recoverable {
+		return internal.DeletionRecoveryLevelRecoverable.ToPtr()
+	} else {
+		return internal.DeletionRecoveryLevelRecoverablePurgeable.ToPtr()
+	}
 }
 
 // JSONWebKeyCurveName - Elliptic curve name. For valid values, see JsonWebKeyCurveName.

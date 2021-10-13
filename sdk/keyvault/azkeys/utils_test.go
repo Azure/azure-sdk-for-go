@@ -8,6 +8,7 @@ package azkeys
 
 import (
 	"context"
+	"encoding/hex"
 	"fmt"
 	"hash/fnv"
 	"net/http"
@@ -156,4 +157,13 @@ func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenReque
 		Token:     "faketoken",
 		ExpiresOn: time.Date(2040, time.January, 1, 1, 1, 1, 1, time.UTC),
 	}, nil
+}
+
+func toBytes(s string, t *testing.T) []byte {
+	if len(s) % 2 == 1 {
+		s = fmt.Sprintf("0%s", s)
+	}
+	ret, err := hex.DecodeString(s)
+	require.NoError(t, err)
+	return ret
 }

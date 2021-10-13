@@ -164,6 +164,27 @@ func jsonWebKeyFromGenerated(i *internal.JSONWebKey) *JSONWebKey {
 	}
 }
 
+func (j JSONWebKey) toGenerated() *internal.JSONWebKey {
+	return &internal.JSONWebKey{
+		Crv:    (*internal.JSONWebKeyCurveName)(j.Crv),
+		D:      j.D,
+		DP:     j.DP,
+		DQ:     j.DQ,
+		E:      j.E,
+		K:      j.K,
+		KeyOps: j.KeyOps,
+		Kid:    j.Kid,
+		Kty:    (*internal.JSONWebKeyType)(j.Kty),
+		N:      j.N,
+		P:      j.P,
+		Q:      j.Q,
+		QI:     j.QI,
+		T:      j.T,
+		X:      j.X,
+		Y:      j.Y,
+	}
+}
+
 // KeyType - JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
 type KeyType string
 

@@ -10,6 +10,7 @@ import (
 	"reflect"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 // holds sentinel values used to send nulls
@@ -59,6 +60,9 @@ func IsNullValue(v interface{}) bool {
 	// no sentinel object for this *t
 	return false
 }
+
+// ClientOptions contains configuration settings for a client's pipeline.
+type ClientOptions = policy.ClientOptions
 
 // Poller encapsulates state and logic for polling on long-running operations.
 type Poller = pollers.Poller

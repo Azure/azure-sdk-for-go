@@ -6,7 +6,7 @@
 
 package arm
 
-import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 
 // Endpoint is the base URL for Azure Resource Manager.
 type Endpoint string
@@ -23,17 +23,15 @@ const (
 )
 
 // ClientOptions contains configuration settings for a client's pipeline.
-// All zero-value fields will be initialized with their default values.
 type ClientOptions struct {
-	azcore.ClientOptions
+	policy.ClientOptions
 
 	// AuxiliaryTenants contains a list of additional tenants for cross-tenant requests.
 	AuxiliaryTenants []string
 
-	// DisableRPRegistration disables the auto-RP registration policy.
-	// The default value is false.
+	// DisableRPRegistration disables the auto-RP registration policy. Defaults to false.
 	DisableRPRegistration bool
 
-	// Host is the base URL for Azure Resource Manager.
+	// Host is the base URL for Azure Resource Manager. Defaults to AzurePublicCloud.
 	Host Endpoint
 }

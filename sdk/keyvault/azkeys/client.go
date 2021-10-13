@@ -46,6 +46,7 @@ type ClientOptions struct {
 	PerTryPolicies []policy.Policy
 }
 
+// converts ClientOptions to generated *internal.ConnectionOptions
 func (c *ClientOptions) toConnectionOptions() *internal.ConnectionOptions {
 	if c == nil {
 		return nil
@@ -96,10 +97,12 @@ type CreateKeyOptions struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
+// convert CreateKeyOptions to *internal.KeyVaultClientCreateKeyOptions
 func (c *CreateKeyOptions) toGenerated() *internal.KeyVaultClientCreateKeyOptions {
 	return &internal.KeyVaultClientCreateKeyOptions{}
 }
 
+// convert CreateKeyOptions to internal.KeyCreateParameters
 func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) internal.KeyCreateParameters {
 	return internal.KeyCreateParameters{
 		Kty:            keyType.toGenerated(),
@@ -119,6 +122,7 @@ type CreateKeyResponse struct {
 	RawResponse *http.Response
 }
 
+// creates CreateKeyResponse from internal.KeyVaultClient.CreateKeyResponse
 func createKeyResponseFromGenerated(g internal.KeyVaultClientCreateKeyResponse) CreateKeyResponse {
 	return CreateKeyResponse{
 		RawResponse: g.RawResponse,
@@ -131,6 +135,9 @@ func createKeyResponseFromGenerated(g internal.KeyVaultClientCreateKeyResponse) 
 	}
 }
 
+// CreateKey - The create key operation can be used to create any key type in Azure Key Vault.
+// If the named key already exists, Azure Key Vault creates
+// a new version of the key. It requires the keys/create  permission.
 func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, options *CreateKeyOptions) (CreateKeyResponse, error) {
 	if options == nil {
 		options = &CreateKeyOptions{}
@@ -144,6 +151,7 @@ func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, op
 	return createKeyResponseFromGenerated(resp), nil
 }
 
+// CreateECKeyOptions contains the optional parameters for the KeyVaultClient.CreateECKey method
 type CreateECKeyOptions struct {
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
 	CurveName *internal.JSONWebKeyCurveName `json:"crv,omitempty"`
@@ -155,6 +163,7 @@ type CreateECKeyOptions struct {
 	HardwareProtected bool
 }
 
+// convert CreateECKeyOptions to internal.KeyCreateParameters
 func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) internal.KeyCreateParameters {
 	return internal.KeyCreateParameters{
 		Kty:   keyType.toGenerated(),
@@ -163,12 +172,14 @@ func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) internal.Key
 	}
 }
 
+// CreateECKeyResponse contains the response from method Client.CreateECKey.
 type CreateECKeyResponse struct {
 	KeyBundle
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
+// convert the internal.KeyVaultClientCreateKeyResponse to CreateECKeyResponse
 func createECKeyResponseFromGenerated(g internal.KeyVaultClientCreateKeyResponse) CreateECKeyResponse {
 	return CreateECKeyResponse{
 		RawResponse: g.RawResponse,
@@ -181,6 +192,9 @@ func createECKeyResponseFromGenerated(g internal.KeyVaultClientCreateKeyResponse
 	}
 }
 
+// CreateKey - The create key operation can be used to create a new elliptic key curve in Azure Key Vault.
+// If the named key already exists, Azure Key Vault creates
+// a new version of the key. It requires the keys/create  permission.
 func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateECKeyOptions) (CreateECKeyResponse, error) {
 	keyType := EC
 
@@ -198,6 +212,7 @@ func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateEC
 	return createECKeyResponseFromGenerated(resp), nil
 }
 
+// CreateOCTKeyOptions contains the optional parameters for the Client.CreateOCTKey method
 type CreateOCTKeyOptions struct {
 	// Hardware Protected OCT Key
 	HardwareProtected bool
@@ -209,6 +224,7 @@ type CreateOCTKeyOptions struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
+// conver the CreateOCTKeyOptions to internal.KeyCreateParameters
 func (c *CreateOCTKeyOptions) toKeyCreateParameters(keyType KeyType) internal.KeyCreateParameters {
 	return internal.KeyCreateParameters{
 		Kty:     keyType.toGenerated(),
@@ -217,12 +233,14 @@ func (c *CreateOCTKeyOptions) toKeyCreateParameters(keyType KeyType) internal.Ke
 	}
 }
 
+// CreateOCTKeyResponse contains the response from method Client.CreateOCTKey.
 type CreateOCTKeyResponse struct {
 	KeyBundle
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
+// convert generated response to CreateOCTKeyResponse
 func createOCTKeyResponseFromGenerated(i internal.KeyVaultClientCreateKeyResponse) CreateOCTKeyResponse {
 	return CreateOCTKeyResponse{
 		RawResponse: i.RawResponse,
@@ -235,6 +253,9 @@ func createOCTKeyResponseFromGenerated(i internal.KeyVaultClientCreateKeyRespons
 	}
 }
 
+// CreateKey - The create key operation can be used to create a new octet sequence (symmetric) key in Azure Key Vault.
+// If the named key already exists, Azure Key Vault creates
+// a new version of the key. It requires the keys/create  permission.
 func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateOCTKeyOptions) (CreateOCTKeyResponse, error) {
 	keyType := Oct
 
@@ -249,6 +270,7 @@ func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateO
 	return createOCTKeyResponseFromGenerated(resp), err
 }
 
+// CreateRSAKeyOptions contains the optional parameters for the Client.CreateRSAKey method.
 type CreateRSAKeyOptions struct {
 	// Hardware Protected OCT Key
 	HardwareProtected bool
@@ -263,6 +285,7 @@ type CreateRSAKeyOptions struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
+// convert CreateRSAKeyOptions to internal.KeyCreateParameters
 func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) internal.KeyCreateParameters {
 	return internal.KeyCreateParameters{
 		Kty:            k.toGenerated(),
@@ -272,12 +295,14 @@ func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) internal.KeyCreate
 	}
 }
 
+// CreateRSAKeyResponse contains the response from method Client.CreateRSAKey.
 type CreateRSAKeyResponse struct {
 	KeyBundle
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
+// convert internal response to CreateRSAKeyResponse
 func createRSAKeyResponseFromGenerated(i internal.KeyVaultClientCreateKeyResponse) CreateRSAKeyResponse {
 	return CreateRSAKeyResponse{
 		RawResponse: i.RawResponse,
@@ -290,6 +315,9 @@ func createRSAKeyResponseFromGenerated(i internal.KeyVaultClientCreateKeyRespons
 	}
 }
 
+// CreateKey - The create key operation can be used to create a new RSA key in Azure Key Vault.
+// If the named key already exists, Azure Key Vault creates
+// a new version of the key. It requires the keys/create  permission.
 func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateRSAKeyOptions) (CreateRSAKeyResponse, error) {
 	keyType := RSA
 
@@ -307,6 +335,7 @@ func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateR
 	return createRSAKeyResponseFromGenerated(resp), nil
 }
 
+// ListKeysPager is a Pager for the Client.ListSecrets operation
 type ListKeysPager interface {
 	// PageResponse returns the current ListKeysPage
 	PageResponse() ListKeysPage
@@ -318,31 +347,39 @@ type ListKeysPager interface {
 	NextPage(context.Context) bool
 }
 
+// listKeysPager implements the ListKeysPager interface
 type listKeysPager struct {
 	genPager internal.KeyVaultClientGetKeysPager
-	err      error
 }
 
+// PageResponse returns the results from the page most recently fetched from the service
 func (l *listKeysPager) PageResponse() ListKeysPage {
 	return listKeysPageFromGenerated(l.genPager.PageResponse())
 }
 
+// Err returns an error value if the most recent call to NextPage was not successful, else nil
 func (l *listKeysPager) Err() error {
-	return l.err
+	return l.genPager.Err()
 }
 
+// NextPage fetches the next available page of results from the service. If the fetched page
+// contains results, the return value is true, else false. Results fetched from the service
+// can be evaluated by calling PageResponse on this Pager.
 func (l *listKeysPager) NextPage(ctx context.Context) bool {
 	return l.genPager.NextPage(ctx)
 }
 
+// ListKeysOptions contains the optional parameters for the Client.ListKeys method
 type ListKeysOptions struct {
 	MaxResults *int32
 }
 
+// convert ListKeysOptions to generated options
 func (l ListKeysOptions) toGenerated() *internal.KeyVaultClientGetKeysOptions {
 	return &internal.KeyVaultClientGetKeysOptions{Maxresults: l.MaxResults}
 }
 
+// ListKeysPage contains the current page of results for the Client.ListSecrets operation
 type ListKeysPage struct {
 	// READ-ONLY; The URL to get the next set of keys.
 	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
@@ -353,6 +390,7 @@ type ListKeysPage struct {
 	RawResponse *http.Response
 }
 
+// convert internal Response to ListKeysPage
 func listKeysPageFromGenerated(i internal.KeyVaultClientGetKeysResponse) ListKeysPage {
 	var keys []*KeyItem
 	for _, k := range i.Value {
@@ -365,6 +403,10 @@ func listKeysPageFromGenerated(i internal.KeyVaultClientGetKeysResponse) ListKey
 	}
 }
 
+// ListKeys retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the
+// public part of a stored key. The LIST operation is applicable to all key types, however only the
+// base key identifier, attributes, and tags are provided in the response. Individual versions of a
+// key are not listed in the response. This operation requires the keys/list permission.
 func (c *Client) ListKeys(options *ListKeysOptions) ListKeysPager {
 	if options == nil {
 		options = &ListKeysOptions{}
@@ -376,16 +418,19 @@ func (c *Client) ListKeys(options *ListKeysOptions) ListKeysPager {
 	}
 }
 
+// GetKeyOptions contains the options for the Client.GetKey method
 type GetKeyOptions struct {
 	Version string
 }
 
+// GetKeyResponse contains the response for the Client.GetResponse method
 type GetKeyResponse struct {
 	KeyBundle
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
+// convert internal response to GetKeyResponse
 func getKeyResponseFromGenerated(i internal.KeyVaultClientGetKeyResponse) GetKeyResponse {
 	return GetKeyResponse{
 		RawResponse: i.RawResponse,
@@ -398,6 +443,8 @@ func getKeyResponseFromGenerated(i internal.KeyVaultClientGetKeyResponse) GetKey
 	}
 }
 
+// GetKey - The get key operation is applicable to all key types. If the requested key is symmetric, then
+// no key material is released in the response. This operation requires the keys/get permission.
 func (c *Client) GetKey(ctx context.Context, keyName string, options *GetKeyOptions) (GetKeyResponse, error) {
 	if options == nil {
 		options = &GetKeyOptions{}
@@ -411,18 +458,22 @@ func (c *Client) GetKey(ctx context.Context, keyName string, options *GetKeyOpti
 	return getKeyResponseFromGenerated(resp), err
 }
 
+// GetDeletedKeyOptions contains the optional parameters for the Client.GetDeletedKey method
 type GetDeletedKeyOptions struct{}
 
+// convert the GetDeletedKeyOptions to the internal representation
 func (g GetDeletedKeyOptions) toGenerated() *internal.KeyVaultClientGetDeletedKeyOptions {
 	return &internal.KeyVaultClientGetDeletedKeyOptions{}
 }
 
+// GetDeletedKeyResponse contains the response from a Client.GetDeletedKey
 type GetDeletedKeyResponse struct {
 	DeletedKeyBundle
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
+// convert generated response to GetDeletedKeyResponse
 func getDeletedKeyResponseFromGenerated(i internal.KeyVaultClientGetDeletedKeyResponse) GetDeletedKeyResponse {
 	return GetDeletedKeyResponse{
 		RawResponse: i.RawResponse,
@@ -440,6 +491,9 @@ func getDeletedKeyResponseFromGenerated(i internal.KeyVaultClientGetDeletedKeyRe
 	}
 }
 
+// GetDeletedKey - The Get Deleted Key operation is applicable for soft-delete enabled vaults.
+// While the operation can be invoked on any vault, it will return an error if invoked on a non
+// soft-delete enabled vault. This operation requires the keys/get permission.
 func (c *Client) GetDeletedKey(ctx context.Context, keyName string, options *GetDeletedKeyOptions) (GetDeletedKeyResponse, error) {
 	if options == nil {
 		options = &GetDeletedKeyOptions{}
@@ -456,6 +510,7 @@ func (c *Client) GetDeletedKey(ctx context.Context, keyName string, options *Get
 // PurgeDeletedKeyOptions is the struct for any future options for Client.PurgeDeletedKey.
 type PurgeDeletedKeyOptions struct{}
 
+// convert options to internal options
 func (p *PurgeDeletedKeyOptions) toGenerated() *internal.KeyVaultClientPurgeDeletedKeyOptions {
 	return &internal.KeyVaultClientPurgeDeletedKeyOptions{}
 }
@@ -490,6 +545,7 @@ type DeleteKeyResponse struct {
 	RawResponse *http.Response
 }
 
+// convert interal response to DeleteKeyResponse
 func deleteKeyResponseFromGenerated(i *internal.KeyVaultClientDeleteKeyResponse) *DeleteKeyResponse {
 	if i == nil {
 		return nil
@@ -574,6 +630,7 @@ func (s *startDeleteKeyPoller) pollUntilDone(ctx context.Context, t time.Duratio
 	return DeleteKeyResponse{}, nil
 }
 
+// DeleteKeyPollerResponse contains the response from the Client.BeginDeleteKey method
 type DeleteKeyPollerResponse struct {
 	// PollUntilDone will poll the service endpoint until a terminal state is reached or an error occurs
 	PollUntilDone func(context.Context, time.Duration) (DeleteKeyResponse, error)
@@ -620,19 +677,24 @@ func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *Be
 	}, nil
 }
 
+// BackupKeyOptions contains the optional parameters for the Client.BackupKey method
 type BackupKeyOptions struct{}
 
+// convert Options to generated version
 func (b BackupKeyOptions) toGenerated() *internal.KeyVaultClientBackupKeyOptions {
 	return &internal.KeyVaultClientBackupKeyOptions{}
 }
 
+// BackupKeyResponse contains the response from the Client.BackupKey method
 type BackupKeyResponse struct {
 	// READ-ONLY; The backup blob containing the backed up key.
 	Value []byte `json:"value,omitempty" azure:"ro"`
+
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
+// convert internal reponse to BackupKeyResponse
 func backupKeyResponseFromGenerated(i internal.KeyVaultClientBackupKeyResponse) BackupKeyResponse {
 	return BackupKeyResponse{
 		RawResponse: i.RawResponse,
@@ -640,6 +702,16 @@ func backupKeyResponseFromGenerated(i internal.KeyVaultClientBackupKeyResponse) 
 	}
 }
 
+// BackupKey - The Key Backup operation exports a key from Azure Key Vault in a protected form.
+// Note that this operation does NOT return key material in a form that can be used outside the
+// Azure Key Vault system, the returned key material is either protected to a Azure Key Vault
+// HSM or to Azure Key Vault itself. The intent of this operation is to allow a client to GENERATE
+// a key in one Azure Key Vault instance, BACKUP the key, and then RESTORE it into another Azure
+// Key Vault instance. The BACKUP operation may be used to export, in protected form, any key
+// type from Azure Key Vault. Individual versions of a key cannot be backed up. BACKUP / RESTORE
+// can be performed within geographical boundaries only; meaning that a BACKUP from one geographical
+// area cannot be restored to another geographical area. For example, a backup from the US
+// geographical area cannot be restored in an EU geographical area. This operation requires the key/backup permission.
 func (c *Client) BackupKey(ctx context.Context, keyName string, options *BackupKeyOptions) (BackupKeyResponse, error) {
 	if options == nil {
 		options = &BackupKeyOptions{}
@@ -667,6 +739,7 @@ type RecoverDeletedKeyPoller interface {
 	FinalResponse(context.Context) (RecoverDeletedKeyResponse, error)
 }
 
+// beginRecoverPoller implements the RecoverDeletedKeyPoller interface
 type beginRecoverPoller struct {
 	keyName         string
 	vaultUrl        string
@@ -699,6 +772,7 @@ func (b *beginRecoverPoller) FinalResponse(ctx context.Context) (RecoverDeletedK
 	return recoverDeletedKeyResponseFromGenerated(b.recoverResponse), nil
 }
 
+// pollUntilDone is the method for the Response.PollUntilDone struct
 func (b *beginRecoverPoller) pollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedKeyResponse, error) {
 	for {
 		resp, err := b.Poll(ctx)
@@ -789,8 +863,11 @@ func (c *Client) BeginRecoverDeletedKey(ctx context.Context, keyName string, opt
 	}, nil
 }
 
+// UpdateKeyPropertiesOptions contains the optional parameters for the Client.UpdateKeyProperties method
 type UpdateKeyPropertiesOptions struct {
+	// The version of a key to update
 	Version string
+
 	// The attributes of a key managed by the key vault service.
 	KeyAttributes *KeyAttributes `json:"attributes,omitempty"`
 
@@ -801,6 +878,7 @@ type UpdateKeyPropertiesOptions struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
+// convert the options to internal.KeyUpdateParameters struct
 func (u UpdateKeyPropertiesOptions) toKeyUpdateParameters() internal.KeyUpdateParameters {
 	var attribs *internal.KeyAttributes
 	if u.KeyAttributes != nil {
@@ -813,16 +891,19 @@ func (u UpdateKeyPropertiesOptions) toKeyUpdateParameters() internal.KeyUpdatePa
 	}
 }
 
+// convert options to generated options
 func (u UpdateKeyPropertiesOptions) toGeneratedOptions() *internal.KeyVaultClientUpdateKeyOptions {
 	return &internal.KeyVaultClientUpdateKeyOptions{}
 }
 
+// UpdateKeyPropertiesResponse contains the response for the Client.UpdateKeyProperties method
 type UpdateKeyPropertiesResponse struct {
 	KeyBundle
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
+// convert the internal response to UpdateKeyPropertiesResponse
 func updateKeyPropertiesFromGenerated(i internal.KeyVaultClientUpdateKeyResponse) UpdateKeyPropertiesResponse {
 	return UpdateKeyPropertiesResponse{
 		RawResponse: i.RawResponse,
@@ -835,6 +916,8 @@ func updateKeyPropertiesFromGenerated(i internal.KeyVaultClientUpdateKeyResponse
 	}
 }
 
+// UpdateKey - In order to perform this operation, the key must already exist in the Key Vault.
+// Note: The cryptographic material of a key itself cannot be changed. This operation requires the keys/update permission.
 func (c *Client) UpdateKeyProperties(ctx context.Context, keyName string, options *UpdateKeyPropertiesOptions) (UpdateKeyPropertiesResponse, error) {
 	if options == nil {
 		options = &UpdateKeyPropertiesOptions{}
@@ -932,7 +1015,6 @@ func (c *Client) ListDeletedKeys(options *ListDeletedKeysOptions) ListDeletedKey
 	return &listDeletedKeysPager{
 		genPager: c.kvClient.GetDeletedKeys(c.vaultUrl, options.toGenerated()),
 	}
-
 }
 
 // ListKeyVersionsPager is a Pager for Client.ListKeyVersions results
@@ -947,6 +1029,7 @@ type ListKeyVersionsPager interface {
 	NextPage(context.Context) bool
 }
 
+// listKeyVersionsPager implements the ListKeyVersionsPager interface
 type listKeyVersionsPager struct {
 	genPager *internal.KeyVaultClientGetKeyVersionsPager
 }
@@ -984,7 +1067,7 @@ func (l *ListKeyVersionsOptions) toGenerated() *internal.KeyVaultClientGetKeyVer
 	}
 }
 
-// The key list result
+// ListKeyVersionsPage contains the current page from a ListKeyVersionsPager.PageResponse method
 type ListKeyVersionsPage struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
@@ -1029,9 +1112,7 @@ func (c *Client) ListKeyVersions(keyName string, options *ListKeyVersionsOptions
 }
 
 // RestoreKeyBackupOptions contains the optional parameters for the Client.RestoreKey method.
-type RestoreKeyBackupOptions struct {
-	// placeholder for future optional parameters
-}
+type RestoreKeyBackupOptions struct{}
 
 func (r RestoreKeyBackupOptions) toGenerated() *internal.KeyVaultClientRestoreKeyOptions {
 	return &internal.KeyVaultClientRestoreKeyOptions{}
@@ -1072,7 +1153,7 @@ func (c *Client) RestoreKeyBackup(ctx context.Context, keyBackup []byte, options
 	return restoreKeyBackupResponseFromGenerated(resp), nil
 }
 
-// ImportKeyOptions - The key import parameters.
+// ImportKeyOptions contains the optional parameters for the Client.ImportKeyOptions parameter
 type ImportKeyOptions struct {
 	// Whether to import as a hardware key (HSM) or software key.
 	Hsm *bool `json:"Hsm,omitempty"`
@@ -1097,12 +1178,14 @@ func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) internal.KeyImpo
 	}
 }
 
+// ImportKeyResponse contains the response of the Client.ImportKey method
 type ImportKeyResponse struct {
 	KeyBundle
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
+// convert the generated response to the ImportKeyResponse
 func importKeyResponseFromGenerated(i internal.KeyVaultClientImportKeyResponse) ImportKeyResponse {
 	return ImportKeyResponse{
 		RawResponse: i.RawResponse,
@@ -1115,6 +1198,9 @@ func importKeyResponseFromGenerated(i internal.KeyVaultClientImportKeyResponse) 
 	}
 }
 
+// ImportKey - The import key operation may be used to import any key type into an Azure Key Vault.
+// If the named key already exists, Azure Key Vault creates a new version of the key. This operation
+// requires the  keys/import permission.
 func (c *Client) ImportKey(ctx context.Context, keyName string, key JSONWebKey, options *ImportKeyOptions) (ImportKeyResponse, error) {
 	if options == nil {
 		options = &ImportKeyOptions{}
@@ -1127,4 +1213,3 @@ func (c *Client) ImportKey(ctx context.Context, keyName string, key JSONWebKey, 
 
 	return importKeyResponseFromGenerated(resp), nil
 }
-

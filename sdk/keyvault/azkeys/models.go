@@ -42,6 +42,7 @@ type KeyAttributes struct {
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 }
 
+// converts a KeyAttributes to *internal.KeyAttributes
 func (k KeyAttributes) toGenerated() *internal.KeyAttributes {
 	return &internal.KeyAttributes{
 		RecoverableDays: k.RecoverableDays,
@@ -56,6 +57,7 @@ func (k KeyAttributes) toGenerated() *internal.KeyAttributes {
 	}
 }
 
+// converts *internal.KeyAttributes to *KeyAttributes
 func keyAttributesFromGenerated(i *internal.KeyAttributes) *KeyAttributes {
 	if i == nil {
 		return &KeyAttributes{}
@@ -164,6 +166,7 @@ func jsonWebKeyFromGenerated(i *internal.JSONWebKey) *JSONWebKey {
 	}
 }
 
+// converts JSONWebKey to *internal.JSONWebKey
 func (j JSONWebKey) toGenerated() *internal.JSONWebKey {
 	return &internal.JSONWebKey{
 		Crv:    (*internal.JSONWebKeyCurveName)(j.Crv),
@@ -208,6 +211,7 @@ const (
 	RSAHSM KeyType = "RSA-HSM"
 )
 
+// convert KeyType to *internal.JSONWebKeyType
 func (j KeyType) toGenerated() *internal.JSONWebKeyType {
 	return internal.JSONWebKeyType(j).ToPtr()
 }
@@ -227,6 +231,7 @@ type KeyItem struct {
 	Managed *bool `json:"managed,omitempty" azure:"ro"`
 }
 
+// convert *internal.KeyItem to *KeyItem
 func keyItemFromGenerated(i *internal.KeyItem) *KeyItem {
 	if i == nil {
 		return nil
@@ -266,6 +271,7 @@ type DeletedKeyItem struct {
 	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty" azure:"ro"`
 }
 
+// convert *internal.DeletedKeyItem to *DeletedKeyItem
 func deletedKeyItemFromGenerated(i *internal.DeletedKeyItem) *DeletedKeyItem {
 	if i == nil {
 		return nil

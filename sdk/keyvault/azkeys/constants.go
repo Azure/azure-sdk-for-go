@@ -51,10 +51,12 @@ const (
 	RecoverablePurgeable DeletionRecoveryLevel = "Recoverable+Purgeable"
 )
 
+// ToPtr returns a *DeletionRecoveryLevel pointing to the current value.
 func (d DeletionRecoveryLevel) ToPtr() *DeletionRecoveryLevel {
 	return &d
 }
 
+// convert a pointer to exported DeletionRecoveryLevel to the generated version
 func recoveryLevelToGenerated(d *DeletionRecoveryLevel) *internal.DeletionRecoveryLevel {
 	if d == nil {
 		return nil

@@ -50,7 +50,7 @@ func (m mockError) Error() string {
 }
 
 func getPipeline(srv *mock.Server) pipeline.Pipeline {
-	return runtime.NewPipeline(
+	return pipeline.NewPipeline(
 		srv,
 		runtime.NewLogPolicy(nil))
 }

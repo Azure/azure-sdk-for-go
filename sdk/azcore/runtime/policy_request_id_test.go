@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -18,7 +19,7 @@ func TestRequestIdPolicy(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
-	pl := NewPipeline(srv, NewRequestIdPolicy())
+	pl := pipeline.NewPipeline(srv, NewRequestIdPolicy())
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

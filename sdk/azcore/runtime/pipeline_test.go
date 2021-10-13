@@ -30,7 +30,7 @@ func (p *countingPolicy) Do(req *policy.Request) (*http.Response, error) {
 	return req.Next()
 }
 
-func TestBuildPipelineTelemetry(t *testing.T) {
+func TestNewDefaultPipelineTelemetry(t *testing.T) {
 	for _, disabled := range []bool{true, false} {
 		name := "enabled"
 		if disabled {
@@ -59,7 +59,7 @@ func TestBuildPipelineTelemetry(t *testing.T) {
 	}
 }
 
-func TestBuildPipelineCustomTelemetry(t *testing.T) {
+func TestNewDefaultPipelineCustomTelemetry(t *testing.T) {
 	const appID = "something"
 	srv, close := mock.NewServer()
 	defer close()
@@ -84,7 +84,7 @@ func TestBuildPipelineCustomTelemetry(t *testing.T) {
 	}
 }
 
-func TestBuildPipelineCustomPolicies(t *testing.T) {
+func TestNewDefaultPipelineCustomPolicies(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))

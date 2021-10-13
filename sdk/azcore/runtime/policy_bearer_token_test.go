@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -46,9 +47,9 @@ func (mc mockCredential) Do(req *policy.Request) (*http.Response, error) {
 func defaultTestPipeline(srv policy.Transporter, scope string) Pipeline {
 	retryOpts := policy.RetryOptions{
 		MaxRetryDelay: 500 * time.Millisecond,
-		RetryDelay:    50 * time.Millisecond,
+		RetryDelay:    time.Millisecond,
 	}
-	return NewPipeline(
+	return pipeline.NewPipeline(
 		srv,
 		NewRetryPolicy(&retryOpts),
 		NewBearerTokenPolicy(mockCredential{}, AuthenticationOptions{}),
@@ -85,7 +86,7 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 		return nil, expectedErr
 	}
 	policy := NewBearerTokenPolicy(failCredential, AuthenticationOptions{})
-	pipeline := NewPipeline(srv, policy)
+	pipeline := pipeline.NewPipeline(srv, policy)
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -130,7 +131,7 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 		RetryDelay:    50 * time.Millisecond,
 		MaxRetries:    3,
 	}
-	pipeline := NewPipeline(
+	pipeline := pipeline.NewPipeline(
 		srv,
 		NewRetryPolicy(&retryOpts),
 		NewBearerTokenPolicy(mockCredential{}, AuthenticationOptions{}),
@@ -160,7 +161,7 @@ func TestBearerTokenWithAuxiliaryTenants(t *testing.T) {
 		MaxRetryDelay: 500 * time.Millisecond,
 		RetryDelay:    50 * time.Millisecond,
 	}
-	pipeline := NewPipeline(
+	pipeline := pipeline.NewPipeline(
 		srv,
 		NewRetryPolicy(&retryOpts),
 		NewBearerTokenPolicy(

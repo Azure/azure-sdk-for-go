@@ -4,57 +4,27 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package arm
+package runtime
 
 import (
 	"context"
 	"net/http"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-type mockTokenCred struct{}
-
-func (mockTokenCred) NewAuthenticationPolicy(azruntime.AuthenticationOptions) policy.Policy {
-	return pipeline.PolicyFunc(func(req *policy.Request) (*http.Response, error) {
-		return req.Next()
-	})
-}
-
-func (mockTokenCred) GetToken(context.Context, policy.TokenRequestOptions) (*azcore.AccessToken, error) {
-	return &azcore.AccessToken{
-		Token:     "abc123",
-		ExpiresOn: time.Now().Add(1 * time.Hour),
-	}, nil
-}
-
-const rpUnregisteredResp = `{
-	"error":{
-		"code":"MissingSubscriptionRegistration",
-		"message":"The subscription registration is in 'Unregistered' state. The subscription must be registered to use namespace 'Microsoft.Storage'. See https://aka.ms/rps-not-found for how to register subscriptions.",
-		"details":[{
-				"code":"MissingSubscriptionRegistration",
-				"target":"Microsoft.Storage",
-				"message":"The subscription registration is in 'Unregistered' state. The subscription must be registered to use namespace 'Microsoft.Storage'. See https://aka.ms/rps-not-found for how to register subscriptions."
-			}
-		]
-	}
-}`
-
 func TestNewPipelineWithOptions(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse()
-	opt := ClientOptions{}
+	opt := arm.ClientOptions{}
 	opt.Transport = srv
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
@@ -77,7 +47,7 @@ func TestNewPipelineWithCustomTelemetry(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse()
-	opt := ClientOptions{}
+	opt := arm.ClientOptions{}
 	opt.Transport = srv
 	opt.Telemetry.ApplicationID = myTelemetry
 	if opt.Telemetry.ApplicationID != myTelemetry {
@@ -104,13 +74,13 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	defer close()
 	// initial response that RP is unregistered
 	srv.SetResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
-	opts := &ClientOptions{DisableRPRegistration: true}
+	opts := &arm.ClientOptions{DisableRPRegistration: true}
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
 	// log only RP registration
-	log.SetClassifications(armruntime.LogRPRegistration)
+	log.SetClassifications(LogRPRegistration)
 	defer func() {
 		// reset logging
 		log.SetClassifications()
@@ -150,11 +120,11 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	perCallPolicy := countingPolicy{}
 	perRetryPolicy := countingPolicy{}
-	opts := &ClientOptions{
+	opts := &arm.ClientOptions{
 		DisableRPRegistration: true,
 		ClientOptions: azcore.ClientOptions{
-			PerCallPolicies: []policy.Policy{&perCallPolicy},
-			PerRetryPolicies:  []policy.Policy{&perRetryPolicy},
+			PerCallPolicies:  []policy.Policy{&perCallPolicy},
+			PerRetryPolicies: []policy.Policy{&perRetryPolicy},
 		},
 	}
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())

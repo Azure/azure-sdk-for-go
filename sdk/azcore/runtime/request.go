@@ -45,17 +45,6 @@ func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*pipel
 	return pipeline.NewRequest(ctx, httpMethod, endpoint)
 }
 
-// NewPipeline creates a new Pipeline object from the specified Transport and Policies.
-// If no transport is provided then the default *http.Client transport will be used.
-func NewPipeline(transport pipeline.Transporter, policies ...pipeline.Policy) pipeline.Pipeline {
-	if transport == nil {
-		transport = defaultHTTPClient
-	}
-	// transport policy must always be the last in the slice
-	policies = append(policies, pipeline.PolicyFunc(httpHeaderPolicy), pipeline.PolicyFunc(bodyDownloadPolicy))
-	return pipeline.NewPipeline(transport, policies...)
-}
-
 // JoinPaths concatenates multiple URL path segments into one path,
 // inserting path separation characters as required. JoinPaths will preserve
 // query parameters in the root path

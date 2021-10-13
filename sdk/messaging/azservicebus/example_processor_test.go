@@ -14,8 +14,8 @@ var processor *azservicebus.Processor
 
 func ExampleClient_NewProcessorForSubscription() {
 	processor, err = client.NewProcessorForSubscription(
-		topicName,
-		subscriptionName,
+		"exampleTopic",
+		"exampleSubscription",
 		&azservicebus.ProcessorOptions{
 			// NOTE: this is a parameter you'll want to tune. It controls the number of
 			// active message `handleMessage` calls that the processor will allow at any time.
@@ -29,7 +29,7 @@ func ExampleClient_NewProcessorForSubscription() {
 
 func ExampleClient_NewProcessorForQueue() {
 	processor, err = client.NewProcessorForQueue(
-		queueName,
+		"exampleQueue",
 		&azservicebus.ProcessorOptions{
 			// NOTE: this is a parameter you'll want to tune. It controls the number of
 			// active message `handleMessage` calls that the processor will allow at any time.

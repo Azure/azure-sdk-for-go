@@ -20,7 +20,7 @@ import (
 type (
 	// TopicManager provides CRUD functionality for Service Bus Topics
 	TopicManager struct {
-		*entityManager
+		entityManager *EntityManager
 	}
 
 	// TopicEntity is the Azure Service Bus description of a Topic for management activities
@@ -80,16 +80,21 @@ func ListTopicsWithTop(top int) ListTopicsOption {
 	}
 }
 
-// NewTopicManager creates a new TopicManager for a Service Bus Namespace
-func (ns *Namespace) NewTopicManager() *TopicManager {
-	return &TopicManager{
-		entityManager: newEntityManager(ns.GetHTTPSHostURI(), ns.TokenProvider),
+func NewTopicManagerWithConnectionString(connectionString string) (*TopicManager, error) {
+	entityManager, err := NewEntityManagerWithConnectionString(connectionString)
+
+	if err != nil {
+		return nil, err
 	}
+
+	return &TopicManager{
+		entityManager: entityManager,
+	}, nil
 }
 
 // Delete deletes a Service Bus Topic entity by name
 func (tm *TopicManager) Delete(ctx context.Context, name string) error {
-	ctx, span := tm.startSpanFromContext(ctx, "sb.TopicManager.Delete")
+	ctx, span := tm.entityManager.startSpanFromContext(ctx, "sb.TopicManager.Delete")
 	defer span.End()
 
 	res, err := tm.entityManager.Delete(ctx, "/"+name)
@@ -100,7 +105,7 @@ func (tm *TopicManager) Delete(ctx context.Context, name string) error {
 
 // Put creates or updates a Service Bus Topic
 func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManagementOption) (*TopicEntity, error) {
-	ctx, span := tm.startSpanFromContext(ctx, "sb.TopicManager.Put")
+	ctx, span := tm.entityManager.startSpanFromContext(ctx, "sb.TopicManager.Put")
 	defer span.End()
 
 	td := new(TopicDescription)
@@ -154,7 +159,7 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManag
 
 // List fetches all of the Topics for a Service Bus Namespace
 func (tm *TopicManager) List(ctx context.Context, options ...ListTopicsOption) ([]*TopicEntity, error) {
-	ctx, span := tm.startSpanFromContext(ctx, "sb.TopicManager.List")
+	ctx, span := tm.entityManager.startSpanFromContext(ctx, "sb.TopicManager.List")
 	defer span.End()
 
 	listTopicsOptions := ListTopicsOptions{}
@@ -196,7 +201,7 @@ func (tm *TopicManager) List(ctx context.Context, options ...ListTopicsOption) (
 
 // Get fetches a Service Bus Topic entity by name
 func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, error) {
-	ctx, span := tm.startSpanFromContext(ctx, "sb.TopicManager.Get")
+	ctx, span := tm.entityManager.startSpanFromContext(ctx, "sb.TopicManager.Get")
 	defer span.End()
 
 	res, err := tm.entityManager.Get(ctx, name)

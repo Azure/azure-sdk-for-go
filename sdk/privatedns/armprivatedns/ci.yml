@@ -9,14 +9,14 @@ trigger:
   paths:
     include:
     - sdk/privatedns/armprivatedns/
+
+pr:
   branches:
     include:
       - main
       - feature/*
       - hotfix/*
       - release/*
-
-pr:
   paths:
     include:
     - sdk/privatedns/armprivatedns/

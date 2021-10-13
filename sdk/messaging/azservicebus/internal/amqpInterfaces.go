@@ -22,6 +22,9 @@ type AMQPReceiver interface {
 	RejectMessage(ctx context.Context, msg *amqp.Message, e *amqp.Error) error
 	ReleaseMessage(ctx context.Context, msg *amqp.Message) error
 	ModifyMessage(ctx context.Context, msg *amqp.Message, deliveryFailed, undeliverableHere bool, messageAnnotations amqp.Annotations) error
+
+	LinkName() string
+	LinkSourceFilterValue(name string) interface{}
 }
 
 // AMQPReceiver is implemented by *amqp.Receiver

@@ -13,6 +13,7 @@
 ### Bug Fixes
 * Fixed a potential panic when creating the default Transporter.
 * Close LRO initial response body when creating a poller.
+* Fixed a panic when recursively cloning structs that contain time.Time.
 
 ## 0.19.0 (2021-08-25)
 

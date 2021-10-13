@@ -80,7 +80,7 @@ This project uses Go modules for versioning and dependency management.
 As an example, to install the Azure Compute module, you would run :
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute
 ```
 
 We also recommend installing other packages for authentication and core functionalities :
@@ -140,12 +140,12 @@ To write the concrete code for the API call, you might need to look up the infor
 
 - [Official Go docs for new Azure Go SDK packages](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk) - This web-site contains the complete SDK references for each released package as well as embedded code snippets for some operation
 
-To see the reference for a certain package, you can either click into each package on the web-site, or directly add the SDK path to the end of URL. For example, to see the reference for Azure Compute package, you can use [https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute). Certain development tool or IDE has features that allow you to directly look up API definitions as well.
+To see the reference for a certain package, you can either click into each package on the web-site, or directly add the SDK path to the end of URL. For example, to see the reference for Azure Compute package, you can use [https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute). Certain development tool or IDE has features that allow you to directly look up API definitions as well.
 
 Let's illustrate the SDK usage by a few quick examples. In the following sample. we are going to create a resource group using the SDK. To achieve this scenario, we can take the follow steps
 
-- **Step 1** : Decide which client we want to use, in our case, we know that it's related to Resource Group so our choice is the [ResourceGroupsClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources#ResourceGroupsClient)
-- **Step 2** : Find out which operation is responsible for creating a resource group. By locating the client in previous step, we are able to see all the functions under `ResourceGroupsClient`, and we can see [the `CreateOrUpdate` function](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources#ResourceGroupsClient.CreateOrUpdate) is what need. 
+- **Step 1** : Decide which client we want to use, in our case, we know that it's related to Resource Group so our choice is the [ResourceGroupsClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources#ResourceGroupsClient)
+- **Step 2** : Find out which operation is responsible for creating a resource group. By locating the client in previous step, we are able to see all the functions under `ResourceGroupsClient`, and we can see [the `CreateOrUpdate` function](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources#ResourceGroupsClient.CreateOrUpdate) is what need. 
 - **Step 3** : Using the information about this operation, we can then fill in the required parameters, and implement it using the Go SDK. If we need extra information on what those parameters mean, we can also use the [Azure service documentation](https://docs.microsoft.com/azure/?product=featured) on Microsoft Docs
 
 Let's show our what final code looks like
@@ -159,7 +159,7 @@ import (
     "contexts"
     "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
     "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-    "github.com/Azure/azure-sdk-for-go/sdk/resources/armresources"
+    "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 ```
@@ -335,7 +335,7 @@ For more advanced usage of LRO and design guidelines of LRO, please visit [this 
 
 More code samples for using the management library for Go SDK can be found in the following locations
 - [Go SDK Code Samples](https://aka.ms/azsdk/go/mgmt/samples)
-- Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/network/armnetwork/example_networkinterfaces_test.go)
+- Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/network/armnetwork/example_networkinterfaces_test.go)
 
 Need help?
 ----------

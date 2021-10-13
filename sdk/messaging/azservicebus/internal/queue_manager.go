@@ -12,7 +12,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/devigned/tab"
@@ -23,7 +22,7 @@ import (
 type (
 	// QueueManager provides CRUD functionality for Service Bus Queues
 	QueueManager struct {
-		*entityManager
+		entityManager *EntityManager
 	}
 
 	// Entity is represents the most basic form of an Azure Service Bus entity.
@@ -286,16 +285,21 @@ func QueueEntityWithMaxDeliveryCount(count int32) QueueManagementOption {
 	}
 }
 
-// NewQueueManager creates a new QueueManager for a Service Bus Namespace
-func NewQueueManager(httpsHostURI string, tokenProvider auth.TokenProvider) *QueueManager {
-	return &QueueManager{
-		entityManager: newEntityManager(httpsHostURI, tokenProvider),
+func NewQueueManagerWithConnectionString(connectionString string) (*QueueManager, error) {
+	entityManager, err := NewEntityManagerWithConnectionString(connectionString)
+
+	if err != nil {
+		return nil, err
 	}
+
+	return &QueueManager{
+		entityManager: entityManager,
+	}, nil
 }
 
 // Delete deletes a Service Bus Queue entity by name
 func (qm *QueueManager) Delete(ctx context.Context, name string) error {
-	ctx, span := qm.startSpanFromContext(ctx, "sb.QueueManager.Delete")
+	ctx, span := qm.entityManager.startSpanFromContext(ctx, "sb.QueueManager.Delete")
 	defer span.End()
 
 	res, err := qm.entityManager.Delete(ctx, "/"+name)
@@ -306,7 +310,7 @@ func (qm *QueueManager) Delete(ctx context.Context, name string) error {
 
 // Put creates or updates a Service Bus Queue
 func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManagementOption) (*QueueEntity, error) {
-	ctx, span := qm.startSpanFromContext(ctx, "sb.QueueManager.Put")
+	ctx, span := qm.entityManager.startSpanFromContext(ctx, "sb.QueueManager.Put")
 	defer span.End()
 
 	qd := new(QueueDescription)
@@ -331,11 +335,11 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 
 	var mw []MiddlewareFunc
 	if qd.ForwardTo != nil {
-		mw = append(mw, addSupplementalAuthorization(*qd.ForwardTo, qm.TokenProvider()))
+		mw = append(mw, addSupplementalAuthorization(*qd.ForwardTo, qm.entityManager.TokenProvider()))
 	}
 
 	if qd.ForwardDeadLetteredMessagesTo != nil {
-		mw = append(mw, addDeadLetterSupplementalAuthorization(*qd.ForwardDeadLetteredMessagesTo, qm.TokenProvider()))
+		mw = append(mw, addDeadLetterSupplementalAuthorization(*qd.ForwardDeadLetteredMessagesTo, qm.entityManager.TokenProvider()))
 	}
 
 	reqBytes, err := xml.Marshal(qe)
@@ -369,7 +373,7 @@ func (qm *QueueManager) Put(ctx context.Context, name string, opts ...QueueManag
 
 // List fetches all of the queues for a Service Bus Namespace
 func (qm *QueueManager) List(ctx context.Context, options ...ListQueuesOption) ([]*QueueEntity, error) {
-	ctx, span := qm.startSpanFromContext(ctx, "sb.QueueManager.List")
+	ctx, span := qm.entityManager.startSpanFromContext(ctx, "sb.QueueManager.List")
 	defer span.End()
 
 	listQueuesOptions := ListQueuesOptions{}
@@ -411,7 +415,7 @@ func (qm *QueueManager) List(ctx context.Context, options ...ListQueuesOption) (
 
 // Get fetches a Service Bus Queue entity by name
 func (qm *QueueManager) Get(ctx context.Context, name string) (*QueueEntity, error) {
-	ctx, span := qm.startSpanFromContext(ctx, "sb.QueueManager.Get")
+	ctx, span := qm.entityManager.startSpanFromContext(ctx, "sb.QueueManager.Get")
 	defer span.End()
 
 	res, err := qm.entityManager.Get(ctx, name)

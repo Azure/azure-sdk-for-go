@@ -17,6 +17,7 @@ import (
 	"mime/multipart"
 	"reflect"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
@@ -195,6 +196,11 @@ func recursiveCloneWithoutReadOnlyFields(val reflect.Value) interface{} {
 		aztag := field.Tag.Get("azure")
 		if azureTagIsReadOnly(aztag) {
 			// omit from payload
+		} else if reflect.Indirect(val.Field(i)).Type() == reflect.TypeOf(time.Time{}) {
+			// we can't recursively clone time.Time as it contains unexported fields.
+			// copy the value directly.  note that this check must come before the
+			// below struct type check as time.Time is a struct.
+			reflect.Indirect(clone).Field(i).Set(val.Field(i))
 		} else if reflect.Indirect(val.Field(i)).Kind() == reflect.Struct {
 			// recursive case
 			v := recursiveCloneWithoutReadOnlyFields(reflect.Indirect(val.Field(i)))

@@ -10,7 +10,7 @@ package armcontainerregistry
 
 const (
 	module  = "armcontainerregistry"
-	version = "v0.2.0"
+	version = "v0.2.1"
 )
 
 // Action - The action of virtual network rule.

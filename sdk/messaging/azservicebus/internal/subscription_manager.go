@@ -23,8 +23,8 @@ import (
 type (
 	// SubscriptionManager provides CRUD functionality for Service Bus Subscription
 	SubscriptionManager struct {
-		*entityManager
-		topicName string
+		entityManager *EntityManager
+		topicName     string
 	}
 
 	// FilterDescriber can transform itself into a FilterDescription
@@ -187,17 +187,22 @@ func ListSubscriptionsWithTop(top int) ListSubscriptionsOption {
 	}
 }
 
-// NewSubscriptionManager creates a new SubscriptionManger for a Service Bus Namespace
-func (ns *Namespace) NewSubscriptionManager(topicName string) (*SubscriptionManager, error) {
+func NewSubscriptionManagerForConnectionString(topicName string, connectionString string) (*SubscriptionManager, error) {
+	entityManager, err := NewEntityManagerWithConnectionString(connectionString)
+
+	if err != nil {
+		return nil, err
+	}
+
 	return &SubscriptionManager{
-		entityManager: newEntityManager(ns.GetHTTPSHostURI(), ns.TokenProvider),
+		entityManager: entityManager,
 		topicName:     topicName,
 	}, nil
 }
 
 // Delete deletes a Service Bus Topic entity by name
 func (sm *SubscriptionManager) Delete(ctx context.Context, name string) error {
-	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Delete")
+	ctx, span := sm.entityManager.startSpanFromContext(ctx, "sb.SubscriptionManager.Delete")
 	defer span.End()
 
 	res, err := sm.entityManager.Delete(ctx, sm.getResourceURI(name))
@@ -208,7 +213,7 @@ func (sm *SubscriptionManager) Delete(ctx context.Context, name string) error {
 
 // Put creates or updates a Service Bus Topic
 func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...SubscriptionManagementOption) (*SubscriptionEntity, error) {
-	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Put")
+	ctx, span := sm.entityManager.startSpanFromContext(ctx, "sb.SubscriptionManager.Put")
 	defer span.End()
 
 	sd := new(SubscriptionDescription)
@@ -232,11 +237,11 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 
 	var mw []MiddlewareFunc
 	if sd.ForwardTo != nil {
-		mw = append(mw, addSupplementalAuthorization(*sd.ForwardTo, sm.TokenProvider()))
+		mw = append(mw, addSupplementalAuthorization(*sd.ForwardTo, sm.entityManager.TokenProvider()))
 	}
 
 	if sd.ForwardDeadLetteredMessagesTo != nil {
-		mw = append(mw, addDeadLetterSupplementalAuthorization(*sd.ForwardDeadLetteredMessagesTo, sm.TokenProvider()))
+		mw = append(mw, addDeadLetterSupplementalAuthorization(*sd.ForwardDeadLetteredMessagesTo, sm.entityManager.TokenProvider()))
 	}
 
 	reqBytes, err := xml.Marshal(qe)
@@ -269,7 +274,7 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 
 // List fetches all of the Topics for a Service Bus Namespace
 func (sm *SubscriptionManager) List(ctx context.Context, options ...ListSubscriptionsOption) ([]*SubscriptionEntity, error) {
-	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.List")
+	ctx, span := sm.entityManager.startSpanFromContext(ctx, "sb.SubscriptionManager.List")
 	defer span.End()
 
 	listSubscriptionsOptions := ListSubscriptionsOptions{}
@@ -309,7 +314,7 @@ func (sm *SubscriptionManager) List(ctx context.Context, options ...ListSubscrip
 
 // Get fetches a Service Bus Topic entity by name
 func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*SubscriptionEntity, error) {
-	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.Get")
+	ctx, span := sm.entityManager.startSpanFromContext(ctx, "sb.SubscriptionManager.Get")
 	defer span.End()
 
 	res, err := sm.entityManager.Get(ctx, sm.getResourceURI(name))
@@ -345,7 +350,7 @@ func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*Subscript
 //
 // By default when the subscription is created, there exists a single "true" filter which matches all messages.
 func (sm *SubscriptionManager) ListRules(ctx context.Context, subscriptionName string) ([]*RuleEntity, error) {
-	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.ListRules")
+	ctx, span := sm.entityManager.startSpanFromContext(ctx, "sb.SubscriptionManager.ListRules")
 	defer span.End()
 
 	res, err := sm.entityManager.Get(ctx, sm.getRulesResourceURI(subscriptionName))
@@ -379,7 +384,7 @@ func (sm *SubscriptionManager) ListRules(ctx context.Context, subscriptionName s
 
 // PutRuleWithAction creates a new Subscription rule to filter messages from the topic and then perform an action
 func (sm *SubscriptionManager) PutRuleWithAction(ctx context.Context, subscriptionName, ruleName string, filter FilterDescriber, action ActionDescriber) (*RuleEntity, error) {
-	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.PutRuleWithAction")
+	ctx, span := sm.entityManager.startSpanFromContext(ctx, "sb.SubscriptionManager.PutRuleWithAction")
 	defer span.End()
 
 	ad := action.ToActionDescription()
@@ -397,7 +402,7 @@ func (sm *SubscriptionManager) PutRuleWithAction(ctx context.Context, subscripti
 
 // PutRule creates a new Subscription rule to filter messages from the topic
 func (sm *SubscriptionManager) PutRule(ctx context.Context, subscriptionName, ruleName string, filter FilterDescriber) (*RuleEntity, error) {
-	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.PutRule")
+	ctx, span := sm.entityManager.startSpanFromContext(ctx, "sb.SubscriptionManager.PutRule")
 	defer span.End()
 
 	rd := &RuleDescription{
@@ -412,7 +417,7 @@ func (sm *SubscriptionManager) PutRule(ctx context.Context, subscriptionName, ru
 }
 
 func (sm *SubscriptionManager) putRule(ctx context.Context, subscriptionName, ruleName string, rd *RuleDescription) (*RuleEntity, error) {
-	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.putRule")
+	ctx, span := sm.entityManager.startSpanFromContext(ctx, "sb.SubscriptionManager.putRule")
 	defer span.End()
 
 	re := &ruleEntry{
@@ -457,7 +462,7 @@ func (sm *SubscriptionManager) putRule(ctx context.Context, subscriptionName, ru
 
 // DeleteRule will delete a rule on the subscription
 func (sm *SubscriptionManager) DeleteRule(ctx context.Context, subscriptionName, ruleName string) error {
-	ctx, span := sm.startSpanFromContext(ctx, "sb.SubscriptionManager.DeleteRule")
+	ctx, span := sm.entityManager.startSpanFromContext(ctx, "sb.SubscriptionManager.DeleteRule")
 	defer span.End()
 
 	res, err := sm.entityManager.Delete(ctx, sm.getRuleResourceURI(subscriptionName, ruleName))

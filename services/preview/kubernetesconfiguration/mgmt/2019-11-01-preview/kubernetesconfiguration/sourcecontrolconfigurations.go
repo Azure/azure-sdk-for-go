@@ -14,8 +14,7 @@ import (
 	"net/http"
 )
 
-// SourceControlConfigurationsClient is the use these APIs to create Source Control Configuration resources through
-// ARM, for Kubernetes Clusters.
+// SourceControlConfigurationsClient is the kubernetesConfiguration Client
 type SourceControlConfigurationsClient struct {
 	BaseClient
 }

@@ -85,7 +85,7 @@ func (client SourceControlConfigurationsClient) CreateOrUpdatePreparer(ctx conte
 		"subscriptionId":                 autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-01"
+	const APIVersion = "2020-10-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -165,7 +165,7 @@ func (client SourceControlConfigurationsClient) DeletePreparer(ctx context.Conte
 		"subscriptionId":                 autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-01"
+	const APIVersion = "2020-10-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -258,7 +258,7 @@ func (client SourceControlConfigurationsClient) GetPreparer(ctx context.Context,
 		"subscriptionId":                 autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-01"
+	const APIVersion = "2020-10-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}
@@ -345,7 +345,7 @@ func (client SourceControlConfigurationsClient) ListPreparer(ctx context.Context
 		"subscriptionId":      autorest.Encode("path", client.SubscriptionID),
 	}
 
-	const APIVersion = "2021-03-01"
+	const APIVersion = "2020-10-01-preview"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

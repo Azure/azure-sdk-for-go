@@ -1,5 +1,4 @@
-// Package kubernetesconfiguration implements the Azure ARM Kubernetesconfiguration service API version
-// 2019-11-01-preview.
+// Package kubernetesconfiguration implements the Azure ARM Kubernetesconfiguration service API version 2021-09-01.
 //
 // KubernetesConfiguration Client
 package kubernetesconfiguration

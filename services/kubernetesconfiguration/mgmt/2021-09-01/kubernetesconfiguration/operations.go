@@ -30,7 +30,7 @@ func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) Opera
 	return OperationsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// List list all the available operations the KubernetesConfiguration resource provider supports.
+// List list all the available operations the KubernetesConfiguration resource provider supports, in this api-version.
 func (client OperationsClient) List(ctx context.Context) (result ResourceProviderOperationListPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/OperationsClient.List")
@@ -71,7 +71,7 @@ func (client OperationsClient) List(ctx context.Context) (result ResourceProvide
 
 // ListPreparer prepares the List request.
 func (client OperationsClient) ListPreparer(ctx context.Context) (*http.Request, error) {
-	const APIVersion = "2021-03-01"
+	const APIVersion = "2021-09-01"
 	queryParameters := map[string]interface{}{
 		"api-version": APIVersion,
 	}

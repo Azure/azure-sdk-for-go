@@ -7,6 +7,7 @@
 package recording
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -433,6 +434,49 @@ func TestStartStop(t *testing.T) {
 	defer jsonFile.Close()
 }
 
+func TestUriSanitizer(t *testing.T) {
+	os.Setenv("AZURE_RECORD_MODE", "record")
+	defer os.Unsetenv("AZURE_RECORD_MODE")
+
+	err := StartRecording(t, packagePath, nil)
+	require.NoError(t, err)
+
+	err = AddUriSanitizer("replacement", "bing", nil)
+	require.NoError(t, err)
+
+	client, err := GetHTTPClient(t)
+	require.NoError(t, err)
+
+	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
+	require.NoError(t, err)
+
+	req.Header.Set(UpstreamUriHeader, "https://www.bing.com/")
+	req.Header.Set(ModeHeader, GetRecordMode())
+	req.Header.Set(IdHeader, GetRecordingId(t))
+
+	resp, err := client.Do(req)
+	require.NoError(t, err)
+	require.NotNil(t, resp)
+
+	require.NotNil(t, GetRecordingId(t))
+
+	err = StopRecording(t, nil)
+	require.NoError(t, err)
+
+	// Make sure the file is there
+	jsonFile, err := os.Open("./recordings/TestUriSanitizer.json")
+	require.NoError(t, err)
+	defer jsonFile.Close()
+
+	var data RecordingFileStruct
+	byteValue, err := ioutil.ReadAll(jsonFile)
+	require.NoError(t, err)
+	err = json.Unmarshal(byteValue, &data)
+	require.NoError(t, err)
+
+	require.Equal(t, data.Entries[0].RequestUri, "https://www.replacement.com/")
+}
+
 func TestProxyCert(t *testing.T) {
 	_, err := getRootCas(t)
 	require.NoError(t, err)
@@ -463,6 +507,14 @@ func TestStopRecordingNoStart(t *testing.T) {
 	jsonFile, err := os.Open("./recordings/TestStopRecordingNoStart.json")
 	require.Error(t, err)
 	defer jsonFile.Close()
+}
+
+type RecordingFileStruct struct {
+	Entries []Entry `json:"Entries"`
+}
+
+type Entry struct {
+	RequestUri string `json:"RequestUri"`
 }
 
 func TestLiveModeOnly(t *testing.T) {
@@ -504,5 +556,5 @@ func TestBackwardSlashPath(t *testing.T) {
 	packagePathBackslash := "sdk\\internal\\recordings"
 
 	err := StartRecording(t, packagePathBackslash, nil)
-	require.NoError(t, err)
+	require.Error(t, err)
 }

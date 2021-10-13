@@ -29,5 +29,3 @@ stages:
     ServiceDirectory: 'internal'
     RunTests: true
     LicenseCheck: false
-    EnvVars:
-      AZURE_RECORD_MODE: 'record'

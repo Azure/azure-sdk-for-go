@@ -3,12 +3,14 @@
 ## 0.20.0 (Unreleased)
 
 ### Breaking Changes
-* The endpoint parameter for `arm/Connection` constructors has changed to a string typedef in order to provide a hint for applicable values.
+* Removed `arm.Connection`
 * Removed `azcore.Credential` and `.NewAnonymousCredential()`
   * `NewRPRegistrationPolicy` now requires an `azcore.TokenCredential`
 
 ### Features Added
 * Updating Documentation
+* Added string typdef `arm.Endpoint` to provide a hint toward expected ARM client endpoints
+* `azcore.ClientOptions` contains common pipeline configuration settings
 
 ### Bug Fixes
 * Fixed a potential panic when creating the default Transporter.

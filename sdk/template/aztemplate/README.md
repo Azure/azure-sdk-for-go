@@ -54,7 +54,7 @@ Security issues and bugs should be reported privately, via email, to the Microso
 
 ### License
 
-Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-for-go/blob/master/sdk/template/aztemplate/LICENSE) license.
+Azure SDK for Go is licensed under the [MIT](https://github.com/Azure/azure-sdk-for-go/blob/master/sdk/template/aztemplate/LICENSE.txt) license.
 
 <!-- LINKS -->
 [azure_sdk_for_go_contributing]: https://github.com/Azure/azure-sdk-for-go/blob/main/CONTRIBUTING.md

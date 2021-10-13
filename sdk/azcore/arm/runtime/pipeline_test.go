@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
@@ -125,6 +126,7 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 		ClientOptions: azcore.ClientOptions{
 			PerCallPolicies:  []policy.Policy{&perCallPolicy},
 			PerRetryPolicies: []policy.Policy{&perRetryPolicy},
+			Retry: policy.RetryOptions{RetryDelay: time.Microsecond},
 		},
 	}
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())

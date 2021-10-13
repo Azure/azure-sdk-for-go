@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v3/auth"
+	"github.com/Azure/azure-amqp-common-go/v3/conn"
 	"github.com/devigned/tab"
 )
 
@@ -27,8 +28,8 @@ const (
 )
 
 type (
-	// entityManager provides CRUD functionality for Service Bus entities (Queues, Topics, Subscriptions...)
-	entityManager struct {
+	// EntityManager provides CRUD functionality for Service Bus entities (Queues, Topics, Subscriptions...)
+	EntityManager struct {
 		tokenProvider auth.TokenProvider
 		Host          string
 		mwStack       []MiddlewareFunc
@@ -135,22 +136,36 @@ func (m *managementError) String() string {
 	return fmt.Sprintf("Code: %d, Details: %s", m.Code, m.Detail)
 }
 
-// newEntityManager creates a new instance of an entityManager given a token provider and host
-func newEntityManager(host string, tokenProvider auth.TokenProvider) *entityManager {
-	return &entityManager{
-		Host:          host,
-		tokenProvider: tokenProvider,
+// NewEntityManagerWithConnectionString creates an entity manager (a lower level HTTP client
+// for the ATOM endpoint). This is typically wrapped by an entity specific client (like
+// TopicManager, QueueManager or , SubscriptionManager).
+func NewEntityManagerWithConnectionString(connectionString string) (*EntityManager, error) {
+	parsed, err := conn.ParsedConnectionFromStr(connectionString)
+
+	if err != nil {
+		return nil, err
+	}
+
+	provider, err := newTokenProviderWithConnectionString(parsed.KeyName, parsed.Key)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &EntityManager{
+		Host:          fmt.Sprintf("https://%s.%s/", parsed.Namespace, parsed.Suffix),
+		tokenProvider: provider,
 		mwStack: []MiddlewareFunc{
 			addAPIVersion201704,
 			addAtomXMLContentType,
-			addAuthorization(tokenProvider),
+			addAuthorization(provider),
 			applyTracing,
 		},
-	}
+	}, nil
 }
 
 // Get performs an HTTP Get for a given entity path
-func (em *entityManager) Get(ctx context.Context, entityPath string, mw ...MiddlewareFunc) (*http.Response, error) {
+func (em *EntityManager) Get(ctx context.Context, entityPath string, mw ...MiddlewareFunc) (*http.Response, error) {
 	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Get")
 	defer span.End()
 
@@ -158,7 +173,7 @@ func (em *entityManager) Get(ctx context.Context, entityPath string, mw ...Middl
 }
 
 // Put performs an HTTP PUT for a given entity path and body
-func (em *entityManager) Put(ctx context.Context, entityPath string, body []byte, mw ...MiddlewareFunc) (*http.Response, error) {
+func (em *EntityManager) Put(ctx context.Context, entityPath string, body []byte, mw ...MiddlewareFunc) (*http.Response, error) {
 	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Put")
 	defer span.End()
 
@@ -166,7 +181,7 @@ func (em *entityManager) Put(ctx context.Context, entityPath string, body []byte
 }
 
 // Delete performs an HTTP DELETE for a given entity path
-func (em *entityManager) Delete(ctx context.Context, entityPath string, mw ...MiddlewareFunc) (*http.Response, error) {
+func (em *EntityManager) Delete(ctx context.Context, entityPath string, mw ...MiddlewareFunc) (*http.Response, error) {
 	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Delete")
 	defer span.End()
 
@@ -174,14 +189,14 @@ func (em *entityManager) Delete(ctx context.Context, entityPath string, mw ...Mi
 }
 
 // Post performs an HTTP POST for a given entity path and body
-func (em *entityManager) Post(ctx context.Context, entityPath string, body []byte, mw ...MiddlewareFunc) (*http.Response, error) {
+func (em *EntityManager) Post(ctx context.Context, entityPath string, body []byte, mw ...MiddlewareFunc) (*http.Response, error) {
 	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Post")
 	defer span.End()
 
 	return em.Execute(ctx, http.MethodPost, entityPath, bytes.NewReader(body), mw...)
 }
 
-func (em *entityManager) Execute(ctx context.Context, method string, entityPath string, body io.Reader, mw ...MiddlewareFunc) (*http.Response, error) {
+func (em *EntityManager) Execute(ctx context.Context, method string, entityPath string, body io.Reader, mw ...MiddlewareFunc) (*http.Response, error) {
 	ctx, span := em.startSpanFromContext(ctx, "sb.EntityManger.Execute")
 	defer span.End()
 
@@ -220,12 +235,12 @@ func (em *entityManager) Execute(ctx context.Context, method string, entityPath 
 }
 
 // Use adds middleware to the middleware mwStack
-func (em *entityManager) Use(mw ...MiddlewareFunc) {
+func (em *EntityManager) Use(mw ...MiddlewareFunc) {
 	em.mwStack = append(em.mwStack, mw...)
 }
 
 // TokenProvider generates authorization tokens for communicating with the Service Bus management API
-func (em *entityManager) TokenProvider() auth.TokenProvider {
+func (em *EntityManager) TokenProvider() auth.TokenProvider {
 	return em.tokenProvider
 }
 

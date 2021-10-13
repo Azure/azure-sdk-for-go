@@ -58,7 +58,7 @@ func (ns *Namespace) startSpanFromContext(ctx context.Context, operationName str
 	return ctx, span
 }
 
-func (em *entityManager) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+func (em *EntityManager) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
 	ctx, span := tab.StartSpan(ctx, operationName)
 	ApplyComponentInfo(span)
 	span.AddAttributes(tab.StringAttribute("span.kind", "client"))

@@ -226,3 +226,18 @@ func IsDrainingError(err error) bool {
 	// TODO: we should be able to identify these errors programatically
 	return strings.Contains(err.Error(), "link is currently draining")
 }
+
+// IsSessionLockedError checks to see if this is the "you tried to get a session that was already locked"
+// error.
+func IsSessionLockedError(err error) bool {
+	var amqpError *amqp.Error
+
+	if !errors.As(err, &amqpError) {
+		return false
+	}
+
+	// Example:
+	//{Condition: com.microsoft:session-cannot-be-locked, Description: The requested session 'session-1' cannot be accepted. It may be locked by another receiver.
+
+	return amqpError.Condition == "com.microsoft:session-cannot-be-locked"
+}

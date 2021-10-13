@@ -301,6 +301,7 @@ func TestUpdateKeyProperties(t *testing.T) {
 		Tags: map[string]*string{
 			"Tag1": to.StringPtr("Val1"),
 		},
+		// Uncomment when new azcore with fix with #15786 is released
 		// KeyAttributes: &KeyAttributes{
 		// 	Attributes: Attributes{
 		// 		Expires: to.TimePtr(time.Now().AddDate(1, 0, 0)),

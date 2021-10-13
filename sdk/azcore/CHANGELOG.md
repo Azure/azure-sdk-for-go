@@ -11,6 +11,7 @@
 * Updating Documentation
 * Added string typdef `arm.Endpoint` to provide a hint toward expected ARM client endpoints
 * `azcore.ClientOptions` contains common pipeline configuration settings
+* Added `runtime.NewDefaultPipeline`, a constructor of default data plane pipelines
 
 ### Bug Fixes
 * Fixed a potential panic when creating the default Transporter.

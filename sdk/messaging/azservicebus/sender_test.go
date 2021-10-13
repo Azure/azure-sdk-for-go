@@ -215,7 +215,7 @@ func Test_Sender_ScheduleMessages(t *testing.T) {
 	defer sender.Close(context.Background())
 
 	now := time.Now()
-	nearFuture := now.Add(10 * time.Second)
+	nearFuture := now.Add(20 * time.Second)
 
 	// there are two ways to schedule a message - you can use the
 	// `ScheduleMessages` API (in which case you get a sequence number that
@@ -232,16 +232,16 @@ func Test_Sender_ScheduleMessages(t *testing.T) {
 	require.NoError(t, err)
 	require.EqualValues(t, 2, len(sequenceNumbers))
 
+	// cancel one of the ones scheduled using `ScheduleMessages`
+	err = sender.CancelScheduledMessages(ctx, []int64{sequenceNumbers[0]})
+	require.NoError(t, err)
+
 	err = sender.SendMessage(ctx,
 		&Message{
 			Body:                 []byte("To the future (scheduled using the field)"),
 			ScheduledEnqueueTime: &nearFuture,
 		})
 
-	require.NoError(t, err)
-
-	// cancel one of the ones scheduled using `ScheduleMessages`
-	err = sender.CancelScheduledMessages(ctx, []int64{sequenceNumbers[0]})
 	require.NoError(t, err)
 
 	messages, err := receiver.ReceiveMessages(ctx, 2, nil)

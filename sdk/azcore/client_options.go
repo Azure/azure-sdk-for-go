@@ -27,7 +27,7 @@ type ClientOptions struct {
 	// Each policy is executed once per request.
 	PerCallPolicies []policy.Policy
 
-	// PerTryPolicies contains custom policies to inject into the pipeline.
+	// PerRetryPolicies contains custom policies to inject into the pipeline.
 	// Each policy is executed once per request, and for each retry of that request.
-	PerTryPolicies []policy.Policy
+	PerRetryPolicies []policy.Policy
 }

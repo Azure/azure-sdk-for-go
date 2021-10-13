@@ -154,7 +154,7 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 		DisableRPRegistration: true,
 		ClientOptions: azcore.ClientOptions{
 			PerCallPolicies: []policy.Policy{&perCallPolicy},
-			PerTryPolicies:  []policy.Policy{&perRetryPolicy},
+			PerRetryPolicies:  []policy.Policy{&perRetryPolicy},
 		},
 	}
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())

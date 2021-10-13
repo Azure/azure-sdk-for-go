@@ -70,7 +70,7 @@ func NewPipeline(module, version string, cred azcore.TokenCredential, options *C
 	}
 	policies = append(policies, options.PerCallPolicies...)
 	policies = append(policies, azruntime.NewRetryPolicy(&options.Retry))
-	policies = append(policies, options.PerTryPolicies...)
+	policies = append(policies, options.PerRetryPolicies...)
 	policies = append(policies,
 		azruntime.NewBearerTokenPolicy(cred, azruntime.AuthenticationOptions{
 			TokenRequest: policy.TokenRequestOptions{

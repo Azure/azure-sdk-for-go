@@ -113,10 +113,10 @@ type JSONWebKey struct {
 	KeyOps []*string `json:"key_ops,omitempty"`
 
 	// Key identifier.
-	Kid *string `json:"kid,omitempty"`
+	ID *string `json:"kid,omitempty"`
 
 	// JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-	Kty *KeyType `json:"kty,omitempty"`
+	KeyType *KeyType `json:"kty,omitempty"`
 
 	// RSA modulus.
 	N []byte `json:"n,omitempty"`
@@ -147,22 +147,22 @@ func jsonWebKeyFromGenerated(i *internal.JSONWebKey) *JSONWebKey {
 	}
 
 	return &JSONWebKey{
-		Crv:    (*JSONWebKeyCurveName)(i.Crv),
-		D:      i.D,
-		DP:     i.DP,
-		DQ:     i.DQ,
-		E:      i.E,
-		K:      i.K,
-		KeyOps: i.KeyOps,
-		Kid:    i.Kid,
-		Kty:    (*KeyType)(i.Kty),
-		N:      i.N,
-		P:      i.P,
-		Q:      i.Q,
-		QI:     i.QI,
-		T:      i.T,
-		X:      i.X,
-		Y:      i.Y,
+		Crv:     (*JSONWebKeyCurveName)(i.Crv),
+		D:       i.D,
+		DP:      i.DP,
+		DQ:      i.DQ,
+		E:       i.E,
+		K:       i.K,
+		KeyOps:  i.KeyOps,
+		ID:     i.Kid,
+		KeyType: (*KeyType)(i.Kty),
+		N:       i.N,
+		P:       i.P,
+		Q:       i.Q,
+		QI:      i.QI,
+		T:       i.T,
+		X:       i.X,
+		Y:       i.Y,
 	}
 }
 
@@ -176,8 +176,8 @@ func (j JSONWebKey) toGenerated() *internal.JSONWebKey {
 		E:      j.E,
 		K:      j.K,
 		KeyOps: j.KeyOps,
-		Kid:    j.Kid,
-		Kty:    (*internal.JSONWebKeyType)(j.Kty),
+		Kid:    j.ID,
+		Kty:    (*internal.JSONWebKeyType)(j.KeyType),
 		N:      j.N,
 		P:      j.P,
 		Q:      j.Q,

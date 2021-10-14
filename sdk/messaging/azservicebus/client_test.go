@@ -20,13 +20,13 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 
 	// test with azure identity support
 	ns := os.Getenv("SERVICEBUS_ENDPOINT")
-	dac, err := azidentity.NewEnvironmentCredential(nil)
+	envCred, err := azidentity.NewEnvironmentCredential(nil)
 
 	if err != nil || ns == "" {
 		t.Skip("Azure Identity compatible credentials not configured")
 	}
 
-	client, err := NewClient(ns, dac, nil)
+	client, err := NewClient(ns, envCred, nil)
 	require.NoError(t, err)
 
 	sender, err := client.NewSender(queue)

@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/sql/armsql
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql
 
 go 1.16
 

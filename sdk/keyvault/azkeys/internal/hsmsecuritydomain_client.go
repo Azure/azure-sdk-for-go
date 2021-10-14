@@ -32,11 +32,11 @@ func (client *hsmSecurityDomainClient) BeginDownload(ctx context.Context, vaultB
 	result := HSMSecurityDomainDownloadPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := runtime.NewPoller("hsmSecurityDomainClient.Download",resp, 	client.con.Pipeline(), client.downloadHandleError)
+	pt, err := runtime.NewPoller("hsmSecurityDomainClient.Download", resp, client.con.Pipeline(), client.downloadHandleError)
 	if err != nil {
 		return HSMSecurityDomainDownloadPollerResponse{}, err
 	}
-	result.Poller = &HSMSecurityDomainDownloadPoller {
+	result.Poller = &HSMSecurityDomainDownloadPoller{
 		pt: pt,
 	}
 	return result, nil
@@ -49,14 +49,14 @@ func (client *hsmSecurityDomainClient) download(ctx context.Context, vaultBaseUR
 	if err != nil {
 		return nil, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted) {
 		return nil, client.downloadHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // downloadCreateRequest creates the Download request.
@@ -81,7 +81,7 @@ func (client *hsmSecurityDomainClient) downloadHandleError(resp *http.Response) 
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -95,7 +95,7 @@ func (client *hsmSecurityDomainClient) DownloadPending(ctx context.Context, vaul
 	if err != nil {
 		return HSMSecurityDomainDownloadPendingResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return HSMSecurityDomainDownloadPendingResponse{}, err
 	}
@@ -133,7 +133,7 @@ func (client *hsmSecurityDomainClient) downloadPendingHandleError(resp *http.Res
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -147,7 +147,7 @@ func (client *hsmSecurityDomainClient) TransferKey(ctx context.Context, vaultBas
 	if err != nil {
 		return HSMSecurityDomainTransferKeyResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return HSMSecurityDomainTransferKeyResponse{}, err
 	}
@@ -188,7 +188,7 @@ func (client *hsmSecurityDomainClient) transferKeyHandleError(resp *http.Respons
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -205,11 +205,11 @@ func (client *hsmSecurityDomainClient) BeginUpload(ctx context.Context, vaultBas
 	result := HSMSecurityDomainUploadPollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := runtime.NewPoller("hsmSecurityDomainClient.Upload",resp, 	client.con.Pipeline(), client.uploadHandleError)
+	pt, err := runtime.NewPoller("hsmSecurityDomainClient.Upload", resp, client.con.Pipeline(), client.uploadHandleError)
 	if err != nil {
 		return HSMSecurityDomainUploadPollerResponse{}, err
 	}
-	result.Poller = &HSMSecurityDomainUploadPoller {
+	result.Poller = &HSMSecurityDomainUploadPoller{
 		pt: pt,
 	}
 	return result, nil
@@ -222,14 +222,14 @@ func (client *hsmSecurityDomainClient) upload(ctx context.Context, vaultBaseURL 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, client.uploadHandleError(resp)
 	}
-	 return resp, nil
+	return resp, nil
 }
 
 // uploadCreateRequest creates the Upload request.
@@ -251,7 +251,7 @@ func (client *hsmSecurityDomainClient) uploadHandleError(resp *http.Response) er
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -265,7 +265,7 @@ func (client *hsmSecurityDomainClient) UploadPending(ctx context.Context, vaultB
 	if err != nil {
 		return HSMSecurityDomainUploadPendingResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return HSMSecurityDomainUploadPendingResponse{}, err
 	}
@@ -303,10 +303,9 @@ func (client *hsmSecurityDomainClient) uploadPendingHandleError(resp *http.Respo
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
 	return runtime.NewResponseError(&errType, resp)
 }
-

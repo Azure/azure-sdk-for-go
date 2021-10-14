@@ -160,7 +160,7 @@ func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenReque
 }
 
 func toBytes(s string, t *testing.T) []byte {
-	if len(s) % 2 == 1 {
+	if len(s)%2 == 1 {
 		s = fmt.Sprintf("0%s", s)
 	}
 	ret, err := hex.DecodeString(s)

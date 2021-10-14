@@ -39,9 +39,9 @@ func (p *HSMSecurityDomainDownloadPoller) Poll(ctx context.Context) (*http.Respo
 	return p.pt.Poll(ctx)
 }
 
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final HSMSecurityDomainDownloadResponse will be returned.
+// FinalResponse performs a final GET to the service and returns the final response
+// for the polling operation. If there is an error performing the final GET then an error is returned.
+// If the final GET succeeded then the final HSMSecurityDomainDownloadResponse will be returned.
 func (p *HSMSecurityDomainDownloadPoller) FinalResponse(ctx context.Context) (HSMSecurityDomainDownloadResponse, error) {
 	respType := HSMSecurityDomainDownloadResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.SecurityDomainObject)
@@ -82,9 +82,9 @@ func (p *HSMSecurityDomainUploadPoller) Poll(ctx context.Context) (*http.Respons
 	return p.pt.Poll(ctx)
 }
 
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final HSMSecurityDomainUploadResponse will be returned.
+// FinalResponse performs a final GET to the service and returns the final response
+// for the polling operation. If there is an error performing the final GET then an error is returned.
+// If the final GET succeeded then the final HSMSecurityDomainUploadResponse will be returned.
 func (p *HSMSecurityDomainUploadPoller) FinalResponse(ctx context.Context) (HSMSecurityDomainUploadResponse, error) {
 	respType := HSMSecurityDomainUploadResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.SecurityDomainOperationStatus)
@@ -125,9 +125,9 @@ func (p *KeyVaultClientFullBackupPoller) Poll(ctx context.Context) (*http.Respon
 	return p.pt.Poll(ctx)
 }
 
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final KeyVaultClientFullBackupResponse will be returned.
+// FinalResponse performs a final GET to the service and returns the final response
+// for the polling operation. If there is an error performing the final GET then an error is returned.
+// If the final GET succeeded then the final KeyVaultClientFullBackupResponse will be returned.
 func (p *KeyVaultClientFullBackupPoller) FinalResponse(ctx context.Context) (KeyVaultClientFullBackupResponse, error) {
 	respType := KeyVaultClientFullBackupResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.FullBackupOperation)
@@ -168,9 +168,9 @@ func (p *KeyVaultClientFullRestoreOperationPoller) Poll(ctx context.Context) (*h
 	return p.pt.Poll(ctx)
 }
 
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final KeyVaultClientFullRestoreOperationResponse will be returned.
+// FinalResponse performs a final GET to the service and returns the final response
+// for the polling operation. If there is an error performing the final GET then an error is returned.
+// If the final GET succeeded then the final KeyVaultClientFullRestoreOperationResponse will be returned.
 func (p *KeyVaultClientFullRestoreOperationPoller) FinalResponse(ctx context.Context) (KeyVaultClientFullRestoreOperationResponse, error) {
 	respType := KeyVaultClientFullRestoreOperationResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.RestoreOperation)
@@ -211,9 +211,9 @@ func (p *KeyVaultClientSelectiveKeyRestoreOperationPoller) Poll(ctx context.Cont
 	return p.pt.Poll(ctx)
 }
 
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final KeyVaultClientSelectiveKeyRestoreOperationResponse will be returned.
+// FinalResponse performs a final GET to the service and returns the final response
+// for the polling operation. If there is an error performing the final GET then an error is returned.
+// If the final GET succeeded then the final KeyVaultClientSelectiveKeyRestoreOperationResponse will be returned.
 func (p *KeyVaultClientSelectiveKeyRestoreOperationPoller) FinalResponse(ctx context.Context) (KeyVaultClientSelectiveKeyRestoreOperationResponse, error) {
 	respType := KeyVaultClientSelectiveKeyRestoreOperationResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.SelectiveKeyRestoreOperation)
@@ -229,4 +229,3 @@ func (p *KeyVaultClientSelectiveKeyRestoreOperationPoller) FinalResponse(ctx con
 func (p *KeyVaultClientSelectiveKeyRestoreOperationPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
-

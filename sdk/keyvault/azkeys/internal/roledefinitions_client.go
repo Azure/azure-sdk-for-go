@@ -31,7 +31,7 @@ func (client *roleDefinitionsClient) CreateOrUpdate(ctx context.Context, vaultBa
 	if err != nil {
 		return RoleDefinitionsCreateOrUpdateResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return RoleDefinitionsCreateOrUpdateResponse{}, err
 	}
@@ -80,7 +80,7 @@ func (client *roleDefinitionsClient) createOrUpdateHandleError(resp *http.Respon
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -94,7 +94,7 @@ func (client *roleDefinitionsClient) Delete(ctx context.Context, vaultBaseURL st
 	if err != nil {
 		return RoleDefinitionsDeleteResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return RoleDefinitionsDeleteResponse{}, err
 	}
@@ -143,7 +143,7 @@ func (client *roleDefinitionsClient) deleteHandleError(resp *http.Response) erro
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -157,7 +157,7 @@ func (client *roleDefinitionsClient) Get(ctx context.Context, vaultBaseURL strin
 	if err != nil {
 		return RoleDefinitionsGetResponse{}, err
 	}
-	resp, err := 	client.con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return RoleDefinitionsGetResponse{}, err
 	}
@@ -206,7 +206,7 @@ func (client *roleDefinitionsClient) getHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -215,7 +215,7 @@ func (client *roleDefinitionsClient) getHandleError(resp *http.Response) error {
 
 // List - Get all role definitions that are applicable at scope and above.
 // If the operation fails it returns the *KeyVaultError error type.
-func (client *roleDefinitionsClient) List(vaultBaseURL string, scope string, options *RoleDefinitionsListOptions) (*RoleDefinitionsListPager) {
+func (client *roleDefinitionsClient) List(vaultBaseURL string, scope string, options *RoleDefinitionsListOptions) *RoleDefinitionsListPager {
 	return &RoleDefinitionsListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -265,10 +265,9 @@ func (client *roleDefinitionsClient) listHandleError(resp *http.Response) error 
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-		errType := KeyVaultError{raw: string(body)}
+	errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
 	return runtime.NewResponseError(&errType, resp)
 }
-

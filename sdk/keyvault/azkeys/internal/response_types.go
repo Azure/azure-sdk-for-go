@@ -49,11 +49,12 @@ func (l HSMSecurityDomainDownloadPollerResponse) PollUntilDone(ctx context.Conte
 }
 
 // Resume rehydrates a HSMSecurityDomainDownloadPollerResponse from the provided client and resume token.
-func (l *HSMSecurityDomainDownloadPollerResponse) Resume(ctx context.Context, client *hsmSecurityDomainClient, token string) error {	pt, err := runtime.NewPollerFromResumeToken("hsmSecurityDomainClient.Download",token, 	client.con.Pipeline(), client.downloadHandleError)
+func (l *HSMSecurityDomainDownloadPollerResponse) Resume(ctx context.Context, client *hsmSecurityDomainClient, token string) error {
+	pt, err := runtime.NewPollerFromResumeToken("hsmSecurityDomainClient.Download", token, client.con.Pipeline(), client.downloadHandleError)
 	if err != nil {
 		return err
 	}
-	poller := &HSMSecurityDomainDownloadPoller {
+	poller := &HSMSecurityDomainDownloadPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -122,11 +123,12 @@ func (l HSMSecurityDomainUploadPollerResponse) PollUntilDone(ctx context.Context
 }
 
 // Resume rehydrates a HSMSecurityDomainUploadPollerResponse from the provided client and resume token.
-func (l *HSMSecurityDomainUploadPollerResponse) Resume(ctx context.Context, client *hsmSecurityDomainClient, token string) error {	pt, err := runtime.NewPollerFromResumeToken("hsmSecurityDomainClient.Upload",token, 	client.con.Pipeline(), client.uploadHandleError)
+func (l *HSMSecurityDomainUploadPollerResponse) Resume(ctx context.Context, client *hsmSecurityDomainClient, token string) error {
+	pt, err := runtime.NewPollerFromResumeToken("hsmSecurityDomainClient.Upload", token, client.con.Pipeline(), client.uploadHandleError)
 	if err != nil {
 		return err
 	}
-	poller := &HSMSecurityDomainUploadPoller {
+	poller := &HSMSecurityDomainUploadPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -363,11 +365,12 @@ func (l KeyVaultClientFullBackupPollerResponse) PollUntilDone(ctx context.Contex
 }
 
 // Resume rehydrates a KeyVaultClientFullBackupPollerResponse from the provided client and resume token.
-func (l *KeyVaultClientFullBackupPollerResponse) Resume(ctx context.Context, client *KeyVaultClient, token string) error {	pt, err := runtime.NewPollerFromResumeToken("keyVaultClient.FullBackup",token, 	client.Con.Pipeline(), client.fullBackupHandleError)
+func (l *KeyVaultClientFullBackupPollerResponse) Resume(ctx context.Context, client *KeyVaultClient, token string) error {
+	pt, err := runtime.NewPollerFromResumeToken("keyVaultClient.FullBackup", token, client.Con.Pipeline(), client.fullBackupHandleError)
 	if err != nil {
 		return err
 	}
-	poller := &KeyVaultClientFullBackupPoller {
+	poller := &KeyVaultClientFullBackupPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -424,11 +427,12 @@ func (l KeyVaultClientFullRestoreOperationPollerResponse) PollUntilDone(ctx cont
 }
 
 // Resume rehydrates a KeyVaultClientFullRestoreOperationPollerResponse from the provided client and resume token.
-func (l *KeyVaultClientFullRestoreOperationPollerResponse) Resume(ctx context.Context, client *KeyVaultClient, token string) error {	pt, err := runtime.NewPollerFromResumeToken("keyVaultClient.FullRestoreOperation",token, 	client.Con.Pipeline(), client.fullRestoreOperationHandleError)
+func (l *KeyVaultClientFullRestoreOperationPollerResponse) Resume(ctx context.Context, client *KeyVaultClient, token string) error {
+	pt, err := runtime.NewPollerFromResumeToken("keyVaultClient.FullRestoreOperation", token, client.Con.Pipeline(), client.fullRestoreOperationHandleError)
 	if err != nil {
 		return err
 	}
-	poller := &KeyVaultClientFullRestoreOperationPoller {
+	poller := &KeyVaultClientFullRestoreOperationPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1001,11 +1005,12 @@ func (l KeyVaultClientSelectiveKeyRestoreOperationPollerResponse) PollUntilDone(
 }
 
 // Resume rehydrates a KeyVaultClientSelectiveKeyRestoreOperationPollerResponse from the provided client and resume token.
-func (l *KeyVaultClientSelectiveKeyRestoreOperationPollerResponse) Resume(ctx context.Context, client *KeyVaultClient, token string) error {	pt, err := runtime.NewPollerFromResumeToken("keyVaultClient.SelectiveKeyRestoreOperation",token, 	client.Con.Pipeline(), client.selectiveKeyRestoreOperationHandleError)
+func (l *KeyVaultClientSelectiveKeyRestoreOperationPollerResponse) Resume(ctx context.Context, client *KeyVaultClient, token string) error {
+	pt, err := runtime.NewPollerFromResumeToken("keyVaultClient.SelectiveKeyRestoreOperation", token, client.Con.Pipeline(), client.selectiveKeyRestoreOperationHandleError)
 	if err != nil {
 		return err
 	}
-	poller := &KeyVaultClientSelectiveKeyRestoreOperationPoller {
+	poller := &KeyVaultClientSelectiveKeyRestoreOperationPoller{
 		pt: pt,
 	}
 	resp, err := poller.Poll(ctx)
@@ -1328,4 +1333,3 @@ type RoleDefinitionsListResponse struct {
 type RoleDefinitionsListResult struct {
 	RoleDefinitionListResult
 }
-

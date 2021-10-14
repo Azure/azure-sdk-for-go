@@ -6,3 +6,5 @@ require (
 	github.com/Azure/azure-sdk-for-go v58.1.0+incompatible
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.19.0
 )
+
+retract v0.1.0

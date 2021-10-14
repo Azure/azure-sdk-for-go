@@ -12,7 +12,7 @@ package iotcentral
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2018-09-01/iotcentral"
+	original "github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2021-06-01/iotcentral"
 )
 
 const (
@@ -22,11 +22,23 @@ const (
 type AppSku = original.AppSku
 
 const (
-	F1  AppSku = original.F1
-	S1  AppSku = original.S1
-	ST0 AppSku = original.ST0
-	ST1 AppSku = original.ST1
-	ST2 AppSku = original.ST2
+	AppSkuST0 AppSku = original.AppSkuST0
+	AppSkuST1 AppSku = original.AppSkuST1
+	AppSkuST2 AppSku = original.AppSkuST2
+)
+
+type AppState = original.AppState
+
+const (
+	AppStateCreated   AppState = original.AppStateCreated
+	AppStateSuspended AppState = original.AppStateSuspended
+)
+
+type SystemAssignedServiceIdentityType = original.SystemAssignedServiceIdentityType
+
+const (
+	SystemAssignedServiceIdentityTypeNone           SystemAssignedServiceIdentityType = original.SystemAssignedServiceIdentityTypeNone
+	SystemAssignedServiceIdentityTypeSystemAssigned SystemAssignedServiceIdentityType = original.SystemAssignedServiceIdentityTypeSystemAssigned
 )
 
 type App = original.App
@@ -57,6 +69,7 @@ type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
 type Resource = original.Resource
+type SystemAssignedServiceIdentity = original.SystemAssignedServiceIdentity
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -96,6 +109,12 @@ func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 }
 func PossibleAppSkuValues() []AppSku {
 	return original.PossibleAppSkuValues()
+}
+func PossibleAppStateValues() []AppState {
+	return original.PossibleAppStateValues()
+}
+func PossibleSystemAssignedServiceIdentityTypeValues() []SystemAssignedServiceIdentityType {
+	return original.PossibleSystemAssignedServiceIdentityTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

@@ -81,11 +81,11 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 // CreateKeyOptions contains the optional parameters for the KeyVaultClient.CreateKey method.
 type CreateKeyOptions struct {
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	Curve *internal.JSONWebKeyCurveName `json:"crv,omitempty"`
+	Curve *JSONWebKeyCurveName `json:"crv,omitempty"`
 
 	// The attributes of a key managed by the key vault service.
-	KeyAttributes *internal.KeyAttributes         `json:"attributes,omitempty"`
-	KeyOps        []*internal.JSONWebKeyOperation `json:"key_ops,omitempty"`
+	KeyAttributes *KeyAttributes         `json:"attributes,omitempty"`
+	KeyOps        []*JSONWebKeyOperation `json:"key_ops,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize *int32 `json:"key_size,omitempty"`
@@ -104,11 +104,21 @@ func (c *CreateKeyOptions) toGenerated() *internal.KeyVaultClientCreateKeyOption
 
 // convert CreateKeyOptions to internal.KeyCreateParameters
 func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) internal.KeyCreateParameters {
+	var attribs *internal.KeyAttributes
+	if c.KeyAttributes != nil {
+		attribs = c.KeyAttributes.toGenerated()
+	}
+
+	ops := make([]*internal.JSONWebKeyOperation, 0)
+	for _, o := range c.KeyOps {
+		ops = append(ops, (*internal.JSONWebKeyOperation)(o))
+	}
+
 	return internal.KeyCreateParameters{
 		Kty:            keyType.toGenerated(),
-		Curve:          c.Curve,
-		KeyAttributes:  c.KeyAttributes,
-		KeyOps:         c.KeyOps,
+		Curve:          (*internal.JSONWebKeyCurveName)(c.Curve),
+		KeyAttributes:  attribs,
+		KeyOps:         ops,
 		KeySize:        c.KeySize,
 		PublicExponent: c.PublicExponent,
 		Tags:           c.Tags,
@@ -154,7 +164,7 @@ func (c *Client) CreateKey(ctx context.Context, name string, keyType KeyType, op
 // CreateECKeyOptions contains the optional parameters for the KeyVaultClient.CreateECKey method
 type CreateECKeyOptions struct {
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
-	CurveName *internal.JSONWebKeyCurveName `json:"crv,omitempty"`
+	CurveName *JSONWebKeyCurveName `json:"crv,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
@@ -167,7 +177,7 @@ type CreateECKeyOptions struct {
 func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) internal.KeyCreateParameters {
 	return internal.KeyCreateParameters{
 		Kty:   keyType.toGenerated(),
-		Curve: c.CurveName,
+		Curve: (*internal.JSONWebKeyCurveName)(c.CurveName),
 		Tags:  c.Tags,
 	}
 }
@@ -872,7 +882,7 @@ type UpdateKeyPropertiesOptions struct {
 	KeyAttributes *KeyAttributes `json:"attributes,omitempty"`
 
 	// Json web key operations. For more information on possible key operations, see JsonWebKeyOperation.
-	KeyOps []*internal.JSONWebKeyOperation `json:"key_ops,omitempty"`
+	KeyOps []*JSONWebKeyOperation `json:"key_ops,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
@@ -884,8 +894,14 @@ func (u UpdateKeyPropertiesOptions) toKeyUpdateParameters() internal.KeyUpdatePa
 	if u.KeyAttributes != nil {
 		attribs = u.KeyAttributes.toGenerated()
 	}
+
+	ops := make([]*internal.JSONWebKeyOperation, 0)
+	for _, o := range u.KeyOps {
+		ops = append(ops, (*internal.JSONWebKeyOperation)(o))
+	}
+
 	return internal.KeyUpdateParameters{
-		KeyOps:        u.KeyOps,
+		KeyOps:        ops,
 		KeyAttributes: attribs,
 		Tags:          u.Tags,
 	}

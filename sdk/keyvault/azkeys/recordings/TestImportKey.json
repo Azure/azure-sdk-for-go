@@ -14,7 +14,7 @@
         "Content-Length": "1699",
         "Content-Type": "application/json",
         "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Wed, 13 Oct 2021 15:12:34 GMT"
+        "x-ms-date": "Thu, 14 Oct 2021 16:02:53 GMT"
       },
       "RequestBody": {
         "key": {
@@ -42,7 +42,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "684",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Wed, 13 Oct 2021 15:12:33 GMT",
+        "Date": "Thu, 14 Oct 2021 16:02:51 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -50,12 +50,12 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.132.3",
-        "x-ms-request-id": "fc18c4c4-41e9-4a5c-87e0-2068a45b0c84",
+        "x-ms-request-id": "ddc28c56-2b30-4ef4-8640-5546b3d27eef",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://seankane.vault.azure.net/keys/importedKey/4617b79993354467af0cbf726c57817f",
+          "kid": "https://seankane.vault.azure.net/keys/importedKey/e06cd5785cfe42ad8a269e3bade6a275",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -70,8 +70,8 @@
         },
         "attributes": {
           "enabled": true,
-          "created": 1634137954,
-          "updated": 1634137954,
+          "created": 1634227371,
+          "updated": 1634227371,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
         }

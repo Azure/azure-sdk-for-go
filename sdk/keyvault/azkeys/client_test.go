@@ -321,7 +321,7 @@ func TestListDeletedKeys(t *testing.T) {
 	client, err := createClient(t)
 	require.NoError(t, err)
 
-	key, err := createRandomName(t, "key1")
+	key, err := createRandomName(t, "0key")
 	require.NoError(t, err)
 	_, err = client.CreateRSAKey(context.Background(), key, nil)
 	require.NoError(t, err)
@@ -332,7 +332,7 @@ func TestListDeletedKeys(t *testing.T) {
 	_, err = pollerResp.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
 
-	key, err = createRandomName(t, "key21")
+	key, err = createRandomName(t, "keyy")
 	require.NoError(t, err)
 	_, err = client.CreateRSAKey(context.Background(), key, nil)
 	require.NoError(t, err)
@@ -343,7 +343,7 @@ func TestListDeletedKeys(t *testing.T) {
 	_, err = pollerResp.PollUntilDone(context.Background(), delay())
 	require.NoError(t, err)
 
-	key, err = createRandomName(t, "key31")
+	key, err = createRandomName(t, "keyyy")
 	require.NoError(t, err)
 	_, err = client.CreateRSAKey(context.Background(), key, nil)
 	require.NoError(t, err)

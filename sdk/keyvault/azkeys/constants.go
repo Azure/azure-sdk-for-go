@@ -99,3 +99,21 @@ const (
 func (c JSONWebKeyCurveName) ToPtr() *JSONWebKeyCurveName {
 	return &c
 }
+
+// JSONWebKeyOperation - JSON web key operations. For more information, see JsonWebKeyOperation.
+type JSONWebKeyOperation string
+
+const (
+	JSONWebKeyOperationDecrypt   JSONWebKeyOperation = "decrypt"
+	JSONWebKeyOperationEncrypt   JSONWebKeyOperation = "encrypt"
+	JSONWebKeyOperationImport    JSONWebKeyOperation = "import"
+	JSONWebKeyOperationSign      JSONWebKeyOperation = "sign"
+	JSONWebKeyOperationUnwrapKey JSONWebKeyOperation = "unwrapKey"
+	JSONWebKeyOperationVerify    JSONWebKeyOperation = "verify"
+	JSONWebKeyOperationWrapKey   JSONWebKeyOperation = "wrapKey"
+)
+
+// ToPtr returns a *JSONWebKeyOperation pointing to the current value.
+func (c JSONWebKeyOperation) ToPtr() *JSONWebKeyOperation {
+	return &c
+}

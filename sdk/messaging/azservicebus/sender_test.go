@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -55,7 +54,7 @@ func Test_Sender_SendBatchOfTwo(t *testing.T) {
 }
 
 func Test_Sender_UsingPartitionedQueue(t *testing.T) {
-	client, cleanup, queueName := setupLiveTest(t, &internal.QueueDescription{
+	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
 		EnablePartitioning: to.BoolPtr(true),
 	})
 	defer cleanup()
@@ -111,7 +110,7 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 func Test_Sender_SendMessages(t *testing.T) {
 	ctx := context.Background()
 
-	client, cleanup, queueName := setupLiveTest(t, &internal.QueueDescription{
+	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
 		EnablePartitioning: to.BoolPtr(true),
 	})
 	defer cleanup()

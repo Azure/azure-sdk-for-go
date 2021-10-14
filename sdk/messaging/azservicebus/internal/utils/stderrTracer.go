@@ -18,12 +18,12 @@ import (
 // Ex:
 // tab.Register(&utils.StderrTracer{
 // 		Include: map[string]bool{
-// 			internal.SpanProcessorClose: true,
-// 			internal.SpanProcessorLoop:  true,
-// 			internal.SpanNegotiateClaim: true,
-// 			internal.SpanRecover:        true,
-// 			internal.SpanRecoverLink:    true,
-// 			internal.SpanRecoverClient:  true,
+// 			tracing.SpanProcessorClose: true,
+// 			tracing.SpanProcessorLoop:  true,
+// 			tracing.SpanNegotiateClaim: true,
+// 			tracing.SpanRecover:        true,
+// 			tracing.SpanRecoverLink:    true,
+// 			tracing.SpanRecoverClient:  true,
 // 		},
 // 	})
 type StderrTracer struct {

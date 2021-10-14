@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
@@ -160,7 +161,7 @@ func newProcessor(ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanup
 // sent to your handleError function. The processor will retry and restart as needed -
 // no user intervention is required.
 func (p *Processor) Start(ctx context.Context, handleMessage func(message *ReceivedMessage) error, handleError func(err error)) error {
-	ctx, span := tab.StartSpan(ctx, internal.SpanProcessorLoop)
+	ctx, span := tab.StartSpan(ctx, tracing.SpanProcessorLoop)
 	defer span.End()
 
 	err := func() error {
@@ -221,7 +222,7 @@ func (p *Processor) Close(ctx context.Context) error {
 		return nil
 	}
 
-	ctx, span := tab.StartSpan(ctx, internal.SpanProcessorClose)
+	ctx, span := tab.StartSpan(ctx, tracing.SpanProcessorClose)
 	defer span.End()
 
 	defer func() {
@@ -327,7 +328,7 @@ func (p *Processor) subscribe() error {
 }
 
 func (p *Processor) processMessage(ctx context.Context, receiver internal.AMQPReceiver, amqpMessage *amqp.Message) error {
-	ctx, span := tab.StartSpan(ctx, internal.SpanProcessorMessage)
+	ctx, span := tab.StartSpan(ctx, tracing.SpanProcessorMessage)
 	defer span.End()
 
 	receivedMessage := newReceivedMessage(ctx, amqpMessage)

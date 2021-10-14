@@ -13,6 +13,7 @@ import (
 	common "github.com/Azure/azure-amqp-common-go/v3"
 	"github.com/Azure/azure-amqp-common-go/v3/rpc"
 	"github.com/Azure/azure-amqp-common-go/v3/uuid"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
 )
@@ -70,7 +71,7 @@ func (mc *mgmtClient) recover(ctx context.Context) error {
 	mc.clientMu.Lock()
 	defer mc.clientMu.Unlock()
 
-	ctx, span := mc.startSpanFromContext(ctx, string(spanNameRecover))
+	ctx, span := mc.startSpanFromContext(ctx, string(tracing.SpanNameRecover))
 	defer span.End()
 
 	if mc.rpcLink != nil {
@@ -147,7 +148,7 @@ func (mc *mgmtClient) doRPCWithRetry(ctx context.Context, msg *amqp.Message, tim
 		tab.For(ctx).Debug("recovering RPC connection")
 
 		_, retryErr := common.Retry(amqpRetryDefaultTimes, amqpRetryDefaultDelay, func() (interface{}, error) {
-			ctx, sp := mc.startProducerSpanFromContext(ctx, string(spanNameTryRecover))
+			ctx, sp := mc.startProducerSpanFromContext(ctx, string(tracing.SpanTryRecover))
 			defer sp.End()
 
 			if err := mc.recover(ctx); err == nil {
@@ -192,7 +193,7 @@ func isAMQPTransientError(ctx context.Context, err error) bool {
 }
 
 func (mc *mgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, sequenceNumbers []int64) ([]*amqp.Message, error) {
-	ctx, span := startConsumerSpanFromContext(ctx, spanNameReceiveDeferred)
+	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanReceiveDeferred, Version)
 	defer span.End()
 
 	const messagesField, messageField = "messages", "message"
@@ -280,7 +281,7 @@ func (mc *mgmtClient) ReceiveDeferred(ctx context.Context, mode ReceiveMode, seq
 }
 
 func (mc *mgmtClient) PeekMessages(ctx context.Context, fromSequenceNumber int64, messageCount int32) ([]*amqp.Message, error) {
-	ctx, span := startConsumerSpanFromContext(ctx, spanPeekFromSequenceNumber)
+	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanPeekFromSequenceNumber, Version)
 	defer span.End()
 
 	const messagesField, messageField = "messages", "message"
@@ -391,7 +392,7 @@ func (mc *mgmtClient) PeekMessages(ctx context.Context, fromSequenceNumber int64
 // RenewLocks renews the locks in a single 'com.microsoft:renew-lock' operation.
 // NOTE: this function assumes all the messages received on the same link.
 func (mc *mgmtClient) RenewLocks(ctx context.Context, linkName string, lockTokens ...*amqp.UUID) (err error) {
-	ctx, span := startConsumerSpanFromContext(ctx, spanNameRenewLock)
+	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanRenewLock, Version)
 	defer span.End()
 
 	if len(lockTokens) == 0 {
@@ -430,7 +431,7 @@ func (mc *mgmtClient) RenewLocks(ctx context.Context, linkName string, lockToken
 // *amqp.Receiver. Use this if the receiver has been closed/lost or if the message isn't associated
 // with a link (ex: deferred messages).
 func (mc *mgmtClient) SendDisposition(ctx context.Context, lockToken *amqp.UUID, state Disposition) error {
-	ctx, span := startConsumerSpanFromContext(ctx, spanNameSendDisposition)
+	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanSendDisposition, Version)
 	defer span.End()
 
 	if lockToken == nil {
@@ -473,7 +474,7 @@ func (mc *mgmtClient) SendDisposition(ctx context.Context, lockToken *amqp.UUID,
 // ScheduleMessages will send a batch of messages to a Queue, schedule them to be enqueued, and return the sequence numbers
 // that can be used to cancel each message.
 func (mc *mgmtClient) ScheduleMessages(ctx context.Context, enqueueTime time.Time, messages ...*amqp.Message) ([]int64, error) {
-	ctx, span := startConsumerSpanFromContext(ctx, spanNameScheduleMessage)
+	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanScheduleMessage, Version)
 	defer span.End()
 
 	if len(messages) <= 0 {
@@ -572,7 +573,7 @@ func (mc *mgmtClient) ScheduleMessages(ctx context.Context, enqueueTime time.Tim
 // CancelScheduled allows for removal of messages that have been handed to the Service Bus broker for later delivery,
 // but have not yet ben enqueued.
 func (mc *mgmtClient) CancelScheduled(ctx context.Context, seq ...int64) error {
-	ctx, span := startConsumerSpanFromContext(ctx, spanNameCancelScheduledMessage)
+	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanCancelScheduledMessage, Version)
 	defer span.End()
 
 	msg := &amqp.Message{
@@ -599,4 +600,20 @@ func (mc *mgmtClient) CancelScheduled(ctx context.Context, seq ...int64) error {
 	}
 
 	return nil
+}
+
+func (mc *mgmtClient) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tracing.StartConsumerSpanFromContext(ctx, operationName, Version)
+	span.AddAttributes(tab.StringAttribute("message_bus.destination", mc.links.ManagementPath()))
+	return ctx, span
+}
+
+func (mc *mgmtClient) startProducerSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
+	tracing.ApplyComponentInfo(span, Version)
+	span.AddAttributes(
+		tab.StringAttribute("span.kind", "producer"),
+		tab.StringAttribute("message_bus.destination", mc.links.ManagementPath()),
+	)
+	return ctx, span
 }

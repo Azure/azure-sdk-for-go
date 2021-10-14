@@ -9,13 +9,22 @@ package deviceupdateapi
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2020-03-01-preview/deviceupdate"
+	"github.com/Azure/go-autorest/autorest"
 )
+
+// BaseClientAPI contains the set of methods on the BaseClient type.
+type BaseClientAPI interface {
+	CheckNameAvailability(ctx context.Context, request deviceupdate.CheckNameAvailabilityRequest) (result deviceupdate.CheckNameAvailabilityResponse, err error)
+}
+
+var _ BaseClientAPI = (*deviceupdate.BaseClient)(nil)
 
 // AccountsClientAPI contains the set of methods on the AccountsClient type.
 type AccountsClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, accountName string, account deviceupdate.Account) (result deviceupdate.AccountsCreateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, accountName string) (result deviceupdate.AccountsDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string) (result deviceupdate.Account, err error)
+	Head(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result deviceupdate.AccountListPage, err error)
 	ListByResourceGroupComplete(ctx context.Context, resourceGroupName string) (result deviceupdate.AccountListIterator, err error)
 	ListBySubscription(ctx context.Context) (result deviceupdate.AccountListPage, err error)
@@ -30,12 +39,31 @@ type InstancesClientAPI interface {
 	Create(ctx context.Context, resourceGroupName string, accountName string, instanceName string, instance deviceupdate.Instance) (result deviceupdate.InstancesCreateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, accountName string, instanceName string) (result deviceupdate.InstancesDeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, accountName string, instanceName string) (result deviceupdate.Instance, err error)
+	Head(ctx context.Context, resourceGroupName string, accountName string, instanceName string) (result autorest.Response, err error)
 	ListByAccount(ctx context.Context, resourceGroupName string, accountName string) (result deviceupdate.InstanceListPage, err error)
 	ListByAccountComplete(ctx context.Context, resourceGroupName string, accountName string) (result deviceupdate.InstanceListIterator, err error)
 	Update(ctx context.Context, resourceGroupName string, accountName string, instanceName string, tagUpdatePayload deviceupdate.TagUpdate) (result deviceupdate.Instance, err error)
 }
 
 var _ InstancesClientAPI = (*deviceupdate.InstancesClient)(nil)
+
+// PrivateEndpointConnectionsClientAPI contains the set of methods on the PrivateEndpointConnectionsClient type.
+type PrivateEndpointConnectionsClientAPI interface {
+	CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, privateEndpointConnection deviceupdate.PrivateEndpointConnection) (result deviceupdate.PrivateEndpointConnectionsCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (result deviceupdate.PrivateEndpointConnectionsDeleteFuture, err error)
+	Get(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string) (result deviceupdate.PrivateEndpointConnection, err error)
+	ListByAccount(ctx context.Context, resourceGroupName string, accountName string) (result deviceupdate.PrivateEndpointConnectionListResult, err error)
+}
+
+var _ PrivateEndpointConnectionsClientAPI = (*deviceupdate.PrivateEndpointConnectionsClient)(nil)
+
+// PrivateLinkResourcesClientAPI contains the set of methods on the PrivateLinkResourcesClient type.
+type PrivateLinkResourcesClientAPI interface {
+	Get(ctx context.Context, resourceGroupName string, accountName string, groupID string) (result deviceupdate.GroupInformation, err error)
+	ListByAccount(ctx context.Context, resourceGroupName string, accountName string) (result deviceupdate.PrivateLinkResourceListResult, err error)
+}
+
+var _ PrivateLinkResourcesClientAPI = (*deviceupdate.PrivateLinkResourcesClient)(nil)
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
 type OperationsClientAPI interface {

@@ -25,23 +25,80 @@ const (
 	Internal ActionType = original.Internal
 )
 
+type CheckNameAvailabilityReason = original.CheckNameAvailabilityReason
+
+const (
+	AlreadyExists CheckNameAvailabilityReason = original.AlreadyExists
+	Invalid       CheckNameAvailabilityReason = original.Invalid
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	Application     CreatedByType = original.Application
+	Key             CreatedByType = original.Key
+	ManagedIdentity CreatedByType = original.ManagedIdentity
+	User            CreatedByType = original.User
+)
+
+type GroupIDProvisioningState = original.GroupIDProvisioningState
+
+const (
+	Canceled  GroupIDProvisioningState = original.Canceled
+	Failed    GroupIDProvisioningState = original.Failed
+	Succeeded GroupIDProvisioningState = original.Succeeded
+)
+
+type ManagedServiceIdentityType = original.ManagedServiceIdentityType
+
+const (
+	None                       ManagedServiceIdentityType = original.None
+	SystemAssigned             ManagedServiceIdentityType = original.SystemAssigned
+	SystemAssignedUserAssigned ManagedServiceIdentityType = original.SystemAssignedUserAssigned
+	UserAssigned               ManagedServiceIdentityType = original.UserAssigned
+)
+
 type Origin = original.Origin
 
 const (
-	System     Origin = original.System
-	User       Origin = original.User
-	Usersystem Origin = original.Usersystem
+	OriginSystem     Origin = original.OriginSystem
+	OriginUser       Origin = original.OriginUser
+	OriginUsersystem Origin = original.OriginUsersystem
+)
+
+type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
+
+const (
+	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateCreating
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateDeleting
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateFailed
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateSucceeded
+)
+
+type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
+
+const (
+	Approved PrivateEndpointServiceConnectionStatus = original.Approved
+	Pending  PrivateEndpointServiceConnectionStatus = original.Pending
+	Rejected PrivateEndpointServiceConnectionStatus = original.Rejected
 )
 
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Accepted  ProvisioningState = original.Accepted
-	Canceled  ProvisioningState = original.Canceled
-	Creating  ProvisioningState = original.Creating
-	Deleted   ProvisioningState = original.Deleted
-	Failed    ProvisioningState = original.Failed
-	Succeeded ProvisioningState = original.Succeeded
+	ProvisioningStateAccepted  ProvisioningState = original.ProvisioningStateAccepted
+	ProvisioningStateCanceled  ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleted   ProvisioningState = original.ProvisioningStateDeleted
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+)
+
+type PublicNetworkAccess = original.PublicNetworkAccess
+
+const (
+	Disabled PublicNetworkAccess = original.Disabled
+	Enabled  PublicNetworkAccess = original.Enabled
 )
 
 type Account = original.Account
@@ -56,9 +113,14 @@ type AccountsDeleteFuture = original.AccountsDeleteFuture
 type AccountsUpdateFuture = original.AccountsUpdateFuture
 type AzureEntityResource = original.AzureEntityResource
 type BaseClient = original.BaseClient
+type CheckNameAvailabilityRequest = original.CheckNameAvailabilityRequest
+type CheckNameAvailabilityResponse = original.CheckNameAvailabilityResponse
+type DiagnosticStorageProperties = original.DiagnosticStorageProperties
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
-type ErrorDefinition = original.ErrorDefinition
+type ErrorDetail = original.ErrorDetail
 type ErrorResponse = original.ErrorResponse
+type GroupInformation = original.GroupInformation
+type GroupInformationProperties = original.GroupInformationProperties
 type Instance = original.Instance
 type InstanceList = original.InstanceList
 type InstanceListIterator = original.InstanceListIterator
@@ -68,16 +130,30 @@ type InstancesClient = original.InstancesClient
 type InstancesCreateFuture = original.InstancesCreateFuture
 type InstancesDeleteFuture = original.InstancesDeleteFuture
 type IotHubSettings = original.IotHubSettings
+type ManagedServiceIdentity = original.ManagedServiceIdentity
 type Operation = original.Operation
 type OperationDisplay = original.OperationDisplay
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
 type OperationsClient = original.OperationsClient
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsCreateOrUpdateFuture = original.PrivateEndpointConnectionsCreateOrUpdateFuture
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type ProxyResource = original.ProxyResource
 type Resource = original.Resource
+type SystemData = original.SystemData
 type TagUpdate = original.TagUpdate
 type TrackedResource = original.TrackedResource
+type UserAssignedIdentity = original.UserAssignedIdentity
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)
@@ -118,17 +194,50 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
 func PossibleActionTypeValues() []ActionType {
 	return original.PossibleActionTypeValues()
 }
+func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
+	return original.PossibleCheckNameAvailabilityReasonValues()
+}
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
+func PossibleGroupIDProvisioningStateValues() []GroupIDProvisioningState {
+	return original.PossibleGroupIDProvisioningStateValues()
+}
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return original.PossibleManagedServiceIdentityTypeValues()
+}
 func PossibleOriginValues() []Origin {
 	return original.PossibleOriginValues()
 }
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
+}
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return original.PossiblePrivateEndpointServiceConnectionStatusValues()
+}
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return original.PossibleProvisioningStateValues()
+}
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return original.PossiblePublicNetworkAccessValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/preview"

@@ -21,7 +21,6 @@ func TestAdminClient_UsingIdentity(t *testing.T) {
 	// test with azure identity support
 	ns := os.Getenv("SERVICEBUS_ENDPOINT")
 	envCred, err := azidentity.NewEnvironmentCredential(nil)
-	require.NoError(t, err)
 
 	if err != nil || ns == "" {
 		t.Skip("Azure Identity compatible credentials not configured")

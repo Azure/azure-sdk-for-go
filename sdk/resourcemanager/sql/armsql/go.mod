@@ -7,5 +7,5 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.19.0
 )
 
-// fix module path github.com/Azure/azure-sdk-for-go/sdk/sql/armsql to github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql
+// fix wrong module path in go.mod
 retract v0.1.0

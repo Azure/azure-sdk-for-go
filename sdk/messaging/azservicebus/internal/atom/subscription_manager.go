@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package internal
+package atom
 
 import (
 	"context"
@@ -15,9 +15,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/go-autorest/autorest/date"
-	"github.com/devigned/tab"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 )
 
 type (
@@ -98,12 +97,12 @@ type (
 	}
 
 	ruleEntry struct {
-		*atom.Entry
+		*Entry
 		Content *ruleContent `xml:"content"`
 	}
 
 	ruleFeed struct {
-		*atom.Feed
+		*Feed
 		Entries []ruleEntry `xml:"entry"`
 	}
 
@@ -138,13 +137,13 @@ type (
 
 	// subscriptionFeed is a specialized feed containing Topic Subscriptions
 	subscriptionFeed struct {
-		*atom.Feed
+		*Feed
 		Entries []subscriptionEntry `xml:"entry"`
 	}
 
 	// subscriptionEntryContent is a specialized Topic feed Subscription
 	subscriptionEntry struct {
-		*atom.Entry
+		*Entry
 		Content *subscriptionContent `xml:"content"`
 	}
 
@@ -187,8 +186,8 @@ func ListSubscriptionsWithTop(top int) ListSubscriptionsOption {
 	}
 }
 
-func NewSubscriptionManagerForConnectionString(topicName string, connectionString string) (*SubscriptionManager, error) {
-	entityManager, err := NewEntityManagerWithConnectionString(connectionString)
+func NewSubscriptionManagerForConnectionString(topicName string, connectionString string, version string) (*SubscriptionManager, error) {
+	entityManager, err := NewEntityManagerWithConnectionString(connectionString, version)
 
 	if err != nil {
 		return nil, err
@@ -206,7 +205,7 @@ func (sm *SubscriptionManager) Delete(ctx context.Context, name string) error {
 	defer span.End()
 
 	res, err := sm.entityManager.Delete(ctx, sm.getResourceURI(name))
-	defer closeRes(ctx, res)
+	defer CloseRes(ctx, res)
 
 	return err
 }
@@ -226,7 +225,7 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 	sd.ServiceBusSchema = to.StringPtr(serviceBusSchema)
 
 	qe := &subscriptionEntry{
-		Entry: &atom.Entry{
+		Entry: &Entry{
 			AtomSchema: atomSchema,
 		},
 		Content: &subscriptionContent{
@@ -253,7 +252,7 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 	str = strings.Replace(str, `xmlns:XMLSchema-instance="`+schemaInstance+`" XMLSchema-instance:type`, `xmlns:i="`+schemaInstance+`" i:type`, -1)
 	reqBytes = xmlDoc([]byte(str))
 	res, err := sm.entityManager.Put(ctx, sm.getResourceURI(name), reqBytes, mw...)
-	defer closeRes(ctx, res)
+	defer CloseRes(ctx, res)
 
 	if err != nil {
 		return nil, err
@@ -267,7 +266,7 @@ func (sm *SubscriptionManager) Put(ctx context.Context, name string, opts ...Sub
 	var entry subscriptionEntry
 	err = xml.Unmarshal(b, &entry)
 	if err != nil {
-		return nil, formatManagementError(b)
+		return nil, FormatManagementError(b)
 	}
 	return subscriptionEntryToEntity(&entry), nil
 }
@@ -285,10 +284,10 @@ func (sm *SubscriptionManager) List(ctx context.Context, options ...ListSubscrip
 		}
 	}
 
-	basePath := ConstructAtomPath("/"+sm.topicName+"/subscriptions", listSubscriptionsOptions.skip, listSubscriptionsOptions.top)
+	basePath := constructAtomPath("/"+sm.topicName+"/subscriptions", listSubscriptionsOptions.skip, listSubscriptionsOptions.top)
 
 	res, err := sm.entityManager.Get(ctx, basePath)
-	defer closeRes(ctx, res)
+	defer CloseRes(ctx, res)
 
 	if err != nil {
 		return nil, err
@@ -302,7 +301,7 @@ func (sm *SubscriptionManager) List(ctx context.Context, options ...ListSubscrip
 	var feed subscriptionFeed
 	err = xml.Unmarshal(b, &feed)
 	if err != nil {
-		return nil, formatManagementError(b)
+		return nil, FormatManagementError(b)
 	}
 
 	subs := make([]*SubscriptionEntity, len(feed.Entries))
@@ -318,14 +317,14 @@ func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*Subscript
 	defer span.End()
 
 	res, err := sm.entityManager.Get(ctx, sm.getResourceURI(name))
-	defer closeRes(ctx, res)
+	defer CloseRes(ctx, res)
 
 	if err != nil {
 		return nil, err
 	}
 
 	if res.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound{EntityPath: res.Request.URL.Path}
+		return nil, ResponseError{resp: res}
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
@@ -339,9 +338,9 @@ func (sm *SubscriptionManager) Get(ctx context.Context, name string) (*Subscript
 		if isEmptyFeed(b) {
 			// seems the only way to catch 404 is if the feed is empty. If no subscriptions exist, the GET returns 200
 			// and an empty feed.
-			return nil, ErrNotFound{EntityPath: res.Request.URL.Path}
+			return nil, ResponseError{resp: res}
 		}
-		return nil, formatManagementError(b)
+		return nil, ResponseError{resp: res, inner: FormatManagementError(b)}
 	}
 	return subscriptionEntryToEntity(&entry), nil
 }
@@ -354,14 +353,14 @@ func (sm *SubscriptionManager) ListRules(ctx context.Context, subscriptionName s
 	defer span.End()
 
 	res, err := sm.entityManager.Get(ctx, sm.getRulesResourceURI(subscriptionName))
-	defer closeRes(ctx, res)
+	defer CloseRes(ctx, res)
 
 	if err != nil {
 		return nil, err
 	}
 
 	if res.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound{EntityPath: res.Request.URL.Path}
+		return nil, ResponseError{resp: res}
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
@@ -372,7 +371,7 @@ func (sm *SubscriptionManager) ListRules(ctx context.Context, subscriptionName s
 	var feed ruleFeed
 	err = xml.Unmarshal(b, &feed)
 	if err != nil {
-		return nil, formatManagementError(b)
+		return nil, FormatManagementError(b)
 	}
 
 	rules := make([]*RuleEntity, len(feed.Entries))
@@ -421,7 +420,7 @@ func (sm *SubscriptionManager) putRule(ctx context.Context, subscriptionName, ru
 	defer span.End()
 
 	re := &ruleEntry{
-		Entry: &atom.Entry{
+		Entry: &Entry{
 			AtomSchema: atomSchema,
 		},
 		Content: &ruleContent{
@@ -441,7 +440,7 @@ func (sm *SubscriptionManager) putRule(ctx context.Context, subscriptionName, ru
 
 	reqBytes = xmlDoc([]byte(str))
 	res, err := sm.entityManager.Put(ctx, sm.getRuleResourceURI(subscriptionName, ruleName), reqBytes)
-	defer closeRes(ctx, res)
+	defer CloseRes(ctx, res)
 
 	if err != nil {
 		return nil, err
@@ -455,7 +454,7 @@ func (sm *SubscriptionManager) putRule(ctx context.Context, subscriptionName, ru
 	var entry ruleEntry
 	err = xml.Unmarshal(b, &entry)
 	if err != nil {
-		return nil, formatManagementError(b)
+		return nil, FormatManagementError(b)
 	}
 	return ruleEntryToEntity(&entry), nil
 }
@@ -466,7 +465,7 @@ func (sm *SubscriptionManager) DeleteRule(ctx context.Context, subscriptionName,
 	defer span.End()
 
 	res, err := sm.entityManager.Delete(ctx, sm.getRuleResourceURI(subscriptionName, ruleName))
-	defer closeRes(ctx, res)
+	defer CloseRes(ctx, res)
 
 	return err
 }
@@ -551,7 +550,7 @@ func SubscriptionWithLockDuration(window *time.Duration) SubscriptionManagementO
 			return fmt.Errorf("Lock duration must be shorter than 5 minutes got: %v", *window)
 		}
 
-		s.LockDuration = ptrString(durationTo8601Seconds(*window))
+		s.LockDuration = ptrString(utils.DurationTo8601Seconds(*window))
 		return nil
 	}
 }
@@ -581,7 +580,7 @@ func SubscriptionWithAutoDeleteOnIdle(window *time.Duration) SubscriptionManagem
 			if window.Minutes() < 5 {
 				return errors.New("window must be greater than 5 minutes")
 			}
-			s.AutoDeleteOnIdle = ptrString(durationTo8601Seconds(*window))
+			s.AutoDeleteOnIdle = ptrString(utils.DurationTo8601Seconds(*window))
 		}
 		return nil
 	}
@@ -596,7 +595,7 @@ func SubscriptionWithMessageTimeToLive(window *time.Duration) SubscriptionManage
 			duration := time.Duration(14 * 24 * time.Hour)
 			window = &duration
 		}
-		s.DefaultMessageTimeToLive = ptrString(durationTo8601Seconds(*window))
+		s.DefaultMessageTimeToLive = ptrString(utils.DurationTo8601Seconds(*window))
 		return nil
 	}
 }
@@ -611,15 +610,5 @@ func SubscriptionWithDefaultRuleDescription(filter FilterDescriber, name string)
 		}
 		s.DefaultRuleDescription = rule
 		return nil
-	}
-}
-
-func closeRes(ctx context.Context, res *http.Response) {
-	if res == nil {
-		return
-	}
-
-	if err := res.Body.Close(); err != nil {
-		tab.For(ctx).Error(err)
 	}
 }

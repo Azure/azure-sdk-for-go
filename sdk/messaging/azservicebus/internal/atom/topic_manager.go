@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package internal
+package atom
 
 import (
 	"context"
@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/devigned/tab"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 )
 
 type (
@@ -31,7 +31,7 @@ type (
 
 	// topicEntry is a specialized Topic feed entry
 	topicEntry struct {
-		*atom.Entry
+		*Entry
 		Content *topicContent `xml:"content"`
 	}
 
@@ -44,7 +44,7 @@ type (
 
 	// topicFeed is a specialized feed containing Topic Entries
 	topicFeed struct {
-		*atom.Feed
+		*Feed
 		Entries []topicEntry `xml:"entry"`
 	}
 
@@ -80,8 +80,8 @@ func ListTopicsWithTop(top int) ListTopicsOption {
 	}
 }
 
-func NewTopicManagerWithConnectionString(connectionString string) (*TopicManager, error) {
-	entityManager, err := NewEntityManagerWithConnectionString(connectionString)
+func NewTopicManagerWithConnectionString(connectionString string, version string) (*TopicManager, error) {
+	entityManager, err := NewEntityManagerWithConnectionString(connectionString, version)
 
 	if err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func (tm *TopicManager) Delete(ctx context.Context, name string) error {
 	defer span.End()
 
 	res, err := tm.entityManager.Delete(ctx, "/"+name)
-	defer closeRes(ctx, res)
+	defer CloseRes(ctx, res)
 
 	return err
 }
@@ -119,7 +119,7 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManag
 	td.ServiceBusSchema = to.StringPtr(serviceBusSchema)
 
 	qe := &topicEntry{
-		Entry: &atom.Entry{
+		Entry: &Entry{
 			AtomSchema: atomSchema,
 		},
 		Content: &topicContent{
@@ -136,7 +136,7 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManag
 
 	reqBytes = xmlDoc(reqBytes)
 	res, err := tm.entityManager.Put(ctx, "/"+name, reqBytes)
-	defer closeRes(ctx, res)
+	defer CloseRes(ctx, res)
 
 	if err != nil {
 		tab.For(ctx).Error(err)
@@ -152,7 +152,7 @@ func (tm *TopicManager) Put(ctx context.Context, name string, opts ...TopicManag
 	var entry topicEntry
 	err = xml.Unmarshal(b, &entry)
 	if err != nil {
-		return nil, formatManagementError(b)
+		return nil, FormatManagementError(b)
 	}
 	return topicEntryToEntity(&entry), nil
 }
@@ -170,10 +170,10 @@ func (tm *TopicManager) List(ctx context.Context, options ...ListTopicsOption) (
 		}
 	}
 
-	basePath := ConstructAtomPath("/$Resources/Topics", listTopicsOptions.skip, listTopicsOptions.top)
+	basePath := constructAtomPath("/$Resources/Topics", listTopicsOptions.skip, listTopicsOptions.top)
 
 	res, err := tm.entityManager.Get(ctx, basePath)
-	defer closeRes(ctx, res)
+	defer CloseRes(ctx, res)
 
 	if err != nil {
 		tab.For(ctx).Error(err)
@@ -189,7 +189,7 @@ func (tm *TopicManager) List(ctx context.Context, options ...ListTopicsOption) (
 	var feed topicFeed
 	err = xml.Unmarshal(b, &feed)
 	if err != nil {
-		return nil, formatManagementError(b)
+		return nil, FormatManagementError(b)
 	}
 
 	topics := make([]*TopicEntity, len(feed.Entries))
@@ -205,7 +205,7 @@ func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, err
 	defer span.End()
 
 	res, err := tm.entityManager.Get(ctx, name)
-	defer closeRes(ctx, res)
+	defer CloseRes(ctx, res)
 
 	if err != nil {
 		tab.For(ctx).Error(err)
@@ -213,7 +213,7 @@ func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, err
 	}
 
 	if res.StatusCode == http.StatusNotFound {
-		return nil, ErrNotFound{EntityPath: res.Request.URL.Path}
+		return nil, ResponseError{resp: res}
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
@@ -226,9 +226,9 @@ func (tm *TopicManager) Get(ctx context.Context, name string) (*TopicEntity, err
 	err = xml.Unmarshal(b, &entry)
 	if err != nil {
 		if isEmptyFeed(b) {
-			return nil, ErrNotFound{EntityPath: res.Request.URL.Path}
+			return nil, ResponseError{resp: res}
 		}
-		return nil, formatManagementError(b)
+		return nil, FormatManagementError(b)
 	}
 	return topicEntryToEntity(&entry), nil
 }
@@ -280,7 +280,7 @@ func TopicWithDuplicateDetection(window *time.Duration) TopicManagementOption {
 	return func(t *TopicDescription) error {
 		t.RequiresDuplicateDetection = ptrBool(true)
 		if window != nil {
-			t.DuplicateDetectionHistoryTimeWindow = ptrString(durationTo8601Seconds(*window))
+			t.DuplicateDetectionHistoryTimeWindow = ptrString(utils.DurationTo8601Seconds(*window))
 		}
 		return nil
 	}
@@ -310,7 +310,7 @@ func TopicWithAutoDeleteOnIdle(window *time.Duration) TopicManagementOption {
 			if window.Minutes() < 5 {
 				return errors.New("TopicWithAutoDeleteOnIdle: window must be greater than 5 minutes")
 			}
-			t.AutoDeleteOnIdle = ptrString(durationTo8601Seconds(*window))
+			t.AutoDeleteOnIdle = ptrString(utils.DurationTo8601Seconds(*window))
 		}
 		return nil
 	}
@@ -325,7 +325,7 @@ func TopicWithMessageTimeToLive(window *time.Duration) TopicManagementOption {
 			duration := time.Duration(14 * 24 * time.Hour)
 			window = &duration
 		}
-		t.DefaultMessageTimeToLive = ptrString(durationTo8601Seconds(*window))
+		t.DefaultMessageTimeToLive = ptrString(utils.DurationTo8601Seconds(*window))
 		return nil
 	}
 }

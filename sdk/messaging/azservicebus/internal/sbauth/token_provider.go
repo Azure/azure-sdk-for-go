@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package internal
+package sbauth
 
 import (
 	"context"
@@ -14,25 +14,27 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
-// tokenProvider handles access tokens and expiration calculation for SAS
+// TokenProvider handles access tokens and expiration calculation for SAS
 // keys (via connection strings) or TokenCredentials from Azure Identity.
-type tokenProvider struct {
+type TokenProvider struct {
 	core azcore.TokenCredential
 	sas  *sas.TokenProvider
 }
 
-func newTokenProviderWithTokenCredential(tokenCredential azcore.TokenCredential) *tokenProvider {
-	return &tokenProvider{core: tokenCredential}
+// NewTokenProvider creates a tokenProvider from azcore.TokenCredential.
+func NewTokenProvider(tokenCredential azcore.TokenCredential) *TokenProvider {
+	return &TokenProvider{core: tokenCredential}
 }
 
-func newTokenProviderWithConnectionString(keyName string, key string) (*tokenProvider, error) {
+// NewTokenProviderWithConnectionString creates a tokenProvider from a connection string.
+func NewTokenProviderWithConnectionString(keyName string, key string) (*TokenProvider, error) {
 	provider, err := sas.NewTokenProvider(sas.TokenProviderWithKey(keyName, key))
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &tokenProvider{sas: provider}, nil
+	return &TokenProvider{sas: provider}, nil
 }
 
 // singleUseTokenProvider allows you to wrap an *auth.Token so it can be used
@@ -48,14 +50,14 @@ func (tp *singleUseTokenProvider) GetToken(uri string) (*auth.Token, error) {
 
 // GetToken will retrieve a new token.
 // This function makes us compatible with auth.TokenProvider.
-func (tp *tokenProvider) GetToken(uri string) (*auth.Token, error) {
+func (tp *TokenProvider) GetToken(uri string) (*auth.Token, error) {
 	token, _, err := tp.getTokenImpl(uri)
 	return token, err
 }
 
 // GetToken returns a token (that is compatible as an auth.TokenProvider) and
 // the calculated time when you should renew your token.
-func (tp *tokenProvider) GetTokenAsTokenProvider(uri string) (*singleUseTokenProvider, time.Time, error) {
+func (tp *TokenProvider) GetTokenAsTokenProvider(uri string) (*singleUseTokenProvider, time.Time, error) {
 
 	token, renewAt, err := tp.getTokenImpl(uri)
 
@@ -66,7 +68,7 @@ func (tp *tokenProvider) GetTokenAsTokenProvider(uri string) (*singleUseTokenPro
 	return (*singleUseTokenProvider)(token), renewAt, nil
 }
 
-func (tp *tokenProvider) getTokenImpl(uri string) (*auth.Token, time.Time, error) {
+func (tp *TokenProvider) getTokenImpl(uri string) (*auth.Token, time.Time, error) {
 	if tp.sas != nil {
 		return tp.getSASToken(uri)
 	} else {
@@ -74,7 +76,7 @@ func (tp *tokenProvider) getTokenImpl(uri string) (*auth.Token, time.Time, error
 	}
 }
 
-func (tpa *tokenProvider) getAZCoreToken() (*auth.Token, time.Time, error) {
+func (tpa *TokenProvider) getAZCoreToken() (*auth.Token, time.Time, error) {
 	// not sure if URI plays in here.
 	accessToken, err := tpa.core.GetToken(context.TODO(), policy.TokenRequestOptions{
 		Scopes: []string{
@@ -97,7 +99,7 @@ func (tpa *tokenProvider) getAZCoreToken() (*auth.Token, time.Time, error) {
 		nil
 }
 
-func (tpa *tokenProvider) getSASToken(uri string) (*auth.Token, time.Time, error) {
+func (tpa *TokenProvider) getSASToken(uri string) (*auth.Token, time.Time, error) {
 	authToken, err := tpa.sas.GetToken(uri)
 
 	if err != nil {

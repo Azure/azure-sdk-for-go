@@ -1,16 +1,20 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package internal
+package atom
 
 import (
+	"context"
 	"fmt"
+	"net/http"
 	"net/url"
+
+	"github.com/devigned/tab"
 )
 
-// ConstructAtomPath adds the proper parameters for skip and top
+// constructAtomPath adds the proper parameters for skip and top
 // This is common for the list operations for queues, topics and subscriptions.
-func ConstructAtomPath(basePath string, skip int, top int) string {
+func constructAtomPath(basePath string, skip int, top int) string {
 	values := url.Values{}
 
 	if skip > 0 {
@@ -26,4 +30,15 @@ func ConstructAtomPath(basePath string, skip int, top int) string {
 	}
 
 	return fmt.Sprintf("%s?%s", basePath, values.Encode())
+}
+
+// CloseRes closes the response (or if it's nil just no-ops)
+func CloseRes(ctx context.Context, res *http.Response) {
+	if res == nil {
+		return
+	}
+
+	if err := res.Body.Close(); err != nil {
+		tab.For(ctx).Error(err)
+	}
 }

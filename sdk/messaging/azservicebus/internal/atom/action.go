@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package internal
+package atom
 
 type (
 	// SQLAction represents a SQL language-based action expression that is evaluated against a BrokeredMessage. A

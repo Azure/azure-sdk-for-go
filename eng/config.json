@@ -27,14 +27,14 @@
         {
             "Name": "messaging",
             "CoverageGoal": 0.10
-        }, 
+        },
         {
             "Name": "azsecrets",
             "CoverageGoal": 0.76
         },
         {
-            "Name": "messaging",
-            "CoverageGoal": 0.10
+            "Name": "azkeys",
+            "CoverageGoal": 0.75
         }
     ]
 }

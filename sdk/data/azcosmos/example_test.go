@@ -157,7 +157,7 @@ func Example() {
 		log.Fatal(err)
 	}
 
-	itemSessionToken := itemResponse.SessionToken()
+	itemSessionToken := itemResponse.SessionToken
 	itemResponse, err = container.ReadItem(ctx, pk, "1", &azcosmos.CosmosItemRequestOptions{SessionToken: itemSessionToken})
 	if err != nil {
 		log.Fatal(err)
@@ -184,7 +184,7 @@ func Example() {
 		itemResponseBody["value"] = "newValue"
 
 		// Replace with Etag
-		etag := itemResponse.ETag()
+		etag := itemResponse.ETag
 		itemResponse, err = container.ReplaceItem(ctx, pk, "1", itemResponseBody, &azcosmos.CosmosItemRequestOptions{IfMatchEtag: &etag})
 		var httpErr azcore.HTTPResponse
 

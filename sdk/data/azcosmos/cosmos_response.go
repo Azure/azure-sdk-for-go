@@ -15,10 +15,24 @@ import (
 type CosmosResponse struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
+	// RequestCharge contains the value from the request charge header.
+	RequestCharge float32
+	// ActivityId contains the value from the activity header.
+	ActivityId string
+	// ETag contains the value from the ETag header.
+	ETag azcore.ETag
 }
 
-// RequestCharge contains the value from the request charge header.
-func (c *CosmosResponse) RequestCharge() float32 {
+func newCosmosResponse(resp *http.Response) CosmosResponse {
+	response := CosmosResponse{}
+	response.RawResponse = resp
+	response.RequestCharge = response.readRequestCharge()
+	response.ActivityId = resp.Header.Get(cosmosHeaderActivityId)
+	response.ETag = azcore.ETag(resp.Header.Get(cosmosHeaderEtag))
+	return response
+}
+
+func (c *CosmosResponse) readRequestCharge() float32 {
 	requestChargeString := c.RawResponse.Header.Get(cosmosHeaderRequestCharge)
 	if requestChargeString == "" {
 		return 0
@@ -28,14 +42,4 @@ func (c *CosmosResponse) RequestCharge() float32 {
 		return 0
 	}
 	return float32(f)
-}
-
-// ActivityId contains the value from the activity header.
-func (c *CosmosResponse) ActivityId() string {
-	return c.RawResponse.Header.Get(cosmosHeaderActivityId)
-}
-
-// ETag contains the value from the ETag header.
-func (c *CosmosResponse) ETag() azcore.ETag {
-	return azcore.ETag(c.RawResponse.Header.Get(cosmosHeaderEtag))
 }

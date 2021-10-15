@@ -14,17 +14,16 @@ type CosmosItemResponse struct {
 	// The byte content of the operation response.
 	Value []byte
 	CosmosResponse
-}
-
-// SessionToken contains the value from the session token header to be used on session consistency.
-func (c *CosmosItemResponse) SessionToken() string {
-	return c.RawResponse.Header.Get(cosmosHeaderSessionToken)
+	// SessionToken contains the value from the session token header to be used on session consistency.
+	SessionToken string
 }
 
 func newCosmosItemResponse(resp *http.Response) (CosmosItemResponse, error) {
-	response := CosmosItemResponse{}
+	response := CosmosItemResponse{
+		CosmosResponse: newCosmosResponse(resp),
+	}
+	response.SessionToken = resp.Header.Get(cosmosHeaderSessionToken)
 	defer resp.Body.Close()
-	response.RawResponse = resp
 	body, err := azruntime.Payload(resp)
 	if err != nil {
 		return response, err

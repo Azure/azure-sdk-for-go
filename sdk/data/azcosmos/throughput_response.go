@@ -4,7 +4,6 @@
 package azcosmos
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -16,25 +15,27 @@ type ThroughputResponse struct {
 	// ThroughputProperties contains the unmarshalled response body in ThroughputProperties format.
 	ThroughputProperties *ThroughputProperties
 	CosmosResponse
+	// IsReplacePending returns the state of a throughput update.
+	IsReplacePending bool
+	// MinThroughput is minimum throughput in measurement of request units per second in the Azure Cosmos service.
+	MinThroughput *int32
 }
 
-// IsReplacePending returns the state of a throughput update.
-func (r *ThroughputResponse) IsReplacePending() *bool {
+func (r *ThroughputResponse) getIsReplacePending() bool {
 	isPending := r.RawResponse.Header.Get(cosmosHeaderOfferReplacePending)
 	if isPending == "" {
-		return nil
+		return false
 	}
 
 	isPendingBool, err := strconv.ParseBool(isPending)
 	if err != nil {
-		return nil
+		return false
 	}
 
-	return &isPendingBool
+	return isPendingBool
 }
 
-// MinThroughput is minimum throughput in measurement of request units per second in the Azure Cosmos service.
-func (r *ThroughputResponse) MinThroughput() *int {
+func (r *ThroughputResponse) readMinThroughput() *int32 {
 	minThroughput := r.RawResponse.Header.Get(cosmosHeaderOfferMinimumThroughput)
 	if minThroughput == "" {
 		return nil
@@ -45,14 +46,15 @@ func (r *ThroughputResponse) MinThroughput() *int {
 		return nil
 	}
 
-	minThroughputAsInt := int(minThroughputInt)
+	minThroughputAsInt := int32(minThroughputInt)
 
 	return &minThroughputAsInt
 }
 
 func newThroughputResponse(resp *http.Response, extraRequestCharge *float32) (ThroughputResponse, error) {
-	response := ThroughputResponse{}
-	response.RawResponse = resp
+	response := ThroughputResponse{
+		CosmosResponse: newCosmosResponse(resp),
+	}
 	properties := &ThroughputProperties{}
 	err := azruntime.UnmarshalAsJSON(resp, properties)
 	if err != nil {
@@ -61,9 +63,11 @@ func newThroughputResponse(resp *http.Response, extraRequestCharge *float32) (Th
 	response.ThroughputProperties = properties
 
 	if extraRequestCharge != nil {
-		currentRequestCharge := response.RequestCharge() + *extraRequestCharge
-		response.RawResponse.Header.Set(cosmosHeaderRequestCharge, fmt.Sprint(currentRequestCharge))
+		currentRequestCharge := response.RequestCharge + *extraRequestCharge
+		response.RequestCharge = currentRequestCharge
 	}
 
+	response.IsReplacePending = response.getIsReplacePending()
+	response.MinThroughput = response.readMinThroughput()
 	return response, nil
 }

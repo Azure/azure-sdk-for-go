@@ -157,7 +157,7 @@ func Example() {
 		log.Fatal(err)
 	}
 
-	itemSessionToken := itemResponse.SessionToken()
+	itemSessionToken := itemResponse.SessionToken
 	itemResponse, err = container.ReadItem(ctx, pk, "1", &azcosmos.CosmosItemRequestOptions{SessionToken: itemSessionToken})
 	if err != nil {
 		log.Fatal(err)

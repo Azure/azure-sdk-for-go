@@ -43,6 +43,10 @@ func TestItemCRUD(t *testing.T) {
 		t.Fatalf("Failed to create item: %v", err)
 	}
 
+	if itemResponse.SessionToken == "" {
+		t.Fatalf("Session token is empty")
+	}
+
 	// No content on write by default
 	if len(itemResponse.Value) != 0 {
 		t.Fatalf("Expected empty response, got %v", itemResponse.Value)

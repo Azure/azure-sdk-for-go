@@ -14,7 +14,7 @@ import (
 type ThroughputResponse struct {
 	// ThroughputProperties contains the unmarshalled response body in ThroughputProperties format.
 	ThroughputProperties *ThroughputProperties
-	CosmosResponse
+	Response
 	// IsReplacePending returns the state of a throughput update.
 	IsReplacePending bool
 	// MinThroughput is minimum throughput in measurement of request units per second in the Azure Cosmos service.
@@ -53,7 +53,7 @@ func (r *ThroughputResponse) readMinThroughput() *int32 {
 
 func newThroughputResponse(resp *http.Response, extraRequestCharge *float32) (ThroughputResponse, error) {
 	response := ThroughputResponse{
-		CosmosResponse: newCosmosResponse(resp),
+		Response: newResponse(resp),
 	}
 	properties := &ThroughputProperties{}
 	err := azruntime.UnmarshalAsJSON(resp, properties)

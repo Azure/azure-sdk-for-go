@@ -10,9 +10,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// CosmosResponse is the base response type for all responses from the Azure Cosmos DB database service.
+// Response is the base response type for all responses from the Azure Cosmos DB database service.
 // It contains base methods and properties that are common to all responses.
-type CosmosResponse struct {
+type Response struct {
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 	// RequestCharge contains the value from the request charge header.
@@ -23,8 +23,8 @@ type CosmosResponse struct {
 	ETag azcore.ETag
 }
 
-func newCosmosResponse(resp *http.Response) CosmosResponse {
-	response := CosmosResponse{}
+func newResponse(resp *http.Response) Response {
+	response := Response{}
 	response.RawResponse = resp
 	response.RequestCharge = response.readRequestCharge()
 	response.ActivityId = resp.Header.Get(cosmosHeaderActivityId)
@@ -32,7 +32,7 @@ func newCosmosResponse(resp *http.Response) CosmosResponse {
 	return response
 }
 
-func (c *CosmosResponse) readRequestCharge() float32 {
+func (c *Response) readRequestCharge() float32 {
 	requestChargeString := c.RawResponse.Header.Get(cosmosHeaderRequestCharge)
 	if requestChargeString == "" {
 		return 0

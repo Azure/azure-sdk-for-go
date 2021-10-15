@@ -13,12 +13,12 @@ import (
 type ContainerResponse struct {
 	// ContainerProperties contains the unmarshalled response body in ContainerProperties format.
 	ContainerProperties *ContainerProperties
-	CosmosResponse
+	Response
 }
 
 func newContainerResponse(resp *http.Response, container *Container) (ContainerResponse, error) {
 	response := ContainerResponse{
-		CosmosResponse: newCosmosResponse(resp),
+		Response: newResponse(resp),
 	}
 	properties := &ContainerProperties{}
 	err := azruntime.UnmarshalAsJSON(resp, properties)

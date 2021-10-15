@@ -13,12 +13,12 @@ import (
 type DatabaseResponse struct {
 	// DatabaseProperties contains the unmarshalled response body in DatabaseProperties format.
 	DatabaseProperties *DatabaseProperties
-	CosmosResponse
+	Response
 }
 
 func newDatabaseResponse(resp *http.Response, database *Database) (DatabaseResponse, error) {
 	response := DatabaseResponse{
-		CosmosResponse: newCosmosResponse(resp),
+		Response: newResponse(resp),
 	}
 	properties := &DatabaseProperties{}
 	err := azruntime.UnmarshalAsJSON(resp, properties)

@@ -5,13 +5,13 @@ package azcosmos
 
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
 
-// CosmosDatabaseRequestOptions includes options for operations against a database.
-type CosmosDatabaseRequestOptions struct {
+// DatabaseRequestOptions includes options for operations against a database.
+type DatabaseRequestOptions struct {
 	IfMatchEtag     *azcore.ETag
 	IfNoneMatchEtag *azcore.ETag
 }
 
-func (options *CosmosDatabaseRequestOptions) toHeaders() *map[string]string {
+func (options *DatabaseRequestOptions) toHeaders() *map[string]string {
 	if options.IfMatchEtag == nil && options.IfNoneMatchEtag == nil {
 		return nil
 	}

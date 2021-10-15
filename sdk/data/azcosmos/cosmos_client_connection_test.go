@@ -36,7 +36,7 @@ func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
 	}
-	_, err = connection.sendGetRequest("/", context.Background(), operationContext, &CosmosContainerRequestOptions{}, nil)
+	_, err = connection.sendGetRequest("/", context.Background(), operationContext, &ContainerRequestOptions{}, nil)
 	if err == nil {
 		t.Fatal("Expected error")
 	}
@@ -63,7 +63,7 @@ func TestEnsureErrorIsNotGeneratedOnResponse(t *testing.T) {
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
 	}
-	_, err := connection.sendGetRequest("/", context.Background(), operationContext, &CosmosContainerRequestOptions{}, nil)
+	_, err := connection.sendGetRequest("/", context.Background(), operationContext, &ContainerRequestOptions{}, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -86,7 +86,7 @@ func TestRequestEnricherIsCalled(t *testing.T) {
 		r.Raw().Header.Add("my-header", "12345")
 	}
 
-	req, err := connection.createRequest("/", context.Background(), http.MethodGet, operationContext, &CosmosContainerRequestOptions{}, addHeader)
+	req, err := connection.createRequest("/", context.Background(), http.MethodGet, operationContext, &ContainerRequestOptions{}, addHeader)
 	if err != nil {
 		t.Fatal(err)
 	}

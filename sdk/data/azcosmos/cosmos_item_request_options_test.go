@@ -10,7 +10,7 @@ import (
 )
 
 func TestItemRequestOptionsToHeaders(t *testing.T) {
-	options := &CosmosItemRequestOptions{}
+	options := &ItemRequestOptions{}
 	options.PreTriggers = []string{"preTrigger1", "preTrigger2"}
 	options.PostTriggers = []string{"postTrigger1", "postTrigger2"}
 	options.ConsistencyLevel = ConsistencyLevelSession.ToPtr()

@@ -9,18 +9,18 @@ import (
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// CosmosDatabaseResponse represents the response from a database request.
-type CosmosDatabaseResponse struct {
-	// DatabaseProperties contains the unmarshalled response body in CosmosDatabaseProperties format.
-	DatabaseProperties *CosmosDatabaseProperties
-	CosmosResponse
+// DatabaseResponse represents the response from a database request.
+type DatabaseResponse struct {
+	// DatabaseProperties contains the unmarshalled response body in DatabaseProperties format.
+	DatabaseProperties *DatabaseProperties
+	Response
 }
 
-func newCosmosDatabaseResponse(resp *http.Response, database *CosmosDatabase) (CosmosDatabaseResponse, error) {
-	response := CosmosDatabaseResponse{
-		CosmosResponse: newCosmosResponse(resp),
+func newDatabaseResponse(resp *http.Response, database *Database) (DatabaseResponse, error) {
+	response := DatabaseResponse{
+		Response: newResponse(resp),
 	}
-	properties := &CosmosDatabaseProperties{}
+	properties := &DatabaseProperties{}
 	err := azruntime.UnmarshalAsJSON(resp, properties)
 	if err != nil {
 		return response, err

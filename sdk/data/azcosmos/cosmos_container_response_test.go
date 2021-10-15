@@ -21,7 +21,7 @@ func TestContainerResponseParsing(t *testing.T) {
 		Time: time.Unix(nowAsUnix, 0),
 	}
 
-	properties := &CosmosContainerProperties{
+	properties := &ContainerProperties{
 		Id:           "someId",
 		ETag:         "someEtag",
 		SelfLink:     "someSelfLink",
@@ -33,7 +33,7 @@ func TestContainerResponseParsing(t *testing.T) {
 		},
 	}
 
-	container := &CosmosContainer{
+	container := &Container{
 		Id: "someId",
 	}
 
@@ -57,7 +57,7 @@ func TestContainerResponseParsing(t *testing.T) {
 
 	pl := azruntime.NewPipeline(srv)
 	resp, _ := pl.Do(req)
-	parsedResponse, err := newCosmosContainerResponse(resp, container)
+	parsedResponse, err := newContainerResponse(resp, container)
 	if err != nil {
 		t.Fatal(err)
 	}

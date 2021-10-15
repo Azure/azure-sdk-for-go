@@ -36,7 +36,7 @@ func Example() {
 
 	// ===== 1. Creating a database =====
 
-	databaseName := azcosmos.CosmosDatabaseProperties{Id: "databaseName"}
+	databaseName := azcosmos.DatabaseProperties{Id: "databaseName"}
 	database, err := client.CreateDatabase(ctx, databaseName, nil, nil)
 	if err != nil {
 		log.Fatal(err)
@@ -44,7 +44,7 @@ func Example() {
 
 	// ===== 2. Creating a container =====
 
-	properties := azcosmos.CosmosContainerProperties{
+	properties := azcosmos.ContainerProperties{
 		Id: "aContainer",
 		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
 			Paths: []string{"/myPartitionKey"},
@@ -67,7 +67,7 @@ func Example() {
 		log.Fatal(err)
 	}
 
-	updatedProperties := azcosmos.CosmosContainerProperties{
+	updatedProperties := azcosmos.ContainerProperties{
 		Id: "aContainer",
 		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
 			Paths: []string{"/myPartitionKey"},
@@ -158,7 +158,7 @@ func Example() {
 	}
 
 	itemSessionToken := itemResponse.SessionToken
-	itemResponse, err = container.ReadItem(ctx, pk, "1", &azcosmos.CosmosItemRequestOptions{SessionToken: itemSessionToken})
+	itemResponse, err = container.ReadItem(ctx, pk, "1", &azcosmos.ItemRequestOptions{SessionToken: itemSessionToken})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -185,7 +185,7 @@ func Example() {
 
 		// Replace with Etag
 		etag := itemResponse.ETag
-		itemResponse, err = container.ReplaceItem(ctx, pk, "1", itemResponseBody, &azcosmos.CosmosItemRequestOptions{IfMatchEtag: &etag})
+		itemResponse, err = container.ReplaceItem(ctx, pk, "1", itemResponseBody, &azcosmos.ItemRequestOptions{IfMatchEtag: &etag})
 		var httpErr azcore.HTTPResponse
 
 		return (errors.As(err, &httpErr) && itemResponse.RawResponse.StatusCode == 412), err

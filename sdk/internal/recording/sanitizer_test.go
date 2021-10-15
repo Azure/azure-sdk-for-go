@@ -227,7 +227,7 @@ func TestUriSanitizer(t *testing.T) {
 	client, err := GetHTTPClient(t)
 	require.NoError(t, err)
 
-	req, err := http.NewRequest("POST", "http://localhost:5000", nil)
+	req, err := http.NewRequest("POST", "https://host.docker.internal:443", nil)
 	require.NoError(t, err)
 
 	req.Header.Set(UpstreamUriHeader, srv.URL())

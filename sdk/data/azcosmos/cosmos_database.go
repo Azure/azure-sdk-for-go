@@ -75,7 +75,7 @@ func (db *Database) CreateContainer(
 		return ContainerResponse{}, err
 	}
 
-	return newCosmosContainerResponse(azResponse, container)
+	return newContainerResponse(azResponse, container)
 }
 
 // Read obtains the information for a Cosmos database.

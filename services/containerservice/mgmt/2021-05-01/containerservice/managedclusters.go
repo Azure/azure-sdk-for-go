@@ -31,12 +31,11 @@ func NewManagedClustersClientWithBaseURI(baseURI string, subscriptionID string) 
 	return ManagedClustersClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or updates a managed cluster with the specified configuration for agents and Kubernetes
-// version.
+// CreateOrUpdate sends the create or update request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
-// parameters - parameters supplied to the Create or Update a Managed Cluster operation.
+// parameters - the managed cluster to create or update.
 func (client ManagedClustersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedCluster) (result ManagedClustersCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedClustersClient.CreateOrUpdate")
@@ -163,7 +162,7 @@ func (client ManagedClustersClient) CreateOrUpdateResponder(resp *http.Response)
 	return
 }
 
-// Delete deletes the managed cluster with a specified resource group and name.
+// Delete sends the delete request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -251,7 +250,7 @@ func (client ManagedClustersClient) DeleteResponder(resp *http.Response) (result
 	return
 }
 
-// Get gets the details of the managed cluster with a specified resource group and name.
+// Get sends the get request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -337,12 +336,9 @@ func (client ManagedClustersClient) GetResponder(resp *http.Response) (result Ma
 	return
 }
 
-// GetAccessProfile gets the accessProfile for the specified role name of the managed cluster with a specified resource
-// group and name. **WARNING**: This API will be deprecated. Instead use
-// [ListClusterUserCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusterusercredentials)
-// or
-// [ListClusterAdminCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusteradmincredentials)
-// .
+// GetAccessProfile **WARNING**: This API will be deprecated. Instead use
+// [ListClusterUserCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusterusercredentials) or
+// [ListClusterAdminCredentials](https://docs.microsoft.com/rest/api/aks/managedclusters/listclusteradmincredentials) .
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -430,11 +426,11 @@ func (client ManagedClustersClient) GetAccessProfileResponder(resp *http.Respons
 	return
 }
 
-// GetCommandResult get command result from previous runCommand invoke.
+// GetCommandResult sends the get command result request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
-// commandID - id of the command request.
+// commandID - id of the command.
 func (client ManagedClustersClient) GetCommandResult(ctx context.Context, resourceGroupName string, resourceName string, commandID string) (result RunCommandResult, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedClustersClient.GetCommandResult")
@@ -518,10 +514,10 @@ func (client ManagedClustersClient) GetCommandResultResponder(resp *http.Respons
 	return
 }
 
-// GetOSOptions gets supported OS options in the specified subscription.
+// GetOSOptions sends the get os options request.
 // Parameters:
 // location - the name of a supported Azure region.
-// resourceType - resource type for which the OS options needs to be returned
+// resourceType - the resource type for which the OS options needs to be returned
 func (client ManagedClustersClient) GetOSOptions(ctx context.Context, location string, resourceType string) (result OSOptionProfile, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedClustersClient.GetOSOptions")
@@ -596,8 +592,7 @@ func (client ManagedClustersClient) GetOSOptionsResponder(resp *http.Response) (
 	return
 }
 
-// GetUpgradeProfile gets the details of the upgrade profile for a managed cluster with a specified resource group and
-// name.
+// GetUpgradeProfile sends the get upgrade profile request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -683,8 +678,7 @@ func (client ManagedClustersClient) GetUpgradeProfileResponder(resp *http.Respon
 	return
 }
 
-// List gets a list of managed clusters in the specified subscription. The operation returns properties of each managed
-// cluster.
+// List sends the list request.
 func (client ManagedClustersClient) List(ctx context.Context) (result ManagedClusterListResultPage, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedClustersClient.List")
@@ -797,8 +791,7 @@ func (client ManagedClustersClient) ListComplete(ctx context.Context) (result Ma
 	return
 }
 
-// ListByResourceGroup lists managed clusters in the specified subscription and resource group. The operation returns
-// properties of each managed cluster.
+// ListByResourceGroup sends the list by resource group request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 func (client ManagedClustersClient) ListByResourceGroup(ctx context.Context, resourceGroupName string) (result ManagedClusterListResultPage, err error) {
@@ -920,8 +913,7 @@ func (client ManagedClustersClient) ListByResourceGroupComplete(ctx context.Cont
 	return
 }
 
-// ListClusterAdminCredentials gets cluster admin credential of the managed cluster with a specified resource group and
-// name.
+// ListClusterAdminCredentials sends the list cluster admin credentials request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -1011,8 +1003,7 @@ func (client ManagedClustersClient) ListClusterAdminCredentialsResponder(resp *h
 	return
 }
 
-// ListClusterMonitoringUserCredentials gets cluster monitoring user credential of the managed cluster with a specified
-// resource group and name.
+// ListClusterMonitoringUserCredentials sends the list cluster monitoring user credentials request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -1102,8 +1093,7 @@ func (client ManagedClustersClient) ListClusterMonitoringUserCredentialsResponde
 	return
 }
 
-// ListClusterUserCredentials gets cluster user credential of the managed cluster with a specified resource group and
-// name.
+// ListClusterUserCredentials sends the list cluster user credentials request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -1322,11 +1312,11 @@ func (client ManagedClustersClient) ListOutboundNetworkDependenciesEndpointsComp
 	return
 }
 
-// ResetAADProfile update the AAD Profile for a managed cluster.
+// ResetAADProfile sends the reset aad profile request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
-// parameters - parameters supplied to the Reset AAD Profile operation for a Managed Cluster.
+// parameters - the AAD profile to set on the Managed Cluster
 func (client ManagedClustersClient) ResetAADProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterAADProfile) (result ManagedClustersResetAADProfileFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedClustersClient.ResetAADProfile")
@@ -1413,11 +1403,11 @@ func (client ManagedClustersClient) ResetAADProfileResponder(resp *http.Response
 	return
 }
 
-// ResetServicePrincipalProfile update the service principal Profile for a managed cluster.
+// ResetServicePrincipalProfile this action cannot be performed on a cluster that is not using a service principal
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
-// parameters - parameters supplied to the Reset Service Principal Profile operation for a Managed Cluster.
+// parameters - the service principal profile to set on the managed cluster.
 func (client ManagedClustersClient) ResetServicePrincipalProfile(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterServicePrincipalProfile) (result ManagedClustersResetServicePrincipalProfileFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedClustersClient.ResetServicePrincipalProfile")
@@ -1506,7 +1496,8 @@ func (client ManagedClustersClient) ResetServicePrincipalProfileResponder(resp *
 	return
 }
 
-// RotateClusterCertificates rotate certificates of a managed cluster.
+// RotateClusterCertificates see [Certificate rotation](https://docs.microsoft.com/azure/aks/certificate-rotation) for
+// more details about rotating managed cluster certificates.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -1594,11 +1585,12 @@ func (client ManagedClustersClient) RotateClusterCertificatesResponder(resp *htt
 	return
 }
 
-// RunCommand submit a command to run against managed kubernetes service, it will create a pod to run the command.
+// RunCommand AKS will create a pod to run the command. This is primarily useful for private clusters. For more
+// information see [AKS Run Command](https://docs.microsoft.com/azure/aks/private-clusters#aks-run-command-preview).
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
-// requestPayload - parameters supplied to the RunCommand operation.
+// requestPayload - the run command request
 func (client ManagedClustersClient) RunCommand(ctx context.Context, resourceGroupName string, resourceName string, requestPayload RunCommandRequest) (result ManagedClustersRunCommandFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/ManagedClustersClient.RunCommand")
@@ -1688,7 +1680,8 @@ func (client ManagedClustersClient) RunCommandResponder(resp *http.Response) (re
 	return
 }
 
-// Start starts a Stopped Managed Cluster
+// Start see [starting a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for more details about
+// starting a cluster.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -1776,7 +1769,10 @@ func (client ManagedClustersClient) StartResponder(resp *http.Response) (result 
 	return
 }
 
-// Stop stops a Running Managed Cluster
+// Stop this can only be performed on Azure Virtual Machine Scale set backed clusters. Stopping a cluster stops the
+// control plane and agent nodes entirely, while maintaining all object and cluster state. A cluster does not accrue
+// charges while it is stopped. See [stopping a cluster](https://docs.microsoft.com/azure/aks/start-stop-cluster) for
+// more details about stopping a cluster.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -1864,7 +1860,7 @@ func (client ManagedClustersClient) StopResponder(resp *http.Response) (result a
 	return
 }
 
-// UpdateTags updates a managed cluster with the specified tags.
+// UpdateTags sends the update tags request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.

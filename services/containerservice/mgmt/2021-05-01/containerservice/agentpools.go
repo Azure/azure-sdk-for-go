@@ -31,12 +31,12 @@ func NewAgentPoolsClientWithBaseURI(baseURI string, subscriptionID string) Agent
 	return AgentPoolsClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate creates or updates an agent pool in the specified managed cluster.
+// CreateOrUpdate sends the create or update request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
 // agentPoolName - the name of the agent pool.
-// parameters - parameters supplied to the Create or Update an agent pool operation.
+// parameters - the agent pool to create or update.
 func (client AgentPoolsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters AgentPool) (result AgentPoolsCreateOrUpdateFuture, err error) {
 	if tracing.IsEnabled() {
 		ctx = tracing.StartSpan(ctx, fqdn+"/AgentPoolsClient.CreateOrUpdate")
@@ -132,7 +132,7 @@ func (client AgentPoolsClient) CreateOrUpdateResponder(resp *http.Response) (res
 	return
 }
 
-// Delete deletes the agent pool in the specified managed cluster.
+// Delete sends the delete request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -222,7 +222,7 @@ func (client AgentPoolsClient) DeleteResponder(resp *http.Response) (result auto
 	return
 }
 
-// Get gets the details of the agent pool by managed cluster and resource group.
+// Get sends the get request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -310,7 +310,9 @@ func (client AgentPoolsClient) GetResponder(resp *http.Response) (result AgentPo
 	return
 }
 
-// GetAvailableAgentPoolVersions gets a list of supported versions for the specified agent pool.
+// GetAvailableAgentPoolVersions see [supported Kubernetes
+// versions](https://docs.microsoft.com/azure/aks/supported-kubernetes-versions) for more details about the version
+// lifecycle.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -396,8 +398,7 @@ func (client AgentPoolsClient) GetAvailableAgentPoolVersionsResponder(resp *http
 	return
 }
 
-// GetUpgradeProfile gets the details of the upgrade profile for an agent pool with a specified resource group and
-// managed cluster name.
+// GetUpgradeProfile sends the get upgrade profile request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -485,8 +486,7 @@ func (client AgentPoolsClient) GetUpgradeProfileResponder(resp *http.Response) (
 	return
 }
 
-// List gets a list of agent pools in the specified managed cluster. The operation returns properties of each agent
-// pool.
+// List sends the list request.
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.
@@ -614,7 +614,9 @@ func (client AgentPoolsClient) ListComplete(ctx context.Context, resourceGroupNa
 	return
 }
 
-// UpgradeNodeImageVersion upgrade node image version of an agent pool to the latest.
+// UpgradeNodeImageVersion upgrading the node image version of an agent pool applies the newest OS and runtime updates
+// to the nodes. AKS provides one new image per week with the latest updates. For more details on node image versions,
+// see: https://docs.microsoft.com/azure/aks/node-image-upgrade
 // Parameters:
 // resourceGroupName - the name of the resource group.
 // resourceName - the name of the managed cluster resource.

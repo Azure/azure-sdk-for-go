@@ -7,7 +7,7 @@ access to the keys used to encrypt your data
 
 ## Getting started
 ### Install packages
-Install [azkeys][goget_azkeys] and [azidentity][goget_azidentity] with [pip][pip]:
+Install [azkeys][goget_azkeys] and [azidentity][goget_azidentity] with `go get`:
 ```Bash
 go get github.com/Azure/azure-sdk-for-go/sdk/keys/azkeys
 go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
@@ -132,8 +132,8 @@ This section contains code snippets covering common tasks:
 <!-- * [Perform cryptographic operations](#cryptographic-operations) -->
 
 ### Create a key
-[create_rsa_key](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.create_rsa_key) and
-[create_ec_key](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.create_ec_key) create RSA and elliptic curve keys in the vault, respectively. If a key with the same name already exists, a new version of that key is created.
+[`CreateRSAKey`](https://aka.ms/azsdk/go/keyvault-keys) and
+[`CreateECKey`](https://aka.ms/azsdk/go/keyvault-keys) create RSA and elliptic curve keys in the vault, respectively. If a key with the same name already exists, a new version of that key is created.
 
 ```go
 import (
@@ -174,7 +174,7 @@ func ExampleCreateKeys() {
 ```
 
 ### Retrieve a key
-[`GetKey`](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.get_key) retrieves a key previously stored in the Vault.
+[`GetKey`](https://aka.ms/azsdk/go/keyvault-keys) retrieves a key previously stored in the Vault.
 ```go
 import (
     "fmt"
@@ -196,7 +196,7 @@ func ExampleRetrieveKey() {
 ```
 
 ### Update an existing key
-[`UpdateKeyProperties`](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.update_key_properties)
+[`UpdateKeyProperties`](https://aka.ms/azsdk/go/keyvault-keys)
 updates the properties of a key previously stored in the Key Vault.
 ```go
 import (
@@ -232,7 +232,7 @@ func ExampleClient_UpdateKeyProperties() {
 ```
 
 ### Delete a key
-[`BeginDeleteKey`](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.begin_delete_key) requests Key Vault delete a key, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge (permanently delete) the key as soon as possible. When [soft-delete][soft_delete] is disabled, `begin_delete_key` itself is permanent.
+[`BeginDeleteKey`](https://aka.ms/azsdk/go/keyvault-keys) requests Key Vault delete a key, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge (permanently delete) the key as soon as possible. When [soft-delete][soft_delete] is disabled, `BeginDeleteKey` itself is permanent.
 
 ```go
 import (
@@ -240,7 +240,7 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-func ExampleClient_DeleteKey() {
+func ExampleClient_BeginDeleteKey() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +288,7 @@ rotated_key = key_client.rotate_key("key-name")
 ``` -->
 
 ### List keys
-[`ListKeys`](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.list_properties_of_keys) lists the properties of all of the keys in the client's vault.
+[`ListKeys`](https://aka.ms/azsdk/go/keyvault-keys) lists the properties of all of the keys in the client's vault.
 
 ```go
 import (
@@ -324,7 +324,7 @@ func ExampleClient_ListKeys() {
 ```
 
 <!-- ### Cryptographic operations
-[CryptographyClient](https://aka.ms/azsdk/python/keyvault-keys/crypto/docs#azure.keyvault.keys.crypto.CryptographyClient)
+[CryptographyClient](https://aka.ms/azsdk/go/keyvault-keys)
 enables cryptographic operations (encrypt/decrypt, wrap/unwrap, sign/verify) using a particular key.
 
 ```go
@@ -418,29 +418,24 @@ contact opencode@microsoft.com with any additional questions or comments.
 
 [access_control]: https://docs.microsoft.com/azure/key-vault/managed-hsm/access-control
 [azure_cloud_shell]: https://shell.azure.com/bash
-[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/core/azure-core#azure-core-library-exceptions
+[azure_core_exceptions]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/core/azure-core#azure-core-library-exceptions
 [azure_identity]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity
 [goget_azidentity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/
-[default_cred_ref]: https://aka.ms/azsdk/python/identity/docs#azure.identity.DefaultAzureCredential
+[default_cred_ref]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity#NewDefaultAzureCredential
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[hello_world_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/samples/hello_world.py
-[hello_world_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/samples/hello_world_async.py
+<!-- [hello_world_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/samples/hello_world.py
 [backup_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/samples/backup_restore_operations.py
-[backup_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/samples/backup_restore_operations_async.py
 [list_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/samples/list_operations.py
-[list_operations_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/samples/list_operations_async.py
-[recover_purge_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/samples/recover_purge_operations.py
-[recover_purge_async_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/samples/recover_purge_operations_async.py
+[recover_purge_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/samples/recover_purge_operations.py -->
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[pip]: https://pypi.org/project/pip/
 [goget_azkeys]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys
 [rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
-[reference_docs]: https://aka.ms/azsdk/python/keyvault-keys/docs
-[key_client_docs]: https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient
-[crypto_client_docs]: https://aka.ms/azsdk/python/keyvault-keys/crypto/docs
-[key_client_src]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-keys/azure/keyvault/keys
-[key_samples]: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/keyvault/azure-keyvault-keys/samples
+[reference_docs]: https://aka.ms/azsdk/go/keyvault-keys
+[key_client_docs]: https://aka.ms/azsdk/go/keyvault-keys#Client
+[crypto_client_docs]: https://aka.ms/azsdk/go/keyvault-keys/crypto/docs
+[key_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys/client.go
+[key_samples]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/keyvault/azkeys/example_test.go
 [soft_delete]: https://docs.microsoft.com/azure/key-vault/general/soft-delete-overview
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-python%2Fsdk%2Fkeyvault%2Fazure-keyvault-keys%2FREADME.png)
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fkeyvault%2Fazkeys%2FREADME.png)

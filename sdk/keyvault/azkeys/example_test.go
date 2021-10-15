@@ -117,7 +117,7 @@ func ExampleClient_UpdateKeyProperties() {
 	fmt.Println(*resp.Attributes.RecoveryLevel, *resp.Tags["Tag1"])
 }
 
-func ExampleClient_DeleteKey() {
+func ExampleClient_BeginDeleteKey() {
 	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

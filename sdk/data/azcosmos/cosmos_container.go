@@ -178,15 +178,15 @@ func (c *Container) CreateItem(
 	ctx context.Context,
 	partitionKey *PartitionKey,
 	item interface{},
-	requestOptions *CosmosItemRequestOptions) (CosmosItemResponse, error) {
+	requestOptions *ItemRequestOptions) (ItemResponse, error) {
 
 	addHeader, err := c.buildRequestEnricher(partitionKey, requestOptions, true)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
 	if requestOptions == nil {
-		requestOptions = &CosmosItemRequestOptions{}
+		requestOptions = &ItemRequestOptions{}
 	}
 
 	operationContext := cosmosOperationContext{
@@ -196,7 +196,7 @@ func (c *Container) CreateItem(
 
 	path, err := generatePathForNameBased(resourceTypeDocument, c.link, true)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
 	azResponse, err := c.Database.client.connection.sendPostRequest(
@@ -207,10 +207,10 @@ func (c *Container) CreateItem(
 		requestOptions,
 		addHeader)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
-	return newCosmosItemResponse(azResponse)
+	return newItemResponse(azResponse)
 }
 
 // Upserts (create or replace) an item in a Cosmos container.
@@ -222,11 +222,11 @@ func (c *Container) UpsertItem(
 	ctx context.Context,
 	partitionKey *PartitionKey,
 	item interface{},
-	requestOptions *CosmosItemRequestOptions) (CosmosItemResponse, error) {
+	requestOptions *ItemRequestOptions) (ItemResponse, error) {
 
 	addHeaderInternal, err := c.buildRequestEnricher(partitionKey, requestOptions, true)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
 	addHeader := func(r *policy.Request) {
@@ -235,7 +235,7 @@ func (c *Container) UpsertItem(
 	}
 
 	if requestOptions == nil {
-		requestOptions = &CosmosItemRequestOptions{}
+		requestOptions = &ItemRequestOptions{}
 	}
 
 	operationContext := cosmosOperationContext{
@@ -245,7 +245,7 @@ func (c *Container) UpsertItem(
 
 	path, err := generatePathForNameBased(resourceTypeDocument, c.link, true)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
 	azResponse, err := c.Database.client.connection.sendPostRequest(
@@ -256,10 +256,10 @@ func (c *Container) UpsertItem(
 		requestOptions,
 		addHeader)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
-	return newCosmosItemResponse(azResponse)
+	return newItemResponse(azResponse)
 }
 
 // Replaces an item in a Cosmos container.
@@ -273,15 +273,15 @@ func (c *Container) ReplaceItem(
 	partitionKey *PartitionKey,
 	itemId string,
 	item interface{},
-	requestOptions *CosmosItemRequestOptions) (CosmosItemResponse, error) {
+	requestOptions *ItemRequestOptions) (ItemResponse, error) {
 
 	addHeader, err := c.buildRequestEnricher(partitionKey, requestOptions, true)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
 	if requestOptions == nil {
-		requestOptions = &CosmosItemRequestOptions{}
+		requestOptions = &ItemRequestOptions{}
 	}
 
 	operationContext := cosmosOperationContext{
@@ -291,7 +291,7 @@ func (c *Container) ReplaceItem(
 
 	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, false)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
 	azResponse, err := c.Database.client.connection.sendPutRequest(
@@ -302,10 +302,10 @@ func (c *Container) ReplaceItem(
 		requestOptions,
 		addHeader)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
-	return newCosmosItemResponse(azResponse)
+	return newItemResponse(azResponse)
 }
 
 // Reads an item in a Cosmos container.
@@ -317,15 +317,15 @@ func (c *Container) ReadItem(
 	ctx context.Context,
 	partitionKey *PartitionKey,
 	itemId string,
-	requestOptions *CosmosItemRequestOptions) (CosmosItemResponse, error) {
+	requestOptions *ItemRequestOptions) (ItemResponse, error) {
 
 	addHeader, err := c.buildRequestEnricher(partitionKey, requestOptions, false)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
 	if requestOptions == nil {
-		requestOptions = &CosmosItemRequestOptions{}
+		requestOptions = &ItemRequestOptions{}
 	}
 
 	operationContext := cosmosOperationContext{
@@ -335,7 +335,7 @@ func (c *Container) ReadItem(
 
 	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, false)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
 	azResponse, err := c.Database.client.connection.sendGetRequest(
@@ -345,10 +345,10 @@ func (c *Container) ReadItem(
 		requestOptions,
 		addHeader)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
-	return newCosmosItemResponse(azResponse)
+	return newItemResponse(azResponse)
 }
 
 // Deletes an item in a Cosmos container.
@@ -360,15 +360,15 @@ func (c *Container) DeleteItem(
 	ctx context.Context,
 	partitionKey *PartitionKey,
 	itemId string,
-	requestOptions *CosmosItemRequestOptions) (CosmosItemResponse, error) {
+	requestOptions *ItemRequestOptions) (ItemResponse, error) {
 
 	addHeader, err := c.buildRequestEnricher(partitionKey, requestOptions, true)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
 	if requestOptions == nil {
-		requestOptions = &CosmosItemRequestOptions{}
+		requestOptions = &ItemRequestOptions{}
 	}
 
 	operationContext := cosmosOperationContext{
@@ -378,7 +378,7 @@ func (c *Container) DeleteItem(
 
 	path, err := generatePathForNameBased(resourceTypeDocument, operationContext.resourceAddress, false)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
 	azResponse, err := c.Database.client.connection.sendDeleteRequest(
@@ -388,15 +388,15 @@ func (c *Container) DeleteItem(
 		requestOptions,
 		addHeader)
 	if err != nil {
-		return CosmosItemResponse{}, err
+		return ItemResponse{}, err
 	}
 
-	return newCosmosItemResponse(azResponse)
+	return newItemResponse(azResponse)
 }
 
 func (c *Container) buildRequestEnricher(
 	partitionKey *PartitionKey,
-	requestOptions *CosmosItemRequestOptions,
+	requestOptions *ItemRequestOptions,
 	writeOperation bool) (func(r *policy.Request), error) {
 	if partitionKey == nil {
 		return nil, errors.New("partitionKey is required")

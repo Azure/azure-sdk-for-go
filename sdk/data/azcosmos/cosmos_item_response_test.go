@@ -39,7 +39,7 @@ func TestItemResponseParsing(t *testing.T) {
 
 	pl := azruntime.NewPipeline(srv)
 	resp, _ := pl.Do(req)
-	parsedResponse, err := newCosmosItemResponse(resp)
+	parsedResponse, err := newItemResponse(resp)
 	if err != nil {
 		t.Fatal(err)
 	}

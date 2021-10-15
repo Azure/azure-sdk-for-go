@@ -9,8 +9,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// CosmosItemRequestOptions includes options for operations on items.
-type CosmosItemRequestOptions struct {
+// ItemRequestOptions includes options for operations on items.
+type ItemRequestOptions struct {
 	// Triggers to be invoked before the operation.
 	PreTriggers []string
 	// Triggers to be invoked after the operation.
@@ -36,7 +36,7 @@ type CosmosItemRequestOptions struct {
 	IfMatchEtag *azcore.ETag
 }
 
-func (options *CosmosItemRequestOptions) toHeaders() *map[string]string {
+func (options *ItemRequestOptions) toHeaders() *map[string]string {
 	headers := make(map[string]string)
 
 	if options.PreTriggers != nil && len(options.PreTriggers) > 0 {

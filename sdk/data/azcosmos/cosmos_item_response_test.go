@@ -48,16 +48,16 @@ func TestItemResponseParsing(t *testing.T) {
 		t.Fatal("parsedResponse.RawResponse is nil")
 	}
 
-	if parsedResponse.ActivityId() != "someActivityId" {
-		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId())
+	if parsedResponse.ActivityId != "someActivityId" {
+		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId)
 	}
 
-	if parsedResponse.RequestCharge() != 13.42 {
-		t.Errorf("Expected RequestCharge to be %f, but got %f", 13.42, parsedResponse.RequestCharge())
+	if parsedResponse.RequestCharge != 13.42 {
+		t.Errorf("Expected RequestCharge to be %f, but got %f", 13.42, parsedResponse.RequestCharge)
 	}
 
-	if parsedResponse.ETag() != "someEtag" {
-		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ActivityId())
+	if parsedResponse.ETag != "someEtag" {
+		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ETag)
 	}
 
 	if string(parsedResponse.Value) != string(jsonString) {

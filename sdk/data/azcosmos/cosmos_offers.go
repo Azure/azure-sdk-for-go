@@ -51,7 +51,7 @@ func (c cosmosOffers) ReadThroughputIfExists(
 		return ThroughputResponse{}, err
 	}
 
-	queryRequestCharge := (&CosmosResponse{RawResponse: azResponse}).RequestCharge()
+	queryRequestCharge := newCosmosResponse(azResponse).RequestCharge
 	if len(theOffers.Offers) == 0 {
 		return ThroughputResponse{}, newCosmosErrorWithStatusCode(http.StatusNotFound, &queryRequestCharge)
 	}
@@ -92,7 +92,7 @@ func (c cosmosOffers) ReplaceThroughputIfExists(
 		return ThroughputResponse{}, err
 	}
 
-	readRequestCharge := readResponse.RequestCharge()
+	readRequestCharge := readResponse.RequestCharge
 	readResponse.ThroughputProperties.offer = properties.offer
 
 	operationContext := cosmosOperationContext{

@@ -184,7 +184,7 @@ func Example() {
 		itemResponseBody["value"] = "newValue"
 
 		// Replace with Etag
-		etag := itemResponse.ETag()
+		etag := itemResponse.ETag
 		itemResponse, err = container.ReplaceItem(ctx, pk, "1", itemResponseBody, &azcosmos.CosmosItemRequestOptions{IfMatchEtag: &etag})
 		var httpErr azcore.HTTPResponse
 

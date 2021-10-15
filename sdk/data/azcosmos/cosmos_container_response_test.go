@@ -98,16 +98,16 @@ func TestContainerResponseParsing(t *testing.T) {
 		t.Errorf("Expected PartitionKeyDefinition.Version to be %d, but got %d", properties.PartitionKeyDefinition.Version, parsedResponse.ContainerProperties.PartitionKeyDefinition.Version)
 	}
 
-	if parsedResponse.ActivityId() != "someActivityId" {
-		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId())
+	if parsedResponse.ActivityId != "someActivityId" {
+		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId)
 	}
 
-	if parsedResponse.RequestCharge() != 13.42 {
-		t.Errorf("Expected RequestCharge to be %f, but got %f", 13.42, parsedResponse.RequestCharge())
+	if parsedResponse.RequestCharge != 13.42 {
+		t.Errorf("Expected RequestCharge to be %f, but got %f", 13.42, parsedResponse.RequestCharge)
 	}
 
-	if parsedResponse.ETag() != "someEtag" {
-		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ActivityId())
+	if parsedResponse.ETag != "someEtag" {
+		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ETag)
 	}
 
 	if parsedResponse.ContainerProperties.Container != container {

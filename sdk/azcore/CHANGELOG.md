@@ -6,6 +6,8 @@
 * Removed `arm.Connection`
 * Removed `azcore.Credential` and `.NewAnonymousCredential()`
   * `NewRPRegistrationPolicy` now requires an `azcore.TokenCredential`
+* Removed `runtime.NewPipeline`
+* `arm/runtime.RegistrationOptions` embeds `policy.ClientOptions`
 
 ### Features Added
 * Updating Documentation

@@ -16,7 +16,7 @@ type ContainerResponse struct {
 	CosmosResponse
 }
 
-func newCosmosContainerResponse(resp *http.Response, container *Container) (ContainerResponse, error) {
+func newContainerResponse(resp *http.Response, container *Container) (ContainerResponse, error) {
 	response := ContainerResponse{
 		CosmosResponse: newCosmosResponse(resp),
 	}

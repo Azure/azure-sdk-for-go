@@ -60,7 +60,7 @@ handle(err)
 Using the client created in previous example, you can create a database like this:
 
 ```go
-database := azcosmos.CosmosDatabaseProperties{Id: dbName}
+database := azcosmos.DatabaseProperties{Id: dbName}
 response, err := client.CreateDatabase(context, database, nil, nil)
 handle(err)
 ```
@@ -70,7 +70,7 @@ handle(err)
 Using the above created database for creating a container, like this:
 
 ```go
-properties := azcosmos.CosmosContainerProperties{
+properties := azcosmos.ContainerProperties{
     Id: "aContainer",
     PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
         Paths: []string{"/id"},
@@ -92,7 +92,7 @@ item := map[string]string{
 }
 
 // Create partition key
-container := client.GetCosmosContainer(dbName, containerName)
+container := client.GetContainer(dbName, containerName)
 pk, err := azcosmos.NewPartitionKey("1")
 handle(err)
 

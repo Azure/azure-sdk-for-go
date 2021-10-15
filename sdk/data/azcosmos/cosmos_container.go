@@ -58,7 +58,7 @@ func (c *Container) Read(
 		return ContainerResponse{}, err
 	}
 
-	return newCosmosContainerResponse(azResponse, c)
+	return newContainerResponse(azResponse, c)
 }
 
 // Replace a Cosmos container.
@@ -93,7 +93,7 @@ func (c *Container) Replace(
 		return ContainerResponse{}, err
 	}
 
-	return newCosmosContainerResponse(azResponse, c)
+	return newContainerResponse(azResponse, c)
 }
 
 // Delete a Cosmos container.
@@ -126,7 +126,7 @@ func (c *Container) Delete(
 		return ContainerResponse{}, err
 	}
 
-	return newCosmosContainerResponse(azResponse, c)
+	return newContainerResponse(azResponse, c)
 }
 
 // ReadThroughput obtains the provisioned throughput information for the container.

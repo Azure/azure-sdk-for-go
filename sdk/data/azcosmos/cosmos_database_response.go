@@ -17,8 +17,9 @@ type CosmosDatabaseResponse struct {
 }
 
 func newCosmosDatabaseResponse(resp *http.Response, database *CosmosDatabase) (CosmosDatabaseResponse, error) {
-	response := CosmosDatabaseResponse{}
-	response.RawResponse = resp
+	response := CosmosDatabaseResponse{
+		CosmosResponse: newCosmosResponse(resp),
+	}
 	properties := &CosmosDatabaseProperties{}
 	err := azruntime.UnmarshalAsJSON(resp, properties)
 	if err != nil {

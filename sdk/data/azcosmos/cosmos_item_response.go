@@ -22,9 +22,10 @@ func (c *CosmosItemResponse) SessionToken() string {
 }
 
 func newCosmosItemResponse(resp *http.Response) (CosmosItemResponse, error) {
-	response := CosmosItemResponse{}
+	response := CosmosItemResponse{
+		CosmosResponse: newCosmosResponse(resp),
+	}
 	defer resp.Body.Close()
-	response.RawResponse = resp
 	body, err := azruntime.Payload(resp)
 	if err != nil {
 		return response, err

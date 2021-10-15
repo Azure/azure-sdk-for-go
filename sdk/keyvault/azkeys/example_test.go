@@ -133,7 +133,11 @@ func ExampleClient_BeginDeleteKey() {
 	if err != nil {
 		panic(err)
 	}
-	resp.PollUntilDone(context.TODO(), 1 * time.Second)
+	pollResp, err := resp.PollUntilDone(context.TODO(), 1 * time.Second)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("Successfully deleted key %s", *pollResp.Key.ID)
 }
 
 func ExampleClient_ListKeys() {

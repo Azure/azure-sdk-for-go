@@ -252,11 +252,11 @@ func ExampleClient_BeginDeleteKey() {
 		panic(err)
 	}
 
-	resp, err := client.BeginDeleteKey(context.TODO(), "key-to-delete", nil)
+	pollResp, err := resp.PollUntilDone(context.TODO(), 1 * time.Second)
 	if err != nil {
 		panic(err)
 	}
-	resp.PollUntilDone(context.TODO(), 1 * time.Second)
+	fmt.Printf("Successfully deleted key %s", *pollResp.Key.ID)
 }
 ```
 

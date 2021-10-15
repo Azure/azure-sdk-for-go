@@ -154,7 +154,7 @@ func jsonWebKeyFromGenerated(i *internal.JSONWebKey) *JSONWebKey {
 		E:       i.E,
 		K:       i.K,
 		KeyOps:  i.KeyOps,
-		ID:     i.Kid,
+		ID:      i.Kid,
 		KeyType: (*KeyType)(i.Kty),
 		N:       i.N,
 		P:       i.P,

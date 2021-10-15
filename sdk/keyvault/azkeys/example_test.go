@@ -133,7 +133,7 @@ func ExampleClient_BeginDeleteKey() {
 	if err != nil {
 		panic(err)
 	}
-	pollResp, err := resp.PollUntilDone(context.TODO(), 1 * time.Second)
+	pollResp, err := resp.PollUntilDone(context.TODO(), 1*time.Second)
 	if err != nil {
 		panic(err)
 	}

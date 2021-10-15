@@ -429,7 +429,8 @@ contact opencode@microsoft.com with any additional questions or comments.
 [list_operations_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/samples/list_operations.py
 [recover_purge_sample]: https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/keyvault/azure-keyvault-keys/samples/recover_purge_operations.py -->
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[goget_azkeys]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys
+[goget_azkey]: https://aka.ms/azsdk/go/keyvault-keys
+<!-- [goget_azkeys]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys -->
 [rbac_guide]: https://docs.microsoft.com/azure/key-vault/general/rbac-guide
 [reference_docs]: https://aka.ms/azsdk/go/keyvault-keys
 [key_client_docs]: https://aka.ms/azsdk/go/keyvault-keys#Client

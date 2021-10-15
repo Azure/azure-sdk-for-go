@@ -37,7 +37,7 @@ func Example() {
 	// ===== 1. Creating a database =====
 
 	databaseName := azcosmos.DatabaseProperties{Id: "databaseName"}
-	database, err := client.CreateDatabase(ctx, databaseName, nil, nil)
+	database, err := client.CreateDatabase(ctx, databaseName, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -53,7 +53,7 @@ func Example() {
 
 	throughput := azcosmos.NewManualThroughputProperties(400)
 
-	resp, err := database.DatabaseProperties.Database.CreateContainer(ctx, properties, throughput, nil)
+	resp, err := database.DatabaseProperties.Database.CreateContainer(ctx, properties, &azcosmos.CreateContainerOptions{ThroughputProperties: throughput})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -133,32 +133,47 @@ func Example() {
 	}
 
 	// Create item.
-	itemResponse, err := container.CreateItem(ctx, pk, item, nil)
+	itemResponse, err := container.CreateItem(ctx, *pk, item, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Read item.
-	itemResponse, err = container.ReadItem(ctx, pk, "1", nil)
+	itemResponse, err = container.ReadItem(ctx, *pk, "1", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var itemResponseBody map[string]interface{}
+	err = json.Unmarshal(itemResponse.Value, &itemResponseBody)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Modify some property
+	itemResponseBody["value"] = "newValue"
+
+	// Replace item
+	itemResponse, err = container.ReplaceItem(ctx, *pk, "1", itemResponseBody, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Delete item.
-	itemResponse, err = container.DeleteItem(ctx, pk, "1", nil)
+	itemResponse, err = container.DeleteItem(ctx, *pk, "1", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// ===== 5. Session consistency =====
 
-	itemResponse, err = container.UpsertItem(ctx, pk, item, nil)
+	itemResponse, err = container.UpsertItem(ctx, *pk, item, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	itemSessionToken := itemResponse.SessionToken
-	itemResponse, err = container.ReadItem(ctx, pk, "1", &azcosmos.ItemRequestOptions{SessionToken: itemSessionToken})
+	itemResponse, err = container.ReadItem(ctx, *pk, "1", &azcosmos.ItemOptions{SessionToken: itemSessionToken})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -169,7 +184,7 @@ func Example() {
 	// Check the item response status code. If an error is imitted and the response code is 412 then retry operation.
 	numberRetry := 3
 	err = retryOptimisticConcurrency(numberRetry, 1000*time.Millisecond, func() (bool, error) {
-		itemResponse, err = container.ReadItem(ctx, pk, "1", nil)
+		itemResponse, err = container.ReadItem(ctx, *pk, "1", nil)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -185,7 +200,7 @@ func Example() {
 
 		// Replace with Etag
 		etag := itemResponse.ETag
-		itemResponse, err = container.ReplaceItem(ctx, pk, "1", itemResponseBody, &azcosmos.ItemRequestOptions{IfMatchEtag: &etag})
+		itemResponse, err = container.ReplaceItem(ctx, *pk, "1", itemResponseBody, &azcosmos.ItemOptions{IfMatchEtag: &etag})
 		var httpErr azcore.HTTPResponse
 
 		return (errors.As(err, &httpErr) && itemResponse.RawResponse.StatusCode == 412), err

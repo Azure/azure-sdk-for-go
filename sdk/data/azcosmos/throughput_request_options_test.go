@@ -8,7 +8,7 @@ import (
 )
 
 func TestThroughputRequestOptionsToHeaders(t *testing.T) {
-	options := &ThroughputRequestOptions{}
+	options := &ThroughputOptions{}
 	if options.toHeaders() != nil {
 		t.Error("toHeaders should return nil")
 	}

@@ -8,7 +8,7 @@ import (
 )
 
 func TestContainerRequestOptionsToHeaders(t *testing.T) {
-	options := &CosmosContainerRequestOptions{}
+	options := &ContainerRequestOptions{}
 	if options.toHeaders() != nil {
 		t.Error("toHeaders should return nil")
 	}

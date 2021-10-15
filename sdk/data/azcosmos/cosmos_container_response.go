@@ -9,18 +9,18 @@ import (
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-// CosmosContainerResponse represents the response from a container request.
-type CosmosContainerResponse struct {
+// ContainerResponse represents the response from a container request.
+type ContainerResponse struct {
 	// ContainerProperties contains the unmarshalled response body in CosmosContainerProperties format.
-	ContainerProperties *CosmosContainerProperties
+	ContainerProperties *ContainerProperties
 	CosmosResponse
 }
 
-func newCosmosContainerResponse(resp *http.Response, container *CosmosContainer) (CosmosContainerResponse, error) {
-	response := CosmosContainerResponse{
+func newCosmosContainerResponse(resp *http.Response, container *Container) (ContainerResponse, error) {
+	response := ContainerResponse{
 		CosmosResponse: newCosmosResponse(resp),
 	}
-	properties := &CosmosContainerProperties{}
+	properties := &ContainerProperties{}
 	err := azruntime.UnmarshalAsJSON(resp, properties)
 	if err != nil {
 		return response, err

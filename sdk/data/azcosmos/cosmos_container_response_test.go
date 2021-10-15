@@ -21,7 +21,7 @@ func TestContainerResponseParsing(t *testing.T) {
 		Time: time.Unix(nowAsUnix, 0),
 	}
 
-	properties := &CosmosContainerProperties{
+	properties := &ContainerProperties{
 		Id:           "someId",
 		ETag:         "someEtag",
 		SelfLink:     "someSelfLink",
@@ -33,7 +33,7 @@ func TestContainerResponseParsing(t *testing.T) {
 		},
 	}
 
-	container := &CosmosContainer{
+	container := &Container{
 		Id: "someId",
 	}
 

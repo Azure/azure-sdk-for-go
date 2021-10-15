@@ -10,19 +10,19 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
-// A CosmosContainer lets you perform read, update, change throughput, and delete container operations.
+// A Container lets you perform read, update, change throughput, and delete container operations.
 // It also lets you perform read, update, change throughput, and delete item operations.
-type CosmosContainer struct {
+type Container struct {
 	// The Id of the Cosmos container
 	Id string
 	// The database that contains the container
-	Database *CosmosDatabase
+	Database *Database
 	// The resource link
 	link string
 }
 
-func newCosmosContainer(id string, database *CosmosDatabase) *CosmosContainer {
-	return &CosmosContainer{
+func newContainer(id string, database *Database) *Container {
+	return &Container{
 		Id:       id,
 		Database: database,
 		link:     createLink(database.link, pathSegmentCollection, id)}
@@ -31,11 +31,11 @@ func newCosmosContainer(id string, database *CosmosDatabase) *CosmosContainer {
 // Read obtains the information for a Cosmos container.
 // ctx - The context for the request.
 // requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) Read(
+func (c *Container) Read(
 	ctx context.Context,
-	requestOptions *CosmosContainerRequestOptions) (CosmosContainerResponse, error) {
+	requestOptions *ContainerRequestOptions) (ContainerResponse, error) {
 	if requestOptions == nil {
-		requestOptions = &CosmosContainerRequestOptions{}
+		requestOptions = &ContainerRequestOptions{}
 	}
 
 	operationContext := cosmosOperationContext{
@@ -45,7 +45,7 @@ func (c *CosmosContainer) Read(
 
 	path, err := generatePathForNameBased(resourceTypeCollection, c.link, false)
 	if err != nil {
-		return CosmosContainerResponse{}, err
+		return ContainerResponse{}, err
 	}
 
 	azResponse, err := c.Database.client.connection.sendGetRequest(
@@ -55,7 +55,7 @@ func (c *CosmosContainer) Read(
 		requestOptions,
 		nil)
 	if err != nil {
-		return CosmosContainerResponse{}, err
+		return ContainerResponse{}, err
 	}
 
 	return newCosmosContainerResponse(azResponse, c)
@@ -64,12 +64,12 @@ func (c *CosmosContainer) Read(
 // Replace a Cosmos container.
 // ctx - The context for the request.
 // requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) Replace(
+func (c *Container) Replace(
 	ctx context.Context,
-	containerProperties CosmosContainerProperties,
-	requestOptions *CosmosContainerRequestOptions) (CosmosContainerResponse, error) {
+	containerProperties ContainerProperties,
+	requestOptions *ContainerRequestOptions) (ContainerResponse, error) {
 	if requestOptions == nil {
-		requestOptions = &CosmosContainerRequestOptions{}
+		requestOptions = &ContainerRequestOptions{}
 	}
 
 	operationContext := cosmosOperationContext{
@@ -79,7 +79,7 @@ func (c *CosmosContainer) Replace(
 
 	path, err := generatePathForNameBased(resourceTypeCollection, c.link, false)
 	if err != nil {
-		return CosmosContainerResponse{}, err
+		return ContainerResponse{}, err
 	}
 
 	azResponse, err := c.Database.client.connection.sendPutRequest(
@@ -90,7 +90,7 @@ func (c *CosmosContainer) Replace(
 		requestOptions,
 		nil)
 	if err != nil {
-		return CosmosContainerResponse{}, err
+		return ContainerResponse{}, err
 	}
 
 	return newCosmosContainerResponse(azResponse, c)
@@ -99,11 +99,11 @@ func (c *CosmosContainer) Replace(
 // Delete a Cosmos container.
 // ctx - The context for the request.
 // requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) Delete(
+func (c *Container) Delete(
 	ctx context.Context,
-	requestOptions *CosmosContainerRequestOptions) (CosmosContainerResponse, error) {
+	requestOptions *ContainerRequestOptions) (ContainerResponse, error) {
 	if requestOptions == nil {
-		requestOptions = &CosmosContainerRequestOptions{}
+		requestOptions = &ContainerRequestOptions{}
 	}
 
 	operationContext := cosmosOperationContext{
@@ -113,7 +113,7 @@ func (c *CosmosContainer) Delete(
 
 	path, err := generatePathForNameBased(resourceTypeCollection, c.link, false)
 	if err != nil {
-		return CosmosContainerResponse{}, err
+		return ContainerResponse{}, err
 	}
 
 	azResponse, err := c.Database.client.connection.sendDeleteRequest(
@@ -123,7 +123,7 @@ func (c *CosmosContainer) Delete(
 		requestOptions,
 		nil)
 	if err != nil {
-		return CosmosContainerResponse{}, err
+		return ContainerResponse{}, err
 	}
 
 	return newCosmosContainerResponse(azResponse, c)
@@ -132,7 +132,7 @@ func (c *CosmosContainer) Delete(
 // ReadThroughput obtains the provisioned throughput information for the container.
 // ctx - The context for the request.
 // requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) ReadThroughput(
+func (c *Container) ReadThroughput(
 	ctx context.Context,
 	requestOptions *ThroughputRequestOptions) (ThroughputResponse, error) {
 	if requestOptions == nil {
@@ -152,7 +152,7 @@ func (c *CosmosContainer) ReadThroughput(
 // ctx - The context for the request.
 // throughputProperties - The throughput configuration of the container.
 // requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) ReplaceThroughput(
+func (c *Container) ReplaceThroughput(
 	ctx context.Context,
 	throughputProperties ThroughputProperties,
 	requestOptions *ThroughputRequestOptions) (ThroughputResponse, error) {
@@ -174,7 +174,7 @@ func (c *CosmosContainer) ReplaceThroughput(
 // partitionKey - The partition key for the item.
 // item - The item to create.
 // requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) CreateItem(
+func (c *Container) CreateItem(
 	ctx context.Context,
 	partitionKey *PartitionKey,
 	item interface{},
@@ -218,7 +218,7 @@ func (c *CosmosContainer) CreateItem(
 // partitionKey - The partition key for the item.
 // item - The item to upsert.
 // requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) UpsertItem(
+func (c *Container) UpsertItem(
 	ctx context.Context,
 	partitionKey *PartitionKey,
 	item interface{},
@@ -268,7 +268,7 @@ func (c *CosmosContainer) UpsertItem(
 // itemId - The id of the item to replace.
 // item - The content to be used to replace.
 // requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) ReplaceItem(
+func (c *Container) ReplaceItem(
 	ctx context.Context,
 	partitionKey *PartitionKey,
 	itemId string,
@@ -313,7 +313,7 @@ func (c *CosmosContainer) ReplaceItem(
 // partitionKey - The partition key for the item.
 // itemId - The id of the item to read.
 // requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) ReadItem(
+func (c *Container) ReadItem(
 	ctx context.Context,
 	partitionKey *PartitionKey,
 	itemId string,
@@ -356,7 +356,7 @@ func (c *CosmosContainer) ReadItem(
 // partitionKey - The partition key for the item.
 // itemId - The id of the item to delete.
 // requestOptions - Optional parameters for the request.
-func (c *CosmosContainer) DeleteItem(
+func (c *Container) DeleteItem(
 	ctx context.Context,
 	partitionKey *PartitionKey,
 	itemId string,
@@ -394,7 +394,7 @@ func (c *CosmosContainer) DeleteItem(
 	return newCosmosItemResponse(azResponse)
 }
 
-func (c *CosmosContainer) buildRequestEnricher(
+func (c *Container) buildRequestEnricher(
 	partitionKey *PartitionKey,
 	requestOptions *CosmosItemRequestOptions,
 	writeOperation bool) (func(r *policy.Request), error) {
@@ -422,7 +422,7 @@ func (c *CosmosContainer) buildRequestEnricher(
 	}, nil
 }
 
-func (c *CosmosContainer) getRID(ctx context.Context) (string, error) {
+func (c *Container) getRID(ctx context.Context) (string, error) {
 	containerResponse, err := c.Read(ctx, nil)
 	if err != nil {
 		return "", err

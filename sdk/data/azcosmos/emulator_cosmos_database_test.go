@@ -12,7 +12,7 @@ func TestDatabaseCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t)
 
-	database := CosmosDatabaseProperties{Id: "baseDbTest"}
+	database := DatabaseProperties{Id: "baseDbTest"}
 
 	resp, err := client.CreateDatabase(context.TODO(), database, nil, nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func TestDatabaseWithOfferCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t)
 
-	database := CosmosDatabaseProperties{Id: "baseDbTest"}
+	database := DatabaseProperties{Id: "baseDbTest"}
 	tp := NewManualThroughputProperties(400)
 	resp, err := client.CreateDatabase(context.TODO(), database, tp, nil)
 	if err != nil {

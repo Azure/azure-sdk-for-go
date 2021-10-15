@@ -3,12 +3,12 @@
 
 package azcosmos
 
-// CosmosContainerRequestOptions includes options for operations against a database.
-type CosmosContainerRequestOptions struct {
+// ContainerRequestOptions includes options for operations against a database.
+type ContainerRequestOptions struct {
 	PopulateQuotaInfo bool
 }
 
-func (options *CosmosContainerRequestOptions) toHeaders() *map[string]string {
+func (options *ContainerRequestOptions) toHeaders() *map[string]string {
 	if !options.PopulateQuotaInfo {
 		return nil
 	}

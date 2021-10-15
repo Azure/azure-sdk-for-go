@@ -5,8 +5,8 @@ package azcosmos
 
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
 
-// CosmosContainerProperties represents the properties of a container.
-type CosmosContainerProperties struct {
+// ContainerProperties represents the properties of a container.
+type ContainerProperties struct {
 	// Id contains the unique id of the container.
 	Id string `json:"id"`
 	// ETag contains the entity etag of the container.
@@ -32,5 +32,5 @@ type CosmosContainerProperties struct {
 	// ConflictResolutionPolicy contains the conflict resolution policy of the container.
 	ConflictResolutionPolicy *ConflictResolutionPolicy `json:"conflictResolutionPolicy,omitempty"`
 	// Container represented by these properties
-	Container *CosmosContainer `json:"-"`
+	Container *Container `json:"-"`
 }

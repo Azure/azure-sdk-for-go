@@ -21,7 +21,7 @@ func TestDatabaseResponseParsing(t *testing.T) {
 		Time: time.Unix(nowAsUnix, 0),
 	}
 
-	properties := &CosmosDatabaseProperties{
+	properties := &DatabaseProperties{
 		Id:           "someId",
 		ETag:         "someEtag",
 		SelfLink:     "someSelfLink",
@@ -29,7 +29,7 @@ func TestDatabaseResponseParsing(t *testing.T) {
 		LastModified: &now,
 	}
 
-	database := &CosmosDatabase{
+	database := &Database{
 		Id: "someId",
 	}
 
@@ -53,7 +53,7 @@ func TestDatabaseResponseParsing(t *testing.T) {
 
 	pl := azruntime.NewPipeline(srv)
 	resp, _ := pl.Do(req)
-	parsedResponse, err := newCosmosDatabaseResponse(resp, database)
+	parsedResponse, err := newDatabaseResponse(resp, database)
 	if err != nil {
 		t.Fatal(err)
 	}

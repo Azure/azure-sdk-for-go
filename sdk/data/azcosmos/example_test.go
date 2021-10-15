@@ -36,7 +36,7 @@ func Example() {
 
 	// ===== 1. Creating a database =====
 
-	databaseName := azcosmos.CosmosDatabaseProperties{Id: "databaseName"}
+	databaseName := azcosmos.DatabaseProperties{Id: "databaseName"}
 	database, err := client.CreateDatabase(ctx, databaseName, nil, nil)
 	if err != nil {
 		log.Fatal(err)
@@ -44,7 +44,7 @@ func Example() {
 
 	// ===== 2. Creating a container =====
 
-	properties := azcosmos.CosmosContainerProperties{
+	properties := azcosmos.ContainerProperties{
 		Id: "aContainer",
 		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
 			Paths: []string{"/myPartitionKey"},
@@ -67,7 +67,7 @@ func Example() {
 		log.Fatal(err)
 	}
 
-	updatedProperties := azcosmos.CosmosContainerProperties{
+	updatedProperties := azcosmos.ContainerProperties{
 		Id: "aContainer",
 		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
 			Paths: []string{"/myPartitionKey"},

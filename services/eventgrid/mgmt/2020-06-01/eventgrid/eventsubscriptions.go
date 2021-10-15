@@ -83,6 +83,7 @@ func (client EventSubscriptionsClient) CreateOrUpdatePreparer(ctx context.Contex
 		"api-version": APIVersion,
 	}
 
+	eventSubscriptionInfo.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

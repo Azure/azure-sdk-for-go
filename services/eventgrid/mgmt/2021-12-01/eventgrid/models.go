@@ -18,7 +18,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2020-06-01/eventgrid"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2021-12-01/eventgrid"
 
 // BasicAdvancedFilter this is the base type that represents an advanced filter. To configure an advanced filter, do
 // not directly instantiate an object of this class. Instead, instantiate an object of a derived class such as
@@ -324,6 +324,58 @@ type AzureFunctionEventSubscriptionDestinationProperties struct {
 	MaxEventsPerBatch *int32 `json:"maxEventsPerBatch,omitempty"`
 	// PreferredBatchSizeInKilobytes - Preferred batch size in Kilobytes.
 	PreferredBatchSizeInKilobytes *int32 `json:"preferredBatchSizeInKilobytes,omitempty"`
+	// DeliveryAttributeMappings - Delivery attribute details.
+	DeliveryAttributeMappings *[]BasicDeliveryAttributeMapping `json:"deliveryAttributeMappings,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for AzureFunctionEventSubscriptionDestinationProperties struct.
+func (afesdp *AzureFunctionEventSubscriptionDestinationProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "resourceId":
+			if v != nil {
+				var resourceID string
+				err = json.Unmarshal(*v, &resourceID)
+				if err != nil {
+					return err
+				}
+				afesdp.ResourceID = &resourceID
+			}
+		case "maxEventsPerBatch":
+			if v != nil {
+				var maxEventsPerBatch int32
+				err = json.Unmarshal(*v, &maxEventsPerBatch)
+				if err != nil {
+					return err
+				}
+				afesdp.MaxEventsPerBatch = &maxEventsPerBatch
+			}
+		case "preferredBatchSizeInKilobytes":
+			if v != nil {
+				var preferredBatchSizeInKilobytes int32
+				err = json.Unmarshal(*v, &preferredBatchSizeInKilobytes)
+				if err != nil {
+					return err
+				}
+				afesdp.PreferredBatchSizeInKilobytes = &preferredBatchSizeInKilobytes
+			}
+		case "deliveryAttributeMappings":
+			if v != nil {
+				deliveryAttributeMappings, err := unmarshalBasicDeliveryAttributeMappingArray(*v)
+				if err != nil {
+					return err
+				}
+				afesdp.DeliveryAttributeMappings = &deliveryAttributeMappings
+			}
+		}
+	}
+
+	return nil
 }
 
 // BoolEqualsAdvancedFilter boolEquals Advanced Filter.
@@ -511,13 +563,134 @@ func (dld DeadLetterDestination) AsBasicDeadLetterDestination() (BasicDeadLetter
 	return &dld, true
 }
 
+// DeliveryAttributeListResult result of the Get delivery attributes operation.
+type DeliveryAttributeListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A collection of DeliveryAttributeMapping
+	Value *[]BasicDeliveryAttributeMapping `json:"value,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for DeliveryAttributeListResult struct.
+func (dalr *DeliveryAttributeListResult) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "value":
+			if v != nil {
+				value, err := unmarshalBasicDeliveryAttributeMappingArray(*v)
+				if err != nil {
+					return err
+				}
+				dalr.Value = &value
+			}
+		}
+	}
+
+	return nil
+}
+
+// BasicDeliveryAttributeMapping delivery attribute mapping details.
+type BasicDeliveryAttributeMapping interface {
+	AsStaticDeliveryAttributeMapping() (*StaticDeliveryAttributeMapping, bool)
+	AsDynamicDeliveryAttributeMapping() (*DynamicDeliveryAttributeMapping, bool)
+	AsDeliveryAttributeMapping() (*DeliveryAttributeMapping, bool)
+}
+
+// DeliveryAttributeMapping delivery attribute mapping details.
+type DeliveryAttributeMapping struct {
+	// Name - Name of the delivery attribute or header.
+	Name *string `json:"name,omitempty"`
+	// Type - Possible values include: 'TypeDeliveryAttributeMapping', 'TypeStatic', 'TypeDynamic'
+	Type Type `json:"type,omitempty"`
+}
+
+func unmarshalBasicDeliveryAttributeMapping(body []byte) (BasicDeliveryAttributeMapping, error) {
+	var m map[string]interface{}
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return nil, err
+	}
+
+	switch m["type"] {
+	case string(TypeStatic):
+		var sdam StaticDeliveryAttributeMapping
+		err := json.Unmarshal(body, &sdam)
+		return sdam, err
+	case string(TypeDynamic):
+		var ddam DynamicDeliveryAttributeMapping
+		err := json.Unmarshal(body, &ddam)
+		return ddam, err
+	default:
+		var dam DeliveryAttributeMapping
+		err := json.Unmarshal(body, &dam)
+		return dam, err
+	}
+}
+func unmarshalBasicDeliveryAttributeMappingArray(body []byte) ([]BasicDeliveryAttributeMapping, error) {
+	var rawMessages []*json.RawMessage
+	err := json.Unmarshal(body, &rawMessages)
+	if err != nil {
+		return nil, err
+	}
+
+	damArray := make([]BasicDeliveryAttributeMapping, len(rawMessages))
+
+	for index, rawMessage := range rawMessages {
+		dam, err := unmarshalBasicDeliveryAttributeMapping(*rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		damArray[index] = dam
+	}
+	return damArray, nil
+}
+
+// MarshalJSON is the custom marshaler for DeliveryAttributeMapping.
+func (dam DeliveryAttributeMapping) MarshalJSON() ([]byte, error) {
+	dam.Type = TypeDeliveryAttributeMapping
+	objectMap := make(map[string]interface{})
+	if dam.Name != nil {
+		objectMap["name"] = dam.Name
+	}
+	if dam.Type != "" {
+		objectMap["type"] = dam.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsStaticDeliveryAttributeMapping is the BasicDeliveryAttributeMapping implementation for DeliveryAttributeMapping.
+func (dam DeliveryAttributeMapping) AsStaticDeliveryAttributeMapping() (*StaticDeliveryAttributeMapping, bool) {
+	return nil, false
+}
+
+// AsDynamicDeliveryAttributeMapping is the BasicDeliveryAttributeMapping implementation for DeliveryAttributeMapping.
+func (dam DeliveryAttributeMapping) AsDynamicDeliveryAttributeMapping() (*DynamicDeliveryAttributeMapping, bool) {
+	return nil, false
+}
+
+// AsDeliveryAttributeMapping is the BasicDeliveryAttributeMapping implementation for DeliveryAttributeMapping.
+func (dam DeliveryAttributeMapping) AsDeliveryAttributeMapping() (*DeliveryAttributeMapping, bool) {
+	return &dam, true
+}
+
+// AsBasicDeliveryAttributeMapping is the BasicDeliveryAttributeMapping implementation for DeliveryAttributeMapping.
+func (dam DeliveryAttributeMapping) AsBasicDeliveryAttributeMapping() (BasicDeliveryAttributeMapping, bool) {
+	return &dam, true
+}
+
 // Domain eventGrid Domain.
 type Domain struct {
 	autorest.Response `json:"-"`
-	// DomainProperties - Properties of the domain.
+	// DomainProperties - Properties of the Event Grid Domain resource.
 	*DomainProperties `json:"properties,omitempty"`
 	// SystemData - READ-ONLY; The system metadata relating to Domain resource.
 	SystemData *SystemData `json:"systemData,omitempty"`
+	// Identity - Identity information for the Event Grid Domain resource.
+	Identity *IdentityInfo `json:"identity,omitempty"`
 	// Location - Location of the resource.
 	Location *string `json:"location,omitempty"`
 	// Tags - Tags of the resource.
@@ -535,6 +708,9 @@ func (d Domain) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if d.DomainProperties != nil {
 		objectMap["properties"] = d.DomainProperties
+	}
+	if d.Identity != nil {
+		objectMap["identity"] = d.Identity
 	}
 	if d.Location != nil {
 		objectMap["location"] = d.Location
@@ -571,6 +747,15 @@ func (d *Domain) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				d.SystemData = &systemData
+			}
+		case "identity":
+			if v != nil {
+				var identity IdentityInfo
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				d.Identity = &identity
 			}
 		case "location":
 			if v != nil {
@@ -623,11 +808,11 @@ func (d *Domain) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// DomainProperties properties of the Domain.
+// DomainProperties properties of the Event Grid Domain Resource.
 type DomainProperties struct {
 	// PrivateEndpointConnections - READ-ONLY; List of private endpoint connections.
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
-	// ProvisioningState - READ-ONLY; Provisioning state of the domain. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Canceled', 'Failed'
+	// ProvisioningState - READ-ONLY; Provisioning state of the Event Grid Domain Resource. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Canceled', 'Failed'
 	ProvisioningState DomainProvisioningState `json:"provisioningState,omitempty"`
 	// Endpoint - READ-ONLY; Endpoint for the domain.
 	Endpoint *string `json:"endpoint,omitempty"`
@@ -642,6 +827,24 @@ type DomainProperties struct {
 	PublicNetworkAccess PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 	// InboundIPRules - This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
 	InboundIPRules *[]InboundIPRule `json:"inboundIpRules,omitempty"`
+	// DisableLocalAuth - This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to the domain.
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	// AutoCreateTopicWithFirstSubscription - This Boolean is used to specify the creation mechanism for 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource.
+	// In this context, creation of domain topic can be auto-managed (when true) or self-managed (when false). The default value for this property is true.
+	// When this property is null or set to true, Event Grid is responsible of automatically creating the domain topic when the first event subscription is
+	// created at the scope of the domain topic. If this property is set to false, then creating the first event subscription will require creating a domain topic
+	// by the user. The self-management mode can be used if the user wants full control of when the domain topic is created, while auto-managed mode provides the
+	// flexibility to perform less operations and manage fewer resources by the user. Also, note that in auto-managed creation mode, user is allowed to create the
+	// domain topic on demand if needed.
+	AutoCreateTopicWithFirstSubscription *bool `json:"autoCreateTopicWithFirstSubscription,omitempty"`
+	// AutoDeleteTopicWithLastSubscription - This Boolean is used to specify the deletion mechanism for 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource.
+	// In this context, deletion of domain topic can be auto-managed (when true) or self-managed (when false). The default value for this property is true.
+	// When this property is set to true, Event Grid is responsible of automatically deleting the domain topic when the last event subscription at the scope
+	// of the domain topic is deleted. If this property is set to false, then the user needs to manually delete the domain topic when it is no longer needed
+	// (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management mode can be used if the user wants full
+	// control of when the domain topic needs to be deleted, while auto-managed mode provides the flexibility to perform less operations and manage fewer
+	// resources by the user.
+	AutoDeleteTopicWithLastSubscription *bool `json:"autoDeleteTopicWithLastSubscription,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DomainProperties.
@@ -656,6 +859,15 @@ func (dp DomainProperties) MarshalJSON() ([]byte, error) {
 	}
 	if dp.InboundIPRules != nil {
 		objectMap["inboundIpRules"] = dp.InboundIPRules
+	}
+	if dp.DisableLocalAuth != nil {
+		objectMap["disableLocalAuth"] = dp.DisableLocalAuth
+	}
+	if dp.AutoCreateTopicWithFirstSubscription != nil {
+		objectMap["autoCreateTopicWithFirstSubscription"] = dp.AutoCreateTopicWithFirstSubscription
+	}
+	if dp.AutoDeleteTopicWithLastSubscription != nil {
+		objectMap["autoDeleteTopicWithLastSubscription"] = dp.AutoDeleteTopicWithLastSubscription
 	}
 	return json.Marshal(objectMap)
 }
@@ -739,6 +951,33 @@ func (dp *DomainProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				dp.InboundIPRules = &inboundIPRules
+			}
+		case "disableLocalAuth":
+			if v != nil {
+				var disableLocalAuth bool
+				err = json.Unmarshal(*v, &disableLocalAuth)
+				if err != nil {
+					return err
+				}
+				dp.DisableLocalAuth = &disableLocalAuth
+			}
+		case "autoCreateTopicWithFirstSubscription":
+			if v != nil {
+				var autoCreateTopicWithFirstSubscription bool
+				err = json.Unmarshal(*v, &autoCreateTopicWithFirstSubscription)
+				if err != nil {
+					return err
+				}
+				dp.AutoCreateTopicWithFirstSubscription = &autoCreateTopicWithFirstSubscription
+			}
+		case "autoDeleteTopicWithLastSubscription":
+			if v != nil {
+				var autoDeleteTopicWithLastSubscription bool
+				err = json.Unmarshal(*v, &autoDeleteTopicWithLastSubscription)
+				if err != nil {
+					return err
+				}
+				dp.AutoDeleteTopicWithLastSubscription = &autoDeleteTopicWithLastSubscription
 			}
 		}
 	}
@@ -1382,6 +1621,24 @@ type DomainUpdateParameterProperties struct {
 	PublicNetworkAccess PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 	// InboundIPRules - This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
 	InboundIPRules *[]InboundIPRule `json:"inboundIpRules,omitempty"`
+	// DisableLocalAuth - This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to the domain.
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	// AutoCreateTopicWithFirstSubscription - This Boolean is used to specify the creation mechanism for 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource.
+	// In this context, creation of domain topic can be auto-managed (when true) or self-managed (when false). The default value for this property is true.
+	// When this property is null or set to true, Event Grid is responsible of automatically creating the domain topic when the first event subscription is
+	// created at the scope of the domain topic. If this property is set to false, then creating the first event subscription will require creating a domain topic
+	// by the user. The self-management mode can be used if the user wants full control of when the domain topic is created, while auto-managed mode provides the
+	// flexibility to perform less operations and manage fewer resources by the user. Also, note that in auto-managed creation mode, user is allowed to create the
+	// domain topic on demand if needed.
+	AutoCreateTopicWithFirstSubscription *bool `json:"autoCreateTopicWithFirstSubscription,omitempty"`
+	// AutoDeleteTopicWithLastSubscription - This Boolean is used to specify the deletion mechanism for 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource.
+	// In this context, deletion of domain topic can be auto-managed (when true) or self-managed (when false). The default value for this property is true.
+	// When this property is set to true, Event Grid is responsible of automatically deleting the domain topic when the last event subscription at the scope
+	// of the domain topic is deleted. If this property is set to false, then the user needs to manually delete the domain topic when it is no longer needed
+	// (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management mode can be used if the user wants full
+	// control of when the domain topic needs to be deleted, while auto-managed mode provides the flexibility to perform less operations and manage fewer
+	// resources by the user.
+	AutoDeleteTopicWithLastSubscription *bool `json:"autoDeleteTopicWithLastSubscription,omitempty"`
 }
 
 // DomainUpdateParameters properties of the Domain update.
@@ -1390,6 +1647,8 @@ type DomainUpdateParameters struct {
 	Tags map[string]*string `json:"tags"`
 	// DomainUpdateParameterProperties - Properties of the resource.
 	*DomainUpdateParameterProperties `json:"properties,omitempty"`
+	// Identity - Identity information for the resource.
+	Identity *IdentityInfo `json:"identity,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for DomainUpdateParameters.
@@ -1400,6 +1659,9 @@ func (dup DomainUpdateParameters) MarshalJSON() ([]byte, error) {
 	}
 	if dup.DomainUpdateParameterProperties != nil {
 		objectMap["properties"] = dup.DomainUpdateParameterProperties
+	}
+	if dup.Identity != nil {
+		objectMap["identity"] = dup.Identity
 	}
 	return json.Marshal(objectMap)
 }
@@ -1431,10 +1693,113 @@ func (dup *DomainUpdateParameters) UnmarshalJSON(body []byte) error {
 				}
 				dup.DomainUpdateParameterProperties = &domainUpdateParameterProperties
 			}
+		case "identity":
+			if v != nil {
+				var identity IdentityInfo
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				dup.Identity = &identity
+			}
 		}
 	}
 
 	return nil
+}
+
+// DynamicDeliveryAttributeMapping dynamic delivery attribute mapping details.
+type DynamicDeliveryAttributeMapping struct {
+	// DynamicDeliveryAttributeMappingProperties - Properties of dynamic delivery attribute mapping.
+	*DynamicDeliveryAttributeMappingProperties `json:"properties,omitempty"`
+	// Name - Name of the delivery attribute or header.
+	Name *string `json:"name,omitempty"`
+	// Type - Possible values include: 'TypeDeliveryAttributeMapping', 'TypeStatic', 'TypeDynamic'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DynamicDeliveryAttributeMapping.
+func (ddam DynamicDeliveryAttributeMapping) MarshalJSON() ([]byte, error) {
+	ddam.Type = TypeDynamic
+	objectMap := make(map[string]interface{})
+	if ddam.DynamicDeliveryAttributeMappingProperties != nil {
+		objectMap["properties"] = ddam.DynamicDeliveryAttributeMappingProperties
+	}
+	if ddam.Name != nil {
+		objectMap["name"] = ddam.Name
+	}
+	if ddam.Type != "" {
+		objectMap["type"] = ddam.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsStaticDeliveryAttributeMapping is the BasicDeliveryAttributeMapping implementation for DynamicDeliveryAttributeMapping.
+func (ddam DynamicDeliveryAttributeMapping) AsStaticDeliveryAttributeMapping() (*StaticDeliveryAttributeMapping, bool) {
+	return nil, false
+}
+
+// AsDynamicDeliveryAttributeMapping is the BasicDeliveryAttributeMapping implementation for DynamicDeliveryAttributeMapping.
+func (ddam DynamicDeliveryAttributeMapping) AsDynamicDeliveryAttributeMapping() (*DynamicDeliveryAttributeMapping, bool) {
+	return &ddam, true
+}
+
+// AsDeliveryAttributeMapping is the BasicDeliveryAttributeMapping implementation for DynamicDeliveryAttributeMapping.
+func (ddam DynamicDeliveryAttributeMapping) AsDeliveryAttributeMapping() (*DeliveryAttributeMapping, bool) {
+	return nil, false
+}
+
+// AsBasicDeliveryAttributeMapping is the BasicDeliveryAttributeMapping implementation for DynamicDeliveryAttributeMapping.
+func (ddam DynamicDeliveryAttributeMapping) AsBasicDeliveryAttributeMapping() (BasicDeliveryAttributeMapping, bool) {
+	return &ddam, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for DynamicDeliveryAttributeMapping struct.
+func (ddam *DynamicDeliveryAttributeMapping) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var dynamicDeliveryAttributeMappingProperties DynamicDeliveryAttributeMappingProperties
+				err = json.Unmarshal(*v, &dynamicDeliveryAttributeMappingProperties)
+				if err != nil {
+					return err
+				}
+				ddam.DynamicDeliveryAttributeMappingProperties = &dynamicDeliveryAttributeMappingProperties
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				ddam.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar Type
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				ddam.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DynamicDeliveryAttributeMappingProperties properties of dynamic delivery attribute mapping.
+type DynamicDeliveryAttributeMappingProperties struct {
+	// SourceField - JSON path in the event which contains attribute value.
+	SourceField *string `json:"sourceField,omitempty"`
 }
 
 // EventHubEventSubscriptionDestination information about the event hub destination for an event
@@ -1541,6 +1906,40 @@ func (ehesd *EventHubEventSubscriptionDestination) UnmarshalJSON(body []byte) er
 type EventHubEventSubscriptionDestinationProperties struct {
 	// ResourceID - The Azure Resource Id that represents the endpoint of an Event Hub destination of an event subscription.
 	ResourceID *string `json:"resourceId,omitempty"`
+	// DeliveryAttributeMappings - Delivery attribute details.
+	DeliveryAttributeMappings *[]BasicDeliveryAttributeMapping `json:"deliveryAttributeMappings,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for EventHubEventSubscriptionDestinationProperties struct.
+func (ehesdp *EventHubEventSubscriptionDestinationProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "resourceId":
+			if v != nil {
+				var resourceID string
+				err = json.Unmarshal(*v, &resourceID)
+				if err != nil {
+					return err
+				}
+				ehesdp.ResourceID = &resourceID
+			}
+		case "deliveryAttributeMappings":
+			if v != nil {
+				deliveryAttributeMappings, err := unmarshalBasicDeliveryAttributeMappingArray(*v)
+				if err != nil {
+					return err
+				}
+				ehesdp.DeliveryAttributeMappings = &deliveryAttributeMappings
+			}
+		}
+	}
+
+	return nil
 }
 
 // EventSubscription event Subscription
@@ -1775,6 +2174,8 @@ type EventSubscriptionFilter struct {
 	// IsSubjectCaseSensitive - Specifies if the SubjectBeginsWith and SubjectEndsWith properties of the filter
 	// should be compared in a case sensitive manner.
 	IsSubjectCaseSensitive *bool `json:"isSubjectCaseSensitive,omitempty"`
+	// EnableAdvancedFilteringOnArrays - Allows advanced filters to be evaluated against an array of values instead of expecting a singular value.
+	EnableAdvancedFilteringOnArrays *bool `json:"enableAdvancedFilteringOnArrays,omitempty"`
 	// AdvancedFilters - An array of advanced filters that are used for filtering event subscriptions.
 	AdvancedFilters *[]BasicAdvancedFilter `json:"advancedFilters,omitempty"`
 }
@@ -1823,6 +2224,15 @@ func (esf *EventSubscriptionFilter) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				esf.IsSubjectCaseSensitive = &isSubjectCaseSensitive
+			}
+		case "enableAdvancedFilteringOnArrays":
+			if v != nil {
+				var enableAdvancedFilteringOnArrays bool
+				err = json.Unmarshal(*v, &enableAdvancedFilteringOnArrays)
+				if err != nil {
+					return err
+				}
+				esf.EnableAdvancedFilteringOnArrays = &enableAdvancedFilteringOnArrays
 			}
 		case "advancedFilters":
 			if v != nil {
@@ -2556,6 +2966,72 @@ func (hcesd *HybridConnectionEventSubscriptionDestination) UnmarshalJSON(body []
 type HybridConnectionEventSubscriptionDestinationProperties struct {
 	// ResourceID - The Azure Resource ID of an hybrid connection that is the destination of an event subscription.
 	ResourceID *string `json:"resourceId,omitempty"`
+	// DeliveryAttributeMappings - Delivery attribute details.
+	DeliveryAttributeMappings *[]BasicDeliveryAttributeMapping `json:"deliveryAttributeMappings,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for HybridConnectionEventSubscriptionDestinationProperties struct.
+func (hcesdp *HybridConnectionEventSubscriptionDestinationProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "resourceId":
+			if v != nil {
+				var resourceID string
+				err = json.Unmarshal(*v, &resourceID)
+				if err != nil {
+					return err
+				}
+				hcesdp.ResourceID = &resourceID
+			}
+		case "deliveryAttributeMappings":
+			if v != nil {
+				deliveryAttributeMappings, err := unmarshalBasicDeliveryAttributeMappingArray(*v)
+				if err != nil {
+					return err
+				}
+				hcesdp.DeliveryAttributeMappings = &deliveryAttributeMappings
+			}
+		}
+	}
+
+	return nil
+}
+
+// IdentityInfo the identity information for the resource.
+type IdentityInfo struct {
+	// Type - The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user-assigned identities. The type 'None' will remove any identity. Possible values include: 'None', 'SystemAssigned', 'UserAssigned', 'SystemAssignedUserAssigned'
+	Type IdentityType `json:"type,omitempty"`
+	// PrincipalID - The principal ID of resource identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - The tenant ID of resource.
+	TenantID *string `json:"tenantId,omitempty"`
+	// UserAssignedIdentities - The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	// This property is currently not used and reserved for future usage.
+	UserAssignedIdentities map[string]*UserIdentityProperties `json:"userAssignedIdentities"`
+}
+
+// MarshalJSON is the custom marshaler for IdentityInfo.
+func (ii IdentityInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if ii.Type != "" {
+		objectMap["type"] = ii.Type
+	}
+	if ii.PrincipalID != nil {
+		objectMap["principalId"] = ii.PrincipalID
+	}
+	if ii.TenantID != nil {
+		objectMap["tenantId"] = ii.TenantID
+	}
+	if ii.UserAssignedIdentities != nil {
+		objectMap["userAssignedIdentities"] = ii.UserAssignedIdentities
+	}
+	return json.Marshal(objectMap)
 }
 
 // InboundIPRule ...
@@ -4068,6 +4544,40 @@ func (sbqesd *ServiceBusQueueEventSubscriptionDestination) UnmarshalJSON(body []
 type ServiceBusQueueEventSubscriptionDestinationProperties struct {
 	// ResourceID - The Azure Resource Id that represents the endpoint of the Service Bus destination of an event subscription.
 	ResourceID *string `json:"resourceId,omitempty"`
+	// DeliveryAttributeMappings - Delivery attribute details.
+	DeliveryAttributeMappings *[]BasicDeliveryAttributeMapping `json:"deliveryAttributeMappings,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ServiceBusQueueEventSubscriptionDestinationProperties struct.
+func (sbqesdp *ServiceBusQueueEventSubscriptionDestinationProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "resourceId":
+			if v != nil {
+				var resourceID string
+				err = json.Unmarshal(*v, &resourceID)
+				if err != nil {
+					return err
+				}
+				sbqesdp.ResourceID = &resourceID
+			}
+		case "deliveryAttributeMappings":
+			if v != nil {
+				deliveryAttributeMappings, err := unmarshalBasicDeliveryAttributeMappingArray(*v)
+				if err != nil {
+					return err
+				}
+				sbqesdp.DeliveryAttributeMappings = &deliveryAttributeMappings
+			}
+		}
+	}
+
+	return nil
 }
 
 // ServiceBusTopicEventSubscriptionDestination information about the service bus topic destination for an
@@ -4175,6 +4685,136 @@ func (sbtesd *ServiceBusTopicEventSubscriptionDestination) UnmarshalJSON(body []
 type ServiceBusTopicEventSubscriptionDestinationProperties struct {
 	// ResourceID - The Azure Resource Id that represents the endpoint of the Service Bus Topic destination of an event subscription.
 	ResourceID *string `json:"resourceId,omitempty"`
+	// DeliveryAttributeMappings - Delivery attribute details.
+	DeliveryAttributeMappings *[]BasicDeliveryAttributeMapping `json:"deliveryAttributeMappings,omitempty"`
+}
+
+// UnmarshalJSON is the custom unmarshaler for ServiceBusTopicEventSubscriptionDestinationProperties struct.
+func (sbtesdp *ServiceBusTopicEventSubscriptionDestinationProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "resourceId":
+			if v != nil {
+				var resourceID string
+				err = json.Unmarshal(*v, &resourceID)
+				if err != nil {
+					return err
+				}
+				sbtesdp.ResourceID = &resourceID
+			}
+		case "deliveryAttributeMappings":
+			if v != nil {
+				deliveryAttributeMappings, err := unmarshalBasicDeliveryAttributeMappingArray(*v)
+				if err != nil {
+					return err
+				}
+				sbtesdp.DeliveryAttributeMappings = &deliveryAttributeMappings
+			}
+		}
+	}
+
+	return nil
+}
+
+// StaticDeliveryAttributeMapping static delivery attribute mapping details.
+type StaticDeliveryAttributeMapping struct {
+	// StaticDeliveryAttributeMappingProperties - Properties of static delivery attribute mapping.
+	*StaticDeliveryAttributeMappingProperties `json:"properties,omitempty"`
+	// Name - Name of the delivery attribute or header.
+	Name *string `json:"name,omitempty"`
+	// Type - Possible values include: 'TypeDeliveryAttributeMapping', 'TypeStatic', 'TypeDynamic'
+	Type Type `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for StaticDeliveryAttributeMapping.
+func (sdam StaticDeliveryAttributeMapping) MarshalJSON() ([]byte, error) {
+	sdam.Type = TypeStatic
+	objectMap := make(map[string]interface{})
+	if sdam.StaticDeliveryAttributeMappingProperties != nil {
+		objectMap["properties"] = sdam.StaticDeliveryAttributeMappingProperties
+	}
+	if sdam.Name != nil {
+		objectMap["name"] = sdam.Name
+	}
+	if sdam.Type != "" {
+		objectMap["type"] = sdam.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// AsStaticDeliveryAttributeMapping is the BasicDeliveryAttributeMapping implementation for StaticDeliveryAttributeMapping.
+func (sdam StaticDeliveryAttributeMapping) AsStaticDeliveryAttributeMapping() (*StaticDeliveryAttributeMapping, bool) {
+	return &sdam, true
+}
+
+// AsDynamicDeliveryAttributeMapping is the BasicDeliveryAttributeMapping implementation for StaticDeliveryAttributeMapping.
+func (sdam StaticDeliveryAttributeMapping) AsDynamicDeliveryAttributeMapping() (*DynamicDeliveryAttributeMapping, bool) {
+	return nil, false
+}
+
+// AsDeliveryAttributeMapping is the BasicDeliveryAttributeMapping implementation for StaticDeliveryAttributeMapping.
+func (sdam StaticDeliveryAttributeMapping) AsDeliveryAttributeMapping() (*DeliveryAttributeMapping, bool) {
+	return nil, false
+}
+
+// AsBasicDeliveryAttributeMapping is the BasicDeliveryAttributeMapping implementation for StaticDeliveryAttributeMapping.
+func (sdam StaticDeliveryAttributeMapping) AsBasicDeliveryAttributeMapping() (BasicDeliveryAttributeMapping, bool) {
+	return &sdam, true
+}
+
+// UnmarshalJSON is the custom unmarshaler for StaticDeliveryAttributeMapping struct.
+func (sdam *StaticDeliveryAttributeMapping) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var staticDeliveryAttributeMappingProperties StaticDeliveryAttributeMappingProperties
+				err = json.Unmarshal(*v, &staticDeliveryAttributeMappingProperties)
+				if err != nil {
+					return err
+				}
+				sdam.StaticDeliveryAttributeMappingProperties = &staticDeliveryAttributeMappingProperties
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				sdam.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar Type
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				sdam.Type = typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// StaticDeliveryAttributeMappingProperties properties of static delivery attribute mapping.
+type StaticDeliveryAttributeMappingProperties struct {
+	// Value - Value of the delivery attribute.
+	Value *string `json:"value,omitempty"`
+	// IsSecret - Boolean flag to tell if the attribute contains sensitive information .
+	IsSecret *bool `json:"isSecret,omitempty"`
 }
 
 // StorageBlobDeadLetterDestination information about the storage blob based dead letter destination.
@@ -4360,6 +5000,8 @@ type StorageQueueEventSubscriptionDestinationProperties struct {
 	ResourceID *string `json:"resourceId,omitempty"`
 	// QueueName - The name of the Storage queue under a storage account that is the destination of an event subscription.
 	QueueName *string `json:"queueName,omitempty"`
+	// QueueMessageTimeToLiveInSeconds - Storage queue message time to live in seconds.
+	QueueMessageTimeToLiveInSeconds *int64 `json:"queueMessageTimeToLiveInSeconds,omitempty"`
 }
 
 // StringBeginsWithAdvancedFilter stringBeginsWith Advanced Filter.
@@ -4858,6 +5500,581 @@ type SystemData struct {
 	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 
+// SystemTopic eventGrid System Topic.
+type SystemTopic struct {
+	autorest.Response `json:"-"`
+	// SystemTopicProperties - Properties of the system topic.
+	*SystemTopicProperties `json:"properties,omitempty"`
+	// Identity - Identity information for the resource.
+	Identity *IdentityInfo `json:"identity,omitempty"`
+	// SystemData - READ-ONLY; The system metadata relating to System Topic resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// Location - Location of the resource.
+	Location *string `json:"location,omitempty"`
+	// Tags - Tags of the resource.
+	Tags map[string]*string `json:"tags"`
+	// ID - READ-ONLY; Fully qualified identifier of the resource.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Type of the resource.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SystemTopic.
+func (st SystemTopic) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if st.SystemTopicProperties != nil {
+		objectMap["properties"] = st.SystemTopicProperties
+	}
+	if st.Identity != nil {
+		objectMap["identity"] = st.Identity
+	}
+	if st.Location != nil {
+		objectMap["location"] = st.Location
+	}
+	if st.Tags != nil {
+		objectMap["tags"] = st.Tags
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SystemTopic struct.
+func (st *SystemTopic) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var systemTopicProperties SystemTopicProperties
+				err = json.Unmarshal(*v, &systemTopicProperties)
+				if err != nil {
+					return err
+				}
+				st.SystemTopicProperties = &systemTopicProperties
+			}
+		case "identity":
+			if v != nil {
+				var identity IdentityInfo
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				st.Identity = &identity
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				st.SystemData = &systemData
+			}
+		case "location":
+			if v != nil {
+				var location string
+				err = json.Unmarshal(*v, &location)
+				if err != nil {
+					return err
+				}
+				st.Location = &location
+			}
+		case "tags":
+			if v != nil {
+				var tags map[string]*string
+				err = json.Unmarshal(*v, &tags)
+				if err != nil {
+					return err
+				}
+				st.Tags = tags
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				st.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				st.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				st.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// SystemTopicEventSubscriptionsCreateOrUpdateFuture an abstraction for monitoring and retrieving the
+// results of a long-running operation.
+type SystemTopicEventSubscriptionsCreateOrUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SystemTopicEventSubscriptionsClient) (EventSubscription, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *SystemTopicEventSubscriptionsCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for SystemTopicEventSubscriptionsCreateOrUpdateFuture.Result.
+func (future *SystemTopicEventSubscriptionsCreateOrUpdateFuture) result(client SystemTopicEventSubscriptionsClient) (es EventSubscription, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventgrid.SystemTopicEventSubscriptionsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		es.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("eventgrid.SystemTopicEventSubscriptionsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if es.Response.Response, err = future.GetResult(sender); err == nil && es.Response.Response.StatusCode != http.StatusNoContent {
+		es, err = client.CreateOrUpdateResponder(es.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.SystemTopicEventSubscriptionsCreateOrUpdateFuture", "Result", es.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// SystemTopicEventSubscriptionsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type SystemTopicEventSubscriptionsDeleteFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SystemTopicEventSubscriptionsClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *SystemTopicEventSubscriptionsDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for SystemTopicEventSubscriptionsDeleteFuture.Result.
+func (future *SystemTopicEventSubscriptionsDeleteFuture) result(client SystemTopicEventSubscriptionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventgrid.SystemTopicEventSubscriptionsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("eventgrid.SystemTopicEventSubscriptionsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// SystemTopicEventSubscriptionsUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type SystemTopicEventSubscriptionsUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SystemTopicEventSubscriptionsClient) (EventSubscription, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *SystemTopicEventSubscriptionsUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for SystemTopicEventSubscriptionsUpdateFuture.Result.
+func (future *SystemTopicEventSubscriptionsUpdateFuture) result(client SystemTopicEventSubscriptionsClient) (es EventSubscription, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventgrid.SystemTopicEventSubscriptionsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		es.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("eventgrid.SystemTopicEventSubscriptionsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if es.Response.Response, err = future.GetResult(sender); err == nil && es.Response.Response.StatusCode != http.StatusNoContent {
+		es, err = client.UpdateResponder(es.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.SystemTopicEventSubscriptionsUpdateFuture", "Result", es.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// SystemTopicProperties properties of the System Topic.
+type SystemTopicProperties struct {
+	// ProvisioningState - READ-ONLY; Provisioning state of the system topic. Possible values include: 'ResourceProvisioningStateCreating', 'ResourceProvisioningStateUpdating', 'ResourceProvisioningStateDeleting', 'ResourceProvisioningStateSucceeded', 'ResourceProvisioningStateCanceled', 'ResourceProvisioningStateFailed'
+	ProvisioningState ResourceProvisioningState `json:"provisioningState,omitempty"`
+	// Source - Source for the system topic.
+	Source *string `json:"source,omitempty"`
+	// TopicType - TopicType for the system topic.
+	TopicType *string `json:"topicType,omitempty"`
+	// MetricResourceID - READ-ONLY; Metric resource id for the system topic.
+	MetricResourceID *string `json:"metricResourceId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SystemTopicProperties.
+func (stp SystemTopicProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if stp.Source != nil {
+		objectMap["source"] = stp.Source
+	}
+	if stp.TopicType != nil {
+		objectMap["topicType"] = stp.TopicType
+	}
+	return json.Marshal(objectMap)
+}
+
+// SystemTopicsCreateOrUpdateFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type SystemTopicsCreateOrUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SystemTopicsClient) (SystemTopic, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *SystemTopicsCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for SystemTopicsCreateOrUpdateFuture.Result.
+func (future *SystemTopicsCreateOrUpdateFuture) result(client SystemTopicsClient) (st SystemTopic, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventgrid.SystemTopicsCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		st.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("eventgrid.SystemTopicsCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if st.Response.Response, err = future.GetResult(sender); err == nil && st.Response.Response.StatusCode != http.StatusNoContent {
+		st, err = client.CreateOrUpdateResponder(st.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.SystemTopicsCreateOrUpdateFuture", "Result", st.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// SystemTopicsDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type SystemTopicsDeleteFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SystemTopicsClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *SystemTopicsDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for SystemTopicsDeleteFuture.Result.
+func (future *SystemTopicsDeleteFuture) result(client SystemTopicsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventgrid.SystemTopicsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("eventgrid.SystemTopicsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// SystemTopicsListResult result of the List System topics operation.
+type SystemTopicsListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A collection of system Topics.
+	Value *[]SystemTopic `json:"value,omitempty"`
+	// NextLink - A link for the next page of topics.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// SystemTopicsListResultIterator provides access to a complete listing of SystemTopic values.
+type SystemTopicsListResultIterator struct {
+	i    int
+	page SystemTopicsListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *SystemTopicsListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SystemTopicsListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *SystemTopicsListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter SystemTopicsListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter SystemTopicsListResultIterator) Response() SystemTopicsListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter SystemTopicsListResultIterator) Value() SystemTopic {
+	if !iter.page.NotDone() {
+		return SystemTopic{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the SystemTopicsListResultIterator type.
+func NewSystemTopicsListResultIterator(page SystemTopicsListResultPage) SystemTopicsListResultIterator {
+	return SystemTopicsListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (stlr SystemTopicsListResult) IsEmpty() bool {
+	return stlr.Value == nil || len(*stlr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (stlr SystemTopicsListResult) hasNextLink() bool {
+	return stlr.NextLink != nil && len(*stlr.NextLink) != 0
+}
+
+// systemTopicsListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (stlr SystemTopicsListResult) systemTopicsListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !stlr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(stlr.NextLink)))
+}
+
+// SystemTopicsListResultPage contains a page of SystemTopic values.
+type SystemTopicsListResultPage struct {
+	fn   func(context.Context, SystemTopicsListResult) (SystemTopicsListResult, error)
+	stlr SystemTopicsListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *SystemTopicsListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SystemTopicsListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.stlr)
+		if err != nil {
+			return err
+		}
+		page.stlr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *SystemTopicsListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page SystemTopicsListResultPage) NotDone() bool {
+	return !page.stlr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page SystemTopicsListResultPage) Response() SystemTopicsListResult {
+	return page.stlr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page SystemTopicsListResultPage) Values() []SystemTopic {
+	if page.stlr.IsEmpty() {
+		return nil
+	}
+	return *page.stlr.Value
+}
+
+// Creates a new instance of the SystemTopicsListResultPage type.
+func NewSystemTopicsListResultPage(cur SystemTopicsListResult, getNextPage func(context.Context, SystemTopicsListResult) (SystemTopicsListResult, error)) SystemTopicsListResultPage {
+	return SystemTopicsListResultPage{
+		fn:   getNextPage,
+		stlr: cur,
+	}
+}
+
+// SystemTopicsUpdateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type SystemTopicsUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SystemTopicsClient) (SystemTopic, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *SystemTopicsUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for SystemTopicsUpdateFuture.Result.
+func (future *SystemTopicsUpdateFuture) result(client SystemTopicsClient) (st SystemTopic, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventgrid.SystemTopicsUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		st.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("eventgrid.SystemTopicsUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if st.Response.Response, err = future.GetResult(sender); err == nil && st.Response.Response.StatusCode != http.StatusNoContent {
+		st, err = client.UpdateResponder(st.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "eventgrid.SystemTopicsUpdateFuture", "Result", st.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// SystemTopicUpdateParameters properties of the System Topic update.
+type SystemTopicUpdateParameters struct {
+	// Tags - Tags of the system topic.
+	Tags map[string]*string `json:"tags"`
+	// Identity - Resource identity information.
+	Identity *IdentityInfo `json:"identity,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SystemTopicUpdateParameters.
+func (stup SystemTopicUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if stup.Tags != nil {
+		objectMap["tags"] = stup.Tags
+	}
+	if stup.Identity != nil {
+		objectMap["identity"] = stup.Identity
+	}
+	return json.Marshal(objectMap)
+}
+
 // Topic eventGrid Topic
 type Topic struct {
 	autorest.Response `json:"-"`
@@ -4989,6 +6206,8 @@ type TopicProperties struct {
 	PublicNetworkAccess PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 	// InboundIPRules - This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
 	InboundIPRules *[]InboundIPRule `json:"inboundIpRules,omitempty"`
+	// DisableLocalAuth - This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to the topic.
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for TopicProperties.
@@ -5003,6 +6222,9 @@ func (tp TopicProperties) MarshalJSON() ([]byte, error) {
 	}
 	if tp.InboundIPRules != nil {
 		objectMap["inboundIpRules"] = tp.InboundIPRules
+	}
+	if tp.DisableLocalAuth != nil {
+		objectMap["disableLocalAuth"] = tp.DisableLocalAuth
 	}
 	return json.Marshal(objectMap)
 }
@@ -5086,6 +6308,15 @@ func (tp *TopicProperties) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				tp.InboundIPRules = &inboundIPRules
+			}
+		case "disableLocalAuth":
+			if v != nil {
+				var disableLocalAuth bool
+				err = json.Unmarshal(*v, &disableLocalAuth)
+				if err != nil {
+					return err
+				}
+				tp.DisableLocalAuth = &disableLocalAuth
 			}
 		}
 	}
@@ -5520,6 +6751,8 @@ type TopicTypeProperties struct {
 	SupportedLocations *[]string `json:"supportedLocations,omitempty"`
 	// SourceResourceFormat - Source resource format.
 	SourceResourceFormat *string `json:"sourceResourceFormat,omitempty"`
+	// SupportedScopesForSource - Supported source scopes.
+	SupportedScopesForSource *[]string `json:"supportedScopesForSource,omitempty"`
 }
 
 // TopicTypesListResult result of the List Topic Types operation
@@ -5536,6 +6769,8 @@ type TopicUpdateParameterProperties struct {
 	PublicNetworkAccess PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
 	// InboundIPRules - This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess is enabled.
 	InboundIPRules *[]InboundIPRule `json:"inboundIpRules,omitempty"`
+	// DisableLocalAuth - This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to the topic.
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
 }
 
 // TopicUpdateParameters properties of the Topic update
@@ -5615,6 +6850,14 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = tr.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// UserIdentityProperties the information about the user identity.
+type UserIdentityProperties struct {
+	// PrincipalID - The principal id of user assigned identity.
+	PrincipalID *string `json:"principalId,omitempty"`
+	// ClientID - The client id of user assigned identity.
+	ClientID *string `json:"clientId,omitempty"`
 }
 
 // WebHookEventSubscriptionDestination information about the webhook destination for an event subscription.
@@ -5731,6 +6974,8 @@ type WebHookEventSubscriptionDestinationProperties struct {
 	AzureActiveDirectoryTenantID *string `json:"azureActiveDirectoryTenantId,omitempty"`
 	// AzureActiveDirectoryApplicationIDOrURI - The Azure Active Directory Application ID or URI to get the access token that will be included as the bearer token in delivery requests.
 	AzureActiveDirectoryApplicationIDOrURI *string `json:"azureActiveDirectoryApplicationIdOrUri,omitempty"`
+	// DeliveryAttributeMappings - Delivery attribute details.
+	DeliveryAttributeMappings *[]BasicDeliveryAttributeMapping `json:"deliveryAttributeMappings,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for WebHookEventSubscriptionDestinationProperties.
@@ -5751,5 +6996,85 @@ func (whesdp WebHookEventSubscriptionDestinationProperties) MarshalJSON() ([]byt
 	if whesdp.AzureActiveDirectoryApplicationIDOrURI != nil {
 		objectMap["azureActiveDirectoryApplicationIdOrUri"] = whesdp.AzureActiveDirectoryApplicationIDOrURI
 	}
+	if whesdp.DeliveryAttributeMappings != nil {
+		objectMap["deliveryAttributeMappings"] = whesdp.DeliveryAttributeMappings
+	}
 	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for WebHookEventSubscriptionDestinationProperties struct.
+func (whesdp *WebHookEventSubscriptionDestinationProperties) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "endpointUrl":
+			if v != nil {
+				var endpointURL string
+				err = json.Unmarshal(*v, &endpointURL)
+				if err != nil {
+					return err
+				}
+				whesdp.EndpointURL = &endpointURL
+			}
+		case "endpointBaseUrl":
+			if v != nil {
+				var endpointBaseURL string
+				err = json.Unmarshal(*v, &endpointBaseURL)
+				if err != nil {
+					return err
+				}
+				whesdp.EndpointBaseURL = &endpointBaseURL
+			}
+		case "maxEventsPerBatch":
+			if v != nil {
+				var maxEventsPerBatch int32
+				err = json.Unmarshal(*v, &maxEventsPerBatch)
+				if err != nil {
+					return err
+				}
+				whesdp.MaxEventsPerBatch = &maxEventsPerBatch
+			}
+		case "preferredBatchSizeInKilobytes":
+			if v != nil {
+				var preferredBatchSizeInKilobytes int32
+				err = json.Unmarshal(*v, &preferredBatchSizeInKilobytes)
+				if err != nil {
+					return err
+				}
+				whesdp.PreferredBatchSizeInKilobytes = &preferredBatchSizeInKilobytes
+			}
+		case "azureActiveDirectoryTenantId":
+			if v != nil {
+				var azureActiveDirectoryTenantID string
+				err = json.Unmarshal(*v, &azureActiveDirectoryTenantID)
+				if err != nil {
+					return err
+				}
+				whesdp.AzureActiveDirectoryTenantID = &azureActiveDirectoryTenantID
+			}
+		case "azureActiveDirectoryApplicationIdOrUri":
+			if v != nil {
+				var azureActiveDirectoryApplicationIDOrURI string
+				err = json.Unmarshal(*v, &azureActiveDirectoryApplicationIDOrURI)
+				if err != nil {
+					return err
+				}
+				whesdp.AzureActiveDirectoryApplicationIDOrURI = &azureActiveDirectoryApplicationIDOrURI
+			}
+		case "deliveryAttributeMappings":
+			if v != nil {
+				deliveryAttributeMappings, err := unmarshalBasicDeliveryAttributeMappingArray(*v)
+				if err != nil {
+					return err
+				}
+				whesdp.DeliveryAttributeMappings = &deliveryAttributeMappings
+			}
+		}
+	}
+
+	return nil
 }

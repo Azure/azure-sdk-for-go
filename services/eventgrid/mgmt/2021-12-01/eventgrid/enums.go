@@ -156,6 +156,25 @@ func PossibleEventSubscriptionProvisioningStateValues() []EventSubscriptionProvi
 	return []EventSubscriptionProvisioningState{EventSubscriptionProvisioningStateAwaitingManualAction, EventSubscriptionProvisioningStateCanceled, EventSubscriptionProvisioningStateCreating, EventSubscriptionProvisioningStateDeleting, EventSubscriptionProvisioningStateFailed, EventSubscriptionProvisioningStateSucceeded, EventSubscriptionProvisioningStateUpdating}
 }
 
+// IdentityType enumerates the values for identity type.
+type IdentityType string
+
+const (
+	// None ...
+	None IdentityType = "None"
+	// SystemAssigned ...
+	SystemAssigned IdentityType = "SystemAssigned"
+	// SystemAssignedUserAssigned ...
+	SystemAssignedUserAssigned IdentityType = "SystemAssigned, UserAssigned"
+	// UserAssigned ...
+	UserAssigned IdentityType = "UserAssigned"
+)
+
+// PossibleIdentityTypeValues returns an array of possible values for the IdentityType const type.
+func PossibleIdentityTypeValues() []IdentityType {
+	return []IdentityType{None, SystemAssigned, SystemAssignedUserAssigned, UserAssigned}
+}
+
 // InputSchema enumerates the values for input schema.
 type InputSchema string
 
@@ -354,4 +373,21 @@ const (
 // PossibleTopicTypeProvisioningStateValues returns an array of possible values for the TopicTypeProvisioningState const type.
 func PossibleTopicTypeProvisioningStateValues() []TopicTypeProvisioningState {
 	return []TopicTypeProvisioningState{TopicTypeProvisioningStateCanceled, TopicTypeProvisioningStateCreating, TopicTypeProvisioningStateDeleting, TopicTypeProvisioningStateFailed, TopicTypeProvisioningStateSucceeded, TopicTypeProvisioningStateUpdating}
+}
+
+// Type enumerates the values for type.
+type Type string
+
+const (
+	// TypeDeliveryAttributeMapping ...
+	TypeDeliveryAttributeMapping Type = "DeliveryAttributeMapping"
+	// TypeDynamic ...
+	TypeDynamic Type = "Dynamic"
+	// TypeStatic ...
+	TypeStatic Type = "Static"
+)
+
+// PossibleTypeValues returns an array of possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{TypeDeliveryAttributeMapping, TypeDynamic, TypeStatic}
 }

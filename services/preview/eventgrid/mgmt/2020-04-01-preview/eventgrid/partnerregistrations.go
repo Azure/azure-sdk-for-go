@@ -82,6 +82,7 @@ func (client PartnerRegistrationsClient) CreateOrUpdatePreparer(ctx context.Cont
 		"api-version": APIVersion,
 	}
 
+	partnerRegistrationInfo.SystemData = nil
 	preparer := autorest.CreatePreparer(
 		autorest.AsContentType("application/json; charset=utf-8"),
 		autorest.AsPut(),

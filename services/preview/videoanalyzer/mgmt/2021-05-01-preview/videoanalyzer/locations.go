@@ -15,7 +15,8 @@ import (
 	"net/http"
 )
 
-// LocationsClient is the azure Video Analyzer ARM Client
+// LocationsClient is the azure Video Analyzer provides a platform for you to build intelligent video applications that
+// span the edge and the cloud
 type LocationsClient struct {
 	BaseClient
 }

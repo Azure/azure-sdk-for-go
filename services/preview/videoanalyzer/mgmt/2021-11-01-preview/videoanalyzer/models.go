@@ -5581,7 +5581,7 @@ type VideoCreationProperties struct {
 	Description *string `json:"description,omitempty"`
 	// SegmentLength - Segment length indicates the length of individual content files (segments) which are persisted to storage. Smaller segments provide lower archive playback latency but generate larger volume of storage transactions. Larger segments reduce the amount of storage transactions while increasing the archive playback latency. Value must be specified in ISO8601 duration format (i.e. "PT30S" equals 30 seconds) and can vary between 30 seconds to 5 minutes, in 30 seconds increments. Changing this value after the initial call to create the video resource can lead to errors when uploading content to the archive. Default value is 30 seconds. This property is only allowed for topologies where "kind" is set to "live".
 	SegmentLength *string `json:"segmentLength,omitempty"`
-	// RetentionPeriod - Video retention period indicates how long the video is kept in storage. Value must be specified in ISO8601 duration format (i.e. "PT1D" equals 1 day) and can vary between 1 day to 10 years, in 1 day increments. When absent (null), all video content is retained indefinitely. This property is only allowed for topologies where "kind" is set to "live".
+	// RetentionPeriod - Video retention period indicates how long the video is kept in storage. Value must be specified in ISO8601 duration format (i.e. "P1D" equals 1 day) and can vary between 1 day to 10 years, in 1 day increments. When absent (null), all video content is retained indefinitely. This property is only allowed for topologies where "kind" is set to "live".
 	RetentionPeriod *string `json:"retentionPeriod,omitempty"`
 }
 

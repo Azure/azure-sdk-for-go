@@ -14,7 +14,8 @@ import (
 	"net/http"
 )
 
-// OperationsClient is the azure Video Analyzer ARM Client
+// OperationsClient is the azure Video Analyzer provides a platform for you to build intelligent video applications
+// that span the edge and the cloud
 type OperationsClient struct {
 	BaseClient
 }

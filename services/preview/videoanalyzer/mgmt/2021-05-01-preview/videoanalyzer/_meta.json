@@ -1,5 +1,5 @@
 {
-  "commit": "c2ea3a3ccd14293b4bd1d17e684ef9129f0dc604",
+  "commit": "387de09b376ed635be4b838d83a3f58cf0eefee9",
   "readme": "/_/azure-rest-api-specs/specification/videoanalyzer/resource-manager/readme.md",
   "tag": "package-2021-05-01-preview",
   "use": "@microsoft.azure/autorest.go@2.1.187",

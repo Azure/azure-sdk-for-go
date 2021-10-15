@@ -186,26 +186,15 @@ type Entry struct {
 	ResponseBody   interface{}       `json:"ResponseBody"` // This should be a string, but proxy saves as an object when there is no body
 }
 
-// func HandleUriSanitizer(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("UriSanitizer", "sanitizer_test.go")
-// }
-
-// func startServer() {
-// 	http.HandleFunc("/urisanitizer", HandleUriSanitizer)
-// 	log.Fatal(http.ListenAndServe(":8080", nil))
-// }
-
 func getServerURL(url string) string {
 	split := strings.Split(url, ":")
 	if len(split) == 0 {
 		log.Fatal("Could not find port")
-		return ""
 	}
 	return split[len(split)-1]
 }
 
 func TestUriSanitizer(t *testing.T) {
-	// go startServer()
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse(mock.WithBody([]byte("success")), mock.WithStatusCode(http.StatusAccepted))
@@ -238,7 +227,7 @@ func TestUriSanitizer(t *testing.T) {
 	client, err := GetHTTPClient(t)
 	require.NoError(t, err)
 
-	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
+	req, err := http.NewRequest("POST", "http://localhost:5000", nil)
 	require.NoError(t, err)
 
 	req.Header.Set(UpstreamUriHeader, srv.URL())

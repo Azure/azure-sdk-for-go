@@ -222,7 +222,7 @@ type KeyItem struct {
 	Attributes *KeyAttributes `json:"attributes,omitempty"`
 
 	// Key identifier.
-	Kid *string `json:"kid,omitempty"`
+	KID *string `json:"kid,omitempty"`
 
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
@@ -239,7 +239,7 @@ func keyItemFromGenerated(i *internal.KeyItem) *KeyItem {
 
 	return &KeyItem{
 		Attributes: keyAttributesFromGenerated(i.Attributes),
-		Kid:        i.Kid,
+		KID:        i.Kid,
 		Tags:       i.Tags,
 		Managed:    i.Managed,
 	}

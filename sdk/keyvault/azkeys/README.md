@@ -127,18 +127,13 @@ This section contains code snippets covering common tasks:
 * [Retrieve a key](#retrieve-a-key "Retrieve a key")
 * [Update an existing key](#update-an-existing-key "Update an existing key")
 * [Delete a key](#delete-a-key "Delete a key")
-* [Configure automatic key rotation](#configure-automatic-key-rotation "Configure automatic key rotation")
+<!-- * [Configure automatic key rotation](#configure-automatic-key-rotation "Configure automatic key rotation") -->
 * [List keys](#list-keys "List keys")
-* [Perform cryptographic operations](#cryptographic-operations)
-* [Async API](#async-api "Async API")
-* [Asynchronously create a key](#asynchronously-create-a-key "Asynchronously create a key")
-* [Asynchronously list keys](#asynchronously-list-keys "Asynchronously list keys")
+<!-- * [Perform cryptographic operations](#cryptographic-operations) -->
 
 ### Create a key
 [create_rsa_key](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.create_rsa_key) and
-[create_ec_key](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.create_ec_key)
-create RSA and elliptic curve keys in the vault, respectively. If a key with the same name already exists, a new version
-of that key is created.
+[create_ec_key](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.create_ec_key) create RSA and elliptic curve keys in the vault, respectively. If a key with the same name already exists, a new version of that key is created.
 
 ```go
 import (
@@ -148,52 +143,60 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-cred, err := azidentity.NewDefaultAzureCredential(nil)
-if err != nil {
-    panic(err)
-}
+func ExampleCreateKeys() {
+    vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
+    cred, err := azidentity.NewDefaultAzureCredential(nil)
+    if err != nil {
+        panic(err)
+    }
 
-client, err := azkeys.NewClient(vaultUrl, cred, nil)
-if err != nil {
-    panic(err)
-}
+    client, err := azkeys.NewClient(vaultUrl, cred, nil)
+    if err != nil {
+        panic(err)
+    }
 
-// Create RSA Key
-resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{KeySize: to.Int32Ptr(2048)})
-if err != nil {
-    panic(err)
-}
-fmt.Println(*resp.Key.ID)
-fmt.Println(*resp.Key.KeyType)
+    // Create RSA Key
+    resp, err := client.CreateRSAKey(context.TODO(), "new-rsa-key", &azkeys.CreateRSAKeyOptions{KeySize: to.Int32Ptr(2048)})
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println(*resp.Key.ID)
+    fmt.Println(*resp.Key.KeyType)
 
-// Create EC Key
-resp, err := client.CreateECKey(context.TODO(), "new-rsa-key", &azkeys.CreateECKeyOptions{CurveName: azkeys.P256.ToPtr()})
-if err != nil {
-    panic(err)
+    // Create EC Key
+    resp, err := client.CreateECKey(context.TODO(), "new-rsa-key", &azkeys.CreateECKeyOptions{CurveName: azkeys.P256.ToPtr()})
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println(*resp.Key.ID)
+    fmt.Println(*resp.Key.KeyType)
 }
-fmt.Println(*resp.Key.ID)
-fmt.Println(*resp.Key.KeyType)
 ```
 
 ### Retrieve a key
-[get_key](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.get_key) retrieves a key
-previously stored in the Vault.
+[`GetKey`](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.get_key) retrieves a key previously stored in the Vault.
 ```go
 import (
+    "fmt"
+
     "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-credential, err := azidentity.NewDefaultAzureCredential(nil)
+func ExampleRetrieveKey() {
+    credential, err := azidentity.NewDefaultAzureCredential(nil)
 
-client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
-key = key_client.get_key("key-name")
-print(key.name)
+    client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
+    resp, err := client.GetKey(context.TODO(), "key-to-retrieve", nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(*resp.Key.ID)
+}
 ```
 
 ### Update an existing key
-[update_key_properties](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.update_key_properties)
+[`UpdateKeyProperties`](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.update_key_properties)
 updates the properties of a key previously stored in the Key Vault.
 ```go
 import (
@@ -201,23 +204,35 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
+func ExampleClient_UpdateKeyProperties() {
+	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
 
-credential, err := azidentity.NewDefaultAzureCredential(nil)
+	client, err := azkeys.NewClient(vaultUrl, cred, nil)
+	if err != nil {
+		panic(err)
+	}
 
-client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
-
-# we will now disable the key for further use
-updated_key = key_client.update_key_properties("key-name", enabled=False)
-
-print(updated_key.name)
-print(updated_key.properties.enabled)
+	resp, err := client.UpdateKeyProperties(context.TODO(), "key-to-update", &azkeys.UpdateKeyPropertiesOptions{
+		Tags: map[string]*string{
+			"Tag1": to.StringPtr("val1"),
+		},
+		KeyAttributes: &azkeys.KeyAttributes{
+			RecoveryLevel: azkeys.CustomizedRecoverablePurgeable.ToPtr(),
+		},
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(*resp.Attributes.RecoveryLevel, *resp.Tags["Tag1"])
+}
 ```
 
 ### Delete a key
-[begin_delete_key](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.begin_delete_key)
-requests Key Vault delete a key, returning a poller which allows you to wait for the deletion to finish. Waiting is
-helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge (permanently delete) the key as
-soon as possible. When [soft-delete][soft_delete] is disabled, `begin_delete_key` itself is permanent.
+[`BeginDeleteKey`](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.begin_delete_key) requests Key Vault delete a key, returning a poller which allows you to wait for the deletion to finish. Waiting is helpful when the vault has [soft-delete][soft_delete] enabled, and you want to purge (permanently delete) the key as soon as possible. When [soft-delete][soft_delete] is disabled, `begin_delete_key` itself is permanent.
 
 ```go
 import (
@@ -225,17 +240,27 @@ import (
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
+func ExampleClient_DeleteKey() {
+	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
 
-credential, err := azidentity.NewDefaultAzureCredential(nil)
+	client, err := azkeys.NewClient(vaultUrl, cred, nil)
+	if err != nil {
+		panic(err)
+	}
 
-client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
-deleted_key = key_client.begin_delete_key("key-name").result()
-
-print(deleted_key.name)
-print(deleted_key.deleted_date)
+	resp, err := client.BeginDeleteKey(context.TODO(), "key-to-delete", nil)
+	if err != nil {
+		panic(err)
+	}
+	resp.PollUntilDone(context.TODO(), 1 * time.Second)
+}
 ```
 
-### Configure automatic key rotation
+<!-- ### Configure automatic key rotation
 `update_key_rotation_policy` allows you to configure automatic key rotation for a key by specifying a rotation policy.
 In addition, `rotate_key` allows you to rotate a key on-demand by creating a new version of the given key.
 
@@ -249,37 +274,53 @@ credential, err := azidentity.NewDefaultAzureCredential(nil)
 
 client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
 
-# Set the key's automated rotation policy to rotate the key 30 days before the key expires
-actions = [KeyRotationLifetimeAction(KeyRotationPolicyAction.ROTATE, time_before_expiry="P30D")]
-# You may also specify the duration after which the newly rotated key will expire
-# In this example, any new key versions will expire after 90 days
+// # Set the key's automated rotation policy to rotate the key 30 days before the key expires
+// actions = [KeyRotationLifetimeAction(KeyRotationPolicyAction.ROTATE, time_before_expiry="P30D")]
+// # You may also specify the duration after which the newly rotated key will expire
+// # In this example, any new key versions will expire after 90 days
 updated_policy = key_client.update_key_rotation_policy("key-name", expires_in="P90D", lifetime_actions=actions)
 
-# You can get the current rotation policy for a key with get_key_rotation_policy
+// # You can get the current rotation policy for a key with get_key_rotation_policy
 current_policy = key_client.get_key_rotation_policy("key-name")
 
-# Finally, you can rotate a key on-demand by creating a new version of the key
+// # Finally, you can rotate a key on-demand by creating a new version of the key
 rotated_key = key_client.rotate_key("key-name")
-```
+``` -->
 
 ### List keys
-[list_properties_of_keys](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.list_properties_of_keys)
-lists the properties of all of the keys in the client's vault.
+[`ListKeys`](https://aka.ms/azsdk/python/keyvault-keys/docs#azure.keyvault.keys.KeyClient.list_properties_of_keys) lists the properties of all of the keys in the client's vault.
 
 ```go
 import (
+    "fmt"
+
     "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-credential, err := azidentity.NewDefaultAzureCredential(nil)
+func ExampleClient_ListKeys() {
+	vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
 
-client, err = azkeys.NewClient("https://my-key-vault.vault.azure.net/", credential, nil)
-keys = key_client.list_properties_of_keys()
+	client, err := azkeys.NewClient(vaultUrl, cred, nil)
+	if err != nil {
+		panic(err)
+	}
 
-for key in keys:
-    # the list doesn't include values or versions of the keys
-    print(key.name)
+	pager := client.ListKeys(nil)
+	for pager.NextPage(context.TODO()) {
+		for _, key := range pager.PageResponse().Keys {
+			fmt.Println(*key.KID)
+		}
+	}
+
+	if pager.Err() != nil {
+		panic(pager.Err())
+	}
+}
 ```
 
 <!-- ### Cryptographic operations
@@ -311,71 +352,49 @@ for more details of the cryptography API. -->
 
 
 ## Troubleshooting
-### General
-Key Vault clients raise exceptions defined in [azure-core][azure_core_exceptions].
-For example, if you try to get a key that doesn't exist in the vault, [KeyClient][key_client_docs]
-raises [ResourceNotFoundError](https://aka.ms/azsdk-python-core-exceptions-resource-not-found-error):
 
-```python
-from azure.identity import DefaultAzureCredential
-from azure.keyvault.keys import KeyClient
-from azure.core.exceptions import ResourceNotFoundError
+### Error Handling
 
-credential = DefaultAzureCredential()
-key_client = KeyClient(vault_url="https://my-key-vault.vault.azure.net/", credential=credential)
-
-try:
-    key_client.get_key("which-does-not-exist")
-except ResourceNotFoundError as e:
-    print(e.message)
+All I/O operations will return an `error` that can be investigated to discover more information about the error. In addition, you can investigate the raw response of any response object:
+```golang
+resp, err := client.GetSecret(context.Background(), "mySecretName", nil)
+if err != nil {
+    var httpErr azcore.HTTPResponse
+    if errors.As(err, &httpErr) {
+        // investigate httpErr.RawResponse()
+    }
+}
 ```
 
 ### Logging
-This library uses the standard
-[logging](https://docs.python.org/3/library/logging.html) library for logging.
-Basic information about HTTP sessions (URLs, headers, etc.) is logged at INFO
-level.
 
-Detailed DEBUG level logging, including request/response bodies and unredacted
-headers, can be enabled on a client with the `logging_enable` argument:
-```py
-from azure.identity import DefaultAzureCredential
-from azure.keyvault.keys import KeyClient
-import sys
-import logging
+This module uses the classification based logging implementation in azcore. To turn on logging set `AZURE_SDK_GO_LOGGING` to `all`. If you only want to include logs for `azsecrets`, you must create your own logger and set the log classification as `LogCredential`.
 
-# Create a logger for the 'azure' SDK
-logger = logging.getLogger('azure')
-logger.setLevel(logging.DEBUG)
+To obtain more detailed logging, including request/response bodies and header values, make sure to leave the logger as default or enable the `LogRequest` and/or `LogResponse` classificatons. A logger that only includes credential logs can be like the following:
 
-# Configure a console output
-handler = logging.StreamHandler(stream=sys.stdout)
-logger.addHandler(handler)
+```go
+import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+// Set log to output to the console
+log.SetListener(func(cls log.Classification, msg string) {
+		fmt.Println(msg) // printing log out to the console
+})
 
-credential = DefaultAzureCredential()
-
-# This client will log detailed information about its HTTP sessions, at DEBUG level
-client = KeyClient(vault_url="https://my-key-vault.vault.azure.net/", credential=credential, logging_enable=True)
+// Includes only requests and responses in credential logs
+log.SetClassifications(log.Request, log.Response)
 ```
 
-Similarly, `logging_enable` can enable detailed logging for a single operation,
-even when it isn't enabled for the client:
-```py
-client.get_key("my-key", logging_enable=True)
-```
+> CAUTION: logs from credentials contain sensitive information.
+> These logs must be protected to avoid compromising account security.
 
-## Next steps
-Several samples are available in the Azure SDK for Python GitHub repository.
-These provide example code for additional Key Vault scenarios:
-* [hello_world.py][hello_world_sample] and
-[hello_world_async.py][hello_world_async_sample] - create/get/update/delete keys
-* [list_operations.py][list_operations_sample] and
-[list_operations_async.py][list_operations_async_sample] - basic list operations for keys
-* [backup_restore_operations.py][backup_operations_sample] and
-[backup_restore_operations_async.py][backup_operations_async_sample] - backup and
-recover keys
-* [recover_purge_operations.py][recover_purge_sample] and
-[recover_purge_operations_async.py][recover_purge_async_sample] - recovering and purging keys
+###  Additional Documentation
+For more extensive documentation on Azure Key Vault, see the [API reference documentation][reference_docs].
+
+## Contributing
+This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
+
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
+
+This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information, see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact opencode@microsoft.com with any additional questions or comments.
 
 ###  Additional Documentation
 For more extensive documentation on Azure Key Vault, see the

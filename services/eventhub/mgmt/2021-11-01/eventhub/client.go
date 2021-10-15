@@ -1,4 +1,4 @@
-// Package eventhub implements the Azure ARM Eventhub service API version 2018-01-01-preview.
+// Package eventhub implements the Azure ARM Eventhub service API version 2021-11-01.
 //
 //
 package eventhub

@@ -18,7 +18,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/eventhub/mgmt/2017-04-01/eventhub"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/eventhub/mgmt/2021-01-01-preview/eventhub"
 
 // AccessKeys namespace/EventHub Connection String
 type AccessKeys struct {
@@ -50,6 +50,8 @@ type ArmDisasterRecovery struct {
 	autorest.Response `json:"-"`
 	// ArmDisasterRecoveryProperties - Properties required to the Create Or Update Alias(Disaster Recovery configurations)
 	*ArmDisasterRecoveryProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -84,6 +86,15 @@ func (adr *ArmDisasterRecovery) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				adr.ArmDisasterRecoveryProperties = &armDisasterRecoveryProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				adr.SystemData = &systemData
 			}
 		case "id":
 			if v != nil {
@@ -290,7 +301,7 @@ func NewArmDisasterRecoveryListResultPage(cur ArmDisasterRecoveryListResult, get
 // ArmDisasterRecoveryProperties properties required to the Create Or Update Alias(Disaster Recovery
 // configurations)
 type ArmDisasterRecoveryProperties struct {
-	// ProvisioningState - READ-ONLY; Provisioning state of the Alias(Disaster Recovery configuration) - possible values 'Accepted' or 'Succeeded' or 'Failed'. Possible values include: 'Accepted', 'Succeeded', 'Failed'
+	// ProvisioningState - READ-ONLY; Provisioning state of the Alias(Disaster Recovery configuration) - possible values 'Accepted' or 'Succeeded' or 'Failed'. Possible values include: 'ProvisioningStateDRAccepted', 'ProvisioningStateDRSucceeded', 'ProvisioningStateDRFailed'
 	ProvisioningState ProvisioningStateDR `json:"provisioningState,omitempty"`
 	// PartnerNamespace - ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing
 	PartnerNamespace *string `json:"partnerNamespace,omitempty"`
@@ -319,6 +330,8 @@ type AuthorizationRule struct {
 	autorest.Response `json:"-"`
 	// AuthorizationRuleProperties - Properties supplied to create or update AuthorizationRule
 	*AuthorizationRuleProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -353,6 +366,15 @@ func (ar *AuthorizationRule) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				ar.AuthorizationRuleProperties = &authorizationRuleProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				ar.SystemData = &systemData
 			}
 		case "id":
 			if v != nil {
@@ -581,7 +603,7 @@ type CheckNameAvailabilityResult struct {
 	Message *string `json:"message,omitempty"`
 	// NameAvailable - Value indicating Namespace is availability, true if the Namespace is available; otherwise, false.
 	NameAvailable *bool `json:"nameAvailable,omitempty"`
-	// Reason - The reason for unavailability of a Namespace. Possible values include: 'None', 'InvalidName', 'SubscriptionIsDisabled', 'NameInUse', 'NameInLockdown', 'TooManyNamespaceInCurrentSubscription'
+	// Reason - The reason for unavailability of a Namespace. Possible values include: 'UnavailableReasonNone', 'UnavailableReasonInvalidName', 'UnavailableReasonSubscriptionIsDisabled', 'UnavailableReasonNameInUse', 'UnavailableReasonNameInLockdown', 'UnavailableReasonTooManyNamespaceInCurrentSubscription'
 	Reason UnavailableReason `json:"reason,omitempty"`
 }
 
@@ -597,11 +619,21 @@ func (cnar CheckNameAvailabilityResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
+// ConnectionState connectionState information.
+type ConnectionState struct {
+	// Status - Status of the connection. Possible values include: 'Pending', 'Approved', 'Rejected', 'Disconnected'
+	Status PrivateLinkConnectionStatus `json:"status,omitempty"`
+	// Description - Description of the connection state.
+	Description *string `json:"description,omitempty"`
+}
+
 // ConsumerGroup single item in List or Get Consumer group operation
 type ConsumerGroup struct {
 	autorest.Response `json:"-"`
 	// ConsumerGroupProperties - Single item in List or Get Consumer group operation
 	*ConsumerGroupProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -636,6 +668,15 @@ func (cg *ConsumerGroup) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				cg.ConsumerGroupProperties = &consumerGroupProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				cg.SystemData = &systemData
 			}
 		case "id":
 			if v != nil {
@@ -917,6 +958,10 @@ type EHNamespace struct {
 	autorest.Response `json:"-"`
 	// Sku - Properties of sku resource
 	Sku *Sku `json:"sku,omitempty"`
+	// Identity - Properties of BYOK Identity description
+	Identity *Identity `json:"identity,omitempty"`
+	// SystemData - READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// EHNamespaceProperties - Namespace properties supplied for create namespace operation.
 	*EHNamespaceProperties `json:"properties,omitempty"`
 	// Location - Resource location.
@@ -936,6 +981,9 @@ func (en EHNamespace) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	if en.Sku != nil {
 		objectMap["sku"] = en.Sku
+	}
+	if en.Identity != nil {
+		objectMap["identity"] = en.Identity
 	}
 	if en.EHNamespaceProperties != nil {
 		objectMap["properties"] = en.EHNamespaceProperties
@@ -966,6 +1014,24 @@ func (en *EHNamespace) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				en.Sku = &sku
+			}
+		case "identity":
+			if v != nil {
+				var identity Identity
+				err = json.Unmarshal(*v, &identity)
+				if err != nil {
+					return err
+				}
+				en.Identity = &identity
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				en.SystemData = &systemData
 			}
 		case "properties":
 			if v != nil {
@@ -1190,12 +1256,16 @@ func NewEHNamespaceListResultPage(cur EHNamespaceListResult, getNextPage func(co
 type EHNamespaceProperties struct {
 	// ProvisioningState - READ-ONLY; Provisioning state of the Namespace.
 	ProvisioningState *string `json:"provisioningState,omitempty"`
+	// Status - READ-ONLY; Status of the Namespace.
+	Status *string `json:"status,omitempty"`
 	// CreatedAt - READ-ONLY; The time the Namespace was created.
 	CreatedAt *date.Time `json:"createdAt,omitempty"`
 	// UpdatedAt - READ-ONLY; The time the Namespace was updated.
 	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
 	// ServiceBusEndpoint - READ-ONLY; Endpoint you can use to perform Service Bus operations.
 	ServiceBusEndpoint *string `json:"serviceBusEndpoint,omitempty"`
+	// ClusterArmID - Cluster ARM ID of the Namespace.
+	ClusterArmID *string `json:"clusterArmId,omitempty"`
 	// MetricID - READ-ONLY; Identifier for Azure Insights metrics.
 	MetricID *string `json:"metricId,omitempty"`
 	// IsAutoInflateEnabled - Value that indicates whether AutoInflate is enabled for eventhub namespace.
@@ -1204,11 +1274,20 @@ type EHNamespaceProperties struct {
 	MaximumThroughputUnits *int32 `json:"maximumThroughputUnits,omitempty"`
 	// KafkaEnabled - Value that indicates whether Kafka is enabled for eventhub namespace.
 	KafkaEnabled *bool `json:"kafkaEnabled,omitempty"`
+	// ZoneRedundant - Enabling this property creates a Standard Event Hubs Namespace in regions supported availability zones.
+	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+	// Encryption - Properties of BYOK Encryption description
+	Encryption *Encryption `json:"encryption,omitempty"`
+	// PrivateEndpointConnections - List of private endpoint connections.
+	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for EHNamespaceProperties.
 func (en EHNamespaceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	if en.ClusterArmID != nil {
+		objectMap["clusterArmId"] = en.ClusterArmID
+	}
 	if en.IsAutoInflateEnabled != nil {
 		objectMap["isAutoInflateEnabled"] = en.IsAutoInflateEnabled
 	}
@@ -1218,7 +1297,26 @@ func (en EHNamespaceProperties) MarshalJSON() ([]byte, error) {
 	if en.KafkaEnabled != nil {
 		objectMap["kafkaEnabled"] = en.KafkaEnabled
 	}
+	if en.ZoneRedundant != nil {
+		objectMap["zoneRedundant"] = en.ZoneRedundant
+	}
+	if en.Encryption != nil {
+		objectMap["encryption"] = en.Encryption
+	}
+	if en.PrivateEndpointConnections != nil {
+		objectMap["privateEndpointConnections"] = en.PrivateEndpointConnections
+	}
 	return json.Marshal(objectMap)
+}
+
+// Encryption properties to configure Encryption
+type Encryption struct {
+	// KeyVaultProperties - Properties of KeyVault
+	KeyVaultProperties *[]KeyVaultProperties `json:"keyVaultProperties,omitempty"`
+	// KeySource - Enumerates the possible value of keySource for Encryption. Possible values include: 'MicrosoftKeyVault'
+	KeySource KeySource `json:"keySource,omitempty"`
+	// RequireInfrastructureEncryption - Enable Infrastructure Encryption (Double Encryption)
+	RequireInfrastructureEncryption *bool `json:"requireInfrastructureEncryption,omitempty"`
 }
 
 // ErrorResponse error response indicates Event Hub service is not able to process the incoming request.
@@ -1228,6 +1326,55 @@ type ErrorResponse struct {
 	Code *string `json:"code,omitempty"`
 	// Message - Error message indicating why the operation failed.
 	Message *string `json:"message,omitempty"`
+}
+
+// Identity properties to configure Identity for Bring your Own Keys
+type Identity struct {
+	// PrincipalID - READ-ONLY; ObjectId from the KeyVault
+	PrincipalID *string `json:"principalId,omitempty"`
+	// TenantID - READ-ONLY; TenantId from the KeyVault
+	TenantID *string `json:"tenantId,omitempty"`
+	// Type - Type of managed service identity. Possible values include: 'SystemAssigned', 'UserAssigned', 'SystemAssignedUserAssigned', 'None'
+	Type ManagedServiceIdentityType `json:"type,omitempty"`
+	// UserAssignedIdentities - Properties for User Assigned Identities
+	UserAssignedIdentities map[string]*IdentityUserAssignedIdentitiesValue `json:"userAssignedIdentities"`
+}
+
+// MarshalJSON is the custom marshaler for Identity.
+func (i Identity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if i.Type != "" {
+		objectMap["type"] = i.Type
+	}
+	if i.UserAssignedIdentities != nil {
+		objectMap["userAssignedIdentities"] = i.UserAssignedIdentities
+	}
+	return json.Marshal(objectMap)
+}
+
+// IdentityUserAssignedIdentitiesValue ...
+type IdentityUserAssignedIdentitiesValue struct {
+	// PrincipalID - READ-ONLY; Principal Id of user assigned identity
+	PrincipalID *string `json:"principalId,omitempty"`
+	// ClientID - READ-ONLY; Client Id of user assigned identity
+	ClientID *string `json:"clientId,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for IdentityUserAssignedIdentitiesValue.
+func (iAiv IdentityUserAssignedIdentitiesValue) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// KeyVaultProperties properties to configure keyVault Properties
+type KeyVaultProperties struct {
+	// KeyName - Name of the Key from KeyVault
+	KeyName *string `json:"keyName,omitempty"`
+	// KeyVaultURI - Uri of KeyVault
+	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
+	// KeyVersion - Key Version
+	KeyVersion *string                         `json:"keyVersion,omitempty"`
+	Identity   *UserAssignedIdentityProperties `json:"identity,omitempty"`
 }
 
 // ListResult the result of the List EventHubs operation.
@@ -1389,342 +1536,13 @@ func NewListResultPage(cur ListResult, getNextPage func(context.Context, ListRes
 	}
 }
 
-// MessagingPlan messaging Plan for the namespace
-type MessagingPlan struct {
-	autorest.Response        `json:"-"`
-	*MessagingPlanProperties `json:"properties,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MessagingPlan.
-func (mp MessagingPlan) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mp.MessagingPlanProperties != nil {
-		objectMap["properties"] = mp.MessagingPlanProperties
-	}
-	if mp.Location != nil {
-		objectMap["location"] = mp.Location
-	}
-	if mp.Tags != nil {
-		objectMap["tags"] = mp.Tags
-	}
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON is the custom unmarshaler for MessagingPlan struct.
-func (mp *MessagingPlan) UnmarshalJSON(body []byte) error {
-	var m map[string]*json.RawMessage
-	err := json.Unmarshal(body, &m)
-	if err != nil {
-		return err
-	}
-	for k, v := range m {
-		switch k {
-		case "properties":
-			if v != nil {
-				var messagingPlanProperties MessagingPlanProperties
-				err = json.Unmarshal(*v, &messagingPlanProperties)
-				if err != nil {
-					return err
-				}
-				mp.MessagingPlanProperties = &messagingPlanProperties
-			}
-		case "location":
-			if v != nil {
-				var location string
-				err = json.Unmarshal(*v, &location)
-				if err != nil {
-					return err
-				}
-				mp.Location = &location
-			}
-		case "tags":
-			if v != nil {
-				var tags map[string]*string
-				err = json.Unmarshal(*v, &tags)
-				if err != nil {
-					return err
-				}
-				mp.Tags = tags
-			}
-		case "id":
-			if v != nil {
-				var ID string
-				err = json.Unmarshal(*v, &ID)
-				if err != nil {
-					return err
-				}
-				mp.ID = &ID
-			}
-		case "name":
-			if v != nil {
-				var name string
-				err = json.Unmarshal(*v, &name)
-				if err != nil {
-					return err
-				}
-				mp.Name = &name
-			}
-		case "type":
-			if v != nil {
-				var typeVar string
-				err = json.Unmarshal(*v, &typeVar)
-				if err != nil {
-					return err
-				}
-				mp.Type = &typeVar
-			}
-		}
-	}
-
-	return nil
-}
-
-// MessagingPlanProperties ...
-type MessagingPlanProperties struct {
-	// Sku - READ-ONLY; Sku type
-	Sku *int32 `json:"sku,omitempty"`
-	// SelectedEventHubUnit - READ-ONLY; Selected event hub unit
-	SelectedEventHubUnit *int32 `json:"selectedEventHubUnit,omitempty"`
-	// UpdatedAt - READ-ONLY; The exact time the messaging plan was updated.
-	UpdatedAt *date.Time `json:"updatedAt,omitempty"`
-	// Revision - READ-ONLY; revision number
-	Revision *int64 `json:"revision,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MessagingPlanProperties.
-func (mp MessagingPlanProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
-// MessagingRegions messaging Region
-type MessagingRegions struct {
-	// Properties - Properties of Messaging Region
-	Properties *MessagingRegionsProperties `json:"properties,omitempty"`
-	// Location - Resource location.
-	Location *string `json:"location,omitempty"`
-	// Tags - Resource tags.
-	Tags map[string]*string `json:"tags"`
-	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty"`
-	// Name - READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty"`
-	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MessagingRegions.
-func (mr MessagingRegions) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mr.Properties != nil {
-		objectMap["properties"] = mr.Properties
-	}
-	if mr.Location != nil {
-		objectMap["location"] = mr.Location
-	}
-	if mr.Tags != nil {
-		objectMap["tags"] = mr.Tags
-	}
-	return json.Marshal(objectMap)
-}
-
-// MessagingRegionsListResult the response of the List MessagingRegions operation.
-type MessagingRegionsListResult struct {
-	autorest.Response `json:"-"`
-	// Value - Result of the List MessagingRegions type.
-	Value *[]MessagingRegions `json:"value,omitempty"`
-	// NextLink - READ-ONLY; Link to the next set of results. Not empty if Value contains incomplete list of MessagingRegions.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MessagingRegionsListResult.
-func (mrlr MessagingRegionsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	if mrlr.Value != nil {
-		objectMap["value"] = mrlr.Value
-	}
-	return json.Marshal(objectMap)
-}
-
-// MessagingRegionsListResultIterator provides access to a complete listing of MessagingRegions values.
-type MessagingRegionsListResultIterator struct {
-	i    int
-	page MessagingRegionsListResultPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *MessagingRegionsListResultIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/MessagingRegionsListResultIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *MessagingRegionsListResultIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter MessagingRegionsListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter MessagingRegionsListResultIterator) Response() MessagingRegionsListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter MessagingRegionsListResultIterator) Value() MessagingRegions {
-	if !iter.page.NotDone() {
-		return MessagingRegions{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the MessagingRegionsListResultIterator type.
-func NewMessagingRegionsListResultIterator(page MessagingRegionsListResultPage) MessagingRegionsListResultIterator {
-	return MessagingRegionsListResultIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (mrlr MessagingRegionsListResult) IsEmpty() bool {
-	return mrlr.Value == nil || len(*mrlr.Value) == 0
-}
-
-// hasNextLink returns true if the NextLink is not empty.
-func (mrlr MessagingRegionsListResult) hasNextLink() bool {
-	return mrlr.NextLink != nil && len(*mrlr.NextLink) != 0
-}
-
-// messagingRegionsListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (mrlr MessagingRegionsListResult) messagingRegionsListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if !mrlr.hasNextLink() {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(mrlr.NextLink)))
-}
-
-// MessagingRegionsListResultPage contains a page of MessagingRegions values.
-type MessagingRegionsListResultPage struct {
-	fn   func(context.Context, MessagingRegionsListResult) (MessagingRegionsListResult, error)
-	mrlr MessagingRegionsListResult
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *MessagingRegionsListResultPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/MessagingRegionsListResultPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	for {
-		next, err := page.fn(ctx, page.mrlr)
-		if err != nil {
-			return err
-		}
-		page.mrlr = next
-		if !next.hasNextLink() || !next.IsEmpty() {
-			break
-		}
-	}
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *MessagingRegionsListResultPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page MessagingRegionsListResultPage) NotDone() bool {
-	return !page.mrlr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page MessagingRegionsListResultPage) Response() MessagingRegionsListResult {
-	return page.mrlr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page MessagingRegionsListResultPage) Values() []MessagingRegions {
-	if page.mrlr.IsEmpty() {
-		return nil
-	}
-	return *page.mrlr.Value
-}
-
-// Creates a new instance of the MessagingRegionsListResultPage type.
-func NewMessagingRegionsListResultPage(cur MessagingRegionsListResult, getNextPage func(context.Context, MessagingRegionsListResult) (MessagingRegionsListResult, error)) MessagingRegionsListResultPage {
-	return MessagingRegionsListResultPage{
-		fn:   getNextPage,
-		mrlr: cur,
-	}
-}
-
-// MessagingRegionsProperties properties of Messaging Region
-type MessagingRegionsProperties struct {
-	// Code - READ-ONLY; Region code
-	Code *string `json:"code,omitempty"`
-	// FullName - READ-ONLY; Full name of the region
-	FullName *string `json:"fullName,omitempty"`
-}
-
-// MarshalJSON is the custom marshaler for MessagingRegionsProperties.
-func (mr MessagingRegionsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	return json.Marshal(objectMap)
-}
-
 // Model single item in List or Get Event Hub operation
 type Model struct {
 	autorest.Response `json:"-"`
 	// Properties - Properties supplied to the Create Or Update Event Hub operation.
 	*Properties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -1759,6 +1577,15 @@ func (mVar *Model) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				mVar.Properties = &properties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				mVar.SystemData = &systemData
 			}
 		case "id":
 			if v != nil {
@@ -1873,11 +1700,13 @@ func (future *NamespacesDeleteFuture) result(client NamespacesClient) (ar autore
 	return
 }
 
-// NetworkRuleSet description of NetworkRuleSet resource.
+// NetworkRuleSet description of topic resource.
 type NetworkRuleSet struct {
 	autorest.Response `json:"-"`
 	// NetworkRuleSetProperties - NetworkRuleSet properties
 	*NetworkRuleSetProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string `json:"id,omitempty"`
 	// Name - READ-ONLY; The name of the resource
@@ -1913,6 +1742,15 @@ func (nrs *NetworkRuleSet) UnmarshalJSON(body []byte) error {
 				}
 				nrs.NetworkRuleSetProperties = &networkRuleSetProperties
 			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				nrs.SystemData = &systemData
+			}
 		case "id":
 			if v != nil {
 				var ID string
@@ -1946,167 +1784,10 @@ func (nrs *NetworkRuleSet) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// NetworkRuleSetListResult the response of the List NetworkRuleSet operation
-type NetworkRuleSetListResult struct {
-	autorest.Response `json:"-"`
-	// Value - Result of the List NetworkRuleSet operation.
-	Value *[]NetworkRuleSet `json:"value,omitempty"`
-	// NextLink - Link to the next set of results. Not empty if Value contains incomplete list of NetworkRuleSet.
-	NextLink *string `json:"nextLink,omitempty"`
-}
-
-// NetworkRuleSetListResultIterator provides access to a complete listing of NetworkRuleSet values.
-type NetworkRuleSetListResultIterator struct {
-	i    int
-	page NetworkRuleSetListResultPage
-}
-
-// NextWithContext advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-func (iter *NetworkRuleSetListResultIterator) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkRuleSetListResultIterator.NextWithContext")
-		defer func() {
-			sc := -1
-			if iter.Response().Response.Response != nil {
-				sc = iter.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	iter.i++
-	if iter.i < len(iter.page.Values()) {
-		return nil
-	}
-	err = iter.page.NextWithContext(ctx)
-	if err != nil {
-		iter.i--
-		return err
-	}
-	iter.i = 0
-	return nil
-}
-
-// Next advances to the next value.  If there was an error making
-// the request the iterator does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (iter *NetworkRuleSetListResultIterator) Next() error {
-	return iter.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the enumeration should be started or is not yet complete.
-func (iter NetworkRuleSetListResultIterator) NotDone() bool {
-	return iter.page.NotDone() && iter.i < len(iter.page.Values())
-}
-
-// Response returns the raw server response from the last page request.
-func (iter NetworkRuleSetListResultIterator) Response() NetworkRuleSetListResult {
-	return iter.page.Response()
-}
-
-// Value returns the current value or a zero-initialized value if the
-// iterator has advanced beyond the end of the collection.
-func (iter NetworkRuleSetListResultIterator) Value() NetworkRuleSet {
-	if !iter.page.NotDone() {
-		return NetworkRuleSet{}
-	}
-	return iter.page.Values()[iter.i]
-}
-
-// Creates a new instance of the NetworkRuleSetListResultIterator type.
-func NewNetworkRuleSetListResultIterator(page NetworkRuleSetListResultPage) NetworkRuleSetListResultIterator {
-	return NetworkRuleSetListResultIterator{page: page}
-}
-
-// IsEmpty returns true if the ListResult contains no values.
-func (nrslr NetworkRuleSetListResult) IsEmpty() bool {
-	return nrslr.Value == nil || len(*nrslr.Value) == 0
-}
-
-// hasNextLink returns true if the NextLink is not empty.
-func (nrslr NetworkRuleSetListResult) hasNextLink() bool {
-	return nrslr.NextLink != nil && len(*nrslr.NextLink) != 0
-}
-
-// networkRuleSetListResultPreparer prepares a request to retrieve the next set of results.
-// It returns nil if no more results exist.
-func (nrslr NetworkRuleSetListResult) networkRuleSetListResultPreparer(ctx context.Context) (*http.Request, error) {
-	if !nrslr.hasNextLink() {
-		return nil, nil
-	}
-	return autorest.Prepare((&http.Request{}).WithContext(ctx),
-		autorest.AsJSON(),
-		autorest.AsGet(),
-		autorest.WithBaseURL(to.String(nrslr.NextLink)))
-}
-
-// NetworkRuleSetListResultPage contains a page of NetworkRuleSet values.
-type NetworkRuleSetListResultPage struct {
-	fn    func(context.Context, NetworkRuleSetListResult) (NetworkRuleSetListResult, error)
-	nrslr NetworkRuleSetListResult
-}
-
-// NextWithContext advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-func (page *NetworkRuleSetListResultPage) NextWithContext(ctx context.Context) (err error) {
-	if tracing.IsEnabled() {
-		ctx = tracing.StartSpan(ctx, fqdn+"/NetworkRuleSetListResultPage.NextWithContext")
-		defer func() {
-			sc := -1
-			if page.Response().Response.Response != nil {
-				sc = page.Response().Response.Response.StatusCode
-			}
-			tracing.EndSpan(ctx, sc, err)
-		}()
-	}
-	for {
-		next, err := page.fn(ctx, page.nrslr)
-		if err != nil {
-			return err
-		}
-		page.nrslr = next
-		if !next.hasNextLink() || !next.IsEmpty() {
-			break
-		}
-	}
-	return nil
-}
-
-// Next advances to the next page of values.  If there was an error making
-// the request the page does not advance and the error is returned.
-// Deprecated: Use NextWithContext() instead.
-func (page *NetworkRuleSetListResultPage) Next() error {
-	return page.NextWithContext(context.Background())
-}
-
-// NotDone returns true if the page enumeration should be started or is not yet complete.
-func (page NetworkRuleSetListResultPage) NotDone() bool {
-	return !page.nrslr.IsEmpty()
-}
-
-// Response returns the raw server response from the last page request.
-func (page NetworkRuleSetListResultPage) Response() NetworkRuleSetListResult {
-	return page.nrslr
-}
-
-// Values returns the slice of values for the current page or nil if there are no values.
-func (page NetworkRuleSetListResultPage) Values() []NetworkRuleSet {
-	if page.nrslr.IsEmpty() {
-		return nil
-	}
-	return *page.nrslr.Value
-}
-
-// Creates a new instance of the NetworkRuleSetListResultPage type.
-func NewNetworkRuleSetListResultPage(cur NetworkRuleSetListResult, getNextPage func(context.Context, NetworkRuleSetListResult) (NetworkRuleSetListResult, error)) NetworkRuleSetListResultPage {
-	return NetworkRuleSetListResultPage{
-		fn:    getNextPage,
-		nrslr: cur,
-	}
-}
-
 // NetworkRuleSetProperties networkRuleSet properties
 type NetworkRuleSetProperties struct {
+	// TrustedServiceAccessEnabled - Value that indicates whether Trusted Service Access is Enabled or not.
+	TrustedServiceAccessEnabled *bool `json:"trustedServiceAccessEnabled,omitempty"`
 	// DefaultAction - Default Action for Network Rule Set. Possible values include: 'Allow', 'Deny'
 	DefaultAction DefaultAction `json:"defaultAction,omitempty"`
 	// VirtualNetworkRules - List VirtualNetwork Rules
@@ -2115,7 +1796,7 @@ type NetworkRuleSetProperties struct {
 	IPRules *[]NWRuleSetIPRules `json:"ipRules,omitempty"`
 }
 
-// NWRuleSetIPRules description of NetWorkRuleSet - IpRules resource.
+// NWRuleSetIPRules the response from the List namespace operation.
 type NWRuleSetIPRules struct {
 	// IPMask - IP Mask
 	IPMask *string `json:"ipMask,omitempty"`
@@ -2123,11 +1804,11 @@ type NWRuleSetIPRules struct {
 	Action NetworkRuleIPAction `json:"action,omitempty"`
 }
 
-// NWRuleSetVirtualNetworkRules description of VirtualNetworkRules - NetworkRules resource.
+// NWRuleSetVirtualNetworkRules the response from the List namespace operation.
 type NWRuleSetVirtualNetworkRules struct {
 	// Subnet - Subnet properties
 	Subnet *Subnet `json:"subnet,omitempty"`
-	// IgnoreMissingVnetServiceEndpoint - Value that indicates whether to ignore missing VNet Service Endpoint
+	// IgnoreMissingVnetServiceEndpoint - Value that indicates whether to ignore missing Vnet Service Endpoint
 	IgnoreMissingVnetServiceEndpoint *bool `json:"ignoreMissingVnetServiceEndpoint,omitempty"`
 }
 
@@ -2330,6 +2011,403 @@ func NewOperationListResultPage(cur OperationListResult, getNextPage func(contex
 	}
 }
 
+// PrivateEndpoint privateEndpoint information.
+type PrivateEndpoint struct {
+	// ID - The ARM identifier for Private Endpoint.
+	ID *string `json:"id,omitempty"`
+}
+
+// PrivateEndpointConnection properties of the PrivateEndpointConnection.
+type PrivateEndpointConnection struct {
+	autorest.Response `json:"-"`
+	// PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnection.
+	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	// SystemData - READ-ONLY; The system meta data relating to this resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateEndpointConnection.
+func (pec PrivateEndpointConnection) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if pec.PrivateEndpointConnectionProperties != nil {
+		objectMap["properties"] = pec.PrivateEndpointConnectionProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PrivateEndpointConnection struct.
+func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var privateEndpointConnectionProperties PrivateEndpointConnectionProperties
+				err = json.Unmarshal(*v, &privateEndpointConnectionProperties)
+				if err != nil {
+					return err
+				}
+				pec.PrivateEndpointConnectionProperties = &privateEndpointConnectionProperties
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				pec.SystemData = &systemData
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				pec.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				pec.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				pec.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// PrivateEndpointConnectionListResult result of the list of all private endpoint connections operation.
+type PrivateEndpointConnectionListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A collection of private endpoint connection resources.
+	Value *[]PrivateEndpointConnection `json:"value,omitempty"`
+	// NextLink - A link for the next page of private endpoint connection resources.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PrivateEndpointConnectionListResultIterator provides access to a complete listing of
+// PrivateEndpointConnection values.
+type PrivateEndpointConnectionListResultIterator struct {
+	i    int
+	page PrivateEndpointConnectionListResultPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PrivateEndpointConnectionListResultIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionListResultIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PrivateEndpointConnectionListResultIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PrivateEndpointConnectionListResultIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PrivateEndpointConnectionListResultIterator) Response() PrivateEndpointConnectionListResult {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PrivateEndpointConnectionListResultIterator) Value() PrivateEndpointConnection {
+	if !iter.page.NotDone() {
+		return PrivateEndpointConnection{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PrivateEndpointConnectionListResultIterator type.
+func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
+	return PrivateEndpointConnectionListResultIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (peclr PrivateEndpointConnectionListResult) IsEmpty() bool {
+	return peclr.Value == nil || len(*peclr.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (peclr PrivateEndpointConnectionListResult) hasNextLink() bool {
+	return peclr.NextLink != nil && len(*peclr.NextLink) != 0
+}
+
+// privateEndpointConnectionListResultPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (peclr PrivateEndpointConnectionListResult) privateEndpointConnectionListResultPreparer(ctx context.Context) (*http.Request, error) {
+	if !peclr.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(peclr.NextLink)))
+}
+
+// PrivateEndpointConnectionListResultPage contains a page of PrivateEndpointConnection values.
+type PrivateEndpointConnectionListResultPage struct {
+	fn    func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)
+	peclr PrivateEndpointConnectionListResult
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PrivateEndpointConnectionListResultPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionListResultPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.peclr)
+		if err != nil {
+			return err
+		}
+		page.peclr = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PrivateEndpointConnectionListResultPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PrivateEndpointConnectionListResultPage) NotDone() bool {
+	return !page.peclr.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PrivateEndpointConnectionListResultPage) Response() PrivateEndpointConnectionListResult {
+	return page.peclr
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PrivateEndpointConnectionListResultPage) Values() []PrivateEndpointConnection {
+	if page.peclr.IsEmpty() {
+		return nil
+	}
+	return *page.peclr.Value
+}
+
+// Creates a new instance of the PrivateEndpointConnectionListResultPage type.
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return PrivateEndpointConnectionListResultPage{
+		fn:    getNextPage,
+		peclr: cur,
+	}
+}
+
+// PrivateEndpointConnectionProperties properties of the private endpoint connection resource.
+type PrivateEndpointConnectionProperties struct {
+	// PrivateEndpoint - The Private Endpoint resource for this Connection.
+	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	// PrivateLinkServiceConnectionState - Details about the state of the connection.
+	PrivateLinkServiceConnectionState *ConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	// ProvisioningState - Provisioning state of the Private Endpoint Connection. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Canceled', 'Failed'
+	ProvisioningState EndPointProvisioningState `json:"provisioningState,omitempty"`
+}
+
+// PrivateEndpointConnectionsDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type PrivateEndpointConnectionsDeleteFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(PrivateEndpointConnectionsClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *PrivateEndpointConnectionsDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for PrivateEndpointConnectionsDeleteFuture.Result.
+func (future *PrivateEndpointConnectionsDeleteFuture) result(client PrivateEndpointConnectionsClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "eventhub.PrivateEndpointConnectionsDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("eventhub.PrivateEndpointConnectionsDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// PrivateLinkResource information of the private link resource.
+type PrivateLinkResource struct {
+	// PrivateLinkResourceProperties - Properties of the private link resource.
+	*PrivateLinkResourceProperties `json:"properties,omitempty"`
+	// ID - Fully qualified identifier of the resource.
+	ID *string `json:"id,omitempty"`
+	// Name - Name of the resource
+	Name *string `json:"name,omitempty"`
+	// Type - Type of the resource
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for PrivateLinkResource.
+func (plr PrivateLinkResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if plr.PrivateLinkResourceProperties != nil {
+		objectMap["properties"] = plr.PrivateLinkResourceProperties
+	}
+	if plr.ID != nil {
+		objectMap["id"] = plr.ID
+	}
+	if plr.Name != nil {
+		objectMap["name"] = plr.Name
+	}
+	if plr.Type != nil {
+		objectMap["type"] = plr.Type
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for PrivateLinkResource struct.
+func (plr *PrivateLinkResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var privateLinkResourceProperties PrivateLinkResourceProperties
+				err = json.Unmarshal(*v, &privateLinkResourceProperties)
+				if err != nil {
+					return err
+				}
+				plr.PrivateLinkResourceProperties = &privateLinkResourceProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				plr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				plr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				plr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// PrivateLinkResourceProperties properties of PrivateLinkResource
+type PrivateLinkResourceProperties struct {
+	// GroupID - The private link resource group id.
+	GroupID *string `json:"groupId,omitempty"`
+	// RequiredMembers - The private link resource required member names.
+	RequiredMembers *[]string `json:"requiredMembers,omitempty"`
+	// RequiredZoneNames - The private link resource Private link DNS zone name.
+	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
+}
+
+// PrivateLinkResourcesListResult result of the List private link resources operation.
+type PrivateLinkResourcesListResult struct {
+	autorest.Response `json:"-"`
+	// Value - A collection of private link resources
+	Value *[]PrivateLinkResource `json:"value,omitempty"`
+	// NextLink - A link for the next page of private link resources.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
 // Properties properties supplied to the Create Or Update Event Hub operation.
 type Properties struct {
 	// PartitionIds - READ-ONLY; Current number of shards on the Event Hub.
@@ -2342,7 +2420,7 @@ type Properties struct {
 	MessageRetentionInDays *int64 `json:"messageRetentionInDays,omitempty"`
 	// PartitionCount - Number of partitions created for the Event Hub, allowed values are from 1 to 32 partitions.
 	PartitionCount *int64 `json:"partitionCount,omitempty"`
-	// Status - Enumerates the possible values for the status of the Event Hub. Possible values include: 'Active', 'Disabled', 'Restoring', 'SendDisabled', 'ReceiveDisabled', 'Creating', 'Deleting', 'Renaming', 'Unknown'
+	// Status - Enumerates the possible values for the status of the Event Hub. Possible values include: 'EntityStatusActive', 'EntityStatusDisabled', 'EntityStatusRestoring', 'EntityStatusSendDisabled', 'EntityStatusReceiveDisabled', 'EntityStatusCreating', 'EntityStatusDeleting', 'EntityStatusRenaming', 'EntityStatusUnknown'
 	Status EntityStatus `json:"status,omitempty"`
 	// CaptureDescription - Properties of capture description
 	CaptureDescription *CaptureDescription `json:"captureDescription,omitempty"`
@@ -2393,11 +2471,11 @@ func (r Resource) MarshalJSON() ([]byte, error) {
 
 // Sku SKU parameters supplied to the create namespace operation
 type Sku struct {
-	// Name - Name of this SKU. Possible values include: 'Basic', 'Standard'
+	// Name - Name of this SKU. Possible values include: 'Basic', 'Standard', 'Premium'
 	Name SkuName `json:"name,omitempty"`
-	// Tier - The billing tier of this particular SKU. Possible values include: 'SkuTierBasic', 'SkuTierStandard'
+	// Tier - The billing tier of this particular SKU. Possible values include: 'SkuTierBasic', 'SkuTierStandard', 'SkuTierPremium'
 	Tier SkuTier `json:"tier,omitempty"`
-	// Capacity - The Event Hubs throughput units, value should be 0 to 20 throughput units.
+	// Capacity - The Event Hubs throughput units for Basic or Standard tiers, where value should be 0 to 20 throughput units. The Event Hubs premium units for Premium tier, where value should be 0 to 10 premium units.
 	Capacity *int32 `json:"capacity,omitempty"`
 }
 
@@ -2405,6 +2483,22 @@ type Sku struct {
 type Subnet struct {
 	// ID - Resource ID of Virtual Network Subnet
 	ID *string `json:"id,omitempty"`
+}
+
+// SystemData metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// CreatedBy - The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'User', 'Application', 'ManagedIdentity', 'Key'
+	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The type of identity that last modified the resource.
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 
 // TrackedResource definition of resource.
@@ -2431,4 +2525,10 @@ func (tr TrackedResource) MarshalJSON() ([]byte, error) {
 		objectMap["tags"] = tr.Tags
 	}
 	return json.Marshal(objectMap)
+}
+
+// UserAssignedIdentityProperties ...
+type UserAssignedIdentityProperties struct {
+	// UserAssignedIdentity - ARM ID of user Identity selected for encryption
+	UserAssignedIdentity *string `json:"userAssignedIdentity,omitempty"`
 }

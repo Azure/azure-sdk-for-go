@@ -38,7 +38,7 @@ func (c *CosmosClient) GetDatabase(id string) (*Database, error) {
 		return nil, errors.New("id is required")
 	}
 
-	return newCosmosDatabase(id, c), nil
+	return newDatabase(id, c), nil
 }
 
 // GetContainer returns a Container object.
@@ -53,7 +53,7 @@ func (c *CosmosClient) GetContainer(databaseId string, containerId string) (*Con
 		return nil, errors.New("containerId is required")
 	}
 
-	return newCosmosDatabase(databaseId, c).GetContainer(containerId)
+	return newDatabase(databaseId, c).GetContainer(containerId)
 }
 
 // CreateDatabase creates a new database.
@@ -65,9 +65,9 @@ func (c *CosmosClient) CreateDatabase(
 	ctx context.Context,
 	databaseProperties DatabaseProperties,
 	throughputProperties *ThroughputProperties,
-	requestOptions *CosmosDatabaseRequestOptions) (DatabaseResponse, error) {
+	requestOptions *DatabaseRequestOptions) (DatabaseResponse, error) {
 	if requestOptions == nil {
-		requestOptions = &CosmosDatabaseRequestOptions{}
+		requestOptions = &DatabaseRequestOptions{}
 	}
 
 	operationContext := cosmosOperationContext{

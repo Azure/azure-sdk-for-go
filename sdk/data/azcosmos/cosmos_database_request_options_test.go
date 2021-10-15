@@ -10,7 +10,7 @@ import (
 )
 
 func TestDatabaseRequestOptionsToHeaders(t *testing.T) {
-	options := &CosmosDatabaseRequestOptions{}
+	options := &DatabaseRequestOptions{}
 	if options.toHeaders() != nil {
 		t.Error("toHeaders should return nil")
 	}

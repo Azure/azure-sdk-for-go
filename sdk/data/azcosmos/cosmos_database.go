@@ -18,7 +18,7 @@ type Database struct {
 	link string
 }
 
-func newCosmosDatabase(id string, client *CosmosClient) *Database {
+func newDatabase(id string, client *CosmosClient) *Database {
 	return &Database{
 		Id:     id,
 		client: client,
@@ -83,9 +83,9 @@ func (db *Database) CreateContainer(
 // requestOptions - Optional parameters for the request.
 func (db *Database) Read(
 	ctx context.Context,
-	requestOptions *CosmosDatabaseRequestOptions) (DatabaseResponse, error) {
+	requestOptions *DatabaseRequestOptions) (DatabaseResponse, error) {
 	if requestOptions == nil {
-		requestOptions = &CosmosDatabaseRequestOptions{}
+		requestOptions = &DatabaseRequestOptions{}
 	}
 
 	operationContext := cosmosOperationContext{
@@ -156,9 +156,9 @@ func (db *Database) ReplaceThroughput(
 // requestOptions - Optional parameters for the request.
 func (db *Database) Delete(
 	ctx context.Context,
-	requestOptions *CosmosDatabaseRequestOptions) (DatabaseResponse, error) {
+	requestOptions *DatabaseRequestOptions) (DatabaseResponse, error) {
 	if requestOptions == nil {
-		requestOptions = &CosmosDatabaseRequestOptions{}
+		requestOptions = &DatabaseRequestOptions{}
 	}
 
 	operationContext := cosmosOperationContext{

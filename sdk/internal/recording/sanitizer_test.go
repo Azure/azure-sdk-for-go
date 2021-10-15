@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -185,7 +186,36 @@ type Entry struct {
 	ResponseBody   interface{}       `json:"ResponseBody"` // This should be a string, but proxy saves as an object when there is no body
 }
 
+// func HandleUriSanitizer(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("UriSanitizer", "sanitizer_test.go")
+// }
+
+// func startServer() {
+// 	http.HandleFunc("/urisanitizer", HandleUriSanitizer)
+// 	log.Fatal(http.ListenAndServe(":8080", nil))
+// }
+
+func getServerURL(url string) string {
+	split := strings.Split(url, ":")
+	if len(split) == 0 {
+		log.Fatal("Could not find port")
+		return ""
+	}
+	return split[len(split)-1]
+}
+
 func TestUriSanitizer(t *testing.T) {
+	// go startServer()
+	srv, close := mock.NewServer()
+	defer close()
+	srv.SetResponse(mock.WithBody([]byte("success")), mock.WithStatusCode(http.StatusAccepted))
+	fmt.Println("SERVER URL: ", srv.URL())
+
+	_, e := http.Get(srv.URL())
+	if e != nil {
+		panic(e)
+	}
+
 	temp := recordMode
 	recordMode = "record"
 	f := func() {
@@ -200,7 +230,9 @@ func TestUriSanitizer(t *testing.T) {
 	err = StartRecording(t, packagePath, nil)
 	require.NoError(t, err)
 
-	err = AddUriSanitizer("replacement", "bing", nil)
+	srvURL := fmt.Sprintf("http://host.docker.internal:%s", getServerURL(srv.URL()))
+	fmt.Println(srvURL)
+	err = AddUriSanitizer("https://replacement.com", srvURL, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -209,7 +241,7 @@ func TestUriSanitizer(t *testing.T) {
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, "https://www.bing.com/")
+	req.Header.Set(UpstreamUriHeader, srv.URL())
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId(t))
 

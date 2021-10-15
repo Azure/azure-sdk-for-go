@@ -3,13 +3,13 @@
 
 package azcosmos
 
-// ThroughputRequestOptions includes options for throughput operations.
-type ThroughputRequestOptions struct {
+// ThroughputOptions includes options for throughput operations.
+type ThroughputOptions struct {
 	IfMatchEtag     string
 	IfNoneMatchEtag string
 }
 
-func (options *ThroughputRequestOptions) toHeaders() *map[string]string {
+func (options *ThroughputOptions) toHeaders() *map[string]string {
 	if options.IfMatchEtag == "" && options.IfNoneMatchEtag == "" {
 		return nil
 	}

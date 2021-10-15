@@ -3,12 +3,13 @@
 
 package azcosmos
 
-// ContainerRequestOptions includes options for operations against a database.
-type ContainerRequestOptions struct {
+// ReadContainerOptions includes options for Read
+type ReadContainerOptions struct {
+	// PopulateQuotaInfo indicates whether to populate quota info in response headers.
 	PopulateQuotaInfo bool
 }
 
-func (options *ContainerRequestOptions) toHeaders() *map[string]string {
+func (options *ReadContainerOptions) toHeaders() *map[string]string {
 	if !options.PopulateQuotaInfo {
 		return nil
 	}
@@ -18,4 +19,24 @@ func (options *ContainerRequestOptions) toHeaders() *map[string]string {
 		headers[cosmosHeaderPopulateQuotaInfo] = "true"
 	}
 	return &headers
+}
+
+// CreateContainerOptions are options for the CreateContainer operation
+type CreateContainerOptions struct {
+	// ThroughputProperties: Optional throughput configuration of the container
+	ThroughputProperties *ThroughputProperties
+}
+
+// ReplaceContainerOptions are options for the ReplaceContainer operation
+type ReplaceContainerOptions struct{}
+
+func (options *ReplaceContainerOptions) toHeaders() *map[string]string {
+	return nil
+}
+
+// DeleteContainerOptions are options for the DeleteContainer operation
+type DeleteContainerOptions struct{}
+
+func (options *DeleteContainerOptions) toHeaders() *map[string]string {
+	return nil
 }

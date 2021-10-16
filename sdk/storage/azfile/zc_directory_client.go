@@ -64,7 +64,7 @@ func (d DirectoryClient) Create(ctx context.Context, options *CreateDirectoryOpt
 
 // Delete removes the specified empty directory. Note that the directory must be empty before it can be deleted..
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-directory.
-func (d DirectoryClient) Delete(ctx context.Context) (DirectoryDeleteResponse, error) {
+func (d DirectoryClient) Delete(ctx context.Context, options *DeleteDirectoryOptions) (DirectoryDeleteResponse, error) {
 	return d.client.Delete(ctx, nil)
 }
 

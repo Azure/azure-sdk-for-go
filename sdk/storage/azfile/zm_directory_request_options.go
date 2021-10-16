@@ -32,6 +32,9 @@ func (o *CreateDirectoryOptions) format() (fileAttributes string, fileCreationTi
 	return
 }
 
+type DeleteDirectoryOptions struct {
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 
 type GetDirectoryPropertiesOptions struct {

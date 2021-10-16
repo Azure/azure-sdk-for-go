@@ -42,6 +42,9 @@ type FilePermissions struct {
 }
 
 func (fp *FilePermissions) format() (filePermission *string, filePermissionKey *string, err error) {
+	if fp == nil {
+		return &defaultFilePermissionStr, nil, nil
+	}
 	filePermission = &defaultFilePermissionStr
 	if fp.FilePermissionStr != nil {
 		filePermission = fp.FilePermissionStr

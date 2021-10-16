@@ -10,10 +10,9 @@ package armmonitor
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // ActionGroupsCreateOrUpdateResponse contains the response from method ActionGroups.CreateOrUpdate.

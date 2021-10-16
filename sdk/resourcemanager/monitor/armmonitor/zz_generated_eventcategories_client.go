@@ -11,11 +11,10 @@ package armmonitor
 import (
 	"context"
 	"fmt"
-	"net/http"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
 )
 
 // EventCategoriesClient contains the methods for the EventCategories group.

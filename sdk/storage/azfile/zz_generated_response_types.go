@@ -32,16 +32,16 @@ type DirectoryCreateResult struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -128,16 +128,16 @@ type DirectoryGetPropertiesResult struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -251,16 +251,16 @@ type DirectorySetPropertiesResult struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -412,16 +412,16 @@ type FileCreateResult struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -525,19 +525,19 @@ type FileDownloadResult struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileContentMD5 contains the information returned from the x-ms-content-md5 header response.
 	FileContentMD5 []byte
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -656,16 +656,16 @@ type FileGetPropertiesResult struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -710,6 +710,7 @@ type FileGetRangeListResponse struct {
 
 // FileGetRangeListResult contains the result from method File.GetRangeList.
 type FileGetRangeListResult struct {
+	ShareFileRangeList
 	// Date contains the information returned from the Date header response.
 	Date *time.Time `xml:"Date"`
 
@@ -721,9 +722,6 @@ type FileGetRangeListResult struct {
 
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time `xml:"LastModified"`
-
-	// A list of non-overlapping valid ranges, sorted by increasing address range.
-	Ranges []*Range `xml:"Range"`
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string `xml:"RequestID"`
@@ -802,16 +800,16 @@ type FileSetHTTPHeadersResult struct {
 	FileAttributes *string
 
 	// FileChangeTime contains the information returned from the x-ms-file-change-time header response.
-	FileChangeTime *time.Time
+	FileChangeTime *string
 
 	// FileCreationTime contains the information returned from the x-ms-file-creation-time header response.
-	FileCreationTime *time.Time
+	FileCreationTime *string
 
 	// FileID contains the information returned from the x-ms-file-id header response.
 	FileID *string
 
 	// FileLastWriteTime contains the information returned from the x-ms-file-last-write-time header response.
-	FileLastWriteTime *time.Time
+	FileLastWriteTime *string
 
 	// FileParentID contains the information returned from the x-ms-file-parent-id header response.
 	FileParentID *string
@@ -1000,6 +998,102 @@ type ServiceSetPropertiesResult struct {
 	Version *string
 }
 
+// ShareAcquireLeaseResponse contains the response from method Share.AcquireLease.
+type ShareAcquireLeaseResponse struct {
+	ShareAcquireLeaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ShareAcquireLeaseResult contains the result from method Share.AcquireLease.
+type ShareAcquireLeaseResult struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// LeaseID contains the information returned from the x-ms-lease-id header response.
+	LeaseID *string
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
+// ShareBreakLeaseResponse contains the response from method Share.BreakLease.
+type ShareBreakLeaseResponse struct {
+	ShareBreakLeaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ShareBreakLeaseResult contains the result from method Share.BreakLease.
+type ShareBreakLeaseResult struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// LeaseID contains the information returned from the x-ms-lease-id header response.
+	LeaseID *string
+
+	// LeaseTime contains the information returned from the x-ms-lease-time header response.
+	LeaseTime *int32
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
+// ShareChangeLeaseResponse contains the response from method Share.ChangeLease.
+type ShareChangeLeaseResponse struct {
+	ShareChangeLeaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ShareChangeLeaseResult contains the result from method Share.ChangeLease.
+type ShareChangeLeaseResult struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// LeaseID contains the information returned from the x-ms-lease-id header response.
+	LeaseID *string
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
 // ShareCreatePermissionResponse contains the response from method Share.CreatePermission.
 type ShareCreatePermissionResponse struct {
 	ShareCreatePermissionResult
@@ -1169,6 +1263,15 @@ type ShareGetPropertiesResult struct {
 	// LastModified contains the information returned from the Last-Modified header response.
 	LastModified *time.Time
 
+	// LeaseDuration contains the information returned from the x-ms-lease-duration header response.
+	LeaseDuration *LeaseDurationType
+
+	// LeaseState contains the information returned from the x-ms-lease-state header response.
+	LeaseState *LeaseStateType
+
+	// LeaseStatus contains the information returned from the x-ms-lease-status header response.
+	LeaseStatus *LeaseStatusType
+
 	// Metadata contains the information returned from the x-ms-meta header response.
 	Metadata map[string]string
 
@@ -1218,6 +1321,65 @@ type ShareGetStatisticsResult struct {
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string `xml:"Version"`
+}
+
+// ShareReleaseLeaseResponse contains the response from method Share.ReleaseLease.
+type ShareReleaseLeaseResponse struct {
+	ShareReleaseLeaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ShareReleaseLeaseResult contains the result from method Share.ReleaseLease.
+type ShareReleaseLeaseResult struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
+// ShareRenewLeaseResponse contains the response from method Share.RenewLease.
+type ShareRenewLeaseResponse struct {
+	ShareRenewLeaseResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// ShareRenewLeaseResult contains the result from method Share.RenewLease.
+type ShareRenewLeaseResult struct {
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *string
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// LeaseID contains the information returned from the x-ms-lease-id header response.
+	LeaseID *string
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
 }
 
 // ShareRestoreResponse contains the response from method Share.Restore.

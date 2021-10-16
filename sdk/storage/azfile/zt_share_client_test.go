@@ -4,7 +4,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func (s *azfileTestSuite) TestShareCreateRootDirectoryURL() {
+func (s *azfileLiveTestSuite) TestShareCreateRootDirectoryURL() {
 	_assert := assert.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
@@ -13,5 +13,5 @@ func (s *azfileTestSuite) TestShareCreateRootDirectoryURL() {
 	}
 
 	shareClient := createNewShare(_assert, generateShareName(testName), svcClient)
-	defer deleteContainer(_assert, shareClient)
+	defer delShare(_assert, shareClient)
 }

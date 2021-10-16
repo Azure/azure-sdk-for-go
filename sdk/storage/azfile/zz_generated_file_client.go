@@ -55,7 +55,7 @@ func (client *fileClient) abortCopyCreateRequest(ctx context.Context, copyID str
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("x-ms-copy-action", "abort")
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
@@ -131,7 +131,7 @@ func (client *fileClient) acquireLeaseCreateRequest(ctx context.Context, options
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header.Set("x-ms-proposed-lease-id", *options.ProposedLeaseID)
 	}
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -220,7 +220,7 @@ func (client *fileClient) breakLeaseCreateRequest(ctx context.Context, fileBreak
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	if fileBreakLeaseOptions != nil && fileBreakLeaseOptions.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *fileBreakLeaseOptions.RequestID)
 	}
@@ -310,7 +310,7 @@ func (client *fileClient) changeLeaseCreateRequest(ctx context.Context, leaseID 
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header.Set("x-ms-proposed-lease-id", *options.ProposedLeaseID)
 	}
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -368,7 +368,7 @@ func (client *fileClient) changeLeaseHandleError(resp *http.Response) error {
 
 // Create - Creates a new file or replaces a file. Note it only initializes the file with no content.
 // If the operation fails it returns the *StorageError error type.
-func (client *fileClient) Create(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, fileCreateOptions *FileCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileCreateResponse, error) {
+func (client *fileClient) Create(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, fileCreateOptions *FileCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, fileContentLength, fileAttributes, fileCreationTime, fileLastWriteTime, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions)
 	if err != nil {
 		return FileCreateResponse{}, err
@@ -384,7 +384,7 @@ func (client *fileClient) Create(ctx context.Context, fileContentLength int64, f
 }
 
 // createCreateRequest creates the Create request.
-func (client *fileClient) createCreateRequest(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, fileCreateOptions *FileCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+func (client *fileClient) createCreateRequest(ctx context.Context, fileContentLength int64, fileAttributes string, fileCreationTime string, fileLastWriteTime string, fileCreateOptions *FileCreateOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
 	if err != nil {
 		return nil, err
@@ -394,7 +394,7 @@ func (client *fileClient) createCreateRequest(ctx context.Context, fileContentLe
 		reqQP.Set("timeout", strconv.FormatInt(int64(*fileCreateOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	req.Raw().Header.Set("x-ms-content-length", strconv.FormatInt(fileContentLength, 10))
 	req.Raw().Header.Set("x-ms-type", "file")
 	if fileHTTPHeaders != nil && fileHTTPHeaders.FileContentType != nil {
@@ -427,8 +427,8 @@ func (client *fileClient) createCreateRequest(ctx context.Context, fileContentLe
 		req.Raw().Header.Set("x-ms-file-permission-key", *fileCreateOptions.FilePermissionKey)
 	}
 	req.Raw().Header.Set("x-ms-file-attributes", fileAttributes)
-	req.Raw().Header.Set("x-ms-file-creation-time", fileCreationTime.Format(time.RFC1123))
-	req.Raw().Header.Set("x-ms-file-last-write-time", fileLastWriteTime.Format(time.RFC1123))
+	req.Raw().Header.Set("x-ms-file-creation-time", fileCreationTime)
+	req.Raw().Header.Set("x-ms-file-last-write-time", fileLastWriteTime)
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
@@ -476,25 +476,13 @@ func (client *fileClient) createHandleResponse(resp *http.Response) (FileCreateR
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileCreateResponse{}, err
-		}
-		result.FileCreationTime = &fileCreationTime
+		result.FileCreationTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileCreateResponse{}, err
-		}
-		result.FileLastWriteTime = &fileLastWriteTime
+		result.FileLastWriteTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileCreateResponse{}, err
-		}
-		result.FileChangeTime = &fileChangeTime
+		result.FileChangeTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
 		result.FileID = &val
@@ -546,7 +534,7 @@ func (client *fileClient) deleteCreateRequest(ctx context.Context, fileDeleteOpt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*fileDeleteOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
@@ -615,7 +603,7 @@ func (client *fileClient) downloadCreateRequest(ctx context.Context, fileDownloa
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.SkipBodyDownload()
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	if fileDownloadOptions != nil && fileDownloadOptions.Range != nil {
 		req.Raw().Header.Set("x-ms-range", *fileDownloadOptions.Range)
 	}
@@ -738,25 +726,13 @@ func (client *fileClient) downloadHandleResponse(resp *http.Response) (FileDownl
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileDownloadResponse{}, err
-		}
-		result.FileCreationTime = &fileCreationTime
+		result.FileCreationTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileDownloadResponse{}, err
-		}
-		result.FileLastWriteTime = &fileLastWriteTime
+		result.FileLastWriteTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileDownloadResponse{}, err
-		}
-		result.FileChangeTime = &fileChangeTime
+		result.FileChangeTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
 		result.FilePermissionKey = &val
@@ -828,7 +804,7 @@ func (client *fileClient) forceCloseHandlesCreateRequest(ctx context.Context, ha
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("x-ms-handle-id", handleID)
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
@@ -916,7 +892,7 @@ func (client *fileClient) getPropertiesCreateRequest(ctx context.Context, fileGe
 		reqQP.Set("timeout", strconv.FormatInt(int64(*fileGetPropertiesOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
@@ -1023,25 +999,13 @@ func (client *fileClient) getPropertiesHandleResponse(resp *http.Response) (File
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileGetPropertiesResponse{}, err
-		}
-		result.FileCreationTime = &fileCreationTime
+		result.FileCreationTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileGetPropertiesResponse{}, err
-		}
-		result.FileLastWriteTime = &fileLastWriteTime
+		result.FileLastWriteTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileGetPropertiesResponse{}, err
-		}
-		result.FileChangeTime = &fileChangeTime
+		result.FileChangeTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
 		result.FilePermissionKey = &val
@@ -1105,11 +1069,14 @@ func (client *fileClient) getRangeListCreateRequest(ctx context.Context, fileGet
 	if fileGetRangeListOptions != nil && fileGetRangeListOptions.Sharesnapshot != nil {
 		reqQP.Set("sharesnapshot", *fileGetRangeListOptions.Sharesnapshot)
 	}
+	if fileGetRangeListOptions != nil && fileGetRangeListOptions.Prevsharesnapshot != nil {
+		reqQP.Set("prevsharesnapshot", *fileGetRangeListOptions.Prevsharesnapshot)
+	}
 	if fileGetRangeListOptions != nil && fileGetRangeListOptions.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*fileGetRangeListOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	if fileGetRangeListOptions != nil && fileGetRangeListOptions.Range != nil {
 		req.Raw().Header.Set("x-ms-range", *fileGetRangeListOptions.Range)
 	}
@@ -1153,7 +1120,7 @@ func (client *fileClient) getRangeListHandleResponse(resp *http.Response) (FileG
 		}
 		result.Date = &date
 	}
-	if err := runtime.UnmarshalAsXML(resp, &result); err != nil {
+	if err := runtime.UnmarshalAsXML(resp, &result.ShareFileRangeList); err != nil {
 		return FileGetRangeListResponse{}, err
 	}
 	return result, nil
@@ -1210,7 +1177,7 @@ func (client *fileClient) listHandlesCreateRequest(ctx context.Context, options 
 		reqQP.Set("sharesnapshot", *options.Sharesnapshot)
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
@@ -1284,7 +1251,7 @@ func (client *fileClient) releaseLeaseCreateRequest(ctx context.Context, leaseID
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("x-ms-lease-action", "release")
 	req.Raw().Header.Set("x-ms-lease-id", leaseID)
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header.Set("x-ms-client-request-id", *options.RequestID)
 	}
@@ -1339,7 +1306,7 @@ func (client *fileClient) releaseLeaseHandleError(resp *http.Response) error {
 
 // SetHTTPHeaders - Sets HTTP headers on the file.
 // If the operation fails it returns the *StorageError error type.
-func (client *fileClient) SetHTTPHeaders(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, fileSetHTTPHeadersOptions *FileSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileSetHTTPHeadersResponse, error) {
+func (client *fileClient) SetHTTPHeaders(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, fileSetHTTPHeadersOptions *FileSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (FileSetHTTPHeadersResponse, error) {
 	req, err := client.setHTTPHeadersCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, fileSetHTTPHeadersOptions, fileHTTPHeaders, leaseAccessConditions)
 	if err != nil {
 		return FileSetHTTPHeadersResponse{}, err
@@ -1355,7 +1322,7 @@ func (client *fileClient) SetHTTPHeaders(ctx context.Context, fileAttributes str
 }
 
 // setHTTPHeadersCreateRequest creates the SetHTTPHeaders request.
-func (client *fileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, fileSetHTTPHeadersOptions *FileSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
+func (client *fileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, fileSetHTTPHeadersOptions *FileSetHTTPHeadersOptions, fileHTTPHeaders *FileHTTPHeaders, leaseAccessConditions *LeaseAccessConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
 	if err != nil {
 		return nil, err
@@ -1366,7 +1333,7 @@ func (client *fileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileA
 		reqQP.Set("timeout", strconv.FormatInt(int64(*fileSetHTTPHeadersOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	if fileSetHTTPHeadersOptions != nil && fileSetHTTPHeadersOptions.FileContentLength != nil {
 		req.Raw().Header.Set("x-ms-content-length", strconv.FormatInt(*fileSetHTTPHeadersOptions.FileContentLength, 10))
 	}
@@ -1395,8 +1362,8 @@ func (client *fileClient) setHTTPHeadersCreateRequest(ctx context.Context, fileA
 		req.Raw().Header.Set("x-ms-file-permission-key", *fileSetHTTPHeadersOptions.FilePermissionKey)
 	}
 	req.Raw().Header.Set("x-ms-file-attributes", fileAttributes)
-	req.Raw().Header.Set("x-ms-file-creation-time", fileCreationTime.Format(time.RFC1123))
-	req.Raw().Header.Set("x-ms-file-last-write-time", fileLastWriteTime.Format(time.RFC1123))
+	req.Raw().Header.Set("x-ms-file-creation-time", fileCreationTime)
+	req.Raw().Header.Set("x-ms-file-last-write-time", fileLastWriteTime)
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
@@ -1444,25 +1411,13 @@ func (client *fileClient) setHTTPHeadersHandleResponse(resp *http.Response) (Fil
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileSetHTTPHeadersResponse{}, err
-		}
-		result.FileCreationTime = &fileCreationTime
+		result.FileCreationTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileSetHTTPHeadersResponse{}, err
-		}
-		result.FileLastWriteTime = &fileLastWriteTime
+		result.FileLastWriteTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return FileSetHTTPHeadersResponse{}, err
-		}
-		result.FileChangeTime = &fileChangeTime
+		result.FileChangeTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
 		result.FileID = &val
@@ -1520,7 +1475,7 @@ func (client *fileClient) setMetadataCreateRequest(ctx context.Context, fileSetM
 			req.Raw().Header.Set("x-ms-meta-"+k, v)
 		}
 	}
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
@@ -1570,7 +1525,7 @@ func (client *fileClient) setMetadataHandleError(resp *http.Response) error {
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// StartCopy - Copies a file or file to a destination file within the storage account.
+// StartCopy - Copies a blob or file to a destination file within the storage account.
 // If the operation fails it returns the *StorageError error type.
 func (client *fileClient) StartCopy(ctx context.Context, copySource string, fileStartCopyOptions *FileStartCopyOptions, copyFileSmbInfo *CopyFileSmbInfo, leaseAccessConditions *LeaseAccessConditions) (FileStartCopyResponse, error) {
 	req, err := client.startCopyCreateRequest(ctx, copySource, fileStartCopyOptions, copyFileSmbInfo, leaseAccessConditions)
@@ -1598,7 +1553,7 @@ func (client *fileClient) startCopyCreateRequest(ctx context.Context, copySource
 		reqQP.Set("timeout", strconv.FormatInt(int64(*fileStartCopyOptions.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	if fileStartCopyOptions != nil && fileStartCopyOptions.Metadata != nil {
 		for k, v := range fileStartCopyOptions.Metadata {
 			req.Raw().Header.Set("x-ms-meta-"+k, v)
@@ -1719,7 +1674,7 @@ func (client *fileClient) uploadRangeCreateRequest(ctx context.Context, rangePar
 	if fileUploadRangeOptions != nil && fileUploadRangeOptions.ContentMD5 != nil {
 		req.Raw().Header.Set("Content-MD5", base64.StdEncoding.EncodeToString(fileUploadRangeOptions.ContentMD5))
 	}
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}
@@ -1831,7 +1786,7 @@ func (client *fileClient) uploadRangeFromURLCreateRequest(ctx context.Context, r
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfNoneMatchCRC64 != nil {
 		req.Raw().Header.Set("x-ms-source-if-none-match-crc64", base64.StdEncoding.EncodeToString(sourceModifiedAccessConditions.SourceIfNoneMatchCRC64))
 	}
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header.Set("x-ms-lease-id", *leaseAccessConditions.LeaseID)
 	}

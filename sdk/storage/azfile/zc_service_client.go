@@ -38,13 +38,18 @@ func NewServiceClient(serviceURL string, cred azcore.Credential, options *Client
 // To change the pipeline, create the ShareURL and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewShareURL instead of calling this object's
 // NewShareURL method.
-func (s ServiceClient) NewShareClient(shareName string) ShareClient {
+func (s ServiceClient) NewShareClient(shareName string) (ShareClient, error) {
 	shareURL := appendToURLPath(s.client.con.u, shareName)
-	containerConnection := &connection{shareURL, s.client.con.p}
+	u, err := url.Parse(shareURL)
+	if err != nil {
+		return ShareClient{}, err
+	}
+	conn := &connection{shareURL, s.client.con.p}
 	return ShareClient{
 		client: &shareClient{
-			con: containerConnection,
+			con: conn,
 		},
 		cred: s.cred,
-	}
+		u:    *u,
+	}, nil
 }

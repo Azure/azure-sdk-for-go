@@ -53,7 +53,7 @@ func (client *serviceClient) getPropertiesCreateRequest(ctx context.Context, opt
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
@@ -124,7 +124,7 @@ func (client *serviceClient) listSharesSegmentCreateRequest(ctx context.Context,
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
@@ -188,7 +188,7 @@ func (client *serviceClient) setPropertiesCreateRequest(ctx context.Context, sto
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, runtime.MarshalAsXML(req, storageServiceProperties)
 }

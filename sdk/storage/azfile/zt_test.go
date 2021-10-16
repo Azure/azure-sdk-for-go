@@ -36,8 +36,9 @@ const (
 )
 
 const (
-	sharePrefix                 = "gos"
-	filePrefix                  = "gotestfile"
+	sharePrefix                 = "gosh"
+	directoryPrefix             = "godi"
+	filePrefix                  = "gofi"
 	fileDefaultData             = "GoFileDefaultData"
 	invalidHeaderErrorSubstring = "invalid header field"
 )
@@ -50,7 +51,7 @@ type azfileLiveTestSuite struct {
 // Hookup to the testing framework
 func Test(t *testing.T) {
 	suite.Run(t, &azfileTestSuite{mode: testframework.Playback})
-	//suite.Run(t, &azfileLiveTestSuite{})
+	suite.Run(t, &azfileLiveTestSuite{})
 }
 
 type testContext struct {
@@ -113,6 +114,15 @@ func (s *azfileTestSuite) AfterTest(suite string, test string) {
 	recordedTestTeardown(s.T().Name())
 }
 
+//nolint
+func (s *azfileLiveTestSuite) BeforeTest(suite string, test string) {
+}
+
+//nolint
+func (s *azfileLiveTestSuite) AfterTest(suite string, test string) {
+
+}
+
 // This function generates an entity name by concatenating the passed prefix,
 // the name of the test requesting the entity name, and the minute, second, and nanoseconds of the call.
 // This should make it easy to associate the entities with their test, uniquely identify
@@ -145,6 +155,10 @@ func generateEntityName(testName string) string {
 }
 func generateShareName(testName string) string {
 	return sharePrefix + generateEntityName(testName)
+}
+
+func generateDirectoryName(testName string) string {
+	return directoryPrefix + generateEntityName(testName)
 }
 
 func generateFileName(testName string) string {
@@ -299,12 +313,13 @@ func generateData(sizeInBytes int) (io.ReadSeekCloser, []byte) {
 	return internal.NopCloser(bytes.NewReader(data)), data
 }
 
-func getShareClient(containerName string, s ServiceClient) ShareClient {
-	return s.NewShareClient(containerName)
+func getShareClient(shareName string, s ServiceClient) (ShareClient, error) {
+	return s.NewShareClient(shareName)
 }
 
 func createNewShare(_assert *assert.Assertions, shareName string, serviceClient ServiceClient) ShareClient {
-	shareClient := getShareClient(shareName, serviceClient)
+	shareClient, err := getShareClient(shareName, serviceClient)
+	_assert.Nil(err)
 
 	cResp, err := shareClient.Create(ctx, nil)
 	_assert.Nil(err)
@@ -312,8 +327,28 @@ func createNewShare(_assert *assert.Assertions, shareName string, serviceClient 
 	return shareClient
 }
 
-func deleteContainer(_assert *assert.Assertions, shareClient ShareClient) {
-	deleteContainerResp, err := shareClient.Delete(context.Background(), nil)
+func delShare(_assert *assert.Assertions, shareClient ShareClient) {
+	deleteShareResp, err := shareClient.Delete(context.Background(), nil)
 	_assert.Nil(err)
-	_assert.Equal(deleteContainerResp.RawResponse.StatusCode, 202)
+	_assert.Equal(deleteShareResp.RawResponse.StatusCode, 202)
+}
+
+func delDirectory(_assert *assert.Assertions, dirClient DirectoryClient) {
+	resp, err := dirClient.Delete(context.Background())
+	_assert.Nil(err)
+	_assert.Equal(resp.RawResponse.StatusCode, 202)
+}
+
+func getDirectoryURLFromShare(_assert *assert.Assertions, directoryName string, shareClient ShareClient) DirectoryClient {
+	dirClient := shareClient.NewDirectoryClient(directoryName)
+	return dirClient
+}
+
+func createNewDirectoryFromShare(_assert *assert.Assertions, directoryName string, shareClient ShareClient) DirectoryClient {
+	dirClient := getDirectoryURLFromShare(_assert, directoryName, shareClient)
+
+	cResp, err := dirClient.Create(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	return dirClient
 }

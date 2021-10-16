@@ -37,6 +37,26 @@ func (c CopyStatusType) ToPtr() *CopyStatusType {
 	return &c
 }
 
+type DeleteSnapshotsOptionType string
+
+const (
+	DeleteSnapshotsOptionTypeInclude       DeleteSnapshotsOptionType = "include"
+	DeleteSnapshotsOptionTypeIncludeLeased DeleteSnapshotsOptionType = "include-leased"
+)
+
+// PossibleDeleteSnapshotsOptionTypeValues returns the possible values for the DeleteSnapshotsOptionType const type.
+func PossibleDeleteSnapshotsOptionTypeValues() []DeleteSnapshotsOptionType {
+	return []DeleteSnapshotsOptionType{
+		DeleteSnapshotsOptionTypeInclude,
+		DeleteSnapshotsOptionTypeIncludeLeased,
+	}
+}
+
+// ToPtr returns a *DeleteSnapshotsOptionType pointing to the current value.
+func (c DeleteSnapshotsOptionType) ToPtr() *DeleteSnapshotsOptionType {
+	return &c
+}
+
 type FileRangeWriteType string
 
 const (
@@ -57,6 +77,7 @@ func (c FileRangeWriteType) ToPtr() *FileRangeWriteType {
 	return &c
 }
 
+// LeaseDurationType - When a share is leased, specifies whether the lease is of infinite or fixed duration.
 type LeaseDurationType string
 
 const (
@@ -77,6 +98,7 @@ func (c LeaseDurationType) ToPtr() *LeaseDurationType {
 	return &c
 }
 
+// LeaseStateType - Lease state of the share.
 type LeaseStateType string
 
 const (
@@ -103,6 +125,7 @@ func (c LeaseStateType) ToPtr() *LeaseStateType {
 	return &c
 }
 
+// LeaseStatusType - The current lease status of the share.
 type LeaseStatusType string
 
 const (

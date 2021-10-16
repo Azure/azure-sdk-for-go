@@ -59,6 +59,14 @@ func (a *AccessPolicy) UnmarshalXML(d *xml.Decoder, start xml.StartElement) erro
 	return nil
 }
 
+type ClearRange struct {
+	// REQUIRED
+	End *int64 `xml:"End"`
+
+	// REQUIRED
+	Start *int64 `xml:"Start"`
+}
+
 // CopyFileSmbInfo contains a group of parameters for the File.StartCopy method.
 type CopyFileSmbInfo struct {
 	// Specifies either the option to copy file attributes from a source file(source) to a target file or a list of attributes to set on a target file.
@@ -314,6 +322,8 @@ type FileGetPropertiesOptions struct {
 
 // FileGetRangeListOptions contains the optional parameters for the File.GetRangeList method.
 type FileGetRangeListOptions struct {
+	// The previous snapshot parameter is an opaque DateTime value that, when present, specifies the previous snapshot.
+	Prevsharesnapshot *string
 	// Specifies the range of bytes over which to list ranges, inclusively.
 	Range *string
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
@@ -370,6 +380,15 @@ type FileProperty struct {
 	// may not reflect that fact until the handle is closed or
 	// the op-lock is broken. To retrieve current property values, call Get File Properties.
 	ContentLength *int64 `xml:"Content-Length"`
+}
+
+// FileRange - An Azure Storage file range.
+type FileRange struct {
+	// REQUIRED; End of the range.
+	End *int64 `xml:"End"`
+
+	// REQUIRED; Start of the range.
+	Start *int64 `xml:"Start"`
 }
 
 // FileReleaseLeaseOptions contains the optional parameters for the File.ReleaseLease method.
@@ -533,7 +552,7 @@ func (h *HandleItem) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error 
 	return nil
 }
 
-// LeaseAccessConditions contains a group of parameters for the File.Create method.
+// LeaseAccessConditions contains a group of parameters for the Share.GetProperties method.
 type LeaseAccessConditions struct {
 	// If specified, the operation only succeeds if the resource's lease is active and matches this ID.
 	LeaseID *string
@@ -628,21 +647,6 @@ type Metrics struct {
 	RetentionPolicy *RetentionPolicy `xml:"RetentionPolicy"`
 }
 
-// ProtocolSettings - Protocol settings
-type ProtocolSettings struct {
-	// Settings for SMB protocol.
-	SmbSettings *SmbSettings `xml:"SMB"`
-}
-
-// Range - An Azure Storage file range.
-type Range struct {
-	// REQUIRED; End of the range.
-	End *int64 `xml:"End"`
-
-	// REQUIRED; Start of the range.
-	Start *int64 `xml:"Start"`
-}
-
 // RetentionPolicy - The retention policy.
 type RetentionPolicy struct {
 	// REQUIRED; Indicates whether a retention policy is enabled for the File service. If false, metrics data is retained, and the user is responsible for deleting
@@ -686,6 +690,53 @@ type ServiceSetPropertiesOptions struct {
 	Timeout *int32
 }
 
+// ShareAcquireLeaseOptions contains the optional parameters for the Share.AcquireLease method.
+type ShareAcquireLeaseOptions struct {
+	// Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite lease can be between 15 and 60 seconds.
+	// A lease duration cannot be changed using renew or change.
+	Duration *int32
+	// Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See
+	// Guid Constructor (String) for a list of valid GUID string formats.
+	ProposedLeaseID *string
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+	RequestID *string
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
+	// Timeouts for File Service Operations.</a>
+	Timeout *int32
+}
+
+// ShareBreakLeaseOptions contains the optional parameters for the Share.BreakLease method.
+type ShareBreakLeaseOptions struct {
+	// For a break operation, proposed duration the lease should continue before it is broken, in seconds, between 0 and 60. This break period is only used
+	// if it is shorter than the time remaining on the lease. If longer, the time remaining on the lease is used. A new lease will not be available before the
+	// break period has expired, but the lease may be held for longer than the break period. If this header does not appear with a break operation, a fixed-duration
+	// lease breaks after the remaining lease period elapses, and an infinite lease breaks immediately.
+	BreakPeriod *int32
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+	RequestID *string
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
+	// Timeouts for File Service Operations.</a>
+	Timeout *int32
+}
+
+// ShareChangeLeaseOptions contains the optional parameters for the Share.ChangeLease method.
+type ShareChangeLeaseOptions struct {
+	// Proposed lease ID, in a GUID string format. The File service returns 400 (Invalid request) if the proposed lease ID is not in the correct format. See
+	// Guid Constructor (String) for a list of valid GUID string formats.
+	ProposedLeaseID *string
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+	RequestID *string
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
+	// Timeouts for File Service Operations.</a>
+	Timeout *int32
+}
+
 // ShareCreateOptions contains the optional parameters for the Share.Create method.
 type ShareCreateOptions struct {
 	// Specifies the access tier of the share.
@@ -718,12 +769,37 @@ type ShareCreateSnapshotOptions struct {
 // ShareDeleteOptions contains the optional parameters for the Share.Delete method.
 type ShareDeleteOptions struct {
 	// Specifies the option include to delete the base share and all of its snapshots.
-	DeleteSnapshots *string
+	DeleteSnapshots *DeleteSnapshotsOptionType
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
 	Sharesnapshot *string
 	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
 	// Timeouts for File Service Operations.</a>
 	Timeout *int32
+}
+
+// ShareFileRangeList - The list of file ranges
+type ShareFileRangeList struct {
+	ClearRanges []*ClearRange `xml:"ClearRange"`
+	Ranges      []*FileRange  `xml:"Range"`
+}
+
+// MarshalXML implements the xml.Marshaller interface for type ShareFileRangeList.
+func (s ShareFileRangeList) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	type alias ShareFileRangeList
+	aux := &struct {
+		*alias
+		ClearRanges *[]*ClearRange `xml:"ClearRange"`
+		Ranges      *[]*FileRange  `xml:"Range"`
+	}{
+		alias: (*alias)(&s),
+	}
+	if s.ClearRanges != nil {
+		aux.ClearRanges = &s.ClearRanges
+	}
+	if s.Ranges != nil {
+		aux.Ranges = &s.Ranges
+	}
+	return e.EncodeElement(aux, start)
 }
 
 // ShareGetAccessPolicyOptions contains the optional parameters for the Share.GetAccessPolicy method.
@@ -802,16 +878,25 @@ type ShareProperties struct {
 	LastModified *time.Time `xml:"Last-Modified"`
 
 	// REQUIRED
-	Quota                         *int32     `xml:"Quota"`
-	AccessTier                    *string    `xml:"AccessTier"`
-	AccessTierChangeTime          *time.Time `xml:"AccessTierChangeTime"`
-	AccessTierTransitionState     *string    `xml:"AccessTierTransitionState"`
-	DeletedTime                   *time.Time `xml:"DeletedTime"`
-	NextAllowedQuotaDowngradeTime *time.Time `xml:"NextAllowedQuotaDowngradeTime"`
-	ProvisionedEgressMBps         *int32     `xml:"ProvisionedEgressMBps"`
-	ProvisionedIngressMBps        *int32     `xml:"ProvisionedIngressMBps"`
-	ProvisionedIops               *int32     `xml:"ProvisionedIops"`
-	RemainingRetentionDays        *int32     `xml:"RemainingRetentionDays"`
+	Quota                     *int32     `xml:"Quota"`
+	AccessTier                *string    `xml:"AccessTier"`
+	AccessTierChangeTime      *time.Time `xml:"AccessTierChangeTime"`
+	AccessTierTransitionState *string    `xml:"AccessTierTransitionState"`
+	DeletedTime               *time.Time `xml:"DeletedTime"`
+
+	// When a share is leased, specifies whether the lease is of infinite or fixed duration.
+	LeaseDuration *LeaseDurationType `xml:"LeaseDuration"`
+
+	// Lease state of the share.
+	LeaseState *LeaseStateType `xml:"LeaseState"`
+
+	// The current lease status of the share.
+	LeaseStatus                   *LeaseStatusType `xml:"LeaseStatus"`
+	NextAllowedQuotaDowngradeTime *time.Time       `xml:"NextAllowedQuotaDowngradeTime"`
+	ProvisionedEgressMBps         *int32           `xml:"ProvisionedEgressMBps"`
+	ProvisionedIngressMBps        *int32           `xml:"ProvisionedIngressMBps"`
+	ProvisionedIops               *int32           `xml:"ProvisionedIops"`
+	RemainingRetentionDays        *int32           `xml:"RemainingRetentionDays"`
 }
 
 // MarshalXML implements the xml.Marshaller interface for type ShareProperties.
@@ -853,6 +938,34 @@ func (s *ShareProperties) UnmarshalXML(d *xml.Decoder, start xml.StartElement) e
 	s.LastModified = (*time.Time)(aux.LastModified)
 	s.NextAllowedQuotaDowngradeTime = (*time.Time)(aux.NextAllowedQuotaDowngradeTime)
 	return nil
+}
+
+// ShareProtocolSettings - Protocol settings
+type ShareProtocolSettings struct {
+	// Settings for SMB protocol.
+	Smb *ShareSmbSettings `xml:"SMB"`
+}
+
+// ShareReleaseLeaseOptions contains the optional parameters for the Share.ReleaseLease method.
+type ShareReleaseLeaseOptions struct {
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+	RequestID *string
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
+	// Timeouts for File Service Operations.</a>
+	Timeout *int32
+}
+
+// ShareRenewLeaseOptions contains the optional parameters for the Share.RenewLease method.
+type ShareRenewLeaseOptions struct {
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+	RequestID *string
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	Sharesnapshot *string
+	// The timeout parameter is expressed in seconds. For more information, see <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN">Setting
+	// Timeouts for File Service Operations.</a>
+	Timeout *int32
 }
 
 // ShareRestoreOptions contains the optional parameters for the Share.Restore method.
@@ -897,6 +1010,12 @@ type ShareSetPropertiesOptions struct {
 	Timeout *int32
 }
 
+// ShareSmbSettings - Settings for SMB protocol.
+type ShareSmbSettings struct {
+	// Settings for SMB Multichannel.
+	Multichannel *SmbMultichannel `xml:"Multichannel"`
+}
+
 // ShareStats - Stats for the share.
 type ShareStats struct {
 	// REQUIRED; The approximate size of the data stored in bytes. Note that this value may not include all recently created or recently resized files.
@@ -916,12 +1035,6 @@ type SignedIdentifier struct {
 type SmbMultichannel struct {
 	// If SMB multichannel is enabled.
 	Enabled *bool `xml:"Enabled"`
-}
-
-// SmbSettings - Settings for SMB protocol.
-type SmbSettings struct {
-	// Settings for SMB Multichannel.
-	Multichannel *SmbMultichannel `xml:"Multichannel"`
 }
 
 // SourceModifiedAccessConditions contains a group of parameters for the File.UploadRangeFromURL method.
@@ -956,7 +1069,7 @@ type StorageServiceProperties struct {
 	MinuteMetrics *Metrics `xml:"MinuteMetrics"`
 
 	// Protocol settings
-	ProtocolSettings *ProtocolSettings `xml:"ProtocolSettings"`
+	Protocol *ShareProtocolSettings `xml:"ProtocolSettings"`
 }
 
 // MarshalXML implements the xml.Marshaller interface for type StorageServiceProperties.

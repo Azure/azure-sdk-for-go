@@ -25,7 +25,7 @@ type directoryClient struct {
 
 // Create - Creates a new directory under the specified share or parent directory.
 // If the operation fails it returns the *StorageError error type.
-func (client *directoryClient) Create(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryCreateOptions) (DirectoryCreateResponse, error) {
+func (client *directoryClient) Create(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectoryCreateOptions) (DirectoryCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options)
 	if err != nil {
 		return DirectoryCreateResponse{}, err
@@ -41,7 +41,7 @@ func (client *directoryClient) Create(ctx context.Context, fileAttributes string
 }
 
 // createCreateRequest creates the Create request.
-func (client *directoryClient) createCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectoryCreateOptions) (*policy.Request, error) {
+func (client *directoryClient) createCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectoryCreateOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
 	if err != nil {
 		return nil, err
@@ -57,7 +57,7 @@ func (client *directoryClient) createCreateRequest(ctx context.Context, fileAttr
 			req.Raw().Header.Set("x-ms-meta-"+k, v)
 		}
 	}
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	if options != nil && options.FilePermission != nil {
 		req.Raw().Header.Set("x-ms-file-permission", *options.FilePermission)
 	}
@@ -65,8 +65,8 @@ func (client *directoryClient) createCreateRequest(ctx context.Context, fileAttr
 		req.Raw().Header.Set("x-ms-file-permission-key", *options.FilePermissionKey)
 	}
 	req.Raw().Header.Set("x-ms-file-attributes", fileAttributes)
-	req.Raw().Header.Set("x-ms-file-creation-time", fileCreationTime.Format(time.RFC1123))
-	req.Raw().Header.Set("x-ms-file-last-write-time", fileLastWriteTime.Format(time.RFC1123))
+	req.Raw().Header.Set("x-ms-file-creation-time", fileCreationTime)
+	req.Raw().Header.Set("x-ms-file-last-write-time", fileLastWriteTime)
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
@@ -111,25 +111,13 @@ func (client *directoryClient) createHandleResponse(resp *http.Response) (Direct
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectoryCreateResponse{}, err
-		}
-		result.FileCreationTime = &fileCreationTime
+		result.FileCreationTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectoryCreateResponse{}, err
-		}
-		result.FileLastWriteTime = &fileLastWriteTime
+		result.FileLastWriteTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectoryCreateResponse{}, err
-		}
-		result.FileChangeTime = &fileChangeTime
+		result.FileChangeTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
 		result.FileID = &val
@@ -182,7 +170,7 @@ func (client *directoryClient) deleteCreateRequest(ctx context.Context, options 
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
@@ -258,7 +246,7 @@ func (client *directoryClient) forceCloseHandlesCreateRequest(ctx context.Contex
 	if options != nil && options.Recursive != nil {
 		req.Raw().Header.Set("x-ms-recursive", strconv.FormatBool(*options.Recursive))
 	}
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
@@ -348,7 +336,7 @@ func (client *directoryClient) getPropertiesCreateRequest(ctx context.Context, o
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
@@ -398,25 +386,13 @@ func (client *directoryClient) getPropertiesHandleResponse(resp *http.Response) 
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectoryGetPropertiesResponse{}, err
-		}
-		result.FileCreationTime = &fileCreationTime
+		result.FileCreationTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectoryGetPropertiesResponse{}, err
-		}
-		result.FileLastWriteTime = &fileLastWriteTime
+		result.FileLastWriteTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectoryGetPropertiesResponse{}, err
-		}
-		result.FileChangeTime = &fileChangeTime
+		result.FileChangeTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-permission-key"); val != "" {
 		result.FilePermissionKey = &val
@@ -483,7 +459,7 @@ func (client *directoryClient) listFilesAndDirectoriesSegmentCreateRequest(ctx c
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
@@ -567,7 +543,7 @@ func (client *directoryClient) listHandlesCreateRequest(ctx context.Context, opt
 	if options != nil && options.Recursive != nil {
 		req.Raw().Header.Set("x-ms-recursive", strconv.FormatBool(*options.Recursive))
 	}
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
@@ -645,7 +621,7 @@ func (client *directoryClient) setMetadataCreateRequest(ctx context.Context, opt
 			req.Raw().Header.Set("x-ms-meta-"+k, v)
 		}
 	}
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
@@ -694,7 +670,7 @@ func (client *directoryClient) setMetadataHandleError(resp *http.Response) error
 
 // SetProperties - Sets properties on the directory.
 // If the operation fails it returns the *StorageError error type.
-func (client *directoryClient) SetProperties(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectorySetPropertiesOptions) (DirectorySetPropertiesResponse, error) {
+func (client *directoryClient) SetProperties(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectorySetPropertiesOptions) (DirectorySetPropertiesResponse, error) {
 	req, err := client.setPropertiesCreateRequest(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, options)
 	if err != nil {
 		return DirectorySetPropertiesResponse{}, err
@@ -710,7 +686,7 @@ func (client *directoryClient) SetProperties(ctx context.Context, fileAttributes
 }
 
 // setPropertiesCreateRequest creates the SetProperties request.
-func (client *directoryClient) setPropertiesCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, options *DirectorySetPropertiesOptions) (*policy.Request, error) {
+func (client *directoryClient) setPropertiesCreateRequest(ctx context.Context, fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectorySetPropertiesOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.con.Endpoint())
 	if err != nil {
 		return nil, err
@@ -722,7 +698,7 @@ func (client *directoryClient) setPropertiesCreateRequest(ctx context.Context, f
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
 	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header.Set("x-ms-version", "2019-12-12")
+	req.Raw().Header.Set("x-ms-version", "2020-02-10")
 	if options != nil && options.FilePermission != nil {
 		req.Raw().Header.Set("x-ms-file-permission", *options.FilePermission)
 	}
@@ -730,8 +706,8 @@ func (client *directoryClient) setPropertiesCreateRequest(ctx context.Context, f
 		req.Raw().Header.Set("x-ms-file-permission-key", *options.FilePermissionKey)
 	}
 	req.Raw().Header.Set("x-ms-file-attributes", fileAttributes)
-	req.Raw().Header.Set("x-ms-file-creation-time", fileCreationTime.Format(time.RFC1123))
-	req.Raw().Header.Set("x-ms-file-last-write-time", fileLastWriteTime.Format(time.RFC1123))
+	req.Raw().Header.Set("x-ms-file-creation-time", fileCreationTime)
+	req.Raw().Header.Set("x-ms-file-last-write-time", fileLastWriteTime)
 	req.Raw().Header.Set("Accept", "application/xml")
 	return req, nil
 }
@@ -776,25 +752,13 @@ func (client *directoryClient) setPropertiesHandleResponse(resp *http.Response) 
 		result.FileAttributes = &val
 	}
 	if val := resp.Header.Get("x-ms-file-creation-time"); val != "" {
-		fileCreationTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectorySetPropertiesResponse{}, err
-		}
-		result.FileCreationTime = &fileCreationTime
+		result.FileCreationTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-last-write-time"); val != "" {
-		fileLastWriteTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectorySetPropertiesResponse{}, err
-		}
-		result.FileLastWriteTime = &fileLastWriteTime
+		result.FileLastWriteTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-change-time"); val != "" {
-		fileChangeTime, err := time.Parse(time.RFC1123, val)
-		if err != nil {
-			return DirectorySetPropertiesResponse{}, err
-		}
-		result.FileChangeTime = &fileChangeTime
+		result.FileChangeTime = &val
 	}
 	if val := resp.Header.Get("x-ms-file-id"); val != "" {
 		result.FileID = &val

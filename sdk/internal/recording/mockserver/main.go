@@ -19,11 +19,14 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Success", time.Now().String())
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Location", "Next-Location")
-	json.NewEncoder(w).Encode(map[string]string{
+	err := json.NewEncoder(w).Encode(map[string]string{
 		"Tag":  "Value",
 		"Tag2": "Value2",
 		"Tag3": "https://storageaccount.table.core.windows.net/",
 	})
+	if err != nil {
+		log.Fatalf("error writing the response")
+	}
 }
 
 func main() {

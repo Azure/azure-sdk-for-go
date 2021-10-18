@@ -5,4 +5,4 @@
 
 # Start the test server in the background for sanitizers
 
-Start-Job go run ./recording/mockserver/. 
+go run ./recording/mockserver/.

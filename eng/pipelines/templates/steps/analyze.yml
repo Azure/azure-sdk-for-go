@@ -70,6 +70,7 @@ steps:
     workingDirectory: 'sdk/${{parameters.ServiceDirectory}}'
 
   - template: /eng/common/pipelines/templates/steps/verify-links.yml
+    condition: succeededOrFailed()
     parameters:
       Directory: sdk/${{ parameters.ServiceDirectory }}
       CheckLinkGuidance: $true
@@ -78,6 +79,7 @@ steps:
 
   - ${{if eq(parameters.NonShipping, 'false')}}:
     - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+      condition: succeededOrFailed()
       parameters:
         PackageName: 'sdk/${{parameters.ServiceDirectory}}'
         ForRelease: false

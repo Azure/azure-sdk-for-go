@@ -28,6 +28,7 @@ type Client struct {
 	vaultURL   string
 	keyID      string
 	keyVersion string
+	useService bool
 }
 
 // ClientOptions are the configurable options on a Client.
@@ -58,7 +59,6 @@ func (c *ClientOptions) toConnectionOptions() *internal.ConnectionOptions {
 	if c == nil {
 		return nil
 	}
-
 	return &internal.ConnectionOptions{
 		HTTPClient:       c.Transport,
 		Retry:            c.Retry,
@@ -115,6 +115,7 @@ func NewClient(key string, cred azcore.TokenCredential, options *ClientOptions) 
 		vaultURL:   vaultURL,
 		keyID:      keyID,
 		keyVersion: keyVersion,
+		useService: true,
 	}, nil
 }
 
@@ -165,24 +166,34 @@ func encryptResponseFromGenerated(i internal.KeyVaultClientEncryptResponse) Encr
 	}
 }
 
+// The ENCRYPT operation encrypts an arbitrary sequence of bytes using an encryption key that is stored in
+// Azure Key Vault. Note that the ENCRYPT operation only supports a single block of data, the size of which
+// is dependent on the target key and the encryption algorithm to be used. The ENCRYPT operation is only
+// strictly necessary for symmetric keys stored in Azure Key Vault since protection with an asymmetric key
+// can be performed using public portion of the key. This operation is supported for asymmetric keys as a
+// convenience for callers that have a key-reference but do not have access to the public key material.
+// This operation requires the keys/encrypt permission.
 func (c *Client) Encrypt(ctx context.Context, alg EncryptionAlgorithm, value []byte, options *EncryptOptions) (EncryptResponse, error) {
 	if options == nil {
 		options = &EncryptOptions{}
 	}
 
-	resp, err := c.kvClient.Encrypt(
-		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
-		options.toGeneratedKeyOperationsParameters(alg, value),
-		&internal.KeyVaultClientEncryptOptions{},
-	)
-	if err != nil {
-		return EncryptResponse{}, err
-	}
+	if c.useService {
+		resp, err := c.kvClient.Encrypt(
+			ctx,
+			c.vaultURL,
+			c.keyID,
+			c.keyVersion,
+			options.toGeneratedKeyOperationsParameters(alg, value),
+			&internal.KeyVaultClientEncryptOptions{},
+		)
+		if err != nil {
+			return EncryptResponse{}, err
+		}
 
-	return encryptResponseFromGenerated(resp), nil
+		return encryptResponseFromGenerated(resp), nil
+	}
+	return EncryptResponse{}, nil
 }
 
 // DecryptOptions contains the optional parameters for the Client.Decrypt function
@@ -226,27 +237,36 @@ func decryptResponseFromGenerated(i internal.KeyVaultClientDecryptResponse) Decr
 	}
 }
 
+// The DECRYPT operation decrypts a well-formed block of ciphertext using the target encryption key and
+// specified algorithm. This operation is the reverse of the ENCRYPT operation; only a single block of
+// data may be decrypted, the size of this block is dependent on the target key and the algorithm to be
+// used. The DECRYPT operation applies to asymmetric and symmetric keys stored in Azure Key Vault since
+// it uses the private portion of the key. This operation requires the keys/decrypt permission.
 func (c *Client) Decrypt(ctx context.Context, alg EncryptionAlgorithm, ciphertext []byte, options *DecryptOptions) (DecryptResponse, error) {
 	if options == nil {
 		options = &DecryptOptions{}
 	}
 
-	resp, err := c.kvClient.Decrypt(
-		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
-		options.toGeneratedKeyOperationsParameters(alg, ciphertext),
-		&internal.KeyVaultClientDecryptOptions{},
-	)
+	if c.useService {
+		resp, err := c.kvClient.Decrypt(
+			ctx,
+			c.vaultURL,
+			c.keyID,
+			c.keyVersion,
+			options.toGeneratedKeyOperationsParameters(alg, ciphertext),
+			&internal.KeyVaultClientDecryptOptions{},
+		)
 
-	if err != nil {
-		return DecryptResponse{}, err
+		if err != nil {
+			return DecryptResponse{}, err
+		}
+
+		return decryptResponseFromGenerated(resp), nil
 	}
-
-	return decryptResponseFromGenerated(resp), nil
+	return DecryptResponse{}, nil
 }
 
+// WrapKeyOptions contains the optional parameters for the Client.WrapKey method.
 type WrapKeyOptions struct {
 	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
 	AAD []byte `json:"aad,omitempty"`
@@ -288,27 +308,36 @@ func wrapKeyResponseFromGenerated(i internal.KeyVaultClientWrapKeyResponse) Wrap
 	}
 }
 
+// The WRAP operation supports encryption of a symmetric key using a key encryption key that has previously
+// been stored in an Azure Key Vault. The WRAP operation is only strictly necessary for symmetric keys stored
+//in Azure Key Vault since protection with an asymmetric key can be performed using the public portion of
+// the key. This operation is supported for asymmetric keys as a convenience for callers that have a
+// key-reference but do not have access to the public key material. This operation requires the keys/wrapKey permission.
 func (c *Client) WrapKey(ctx context.Context, alg KeyWrapAlgorithm, key []byte, options *WrapKeyOptions) (WrapKeyResponse, error) {
 	if options == nil {
 		options = &WrapKeyOptions{}
 	}
 
-	resp, err := c.kvClient.WrapKey(
-		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
-		options.toGeneratedKeyOperationsParameters(alg, key),
-		&internal.KeyVaultClientWrapKeyOptions{},
-	)
+	if c.useService {
+		resp, err := c.kvClient.WrapKey(
+			ctx,
+			c.vaultURL,
+			c.keyID,
+			c.keyVersion,
+			options.toGeneratedKeyOperationsParameters(alg, key),
+			&internal.KeyVaultClientWrapKeyOptions{},
+		)
 
-	if err != nil {
-		return WrapKeyResponse{}, err
+		if err != nil {
+			return WrapKeyResponse{}, err
+		}
+
+		return wrapKeyResponseFromGenerated(resp), nil
 	}
-
-	return wrapKeyResponseFromGenerated(resp), nil
+	return WrapKeyResponse{}, nil
 }
 
+// UnwrapKeyOptions contains the optional parameters for the Client.UnwrapKey method
 type UnwrapKeyOptions struct {
 	// Additional data to authenticate but not encrypt/decrypt when using authenticated crypto algorithms.
 	AAD []byte `json:"aad,omitempty"`
@@ -330,6 +359,7 @@ func (w UnwrapKeyOptions) toGeneratedKeyOperationsParameters(alg KeyWrapAlgorith
 	}
 }
 
+// UnwrapKeyResponse contains the response for the Client.UnwrapKey method
 type UnwrapKeyResponse struct {
 	KeyOperationResult
 	// RawResponse contains the underlying HTTP response.
@@ -349,24 +379,31 @@ func unwrapKeyResponseFromGenerated(i internal.KeyVaultClientUnwrapKeyResponse) 
 	}
 }
 
+// UnwrapKey - The UNWRAP operation supports decryption of a symmetric key using the target key encryption key.
+// This operation is the reverse of the WRAP operation. The UNWRAP operation applies to asymmetric and symmetric
+// keys stored in Azure Key Vault since it uses the private portion of the key. This operation requires the
+// keys/unwrapKey permission.
 func (c *Client) UnwrapKey(ctx context.Context, alg KeyWrapAlgorithm, encryptedKey []byte, options *UnwrapKeyOptions) (UnwrapKeyResponse, error) {
 	if options == nil {
 		options = &UnwrapKeyOptions{}
 	}
 
-	resp, err := c.kvClient.UnwrapKey(
-		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
-		options.toGeneratedKeyOperationsParameters(alg, encryptedKey),
-		&internal.KeyVaultClientUnwrapKeyOptions{},
-	)
-	if err != nil {
-		return UnwrapKeyResponse{}, err
-	}
+	if c.useService {
+		resp, err := c.kvClient.UnwrapKey(
+			ctx,
+			c.vaultURL,
+			c.keyID,
+			c.keyVersion,
+			options.toGeneratedKeyOperationsParameters(alg, encryptedKey),
+			&internal.KeyVaultClientUnwrapKeyOptions{},
+		)
+		if err != nil {
+			return UnwrapKeyResponse{}, err
+		}
 
-	return unwrapKeyResponseFromGenerated(resp), nil
+		return unwrapKeyResponseFromGenerated(resp), nil
+	}
+	return UnwrapKeyResponse{}, nil
 }
 
 // SignOptions contains the optional parameters for the Client.Sign method.
@@ -396,27 +433,32 @@ func signResponseFromGenerated(i internal.KeyVaultClientSignResponse) SignRespon
 	}
 }
 
+// The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since
+// this operation uses the private portion of the key. This operation requires the keys/sign permission.
 func (c *Client) Sign(ctx context.Context, algorithm SignatureAlgorithm, digest []byte, options *SignOptions) (SignResponse, error) {
 	if options == nil {
 		options = &SignOptions{}
 	}
 
-	resp, err := c.kvClient.Sign(
-		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
-		internal.KeySignParameters{
-			Algorithm: (*internal.JSONWebKeySignatureAlgorithm)(&algorithm),
-			Value:     digest,
-		},
-		options.toGenerated(),
-	)
-	if err != nil {
-		return SignResponse{}, err
-	}
+	if c.useService {
+		resp, err := c.kvClient.Sign(
+			ctx,
+			c.vaultURL,
+			c.keyID,
+			c.keyVersion,
+			internal.KeySignParameters{
+				Algorithm: (*internal.JSONWebKeySignatureAlgorithm)(&algorithm),
+				Value:     digest,
+			},
+			options.toGenerated(),
+		)
+		if err != nil {
+			return SignResponse{}, err
+		}
 
-	return signResponseFromGenerated(resp), nil
+		return signResponseFromGenerated(resp), nil
+	}
+	return SignResponse{}, nil
 }
 
 // VerifyOptions contains the optional parameters for the Client.Verify method
@@ -442,27 +484,34 @@ func verifyResponseFromGenerated(i internal.KeyVaultClientVerifyResponse) Verify
 	}
 }
 
+// The VERIFY operation is applicable to symmetric keys stored in Azure Key Vault. VERIFY is not strictly
+// necessary for asymmetric keys stored in Azure Key Vault since signature verification can be performed
+// using the public portion of the key but this operation is supported as a convenience for callers that
+// only have a key-reference and not the public portion of the key. This operation requires the keys/verify permission.
 func (c *Client) Verify(ctx context.Context, algorithm SignatureAlgorithm, digest []byte, signature []byte, options *VerifyOptions) (VerifyResponse, error) {
 	if options == nil {
 		options = &VerifyOptions{}
 	}
 
-	resp, err := c.kvClient.Verify(
-		ctx,
-		c.vaultURL,
-		c.keyID,
-		c.keyVersion,
-		internal.KeyVerifyParameters{
-			Algorithm: (*internal.JSONWebKeySignatureAlgorithm)(&algorithm),
-			Digest:    digest,
-			Signature: signature,
-		},
-		options.toGenerated(),
-	)
+	if c.useService {
+		resp, err := c.kvClient.Verify(
+			ctx,
+			c.vaultURL,
+			c.keyID,
+			c.keyVersion,
+			internal.KeyVerifyParameters{
+				Algorithm: (*internal.JSONWebKeySignatureAlgorithm)(&algorithm),
+				Digest:    digest,
+				Signature: signature,
+			},
+			options.toGenerated(),
+		)
 
-	if err != nil {
-		return VerifyResponse{}, err
+		if err != nil {
+			return VerifyResponse{}, err
+		}
+
+		return verifyResponseFromGenerated(resp), nil
 	}
-
-	return verifyResponseFromGenerated(resp), nil
+	return VerifyResponse{}, nil
 }

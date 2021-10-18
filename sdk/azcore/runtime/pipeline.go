@@ -13,9 +13,9 @@ import (
 
 // NewPipeline creates a pipeline from connection options, with any additional policies as specified.
 // module, version: used by the telemetry policy, when enabled
-// perCallPolicies: additional policies to invoke once per request
-// perRetryPolicies: additional policies to invoke once per request and once per retry of that request
-func NewPipeline(module, version string, perCallPolicies []policy.Policy, perRetryPolicies []policy.Policy, options *policy.ClientOptions) Pipeline {
+// perCall: additional policies to invoke once per request
+// perRetry: additional policies to invoke once per request and once per retry of that request
+func NewPipeline(module, version string, perCall, perRetry []policy.Policy, options *policy.ClientOptions) Pipeline {
 	if options == nil {
 		options = &policy.ClientOptions{}
 	}
@@ -24,10 +24,10 @@ func NewPipeline(module, version string, perCallPolicies []policy.Policy, perRet
 		policies = append(policies, NewTelemetryPolicy(module, version, &options.Telemetry))
 	}
 	policies = append(policies, options.PerCallPolicies...)
-	policies = append(policies, perCallPolicies...)
+	policies = append(policies, perCall...)
 	policies = append(policies, NewRetryPolicy(&options.Retry))
 	policies = append(policies, options.PerRetryPolicies...)
-	policies = append(policies, perRetryPolicies...)
+	policies = append(policies, perRetry...)
 	policies = append(policies, NewLogPolicy(&options.Logging))
 	policies = append(policies, pipeline.PolicyFunc(httpHeaderPolicy), pipeline.PolicyFunc(bodyDownloadPolicy))
 	transport := options.Transport

@@ -152,10 +152,12 @@ func (c *cosmosClientConnection) createRequest(
 		return nil, err
 	}
 
-	headers := requestOptions.toHeaders()
-	if headers != nil {
-		for k, v := range *headers {
-			req.Raw().Header.Set(k, v)
+	if requestOptions != nil {
+		headers := requestOptions.toHeaders()
+		if headers != nil {
+			for k, v := range *headers {
+				req.Raw().Header.Set(k, v)
+			}
 		}
 	}
 

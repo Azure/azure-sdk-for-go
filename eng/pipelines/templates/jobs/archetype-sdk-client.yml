@@ -117,6 +117,7 @@ stages:
           Image: $(vm.image)
           GoVersion: $(go.version)
           RunTests: ${{ parameters.RunTests }}
+          TestProxy: true
           EnvVars:
             AZURE_RECORD_MODE: ${{ coalesce(parameters.EnvVars.AZURE_RECORD_MODE, 'playback') }}
 

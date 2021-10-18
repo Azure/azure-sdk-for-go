@@ -60,8 +60,8 @@ handle(err)
 Using the client created in previous example, you can create a database like this:
 
 ```go
-database := azcosmos.CosmosDatabaseProperties{Id: dbName}
-response, err := client.CreateDatabase(context, database, nil, nil)
+database := azcosmos.DatabaseProperties{Id: dbName}
+response, err := client.CreateDatabase(context, database, nil)
 handle(err)
 ```
 
@@ -70,7 +70,7 @@ handle(err)
 Using the above created database for creating a container, like this:
 
 ```go
-properties := azcosmos.CosmosContainerProperties{
+properties := azcosmos.ContainerProperties{
     Id: "aContainer",
     PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
         Paths: []string{"/id"},
@@ -78,7 +78,7 @@ properties := azcosmos.CosmosContainerProperties{
 }
 
 throughput := azcosmos.NewManualThroughputProperties(400)
-response, err := database.CreateContainer(context, properties, throughput, nil)
+response, err := database.CreateContainer(context, properties, &CreateContainerOptions{ThroughputProperties: throughput})
 handle(err)
 container := resp.ContainerProperties.Container
 ```
@@ -92,21 +92,21 @@ item := map[string]string{
 }
 
 // Create partition key
-container := client.GetCosmosContainer(dbName, containerName)
+container := client.GetContainer(dbName, containerName)
 pk, err := azcosmos.NewPartitionKey("1")
 handle(err)
 
 // Create an item
-itemResponse, err := container.CreateItem(context, pk, item, nil)
+itemResponse, err := container.CreateItem(context, &pk, item, nil)
 handle(err)
 
-itemResponse, err = container.ReadItem(context, pk, "1", nil)
+itemResponse, err = container.ReadItem(context, &pk, "1", nil)
 handle(err)
 
-itemResponse, err = container.ReplaceItem(context, pk, "1", item, nil)
+itemResponse, err = container.ReplaceItem(context, &pk, "1", item, nil)
 handle(err)
 
-itemResponse, err = container.DeleteItem(context, pk, "1", nil)
+itemResponse, err = container.DeleteItem(context, &pk, "1", nil)
 handle(err)
 ```
 

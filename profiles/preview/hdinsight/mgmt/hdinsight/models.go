@@ -12,7 +12,7 @@ package hdinsight
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/hdinsight/mgmt/2018-06-01/hdinsight"
+	original "github.com/Azure/azure-sdk-for-go/services/hdinsight/mgmt/2021-06-01/hdinsight"
 )
 
 const (
@@ -35,6 +35,15 @@ const (
 	ClusterProvisioningStateFailed     ClusterProvisioningState = original.ClusterProvisioningStateFailed
 	ClusterProvisioningStateInProgress ClusterProvisioningState = original.ClusterProvisioningStateInProgress
 	ClusterProvisioningStateSucceeded  ClusterProvisioningState = original.ClusterProvisioningStateSucceeded
+)
+
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type DaysOfWeek = original.DaysOfWeek
@@ -79,11 +88,48 @@ const (
 	OSTypeWindows OSType = original.OSTypeWindows
 )
 
+type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
+
+const (
+	PrivateEndpointConnectionProvisioningStateCanceled   PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateCanceled
+	PrivateEndpointConnectionProvisioningStateDeleting   PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateDeleting
+	PrivateEndpointConnectionProvisioningStateFailed     PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateFailed
+	PrivateEndpointConnectionProvisioningStateInProgress PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateInProgress
+	PrivateEndpointConnectionProvisioningStateSucceeded  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateSucceeded
+	PrivateEndpointConnectionProvisioningStateUpdating   PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateUpdating
+)
+
+type PrivateIPAllocationMethod = original.PrivateIPAllocationMethod
+
+const (
+	PrivateIPAllocationMethodDynamic PrivateIPAllocationMethod = original.PrivateIPAllocationMethodDynamic
+	PrivateIPAllocationMethodStatic  PrivateIPAllocationMethod = original.PrivateIPAllocationMethodStatic
+)
+
 type PrivateLink = original.PrivateLink
 
 const (
 	PrivateLinkDisabled PrivateLink = original.PrivateLinkDisabled
 	PrivateLinkEnabled  PrivateLink = original.PrivateLinkEnabled
+)
+
+type PrivateLinkConfigurationProvisioningState = original.PrivateLinkConfigurationProvisioningState
+
+const (
+	PrivateLinkConfigurationProvisioningStateCanceled   PrivateLinkConfigurationProvisioningState = original.PrivateLinkConfigurationProvisioningStateCanceled
+	PrivateLinkConfigurationProvisioningStateDeleting   PrivateLinkConfigurationProvisioningState = original.PrivateLinkConfigurationProvisioningStateDeleting
+	PrivateLinkConfigurationProvisioningStateFailed     PrivateLinkConfigurationProvisioningState = original.PrivateLinkConfigurationProvisioningStateFailed
+	PrivateLinkConfigurationProvisioningStateInProgress PrivateLinkConfigurationProvisioningState = original.PrivateLinkConfigurationProvisioningStateInProgress
+	PrivateLinkConfigurationProvisioningStateSucceeded  PrivateLinkConfigurationProvisioningState = original.PrivateLinkConfigurationProvisioningStateSucceeded
+)
+
+type PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatus
+
+const (
+	PrivateLinkServiceConnectionStatusApproved PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusApproved
+	PrivateLinkServiceConnectionStatusPending  PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusPending
+	PrivateLinkServiceConnectionStatusRejected PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusRejected
+	PrivateLinkServiceConnectionStatusRemoved  PrivateLinkServiceConnectionStatus = original.PrivateLinkServiceConnectionStatusRemoved
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
@@ -127,6 +173,7 @@ type AutoscaleConfigurationUpdateParameter = original.AutoscaleConfigurationUpda
 type AutoscaleRecurrence = original.AutoscaleRecurrence
 type AutoscaleSchedule = original.AutoscaleSchedule
 type AutoscaleTimeAndCapacity = original.AutoscaleTimeAndCapacity
+type AzureEntityResource = original.AzureEntityResource
 type AzureMonitorRequest = original.AzureMonitorRequest
 type AzureMonitorResponse = original.AzureMonitorResponse
 type AzureMonitorSelectedConfigurations = original.AzureMonitorSelectedConfigurations
@@ -147,12 +194,10 @@ type ClusterDefinition = original.ClusterDefinition
 type ClusterDiskEncryptionParameters = original.ClusterDiskEncryptionParameters
 type ClusterGetProperties = original.ClusterGetProperties
 type ClusterIdentity = original.ClusterIdentity
-type ClusterIdentityUserAssignedIdentitiesValue = original.ClusterIdentityUserAssignedIdentitiesValue
 type ClusterListPersistedScriptActionsResult = original.ClusterListPersistedScriptActionsResult
 type ClusterListResult = original.ClusterListResult
 type ClusterListResultIterator = original.ClusterListResultIterator
 type ClusterListResultPage = original.ClusterListResultPage
-type ClusterListRuntimeScriptActionDetailResult = original.ClusterListRuntimeScriptActionDetailResult
 type ClusterMonitoringRequest = original.ClusterMonitoringRequest
 type ClusterMonitoringResponse = original.ClusterMonitoringResponse
 type ClusterPatchParameters = original.ClusterPatchParameters
@@ -191,6 +236,8 @@ type ExtensionsEnableMonitoringFuture = original.ExtensionsEnableMonitoringFutur
 type GatewaySettings = original.GatewaySettings
 type HardwareProfile = original.HardwareProfile
 type HostInfo = original.HostInfo
+type IPConfiguration = original.IPConfiguration
+type IPConfigurationProperties = original.IPConfigurationProperties
 type KafkaRestProperties = original.KafkaRestProperties
 type LinuxOperatingSystemProfile = original.LinuxOperatingSystemProfile
 type ListHostInfo = original.ListHostInfo
@@ -208,12 +255,29 @@ type OperationListResultPage = original.OperationListResultPage
 type OperationProperties = original.OperationProperties
 type OperationsClient = original.OperationsClient
 type OsProfile = original.OsProfile
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionListResultIterator = original.PrivateEndpointConnectionListResultIterator
+type PrivateEndpointConnectionListResultPage = original.PrivateEndpointConnectionListResultPage
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateEndpointConnectionsCreateOrUpdateFuture = original.PrivateEndpointConnectionsCreateOrUpdateFuture
+type PrivateEndpointConnectionsDeleteFuture = original.PrivateEndpointConnectionsDeleteFuture
+type PrivateLinkConfiguration = original.PrivateLinkConfiguration
+type PrivateLinkConfigurationProperties = original.PrivateLinkConfigurationProperties
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type ProxyResource = original.ProxyResource
 type QuotaCapability = original.QuotaCapability
 type QuotaInfo = original.QuotaInfo
 type RegionalQuotaCapability = original.RegionalQuotaCapability
 type RegionsCapability = original.RegionsCapability
 type Resource = original.Resource
+type ResourceID = original.ResourceID
 type Role = original.Role
 type RuntimeScriptAction = original.RuntimeScriptAction
 type RuntimeScriptActionDetail = original.RuntimeScriptActionDetail
@@ -235,15 +299,15 @@ type ServiceSpecification = original.ServiceSpecification
 type SetString = original.SetString
 type StorageAccount = original.StorageAccount
 type StorageProfile = original.StorageProfile
+type SystemData = original.SystemData
 type TrackedResource = original.TrackedResource
 type UpdateClusterIdentityCertificateParameters = original.UpdateClusterIdentityCertificateParameters
 type UpdateGatewaySettingsParameters = original.UpdateGatewaySettingsParameters
 type Usage = original.Usage
 type UsagesListResult = original.UsagesListResult
-type VMSizeCompatibilityFilter = original.VMSizeCompatibilityFilter
+type UserAssignedIdentity = original.UserAssignedIdentity
 type VMSizeCompatibilityFilterV2 = original.VMSizeCompatibilityFilterV2
 type VMSizeProperty = original.VMSizeProperty
-type VMSizesCapability = original.VMSizesCapability
 type ValidationErrorInfo = original.ValidationErrorInfo
 type VersionSpec = original.VersionSpec
 type VersionsCapability = original.VersionsCapability
@@ -308,6 +372,24 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPrivateEndpointConnectionListResultIterator(page PrivateEndpointConnectionListResultPage) PrivateEndpointConnectionListResultIterator {
+	return original.NewPrivateEndpointConnectionListResultIterator(page)
+}
+func NewPrivateEndpointConnectionListResultPage(cur PrivateEndpointConnectionListResult, getNextPage func(context.Context, PrivateEndpointConnectionListResult) (PrivateEndpointConnectionListResult, error)) PrivateEndpointConnectionListResultPage {
+	return original.NewPrivateEndpointConnectionListResultPage(cur, getNextPage)
+}
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewScriptActionExecutionHistoryListIterator(page ScriptActionExecutionHistoryListPage) ScriptActionExecutionHistoryListIterator {
 	return original.NewScriptActionExecutionHistoryListIterator(page)
 }
@@ -347,6 +429,9 @@ func PossibleAsyncOperationStateValues() []AsyncOperationState {
 func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
 	return original.PossibleClusterProvisioningStateValues()
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleDaysOfWeekValues() []DaysOfWeek {
 	return original.PossibleDaysOfWeekValues()
 }
@@ -361,6 +446,18 @@ func PossibleJSONWebKeyEncryptionAlgorithmValues() []JSONWebKeyEncryptionAlgorit
 }
 func PossibleOSTypeValues() []OSType {
 	return original.PossibleOSTypeValues()
+}
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
+}
+func PossiblePrivateIPAllocationMethodValues() []PrivateIPAllocationMethod {
+	return original.PossiblePrivateIPAllocationMethodValues()
+}
+func PossiblePrivateLinkConfigurationProvisioningStateValues() []PrivateLinkConfigurationProvisioningState {
+	return original.PossiblePrivateLinkConfigurationProvisioningStateValues()
+}
+func PossiblePrivateLinkServiceConnectionStatusValues() []PrivateLinkServiceConnectionStatus {
+	return original.PossiblePrivateLinkServiceConnectionStatusValues()
 }
 func PossiblePrivateLinkValues() []PrivateLink {
 	return original.PossiblePrivateLinkValues()

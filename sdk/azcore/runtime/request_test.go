@@ -19,6 +19,7 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+	"time"
 	"unsafe"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
@@ -447,6 +448,37 @@ func TestCloneWithoutReadOnlyFieldsCloneByVal(t *testing.T) {
 	}
 	if um.Name == nil {
 		t.Fatal("unexpected nil Name")
+	}
+}
+
+func TestCloneWithoutReadOnlyFieldsTime(t *testing.T) {
+	id := int32(123)
+	expires := time.Date(2021, 10, 13, 8, 48, 31, 0, time.UTC)
+	type withTime struct {
+		ID      *int32     `json:"id" azure:"ro"`
+		Expires *time.Time `json:"expires"`
+	}
+	nro := withTime{
+		ID:      &id,
+		Expires: &expires,
+	}
+	v := cloneWithoutReadOnlyFields(nro)
+	b, err := json.Marshal(v)
+	if err != nil {
+		t.Fatal(err)
+	}
+	um := withTime{}
+	err = json.Unmarshal(b, &um)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if um.ID != nil {
+		t.Fatalf("expected nil ID, got %d", *um.ID)
+	}
+	if um.Expires == nil {
+		t.Fatal("unexpected nil Expires")
+	} else if *um.Expires != expires {
+		t.Fatalf("unexpected Expires %v", *um.Expires)
 	}
 }
 

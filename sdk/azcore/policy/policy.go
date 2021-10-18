@@ -26,6 +26,30 @@ type Transporter = pipeline.Transporter
 // Don't use this type directly, use runtime.NewRequest() instead.
 type Request = pipeline.Request
 
+// ClientOptions contains optional settings for a client's pipeline.
+// All zero-value fields will be initialized with default values.
+type ClientOptions struct {
+	// Logging configures the built-in logging policy.
+	Logging LogOptions
+
+	// Retry configures the built-in retry policy.
+	Retry RetryOptions
+
+	// Telemetry configures the built-in telemetry policy.
+	Telemetry TelemetryOptions
+
+	// Transport sets the transport for HTTP requests.
+	Transport Transporter
+
+	// PerCallPolicies contains custom policies to inject into the pipeline.
+	// Each policy is executed once per request.
+	PerCallPolicies []Policy
+
+	// PerRetryPolicies contains custom policies to inject into the pipeline.
+	// Each policy is executed once per request, and for each retry of that request.
+	PerRetryPolicies []Policy
+}
+
 // LogOptions configures the logging policy's behavior.
 type LogOptions struct {
 	// IncludeBody indicates if request and response bodies should be included in logging.

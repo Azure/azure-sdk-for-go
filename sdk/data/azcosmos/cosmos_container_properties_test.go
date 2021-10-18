@@ -16,7 +16,7 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 		Time: time.Unix(nowAsUnix, 0),
 	}
 
-	properties := &CosmosContainerProperties{
+	properties := &ContainerProperties{
 		Id:           "someId",
 		ETag:         "someEtag",
 		SelfLink:     "someSelfLink",
@@ -60,7 +60,7 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	otherProperties := &CosmosContainerProperties{}
+	otherProperties := &ContainerProperties{}
 	err = json.Unmarshal(jsonString, otherProperties)
 	if err != nil {
 		t.Fatal(err, string(jsonString))
@@ -158,7 +158,7 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 func TestContainerPropertiesSerializationWithTTL(t *testing.T) {
 	jsonString := []byte(`{"defaultTtl": 10, "analyticalStorageTtl": 20}`)
 
-	properties := &CosmosContainerProperties{}
+	properties := &ContainerProperties{}
 	err := json.Unmarshal(jsonString, properties)
 	if err != nil {
 		t.Fatal(err, string(jsonString))

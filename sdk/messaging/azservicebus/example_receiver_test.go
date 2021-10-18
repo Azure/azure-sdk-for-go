@@ -13,8 +13,8 @@ import (
 
 func ExampleClient_NewReceiverForSubscription() {
 	receiver, err = client.NewReceiverForSubscription(
-		topicName,
-		subscriptionName,
+		"exampleTopic",
+		"exampleSubscription",
 		&azservicebus.ReceiverOptions{
 			ReceiveMode: azservicebus.PeekLock,
 		},
@@ -24,7 +24,7 @@ func ExampleClient_NewReceiverForSubscription() {
 
 func ExampleClient_NewReceiverForQueue() {
 	receiver, err = client.NewReceiverForQueue(
-		queueName,
+		"exampleQueue",
 		&azservicebus.ReceiverOptions{
 			ReceiveMode: azservicebus.PeekLock,
 		},
@@ -34,7 +34,7 @@ func ExampleClient_NewReceiverForQueue() {
 
 func ExampleClient_NewReceiverForQueue_deadLetterQueue() {
 	receiver, err = client.NewReceiverForQueue(
-		queueName,
+		"exampleQueue",
 		&azservicebus.ReceiverOptions{
 			ReceiveMode: azservicebus.PeekLock,
 			SubQueue:    azservicebus.SubQueueDeadLetter,
@@ -45,8 +45,8 @@ func ExampleClient_NewReceiverForQueue_deadLetterQueue() {
 
 func ExampleClient_NewReceiverForSubscription_deadLetterQueue() {
 	receiver, err = client.NewReceiverForSubscription(
-		topicName,
-		subscriptionName,
+		"exampleTopic",
+		"exampleSubscription",
 		&azservicebus.ReceiverOptions{
 			ReceiveMode: azservicebus.PeekLock,
 			SubQueue:    azservicebus.SubQueueDeadLetter,

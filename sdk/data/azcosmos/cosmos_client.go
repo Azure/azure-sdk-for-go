@@ -31,20 +31,20 @@ func NewClientWithSharedKey(endpoint string, cred *SharedKeyCredential, options 
 	return &CosmosClient{Endpoint: endpoint, connection: connection, cred: cred, options: options}, nil
 }
 
-// GetCosmosDatabase returns a CosmosDatabase object.
+// GetDatabase returns a Database object.
 // id - The id of the database.
-func (c *CosmosClient) GetCosmosDatabase(id string) (*CosmosDatabase, error) {
+func (c *CosmosClient) GetDatabase(id string) (*Database, error) {
 	if id == "" {
 		return nil, errors.New("id is required")
 	}
 
-	return newCosmosDatabase(id, c), nil
+	return newDatabase(id, c), nil
 }
 
-// GetCosmosContainer returns a CosmosContainer object.
+// GetContainer returns a Container object.
 // databaseId - The id of the database.
 // containerId - The id of the container.
-func (c *CosmosClient) GetCosmosContainer(databaseId string, containerId string) (*CosmosContainer, error) {
+func (c *CosmosClient) GetContainer(databaseId string, containerId string) (*Container, error) {
 	if databaseId == "" {
 		return nil, errors.New("databaseId is required")
 	}
@@ -53,21 +53,19 @@ func (c *CosmosClient) GetCosmosContainer(databaseId string, containerId string)
 		return nil, errors.New("containerId is required")
 	}
 
-	return newCosmosDatabase(databaseId, c).GetContainer(containerId)
+	return newDatabase(databaseId, c).GetContainer(containerId)
 }
 
 // CreateDatabase creates a new database.
 // ctx - The context for the request.
 // databaseProperties - The definition of the database
-// throughputProperties - Optional throughput configuration of the database
-// requestOptions - Optional parameters for the request.
+// o - Options for the create database operation.
 func (c *CosmosClient) CreateDatabase(
 	ctx context.Context,
-	databaseProperties CosmosDatabaseProperties,
-	throughputProperties *ThroughputProperties,
-	requestOptions *CosmosDatabaseRequestOptions) (CosmosDatabaseResponse, error) {
-	if requestOptions == nil {
-		requestOptions = &CosmosDatabaseRequestOptions{}
+	databaseProperties DatabaseProperties,
+	o *CreateDatabaseOptions) (DatabaseResponse, error) {
+	if o == nil {
+		o = &CreateDatabaseOptions{}
 	}
 
 	operationContext := cosmosOperationContext{
@@ -77,12 +75,12 @@ func (c *CosmosClient) CreateDatabase(
 
 	path, err := generatePathForNameBased(resourceTypeDatabase, "", true)
 	if err != nil {
-		return CosmosDatabaseResponse{}, err
+		return DatabaseResponse{}, err
 	}
 
-	database, err := c.GetCosmosDatabase(databaseProperties.Id)
+	database, err := c.GetDatabase(databaseProperties.Id)
 	if err != nil {
-		return CosmosDatabaseResponse{}, err
+		return DatabaseResponse{}, err
 	}
 
 	azResponse, err := c.connection.sendPostRequest(
@@ -90,11 +88,11 @@ func (c *CosmosClient) CreateDatabase(
 		ctx,
 		databaseProperties,
 		operationContext,
-		requestOptions,
-		throughputProperties.addHeadersToRequest)
+		nil,
+		o.ThroughputProperties.addHeadersToRequest)
 	if err != nil {
-		return CosmosDatabaseResponse{}, err
+		return DatabaseResponse{}, err
 	}
 
-	return newCosmosDatabaseResponse(azResponse, database)
+	return newDatabaseResponse(azResponse, database)
 }

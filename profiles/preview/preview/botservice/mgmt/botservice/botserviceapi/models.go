@@ -9,10 +9,14 @@
 
 package botserviceapi
 
-import original "github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2018-07-12/botservice/botserviceapi"
+import original "github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2021-05-01-preview/botservice/botserviceapi"
 
 type BotConnectionClientAPI = original.BotConnectionClientAPI
 type BotsClientAPI = original.BotsClientAPI
 type ChannelsClientAPI = original.ChannelsClientAPI
-type EnterpriseChannelsClientAPI = original.EnterpriseChannelsClientAPI
+type DirectLineClientAPI = original.DirectLineClientAPI
+type HostSettingsClientAPI = original.HostSettingsClientAPI
+type OperationResultsClientAPI = original.OperationResultsClientAPI
 type OperationsClientAPI = original.OperationsClientAPI
+type PrivateEndpointConnectionsClientAPI = original.PrivateEndpointConnectionsClientAPI
+type PrivateLinkResourcesClientAPI = original.PrivateLinkResourcesClientAPI

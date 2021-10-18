@@ -40,9 +40,9 @@ func (e *emulatorTests) createDatabase(
 	t *testing.T,
 	ctx context.Context,
 	client *CosmosClient,
-	dbName string) *CosmosDatabase {
-	database := CosmosDatabaseProperties{Id: dbName}
-	resp, err := client.CreateDatabase(ctx, database, nil, nil)
+	dbName string) *Database {
+	database := DatabaseProperties{Id: dbName}
+	resp, err := client.CreateDatabase(ctx, database, nil)
 	if err != nil {
 		t.Fatalf("Failed to create database: %v", err)
 	}
@@ -57,7 +57,7 @@ func (e *emulatorTests) createDatabase(
 func (e *emulatorTests) deleteDatabase(
 	t *testing.T,
 	ctx context.Context,
-	database *CosmosDatabase) {
+	database *Database) {
 	_, err := database.Delete(ctx, nil)
 	if err != nil {
 		t.Fatalf("Failed to delete database: %v", err)

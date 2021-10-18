@@ -38,15 +38,13 @@ func (db *Database) GetContainer(id string) (*Container, error) {
 // CreateContainer creates a container in the Cosmos database.
 // ctx - The context for the request.
 // containerProperties - The properties for the container.
-// throughputProperties - Optional throughput configuration of the container
-// requestOptions - Optional parameters for the request.
+// o - Options for the create container operation.
 func (db *Database) CreateContainer(
 	ctx context.Context,
 	containerProperties ContainerProperties,
-	throughputProperties *ThroughputProperties,
-	requestOptions *ContainerRequestOptions) (ContainerResponse, error) {
-	if requestOptions == nil {
-		requestOptions = &ContainerRequestOptions{}
+	o *CreateContainerOptions) (ContainerResponse, error) {
+	if o == nil {
+		o = &CreateContainerOptions{}
 	}
 
 	operationContext := cosmosOperationContext{
@@ -69,8 +67,8 @@ func (db *Database) CreateContainer(
 		ctx,
 		containerProperties,
 		operationContext,
-		requestOptions,
-		throughputProperties.addHeadersToRequest)
+		nil,
+		o.ThroughputProperties.addHeadersToRequest)
 	if err != nil {
 		return ContainerResponse{}, err
 	}
@@ -80,12 +78,12 @@ func (db *Database) CreateContainer(
 
 // Read obtains the information for a Cosmos database.
 // ctx - The context for the request.
-// requestOptions - Optional parameters for the request.
+// o - Options for Read operation.
 func (db *Database) Read(
 	ctx context.Context,
-	requestOptions *DatabaseRequestOptions) (DatabaseResponse, error) {
-	if requestOptions == nil {
-		requestOptions = &DatabaseRequestOptions{}
+	o *ReadDatabaseOptions) (DatabaseResponse, error) {
+	if o == nil {
+		o = &ReadDatabaseOptions{}
 	}
 
 	operationContext := cosmosOperationContext{
@@ -102,7 +100,7 @@ func (db *Database) Read(
 		path,
 		ctx,
 		operationContext,
-		requestOptions,
+		o,
 		nil)
 	if err != nil {
 		return DatabaseResponse{}, err
@@ -113,12 +111,12 @@ func (db *Database) Read(
 
 // ReadThroughput obtains the provisioned throughput information for the database.
 // ctx - The context for the request.
-// requestOptions - Optional parameters for the request.
+// o - Options for the operation.
 func (db *Database) ReadThroughput(
 	ctx context.Context,
-	requestOptions *ThroughputRequestOptions) (ThroughputResponse, error) {
-	if requestOptions == nil {
-		requestOptions = &ThroughputRequestOptions{}
+	o *ThroughputOptions) (ThroughputResponse, error) {
+	if o == nil {
+		o = &ThroughputOptions{}
 	}
 
 	rid, err := db.getRID(ctx)
@@ -127,19 +125,19 @@ func (db *Database) ReadThroughput(
 	}
 
 	offers := &cosmosOffers{connection: db.client.connection}
-	return offers.ReadThroughputIfExists(ctx, rid, requestOptions)
+	return offers.ReadThroughputIfExists(ctx, rid, o)
 }
 
 // ReplaceThroughput updates the provisioned throughput for the database.
 // ctx - The context for the request.
 // throughputProperties - The throughput configuration of the database.
-// requestOptions - Optional parameters for the request.
+// o - Options for the operation.
 func (db *Database) ReplaceThroughput(
 	ctx context.Context,
 	throughputProperties ThroughputProperties,
-	requestOptions *ThroughputRequestOptions) (ThroughputResponse, error) {
-	if requestOptions == nil {
-		requestOptions = &ThroughputRequestOptions{}
+	o *ThroughputOptions) (ThroughputResponse, error) {
+	if o == nil {
+		o = &ThroughputOptions{}
 	}
 
 	rid, err := db.getRID(ctx)
@@ -148,17 +146,17 @@ func (db *Database) ReplaceThroughput(
 	}
 
 	offers := &cosmosOffers{connection: db.client.connection}
-	return offers.ReadThroughputIfExists(ctx, rid, requestOptions)
+	return offers.ReadThroughputIfExists(ctx, rid, o)
 }
 
 // Delete a Cosmos database.
 // ctx - The context for the request.
-// requestOptions - Optional parameters for the request.
+// o - Options for Read operation.
 func (db *Database) Delete(
 	ctx context.Context,
-	requestOptions *DatabaseRequestOptions) (DatabaseResponse, error) {
-	if requestOptions == nil {
-		requestOptions = &DatabaseRequestOptions{}
+	o *DeleteDatabaseOptions) (DatabaseResponse, error) {
+	if o == nil {
+		o = &DeleteDatabaseOptions{}
 	}
 
 	operationContext := cosmosOperationContext{
@@ -175,7 +173,7 @@ func (db *Database) Delete(
 		path,
 		ctx,
 		operationContext,
-		requestOptions,
+		o,
 		nil)
 	if err != nil {
 		return DatabaseResponse{}, err

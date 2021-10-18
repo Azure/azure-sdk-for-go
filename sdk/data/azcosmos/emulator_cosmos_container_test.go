@@ -33,7 +33,7 @@ func TestContainerCRUD(t *testing.T) {
 
 	throughput := NewManualThroughputProperties(400)
 
-	resp, err := database.CreateContainer(context.TODO(), properties, throughput, nil)
+	resp, err := database.CreateContainer(context.TODO(), properties, &CreateContainerOptions{ThroughputProperties: throughput})
 	if err != nil {
 		t.Fatalf("Failed to create container: %v", err)
 	}
@@ -121,7 +121,7 @@ func TestContainerAutoscaleCRUD(t *testing.T) {
 
 	throughput := NewAutoscaleThroughputProperties(5000)
 
-	resp, err := database.CreateContainer(context.TODO(), properties, throughput, nil)
+	resp, err := database.CreateContainer(context.TODO(), properties, &CreateContainerOptions{ThroughputProperties: throughput})
 	if err != nil {
 		t.Fatalf("Failed to create container: %v", err)
 	}

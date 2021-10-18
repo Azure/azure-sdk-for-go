@@ -59,15 +59,13 @@ func (c *CosmosClient) GetContainer(databaseId string, containerId string) (*Con
 // CreateDatabase creates a new database.
 // ctx - The context for the request.
 // databaseProperties - The definition of the database
-// throughputProperties - Optional throughput configuration of the database
-// requestOptions - Optional parameters for the request.
+// o - Options for the create database operation.
 func (c *CosmosClient) CreateDatabase(
 	ctx context.Context,
 	databaseProperties DatabaseProperties,
-	throughputProperties *ThroughputProperties,
-	requestOptions *DatabaseRequestOptions) (DatabaseResponse, error) {
-	if requestOptions == nil {
-		requestOptions = &DatabaseRequestOptions{}
+	o *CreateDatabaseOptions) (DatabaseResponse, error) {
+	if o == nil {
+		o = &CreateDatabaseOptions{}
 	}
 
 	operationContext := cosmosOperationContext{
@@ -90,8 +88,8 @@ func (c *CosmosClient) CreateDatabase(
 		ctx,
 		databaseProperties,
 		operationContext,
-		requestOptions,
-		throughputProperties.addHeadersToRequest)
+		nil,
+		o.ThroughputProperties.addHeadersToRequest)
 	if err != nil {
 		return DatabaseResponse{}, err
 	}

@@ -30,7 +30,7 @@ func (p *countingPolicy) Do(req *policy.Request) (*http.Response, error) {
 	return req.Next()
 }
 
-func TestNewDefaultPipelineTelemetry(t *testing.T) {
+func TestNewPipelineTelemetry(t *testing.T) {
 	for _, disabled := range []bool{true, false} {
 		name := "enabled"
 		if disabled {
@@ -47,7 +47,7 @@ func TestNewDefaultPipelineTelemetry(t *testing.T) {
 			}
 			module := "test"
 			version := "v1.2.3"
-			resp, err := NewDefaultPipeline(module, version, []pipeline.Policy{}, []pipeline.Policy{}, &opt).Do(req)
+			resp, err := NewPipeline(module, version, []pipeline.Policy{}, []pipeline.Policy{}, &opt).Do(req)
 			if err != nil {
 				t.Fatalf("Unexpected error: %v", err)
 			}
@@ -59,7 +59,7 @@ func TestNewDefaultPipelineTelemetry(t *testing.T) {
 	}
 }
 
-func TestNewDefaultPipelineCustomTelemetry(t *testing.T) {
+func TestNewPipelineCustomTelemetry(t *testing.T) {
 	const appID = "something"
 	srv, close := mock.NewServer()
 	defer close()
@@ -72,7 +72,7 @@ func TestNewDefaultPipelineCustomTelemetry(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	resp, err := NewDefaultPipeline("armtest", "v1.2.3", []pipeline.Policy{}, []pipeline.Policy{}, &opts).Do(req)
+	resp, err := NewPipeline("armtest", "v1.2.3", []pipeline.Policy{}, []pipeline.Policy{}, &opts).Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -84,7 +84,7 @@ func TestNewDefaultPipelineCustomTelemetry(t *testing.T) {
 	}
 }
 
-func TestNewDefaultPipelineCustomPolicies(t *testing.T) {
+func TestNewPipelineCustomPolicies(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithStatusCode(http.StatusInternalServerError))
@@ -96,7 +96,7 @@ func TestNewDefaultPipelineCustomPolicies(t *testing.T) {
 	}
 	perCallPolicy := &countingPolicy{}
 	perRetryPolicy := &countingPolicy{}
-	_, err = NewDefaultPipeline("", "", []pipeline.Policy{perCallPolicy}, []pipeline.Policy{perRetryPolicy}, &opts).Do(req)
+	_, err = NewPipeline("", "", []pipeline.Policy{perCallPolicy}, []pipeline.Policy{perRetryPolicy}, &opts).Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}

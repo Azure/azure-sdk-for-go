@@ -80,7 +80,7 @@ func NewRPRegistrationPolicy(endpoint string, cred azcore.TokenCredential, o *Re
 	authPolicy := runtime.NewBearerTokenPolicy(cred, runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: []string{shared.EndpointToScope(endpoint)}}})
 	p := &rpRegistrationPolicy{
 		endpoint: endpoint,
-		pipeline: runtime.NewDefaultPipeline(shared.Module,
+		pipeline: runtime.NewPipeline(shared.Module,
 			shared.Version,
 			[]pipeline.Policy{},
 			[]pipeline.Policy{authPolicy},

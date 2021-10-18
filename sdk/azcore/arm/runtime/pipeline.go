@@ -39,5 +39,5 @@ func NewPipeline(module, version string, cred azcore.TokenCredential, options *a
 		},
 		),
 	}
-	return azruntime.NewDefaultPipeline(module, version, perCallPolicies, perRetryPolicies, &options.ClientOptions)
+	return azruntime.NewPipeline(module, version, perCallPolicies, perRetryPolicies, &options.ClientOptions)
 }

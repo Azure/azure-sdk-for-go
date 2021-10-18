@@ -11,11 +11,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
-// NewDefaultPipeline creates a pipeline from connection options, with any additional policies as specified.
+// NewPipeline creates a pipeline from connection options, with any additional policies as specified.
 // module, version: used by the telemetry policy, when enabled
 // perCallPolicies: additional policies to invoke once per request
 // perRetryPolicies: additional policies to invoke once per request and once per retry of that request
-func NewDefaultPipeline(module, version string, perCallPolicies []policy.Policy, perRetryPolicies []policy.Policy, options *policy.ClientOptions) pipeline.Pipeline {
+func NewPipeline(module, version string, perCallPolicies []policy.Policy, perRetryPolicies []policy.Policy, options *policy.ClientOptions) Pipeline {
 	if options == nil {
 		options = &policy.ClientOptions{}
 	}

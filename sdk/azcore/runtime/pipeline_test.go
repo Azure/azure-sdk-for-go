@@ -47,7 +47,7 @@ func TestNewPipelineTelemetry(t *testing.T) {
 			}
 			module := "test"
 			version := "v1.2.3"
-			resp, err := NewPipeline(module, version, []pipeline.Policy{}, []pipeline.Policy{}, &opt).Do(req)
+			resp, err := NewPipeline(module, version, nil, nil, &opt).Do(req)
 			if err != nil {
 				t.Fatalf("Unexpected error: %v", err)
 			}
@@ -72,7 +72,7 @@ func TestNewPipelineCustomTelemetry(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	resp, err := NewPipeline("armtest", "v1.2.3", []pipeline.Policy{}, []pipeline.Policy{}, &opts).Do(req)
+	resp, err := NewPipeline("armtest", "v1.2.3", nil, nil, &opts).Do(req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}

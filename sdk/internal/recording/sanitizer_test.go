@@ -11,7 +11,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -178,33 +177,21 @@ type RecordingFileStruct struct {
 }
 
 type Entry struct {
-	RequestUri     string            `json:"RequestUri"`
-	RequestMethod  string            `json:"RequestMethod"`
-	RequestHeaders map[string]string `json:"RequestHeaders"`
-	RequestBody    string            `json:"RequestBody"`
-	StatusCode     int               `json:"StatusCode"`
-	ResponseBody   interface{}       `json:"ResponseBody"` // This should be a string, but proxy saves as an object when there is no body
+	RequestUri      string            `json:"RequestUri"`
+	RequestMethod   string            `json:"RequestMethod"`
+	RequestHeaders  map[string]string `json:"RequestHeaders"`
+	RequestBody     string            `json:"RequestBody"`
+	StatusCode      int               `json:"StatusCode"`
+	ResponseBody    interface{}       `json:"ResponseBody"` // This should be a string, but proxy saves as an object when there is no body
+	ResponseHeaders map[string]string `json:"ResponseHeaders"`
 }
 
-func getServerURL(url string) string {
-	split := strings.Split(url, ":")
-	if len(split) == 0 {
-		log.Fatal("Could not find port")
-	}
-	return split[len(split)-1]
+func (e Entry) ResponseBodyByValue(k string) interface{} {
+	m := e.ResponseBody.(map[string]interface{})
+	return m[k]
 }
 
 func TestUriSanitizer(t *testing.T) {
-	srv, close := mock.NewServer()
-	defer close()
-	srv.SetResponse(mock.WithBody([]byte("success")), mock.WithStatusCode(http.StatusAccepted))
-	fmt.Println("SERVER URL: ", srv.URL())
-
-	_, e := http.Get(srv.URL())
-	if e != nil {
-		panic(e)
-	}
-
 	temp := recordMode
 	recordMode = "record"
 	f := func() {
@@ -219,15 +206,15 @@ func TestUriSanitizer(t *testing.T) {
 	err = StartRecording(t, packagePath, nil)
 	require.NoError(t, err)
 
-	srvURL := fmt.Sprintf("http://172.17.0.2:%s", getServerURL(srv.URL()))
-	fmt.Println(srvURL)
-	err = AddUriSanitizer("https://replacement.com", srvURL, nil)
+	srvURL := "http://host.docker.internal:8080/"
+
+	err = AddUriSanitizer("https://replacement.com/", srvURL, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
 	require.NoError(t, err)
 
-	req, err := http.NewRequest("POST", srvURL, nil)
+	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
 	req.Header.Set(UpstreamUriHeader, srvURL)
@@ -254,7 +241,7 @@ func TestUriSanitizer(t *testing.T) {
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
 
-	require.Equal(t, data.Entries[0].RequestUri, "https://www.replacement.com/")
+	require.Equal(t, data.Entries[0].RequestUri, "https://replacement.com/")
 }
 
 func TestHeaderRegexSanitizer(t *testing.T) {
@@ -275,24 +262,26 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 	client, err := GetHTTPClient(t)
 	require.NoError(t, err)
 
+	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
+
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, "https://www.bing.com/")
+	req.Header.Set(UpstreamUriHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId(t))
 	req.Header.Set("testproxy-header", "fakevalue")
 	req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
 	req.Header.Set("ComplexRegex", "https://fakeaccount.table.core.windows.net")
 
-	err = AddHeaderRegexSanitizer("testproxy-header", "Sanitized", "", "", nil)
+	err = AddHeaderRegexSanitizer("testproxy-header", "Sanitized", "", nil)
 	require.NoError(t, err)
 
-	err = AddHeaderRegexSanitizer("FakeStorageLocation", "Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.blob\\.core\\.windows\\.net", "", nil)
+	err = AddHeaderRegexSanitizer("FakeStorageLocation", "Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.blob\\.core\\.windows\\.net", nil)
 	require.NoError(t, err)
 
 	// This is the only failing one
-	err = AddHeaderRegexSanitizer("ComplexRegex", "Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.(?:table|blob|queue)\\.core\\.windows\\.net", "account", nil)
+	err = AddHeaderRegexSanitizer("ComplexRegex", "Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.(?:table|blob|queue)\\.core\\.windows\\.net", &RecordingOptions{GroupForReplace: "account"})
 	require.NoError(t, err)
 
 	resp, err := client.Do(req)
@@ -314,6 +303,10 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
+
+	require.Equal(t, "Sanitized", data.Entries[0].RequestHeaders["testproxy-header"])
+	require.Equal(t, "Sanitized", data.Entries[0].RequestHeaders["fakestoragelocation"])
+	require.Equal(t, "https://Sanitized.table.core.windows.net", data.Entries[0].RequestHeaders["complexregex"])
 }
 
 func TestBodyKeySanitizer(t *testing.T) {
@@ -334,10 +327,12 @@ func TestBodyKeySanitizer(t *testing.T) {
 	client, err := GetHTTPClient(t)
 	require.NoError(t, err)
 
+	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
+
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, "https://azsdkengsys.azurecr.io/acr/v1/_catalog")
+	req.Header.Set(UpstreamUriHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId(t))
 
@@ -349,7 +344,7 @@ func TestBodyKeySanitizer(t *testing.T) {
 
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 
-	err = AddBodyKeySanitizer("$.key1", "Sanitized", "", "", nil)
+	err = AddBodyKeySanitizer("$.Tag", "Sanitized", "", nil)
 	require.NoError(t, err)
 
 	resp, err := client.Do(req)
@@ -371,6 +366,8 @@ func TestBodyKeySanitizer(t *testing.T) {
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
+
+	require.Equal(t, "Sanitized", data.Entries[0].ResponseBodyByValue("Tag"))
 }
 
 func TestBodyRegexSanitizer(t *testing.T) {
@@ -391,10 +388,12 @@ func TestBodyRegexSanitizer(t *testing.T) {
 	client, err := GetHTTPClient(t)
 	require.NoError(t, err)
 
+	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
+
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, "https://azsdkengsys.azurecr.io/acr/v1/_catalog")
+	req.Header.Set(UpstreamUriHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId(t))
 
@@ -406,7 +405,9 @@ func TestBodyRegexSanitizer(t *testing.T) {
 
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 
-	err = AddBodyKeySanitizer("$.key1", "Sanitized", "", "", nil)
+	err = AddBodyRegexSanitizer("Sanitized", "Value", nil)
+	require.NoError(t, err)
+	err = AddBodyRegexSanitizer("Sanitized", "https\\:\\/\\/(?<account>[a-z]+)\\.(?:table|blob|queue)\\.core\\.windows\\.net", &RecordingOptions{GroupForReplace: "account"})
 	require.NoError(t, err)
 
 	resp, err := client.Do(req)
@@ -428,6 +429,9 @@ func TestBodyRegexSanitizer(t *testing.T) {
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
+
+	require.NotContains(t, "storageaccount", data.Entries[0].ResponseBody)
+	require.NotContains(t, "Value", data.Entries[0].ResponseBody)
 }
 
 func TestRemoveHeaderSanitizer(t *testing.T) {
@@ -448,10 +452,12 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 	client, err := GetHTTPClient(t)
 	require.NoError(t, err)
 
+	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
+
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, "https://jsonplaceholder.typicode.com/posts/1")
+	req.Header.Set(UpstreamUriHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId(t))
 	req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
@@ -479,6 +485,8 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
+
+	require.NotContains(t, []string{"ComplexRegexRemove", "FakeStorageLocation"}, data.Entries[0].ResponseHeaders)
 }
 
 func TestContinuationSanitizer(t *testing.T) {
@@ -502,7 +510,9 @@ func TestContinuationSanitizer(t *testing.T) {
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, "https://jsonplaceholder.typicode.com/posts/1")
+	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
+
+	req.Header.Set(UpstreamUriHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId(t))
 	req.Header.Set("Location", "/posts/2")
@@ -525,7 +535,7 @@ func TestContinuationSanitizer(t *testing.T) {
 	req, err = http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, "https://jsonplaceholder.typicode.com/posts/2")
+	req.Header.Set(UpstreamUriHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId(t))
 	req.Header.Set("Location", "/posts/3")
@@ -545,6 +555,9 @@ func TestContinuationSanitizer(t *testing.T) {
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
+
+	require.NotContains(t, "Location", data.Entries[0].ResponseHeaders)
+	require.NotContains(t, "Location", data.Entries[0].ResponseHeaders)
 }
 
 func TestGeneralRegexSanitizer(t *testing.T) {
@@ -565,14 +578,16 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 	client, err := GetHTTPClient(t)
 	require.NoError(t, err)
 
+	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
+
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, "https://azsdkengsys.azurecr.io/acr/v1/_catalog")
+	req.Header.Set(UpstreamUriHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId(t))
 
-	err = AddGeneralRegexSanitizer("Sanitized", "invalid", "replace", nil)
+	err = AddGeneralRegexSanitizer("Sanitized", "Value", nil)
 	require.NoError(t, err)
 
 	_, err = client.Do(req)
@@ -593,6 +608,8 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
+
+	require.NotContains(t, "Value", data.Entries[0].ResponseBody)
 }
 
 func TestOAuthResponseSanitizer(t *testing.T) {
@@ -613,10 +630,12 @@ func TestOAuthResponseSanitizer(t *testing.T) {
 	client, err := GetHTTPClient(t)
 	require.NoError(t, err)
 
+	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
+
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, "https://azsdkengsys.azurecr.io/acr/v1/_catalog")
+	req.Header.Set(UpstreamUriHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId(t))
 
@@ -690,6 +709,8 @@ func TestUriSubscriptionIdSanitizer(t *testing.T) {
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
+
+	require.Equal(t, "https://management.azure.com/", data.Entries[0].RequestUri)
 }
 
 func TestResetSanitizers(t *testing.T) {
@@ -707,13 +728,15 @@ func TestResetSanitizers(t *testing.T) {
 	err = StartRecording(t, packagePath, nil)
 	require.NoError(t, err)
 
+	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
+
 	client, err := GetHTTPClient(t)
 	require.NoError(t, err)
 
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, "https://jsonplaceholder.typicode.com/posts/1")
+	req.Header.Set(UpstreamUriHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId(t))
 	req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
@@ -745,4 +768,6 @@ func TestResetSanitizers(t *testing.T) {
 	require.NoError(t, err)
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
+
+	require.Equal(t, data.Entries[0].RequestHeaders["fakestoragelocation"], "https://fakeaccount.blob.core.windows.net")
 }

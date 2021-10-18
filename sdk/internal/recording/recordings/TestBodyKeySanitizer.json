@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://azsdkengsys.azurecr.io/",
+      "RequestUri": "http://host.docker.internal:8080/",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -12,16 +12,19 @@
         "User-Agent": "Go-http-client/2.0"
       },
       "RequestBody": "eyJrZXkxIjoidmFsdWUxIn0=",
-      "StatusCode": 404,
+      "StatusCode": 200,
       "ResponseHeaders": {
-        "Connection": "keep-alive",
-        "Content-Length": "9",
-        "Content-Type": "application/octet-stream",
-        "Date": "Thu, 30 Sep 2021 17:04:14 GMT",
-        "Server": "openresty",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains"
+        "Content-Length": "91",
+        "Content-Type": "application/json",
+        "Date": "Mon, 18 Oct 2021 20:44:13 GMT",
+        "Location": "Next-Location",
+        "Success": "2021-10-18 16:44:13.2687504 -0400 EDT m=\u002B906.483250401"
       },
-      "ResponseBody": "Tm90IGZvdW5k"
+      "ResponseBody": {
+        "Tag": "Sanitized",
+        "Tag2": "Value2",
+        "Tag3": "https://storageaccount.table.core.windows.net/"
+      }
     }
   ],
   "Variables": {}

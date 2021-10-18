@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://jsonplaceholder.typicode.com/",
+      "RequestUri": "http://host.docker.internal:8080/",
       "RequestMethod": "POST",
       "RequestHeaders": {
         ":authority": "localhost:5001",
@@ -13,42 +13,17 @@
         "User-Agent": "Go-http-client/2.0"
       },
       "RequestBody": null,
-      "StatusCode": 404,
+      "StatusCode": 200,
       "ResponseHeaders": {
-        "Access-Control-Allow-Credentials": "true",
-        "Alt-Svc": [
-          "h3=\u0022:443\u0022",
-          "h3-29=\u0022:443\u0022",
-          "h3-28=\u0022:443\u0022",
-          "h3-27=\u0022:443\u0022"
-        ],
-        "Cache-Control": "no-cache",
-        "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "696f077a184b5a10-IAD",
-        "Connection": "keep-alive",
-        "Content-Length": "2",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 30 Sep 2021 17:04:14 GMT",
-        "ETag": "W/\u00222-vyGp6PvFo4RvsFtPoIWeCReyIC8\u0022",
-        "Expect-CT": "max-age=604800, report-uri=\u0022https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\u0022",
-        "Expires": "-1",
-        "NEL": "{\u0022success_fraction\u0022:0,\u0022report_to\u0022:\u0022cf-nel\u0022,\u0022max_age\u0022:604800}",
-        "Pragma": "no-cache",
-        "Report-To": "{\u0022endpoints\u0022:[{\u0022url\u0022:\u0022https:\\/\\/a.nel.cloudflare.com\\/report\\/v3?s=TwWuwuOLQP03g83%2Fdg75bDYXZlMjlc563nMVn60QklZXS8bc%2FvEit2uqlDdnnRBuH8JXS4xBu9tq7wvUjdXDxg7TI3eD%2BKPnHTo0WIRtQBrsoKRx2jvtstOWG4kLyXvGS7uLc7w3Ba9mnmhoH6hg\u0022}],\u0022group\u0022:\u0022cf-nel\u0022,\u0022max_age\u0022:604800}",
-        "Server": "cloudflare",
-        "Vary": [
-          "Origin",
-          "X-HTTP-Method-Override",
-          "Accept-Encoding"
-        ],
-        "Via": "1.1 vegur",
-        "X-Content-Type-Options": "nosniff",
-        "X-Powered-By": "Express",
-        "x-ratelimit-limit": "1000",
-        "x-ratelimit-remaining": "999",
-        "x-ratelimit-reset": "1633021478"
+        "Content-Length": "88",
+        "Content-Type": "application/json",
+        "Date": "Mon, 18 Oct 2021 20:44:13 GMT",
+        "Location": "Next-Location",
+        "Success": "2021-10-18 16:44:13.3232869 -0400 EDT m=\u002B906.537786901"
       },
-      "ResponseBody": {}
+      "ResponseBody": [
+        "{\u0022Tag\u0022:\u0022Value\u0022,\u0022Tag2\u0022:\u0022Value2\u0022,\u0022Tag3\u0022:\u0022https://storageaccount.table.core.windows.net/\u0022}\n"
+      ]
     }
   ],
   "Variables": {}

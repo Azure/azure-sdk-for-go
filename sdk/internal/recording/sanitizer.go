@@ -110,7 +110,7 @@ func handleProxyResponse(resp *http.Response, err error) error {
 	return fmt.Errorf("there was an error communicating with the test proxy: %s", body)
 }
 
-func AddBodyKeySanitizer(jsonPath, replacementValue, regex, groupForReplace string, options *RecordingOptions) error {
+func AddBodyKeySanitizer(jsonPath, replacementValue, regex string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
@@ -129,8 +129,8 @@ func AddBodyKeySanitizer(jsonPath, replacementValue, regex, groupForReplace stri
 	if regex != "" {
 		bodyContent["regex"] = regex
 	}
-	if groupForReplace != "" {
-		bodyContent["groupForReplace"] = groupForReplace
+	if options.GroupForReplace != "" {
+		bodyContent["groupForReplace"] = options.GroupForReplace
 	}
 
 	marshalled, err := json.Marshal(bodyContent)
@@ -144,8 +144,7 @@ func AddBodyKeySanitizer(jsonPath, replacementValue, regex, groupForReplace stri
 
 // value: the substitution value
 // regex: the regex to match on request/response entries
-// groupForReplace: If your regex has multiple groups, the named group which to replace. If your regex does not, make this an empty string
-func AddBodyRegexSanitizer(value, regex, groupForReplace string, options *RecordingOptions) error {
+func AddBodyRegexSanitizer(value, regex string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
@@ -161,8 +160,8 @@ func AddBodyRegexSanitizer(value, regex, groupForReplace string, options *Record
 	if regex != "" {
 		bodyContent["regex"] = regex
 	}
-	if groupForReplace != "" {
-		bodyContent["groupForReplace"] = groupForReplace
+	if options.GroupForReplace != "" {
+		bodyContent["groupForReplace"] = options.GroupForReplace
 	}
 
 	marshalled, err := json.Marshal(bodyContent)
@@ -202,7 +201,7 @@ func AddContinuationSanitizer(key, method string, resetAfterFirst bool, options 
 	return handleProxyResponse(client.Do(req))
 }
 
-func AddGeneralRegexSanitizer(value, regex, groupForReplace string, options *RecordingOptions) error {
+func AddGeneralRegexSanitizer(value, regex string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
@@ -215,7 +214,7 @@ func AddGeneralRegexSanitizer(value, regex, groupForReplace string, options *Rec
 	bodyContent := map[string]string{
 		"value":           value,
 		"regex":           regex,
-		"groupForReplace": groupForReplace,
+		"groupForReplace": options.GroupForReplace,
 	}
 
 	marshalled, err := json.Marshal(bodyContent)
@@ -227,7 +226,7 @@ func AddGeneralRegexSanitizer(value, regex, groupForReplace string, options *Rec
 	return handleProxyResponse(client.Do(req))
 }
 
-func AddHeaderRegexSanitizer(key, replacementValue, regex, groupForReplace string, options *RecordingOptions) error {
+func AddHeaderRegexSanitizer(key, replacementValue, regex string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
@@ -246,8 +245,8 @@ func AddHeaderRegexSanitizer(key, replacementValue, regex, groupForReplace strin
 	if regex != "" {
 		bodyContent["regex"] = regex
 	}
-	if groupForReplace != "" {
-		bodyContent["groupForReplace"] = groupForReplace
+	if options.GroupForReplace != "" {
+		bodyContent["groupForReplace"] = options.GroupForReplace
 	}
 
 	marshalled, err := json.Marshal(bodyContent)

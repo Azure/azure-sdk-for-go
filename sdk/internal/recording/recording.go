@@ -461,9 +461,10 @@ var client = http.Client{
 }
 
 type RecordingOptions struct {
-	UseHTTPS bool
-	Host     string
-	Scheme   string
+	UseHTTPS        bool
+	Host            string
+	Scheme          string
+	GroupForReplace string
 }
 
 func defaultOptions() *RecordingOptions {

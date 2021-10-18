@@ -7,7 +7,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/xml"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -283,7 +282,7 @@ func FormatManagementError(body []byte) error {
 	var mgmtError managementError
 	unmarshalErr := xml.Unmarshal(body, &mgmtError)
 	if unmarshalErr != nil {
-		return errors.New(string(body))
+		return fmt.Errorf("body:%s error:%s", string(body), unmarshalErr.Error())
 	}
 
 	return fmt.Errorf("error code: %d, Details: %s", mgmtError.Code, mgmtError.Detail)

@@ -6,6 +6,8 @@ package atom
 import (
 	"context"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 
@@ -37,6 +39,8 @@ func CloseRes(ctx context.Context, res *http.Response) {
 	if res == nil {
 		return
 	}
+
+	_, _ = io.Copy(ioutil.Discard, res.Body)
 
 	if err := res.Body.Close(); err != nil {
 		tab.For(ctx).Error(err)

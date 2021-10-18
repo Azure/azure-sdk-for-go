@@ -64,7 +64,7 @@ if ($Mode -eq "start"){
     else {
         Write-Host "Attempting creation of Docker host $CONTAINER_NAME"
         Write-Host "docker container create -v `"${root}:${Initial}/etc/testproxy`" -p 5001:5001 -p 5000:5000 --name $CONTAINER_NAME $SelectedImage"
-        docker container create -v "${root}:${Initial}/etc/testproxy" -p 5001:5001 -p 5000:5000 --add-host host.docker.internal:host-gateway --name $CONTAINER_NAME $SelectedImage
+        docker container create -v "${root}:${Initial}/etc/testproxy" -p 5001:5001 -p 5000:5000 --name $CONTAINER_NAME $SelectedImage
     }
 
     Write-Host "Attempting start of Docker host $CONTAINER_NAME"

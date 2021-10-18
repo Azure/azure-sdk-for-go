@@ -219,7 +219,7 @@ func TestUriSanitizer(t *testing.T) {
 	err = StartRecording(t, packagePath, nil)
 	require.NoError(t, err)
 
-	srvURL := fmt.Sprintf("http://host.docker.internal:%s", getServerURL(srv.URL()))
+	srvURL := fmt.Sprintf("http://172.17.0.2:%s", getServerURL(srv.URL()))
 	fmt.Println(srvURL)
 	err = AddUriSanitizer("https://replacement.com", srvURL, nil)
 	require.NoError(t, err)
@@ -227,10 +227,10 @@ func TestUriSanitizer(t *testing.T) {
 	client, err := GetHTTPClient(t)
 	require.NoError(t, err)
 
-	req, err := http.NewRequest("POST", "https://host.docker.internal:443", nil)
+	req, err := http.NewRequest("POST", srvURL, nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, srv.URL())
+	req.Header.Set(UpstreamUriHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
 	req.Header.Set(IdHeader, GetRecordingId(t))
 

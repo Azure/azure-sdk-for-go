@@ -16,8 +16,8 @@ import (
 	"net/http"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
@@ -66,7 +66,7 @@ func ExampleNullValue() {
 }
 
 func ExampleHTTPResponse() {
-	pipeline := runtime.NewDefaultPipeline("module", "version", []pipeline.Policy{}, []pipeline.Policy{}, nil)
+	pipeline := runtime.NewDefaultPipeline("module", "version", []policy.Policy{}, []policy.Policy{}, nil)
 	req, err := runtime.NewRequest(context.Background(), "POST", "https://fakecontainerregisty.azurecr.io/acr/v1/nonexisteng/_tags")
 	if err != nil {
 		panic(err)

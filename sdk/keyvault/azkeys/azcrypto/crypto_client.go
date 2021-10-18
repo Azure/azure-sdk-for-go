@@ -422,6 +422,10 @@ func (c *Client) Sign(ctx context.Context, algorithm SignatureAlgorithm, digest 
 // VerifyOptions contains the optional parameters for the Client.Verify method
 type VerifyOptions struct{}
 
+func (v VerifyOptions) toGenerated() *internal.KeyVaultClientVerifyOptions {
+	return &internal.KeyVaultClientVerifyOptions{}
+}
+
 // VerifyResponse contains the response for the Client.Verify method
 type VerifyResponse struct {
 	// READ-ONLY; True if the signature is verified, otherwise false.
@@ -434,7 +438,7 @@ type VerifyResponse struct {
 func verifyResponseFromGenerated(i internal.KeyVaultClientVerifyResponse) VerifyResponse {
 	return VerifyResponse{
 		RawResponse: i.RawResponse,
-		IsValid:       i.Value,
+		IsValid:     i.Value,
 	}
 }
 
@@ -453,7 +457,7 @@ func (c *Client) Verify(ctx context.Context, algorithm SignatureAlgorithm, diges
 			Digest:    digest,
 			Signature: signature,
 		},
-		&internal.KeyVaultClientVerifyOptions{},
+		options.toGenerated(),
 	)
 
 	if err != nil {

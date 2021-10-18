@@ -16,7 +16,6 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -47,7 +46,7 @@ func TestNewPollerFail(t *testing.T) {
 	p, err := NewPoller("fake.poller", &http.Response{
 		Body:       body,
 		StatusCode: http.StatusBadRequest,
-	}, pipeline.NewPipeline(nil), errUnmarshall)
+	}, newTestPipeline(nil), errUnmarshall)
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	}
@@ -73,7 +72,7 @@ func TestNewPollerFromResumeTokenFail(t *testing.T) {
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			p, err := NewPollerFromResumeToken("fake.poller", test.token, pipeline.NewPipeline(nil), errUnmarshall)
+			p, err := NewPollerFromResumeToken("fake.poller", test.token, newTestPipeline(nil), errUnmarshall)
 			if err == nil {
 				t.Fatal("unexpected nil error")
 			}
@@ -100,7 +99,7 @@ func TestLocPollerSimple(t *testing.T) {
 	}
 	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp.Body = body
-	pl := pipeline.NewPipeline(srv)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -170,7 +169,7 @@ func TestLocPollerCancelled(t *testing.T) {
 	}
 	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp.Body = body
-	pl := pipeline.NewPipeline(srv)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -210,7 +209,7 @@ func TestLocPollerWithError(t *testing.T) {
 	}
 	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp.Body = body
-	pl := pipeline.NewPipeline(srv)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv, Retry: policy.RetryOptions{MaxRetries: -1}})
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -250,7 +249,7 @@ func TestLocPollerWithResumeToken(t *testing.T) {
 	}
 	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp.Body = body
-	pl := pipeline.NewPipeline(srv)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -307,7 +306,7 @@ func TestLocPollerWithTimeout(t *testing.T) {
 	}
 	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp.Body = body
-	pl := pipeline.NewPipeline(srv)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -350,7 +349,7 @@ func TestOpPollerSimple(t *testing.T) {
 			URL:    reqURL,
 		},
 	}
-	pl := pipeline.NewPipeline(srv)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -393,7 +392,7 @@ func TestOpPollerWithWidgetPUT(t *testing.T) {
 			URL:    reqURL,
 		},
 	}
-	pl := pipeline.NewPipeline(srv)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -441,7 +440,7 @@ func TestOpPollerWithWidgetPOSTLocation(t *testing.T) {
 			URL:    reqURL,
 		},
 	}
-	pl := pipeline.NewPipeline(srv)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -487,7 +486,7 @@ func TestOpPollerWithWidgetPOST(t *testing.T) {
 			URL:    reqURL,
 		},
 	}
-	pl := pipeline.NewPipeline(srv)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -536,7 +535,7 @@ func TestOpPollerWithWidgetResourceLocation(t *testing.T) {
 			URL:    reqURL,
 		},
 	}
-	pl := pipeline.NewPipeline(srv)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -581,7 +580,7 @@ func TestOpPollerWithResumeToken(t *testing.T) {
 			URL:    reqURL,
 		},
 	}
-	pl := pipeline.NewPipeline(srv)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)
@@ -629,7 +628,7 @@ func TestNopPoller(t *testing.T) {
 	}
 	body, closed := mock.NewTrackedCloser(http.NoBody)
 	firstResp.Body = body
-	pl := pipeline.NewPipeline(nil)
+	pl := newTestPipeline(nil)
 	lro, err := NewPoller("fake.poller", firstResp, pl, errUnmarshall)
 	if err != nil {
 		t.Fatal(err)

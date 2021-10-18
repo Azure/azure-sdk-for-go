@@ -13,12 +13,12 @@ type Database struct {
 	// The Id of the Cosmos database
 	Id string
 	// The client associated with the Cosmos database
-	client *CosmosClient
+	client *Client
 	// The resource link
 	link string
 }
 
-func newDatabase(id string, client *CosmosClient) *Database {
+func newDatabase(id string, client *Client) *Database {
 	return &Database{
 		Id:     id,
 		client: client,

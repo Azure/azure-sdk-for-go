@@ -501,8 +501,11 @@ func TestBackwardSlashPath(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
-	packagePathBackslash := "sdk\\internal\\recordings"
+	packagePathBackslash := "sdk\\internal\\recording"
 
 	err := StartRecording(t, packagePathBackslash, nil)
+	require.NoError(t, err)
+
+	err = StopRecording(t, nil)
 	require.NoError(t, err)
 }

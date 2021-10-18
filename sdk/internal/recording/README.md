@@ -2,7 +2,7 @@
 
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/Azure.azure-sdk-for-go?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=1842&branchName=master)
 
-The `testframework` package makes it easy to add recorded tests to your track-2 client package.
+The `recording` package makes it easy to add recorded tests to your track-2 client package.
 Below are some examples that walk through setting up a recorded test end to end.
 
 ## Examples
@@ -41,12 +41,12 @@ func recordedTestSetup(t *testing.T, testName string, mode recording.RecordMode)
     // init the test framework
     context := recording.NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { t.Log(msg) }, func() string { return testName })
     //mode should be recording.Playback. This will automatically record if no test recording is available and playback if it is.
-    recording, err := recording.NewRecording(context, mode) 
+    recording, err := recording.NewRecording(context, mode)
     assert.Nil(err)
 ```
 
 After creating the TestContext, it must be passed to a new instance of `Recording` along with the current test mode.
-`Recording` is the main component of the testframework package.
+`Recording` is the main component of the `recording` package.
 
 ```go
 //func recordedTestSetup(t *testing.T, testName string, mode recording.RecordMode) {
@@ -125,7 +125,7 @@ import (
     "testing"
 
     "github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
-    "github.com/Azure/azure-sdk-for-go/sdk/internal/testframework"
+    "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
     "github.com/stretchr/testify/assert"
     "github.com/stretchr/testify/suite"
 )

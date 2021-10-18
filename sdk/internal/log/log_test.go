@@ -13,42 +13,42 @@ import (
 func TestLoggingdefault(t *testing.T) {
 	// ensure logging with nil listener doesn't fail
 	SetListener(nil)
-	Write(RequestClassification, "this should work just fine")
+	Write(RequestEvent, "this should work just fine")
 
-	log := map[Classification]string{}
-	SetListener(func(cls Classification, msg string) {
+	log := map[Event]string{}
+	SetListener(func(cls Event, msg string) {
 		log[cls] = msg
 	})
 	const req = "this is a request"
-	Write(RequestClassification, req)
+	Write(RequestEvent, req)
 	const resp = "this is a response: %d"
-	Writef(ResponseClassification, resp, http.StatusOK)
+	Writef(ResponseEvent, resp, http.StatusOK)
 	if l := len(log); l != 2 {
 		t.Fatalf("unexpected log entry count: %d", l)
 	}
-	if log[RequestClassification] != req {
-		t.Fatalf("unexpected log request: %s", log[RequestClassification])
+	if log[RequestEvent] != req {
+		t.Fatalf("unexpected log request: %s", log[RequestEvent])
 	}
-	if log[ResponseClassification] != fmt.Sprintf(resp, http.StatusOK) {
-		t.Fatalf("unexpected log response: %s", log[ResponseClassification])
+	if log[ResponseEvent] != fmt.Sprintf(resp, http.StatusOK) {
+		t.Fatalf("unexpected log response: %s", log[ResponseEvent])
 	}
 }
 
-func TestLoggingClassification(t *testing.T) {
-	log := map[Classification]string{}
-	SetListener(func(cls Classification, msg string) {
+func TestLoggingEvent(t *testing.T) {
+	log := map[Event]string{}
+	SetListener(func(cls Event, msg string) {
 		log[cls] = msg
 	})
-	SetClassifications(RequestClassification)
-	defer TestResetClassifications()
-	Write(ResponseClassification, "this shouldn't be in the log")
-	if s, ok := log[ResponseClassification]; ok {
+	SetEvents(RequestEvent)
+	defer TestResetEvents()
+	Write(ResponseEvent, "this shouldn't be in the log")
+	if s, ok := log[ResponseEvent]; ok {
 		t.Fatalf("unexpected log entry %s", s)
 	}
 	const req = "this is a request"
-	Write(RequestClassification, req)
-	if log[RequestClassification] != req {
-		t.Fatalf("unexpected log entry: %s", log[RequestClassification])
+	Write(RequestEvent, req)
+	if log[RequestEvent] != req {
+		t.Fatalf("unexpected log entry: %s", log[RequestEvent])
 	}
 }
 

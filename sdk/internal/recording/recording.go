@@ -621,4 +621,3 @@ func GetHTTPClient(t *testing.T) (*http.Client, error) {
 	}
 	return defaultHttpClient, nil
 }
-

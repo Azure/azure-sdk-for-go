@@ -614,7 +614,7 @@ func TestOAuthResponseSanitizer(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestUriSubscriptionIdSanitizer(t *testing.T) {
+func TestURISubscriptionIDSanitizer(t *testing.T) {
 	defer reset(t)
 
 	err := ResetSanitizers(nil)

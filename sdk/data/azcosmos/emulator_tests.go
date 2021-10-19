@@ -27,8 +27,8 @@ func newEmulatorTests(t *testing.T) *emulatorTests {
 }
 
 func (e *emulatorTests) getClient(t *testing.T) *Client {
-	cred, _ := NewSharedKeyCredential(e.key)
-	client, err := NewClientWithSharedKey(e.host, cred, nil)
+	cred, _ := NewKeyCredential(e.key)
+	client, err := NewClientWithKey(e.host, cred, nil)
 	if err != nil {
 		t.Fatalf("Failed to create client: %v", err)
 	}

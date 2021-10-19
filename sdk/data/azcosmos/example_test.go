@@ -23,8 +23,8 @@ func Example() {
 	key, _ := os.LookupEnv("SOME_KEY")
 
 	// Create new Cosmos DB client.
-	cred, _ := azcosmos.NewSharedKeyCredential(key)
-	client, err := azcosmos.NewClientWithSharedKey(endpoint, cred, nil)
+	cred, _ := azcosmos.NewKeyCredential(key)
+	client, err := azcosmos.NewClientWithKey(endpoint, cred, nil)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -57,12 +57,6 @@ steps:
     - ${{ if eq(parameters.TestProxy, true) }}:
       - template: /eng/common/testproxy/test-proxy-docker.yml
 
-    - pwsh: |
-        if (Test-Path ${{ parameters.ServiceDirectory }}/pre.ps1) {
-          Start-Job ${{ parameters.ServiceDirectory }}/pre.ps1
-        }
-      displayName: "Pre run_tests hook"
-
     - task: PowerShell@2
       displayName: 'Run Tests'
       inputs:

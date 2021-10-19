@@ -225,7 +225,7 @@ func TestUriSanitizer(t *testing.T) {
 	require.NoError(t, err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
 	require.NoError(t, err)
 	defer jsonFile.Close()
 
@@ -282,7 +282,7 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 	require.NoError(t, err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
 	require.NoError(t, err)
 	defer jsonFile.Close()
 
@@ -339,7 +339,7 @@ func TestBodyKeySanitizer(t *testing.T) {
 	require.NoError(t, err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
 	require.NoError(t, err)
 	defer jsonFile.Close()
 
@@ -396,7 +396,7 @@ func TestBodyRegexSanitizer(t *testing.T) {
 	require.NoError(t, err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
 	require.NoError(t, err)
 	defer jsonFile.Close()
 
@@ -446,7 +446,7 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 	require.NoError(t, err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
 	require.NoError(t, err)
 	defer jsonFile.Close()
 
@@ -510,7 +510,7 @@ func TestContinuationSanitizer(t *testing.T) {
 	require.NoError(t, err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
 	require.NoError(t, err)
 	defer jsonFile.Close()
 
@@ -557,7 +557,7 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 	require.NoError(t, err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
 	require.NoError(t, err)
 	defer jsonFile.Close()
 
@@ -603,7 +603,7 @@ func TestOAuthResponseSanitizer(t *testing.T) {
 	require.NoError(t, err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
 	require.NoError(t, err)
 	defer jsonFile.Close()
 
@@ -646,7 +646,7 @@ func TestUriSubscriptionIdSanitizer(t *testing.T) {
 	require.NoError(t, err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
 	require.NoError(t, err)
 	defer jsonFile.Close()
 
@@ -699,7 +699,7 @@ func TestResetSanitizers(t *testing.T) {
 	require.NoError(t, err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open(fmt.Sprintf("./recordings/%s.json", t.Name()))
+	jsonFile, err := os.Open(fmt.Sprintf("./testdata/recordings/%s.json", t.Name()))
 	require.NoError(t, err)
 	defer jsonFile.Close()
 

@@ -396,7 +396,7 @@ func TestRecordingOptions(t *testing.T) {
 	require.Equal(t, r.hostScheme(), "https://localhost:5001")
 }
 
-var packagePath = "sdk/internal/recording"
+var packagePath = "sdk/internal/recording/testdata"
 
 func TestStartStop(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
@@ -425,7 +425,7 @@ func TestStartStop(t *testing.T) {
 	require.NoError(t, err)
 
 	// Make sure the file is there
-	jsonFile, err := os.Open("./recordings/TestStartStop.json")
+	jsonFile, err := os.Open("./testdata/recordings/TestStartStop.json")
 	require.NoError(t, err)
 	defer jsonFile.Close()
 }
@@ -457,7 +457,7 @@ func TestStopRecordingNoStart(t *testing.T) {
 	err := Stop(t, nil)
 	require.Error(t, err)
 
-	jsonFile, err := os.Open("./recordings/TestStopRecordingNoStart.json")
+	jsonFile, err := os.Open("./testdata/recordings/TestStopRecordingNoStart.json")
 	require.Error(t, err)
 	defer jsonFile.Close()
 }
@@ -498,7 +498,7 @@ func TestBackwardSlashPath(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
-	packagePathBackslash := "sdk\\internal\\recording"
+	packagePathBackslash := "sdk\\internal\\recording\\testdata"
 
 	err := Start(t, packagePathBackslash, nil)
 	require.NoError(t, err)

@@ -118,23 +118,22 @@ func AddBodyKeySanitizer(jsonPath, replacementValue, regex string, options *Reco
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "BodyKeySanitizer")
-	bodyContent := map[string]string{
-		"jsonPath": jsonPath,
-	}
-	if replacementValue != "" {
-		bodyContent["value"] = replacementValue
-	}
-	if regex != "" {
-		bodyContent["regex"] = regex
-	}
-	if options.GroupForReplace != "" {
-		bodyContent["groupForReplace"] = options.GroupForReplace
-	}
 
-	marshalled, err := json.Marshal(bodyContent)
+	marshalled, err := json.MarshalIndent(struct {
+		JSONPath        string `json:"jsonPath"`
+		Value           string `json:"value,omitempty"`
+		Regex           string `json:"regex,omitempty"`
+		GroupForReplace string `json:"groupForReplace,omitempty"`
+	}{
+		JSONPath:        jsonPath,
+		Value:           replacementValue,
+		Regex:           regex,
+		GroupForReplace: options.GroupForReplace,
+	}, "", "")
 	if err != nil {
 		return err
 	}
+
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
@@ -152,20 +151,20 @@ func AddBodyRegexSanitizer(value, regex string, options *RecordingOptions) error
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "BodyRegexSanitizer")
-	bodyContent := map[string]string{
-		"value": value,
-	}
-	if regex != "" {
-		bodyContent["regex"] = regex
-	}
-	if options.GroupForReplace != "" {
-		bodyContent["groupForReplace"] = options.GroupForReplace
-	}
 
-	marshalled, err := json.Marshal(bodyContent)
+	marshalled, err := json.MarshalIndent(struct {
+		Value           string `json:"value"`
+		Regex           string `json:"regex,omitempty"`
+		GroupForReplace string `json:"groupForReplace,omitempty"`
+	}{
+		Value:           value,
+		Regex:           regex,
+		GroupForReplace: options.GroupForReplace,
+	}, "", "")
 	if err != nil {
 		return err
 	}
+
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
@@ -184,16 +183,20 @@ func AddContinuationSanitizer(key, method string, resetAfterFirst bool, options 
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "ContinuationSanitizer")
-	bodyContent := map[string]string{
-		"key":             key,
-		"method":          method,
-		"resetAfterFirst": fmt.Sprintf("%v", resetAfterFirst),
-	}
 
-	marshalled, err := json.Marshal(bodyContent)
+	marshalled, err := json.MarshalIndent(struct {
+		Key             string `json:"key"`
+		Method          string `json:"method"`
+		ResetAfterFirst string `json:"resetAfterFirst"`
+	}{
+		Key:             key,
+		Method:          method,
+		ResetAfterFirst: fmt.Sprintf("%v", resetAfterFirst),
+	}, "", "")
 	if err != nil {
 		return err
 	}
+
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
@@ -209,16 +212,20 @@ func AddGeneralRegexSanitizer(value, regex string, options *RecordingOptions) er
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "GeneralRegexSanitizer")
-	bodyContent := map[string]string{
-		"value":           value,
-		"regex":           regex,
-		"groupForReplace": options.GroupForReplace,
-	}
 
-	marshalled, err := json.Marshal(bodyContent)
+	marshalled, err := json.MarshalIndent(struct {
+		Value           string `json:"value"`
+		Regex           string `json:"regex"`
+		GroupForReplace string `json:"groupForReplace"`
+	}{
+		Value:           value,
+		Regex:           regex,
+		GroupForReplace: options.GroupForReplace,
+	}, "", "")
 	if err != nil {
 		return err
 	}
+
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
@@ -234,23 +241,22 @@ func AddHeaderRegexSanitizer(key, replacementValue, regex string, options *Recor
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "HeaderRegexSanitizer")
-	bodyContent := map[string]string{
-		"key": key,
-	}
-	if replacementValue != "" {
-		bodyContent["value"] = replacementValue
-	}
-	if regex != "" {
-		bodyContent["regex"] = regex
-	}
-	if options.GroupForReplace != "" {
-		bodyContent["groupForReplace"] = options.GroupForReplace
-	}
 
-	marshalled, err := json.Marshal(bodyContent)
+	marshalled, err := json.MarshalIndent(struct {
+		Key             string `json:"key"`
+		Value           string `json:"value,omitempty"`
+		Regex           string `json:"regex,omitempty"`
+		GroupForReplace string `json:"groupForReplace,omitempty"`
+	}{
+		Key:             key,
+		Value:           replacementValue,
+		Regex:           regex,
+		GroupForReplace: options.GroupForReplace,
+	}, "", "")
 	if err != nil {
 		return err
 	}
+
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
@@ -279,14 +285,16 @@ func AddRemoveHeaderSanitizer(headersForRemoval []string, options *RecordingOpti
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "RemoveHeaderSanitizer")
-	bodyContent := map[string]string{
-		"headersForRemoval": strings.Join(headersForRemoval, ","),
-	}
 
-	marshalled, err := json.Marshal(bodyContent)
+	marshalled, err := json.MarshalIndent(struct {
+		HeadersForRemoval string `json:"headersForRemoval"`
+	}{
+		HeadersForRemoval: strings.Join(headersForRemoval, ""),
+	}, "", "")
 	if err != nil {
 		return err
 	}
+
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
@@ -302,14 +310,18 @@ func AddURISanitizer(replacement, regex string, options *RecordingOptions) error
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "UriRegexSanitizer")
-	bodyContent := map[string]string{
-		"value": replacement,
-		"regex": regex,
-	}
-	marshalled, err := json.Marshal(bodyContent)
+
+	marshalled, err := json.MarshalIndent(struct {
+		Value string `json:"value"`
+		Regex string `json:"regex"`
+	}{
+		Value: replacement,
+		Regex: regex,
+	}, "", "")
 	if err != nil {
 		return err
 	}
+
 	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 	req.ContentLength = int64(len(marshalled))
 	return handleProxyResponse(client.Do(req))
@@ -325,15 +337,17 @@ func AddURISubscriptionIDSanitizer(value string, options *RecordingOptions) erro
 		return err
 	}
 	req.Header.Set("x-abstraction-identifier", "UriSubscriptionIdSanitizer")
-	if value != "" {
-		bodyContent := map[string]string{
-			"value": value,
-		}
 
-		marshalled, err := json.Marshal(bodyContent)
+	if value != "" {
+		marshalled, err := json.MarshalIndent(struct {
+			Value string `json:"value,omitempty"`
+		}{
+			Value: value,
+		}, "", "")
 		if err != nil {
 			return err
 		}
+		
 		req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 		req.ContentLength = int64(len(marshalled))
 	}

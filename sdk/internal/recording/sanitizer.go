@@ -97,11 +97,9 @@ func handleProxyResponse(resp *http.Response, err error) error {
 		return err
 	}
 
-	if resp.StatusCode == http.StatusAccepted || resp.StatusCode == http.StatusOK || resp.StatusCode == 200 {
+	if resp.StatusCode == http.StatusAccepted || resp.StatusCode == http.StatusOK {
 		return nil
 	}
-
-	fmt.Println(resp)
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -114,7 +112,7 @@ func AddBodyKeySanitizer(jsonPath, replacementValue, regex string, options *Reco
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.HostScheme())
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -148,7 +146,7 @@ func AddBodyRegexSanitizer(value, regex string, options *RecordingOptions) error
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.HostScheme())
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -180,7 +178,7 @@ func AddContinuationSanitizer(key, method string, resetAfterFirst bool, options 
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.HostScheme())
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -205,7 +203,7 @@ func AddGeneralRegexSanitizer(value, regex string, options *RecordingOptions) er
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.HostScheme())
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -230,7 +228,7 @@ func AddHeaderRegexSanitizer(key, replacementValue, regex string, options *Recor
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.HostScheme())
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -262,7 +260,7 @@ func AddOAuthResponseSanitizer(options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.HostScheme())
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -275,7 +273,7 @@ func AddRemoveHeaderSanitizer(headersForRemoval []string, options *RecordingOpti
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.HostScheme())
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -298,7 +296,7 @@ func AddURISanitizer(replacement, regex string, options *RecordingOptions) error
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%v/Admin/AddSanitizer", options.HostScheme())
+	url := fmt.Sprintf("%v/Admin/AddSanitizer", options.hostScheme())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -321,7 +319,7 @@ func AddURISubscriptionIDSanitizer(value string, options *RecordingOptions) erro
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.HostScheme())
+	url := fmt.Sprintf("%s/Admin/AddSanitizer", options.hostScheme())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -346,7 +344,7 @@ func ResetSanitizers(options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
-	url := fmt.Sprintf("%v/Admin/Reset", options.HostScheme())
+	url := fmt.Sprintf("%v/Admin/Reset", options.hostScheme())
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err

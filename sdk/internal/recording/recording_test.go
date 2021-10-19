@@ -381,22 +381,19 @@ func TestRecordingOptions(t *testing.T) {
 	r := RecordingOptions{
 		UseHTTPS: true,
 	}
-	require.Equal(t, r.HostScheme(), "https://localhost:5001")
+	require.Equal(t, r.hostScheme(), "https://localhost:5001")
 
 	r.UseHTTPS = false
-	require.Equal(t, r.HostScheme(), "http://localhost:5000")
+	require.Equal(t, r.hostScheme(), "http://localhost:5000")
 
 	require.Equal(t, GetEnvVariable("Nonexistentevnvar", "somefakevalue"), "somefakevalue")
 	require.NotEqual(t, GetEnvVariable("PROXY_CERT", "fake/path/to/proxycert"), "fake/path/to/proxycert")
 
-	r.Init()
-	require.Equal(t, r.Host, "localhost:5000")
-	require.Equal(t, r.Scheme, "http")
+	r.UseHTTPS = false
+	require.Equal(t, r.hostScheme(), "http://localhost:5000")
 
 	r.UseHTTPS = true
-	r.Init()
-	require.Equal(t, r.Host, "localhost:5001")
-	require.Equal(t, r.Scheme, "https")
+	require.Equal(t, r.hostScheme(), "https://localhost:5001")
 }
 
 var packagePath = "sdk/internal/recording"
@@ -405,7 +402,7 @@ func TestStartStop(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
-	err := StartRecording(t, packagePath, nil)
+	err := Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -424,7 +421,7 @@ func TestStartStop(t *testing.T) {
 
 	require.NotNil(t, GetRecordingId(t))
 
-	err = StopRecording(t, nil)
+	err = Stop(t, nil)
 	require.NoError(t, err)
 
 	// Make sure the file is there
@@ -457,7 +454,7 @@ func TestStopRecordingNoStart(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
-	err := StopRecording(t, nil)
+	err := Stop(t, nil)
 	require.Error(t, err)
 
 	jsonFile, err := os.Open("./recordings/TestStopRecordingNoStart.json")
@@ -491,7 +488,7 @@ func TestBadAzureRecordMode(t *testing.T) {
 	temp := recordMode
 
 	recordMode = "badvalue"
-	err := StartRecording(t, packagePath, nil)
+	err := Start(t, packagePath, nil)
 	require.Error(t, err)
 
 	recordMode = temp
@@ -503,9 +500,9 @@ func TestBackwardSlashPath(t *testing.T) {
 
 	packagePathBackslash := "sdk\\internal\\recording"
 
-	err := StartRecording(t, packagePathBackslash, nil)
+	err := Start(t, packagePathBackslash, nil)
 	require.NoError(t, err)
 
-	err = StopRecording(t, nil)
+	err = Stop(t, nil)
 	require.NoError(t, err)
 }

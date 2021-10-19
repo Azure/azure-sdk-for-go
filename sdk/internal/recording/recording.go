@@ -462,20 +462,16 @@ var client = http.Client{
 
 type RecordingOptions struct {
 	UseHTTPS        bool
-	Host            string
-	Scheme          string
 	GroupForReplace string
 }
 
 func defaultOptions() *RecordingOptions {
 	return &RecordingOptions{
 		UseHTTPS: true,
-		Host:     "localhost:5001",
-		Scheme:   "https",
 	}
 }
 
-func (r RecordingOptions) HostScheme() string {
+func (r RecordingOptions) hostScheme() string {
 	if r.UseHTTPS {
 		return "https://localhost:5001"
 	}
@@ -486,7 +482,7 @@ func getTestId(pathToRecordings string, t *testing.T) string {
 	return path.Join(pathToRecordings, "recordings", t.Name()+".json")
 }
 
-func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOptions) error {
+func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
@@ -498,7 +494,7 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 	}
 	testId := getTestId(pathToRecordings, t)
 
-	url := fmt.Sprintf("%s/%s/start", options.HostScheme(), recordMode)
+	url := fmt.Sprintf("%s/%s/start", options.hostScheme(), recordMode)
 
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
@@ -523,7 +519,7 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 	return nil
 }
 
-func StopRecording(t *testing.T, options *RecordingOptions) error {
+func Stop(t *testing.T, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
@@ -531,7 +527,7 @@ func StopRecording(t *testing.T, options *RecordingOptions) error {
 		return nil
 	}
 
-	url := fmt.Sprintf("%v/%v/stop", options.HostScheme(), recordMode)
+	url := fmt.Sprintf("%v/%v/stop", options.hostScheme(), recordMode)
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -552,7 +548,7 @@ func StopRecording(t *testing.T, options *RecordingOptions) error {
 // This looks up an environment variable and if it is not found, returns the recordedValue
 func GetEnvVariable(varName string, recordedValue string) string {
 	val, ok := os.LookupEnv(varName)
-	if !ok {
+	if !ok || GetRecordMode() == RecordingMode {
 		return recordedValue
 	}
 	return val
@@ -626,12 +622,3 @@ func GetHTTPClient(t *testing.T) (*http.Client, error) {
 	return defaultHttpClient, nil
 }
 
-func (o *RecordingOptions) Init() {
-	if o.UseHTTPS {
-		o.Host = baseProxyURLSecure
-		o.Scheme = "https"
-	} else {
-		o.Host = baseProxyURL
-		o.Scheme = "http"
-	}
-}

@@ -21,13 +21,17 @@ import (
 func TestMain(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	w := httptest.NewRecorder()
+
 	indexHandler(w, req)
 	res := w.Result()
 	defer res.Body.Close()
+
 	data, err := ioutil.ReadAll(res.Body)
 	require.NoError(t, err)
+
 	var unmarshalled map[string]string
 	err = json.Unmarshal(data, &unmarshalled)
+
 	require.NoError(t, err)
 	require.Equal(t, unmarshalled["Tag"], "Value")
 	require.Equal(t, unmarshalled["Tag2"], "Value2")

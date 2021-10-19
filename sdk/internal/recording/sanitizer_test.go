@@ -197,7 +197,7 @@ func TestUriSanitizer(t *testing.T) {
 	err := ResetSanitizers(nil)
 	require.NoError(t, err)
 
-	err = StartRecording(t, packagePath, nil)
+	err = Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	srvURL := "http://host.docker.internal:8080/"
@@ -221,7 +221,7 @@ func TestUriSanitizer(t *testing.T) {
 
 	require.NotNil(t, GetRecordingId(t))
 
-	err = StopRecording(t, nil)
+	err = Stop(t, nil)
 	require.NoError(t, err)
 
 	// Make sure the file is there
@@ -244,7 +244,7 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 	err := ResetSanitizers(nil)
 	require.NoError(t, err)
 
-	err = StartRecording(t, packagePath, nil)
+	err = Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -278,7 +278,7 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 
 	require.NotNil(t, GetRecordingId(t))
 
-	err = StopRecording(t, nil)
+	err = Stop(t, nil)
 	require.NoError(t, err)
 
 	// Make sure the file is there
@@ -303,7 +303,7 @@ func TestBodyKeySanitizer(t *testing.T) {
 	err := ResetSanitizers(nil)
 	require.NoError(t, err)
 
-	err = StartRecording(t, packagePath, nil)
+	err = Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -335,7 +335,7 @@ func TestBodyKeySanitizer(t *testing.T) {
 
 	require.NotNil(t, GetRecordingId(t))
 
-	err = StopRecording(t, nil)
+	err = Stop(t, nil)
 	require.NoError(t, err)
 
 	// Make sure the file is there
@@ -358,7 +358,7 @@ func TestBodyRegexSanitizer(t *testing.T) {
 	err := ResetSanitizers(nil)
 	require.NoError(t, err)
 
-	err = StartRecording(t, packagePath, nil)
+	err = Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -392,7 +392,7 @@ func TestBodyRegexSanitizer(t *testing.T) {
 
 	require.NotNil(t, GetRecordingId(t))
 
-	err = StopRecording(t, nil)
+	err = Stop(t, nil)
 	require.NoError(t, err)
 
 	// Make sure the file is there
@@ -416,7 +416,7 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 	err := ResetSanitizers(nil)
 	require.NoError(t, err)
 
-	err = StartRecording(t, packagePath, nil)
+	err = Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -442,7 +442,7 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 
 	require.NotNil(t, GetRecordingId(t))
 
-	err = StopRecording(t, nil)
+	err = Stop(t, nil)
 	require.NoError(t, err)
 
 	// Make sure the file is there
@@ -465,7 +465,7 @@ func TestContinuationSanitizer(t *testing.T) {
 	err := ResetSanitizers(nil)
 	require.NoError(t, err)
 
-	err = StartRecording(t, packagePath, nil)
+	err = Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -506,7 +506,7 @@ func TestContinuationSanitizer(t *testing.T) {
 
 	require.NotNil(t, GetRecordingId(t))
 
-	err = StopRecording(t, nil)
+	err = Stop(t, nil)
 	require.NoError(t, err)
 
 	// Make sure the file is there
@@ -530,7 +530,7 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 	err := ResetSanitizers(nil)
 	require.NoError(t, err)
 
-	err = StartRecording(t, packagePath, nil)
+	err = Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -553,7 +553,7 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 
 	require.NotNil(t, GetRecordingId(t))
 
-	err = StopRecording(t, nil)
+	err = Stop(t, nil)
 	require.NoError(t, err)
 
 	// Make sure the file is there
@@ -576,7 +576,7 @@ func TestOAuthResponseSanitizer(t *testing.T) {
 	err := ResetSanitizers(nil)
 	require.NoError(t, err)
 
-	err = StartRecording(t, packagePath, nil)
+	err = Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -599,7 +599,7 @@ func TestOAuthResponseSanitizer(t *testing.T) {
 
 	require.NotNil(t, GetRecordingId(t))
 
-	err = StopRecording(t, nil)
+	err = Stop(t, nil)
 	require.NoError(t, err)
 
 	// Make sure the file is there
@@ -620,7 +620,7 @@ func TestUriSubscriptionIdSanitizer(t *testing.T) {
 	err := ResetSanitizers(nil)
 	require.NoError(t, err)
 
-	err = StartRecording(t, packagePath, nil)
+	err = Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -642,7 +642,7 @@ func TestUriSubscriptionIdSanitizer(t *testing.T) {
 
 	require.NotNil(t, GetRecordingId(t))
 
-	err = StopRecording(t, nil)
+	err = Stop(t, nil)
 	require.NoError(t, err)
 
 	// Make sure the file is there
@@ -665,7 +665,7 @@ func TestResetSanitizers(t *testing.T) {
 	err := ResetSanitizers(nil)
 	require.NoError(t, err)
 
-	err = StartRecording(t, packagePath, nil)
+	err = Start(t, packagePath, nil)
 	require.NoError(t, err)
 
 	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
@@ -695,7 +695,7 @@ func TestResetSanitizers(t *testing.T) {
 
 	require.NotNil(t, GetRecordingId(t))
 
-	err = StopRecording(t, nil)
+	err = Stop(t, nil)
 	require.NoError(t, err)
 
 	// Make sure the file is there

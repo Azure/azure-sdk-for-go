@@ -58,7 +58,7 @@ func initExamples() {
 
 		createExampleEntities()
 
-		ExampleNewClientWithConnectionString()
+		ExampleNewClientFromConnectionString()
 
 		sender, err = client.NewSender("exampleQueue") // or topicName
 		exitOnError("Failed to create sender", err)

@@ -444,8 +444,6 @@ const (
 	RecordingMode      = "record"
 	PlaybackMode       = "playback"
 	LiveMode           = "live"
-	baseProxyURLSecure = "localhost:5001"
-	baseProxyURL       = "localhost:5000"
 	IDHeader           = "x-recording-id"
 	ModeHeader         = "x-recording-mode"
 	UpstreamURIHeader  = "x-recording-upstream-base-uri"

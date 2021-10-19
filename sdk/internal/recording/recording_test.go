@@ -389,7 +389,7 @@ func TestRecordingOptions(t *testing.T) {
 
 	require.Equal(t, GetEnvVariable(t, "Nonexistentevnvar", "somefakevalue"), "somefakevalue")
 	temp := recordMode
-	recordMode = modeRecording
+	recordMode = RecordingMode
 	require.NotEqual(t, GetEnvVariable(t, "PROXY_CERT", "fake/path/to/proxycert"), "fake/path/to/proxycert")
 	recordMode = temp
 

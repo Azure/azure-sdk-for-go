@@ -31,7 +31,7 @@ func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Poli
     if o == nil {
         o = &recording.RecordingOptions{UseHTTPS: true}
     }
-    p := &recordingPOlicy{options: *o, t: t}
+    p := &recordingPolicy{options: *o, t: t}
     return p
 }
 

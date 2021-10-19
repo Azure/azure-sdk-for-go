@@ -127,8 +127,8 @@ func NewClient(key string, cred azcore.TokenCredential, options *ClientOptions) 
 	}, nil
 }
 
-// Creates a new Client that can only perform cryptographic operations locally
-func NewClientFromJSONWebKey(key azkeys.JSONWebKey, options *ClientOptions) (*Client, error) {
+// Creates a new Client that can only perform cryptographic operations locally.
+func NewClientFromJSONWebKey(key azkeys.JSONWebKey) (*Client, error) {
 	return &Client{}, nil
 }
 

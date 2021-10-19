@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
 )
 
-// This example shows you how to get started using the Azure Cosmos DB SDK for Go. NewCosmosClient creates a new instance of CosmosClient with the specified values. It uses the default pipeline configuration.
+// This example shows you how to get started using the Azure Cosmos DB SDK for Go. NewCosmosClient creates a new instance of Cosmos client with the specified values. It uses the default pipeline configuration.
 func Example() {
 
 	endpoint, _ := os.LookupEnv("SOME_ENDPOINT")

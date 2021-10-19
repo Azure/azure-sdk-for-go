@@ -26,7 +26,7 @@ func newEmulatorTests(t *testing.T) *emulatorTests {
 	}
 }
 
-func (e *emulatorTests) getClient(t *testing.T) *CosmosClient {
+func (e *emulatorTests) getClient(t *testing.T) *Client {
 	cred, _ := NewSharedKeyCredential(e.key)
 	client, err := NewClientWithSharedKey(e.host, cred, nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func (e *emulatorTests) getClient(t *testing.T) *CosmosClient {
 func (e *emulatorTests) createDatabase(
 	t *testing.T,
 	ctx context.Context,
-	client *CosmosClient,
+	client *Client,
 	dbName string) *Database {
 	database := DatabaseProperties{Id: dbName}
 	resp, err := client.CreateDatabase(ctx, database, nil)

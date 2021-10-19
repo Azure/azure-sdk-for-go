@@ -196,24 +196,26 @@ func recursiveCloneWithoutReadOnlyFields(val reflect.Value) interface{} {
 		aztag := field.Tag.Get("azure")
 		if azureTagIsReadOnly(aztag) {
 			// omit from payload
-		} else if reflect.Indirect(val.Field(i)).Type() == reflect.TypeOf(time.Time{}) {
-			// we can't recursively clone time.Time as it contains unexported fields.
-			// copy the value directly.  note that this check must come before the
-			// below struct type check as time.Time is a struct.
-			reflect.Indirect(clone).Field(i).Set(val.Field(i))
-		} else if reflect.Indirect(val.Field(i)).Kind() == reflect.Struct {
-			// recursive case
-			v := recursiveCloneWithoutReadOnlyFields(reflect.Indirect(val.Field(i)))
-			if t.Field(i).Anonymous {
-				// NOTE: this does not handle the case of embedded fields of unexported struct types.
-				// this should be ok as we don't generate any code like this at present
-				reflect.Indirect(clone).Field(i).Set(reflect.Indirect(reflect.ValueOf(v)))
+		} else if v := reflect.Indirect(val.Field(i)); v.IsValid() {
+			if v.Type() == reflect.TypeOf(time.Time{}) {
+				// we can't recursively clone time.Time as it contains unexported fields.
+				// copy the value directly.  note that this check must come before the
+				// below struct type check as time.Time is a struct.
+				reflect.Indirect(clone).Field(i).Set(val.Field(i))
+			} else if v.Kind() == reflect.Struct {
+				// recursive case
+				v := recursiveCloneWithoutReadOnlyFields(v)
+				if t.Field(i).Anonymous {
+					// NOTE: this does not handle the case of embedded fields of unexported struct types.
+					// this should be ok as we don't generate any code like this at present
+					reflect.Indirect(clone).Field(i).Set(reflect.Indirect(reflect.ValueOf(v)))
+				} else {
+					reflect.Indirect(clone).Field(i).Set(reflect.ValueOf(v))
+				}
 			} else {
-				reflect.Indirect(clone).Field(i).Set(reflect.ValueOf(v))
+				// no azure RO tag, non-recursive case, include in payload
+				reflect.Indirect(clone).Field(i).Set(val.Field(i))
 			}
-		} else {
-			// no azure RO tag, non-recursive case, include in payload
-			reflect.Indirect(clone).Field(i).Set(val.Field(i))
 		}
 	}
 	return clone.Interface()

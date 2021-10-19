@@ -24,8 +24,8 @@ const (
 	// This includes information like the HTTP status code, headers, and request URL.
 	EventResponse Event = "Response"
 
-	// EventRetry entries contain information specific to the rety policy in use.
-	EventRetry Event = "Retry"
+	// EventRetryPolicy entries contain information specific to the rety policy in use.
+	EventRetryPolicy Event = "Retry"
 
 	// EventLRO entries contian information specific to long-running operations.
 	// This includes information like polling location, operation state, and sleep intervals.

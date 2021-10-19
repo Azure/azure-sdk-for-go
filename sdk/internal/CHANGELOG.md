@@ -10,6 +10,8 @@
 * Renames `IdHeader` to `IDHeader` and `UpstreamUriHeader` to `UpstreamURIHeader`
 * Add `GroupForReplace` to the `recording.RecordingOptions` option for use in sanitizers.
 * Removes `testing.T` parameter from `GetEnvVariable`
+* Added support for running tests in parallel
+* Tests marked as LiveOnly will bypass the proxy
 
 ## 0.7.1 (2021-09-28)
 * add `mock.NewTrackedCloser` to help test when `Close` is called

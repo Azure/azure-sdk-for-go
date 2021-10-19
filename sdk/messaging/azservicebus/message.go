@@ -78,19 +78,6 @@ const (
 	enqueuedSequenceNumberAnnotation = "x-opt-enqueue-sequence-number"
 )
 
-// Set implements tab.Carrier
-func (m *Message) Set(key string, value interface{}) {
-	if m.ApplicationProperties == nil {
-		m.ApplicationProperties = make(map[string]interface{})
-	}
-	m.ApplicationProperties[key] = value
-}
-
-// GetKeyValues implements tab.Carrier
-func (m *Message) GetKeyValues() map[string]interface{} {
-	return m.ApplicationProperties
-}
-
 func (m *Message) messageType() string {
 	return "Message"
 }

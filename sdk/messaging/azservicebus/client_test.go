@@ -69,7 +69,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.EqualValues(t, fakeTokenCredential, client.config.credential)
 		require.EqualValues(t, "mysb.windows.servicebus.net", client.config.fullyQualifiedNamespace)
 
-		_, err = NewClientWithConnectionString("", nil)
+		_, err = NewClientFromConnectionString("", nil)
 		require.EqualError(t, err, "connectionString must not be empty")
 
 		_, err = NewClient("", fakeTokenCredential, nil)

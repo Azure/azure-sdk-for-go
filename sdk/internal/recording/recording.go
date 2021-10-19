@@ -550,10 +550,9 @@ func StopRecording(t *testing.T, options *RecordingOptions) error {
 }
 
 // This looks up an environment variable and if it is not found, returns the recordedValue
-func GetEnvVariable(t *testing.T, varName string, recordedValue string) string {
+func GetEnvVariable(varName string, recordedValue string) string {
 	val, ok := os.LookupEnv(varName)
 	if !ok {
-		t.Logf("Could not find environment variable: %v", varName)
 		return recordedValue
 	}
 	return val

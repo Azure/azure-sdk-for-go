@@ -386,8 +386,8 @@ func TestRecordingOptions(t *testing.T) {
 	r.UseHTTPS = false
 	require.Equal(t, r.HostScheme(), "http://localhost:5000")
 
-	require.Equal(t, GetEnvVariable(t, "Nonexistentevnvar", "somefakevalue"), "somefakevalue")
-	require.NotEqual(t, GetEnvVariable(t, "PROXY_CERT", "fake/path/to/proxycert"), "fake/path/to/proxycert")
+	require.Equal(t, GetEnvVariable("Nonexistentevnvar", "somefakevalue"), "somefakevalue")
+	require.NotEqual(t, GetEnvVariable("PROXY_CERT", "fake/path/to/proxycert"), "fake/path/to/proxycert")
 
 	r.Init()
 	require.Equal(t, r.Host, "localhost:5000")

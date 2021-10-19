@@ -7,6 +7,7 @@
 * Adds `ResetSanitizer` for removing all sanitizers in an active session.
 * Renames `IdHeader` to `IDHeader` and `UpstreamUriHeader` to `UpstreamURIHeader`
 * Add `GroupForReplace` to the `recording.RecordingOptions` option for use in sanitizers.
+* Removes `testing.T` parameter from `GetEnvVariable`
 
 ## 0.7.1 (2021-09-28)
 * add `mock.NewTrackedCloser` to help test when `Close` is called

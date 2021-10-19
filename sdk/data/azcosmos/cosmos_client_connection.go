@@ -21,7 +21,7 @@ type cosmosClientConnection struct {
 
 // newConnection creates an instance of the connection type with the specified endpoint.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
-func newCosmosClientConnection(endpoint string, cred *SharedKeyCredential, options *CosmosClientOptions) *cosmosClientConnection {
+func newCosmosClientConnection(endpoint string, cred *KeyCredential, options *CosmosClientOptions) *cosmosClientConnection {
 	policies := []policy.Policy{
 		azruntime.NewTelemetryPolicy("azcosmos", serviceLibVersion, &options.Telemetry),
 	}

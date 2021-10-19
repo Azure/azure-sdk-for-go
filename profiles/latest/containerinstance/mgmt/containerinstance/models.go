@@ -12,7 +12,7 @@ package containerinstance
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2021-07-01/containerinstance"
+	original "github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2021-09-01/containerinstance"
 )
 
 const (

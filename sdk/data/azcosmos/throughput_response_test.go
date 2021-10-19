@@ -63,16 +63,16 @@ func TestThroughputResponseParsing(t *testing.T) {
 		t.Fatalf("parsedResponse.ThroughputProperties.ETag is %s, expected %s", parsedResponse.ThroughputProperties.ETag, properties.ETag)
 	}
 
-	if parsedResponse.ActivityId() != "someActivityId" {
-		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId())
+	if parsedResponse.ActivityId != "someActivityId" {
+		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId)
 	}
 
-	if parsedResponse.RequestCharge() != 13.42 {
-		t.Errorf("Expected RequestCharge to be %f, but got %f", 13.42, parsedResponse.RequestCharge())
+	if parsedResponse.RequestCharge != 13.42 {
+		t.Errorf("Expected RequestCharge to be %f, but got %f", 13.42, parsedResponse.RequestCharge)
 	}
 
-	if parsedResponse.ETag() != "someEtag" {
-		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ActivityId())
+	if parsedResponse.ETag != "someEtag" {
+		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ETag)
 	}
 }
 
@@ -128,15 +128,15 @@ func TestThroughputResponseParsingWithPreviousRU(t *testing.T) {
 		t.Fatalf("parsedResponse.ThroughputProperties.ETag is %s, expected %s", parsedResponse.ThroughputProperties.ETag, properties.ETag)
 	}
 
-	if parsedResponse.ActivityId() != "someActivityId" {
-		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId())
+	if parsedResponse.ActivityId != "someActivityId" {
+		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId)
 	}
 
-	if parsedResponse.RequestCharge() != 23.42 {
-		t.Errorf("Expected RequestCharge to be %f, but got %f", 23.42, parsedResponse.RequestCharge())
+	if parsedResponse.RequestCharge != 23.42 {
+		t.Errorf("Expected RequestCharge to be %f, but got %f", 23.42, parsedResponse.RequestCharge)
 	}
 
-	if parsedResponse.ETag() != "someEtag" {
-		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ActivityId())
+	if parsedResponse.ETag != "someEtag" {
+		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ETag)
 	}
 }

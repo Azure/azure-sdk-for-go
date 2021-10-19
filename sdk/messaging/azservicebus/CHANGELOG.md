@@ -9,6 +9,8 @@
 - Added in the `Sender.SendMessages([slice of sendable messages])` function, which batches messages 
   automatically. Useful when you're sending multiple messages that you are already sure will be small
   enough to fit into a single batch.
+- Receiving from sessions using a SessionReceiver, created using Client.AcceptSessionFor(Queue|Subscription)
+  or Client.AcceptNextSessionFor(Queue|Subscription).
 
 ### Breaking Changes
 

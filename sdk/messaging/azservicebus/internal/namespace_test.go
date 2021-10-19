@@ -289,8 +289,11 @@ func (suite *serviceBusSuite) TearDownSuite() {
 }
 
 func (suite *serviceBusSuite) deleteAllTaggedQueues(ctx context.Context) {
-	ns := suite.getNewSasInstance()
-	qm := NewQueueManager(ns.GetHTTPSHostURI(), ns.TokenProvider)
+	qm, err := NewQueueManagerWithConnectionString(suite.ConnStr)
+
+	if err != nil {
+		suite.T().Fatal(err)
+	}
 
 	qs, err := qm.List(ctx)
 	if err != nil {
@@ -308,8 +311,11 @@ func (suite *serviceBusSuite) deleteAllTaggedQueues(ctx context.Context) {
 }
 
 func (suite *serviceBusSuite) deleteAllTaggedTopics(ctx context.Context) {
-	ns := suite.getNewSasInstance()
-	tm := ns.NewTopicManager()
+	tm, err := NewTopicManagerWithConnectionString(suite.ConnStr)
+
+	if err != nil {
+		suite.T().Fatal(err)
+	}
 
 	topics, err := tm.List(ctx)
 	if err != nil {
@@ -324,14 +330,6 @@ func (suite *serviceBusSuite) deleteAllTaggedTopics(ctx context.Context) {
 			}
 		}
 	}
-}
-
-func (suite *serviceBusSuite) getNewSasInstance(opts ...NamespaceOption) *Namespace {
-	ns, err := NewNamespace(append(opts, NamespaceWithConnectionString(suite.ConnStr))...)
-	if err != nil {
-		suite.T().Fatal(err)
-	}
-	return ns
 }
 
 var noRetryRetrier = NewBackoffRetrier(struct {

@@ -12,9 +12,9 @@ func TestDatabaseCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t)
 
-	database := CosmosDatabaseProperties{Id: "baseDbTest"}
+	database := DatabaseProperties{Id: "baseDbTest"}
 
-	resp, err := client.CreateDatabase(context.TODO(), database, nil, nil)
+	resp, err := client.CreateDatabase(context.TODO(), database, nil)
 	if err != nil {
 		t.Fatalf("Failed to create database: %v", err)
 	}
@@ -47,9 +47,9 @@ func TestDatabaseWithOfferCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t)
 
-	database := CosmosDatabaseProperties{Id: "baseDbTest"}
+	database := DatabaseProperties{Id: "baseDbTest"}
 	tp := NewManualThroughputProperties(400)
-	resp, err := client.CreateDatabase(context.TODO(), database, tp, nil)
+	resp, err := client.CreateDatabase(context.TODO(), database, &CreateDatabaseOptions{ThroughputProperties: tp})
 	if err != nil {
 		t.Fatalf("Failed to create database: %v", err)
 	}

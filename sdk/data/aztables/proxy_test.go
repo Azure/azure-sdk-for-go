@@ -160,11 +160,6 @@ func getAADCredential(t *testing.T) (azcore.Credential, error) { //nolint
 		return NewFakeCredential("fakestorageaccount", "fakeAccountKey"), nil
 	}
 
-	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
-
-	err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
-	require.NoError(t, err)
-
 	return azidentity.NewDefaultAzureCredential(nil)
 }
 
@@ -175,9 +170,6 @@ func getSharedKeyCredential(t *testing.T) (azcore.Credential, error) {
 
 	accountName := recording.GetEnvVariable(t, "TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
 	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_COSMOS_ACCOUNT_KEY", "fakeAccountKey")
-
-	err := recording.AddUriSanitizer("fakestorageaccount", accountName, nil)
-	require.NoError(t, err)
 
 	return NewSharedKeyCredential(accountName, accountKey)
 }

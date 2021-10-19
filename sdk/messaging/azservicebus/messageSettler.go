@@ -33,13 +33,13 @@ func newMessageSettler(links internal.AMQPLinks, baseRetrier internal.Retrier) s
 	}
 }
 
-func (s *messageSettler) useManagementLink(m *ReceivedMessage, linkRevision uint64) bool {
+func (s *messageSettler) useManagementLink(m *ReceivedMessage, receiver internal.AMQPReceiver) bool {
 	return s.onlyDoBackupSettlement ||
 		m.deferred ||
-		m.linkRevision != linkRevision
+		m.rawAMQPMessage.LinkName() != receiver.LinkName()
 }
 
-func (s *messageSettler) settleWithRetries(ctx context.Context, message *ReceivedMessage, settleFn func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient, linkRevision uint64) error) error {
+func (s *messageSettler) settleWithRetries(ctx context.Context, message *ReceivedMessage, settleFn func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient) error) error {
 	if s == nil {
 		return errReceiveAndDeleteReceiver
 	}
@@ -59,7 +59,7 @@ func (s *messageSettler) settleWithRetries(ctx context.Context, message *Receive
 			continue
 		}
 
-		lastErr := settleFn(receiver, mgmt, linkRevision)
+		lastErr := settleFn(receiver, mgmt)
 
 		if lastErr != nil {
 			_ = s.links.RecoverIfNeeded(ctx, linkRevision, lastErr)
@@ -74,8 +74,8 @@ func (s *messageSettler) settleWithRetries(ctx context.Context, message *Receive
 
 // CompleteMessage completes a message, deleting it from the queue or subscription.
 func (s *messageSettler) CompleteMessage(ctx context.Context, message *ReceivedMessage) error {
-	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient, linkRevision uint64) error {
-		if s.useManagementLink(message, linkRevision) {
+	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient) error {
+		if s.useManagementLink(message, receiver) {
 			return mgmt.SendDisposition(ctx, bytesToAMQPUUID(message.LockToken), internal.Disposition{Status: internal.CompletedDisposition})
 		} else {
 			return receiver.AcceptMessage(ctx, message.rawAMQPMessage)
@@ -87,8 +87,8 @@ func (s *messageSettler) CompleteMessage(ctx context.Context, message *ReceivedM
 // This will increment its delivery count, and potentially cause it to be dead lettered
 // depending on your queue or subscription's configuration.
 func (s *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedMessage) error {
-	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient, linkRevision uint64) error {
-		if s.useManagementLink(message, linkRevision) {
+	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient) error {
+		if s.useManagementLink(message, receiver) {
 			d := internal.Disposition{
 				Status: internal.AbandonedDisposition,
 			}
@@ -102,8 +102,8 @@ func (s *messageSettler) AbandonMessage(ctx context.Context, message *ReceivedMe
 // DeferMessage will cause a message to be deferred. Deferred messages
 // can be received using `Receiver.ReceiveDeferredMessages`.
 func (s *messageSettler) DeferMessage(ctx context.Context, message *ReceivedMessage) error {
-	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient, linkRevision uint64) error {
-		if s.useManagementLink(message, linkRevision) {
+	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient) error {
+		if s.useManagementLink(message, receiver) {
 			d := internal.Disposition{
 				Status: internal.DeferredDisposition,
 			}
@@ -131,7 +131,7 @@ type DeadLetterOptions struct {
 // queue or subscription. To receive these messages create a receiver with `Client.NewReceiver()`
 // using the `SubQueue` option.
 func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *ReceivedMessage, options *DeadLetterOptions) error {
-	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient, linkRevision uint64) error {
+	return s.settleWithRetries(ctx, message, func(receiver internal.AMQPReceiver, mgmt internal.MgmtClient) error {
 		reason := ""
 		description := ""
 
@@ -145,7 +145,7 @@ func (s *messageSettler) DeadLetterMessage(ctx context.Context, message *Receive
 			}
 		}
 
-		if s.useManagementLink(message, linkRevision) {
+		if s.useManagementLink(message, receiver) {
 			d := internal.Disposition{
 				Status:                internal.SuspendedDisposition,
 				DeadLetterDescription: &description,

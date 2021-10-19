@@ -251,21 +251,20 @@ func continuallySend(ctx context.Context, client *azservicebus.Client, queueName
 func createSubscriptions(telemetryClient appinsights.TelemetryClient, connectionString string, topicName string, subscriptionNames []string) (func(), error) {
 	log.Printf("[BEGIN] Creating topic %s", topicName)
 	defer log.Printf("[END] Creating topic %s", topicName)
-	ns, err := internal.NewNamespace(internal.NamespaceWithConnectionString(connectionString))
+
+	tm, err := internal.NewTopicManagerWithConnectionString(connectionString)
 
 	if err != nil {
-		trackException(nil, telemetryClient, "Failed to create namespace client", err)
+		trackException(nil, telemetryClient, "Failed to create a topic manager", err)
 		return nil, err
 	}
-
-	tm := ns.NewTopicManager()
 
 	if _, err := tm.Put(context.TODO(), topicName); err != nil {
 		trackException(nil, telemetryClient, "Failed to create topic", err)
 		return nil, err
 	}
 
-	sm, err := ns.NewSubscriptionManager(topicName)
+	sm, err := internal.NewSubscriptionManagerForConnectionString(topicName, connectionString)
 
 	if err != nil {
 		trackException(nil, telemetryClient, "Failed to create subscription manager", err)

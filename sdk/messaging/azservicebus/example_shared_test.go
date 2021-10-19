@@ -7,8 +7,10 @@ import (
 	"context"
 	"log"
 	"os"
+	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/joho/godotenv"
 )
 
@@ -28,38 +30,89 @@ func yourLogicForProcessing(message *azservicebus.ReceivedMessage) {
 	log.Printf("Message received")
 }
 
+const exampleQueue = "exampleQueue"
+const exampleTopic = "exampleTopic"
+const exampleSessionQueue = "exampleSessionQueue"
+const exampleSubscription = "exampleSubscription"
+
 var connectionString string
-var queueName string
-var topicName string
-var subscriptionName string
+
 var client *azservicebus.Client
 var sender *azservicebus.Sender
 var receiver *azservicebus.Receiver
+
 var messages []*azservicebus.ReceivedMessage
 var err error
 
-func init() {
-	_ = godotenv.Load()
-	connectionString = os.Getenv("SERVICEBUS_CONNECTION_STRING")
-	queueName = os.Getenv("SERVICEBUS_QUEUE")
-	topicName = os.Getenv("SERVICEBUS_TOPIC")
-	subscriptionName = os.Getenv("SERVICEBUS_SUBSCRIPTION")
+var initExamplesOnce sync.Once
 
-	if connectionString == "" || queueName == "" || topicName == "" || subscriptionName == "" {
-		log.Printf("SERVICEBUS_CONNECTION_STRING, SERVICEBUS_QUEUE, SERVICEBUS_TOPIC, and SERVICEBUS_SUBSCRIPTION need to be defined in the environment")
-		return
+func initExamples() {
+	initExamplesOnce.Do(func() {
+		_ = godotenv.Load()
+		connectionString = os.Getenv("SERVICEBUS_CONNECTION_STRING")
+
+		if connectionString == "" {
+			log.Printf("SERVICEBUS_CONNECTION_STRING needs to be defined in the environment")
+			return
+		}
+
+		createExampleEntities()
+
+		ExampleNewClientWithConnectionString()
+
+		sender, err = client.NewSender("exampleQueue") // or topicName
+		exitOnError("Failed to create sender", err)
+
+		// send some messages so the receiver tests will be fine running.
+		for i := 0; i < 5; i++ {
+			err = sender.SendMessage(context.TODO(), &azservicebus.Message{
+				Body: []byte("hello world"),
+			})
+			exitOnError("Failed to send message", err)
+		}
+	})
+}
+
+func createExampleEntities() {
+	queueManager, err := internal.NewQueueManagerWithConnectionString(connectionString)
+
+	if err != nil {
+		log.Fatalf("Failed to create queue manager : %s", err.Error())
 	}
 
-	ExampleNewClientWithConnectionString()
+	if _, err := queueManager.Get(context.Background(), exampleQueue); err != nil {
+		if _, err := queueManager.Put(context.Background(), "exampleQueue"); err != nil {
+			log.Fatalf("Failed to create/update `exampleQueue`: %s", err.Error())
+		}
+	}
 
-	sender, err = client.NewSender(queueName) // or topicName
-	exitOnError("Failed to create sender", err)
+	if _, err := queueManager.Get(context.Background(), exampleSessionQueue); err != nil {
+		if _, err := queueManager.Put(context.Background(), exampleSessionQueue, internal.QueueEntityWithRequiredSessions()); err != nil {
+			log.Fatalf("Failed to create/update `exampleSessionQueue`: %s", err.Error())
+		}
+	}
 
-	// send some messages so the receiver tests will be fine running.
-	for i := 0; i < 5; i++ {
-		err = sender.SendMessage(context.TODO(), &azservicebus.Message{
-			Body: []byte("hello world"),
-		})
-		exitOnError("Failed to send message", err)
+	topicManager, err := internal.NewTopicManagerWithConnectionString(connectionString)
+
+	if err != nil {
+		log.Fatalf("Failed to create topic manager : %s", err.Error())
+	}
+
+	if _, err := topicManager.Get(context.Background(), exampleTopic); err != nil {
+		if _, err := topicManager.Put(context.Background(), exampleTopic); err != nil {
+			log.Fatalf("Failed to create/update `exampleTopic`: %s", err.Error())
+		}
+	}
+
+	subscriptionManager, err := internal.NewSubscriptionManagerForConnectionString("exampleTopic", connectionString)
+
+	if err != nil {
+		log.Fatalf("Failed to create subscription manager : %s", err.Error())
+	}
+
+	if _, err := subscriptionManager.Get(context.Background(), exampleSubscription); err != nil {
+		if _, err := subscriptionManager.Put(context.Background(), exampleSubscription); err != nil {
+			log.Fatalf("Failed to create/update `exampleSubscription`: %s", err.Error())
+		}
 	}
 }

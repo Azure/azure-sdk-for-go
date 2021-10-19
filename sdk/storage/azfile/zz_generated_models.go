@@ -1045,17 +1045,17 @@ type SourceModifiedAccessConditions struct {
 	SourceIfNoneMatchCRC64 []byte
 }
 
-// Implements the error and azcore.HTTPResponse interfaces.
-type StorageError struct {
-	raw     string
-	Message *string `xml:"Message"`
-}
-
-// Error implements the error interface for type StorageError.
-// The contents of the error text are not contractual and subject to change.
-func (e StorageError) Error() string {
-	return e.raw
-}
+//// Implements the error and azcore.HTTPResponse interfaces.
+//type StorageError struct {
+//	raw     string
+//	Message *string `xml:"Message"`
+//}
+//
+//// Error implements the error interface for type StorageError.
+//// The contents of the error text are not contractual and subject to change.
+//func (e StorageError) Error() string {
+//	return e.raw
+//}
 
 // StorageServiceProperties - Storage service properties.
 type StorageServiceProperties struct {

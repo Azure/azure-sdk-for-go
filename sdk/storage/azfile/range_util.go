@@ -36,7 +36,7 @@ func (r HttpRange) format() *string {
 // toRange makes range string adhere to REST API.
 // A Count with value CountToEnd means Count of bytes from Offset to the end of file.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-the-range-header-for-file-service-operations.
-func getRangeParam(offset, count *int64) *string {
+func toRange(offset, count *int64) *string {
 	if offset == nil && count == nil {
 		return nil
 	}
@@ -53,6 +53,19 @@ func getRangeParam(offset, count *int64) *string {
 
 	return HttpRange{Offset: newOffset, Count: newCount}.format()
 }
+
+//// toRange makes range string adhere to REST API.
+//// A count with value CountToEnd means count of bytes from offset to the end of file.
+//// For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-the-range-header-for-file-service-operations.
+//func toRange(offset int64, count int64) *string {
+//	// No additional validation by design. API can validate parameter by case, and use this method.
+//	endRange := ""
+//	if count != CountToEnd {
+//		endRange = strconv.FormatInt(offset+count-1, 10)
+//	}
+//	r := fmt.Sprintf("bytes=%d-%s", offset, endRange)
+//	return &r
+//}
 
 func validateSeekableStreamAt0AndGetCount(body io.ReadSeeker) (int64, error) {
 	if body == nil { // nil body's are "logically" seekable to 0 and are 0 bytes long

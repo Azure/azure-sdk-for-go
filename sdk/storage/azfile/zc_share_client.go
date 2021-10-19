@@ -2,8 +2,8 @@ package azfile
 
 import (
 	"context"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"net/url"
 )
 
@@ -24,6 +24,22 @@ func NewShareClient(shareURL string, cred azcore.Credential, options *ClientOpti
 
 func (s ShareClient) URL() string {
 	return s.u.String()
+}
+
+// WithSnapshot creates a new ShareURL object identical to the source but with the specified snapshot timestamp.
+// Pass time.Time{} to remove the snapshot returning a URL to the base share.
+func (s ShareClient) WithSnapshot(shareSnapshot string) ShareClient {
+	shareURLParts := NewFileURLParts(s.URL())
+	shareURLParts.ShareSnapshot = shareSnapshot
+	u, _ := url.Parse(shareURLParts.URL())
+
+	return ShareClient{
+		client: &shareClient{
+			&connection{u: shareURLParts.URL(), p: s.client.con.p},
+		},
+		u:    *u,
+		cred: s.cred,
+	}
 }
 
 // NewRootDirectoryClient creates a new DirectoryClient object using ShareClient's URL.
@@ -98,10 +114,10 @@ func (s ShareClient) SetProperties(ctx context.Context, options *SetSharePropert
 
 // SetMetadata sets the share's metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-share-metadata.
-func (s ShareClient) SetMetadata(ctx context.Context, options *SetShareMetadataOptions) (ShareSetMetadataResponse, error) {
-	formattedOptions, leaseAccessConditions := options.format()
-	if formattedOptions == nil || formattedOptions.Metadata == nil {
-		return ShareSetMetadataResponse{}, errors.New("metadata cannot be nil")
+func (s ShareClient) SetMetadata(ctx context.Context, metadata map[string]string, options *SetShareMetadataOptions) (ShareSetMetadataResponse, error) {
+	formattedOptions, leaseAccessConditions, err := options.format(metadata)
+	if err != nil {
+		return ShareSetMetadataResponse{}, err
 	}
 	return s.client.SetMetadata(ctx, formattedOptions, leaseAccessConditions)
 }
@@ -119,21 +135,21 @@ func (s ShareClient) GetPermissions(ctx context.Context, options *GetShareAccess
 // In order to make a SDDL portable, please replace well-known SIDs with their domain specific counterpart.
 // Well-known SIDs are listed here: https://docs.microsoft.com/en-us/windows/win32/secauthz/sid-strings
 // More info about SDDL strings can be located at: https://docs.microsoft.com/en-us/windows/win32/secauthz/security-descriptor-string-format
-func (s ShareClient) CreatePermission(ctx context.Context, sharePermission *string, _ *CreateSharePermissionOptions) (ShareCreatePermissionResponse, error) {
-	permission := SharePermission{Permission: sharePermission}
+func (s ShareClient) CreatePermission(ctx context.Context, sharePermission string, options *CreateSharePermissionOptions) (ShareCreatePermissionResponse, error) {
+	permission := SharePermission{Permission: to.StringPtr(sharePermission)}
 	return s.client.CreatePermission(ctx, permission, nil)
 }
 
 // GetPermission obtains a SDDL permission string from the service using a known permission key.
-func (s ShareClient) GetPermission(ctx context.Context, filePermissionKey string, _ *GetSharePermissionOptions) (ShareGetPermissionResponse, error) {
+func (s ShareClient) GetPermission(ctx context.Context, filePermissionKey string, options *GetSharePermissionOptions) (ShareGetPermissionResponse, error) {
 	return s.client.GetPermission(ctx, filePermissionKey, nil)
 }
 
 // SetPermissions sets a stored access policy for use with shared access signatures.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-share-acl.
-func (s ShareClient) SetPermissions(ctx context.Context, options *SetShareAccessPolicyOptions) (ShareSetAccessPolicyResponse, error) {
-	formattedOptions, leaseAccessConditions := options.format()
-	return s.client.SetAccessPolicy(ctx, formattedOptions, leaseAccessConditions)
+func (s ShareClient) SetPermissions(ctx context.Context, shareACLs []*SignedIdentifier, options *SetShareAccessPolicyOptions) (ShareSetAccessPolicyResponse, error) {
+	shareSetAccessPolicyOptions, leaseAccessConditions := options.format(shareACLs)
+	return s.client.SetAccessPolicy(ctx, shareSetAccessPolicyOptions, leaseAccessConditions)
 }
 
 // GetStatistics retrieves statistics related to the share.

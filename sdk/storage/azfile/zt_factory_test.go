@@ -148,17 +148,17 @@ func getShareClient(shareName string, s ServiceClient) (ShareClient, error) {
 }
 
 func createNewShare(_assert *assert.Assertions, shareName string, serviceClient ServiceClient) ShareClient {
-	shareClient, err := getShareClient(shareName, serviceClient)
+	srClient, err := getShareClient(shareName, serviceClient)
 	_assert.Nil(err)
 
-	cResp, err := shareClient.Create(ctx, nil)
+	cResp, err := srClient.Create(ctx, nil)
 	_assert.Nil(err)
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
-	return shareClient
+	return srClient
 }
 
-func delShare(_assert *assert.Assertions, shareClient ShareClient) {
-	deleteShareResp, err := shareClient.Delete(context.Background(), nil)
+func delShare(_assert *assert.Assertions, shareClient ShareClient, options *DeleteShareOptions) {
+	deleteShareResp, err := shareClient.Delete(context.Background(), options)
 	_assert.Nil(err)
 	_assert.Equal(deleteShareResp.RawResponse.StatusCode, 202)
 }
@@ -212,6 +212,46 @@ func createNewFileFromShare(_assert *assert.Assertions, fileName string, fileSiz
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 
 	return fClient
+}
+
+func createNewFileFromShareWithPermissions(_assert *assert.Assertions, fileName string, fileSize int64, srClient ShareClient) (fClient FileClient) {
+	fClient = getFileClientFromShare(_assert, fileName, srClient)
+
+	cResp, err := fClient.Create(ctx, &CreateFileOptions{
+		FileContentLength: to.Int64Ptr(fileSize),
+		FilePermissions: &FilePermissions{
+			FilePermissionStr: &sampleSDDL,
+		},
+	})
+	_assert.Nil(err)
+	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+
+	return fClient
+}
+
+// This is a convenience method, No public API to create file URL from share now. This method uses share's root directory.
+func createNewFileFromShareWithGivenData(_assert *assert.Assertions, fileName string, fileData string, srClient ShareClient) (fClient FileClient) {
+	fClient = getFileClientFromShare(_assert, fileName, srClient)
+
+	cResp, err := fClient.Create(ctx, &CreateFileOptions{
+		FileContentLength: to.Int64Ptr(int64(len(fileData))),
+		FilePermissions: &FilePermissions{
+			FilePermissionStr: &sampleSDDL,
+		},
+	})
+	_assert.Nil(err)
+	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+
+	putResp, err := fClient.UploadRange(ctx, 0, internal.NopCloser(strings.NewReader(fileDefaultData)), nil)
+	_assert.Nil(err)
+	_assert.Equal(putResp.RawResponse.StatusCode, 201)
+	_assert.Equal(putResp.LastModified.IsZero(), false)
+	_assert.NotEqual(putResp.ETag, "")
+	_assert.NotEqual(putResp.RequestID, "")
+	_assert.NotEqual(putResp.Version, "")
+	_assert.Equal(putResp.Date.IsZero(), false)
+
+	return
 }
 
 func delFile(_assert *assert.Assertions, fileClient FileClient) {

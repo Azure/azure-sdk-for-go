@@ -1,5 +1,7 @@
 package azfile
 
+import "errors"
+
 type CreateShareOptions struct {
 	// Specifies the access tier of the share.
 	AccessTier *ShareAccessTier
@@ -73,7 +75,8 @@ type SetSharePropertiesOptions struct {
 	// Specifies the access tier of the share.
 	AccessTier *ShareAccessTier
 	// Specifies the maximum size of the share, in gigabytes.
-	Quota                 *int32
+	Quota *int32
+
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
@@ -89,20 +92,22 @@ func (o *SetSharePropertiesOptions) format() (*ShareSetPropertiesOptions, *Lease
 }
 
 type SetShareMetadataOptions struct {
-	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
-
-	leaseAccessConditions *LeaseAccessConditions
+	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *SetShareMetadataOptions) format() (*ShareSetMetadataOptions, *LeaseAccessConditions) {
-	if o == nil {
-		return nil, nil
+func (o *SetShareMetadataOptions) format(metadata map[string]string) (shareSetMetadataOptions *ShareSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions, err error) {
+	if metadata == nil || len(metadata) == 0 {
+		err = errors.New("metadata cannot be nil")
+		return
 	}
 
-	return &ShareSetMetadataOptions{
-		Metadata: o.Metadata,
-	}, o.leaseAccessConditions
+	shareSetMetadataOptions = &ShareSetMetadataOptions{Metadata: metadata}
+
+	if o != nil {
+		leaseAccessConditions = o.LeaseAccessConditions
+	}
+
+	return
 }
 
 type GetShareAccessPolicyOptions struct {
@@ -125,20 +130,16 @@ type GetSharePermissionOptions struct {
 
 // SetShareAccessPolicyOptions contains the optional parameters for the Share.SetAccessPolicy method.
 type SetShareAccessPolicyOptions struct {
-	// The ACL for the share.
-	ShareACL []*SignedIdentifier
-
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *SetShareAccessPolicyOptions) format() (*ShareSetAccessPolicyOptions, *LeaseAccessConditions) {
-	if o == nil {
-		return nil, nil
+func (o *SetShareAccessPolicyOptions) format(shareACLs []*SignedIdentifier) (shareSetAccessPolicyOptions *ShareSetAccessPolicyOptions, leaseAccessConditions *LeaseAccessConditions) {
+	shareSetAccessPolicyOptions = &ShareSetAccessPolicyOptions{ShareACL: shareACLs}
+	if o != nil {
+		leaseAccessConditions = o.LeaseAccessConditions
 	}
 
-	return &ShareSetAccessPolicyOptions{
-		ShareACL: o.ShareACL,
-	}, o.LeaseAccessConditions
+	return
 }
 
 type GetShareStatisticsOptions struct {

@@ -5,6 +5,44 @@ import (
 	"time"
 )
 
+// SMBPropertyHolder is an interface designed for SMBPropertyAdapter, to identify valid response types for adapting.
+type SMBPropertyHolder interface {
+	FileCreationTime() string
+	FileLastWriteTime() string
+	FileAttributes() string
+}
+
+// SMBPropertyAdapter is a wrapper struct that automatically converts the string outputs of FileAttributes, FileCreationTime and FileLastWrite time to time.Time.
+// It is _not_ error resistant. It is expected that the response you're inserting into this is a valid response.
+// File and directory calls that return such properties are: GetProperties, SetProperties, Create
+// File Downloads also return such properties. Insert other response types at your peril.
+type SMBPropertyAdapter struct {
+	PropertySource SMBPropertyHolder
+}
+
+func (s *SMBPropertyAdapter) convertISO8601(input string) time.Time {
+	t, err := time.Parse(ISO8601, input)
+
+	if err != nil {
+		// This should literally never happen if this struct is used correctly.
+		panic("SMBPropertyAdapter expects a successful response fitting the SMBPropertyHolder interface. Failed to parse time:\n" + err.Error())
+	}
+
+	return t
+}
+
+func (s *SMBPropertyAdapter) FileCreationTime() time.Time {
+	return s.convertISO8601(s.PropertySource.FileCreationTime()).UTC()
+}
+
+func (s *SMBPropertyAdapter) FileLastWriteTime() time.Time {
+	return s.convertISO8601(s.PropertySource.FileLastWriteTime()).UTC()
+}
+
+func (s *SMBPropertyAdapter) FileAttributes() FileAttributeFlags {
+	return ParseFileAttributeFlagsString(s.PropertySource.FileAttributes())
+}
+
 type CreateDirectoryOptions struct {
 	SMBProperties   *SMBProperties
 	FilePermissions *FilePermissions
@@ -13,12 +51,12 @@ type CreateDirectoryOptions struct {
 
 func (o *CreateDirectoryOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string, directoryCreateOptions *DirectoryCreateOptions, err error) {
 	if o == nil {
-		return defaultFileAttributes, defaultCurrentTimeString, defaultCurrentTimeString, &DirectoryCreateOptions{FilePermission: to.StringPtr(defaultFilePermissionStr)}, nil
+		return DefaultFileAttributes, DefaultCurrentTimeString, DefaultCurrentTimeString, &DirectoryCreateOptions{FilePermission: to.StringPtr(DefaultFilePermissionStr)}, nil
 	}
 
-	fileAttributes, fileCreationTime, fileLastWriteTime = o.SMBProperties.format(false)
+	fileAttributes, fileCreationTime, fileLastWriteTime = o.SMBProperties.format(false, DefaultFileAttributes, DefaultCurrentTimeString)
 
-	filePermission, filePermissionKey, err := o.FilePermissions.format()
+	filePermission, filePermissionKey, err := o.FilePermissions.format(DefaultFilePermissionStr)
 	if err != nil {
 		return
 	}
@@ -81,8 +119,8 @@ type SetDirectoryPropertiesOptions struct {
 
 func (o *SetDirectoryPropertiesOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectorySetPropertiesOptions) {
 	//if o == nil {
-	//	return defaultFileAttributes, defaultCurrentTimeString, defaultCurrentTimeString, &DirectorySetPropertiesOptions{
-	//		FilePermission:    &defaultFilePermissionStr,
+	//	return DefaultFileAttributes, DefaultCurrentTimeString, DefaultCurrentTimeString, &DirectorySetPropertiesOptions{
+	//		FilePermission:    &DefaultFilePermissionStr,
 	//	}
 	//}
 	panic("Write")

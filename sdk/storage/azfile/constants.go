@@ -5,7 +5,10 @@ package azfile
 
 //nolint
 const (
-	SASVersion = "2019-12-12"
+	ServiceVersion = "2020-02-10"
+
+	// SASVersion indicates the SAS version.
+	SASVersion = ServiceVersion
 
 	headerAuthorization           = "Authorization"
 	headerXmsDate                 = "x-ms-date"

@@ -2,6 +2,7 @@ package azfile
 
 import (
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	testframework "github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/assert"
@@ -27,6 +28,8 @@ var (
 	basicMetadata = map[string]string{"foo": "bar"}
 
 	sampleSDDL = `O:S-1-5-32-548G:S-1-5-21-397955417-626881126-188441444-512D:(A;;RPWPCCDCLCSWRCWDWOGA;;;S-1-0-0)`
+
+	deleteSnapshotsInclude = DeleteSnapshotsOptionTypeInclude
 )
 
 const (
@@ -129,4 +132,14 @@ func (s *azfileLiveTestSuite) BeforeTest(suite string, test string) {
 //nolint
 func (s *azfileLiveTestSuite) AfterTest(suite string, test string) {
 
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+func validateStorageError(_assert *assert.Assertions, err error, code StorageErrorCode) {
+	_assert.NotNil(err)
+	var storageError *StorageError
+	_assert.Equal(errors.As(err, &storageError), true)
+
+	_assert.Equal(storageError.ErrorCode, code)
 }

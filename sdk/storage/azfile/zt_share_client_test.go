@@ -13,5 +13,5 @@ func (s *azfileLiveTestSuite) TestShareCreateRootDirectoryURL() {
 	}
 
 	shareClient := createNewShare(_assert, generateShareName(testName), svcClient)
-	defer delShare(_assert, shareClient)
+	defer delShare(_assert, shareClient, nil)
 }

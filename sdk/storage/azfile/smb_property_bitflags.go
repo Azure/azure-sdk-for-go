@@ -56,7 +56,7 @@ func (f FileAttributeFlags) String() (out string) {
 	out = strings.TrimSuffix(out, "|")
 
 	if out == "" {
-		out = defaultFileAttributes
+		out = DefaultFileAttributes
 	}
 
 	return

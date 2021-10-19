@@ -79,7 +79,7 @@ func (d DirectoryClient) GetProperties(ctx context.Context, options *GetDirector
 //// Preserves values for SMB properties.
 //// For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-properties.
 //func (d DirectoryClient) SetProperties(ctx context.Context, options *SetDirectoryPropertiesOptions) (*DirectorySetPropertiesResponse, error) {
-//	permStr, permKey, fileAttr, fileCreateTime, FileLastWriteTime, err := properties.selectSMBPropertyValues(true, defaultPreserveString, defaultPreserveString, defaultPreserveString)
+//	permStr, permKey, fileAttr, fileCreateTime, FileLastWriteTime, err := properties.selectSMBPropertyValues(true, DefaultPreserveString, DefaultPreserveString, DefaultPreserveString)
 //
 //	fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, formattedOptions :=
 //

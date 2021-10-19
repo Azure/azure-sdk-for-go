@@ -54,6 +54,10 @@ steps:
       displayName: "Install Coverage and Junit Dependencies"
       workingDirectory: '${{parameters.GoWorkspace}}'
 
+    - pwsh: |
+         Get-Service docker | Restart-Service
+      condition: and(eq(parameters['TestProxy'], true), eq(variables['Agent.OS'],'Windows_NT'))
+
     - ${{ if eq(parameters.TestProxy, true) }}:
       - template: /eng/common/testproxy/test-proxy-docker.yml
 

@@ -50,8 +50,8 @@ const (
     cosmosDbKey = "someKey"
 )
 
-cred, _ := azcosmos.NewSharedKeyCredential(cosmosDbKey)
-client, err := azcosmos.NewClientWithSharedKey(cosmosDbEndpoint, cred, nil)
+cred, _ := azcosmos.NewKeyCredential(cosmosDbKey)
+client, err := azcosmos.NewClientWithKey(cosmosDbEndpoint, cred, nil)
 handle(err)
 ```
 

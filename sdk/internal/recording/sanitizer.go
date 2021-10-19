@@ -56,7 +56,7 @@ func (s *Sanitizer) AddBodysanitizer(sanitizer StringSanitizer) {
 	s.bodySanitizer = sanitizer
 }
 
-// AddURISanitizer configures the supplied StringSanitizer to sanitize recording request and response URLs
+// AddUriSanitizer configures the supplied StringSanitizer to sanitize recording request and response URLs
 func (s *Sanitizer) AddUrlSanitizer(sanitizer StringSanitizer) {
 	s.urlSanitizer = sanitizer
 }
@@ -347,7 +347,7 @@ func AddURISubscriptionIDSanitizer(value string, options *RecordingOptions) erro
 		if err != nil {
 			return err
 		}
-		
+
 		req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
 		req.ContentLength = int64(len(marshalled))
 	}

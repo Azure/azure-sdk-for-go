@@ -43,7 +43,7 @@ import (
 )
 
 func main() {
-  client, err := azservicebus.NewClientWithConnectionString("<Service Bus connection string>")
+  client, err := azservicebus.NewClientFromConnectionString("<Service Bus connection string>")
  
   if err != nil {
     log.Fatalf("Failed to create Service Bus Client: %s", err.Error())

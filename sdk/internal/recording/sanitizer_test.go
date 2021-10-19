@@ -191,7 +191,7 @@ func (e Entry) ResponseBodyByValue(k string) interface{} {
 	return m[k]
 }
 
-func TestURISanitizer(t *testing.T) {
+func TestUriSanitizer(t *testing.T) {
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -614,7 +614,7 @@ func TestOAuthResponseSanitizer(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestURISubscriptionIDSanitizer(t *testing.T) {
+func TestUriSubscriptionIdSanitizer(t *testing.T) {
 	defer reset(t)
 
 	err := ResetSanitizers(nil)

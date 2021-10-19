@@ -414,9 +414,9 @@ func TestStartStop(t *testing.T) {
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, "https://www.bing.com/")
+	req.Header.Set(UpstreamURIHeader, "https://www.bing.com/")
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IdHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(t))
 
 	resp, err := client.Do(req)
 	require.NoError(t, err)

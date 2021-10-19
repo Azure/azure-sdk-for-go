@@ -56,7 +56,7 @@ func (s *Sanitizer) AddBodysanitizer(sanitizer StringSanitizer) {
 	s.bodySanitizer = sanitizer
 }
 
-// AddUriSanitizer configures the supplied StringSanitizer to sanitize recording request and response URLs
+// AddURISanitizer configures the supplied StringSanitizer to sanitize recording request and response URLs
 func (s *Sanitizer) AddUrlSanitizer(sanitizer StringSanitizer) {
 	s.urlSanitizer = sanitizer
 }
@@ -294,7 +294,7 @@ func AddRemoveHeaderSanitizer(headersForRemoval []string, options *RecordingOpti
 	return handleProxyResponse(client.Do(req))
 }
 
-func AddUriSanitizer(replacement, regex string, options *RecordingOptions) error {
+func AddURISanitizer(replacement, regex string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
@@ -317,7 +317,7 @@ func AddUriSanitizer(replacement, regex string, options *RecordingOptions) error
 	return handleProxyResponse(client.Do(req))
 }
 
-func AddUriSubscriptionIdSanitizer(value string, options *RecordingOptions) error {
+func AddURISubscriptionIDSanitizer(value string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}

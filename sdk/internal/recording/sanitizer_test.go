@@ -177,7 +177,7 @@ type RecordingFileStruct struct {
 }
 
 type Entry struct {
-	RequestUri      string            `json:"RequestUri"`
+	RequestURI      string            `json:"RequestUri"`
 	RequestMethod   string            `json:"RequestMethod"`
 	RequestHeaders  map[string]string `json:"RequestHeaders"`
 	RequestBody     string            `json:"RequestBody"`
@@ -191,13 +191,7 @@ func (e Entry) ResponseBodyByValue(k string) interface{} {
 	return m[k]
 }
 
-func TestUriSanitizer(t *testing.T) {
-	// temp := recordMode
-	// recordMode = "record"
-	// f := func() {
-	// 	recordMode = temp
-	// }
-	// defer f()
+func TestURISanitizer(t *testing.T) {
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -208,7 +202,7 @@ func TestUriSanitizer(t *testing.T) {
 
 	srvURL := "http://host.docker.internal:8080/"
 
-	err = AddUriSanitizer("https://replacement.com/", srvURL, nil)
+	err = AddURISanitizer("https://replacement.com/", srvURL, nil)
 	require.NoError(t, err)
 
 	client, err := GetHTTPClient(t)
@@ -217,9 +211,9 @@ func TestUriSanitizer(t *testing.T) {
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, srvURL)
+	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IdHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(t))
 
 	resp, err := client.Do(req)
 	require.NoError(t, err)
@@ -241,16 +235,10 @@ func TestUriSanitizer(t *testing.T) {
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
 
-	require.Equal(t, data.Entries[0].RequestUri, "https://replacement.com/")
+	require.Equal(t, data.Entries[0].RequestURI, "https://replacement.com/")
 }
 
 func TestHeaderRegexSanitizer(t *testing.T) {
-	// temp := recordMode
-	// recordMode = "record"
-	// f := func() {
-	// 	recordMode = temp
-	// }
-	// defer f()
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -267,9 +255,9 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, srvURL)
+	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IdHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(t))
 	req.Header.Set("testproxy-header", "fakevalue")
 	req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
 	req.Header.Set("ComplexRegex", "https://fakeaccount.table.core.windows.net")
@@ -310,12 +298,6 @@ func TestHeaderRegexSanitizer(t *testing.T) {
 }
 
 func TestBodyKeySanitizer(t *testing.T) {
-	// temp := recordMode
-	// recordMode = "record"
-	// f := func() {
-	// 	recordMode = temp
-	// }
-	// defer f()
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -332,9 +314,9 @@ func TestBodyKeySanitizer(t *testing.T) {
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, srvURL)
+	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IdHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(t))
 
 	bodyValue := map[string]string{
 		"key1": "value1",
@@ -371,12 +353,6 @@ func TestBodyKeySanitizer(t *testing.T) {
 }
 
 func TestBodyRegexSanitizer(t *testing.T) {
-	// temp := recordMode
-	// recordMode = "record"
-	// f := func() {
-	// 	recordMode = temp
-	// }
-	// defer f()
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -393,9 +369,9 @@ func TestBodyRegexSanitizer(t *testing.T) {
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, srvURL)
+	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IdHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(t))
 
 	bodyValue := map[string]string{
 		"key1": "value1",
@@ -435,12 +411,6 @@ func TestBodyRegexSanitizer(t *testing.T) {
 }
 
 func TestRemoveHeaderSanitizer(t *testing.T) {
-	// temp := recordMode
-	// recordMode = "record"
-	// f := func() {
-	// 	recordMode = temp
-	// }
-	// defer f()
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -457,9 +427,9 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, srvURL)
+	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IdHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(t))
 	req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
 	req.Header.Set("ComplexRegexRemove", "https://fakeaccount.table.core.windows.net")
 
@@ -490,12 +460,6 @@ func TestRemoveHeaderSanitizer(t *testing.T) {
 }
 
 func TestContinuationSanitizer(t *testing.T) {
-	// temp := recordMode
-	// recordMode = "record"
-	// f := func() {
-	// 	recordMode = temp
-	// }
-	// defer f()
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -512,9 +476,9 @@ func TestContinuationSanitizer(t *testing.T) {
 
 	srvURL := "http://host.docker.internal:8080/uri-sanitizer"
 
-	req.Header.Set(UpstreamUriHeader, srvURL)
+	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IdHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(t))
 	req.Header.Set("Location", "/posts/2")
 
 	bodyValue := map[string]string{
@@ -535,9 +499,9 @@ func TestContinuationSanitizer(t *testing.T) {
 	req, err = http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, srvURL)
+	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IdHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(t))
 	req.Header.Set("Location", "/posts/3")
 
 	require.NotNil(t, GetRecordingId(t))
@@ -561,12 +525,6 @@ func TestContinuationSanitizer(t *testing.T) {
 }
 
 func TestGeneralRegexSanitizer(t *testing.T) {
-	// temp := recordMode
-	// recordMode = "record"
-	// f := func() {
-	// 	recordMode = temp
-	// }
-	// defer f()
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -583,9 +541,9 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, srvURL)
+	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IdHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(t))
 
 	err = AddGeneralRegexSanitizer("Sanitized", "Value", nil)
 	require.NoError(t, err)
@@ -613,12 +571,6 @@ func TestGeneralRegexSanitizer(t *testing.T) {
 }
 
 func TestOAuthResponseSanitizer(t *testing.T) {
-	// temp := recordMode
-	// recordMode = "record"
-	// f := func() {
-	// 	recordMode = temp
-	// }
-	// defer f()
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -635,9 +587,9 @@ func TestOAuthResponseSanitizer(t *testing.T) {
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, srvURL)
+	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IdHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(t))
 
 	err = AddOAuthResponseSanitizer(nil)
 	require.NoError(t, err)
@@ -663,12 +615,6 @@ func TestOAuthResponseSanitizer(t *testing.T) {
 }
 
 func TestUriSubscriptionIdSanitizer(t *testing.T) {
-	// temp := recordMode
-	// recordMode = "record"
-	// f := func() {
-	// 	recordMode = temp
-	// }
-	// defer f()
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -683,11 +629,11 @@ func TestUriSubscriptionIdSanitizer(t *testing.T) {
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, "https://management.azure.com/subscriptions/12345678-1234-1234-5678-123456789010/providers/Microsoft.ContainerRegistry/checkNameAvailability?api-version=2019-05-01")
+	req.Header.Set(UpstreamURIHeader, "https://management.azure.com/subscriptions/12345678-1234-1234-5678-123456789010/providers/Microsoft.ContainerRegistry/checkNameAvailability?api-version=2019-05-01")
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IdHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(t))
 
-	err = AddUriSubscriptionIdSanitizer("", nil)
+	err = AddURISubscriptionIDSanitizer("", nil)
 	require.NoError(t, err)
 
 	resp, err := client.Do(req)
@@ -710,16 +656,10 @@ func TestUriSubscriptionIdSanitizer(t *testing.T) {
 	err = json.Unmarshal(byteValue, &data)
 	require.NoError(t, err)
 
-	require.Equal(t, "https://management.azure.com/", data.Entries[0].RequestUri)
+	require.Equal(t, "https://management.azure.com/", data.Entries[0].RequestURI)
 }
 
 func TestResetSanitizers(t *testing.T) {
-	// temp := recordMode
-	// recordMode = "record"
-	// f := func() {
-	// 	recordMode = temp
-	// }
-	// defer f()
 	defer reset(t)
 
 	err := ResetSanitizers(nil)
@@ -736,9 +676,9 @@ func TestResetSanitizers(t *testing.T) {
 	req, err := http.NewRequest("POST", "https://localhost:5001", nil)
 	require.NoError(t, err)
 
-	req.Header.Set(UpstreamUriHeader, srvURL)
+	req.Header.Set(UpstreamURIHeader, srvURL)
 	req.Header.Set(ModeHeader, GetRecordMode())
-	req.Header.Set(IdHeader, GetRecordingId(t))
+	req.Header.Set(IDHeader, GetRecordingId(t))
 	req.Header.Set("FakeStorageLocation", "https://fakeaccount.blob.core.windows.net")
 
 	// Add a sanitizer

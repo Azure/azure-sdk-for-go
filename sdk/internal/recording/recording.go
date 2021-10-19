@@ -446,9 +446,9 @@ const (
 	LiveMode           = "live"
 	baseProxyURLSecure = "localhost:5001"
 	baseProxyURL       = "localhost:5000"
-	IdHeader           = "x-recording-id"
+	IDHeader           = "x-recording-id"
 	ModeHeader         = "x-recording-mode"
-	UpstreamUriHeader  = "x-recording-upstream-base-uri"
+	UpstreamURIHeader  = "x-recording-upstream-base-uri"
 )
 
 var recordingIds = map[string]string{}
@@ -511,7 +511,7 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 	if err != nil {
 		return err
 	}
-	recId := resp.Header.Get(IdHeader)
+	recId := resp.Header.Get(IDHeader)
 	if recId == "" {
 		b, err := ioutil.ReadAll(resp.Body)
 		if err != nil {

@@ -32,12 +32,12 @@ You can create an Azure Cosmos account using:
 
 #### Authenticate the client
 
-In order to interact with the Azure CosmosDB service you'll need to create an instance of the Cosmos Client class. To make this possible you will need an URL and key of the Azure CosmosDB service.
+In order to interact with the Azure CosmosDB service you'll need to create an instance of the Cosmos client class. To make this possible you will need an URL and key of the Azure CosmosDB service.
 
 ## Examples
 
 The following section provides several code snippets covering some of the most common CosmosDB SQL API tasks, including:
-* [Create Cosmos Client](#create-cosmos-client "Create Cosmos Client")
+* [Create Client](#create-cosmos-client "Create Cosmos client")
 * [Create Database](#create-database "Create Database")
 * [Create Container](#create-container "Create Container")
 * [CRUD operation on Items](#crud-operation-on-items "CRUD operation on Items")

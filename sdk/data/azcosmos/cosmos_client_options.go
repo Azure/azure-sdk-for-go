@@ -32,7 +32,7 @@ type CosmosClientOptions struct {
 	// When EnableContentResponseOnWrite is false will cause the response to have a null resource. This reduces networking and CPU load by not sending the resource back over the network and serializing it on the client.
 	// The default is false.
 	EnableContentResponseOnWrite bool
-	// LimitToEndpoint limits the operations to the provided endpoint on the CosmosClient. See https://docs.microsoft.com/azure/cosmos-db/troubleshoot-sdk-availability
+	// LimitToEndpoint limits the operations to the provided endpoint on the Cosmos client. See https://docs.microsoft.com/azure/cosmos-db/troubleshoot-sdk-availability
 	LimitToEndpoint bool
 	// RateLimitedRetry defines the retry configuration for rate limited requests.
 	// By default, the SDK will do 9 retries.

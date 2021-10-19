@@ -1,7 +1,7 @@
 # Release History
 
 ## 0.8.0 (Unreleased)
-* Renamed log constant type and values.
+* Renamed log constant type and values to conform to guidelines.
 
 ## 0.7.2 (Unreleased)
 * Exports `RecordMode`, `PlaybackMode`, and `LiveMode` for determining test mode

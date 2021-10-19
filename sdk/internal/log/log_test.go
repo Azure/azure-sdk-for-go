@@ -13,24 +13,24 @@ import (
 func TestLoggingdefault(t *testing.T) {
 	// ensure logging with nil listener doesn't fail
 	SetListener(nil)
-	Write(RequestEvent, "this should work just fine")
+	Write(EventRequest, "this should work just fine")
 
 	log := map[Event]string{}
 	SetListener(func(cls Event, msg string) {
 		log[cls] = msg
 	})
 	const req = "this is a request"
-	Write(RequestEvent, req)
+	Write(EventRequest, req)
 	const resp = "this is a response: %d"
-	Writef(ResponseEvent, resp, http.StatusOK)
+	Writef(EventResponse, resp, http.StatusOK)
 	if l := len(log); l != 2 {
 		t.Fatalf("unexpected log entry count: %d", l)
 	}
-	if log[RequestEvent] != req {
-		t.Fatalf("unexpected log request: %s", log[RequestEvent])
+	if log[EventRequest] != req {
+		t.Fatalf("unexpected log request: %s", log[EventRequest])
 	}
-	if log[ResponseEvent] != fmt.Sprintf(resp, http.StatusOK) {
-		t.Fatalf("unexpected log response: %s", log[ResponseEvent])
+	if log[EventResponse] != fmt.Sprintf(resp, http.StatusOK) {
+		t.Fatalf("unexpected log response: %s", log[EventResponse])
 	}
 }
 
@@ -39,16 +39,16 @@ func TestLoggingEvent(t *testing.T) {
 	SetListener(func(cls Event, msg string) {
 		log[cls] = msg
 	})
-	SetEvents(RequestEvent)
+	SetEvents(EventRequest)
 	defer TestResetEvents()
-	Write(ResponseEvent, "this shouldn't be in the log")
-	if s, ok := log[ResponseEvent]; ok {
+	Write(EventResponse, "this shouldn't be in the log")
+	if s, ok := log[EventResponse]; ok {
 		t.Fatalf("unexpected log entry %s", s)
 	}
 	const req = "this is a request"
-	Write(RequestEvent, req)
-	if log[RequestEvent] != req {
-		t.Fatalf("unexpected log entry: %s", log[RequestEvent])
+	Write(EventRequest, req)
+	if log[EventRequest] != req {
+		t.Fatalf("unexpected log entry: %s", log[EventRequest])
 	}
 }
 

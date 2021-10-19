@@ -16,20 +16,20 @@ import (
 type Event string
 
 const (
-	// RequestEvent entries contain information about HTTP requests.
+	// EventRequest entries contain information about HTTP requests.
 	// This includes information like the URL, query parameters, and headers.
-	RequestEvent Event = "Request"
+	EventRequest Event = "Request"
 
-	// ResponseEvent entries containe information about HTTP responses.
+	// EventResponse entries containe information about HTTP responses.
 	// This includes information like the HTTP status code, headers, and request URL.
-	ResponseEvent Event = "Response"
+	EventResponse Event = "Response"
 
-	// RetryEvent entries contain information specific to the rety policy in use.
-	RetryEvent Event = "Retry"
+	// EventRetry entries contain information specific to the rety policy in use.
+	EventRetry Event = "Retry"
 
-	// LROEvent entries contian information specific to long-running operations.
+	// EventLRO entries contian information specific to long-running operations.
 	// This includes information like polling location, operation state, and sleep intervals.
-	LROEvent Event = "LongRunningOperation"
+	EventLRO Event = "LongRunningOperation"
 )
 
 // logger controls which events to log and writing to the underlying log.

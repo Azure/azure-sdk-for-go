@@ -171,17 +171,10 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 		return nil, errors.New("receiver is already receiving messages. ReceiveMessages() cannot be called concurrently.")
 	}
 
-	return r.receiveMessagesImpl(ctx, maxMessages, options)
+	return r.receiveMessagesImpl(ctx, uint32(maxMessages), options)
 }
 
-func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, options *ReceiveOptions) ([]*ReceivedMessage, error) {
-	// There are three phases for this function:
-	// Phase 1. <receive, respecting user cancellation>
-	// Phase 2. <check error and exit if fatal>
-	//    NOTE: We don't exit here so we don't end up buffering messages internally that the
-	//    user isn't actually waiting for anymore. So we make sure that #3 runs if the
-	//    link is still valid.
-	// Phase 3. <drain the link and leave it in a good state>
+func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages uint32, options *ReceiveOptions) ([]*ReceivedMessage, error) {
 	localOpts := &ReceiveOptions{
 		MaxWaitTime:                  time.Minute,
 		maxWaitTimeAfterFirstMessage: time.Second,
@@ -195,116 +188,37 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		}
 	}
 
-	_, receiver, _, linksRevision, err := r.amqpLinks.Get(ctx)
-
-	if err != nil {
-		if err := r.amqpLinks.RecoverIfNeeded(ctx, linksRevision, err); err != nil {
-			return nil, err
-		}
-
-		return nil, err
-	}
-
-	if err := receiver.IssueCredit(uint32(maxMessages)); err != nil {
-		_ = r.amqpLinks.RecoverIfNeeded(ctx, linksRevision, err)
-		return nil, err
-	}
-
-	messages, err := r.getMessages(ctx, receiver, maxMessages, localOpts)
+	_, receiver, _, _, err := r.amqpLinks.Get(ctx)
 
 	if err != nil {
 		return nil, err
 	}
 
-	if len(messages) == maxMessages {
-		// no drain needed, all messages arrived.
-		return messages, nil
-	}
-
-	return r.drainLink(receiver, messages)
-}
-
-// drainLink initiates a drainLink on the link. Service Bus will send whatever messages it might have still had and
-// set our link credit to 0.
-func (r *Receiver) drainLink(receiver internal.AMQPReceiver, messages []*ReceivedMessage) ([]*ReceivedMessage, error) {
-	receiveCtx, cancelReceive := context.WithCancel(context.Background())
-
-	// start the drain asynchronously. Note that we ignore the user's context at this point
-	// since draining makes sure we don't get messages when nobody is receiving.
-	go func() {
-		if err := receiver.DrainCredit(context.Background()); err != nil {
-			tab.For(receiveCtx).Debug(fmt.Sprintf("Draining of credit failed. link will be closed and will re-open on next receive: %s", err.Error()))
-
-			// if the drain fails we just close the link so it'll re-open at the next receive.
-			if err := r.amqpLinks.Close(context.Background(), false); err != nil {
-				tab.For(receiveCtx).Debug(fmt.Sprintf("Failed to close links on ReceiveMessages cleanup. Not fatal: %s", err.Error()))
-			}
-		}
-		cancelReceive()
-	}()
-
-	// Receive until the drain completes, at which point it'll cancel
-	// our context.
-	// NOTE: That's a gap here where we need to be able to drain _only_ the internally cached messages
-	// in the receiver. Filed as https://github.com/Azure/go-amqp/issues/71
-	for {
-		am, err := receiver.Receive(receiveCtx)
-
-		if internal.IsCancelError(err) {
-			break
-		} else if err != nil {
-			// something fatal happened, we will just
-			_ = r.amqpLinks.Close(context.TODO(), false)
-
-			if len(messages) > 0 {
-				return messages, nil
-			} else {
-				return nil, err
-			}
-		}
-
-		messages = append(messages, newReceivedMessage(receiveCtx, am))
-	}
-
-	return messages, nil
-}
-
-// getMessages receives messages until a link failure, timeout or the user
-// cancels their context.
-func (r *Receiver) getMessages(theirCtx context.Context, receiver internal.AMQPReceiver, maxMessages int, ropts *ReceiveOptions) ([]*ReceivedMessage, error) {
-	ctx, cancel := context.WithTimeout(theirCtx, ropts.MaxWaitTime)
+	ctx, cancel := context.WithTimeout(ctx, localOpts.MaxWaitTime)
 	defer cancel()
+
+	rcv := receiveMessages(receiver, maxMessages, false)
+
+	go func() {
+		select {
+		case <-ctx.Done():
+			rcv.Stop()
+		}
+	}()
 
 	var messages []*ReceivedMessage
 
-	for {
-		var amqpMessage *amqp.Message
-		amqpMessage, err := receiver.Receive(ctx)
+	for message := range rcv.Messages() {
+		messages = append(messages, message)
 
-		if err != nil {
-			if internal.IsCancelError(err) {
-				return messages, nil
-			}
-
-			// we'll close (instead of recovering) since we are holding onto messages
-			// and want to get them back to the user ASAP. (recovery will just happen
-			// on the next call to receive)
-			if err := r.amqpLinks.Close(context.Background(), false); err != nil {
-				tab.For(ctx).Debug(fmt.Sprintf("Failed to close links on ReceiveMessages cleanup. Not fatal: %s", err.Error()))
-			}
-			return nil, err
-		}
-
-		messages = append(messages, newReceivedMessage(ctx, amqpMessage))
-
-		if len(messages) == maxMessages {
+		if uint32(len(messages)) == maxMessages {
 			return messages, nil
 		}
 
 		if len(messages) == 1 {
 			go func() {
 				select {
-				case <-time.After(ropts.maxWaitTimeAfterFirstMessage):
+				case <-time.After(localOpts.maxWaitTimeAfterFirstMessage):
 					cancel()
 				case <-ctx.Done():
 					break
@@ -312,6 +226,23 @@ func (r *Receiver) getMessages(theirCtx context.Context, receiver internal.AMQPR
 			}()
 		}
 	}
+
+	if rcv.Err() != nil {
+		// we'll close (instead of recovering) since we are holding onto messages
+		// and want to get them back to the user ASAP. (recovery will just happen
+		// on the next call to receive)
+		if err := r.amqpLinks.Close(context.Background(), false); err != nil {
+			tab.For(ctx).Debug(fmt.Sprintf("Failed to close links on ReceiveMessages cleanup. Not fatal: %s", err.Error()))
+		}
+
+		if len(messages) > 0 {
+			return messages, nil
+		} else {
+			return nil, rcv.Err()
+		}
+	}
+
+	return messages, nil
 }
 
 // ReceiveDeferredMessages receives messages that were deferred using `Receiver.DeferMessage`.

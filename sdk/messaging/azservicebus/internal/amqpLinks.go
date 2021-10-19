@@ -275,26 +275,35 @@ func (links *amqpLinks) recoverConnection(ctx context.Context) error {
 // Get will initialize a session and call its link.linkCreator function.
 // If this link has been closed via Close() it will return an non retriable error.
 func (l *amqpLinks) Get(ctx context.Context) (AMQPSender, AMQPReceiver, MgmtClient, uint64, error) {
-	l.mu.RLock()
-	sender, receiver, mgmt, revision, closedPermanently := l.sender, l.receiver, l.mgmt, l.revision, l.closedPermanently
-	l.mu.RUnlock()
+	retrier := l.baseRetrier.Copy()
 
-	if closedPermanently {
-		return nil, nil, nil, 0, errClosedPermanently{}
+	var lastErr error
+
+	for retrier.Try(ctx) {
+		l.mu.RLock()
+		sender, receiver, mgmt, revision, closedPermanently := l.sender, l.receiver, l.mgmt, l.revision, l.closedPermanently
+		l.mu.RUnlock()
+
+		if closedPermanently {
+			return nil, nil, nil, 0, errClosedPermanently{}
+		}
+
+		if sender != nil || receiver != nil {
+			return sender, receiver, mgmt, revision, nil
+		}
+
+		l.mu.Lock()
+		lastErr = l.initWithoutLocking(ctx)
+		l.mu.Unlock()
+
+		if lastErr != nil {
+			continue
+		}
+
+		return l.sender, l.receiver, l.mgmt, l.revision, nil
 	}
 
-	if sender != nil || receiver != nil {
-		return sender, receiver, mgmt, revision, nil
-	}
-
-	l.mu.Lock()
-	defer l.mu.Unlock()
-
-	if err := l.initWithoutLocking(ctx); err != nil {
-		return nil, nil, nil, 0, err
-	}
-
-	return l.sender, l.receiver, l.mgmt, l.revision, nil
+	return nil, nil, nil, 0, lastErr
 }
 
 // EntityPath is the full entity path for the queue/topic/subscription.

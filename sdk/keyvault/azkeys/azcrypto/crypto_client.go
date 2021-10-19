@@ -69,6 +69,7 @@ func (c *ClientOptions) toConnectionOptions() *internal.ConnectionOptions {
 	}
 }
 
+// parse the KeyID and Version. If no version is present, return a blank string.
 func parseKeyIDAndVersion(id string) (string, string, error) {
 	parsed, err := url.Parse(id)
 	if err != nil {
@@ -77,13 +78,18 @@ func parseKeyIDAndVersion(id string) (string, string, error) {
 
 	path := strings.Split(parsed.Path, "/")
 
-	if len(path) != 4 {
+	if len(path) < 3 {
 		return "", "", fmt.Errorf("could not parse Key ID from %s", id)
+	}
+
+	if len(path) == 3 {
+		return path[2], "", nil
 	}
 
 	return path[2], path[3], nil
 }
 
+// Parse vault URL from the key identifier
 func parseVaultURL(base string) (string, error) {
 	parsed, err := url.Parse(base)
 	if err != nil {
@@ -93,6 +99,8 @@ func parseVaultURL(base string) (string, error) {
 	return fmt.Sprintf("%s://%s/", parsed.Scheme, parsed.Host), nil
 }
 
+// NewClient creates a new azcrytpo.Client that will perform operations against the Key Vault service. The key should
+// be an identifier of an Azure Key Vault key. Including a version is recommended but not required.
 func NewClient(key string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if options == nil {
 		options = &ClientOptions{}

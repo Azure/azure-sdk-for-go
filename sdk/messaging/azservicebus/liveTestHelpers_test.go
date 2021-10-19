@@ -17,7 +17,7 @@ import (
 func setupLiveTest(t *testing.T, qd *internal.QueueDescription) (*Client, func(), string) {
 	cs := getConnectionString(t)
 
-	serviceBusClient, err := NewClientWithConnectionString(cs, nil)
+	serviceBusClient, err := NewClientFromConnectionString(cs, nil)
 	require.NoError(t, err)
 
 	queueName, cleanupQueue := createQueue(t, cs, qd)

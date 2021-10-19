@@ -32,7 +32,7 @@ type Client struct {
 	links       map[uint64]internal.Closeable
 }
 
-// ClientOptions contains options for the `NewClient` and `NewClientWithConnectionString`
+// ClientOptions contains options for the `NewClient` and `NewClientFromConnectionString`
 // functions.
 type ClientOptions struct {
 	// TLSConfig configures a client with a custom *tls.Config.
@@ -58,10 +58,10 @@ func NewClient(fullyQualifiedNamespace string, credential azcore.TokenCredential
 	}, options)
 }
 
-// NewClient creates a new Client for a Service Bus namespace, using a TokenCredential.
+// NewClientFromConnectionString creates a new Client for a Service Bus namespace using a connection string.
 // A Client allows you create receivers (for queues or subscriptions) and senders (for queues and topics).
 // connectionString is a Service Bus connection string for the namespace or for an entity.
-func NewClientWithConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
+func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
 	if connectionString == "" {
 		return nil, errors.New("connectionString must not be empty")
 	}

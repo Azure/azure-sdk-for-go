@@ -10,7 +10,7 @@ package armmysql
 
 const (
 	module  = "armmysql"
-	version = "v0.1.0"
+	version = "v0.1.1"
 )
 
 // CreateMode - The mode to create a new server.

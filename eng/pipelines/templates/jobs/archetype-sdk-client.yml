@@ -2,9 +2,6 @@ parameters:
   - name: ServiceDirectory
     type: string
     default: ''
-  - name: RunTests
-    type: boolean
-    default: false
   - name: RunLiveTests
     type: boolean
     default: false
@@ -113,8 +110,7 @@ stages:
           GoWorkspace: $(GO_WORKSPACE_PATH)
           Image: $(vm.image)
           GoVersion: $(go.version)
-          RunTests: ${{ parameters.RunTests }}
-          TestProxy: true
+          TestProxy: true # Do we need this conditional if it's always true? @benbp
           EnvVars:
             AZURE_RECORD_MODE: 'playback'
 

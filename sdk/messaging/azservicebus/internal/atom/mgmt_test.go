@@ -1,14 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package internal
+package atom
 
 import (
 	"encoding/xml"
+	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/go-autorest/autorest/date"
+	"github.com/stretchr/testify/require"
 )
 
 const (
@@ -101,35 +102,33 @@ const (
 		`</feed>`
 )
 
-func (suite *serviceBusSuite) TestFeedUnmarshal() {
-	var feed atom.Feed
+func TestFeedUnmarshal(t *testing.T) {
+	var feed Feed
 	err := xml.Unmarshal([]byte(feedOfQueues), &feed)
-	suite.Nil(err)
+	require.Nil(t, err)
 	updated, err := date.ParseTime(time.RFC3339, "2018-05-03T00:21:15Z")
-	suite.Nil(err)
-	suite.Equal("https://sbdjtest.servicebus.windows.net/$Resources/Queues", feed.ID)
-	suite.Equal("Queues", feed.Title)
-	suite.WithinDuration(updated, feed.Updated.ToTime(), 100*time.Millisecond)
-	suite.Equal(updated, (*feed.Updated).ToTime())
-	if suite.Len(feed.Entries, 2) {
-		suite.NotNil(feed.Entries[0].Content)
-	}
-
+	require.Nil(t, err)
+	require.Equal(t, "https://sbdjtest.servicebus.windows.net/$Resources/Queues", feed.ID)
+	require.Equal(t, "Queues", feed.Title)
+	require.WithinDuration(t, updated, feed.Updated.ToTime(), 100*time.Millisecond)
+	require.Equal(t, updated, (*feed.Updated).ToTime())
+	require.EqualValues(t, 2, len(feed.Entries))
+	require.NotNil(t, feed.Entries[0].Content)
 }
 
-func (suite *serviceBusSuite) TestEntryUnmarshal() {
-	var entry atom.Entry
+func TestEntryUnmarshal(t *testing.T) {
+	var entry Entry
 	err := xml.Unmarshal([]byte(queueEntry1), &entry)
-	suite.Nil(err)
-	suite.Equal("https://sbdjtest.servicebus.windows.net/foo", entry.ID)
-	suite.Equal("foo", entry.Title)
-	suite.Equal("sbdjtest", *entry.Author.Name)
-	suite.Equal("https://sbdjtest.servicebus.windows.net/foo", entry.Link.HREF)
+	require.Nil(t, err)
+	require.Equal(t, "https://sbdjtest.servicebus.windows.net/foo", entry.ID)
+	require.Equal(t, "foo", entry.Title)
+	require.Equal(t, "sbdjtest", *entry.Author.Name)
+	require.Equal(t, "https://sbdjtest.servicebus.windows.net/foo", entry.Link.HREF)
 	for _, item := range []string{
 		`<QueueDescription`,
 		"<LockDuration>PT1M</LockDuration>",
 		"<MessageCount>0</MessageCount>",
 	} {
-		suite.Contains(entry.Content.Body, item)
+		require.Contains(t, entry.Content.Body, item)
 	}
 }

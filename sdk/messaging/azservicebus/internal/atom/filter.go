@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package internal
+package atom
 
 type (
 	// TrueFilter represents a always true sql expression which will accept all messages

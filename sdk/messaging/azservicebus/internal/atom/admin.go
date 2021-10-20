@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package internal
+package atom
 
 import (
 	"bytes"
 	"context"
 	"encoding/xml"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -17,6 +16,9 @@ import (
 
 	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-amqp-common-go/v3/conn"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/devigned/tab"
 )
 
@@ -33,6 +35,7 @@ type (
 		tokenProvider auth.TokenProvider
 		Host          string
 		mwStack       []MiddlewareFunc
+		version       string
 	}
 
 	// BaseEntityDescription provides common fields which are part of Queues, Topics and Subscriptions
@@ -98,15 +101,17 @@ var (
 		}
 	}
 
-	applyTracing MiddlewareFunc = func(next RestHandler) RestHandler {
-		return func(ctx context.Context, req *http.Request) (*http.Response, error) {
-			ctx, span := startConsumerSpanFromContext(ctx, "sb.Middleware.ApplyTracing")
-			defer span.End()
+	applyTracing = func(version string) MiddlewareFunc {
+		return func(next RestHandler) RestHandler {
+			return func(ctx context.Context, req *http.Request) (*http.Response, error) {
+				ctx, span := tracing.StartConsumerSpanFromContext(ctx, "sb.Middleware.ApplyTracing", version)
+				defer span.End()
 
-			applyRequestInfo(span, req)
-			res, err := next(ctx, req)
-			applyResponseInfo(span, res)
-			return res, err
+				tracing.ApplyRequestInfo(span, req)
+				res, err := next(ctx, req)
+				tracing.ApplyResponseInfo(span, res)
+				return res, err
+			}
 		}
 	}
 )
@@ -139,14 +144,14 @@ func (m *managementError) String() string {
 // NewEntityManagerWithConnectionString creates an entity manager (a lower level HTTP client
 // for the ATOM endpoint). This is typically wrapped by an entity specific client (like
 // TopicManager, QueueManager or , SubscriptionManager).
-func NewEntityManagerWithConnectionString(connectionString string) (*EntityManager, error) {
+func NewEntityManagerWithConnectionString(connectionString string, version string) (*EntityManager, error) {
 	parsed, err := conn.ParsedConnectionFromStr(connectionString)
 
 	if err != nil {
 		return nil, err
 	}
 
-	provider, err := newTokenProviderWithConnectionString(parsed.KeyName, parsed.Key)
+	provider, err := sbauth.NewTokenProviderWithConnectionString(parsed.KeyName, parsed.Key)
 
 	if err != nil {
 		return nil, err
@@ -154,12 +159,28 @@ func NewEntityManagerWithConnectionString(connectionString string) (*EntityManag
 
 	return &EntityManager{
 		Host:          fmt.Sprintf("https://%s.%s/", parsed.Namespace, parsed.Suffix),
+		version:       version,
 		tokenProvider: provider,
 		mwStack: []MiddlewareFunc{
 			addAPIVersion201704,
 			addAtomXMLContentType,
 			addAuthorization(provider),
-			applyTracing,
+			applyTracing(version),
+		},
+	}, nil
+}
+
+// NewEntityManager creates an entity manager using a TokenCredential.
+func NewEntityManager(ns string, tokenCredential azcore.TokenCredential, version string) (*EntityManager, error) {
+	return &EntityManager{
+		Host:          fmt.Sprintf("https://%s/", ns),
+		version:       version,
+		tokenProvider: sbauth.NewTokenProvider(tokenCredential),
+		mwStack: []MiddlewareFunc{
+			addAPIVersion201704,
+			addAtomXMLContentType,
+			addAuthorization(sbauth.NewTokenProvider(tokenCredential)),
+			applyTracing(version),
 		},
 	}, nil
 }
@@ -231,7 +252,20 @@ func (em *EntityManager) Execute(ctx context.Context, method string, entityPath 
 		h = mw(h)
 	}
 
-	return h(ctx, req)
+	resp, err := h(ctx, req)
+
+	if err == nil {
+		return resp, nil
+	}
+
+	if resp != nil {
+		return nil, ResponseError{
+			inner: err,
+			resp:  resp,
+		}
+	}
+
+	return nil, err
 }
 
 // Use adds middleware to the middleware mwStack
@@ -242,6 +276,23 @@ func (em *EntityManager) Use(mw ...MiddlewareFunc) {
 // TokenProvider generates authorization tokens for communicating with the Service Bus management API
 func (em *EntityManager) TokenProvider() auth.TokenProvider {
 	return em.tokenProvider
+}
+
+func FormatManagementError(body []byte) error {
+	var mgmtError managementError
+	unmarshalErr := xml.Unmarshal(body, &mgmtError)
+	if unmarshalErr != nil {
+		return fmt.Errorf("body:%s error:%s", string(body), unmarshalErr.Error())
+	}
+
+	return fmt.Errorf("error code: %d, Details: %s", mgmtError.Code, mgmtError.Detail)
+}
+
+func (em *EntityManager) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
+	tracing.ApplyComponentInfo(span, em.version)
+	span.AddAttributes(tab.StringAttribute("span.kind", "client"))
+	return ctx, span
 }
 
 func addAuthorization(tp auth.TokenProvider) MiddlewareFunc {
@@ -326,19 +377,4 @@ func ptrBool(toPtr bool) *bool {
 // ptrString(fmt.Sprintf("..", foo)) -> *string
 func ptrString(toPtr string) *string {
 	return &toPtr
-}
-
-// durationTo8601Seconds takes a duration and returns a string period of whole seconds (int cast of float)
-func durationTo8601Seconds(duration time.Duration) string {
-	return fmt.Sprintf("PT%dS", duration/time.Second)
-}
-
-func formatManagementError(body []byte) error {
-	var mgmtError managementError
-	unmarshalErr := xml.Unmarshal(body, &mgmtError)
-	if unmarshalErr != nil {
-		return errors.New(string(body))
-	}
-
-	return fmt.Errorf("error code: %d, Details: %s", mgmtError.Code, mgmtError.Detail)
 }

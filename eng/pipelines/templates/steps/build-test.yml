@@ -90,4 +90,4 @@ steps:
         codeCoverageTool: Cobertura
         summaryFileLocation: './coverage.xml'
         additionalCodeCoverageFiles: './coverage.html'
-        failIfCoverageEmpty: true
+        # failIfCoverageEmpty: true

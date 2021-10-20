@@ -108,7 +108,10 @@ func handleProxyResponse(resp *http.Response, err error) error {
 	return fmt.Errorf("there was an error communicating with the test proxy: %s", body)
 }
 
-func AddBodyKeySanitizer(jsonPath, replacementValue, regex string, options *RecordingOptions) error {
+// AddBodyKeySanitizer adds a sanitizer for JSON Bodies. jsonPath is the path to the key, value
+// is the value to replace with, and regex is the string to match in the body. If your regex includes a group
+// options.GroupForReplace specifies which group to replace
+func AddBodyKeySanitizer(jsonPath, value, regex string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
@@ -126,7 +129,7 @@ func AddBodyKeySanitizer(jsonPath, replacementValue, regex string, options *Reco
 		GroupForReplace string `json:"groupForReplace,omitempty"`
 	}{
 		JSONPath:        jsonPath,
-		Value:           replacementValue,
+		Value:           value,
 		Regex:           regex,
 		GroupForReplace: options.GroupForReplace,
 	}, "", "")
@@ -139,8 +142,10 @@ func AddBodyKeySanitizer(jsonPath, replacementValue, regex string, options *Reco
 	return handleProxyResponse(client.Do(req))
 }
 
-// value: the substitution value
-// regex: the regex to match on request/response entries
+
+// AddBodyRegexSanitizer offers regex replace within a returned JSON body. value is the
+// substitution value, regex can be a simple regex or a substitution operation if
+// options.GroupForReplace is set.
 func AddBodyRegexSanitizer(value, regex string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
@@ -170,6 +175,7 @@ func AddBodyRegexSanitizer(value, regex string, options *RecordingOptions) error
 	return handleProxyResponse(client.Do(req))
 }
 
+// AddContinuationSanitizer is used to anonymize private keys in response/request pairs.
 // key: the name of the header whos value will be replaced from response -> next request
 // method: the method by which the value of the targeted key will be replaced. Defaults to GUID replacement
 // resetAfterFirt: Do we need multiple pairs replaced? Or do we want to replace each value with the same value.
@@ -202,6 +208,9 @@ func AddContinuationSanitizer(key, method string, resetAfterFirst bool, options 
 	return handleProxyResponse(client.Do(req))
 }
 
+// AddGeneralRegexSanitizer adds a general regex across request/response Body, Headers, and URI.
+// value is the substitution value, regex can be defined as a simple regex replace or a substition
+// operation if options.GroupForReplace specifies which group to replace.
 func AddGeneralRegexSanitizer(value, regex string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
@@ -231,7 +240,13 @@ func AddGeneralRegexSanitizer(value, regex string, options *RecordingOptions) er
 	return handleProxyResponse(client.Do(req))
 }
 
-func AddHeaderRegexSanitizer(key, replacementValue, regex string, options *RecordingOptions) error {
+// AddHeaderRegexSanitizer can be used to replace a key with a specific value: set regex to ""
+// OR can be used to do a simple regex replace operation by setting key, value, and regex.
+// OR To do a substitution operation if options.GroupForReplace is set.
+// key is the name of the header to operate against. value is the substitution or whole new header
+// value. regex can be defined as a simple regex replace or a substitution operation if
+// options.GroupForReplace is set.
+func AddHeaderRegexSanitizer(key, value, regex string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
@@ -249,7 +264,7 @@ func AddHeaderRegexSanitizer(key, replacementValue, regex string, options *Recor
 		GroupForReplace string `json:"groupForReplace,omitempty"`
 	}{
 		Key:             key,
-		Value:           replacementValue,
+		Value:           value,
 		Regex:           regex,
 		GroupForReplace: options.GroupForReplace,
 	}, "", "")
@@ -262,6 +277,7 @@ func AddHeaderRegexSanitizer(key, replacementValue, regex string, options *Recor
 	return handleProxyResponse(client.Do(req))
 }
 
+// AddOAuthResponseSanitizer cleans all request/response pairs taht match an oauth regex in their URI
 func AddOAuthResponseSanitizer(options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
@@ -275,6 +291,7 @@ func AddOAuthResponseSanitizer(options *RecordingOptions) error {
 	return handleProxyResponse(client.Do(req))
 }
 
+// AddRemoveHeaderSanitizer removes a list of headers from request/responses.
 func AddRemoveHeaderSanitizer(headersForRemoval []string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
@@ -300,7 +317,9 @@ func AddRemoveHeaderSanitizer(headersForRemoval []string, options *RecordingOpti
 	return handleProxyResponse(client.Do(req))
 }
 
-func AddURISanitizer(replacement, regex string, options *RecordingOptions) error {
+// AddURISanitizer sanitizes URIs via regex. value is the substition value, regex is
+// either a simple regex or a substitution operation if options.GroupForReplace is defined.
+func AddURISanitizer(value, regex string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
@@ -315,7 +334,7 @@ func AddURISanitizer(replacement, regex string, options *RecordingOptions) error
 		Value string `json:"value"`
 		Regex string `json:"regex"`
 	}{
-		Value: replacement,
+		Value: value,
 		Regex: regex,
 	}, "", "")
 	if err != nil {
@@ -327,6 +346,8 @@ func AddURISanitizer(replacement, regex string, options *RecordingOptions) error
 	return handleProxyResponse(client.Do(req))
 }
 
+// AddURISubscriptionIDSanitizer replaces real subscriptionIDs within a URI with a default
+// or configured fake value. To use the default value set value to "", otherwise value specifies the replacement value.
 func AddURISubscriptionIDSanitizer(value string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()

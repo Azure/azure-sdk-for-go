@@ -12,7 +12,7 @@ package botservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2018-07-12/botservice"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2021-05-01-preview/botservice"
 )
 
 const (
@@ -22,87 +22,115 @@ const (
 type ChannelName = original.ChannelName
 
 const (
-	ChannelNameDirectLineChannel ChannelName = original.ChannelNameDirectLineChannel
-	ChannelNameEmailChannel      ChannelName = original.ChannelNameEmailChannel
-	ChannelNameFacebookChannel   ChannelName = original.ChannelNameFacebookChannel
-	ChannelNameKikChannel        ChannelName = original.ChannelNameKikChannel
-	ChannelNameMsTeamsChannel    ChannelName = original.ChannelNameMsTeamsChannel
-	ChannelNameSkypeChannel      ChannelName = original.ChannelNameSkypeChannel
-	ChannelNameSlackChannel      ChannelName = original.ChannelNameSlackChannel
-	ChannelNameSmsChannel        ChannelName = original.ChannelNameSmsChannel
-	ChannelNameTelegramChannel   ChannelName = original.ChannelNameTelegramChannel
-	ChannelNameWebChatChannel    ChannelName = original.ChannelNameWebChatChannel
+	ChannelNameAlexaChannel            ChannelName = original.ChannelNameAlexaChannel
+	ChannelNameDirectLineChannel       ChannelName = original.ChannelNameDirectLineChannel
+	ChannelNameDirectLineSpeechChannel ChannelName = original.ChannelNameDirectLineSpeechChannel
+	ChannelNameEmailChannel            ChannelName = original.ChannelNameEmailChannel
+	ChannelNameFacebookChannel         ChannelName = original.ChannelNameFacebookChannel
+	ChannelNameKikChannel              ChannelName = original.ChannelNameKikChannel
+	ChannelNameLineChannel             ChannelName = original.ChannelNameLineChannel
+	ChannelNameMsTeamsChannel          ChannelName = original.ChannelNameMsTeamsChannel
+	ChannelNameSkypeChannel            ChannelName = original.ChannelNameSkypeChannel
+	ChannelNameSlackChannel            ChannelName = original.ChannelNameSlackChannel
+	ChannelNameSmsChannel              ChannelName = original.ChannelNameSmsChannel
+	ChannelNameTelegramChannel         ChannelName = original.ChannelNameTelegramChannel
+	ChannelNameWebChatChannel          ChannelName = original.ChannelNameWebChatChannel
 )
 
 type ChannelNameBasicChannel = original.ChannelNameBasicChannel
 
 const (
-	ChannelNameChannel            ChannelNameBasicChannel = original.ChannelNameChannel
-	ChannelNameDirectLineChannel1 ChannelNameBasicChannel = original.ChannelNameDirectLineChannel1
-	ChannelNameEmailChannel1      ChannelNameBasicChannel = original.ChannelNameEmailChannel1
-	ChannelNameFacebookChannel1   ChannelNameBasicChannel = original.ChannelNameFacebookChannel1
-	ChannelNameKikChannel1        ChannelNameBasicChannel = original.ChannelNameKikChannel1
-	ChannelNameMsTeamsChannel1    ChannelNameBasicChannel = original.ChannelNameMsTeamsChannel1
-	ChannelNameSkypeChannel1      ChannelNameBasicChannel = original.ChannelNameSkypeChannel1
-	ChannelNameSlackChannel1      ChannelNameBasicChannel = original.ChannelNameSlackChannel1
-	ChannelNameSmsChannel1        ChannelNameBasicChannel = original.ChannelNameSmsChannel1
-	ChannelNameTelegramChannel1   ChannelNameBasicChannel = original.ChannelNameTelegramChannel1
-	ChannelNameWebChatChannel1    ChannelNameBasicChannel = original.ChannelNameWebChatChannel1
+	ChannelNameBasicChannelChannelNameAlexaChannel            ChannelNameBasicChannel = original.ChannelNameBasicChannelChannelNameAlexaChannel
+	ChannelNameBasicChannelChannelNameChannel                 ChannelNameBasicChannel = original.ChannelNameBasicChannelChannelNameChannel
+	ChannelNameBasicChannelChannelNameDirectLineChannel       ChannelNameBasicChannel = original.ChannelNameBasicChannelChannelNameDirectLineChannel
+	ChannelNameBasicChannelChannelNameDirectLineSpeechChannel ChannelNameBasicChannel = original.ChannelNameBasicChannelChannelNameDirectLineSpeechChannel
+	ChannelNameBasicChannelChannelNameEmailChannel            ChannelNameBasicChannel = original.ChannelNameBasicChannelChannelNameEmailChannel
+	ChannelNameBasicChannelChannelNameFacebookChannel         ChannelNameBasicChannel = original.ChannelNameBasicChannelChannelNameFacebookChannel
+	ChannelNameBasicChannelChannelNameKikChannel              ChannelNameBasicChannel = original.ChannelNameBasicChannelChannelNameKikChannel
+	ChannelNameBasicChannelChannelNameLineChannel             ChannelNameBasicChannel = original.ChannelNameBasicChannelChannelNameLineChannel
+	ChannelNameBasicChannelChannelNameMsTeamsChannel          ChannelNameBasicChannel = original.ChannelNameBasicChannelChannelNameMsTeamsChannel
+	ChannelNameBasicChannelChannelNameSkypeChannel            ChannelNameBasicChannel = original.ChannelNameBasicChannelChannelNameSkypeChannel
+	ChannelNameBasicChannelChannelNameSlackChannel            ChannelNameBasicChannel = original.ChannelNameBasicChannelChannelNameSlackChannel
+	ChannelNameBasicChannelChannelNameSmsChannel              ChannelNameBasicChannel = original.ChannelNameBasicChannelChannelNameSmsChannel
+	ChannelNameBasicChannelChannelNameTelegramChannel         ChannelNameBasicChannel = original.ChannelNameBasicChannelChannelNameTelegramChannel
+	ChannelNameBasicChannelChannelNameWebChatChannel          ChannelNameBasicChannel = original.ChannelNameBasicChannelChannelNameWebChatChannel
 )
 
-type EnterpriseChannelNodeState = original.EnterpriseChannelNodeState
+type Key = original.Key
 
 const (
-	CreateFailed EnterpriseChannelNodeState = original.CreateFailed
-	Creating     EnterpriseChannelNodeState = original.Creating
-	DeleteFailed EnterpriseChannelNodeState = original.DeleteFailed
-	Deleting     EnterpriseChannelNodeState = original.Deleting
-	Started      EnterpriseChannelNodeState = original.Started
-	StartFailed  EnterpriseChannelNodeState = original.StartFailed
-	Starting     EnterpriseChannelNodeState = original.Starting
-	StopFailed   EnterpriseChannelNodeState = original.StopFailed
-	Stopped      EnterpriseChannelNodeState = original.Stopped
-	Stopping     EnterpriseChannelNodeState = original.Stopping
-)
-
-type EnterpriseChannelState = original.EnterpriseChannelState
-
-const (
-	EnterpriseChannelStateCreateFailed EnterpriseChannelState = original.EnterpriseChannelStateCreateFailed
-	EnterpriseChannelStateCreating     EnterpriseChannelState = original.EnterpriseChannelStateCreating
-	EnterpriseChannelStateDeleteFailed EnterpriseChannelState = original.EnterpriseChannelStateDeleteFailed
-	EnterpriseChannelStateDeleting     EnterpriseChannelState = original.EnterpriseChannelStateDeleting
-	EnterpriseChannelStateStarted      EnterpriseChannelState = original.EnterpriseChannelStateStarted
-	EnterpriseChannelStateStartFailed  EnterpriseChannelState = original.EnterpriseChannelStateStartFailed
-	EnterpriseChannelStateStarting     EnterpriseChannelState = original.EnterpriseChannelStateStarting
-	EnterpriseChannelStateStopFailed   EnterpriseChannelState = original.EnterpriseChannelStateStopFailed
-	EnterpriseChannelStateStopped      EnterpriseChannelState = original.EnterpriseChannelStateStopped
-	EnterpriseChannelStateStopping     EnterpriseChannelState = original.EnterpriseChannelStateStopping
+	Key1 Key = original.Key1
+	Key2 Key = original.Key2
 )
 
 type Kind = original.Kind
 
 const (
+	KindAzurebot Kind = original.KindAzurebot
 	KindBot      Kind = original.KindBot
 	KindDesigner Kind = original.KindDesigner
 	KindFunction Kind = original.KindFunction
 	KindSdk      Kind = original.KindSdk
 )
 
+type MsaAppType = original.MsaAppType
+
+const (
+	MsaAppTypeMultiTenant     MsaAppType = original.MsaAppTypeMultiTenant
+	MsaAppTypeSingleTenant    MsaAppType = original.MsaAppTypeSingleTenant
+	MsaAppTypeUserAssignedMSI MsaAppType = original.MsaAppTypeUserAssignedMSI
+)
+
+type OperationResultStatus = original.OperationResultStatus
+
+const (
+	OperationResultStatusCanceled  OperationResultStatus = original.OperationResultStatusCanceled
+	OperationResultStatusFailed    OperationResultStatus = original.OperationResultStatusFailed
+	OperationResultStatusRequested OperationResultStatus = original.OperationResultStatusRequested
+	OperationResultStatusRunning   OperationResultStatus = original.OperationResultStatusRunning
+	OperationResultStatusSucceeded OperationResultStatus = original.OperationResultStatusSucceeded
+)
+
+type PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningState
+
+const (
+	PrivateEndpointConnectionProvisioningStateCreating  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateCreating
+	PrivateEndpointConnectionProvisioningStateDeleting  PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateDeleting
+	PrivateEndpointConnectionProvisioningStateFailed    PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateFailed
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = original.PrivateEndpointConnectionProvisioningStateSucceeded
+)
+
+type PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatus
+
+const (
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusApproved
+	PrivateEndpointServiceConnectionStatusPending  PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusPending
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = original.PrivateEndpointServiceConnectionStatusRejected
+)
+
+type RegenerateKeysChannelName = original.RegenerateKeysChannelName
+
+const (
+	RegenerateKeysChannelNameDirectLineChannel RegenerateKeysChannelName = original.RegenerateKeysChannelNameDirectLineChannel
+	RegenerateKeysChannelNameWebChatChannel    RegenerateKeysChannelName = original.RegenerateKeysChannelNameWebChatChannel
+)
+
 type SkuName = original.SkuName
 
 const (
-	F0 SkuName = original.F0
-	S1 SkuName = original.S1
+	SkuNameF0 SkuName = original.SkuNameF0
+	SkuNameS1 SkuName = original.SkuNameS1
 )
 
 type SkuTier = original.SkuTier
 
 const (
-	Free     SkuTier = original.Free
-	Standard SkuTier = original.Standard
+	SkuTierFree     SkuTier = original.SkuTierFree
+	SkuTierStandard SkuTier = original.SkuTierStandard
 )
 
+type AlexaChannel = original.AlexaChannel
+type AlexaChannelProperties = original.AlexaChannelProperties
 type BaseClient = original.BaseClient
 type BasicChannel = original.BasicChannel
 type Bot = original.Bot
@@ -129,28 +157,24 @@ type ConnectionSettingResponseListIterator = original.ConnectionSettingResponseL
 type ConnectionSettingResponseListPage = original.ConnectionSettingResponseListPage
 type DirectLineChannel = original.DirectLineChannel
 type DirectLineChannelProperties = original.DirectLineChannelProperties
+type DirectLineClient = original.DirectLineClient
 type DirectLineSite = original.DirectLineSite
+type DirectLineSpeechChannel = original.DirectLineSpeechChannel
+type DirectLineSpeechChannelProperties = original.DirectLineSpeechChannelProperties
 type EmailChannel = original.EmailChannel
 type EmailChannelProperties = original.EmailChannelProperties
-type EnterpriseChannel = original.EnterpriseChannel
-type EnterpriseChannelCheckNameAvailabilityRequest = original.EnterpriseChannelCheckNameAvailabilityRequest
-type EnterpriseChannelCheckNameAvailabilityResponse = original.EnterpriseChannelCheckNameAvailabilityResponse
-type EnterpriseChannelNode = original.EnterpriseChannelNode
-type EnterpriseChannelProperties = original.EnterpriseChannelProperties
-type EnterpriseChannelResponseList = original.EnterpriseChannelResponseList
-type EnterpriseChannelResponseListIterator = original.EnterpriseChannelResponseListIterator
-type EnterpriseChannelResponseListPage = original.EnterpriseChannelResponseListPage
-type EnterpriseChannelsClient = original.EnterpriseChannelsClient
-type EnterpriseChannelsCreateFuture = original.EnterpriseChannelsCreateFuture
-type EnterpriseChannelsDeleteFuture = original.EnterpriseChannelsDeleteFuture
-type EnterpriseChannelsUpdateFuture = original.EnterpriseChannelsUpdateFuture
 type Error = original.Error
 type ErrorBody = original.ErrorBody
 type FacebookChannel = original.FacebookChannel
 type FacebookChannelProperties = original.FacebookChannelProperties
 type FacebookPage = original.FacebookPage
+type HostSettingsClient = original.HostSettingsClient
+type HostSettingsResponse = original.HostSettingsResponse
 type KikChannel = original.KikChannel
 type KikChannelProperties = original.KikChannelProperties
+type LineChannel = original.LineChannel
+type LineChannelProperties = original.LineChannelProperties
+type LineRegistration = original.LineRegistration
 type MsTeamsChannel = original.MsTeamsChannel
 type MsTeamsChannelProperties = original.MsTeamsChannelProperties
 type OperationDisplayInfo = original.OperationDisplayInfo
@@ -158,12 +182,27 @@ type OperationEntity = original.OperationEntity
 type OperationEntityListResult = original.OperationEntityListResult
 type OperationEntityListResultIterator = original.OperationEntityListResultIterator
 type OperationEntityListResultPage = original.OperationEntityListResultPage
+type OperationResultsClient = original.OperationResultsClient
+type OperationResultsDescription = original.OperationResultsDescription
+type OperationResultsGetFuture = original.OperationResultsGetFuture
 type OperationsClient = original.OperationsClient
+type PrivateEndpoint = original.PrivateEndpoint
+type PrivateEndpointConnection = original.PrivateEndpointConnection
+type PrivateEndpointConnectionListResult = original.PrivateEndpointConnectionListResult
+type PrivateEndpointConnectionProperties = original.PrivateEndpointConnectionProperties
+type PrivateEndpointConnectionsClient = original.PrivateEndpointConnectionsClient
+type PrivateLinkResource = original.PrivateLinkResource
+type PrivateLinkResourceBase = original.PrivateLinkResourceBase
+type PrivateLinkResourceListResult = original.PrivateLinkResourceListResult
+type PrivateLinkResourceProperties = original.PrivateLinkResourceProperties
+type PrivateLinkResourcesClient = original.PrivateLinkResourcesClient
+type PrivateLinkServiceConnectionState = original.PrivateLinkServiceConnectionState
 type Resource = original.Resource
 type ServiceProvider = original.ServiceProvider
 type ServiceProviderParameter = original.ServiceProviderParameter
 type ServiceProviderProperties = original.ServiceProviderProperties
 type ServiceProviderResponseList = original.ServiceProviderResponseList
+type SiteInfo = original.SiteInfo
 type Sku = original.Sku
 type SkypeChannel = original.SkypeChannel
 type SkypeChannelProperties = original.SkypeChannelProperties
@@ -216,17 +255,17 @@ func NewConnectionSettingResponseListIterator(page ConnectionSettingResponseList
 func NewConnectionSettingResponseListPage(cur ConnectionSettingResponseList, getNextPage func(context.Context, ConnectionSettingResponseList) (ConnectionSettingResponseList, error)) ConnectionSettingResponseListPage {
 	return original.NewConnectionSettingResponseListPage(cur, getNextPage)
 }
-func NewEnterpriseChannelResponseListIterator(page EnterpriseChannelResponseListPage) EnterpriseChannelResponseListIterator {
-	return original.NewEnterpriseChannelResponseListIterator(page)
+func NewDirectLineClient(subscriptionID string) DirectLineClient {
+	return original.NewDirectLineClient(subscriptionID)
 }
-func NewEnterpriseChannelResponseListPage(cur EnterpriseChannelResponseList, getNextPage func(context.Context, EnterpriseChannelResponseList) (EnterpriseChannelResponseList, error)) EnterpriseChannelResponseListPage {
-	return original.NewEnterpriseChannelResponseListPage(cur, getNextPage)
+func NewDirectLineClientWithBaseURI(baseURI string, subscriptionID string) DirectLineClient {
+	return original.NewDirectLineClientWithBaseURI(baseURI, subscriptionID)
 }
-func NewEnterpriseChannelsClient(subscriptionID string) EnterpriseChannelsClient {
-	return original.NewEnterpriseChannelsClient(subscriptionID)
+func NewHostSettingsClient(subscriptionID string) HostSettingsClient {
+	return original.NewHostSettingsClient(subscriptionID)
 }
-func NewEnterpriseChannelsClientWithBaseURI(baseURI string, subscriptionID string) EnterpriseChannelsClient {
-	return original.NewEnterpriseChannelsClientWithBaseURI(baseURI, subscriptionID)
+func NewHostSettingsClientWithBaseURI(baseURI string, subscriptionID string) HostSettingsClient {
+	return original.NewHostSettingsClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewOperationEntityListResultIterator(page OperationEntityListResultPage) OperationEntityListResultIterator {
 	return original.NewOperationEntityListResultIterator(page)
@@ -234,11 +273,29 @@ func NewOperationEntityListResultIterator(page OperationEntityListResultPage) Op
 func NewOperationEntityListResultPage(cur OperationEntityListResult, getNextPage func(context.Context, OperationEntityListResult) (OperationEntityListResult, error)) OperationEntityListResultPage {
 	return original.NewOperationEntityListResultPage(cur, getNextPage)
 }
+func NewOperationResultsClient(subscriptionID string) OperationResultsClient {
+	return original.NewOperationResultsClient(subscriptionID)
+}
+func NewOperationResultsClientWithBaseURI(baseURI string, subscriptionID string) OperationResultsClient {
+	return original.NewOperationResultsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateEndpointConnectionsClient(subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClient(subscriptionID)
+}
+func NewPrivateEndpointConnectionsClientWithBaseURI(baseURI string, subscriptionID string) PrivateEndpointConnectionsClient {
+	return original.NewPrivateEndpointConnectionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPrivateLinkResourcesClient(subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClient(subscriptionID)
+}
+func NewPrivateLinkResourcesClientWithBaseURI(baseURI string, subscriptionID string) PrivateLinkResourcesClient {
+	return original.NewPrivateLinkResourcesClientWithBaseURI(baseURI, subscriptionID)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -249,14 +306,26 @@ func PossibleChannelNameBasicChannelValues() []ChannelNameBasicChannel {
 func PossibleChannelNameValues() []ChannelName {
 	return original.PossibleChannelNameValues()
 }
-func PossibleEnterpriseChannelNodeStateValues() []EnterpriseChannelNodeState {
-	return original.PossibleEnterpriseChannelNodeStateValues()
-}
-func PossibleEnterpriseChannelStateValues() []EnterpriseChannelState {
-	return original.PossibleEnterpriseChannelStateValues()
+func PossibleKeyValues() []Key {
+	return original.PossibleKeyValues()
 }
 func PossibleKindValues() []Kind {
 	return original.PossibleKindValues()
+}
+func PossibleMsaAppTypeValues() []MsaAppType {
+	return original.PossibleMsaAppTypeValues()
+}
+func PossibleOperationResultStatusValues() []OperationResultStatus {
+	return original.PossibleOperationResultStatusValues()
+}
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return original.PossiblePrivateEndpointConnectionProvisioningStateValues()
+}
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return original.PossiblePrivateEndpointServiceConnectionStatusValues()
+}
+func PossibleRegenerateKeysChannelNameValues() []RegenerateKeysChannelName {
+	return original.PossibleRegenerateKeysChannelNameValues()
 }
 func PossibleSkuNameValues() []SkuName {
 	return original.PossibleSkuNameValues()

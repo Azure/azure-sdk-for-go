@@ -18,7 +18,7 @@ import (
 func Test_buildCanonicalizedAuthHeader(t *testing.T) {
 	key := "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
 
-	cred, err := NewSharedKeyCredential(key)
+	cred, err := NewKeyCredential(key)
 
 	assert.NoError(t, err)
 
@@ -47,7 +47,7 @@ func Test_buildCanonicalizedAuthHeader(t *testing.T) {
 func Test_buildCanonicalizedAuthHeaderFromRequest(t *testing.T) {
 	key := "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
 
-	cred, err := NewSharedKeyCredential(key)
+	cred, err := NewKeyCredential(key)
 
 	assert.NoError(t, err)
 
@@ -79,7 +79,7 @@ func Test_buildCanonicalizedAuthHeaderFromRequest(t *testing.T) {
 func Test_buildCanonicalizedAuthHeaderFromRequestWithRid(t *testing.T) {
 	key := "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
 
-	cred, err := NewSharedKeyCredential(key)
+	cred, err := NewKeyCredential(key)
 
 	assert.NoError(t, err)
 

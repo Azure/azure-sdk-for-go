@@ -5,8 +5,8 @@ package azcosmos
 
 import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
 
-// CosmosDatabaseProperties represents the properties of a database.
-type CosmosDatabaseProperties struct {
+// DatabaseProperties represents the properties of a database.
+type DatabaseProperties struct {
 	// Id contains the unique id of the database.
 	Id string `json:"id"`
 	// ETag contains the entity etag of the database
@@ -18,5 +18,5 @@ type CosmosDatabaseProperties struct {
 	// LastModified contains the last modified time of the database
 	LastModified *UnixTime `json:"_ts,omitempty"`
 	// Database represented by these properties
-	Database *CosmosDatabase `json:"-"`
+	Database *Database `json:"-"`
 }

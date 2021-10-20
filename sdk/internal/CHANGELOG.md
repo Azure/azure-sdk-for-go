@@ -1,6 +1,6 @@
 # Release History
 
-## 0.8.0 (Unreleased)
+## 0.8.0 (2021-10-20)
 * Renamed log constant type and values to conform to guidelines.
 * Exports `RecordMode`, `PlaybackMode`, and `LiveMode` for determining test mode
 * When running in `LiveMode` no traffic will be routed to the proxy and the `StartRecording`/`StopRecording` methods are no-ops.

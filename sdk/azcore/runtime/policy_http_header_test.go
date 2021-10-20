@@ -16,6 +16,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
+func newTestPipeline(opts *policy.ClientOptions) Pipeline {
+	return NewPipeline("testmodule", "v0.1.0", nil, nil, opts)
+}
+
 func TestAddCustomHTTPHeaderSuccess(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
@@ -29,7 +33,7 @@ func TestAddCustomHTTPHeaderSuccess(t *testing.T) {
 	}), mock.WithStatusCode(http.StatusOK))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 	// HTTP header policy is automatically added during pipeline construction
-	pl := NewPipeline(srv)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
 	req, err := NewRequest(policy.WithHTTPHeader(context.Background(), http.Header{
 		customHeader: []string{customValue},
 	}), http.MethodGet, srv.URL())
@@ -56,7 +60,7 @@ func TestAddCustomHTTPHeaderFail(t *testing.T) {
 	}), mock.WithStatusCode(http.StatusOK))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 	// HTTP header policy is automatically added during pipeline construction
-	pl := NewPipeline(srv)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -80,7 +84,7 @@ func TestAddCustomHTTPHeaderOverwrite(t *testing.T) {
 	}), mock.WithStatusCode(http.StatusOK))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 	// HTTP header policy is automatically added during pipeline construction
-	pl := NewPipeline(srv)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
 	// overwrite the request ID with our own value
 	req, err := NewRequest(policy.WithHTTPHeader(context.Background(), http.Header{
 		customHeader: []string{customValue},
@@ -111,7 +115,7 @@ func TestAddCustomHTTPHeaderMultipleValues(t *testing.T) {
 	}), mock.WithStatusCode(http.StatusOK))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 	// HTTP header policy is automatically added during pipeline construction
-	pl := NewPipeline(srv)
+	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
 	// overwrite the request ID with our own value
 	req, err := NewRequest(policy.WithHTTPHeader(context.Background(), http.Header{
 		customHeader: []string{customValue1, customValue2},

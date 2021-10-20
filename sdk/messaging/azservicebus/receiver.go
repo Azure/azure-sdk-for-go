@@ -171,10 +171,71 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 		return nil, errors.New("receiver is already receiving messages. ReceiveMessages() cannot be called concurrently.")
 	}
 
-	return r.receiveMessagesImpl(ctx, uint32(maxMessages), options)
+	return r.receiveMessagesImpl(ctx, maxMessages, options)
 }
 
-func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages uint32, options *ReceiveOptions) ([]*ReceivedMessage, error) {
+type ReceiveMessagesUsingChannelOptions struct {
+	AutoRenewal *bool
+}
+
+func (r *Receiver) ReceiveMessagesUsingChannel(initialCredits int, options *ReceiveMessagesUsingChannelOptions) (*ReceiveOperation, error) {
+	retrier := internal.NewCyclingRetrier(internal.CyclingRetrierOptions{
+		Factor: 2,
+		Min:    time.Second,
+		Max:    30 * time.Second,
+	})
+
+	ctx, cancel := context.WithCancel(context.Background())
+	ch := make(chan *ReceivedMessage, initialCredits)
+
+	op := &ReceiveOperation{
+		Stop: func() {
+			cancel()
+		},
+		Messages: func() <-chan *ReceivedMessage {
+			return ch
+		},
+	}
+
+	go func() {
+		for retrier.Try(ctx) {
+			_, receiver, _, linkRevision, err := r.amqpLinks.Get(ctx)
+
+			if err != nil {
+				continue
+			}
+
+			// reset, since we succeeded.
+			retrier = retrier.Copy()
+
+			innerOp := newReceiveOperation(receiver, initialCredits, true)
+
+			go func() {
+				select {
+				case <-ctx.Done():
+					innerOp.Stop()
+				}
+			}()
+
+			for m := range innerOp.Messages() {
+				// TODO: this is where auto lock renewal will go.
+				ch <- m
+			}
+
+			if innerOp.Err() != nil {
+				if err := r.amqpLinks.RecoverIfNeeded(context.Background(), linkRevision, innerOp.Err()); err != nil {
+					continue
+				}
+			}
+		}
+
+		close(ch)
+	}()
+
+	return op, nil
+}
+
+func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, options *ReceiveOptions) ([]*ReceivedMessage, error) {
 	localOpts := &ReceiveOptions{
 		MaxWaitTime:                  time.Minute,
 		maxWaitTimeAfterFirstMessage: time.Second,
@@ -197,7 +258,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages uint32, 
 	ctx, cancel := context.WithTimeout(ctx, localOpts.MaxWaitTime)
 	defer cancel()
 
-	rcv := receiveMessages(receiver, maxMessages, false)
+	rcv := newReceiveOperation(receiver, maxMessages, false)
 
 	go func() {
 		select {
@@ -211,7 +272,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages uint32, 
 	for message := range rcv.Messages() {
 		messages = append(messages, message)
 
-		if uint32(len(messages)) == maxMessages {
+		if len(messages) == maxMessages {
 			return messages, nil
 		}
 

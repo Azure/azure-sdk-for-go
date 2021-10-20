@@ -32,7 +32,7 @@ type stats struct {
 	Errors   int32
 }
 
-var processorStats stats
+var channelStats stats
 var receiverStats stats
 var senderStats stats
 
@@ -64,10 +64,10 @@ func runBasicSendAndReceiveTest() {
 
 		for range ticker.C {
 			log.Printf("Received: (p:%d,r:%d), Sent: %d, Errors: (p:%d,r:%d,s:%d)",
-				atomic.LoadInt32(&processorStats.Received),
+				atomic.LoadInt32(&channelStats.Received),
 				atomic.LoadInt32(&receiverStats.Received),
 				atomic.LoadInt32(&senderStats.Sent),
-				atomic.LoadInt32(&processorStats.Errors),
+				atomic.LoadInt32(&channelStats.Errors),
 				atomic.LoadInt32(&receiverStats.Errors),
 				atomic.LoadInt32(&senderStats.Errors))
 		}
@@ -136,7 +136,7 @@ func runBasicSendAndReceiveTest() {
 	if runProcessorTest {
 		go func() {
 			for {
-				runProcessor(ctx, serviceBusClient, topicName, "processor", telemetryClient)
+				runChannelReceiver(ctx, serviceBusClient, topicName, "processor", telemetryClient)
 			}
 		}()
 	} else {
@@ -183,40 +183,40 @@ func runBatchReceiver(ctx context.Context, serviceBusClient *azservicebus.Client
 	}
 }
 
-func runProcessor(ctx context.Context, client *azservicebus.Client, topicName string, subscriptionName string, telemetryClient appinsights.TelemetryClient) {
+func runChannelReceiver(ctx context.Context, client *azservicebus.Client, topicName string, subscriptionName string, telemetryClient appinsights.TelemetryClient) {
 	log.Printf("Starting processor...")
-	processor, err := client.NewProcessorForSubscription(
-		topicName, subscriptionName,
-		&azservicebus.ProcessorOptions{MaxConcurrentCalls: 10})
+
+	receiver, err := client.NewReceiverForSubscription(topicName, subscriptionName, nil)
 
 	if err != nil {
-		trackException(&processorStats, telemetryClient, "Failed when creating processor", err)
+		trackException(&channelStats, telemetryClient, "Failed when creating receiver", err)
 		return
 	}
 
-	err = processor.Start(ctx, func(msg *azservicebus.ReceivedMessage) error {
-		atomic.AddInt32(&processorStats.Received, 1)
-		telemetryClient.TrackMetric("MessageReceived", 1)
-		return nil
-	}, func(err error) {
-		log.Printf("Exception in processor: %s", err.Error())
-		trackException(&processorStats, telemetryClient, "Processor.HandleError", err)
-	})
+	op, err := receiver.ReceiveMessagesUsingChannel(10, nil)
 
 	if err != nil {
-		log.Printf("Exception when starting processor: %s", err.Error())
-		trackException(&processorStats, telemetryClient, "Processor.Start", err)
+		trackException(&channelStats, telemetryClient, "Failed when trying to receive messages using channel", err)
 		return
 	}
 
-	<-ctx.Done()
+	for m := range op.Messages() {
+		atomic.AddInt32(&channelStats.Received, 1)
 
-	telemetryClient.TrackEvent("ProcessorStopped")
-	log.Print("Processor was stopped!")
+		go func() {
+			if err := receiver.CompleteMessage(context.Background(), m); err != nil {
+				trackException(&channelStats, telemetryClient, "Failed when trying to complete message", err)
+				return
+			}
+		}()
+	}
+
+	telemetryClient.TrackEvent("ReceivingStopped")
+	log.Print("Receiving stopped!")
 }
 
 func continuallySend(ctx context.Context, client *azservicebus.Client, queueName string, telemetryClient appinsights.TelemetryClient) {
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 
 	if err != nil {
 		trackException(&senderStats, telemetryClient, "SenderCreate", err)

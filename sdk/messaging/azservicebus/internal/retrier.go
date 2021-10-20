@@ -17,9 +17,6 @@ type Retrier interface {
 	// before starting a set of retries.
 	Copy() Retrier
 
-	// Exhausted is true if the retries were exhausted.
-	Exhausted() bool
-
 	// CurrentTry is the current try (0 for the first run before retries)
 	CurrentTry() int
 
@@ -125,6 +122,83 @@ func (rp *backoffRetrier) Try(ctx context.Context) bool {
 
 	select {
 	case <-time.After(rp.backoff.Duration()):
+		return true
+	case <-ctx.Done():
+		return false
+	}
+}
+
+type CyclingRetrierOptions struct {
+	Factor float64
+	// Jitter eases contention by randomizing backoff steps
+	Jitter bool
+	// Min and Max are the minimum and maximum values of the counter
+	Min, Max time.Duration
+	// timeAfter aliases time.After() for unit testing.
+	timeAfter func(after time.Duration) <-chan time.Time
+}
+
+// NewCyclingRetrier creates a retrier which retries infinitely.
+// Each "cycle" is a full run the backoff.Backoff, and then it automatically
+// resets and starts over again.
+func NewCyclingRetrier(options CyclingRetrierOptions) Retrier {
+	timeAfter := time.After
+
+	if options.timeAfter != nil {
+		timeAfter = options.timeAfter
+	}
+
+	return &cyclingRetrier{
+		backoff: backoff.Backoff{
+			Factor: options.Factor,
+			Jitter: options.Jitter,
+			Min:    options.Min,
+			Max:    options.Max,
+		},
+		timeAfter: timeAfter,
+	}
+}
+
+type cyclingRetrier struct {
+	backoff   backoff.Backoff
+	tries     int
+	timeAfter func(after time.Duration) <-chan time.Time
+}
+
+func (r *cyclingRetrier) Copy() Retrier {
+	return &cyclingRetrier{
+		backoff:   r.backoff,
+		tries:     0,
+		timeAfter: r.timeAfter,
+	}
+}
+
+func (r *cyclingRetrier) CurrentTry() int {
+	return r.tries
+}
+
+func (r *cyclingRetrier) Try(ctx context.Context) bool {
+	defer func() { r.tries++ }()
+
+	select {
+	case <-ctx.Done():
+		return false
+	default:
+	}
+
+	if r.tries == 0 {
+		// first try is always immediate
+		return true
+	}
+
+	duration := r.backoff.Duration()
+
+	select {
+	case <-r.timeAfter(duration):
+		if duration >= r.backoff.Max {
+			r.tries = -1 // (defer will increment the tries number)
+			r.backoff.Reset()
+		}
 		return true
 	case <-ctx.Done():
 		return false

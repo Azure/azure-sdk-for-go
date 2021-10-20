@@ -20,7 +20,7 @@ func TestProcessorReceiveWithDefaults(t *testing.T) {
 	defer cleanup()
 
 	go func() {
-		sender, err := serviceBusClient.NewSender(queueName)
+		sender, err := serviceBusClient.NewSender(queueName, nil)
 		require.NoError(t, err)
 
 		defer sender.Close(context.Background())
@@ -90,7 +90,7 @@ func TestProcessorReceiveWith100MessagesWithMaxConcurrency(t *testing.T) {
 	var expectedBodies []string
 
 	go func() {
-		sender, err := serviceBusClient.NewSender(queueName)
+		sender, err := serviceBusClient.NewSender(queueName, nil)
 		require.NoError(t, err)
 
 		defer sender.Close(context.Background())

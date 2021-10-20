@@ -57,3 +57,30 @@ func ExampleReceiver_ReceiveMessages() {
 		exitOnError("Failed to complete message", err)
 	}
 }
+
+func ExampleReceiver_ReceiveMessagesUsingChannel() {
+	initialCredits := 10
+
+	receiveOperation, err := receiver.ReceiveMessagesUsingChannel(initialCredits, nil)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// the receive operation should be stopped at some point
+	// using `Stop`
+	go func() {
+		select {
+		case <-time.After(time.Second * 5):
+			receiveOperation.Stop()
+		}
+	}()
+
+	for msg := range receiveOperation.Messages() {
+		err = receiver.CompleteMessage(context.TODO(), msg)
+
+		if err != nil {
+			panic(err)
+		}
+	}
+}

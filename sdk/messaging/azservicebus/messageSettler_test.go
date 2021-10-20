@@ -238,7 +238,7 @@ func newTestStuff(t *testing.T) *testStuff {
 	testStuff.Receiver, err = client.NewReceiverForQueue(queueName, nil)
 	require.NoError(t, err)
 
-	testStuff.Sender, err = client.NewSender(queueName)
+	testStuff.Sender, err = client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	testStuff.DeadLetterReceiver, err = client.NewReceiverForQueue(

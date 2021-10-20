@@ -19,7 +19,7 @@ func Test_Sender_SendBatchOfTwo(t *testing.T) {
 
 	ctx := context.Background()
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	defer sender.Close(ctx)
@@ -59,7 +59,7 @@ func Test_Sender_UsingPartitionedQueue(t *testing.T) {
 	})
 	defer cleanup()
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 	defer sender.Close(context.Background())
 

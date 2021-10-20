@@ -20,7 +20,7 @@ func TestReceiverSendFiveReceiveFive(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
-	sender, err := serviceBusClient.NewSender(queueName)
+	sender, err := serviceBusClient.NewSender(queueName, nil)
 	require.NoError(t, err)
 	defer sender.Close(context.Background())
 
@@ -54,7 +54,7 @@ func TestReceiverForceTimeoutWithTooFewMessages(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
-	sender, err := serviceBusClient.NewSender(queueName)
+	sender, err := serviceBusClient.NewSender(queueName, nil)
 	require.NoError(t, err)
 	defer sender.Close(context.Background())
 
@@ -83,7 +83,7 @@ func TestReceiverAbandon(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
-	sender, err := serviceBusClient.NewSender(queueName)
+	sender, err := serviceBusClient.NewSender(queueName, nil)
 	require.NoError(t, err)
 	defer sender.Close(context.Background())
 
@@ -115,7 +115,7 @@ func TestReceiveWithEarlyFirstMessageTimeout(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
-	sender, err := serviceBusClient.NewSender(queueName)
+	sender, err := serviceBusClient.NewSender(queueName, nil)
 	require.NoError(t, err)
 	defer sender.Close(context.Background())
 
@@ -146,7 +146,7 @@ func TestReceiverSendAndReceiveManyTimes(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
-	sender, err := serviceBusClient.NewSender(queueName)
+	sender, err := serviceBusClient.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	defer sender.Close(context.Background())
@@ -184,7 +184,7 @@ func TestReceiverDeferAndReceiveDeferredMessages(t *testing.T) {
 	client, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	ctx := context.TODO()
@@ -227,7 +227,7 @@ func TestReceiverPeek(t *testing.T) {
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
 
-	sender, err := serviceBusClient.NewSender(queueName)
+	sender, err := serviceBusClient.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	ctx := context.TODO()
@@ -290,6 +290,61 @@ func TestReceiverPeek(t *testing.T) {
 	require.NoError(t, err)
 	require.Empty(t, noMessagesExpected)
 }
+
+func TestReceiver_UsingChannel(t *testing.T) {
+	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	ctx := context.Background()
+
+	sender, err := serviceBusClient.NewSender(queueName, nil)
+	require.NoError(t, err)
+
+	batch, err := sender.NewMessageBatch(ctx, nil)
+	require.NoError(t, err)
+
+	batch.Add(&Message{
+		Body: []byte("hello world0"),
+	})
+
+	batch.Add(&Message{
+		Body: []byte("hello world1"),
+	})
+
+	err = sender.SendMessage(ctx, batch)
+	require.NoError(t, err)
+
+	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	receiveOperation, err := receiver.ReceiveMessagesUsingChannel(10, nil)
+	require.NoError(t, err)
+
+	var messages []*ReceivedMessage
+
+	for message := range receiveOperation.Messages() {
+		messages = append(messages, message)
+
+		switch len(messages) {
+		case 2:
+			err = sender.SendMessage(ctx, &Message{
+				Body: []byte("hello world2"),
+			})
+			require.NoError(t, err)
+		case 3:
+			err = sender.SendMessage(ctx, &Message{
+				Body: []byte("hello world3"),
+			})
+			require.NoError(t, err)
+			go receiveOperation.Stop()
+		}
+
+		require.NoError(t, receiver.CompleteMessage(ctx, message))
+	}
+
+	require.EqualValues(t, []string{"hello world0", "hello world1", "hello world2", "hello world3"}, getSortedBodies(messages))
+}
+
 
 func TestReceiverOptions(t *testing.T) {
 	// defaults

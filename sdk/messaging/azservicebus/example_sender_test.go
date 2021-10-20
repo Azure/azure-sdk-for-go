@@ -11,7 +11,7 @@ import (
 )
 
 func ExampleClient_NewSender() {
-	sender, err = client.NewSender(queueName) // or topicName
+	sender, err = client.NewSender(queueName, nil) // or topicName
 	exitOnError("Failed to create sender", err)
 }
 
@@ -28,7 +28,7 @@ func ExampleSender_SendMessage_messageBatch() {
 	client, err := azservicebus.NewClientWithConnectionString(connectionString, nil)
 	exitOnError("Failed to create client", err)
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	exitOnError("Failed to create sender", err)
 
 	batch, err := sender.NewMessageBatch(context.TODO(), nil)

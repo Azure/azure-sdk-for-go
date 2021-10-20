@@ -40,7 +40,6 @@ func TestRetrier(t *testing.T) {
 		// and it's the 6th retry that fails since we've exhausted
 		// the retries we're allotted.
 		require.False(retrier.Try(context.Background()))
-		require.True(retrier.Exhausted())
 	})
 
 	t.Run("Cancellation", func(t *testing.T) {
@@ -61,4 +60,80 @@ func TestRetrier(t *testing.T) {
 		cancel()
 		require.False(t, retrier.Try(cancelledContext))
 	})
+}
+
+func TestCyclingRetrier(t *testing.T) {
+	ctx := context.Background()
+	var durations []time.Duration
+
+	timeAfter := func(duration time.Duration) <-chan time.Time {
+		durations = append(durations, duration)
+
+		ch := make(chan time.Time)
+		close(ch)
+		return ch
+	}
+
+	retrier := NewCyclingRetrier(CyclingRetrierOptions{
+		Factor:    2,
+		Min:       1,
+		Max:       4,
+		timeAfter: timeAfter,
+	})
+
+	// first try is free
+	require.EqualValues(t, 0, retrier.CurrentTry())
+	require.True(t, retrier.Try(ctx))
+	require.EqualValues(t, 1, retrier.CurrentTry())
+	require.Empty(t, durations)
+
+	// retries
+	require.True(t, retrier.Try(ctx))
+	require.True(t, retrier.Try(ctx))
+	require.True(t, retrier.Try(ctx))
+
+	require.EqualValues(t, []time.Duration{
+		1, 2, 4,
+	}, durations)
+
+	// the retrier will automatically reset since we hit our 'max' time limit.
+	durations = nil
+
+	// first try again
+	require.EqualValues(t, 0, retrier.CurrentTry())
+	require.True(t, retrier.Try(ctx))
+	require.EqualValues(t, 1, retrier.CurrentTry())
+	require.Empty(t, durations)
+
+	// retries
+	require.True(t, retrier.Try(ctx))
+	require.True(t, retrier.Try(ctx))
+	require.True(t, retrier.Try(ctx))
+
+	// and...
+	require.EqualValues(t, []time.Duration{
+		1, 2, 4,
+	}, durations)
+
+	// and we respect cancellations
+	retrier = retrier.Copy()
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	require.False(t, retrier.Try(ctx))
+
+	retrier = retrier.Copy()
+	ctx, cancel = context.WithCancel(context.Background())
+
+	require.True(t, retrier.Try(ctx))
+
+	// subsequent attempts can be cancelled as well.
+	cyclingRetrier := retrier.(*cyclingRetrier)
+	cyclingRetrier.timeAfter = func(duration time.Duration) <-chan time.Time {
+		cancel()
+		// ensure that the ctx is what stopped the try.
+		ch := make(chan time.Time)
+		return ch
+	}
+
+	require.False(t, retrier.Try(ctx))
 }

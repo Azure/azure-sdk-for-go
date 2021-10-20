@@ -12,32 +12,33 @@ import (
 	"github.com/devigned/tab"
 )
 
+// ReceiveOperation represents an active receive operation, which
+// pushes messages it receives into the channel from `Messages()`
+// and is stoppable using `Stop()`.
 type ReceiveOperation struct {
-	mu       sync.Mutex
-	lastErr  error
-	cancel   context.CancelFunc
-	messages chan *ReceivedMessage
+	mu      sync.Mutex
+	lastErr error
+	// Stop stops the receive operation.
+	Stop     context.CancelFunc
+	Messages func() <-chan *ReceivedMessage
 }
 
-func (r *ReceiveOperation) Messages() <-chan *ReceivedMessage {
-	return r.messages
-}
-
+// Err is the last error that caused the operation to terminate, or nil if
+// the receive terminated normally.
 func (r *ReceiveOperation) Err() error {
 	return r.lastErr
 }
 
-func (r *ReceiveOperation) Stop() {
-	r.cancel()
-}
-
-func receiveMessages(receiver internal.AMQPReceiver, initialCredit uint32, reissueCredit bool) *ReceiveOperation {
+// newReceiveOperation creates a ReceiveOperation. This operation can encompass two types of receivers:
+// 1. Batch receiving, like Receiver.ReceiveMessages()
+// 2. Push/channel based receiving, like Receiver.ReceiveMessagesUsingChannel()
+func newReceiveOperation(receiver internal.AMQPReceiver, initialCredit int, reissueCredit bool) *ReceiveOperation {
 	ch := make(chan *ReceivedMessage, initialCredit)
 	ctx, cancel := context.WithCancel(context.Background())
 
 	rcv := &ReceiveOperation{
-		cancel:   cancel,
-		messages: ch,
+		Stop:     cancel,
+		Messages: func() <-chan *ReceivedMessage { return ch },
 	}
 
 	go func() {
@@ -57,8 +58,8 @@ func receiveMessages(receiver internal.AMQPReceiver, initialCredit uint32, reiss
 	return rcv
 }
 
-func getMessages(ctx context.Context, receiver internal.AMQPReceiver, initialCredit uint32, reissueCredit bool, messagesCh chan *ReceivedMessage) error {
-	err := receiver.IssueCredit(initialCredit)
+func getMessages(ctx context.Context, receiver internal.AMQPReceiver, initialCredit int, reissueCredit bool, messagesCh chan *ReceivedMessage) error {
+	err := receiver.IssueCredit(uint32(initialCredit))
 
 	if err != nil {
 		return err

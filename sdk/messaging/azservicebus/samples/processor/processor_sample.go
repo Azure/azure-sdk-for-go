@@ -36,7 +36,7 @@ func main() {
 	// Send some sample messages
 	//
 
-	sender, err := serviceBusClient.NewSender(queue)
+	sender, err := serviceBusClient.NewSender(queue, nil)
 
 	if err != nil {
 		log.Fatalf("Failed to create the sender: %s", err.Error())

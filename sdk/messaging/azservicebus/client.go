@@ -110,10 +110,10 @@ func newClientImpl(config clientConfig, options *ClientOptions) (*Client, error)
 			client.config.credential)
 
 		nsOptions = append(nsOptions, option)
+	}
 
-		if client.config.tlsConfig != nil {
-			nsOptions = append(nsOptions, internal.NamespaceWithTLSConfig(client.config.tlsConfig))
-		}
+	if client.config.tlsConfig != nil {
+		nsOptions = append(nsOptions, internal.NamespaceWithTLSConfig(client.config.tlsConfig))
 	}
 
 	client.namespace, err = internal.NewNamespace(nsOptions...)
@@ -175,7 +175,7 @@ func (client *Client) NewReceiverForSubscription(topic string, subscription stri
 }
 
 // NewSender creates a Sender, which allows you to send messages or schedule messages.
-func (client *Client) NewSender(queueOrTopic string) (*Sender, error) {
+func (client *Client) NewSender(queueOrTopic string, options *SenderOptions) (*Sender, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sender, err := newSender(client.namespace, queueOrTopic, cleanupOnClose)
 

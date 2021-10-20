@@ -20,6 +20,11 @@ type (
 		links          internal.AMQPLinks
 	}
 
+	// SenderOptions are options when using Client.NewSender.
+	SenderOptions struct {
+		// placeholder for future optional parameters
+	}
+
 	// SendableMessage are sendable using Sender.SendMessage.
 	// Message, MessageBatch implement this interface.
 	SendableMessage interface {

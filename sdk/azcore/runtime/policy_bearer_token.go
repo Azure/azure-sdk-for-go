@@ -59,7 +59,6 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 		return nil, err
 	}
 	if token, ok := tk.(*azcore.AccessToken); ok {
-		req.Raw().Header.Set(shared.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
 		req.Raw().Header.Set(shared.HeaderAuthorization, shared.BearerTokenPrefix+token.Token)
 	}
 	return req.Next()

@@ -5,6 +5,7 @@ package runtime
 
 import (
 	"context"
+	"strings"
 
 	"errors"
 	"net/http"
@@ -12,9 +13,11 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
@@ -44,22 +47,25 @@ func (mc mockCredential) Do(req *policy.Request) (*http.Response, error) {
 	return nil, nil
 }
 
-func defaultTestPipeline(srv policy.Transporter, scope string) Pipeline {
+func newTestPipeline(opts *policy.ClientOptions) pipeline.Pipeline {
+	return runtime.NewPipeline("testmodule", "v0.1.0", nil, nil, opts)
+}
+
+func defaultTestPipeline(srv policy.Transporter, scope string) pipeline.Pipeline {
 	retryOpts := policy.RetryOptions{
 		MaxRetryDelay: 500 * time.Millisecond,
 		RetryDelay:    time.Millisecond,
 	}
-	b := NewBearerTokenPolicy(
-		mockCredential{},
-		AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: []string{scope}}},
-	)
 	return NewPipeline(
 		"testmodule",
 		"v0.1.0",
-		nil,
-		[]policy.Policy{b},
-		&azcore.ClientOptions{Retry: retryOpts, Transport: srv},
-	)
+		mockCredential{},
+		&arm.ClientOptions{
+			ClientOptions: azcore.ClientOptions{
+				Retry:     retryOpts,
+				Transport: srv,
+			},
+		})
 }
 
 func TestBearerPolicy_SuccessGetToken(t *testing.T) {
@@ -68,7 +74,7 @@ func TestBearerPolicy_SuccessGetToken(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	pipeline := defaultTestPipeline(srv, scope)
-	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -98,7 +104,7 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 		},
 		PerRetryPolicies: []policy.Policy{b},
 	})
-	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -117,7 +123,7 @@ func TestBearerTokenPolicy_TokenExpired(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespShortLived)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	pipeline := defaultTestPipeline(srv, scope)
-	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -144,7 +150,7 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 	}
 	b := NewBearerTokenPolicy(mockCredential{}, AuthenticationOptions{})
 	pipeline := newTestPipeline(&policy.ClientOptions{Transport: srv, Retry: retryOpts, PerRetryPolicies: []pipeline.Policy{b}})
-	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -154,5 +160,45 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 	}
 	if resp != nil {
 		t.Fatal("expected nil response")
+	}
+}
+
+func TestBearerTokenWithAuxiliaryTenants(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse()
+	retryOpts := policy.RetryOptions{
+		MaxRetryDelay: 500 * time.Millisecond,
+		RetryDelay:    50 * time.Millisecond,
+	}
+	b := NewBearerTokenPolicy(
+		mockCredential{},
+		AuthenticationOptions{
+			TokenRequest: policy.TokenRequestOptions{
+				Scopes: []string{scope},
+			},
+			AuxiliaryTenants: []string{"tenant1", "tenant2", "tenant3"},
+		},
+	)
+	pipeline := newTestPipeline(&policy.ClientOptions{Transport: srv, Retry: retryOpts, PerRetryPolicies: []pipeline.Policy{b}})
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	resp, err := pipeline.Do(req)
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		t.Fatalf("unexpected status code: %d", resp.StatusCode)
+	}
+	expectedHeader := strings.Repeat(shared.BearerTokenPrefix+tokenValue+", ", 3)
+	expectedHeader = expectedHeader[:len(expectedHeader)-2]
+	if auxH := resp.Request.Header.Get(shared.HeaderAuxiliaryAuthorization); auxH != expectedHeader {
+		t.Fatalf("unexpected auxiliary authorization header %s", auxH)
 	}
 }

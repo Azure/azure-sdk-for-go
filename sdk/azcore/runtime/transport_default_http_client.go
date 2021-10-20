@@ -44,7 +44,4 @@ type AuthenticationOptions struct {
 	// the list of OAuth2 authentication scopes used when requesting a token.
 	// This field is ignored for other forms of authentication (e.g. shared key).
 	TokenRequest policy.TokenRequestOptions
-	// AuxiliaryTenants contains a list of additional tenant IDs to be used to authenticate
-	// in cross-tenant applications.
-	AuxiliaryTenants []string
 }

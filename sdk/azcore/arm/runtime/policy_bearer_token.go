@@ -4,7 +4,9 @@
 package runtime
 
 import (
+	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -12,18 +14,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
-// BearerTokenPolicy authorizes requests with bearer tokens acquired from a TokenCredential.
-type BearerTokenPolicy struct {
-	// mainResource is the resource to be retreived using the tenant specified in the credential
-	mainResource *shared.ExpiringResource
-	// the following fields are read-only
-	cred    azcore.TokenCredential
-	options policy.TokenRequestOptions
-}
-
 type acquiringResourceState struct {
 	req *policy.Request
-	p   *BearerTokenPolicy
+	p   BearerTokenPolicy
 }
 
 // acquire acquires or updates the resource; only one
@@ -37,21 +30,40 @@ func acquire(state interface{}) (newResource interface{}, newExpiration time.Tim
 	return tk, tk.ExpiresOn, nil
 }
 
+// BearerTokenPolicy authorizes requests with bearer tokens acquired from a TokenCredential.
+type BearerTokenPolicy struct {
+	// mainResource is the resource to be retreived using the tenant specified in the credential
+	mainResource *shared.ExpiringResource
+	// auxResources are additional resources that are required for cross-tenant applications
+	auxResources map[string]*shared.ExpiringResource
+	// the following fields are read-only
+	cred    azcore.TokenCredential
+	options policy.TokenRequestOptions
+}
+
 // NewBearerTokenPolicy creates a policy object that authorizes requests with bearer tokens.
 // cred: an azcore.TokenCredential implementation such as a credential object from azidentity
 // opts: optional settings. Pass nil to accept default values; this is the same as passing a zero-value options.
 func NewBearerTokenPolicy(cred azcore.TokenCredential, opts AuthenticationOptions) *BearerTokenPolicy {
-	return &BearerTokenPolicy{
+	p := &BearerTokenPolicy{
 		cred:         cred,
 		options:      opts.TokenRequest,
 		mainResource: shared.NewExpiringResource(acquire),
 	}
+	if len(opts.AuxiliaryTenants) > 0 {
+		p.auxResources = map[string]*shared.ExpiringResource{}
+	}
+	for _, t := range opts.AuxiliaryTenants {
+		p.auxResources[t] = shared.NewExpiringResource(acquire)
+
+	}
+	return p
 }
 
 // Do authorizes a request with a bearer token
 func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 	as := acquiringResourceState{
-		p:   b,
+		p:   *b,
 		req: req,
 	}
 	tk, err := b.mainResource.GetResource(as)
@@ -61,6 +73,23 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 	if token, ok := tk.(*azcore.AccessToken); ok {
 		req.Raw().Header.Set(shared.HeaderXmsDate, time.Now().UTC().Format(http.TimeFormat))
 		req.Raw().Header.Set(shared.HeaderAuthorization, shared.BearerTokenPrefix+token.Token)
+	}
+	auxTokens := []string{}
+	for tenant, er := range b.auxResources {
+		bCopy := *b
+		bCopy.options.TenantID = tenant
+		auxAS := acquiringResourceState{
+			p:   bCopy,
+			req: req,
+		}
+		auxTk, err := er.GetResource(auxAS)
+		if err != nil {
+			return nil, err
+		}
+		auxTokens = append(auxTokens, fmt.Sprintf("%s%s", shared.BearerTokenPrefix, auxTk.(*azcore.AccessToken).Token))
+	}
+	if len(auxTokens) > 0 {
+		req.Raw().Header.Set(shared.HeaderAuxiliaryAuthorization, strings.Join(auxTokens, ", "))
 	}
 	return req.Next()
 }

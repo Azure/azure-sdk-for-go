@@ -9,11 +9,13 @@
 * `runtime.NewPipeline` has a new signature that simplifies implementing custom authentication
 * `arm/runtime.RegistrationOptions` embeds `policy.ClientOptions`
 * Contents in the `log` package have been slightly renamed.
+* Removed `AuxiliaryTenants` from `runtime.AuthenticationOptions` as this is ARM-specific
 
 ### Features Added
 * Updating Documentation
 * Added string typdef `arm.Endpoint` to provide a hint toward expected ARM client endpoints
 * `azcore.ClientOptions` contains common pipeline configuration settings
+* Added support for multi-tenant authorization in `arm/runtime`
 
 ### Bug Fixes
 * Fixed a potential panic when creating the default Transporter.

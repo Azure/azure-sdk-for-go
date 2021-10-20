@@ -77,7 +77,7 @@ func (client BackupsClient) Clone(ctx context.Context, deviceName string, backup
 
 	result, err = client.CloneSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "Clone", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "Clone", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -114,6 +114,7 @@ func (client BackupsClient) ClonePreparer(ctx context.Context, deviceName string
 // http.Response Body if it receives an error.
 func (client BackupsClient) CloneSender(req *http.Request) (future BackupsCloneFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -168,7 +169,7 @@ func (client BackupsClient) Delete(ctx context.Context, deviceName string, backu
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -202,6 +203,7 @@ func (client BackupsClient) DeletePreparer(ctx context.Context, deviceName strin
 // http.Response Body if it receives an error.
 func (client BackupsClient) DeleteSender(req *http.Request) (future BackupsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -387,7 +389,7 @@ func (client BackupsClient) Restore(ctx context.Context, deviceName string, back
 
 	result, err = client.RestoreSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "Restore", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.BackupsClient", "Restore", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -421,6 +423,7 @@ func (client BackupsClient) RestorePreparer(ctx context.Context, deviceName stri
 // http.Response Body if it receives an error.
 func (client BackupsClient) RestoreSender(req *http.Request) (future BackupsRestoreFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

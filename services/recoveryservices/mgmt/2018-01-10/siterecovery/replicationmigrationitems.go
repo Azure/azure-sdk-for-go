@@ -64,7 +64,7 @@ func (client ReplicationMigrationItemsClient) Create(ctx context.Context, fabric
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -101,6 +101,7 @@ func (client ReplicationMigrationItemsClient) CreatePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client ReplicationMigrationItemsClient) CreateSender(req *http.Request) (future ReplicationMigrationItemsCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -149,7 +150,7 @@ func (client ReplicationMigrationItemsClient) Delete(ctx context.Context, fabric
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -187,6 +188,7 @@ func (client ReplicationMigrationItemsClient) DeletePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client ReplicationMigrationItemsClient) DeleteSender(req *http.Request) (future ReplicationMigrationItemsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -564,7 +566,7 @@ func (client ReplicationMigrationItemsClient) Migrate(ctx context.Context, fabri
 
 	result, err = client.MigrateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsClient", "Migrate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsClient", "Migrate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -601,6 +603,7 @@ func (client ReplicationMigrationItemsClient) MigratePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client ReplicationMigrationItemsClient) MigrateSender(req *http.Request) (future ReplicationMigrationItemsMigrateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -655,7 +658,7 @@ func (client ReplicationMigrationItemsClient) Resync(ctx context.Context, fabric
 
 	result, err = client.ResyncSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsClient", "Resync", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsClient", "Resync", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -692,6 +695,7 @@ func (client ReplicationMigrationItemsClient) ResyncPreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client ReplicationMigrationItemsClient) ResyncSender(req *http.Request) (future ReplicationMigrationItemsResyncFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -746,7 +750,7 @@ func (client ReplicationMigrationItemsClient) TestMigrate(ctx context.Context, f
 
 	result, err = client.TestMigrateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsClient", "TestMigrate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsClient", "TestMigrate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -783,6 +787,7 @@ func (client ReplicationMigrationItemsClient) TestMigratePreparer(ctx context.Co
 // http.Response Body if it receives an error.
 func (client ReplicationMigrationItemsClient) TestMigrateSender(req *http.Request) (future ReplicationMigrationItemsTestMigrateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -840,7 +845,7 @@ func (client ReplicationMigrationItemsClient) TestMigrateCleanup(ctx context.Con
 
 	result, err = client.TestMigrateCleanupSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsClient", "TestMigrateCleanup", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsClient", "TestMigrateCleanup", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -877,6 +882,7 @@ func (client ReplicationMigrationItemsClient) TestMigrateCleanupPreparer(ctx con
 // http.Response Body if it receives an error.
 func (client ReplicationMigrationItemsClient) TestMigrateCleanupSender(req *http.Request) (future ReplicationMigrationItemsTestMigrateCleanupFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -925,7 +931,7 @@ func (client ReplicationMigrationItemsClient) Update(ctx context.Context, fabric
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "siterecovery.ReplicationMigrationItemsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -962,6 +968,7 @@ func (client ReplicationMigrationItemsClient) UpdatePreparer(ctx context.Context
 // http.Response Body if it receives an error.
 func (client ReplicationMigrationItemsClient) UpdateSender(req *http.Request) (future ReplicationMigrationItemsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

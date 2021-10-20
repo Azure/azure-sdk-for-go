@@ -55,16 +55,15 @@ func (client CassandraDataCentersClient) CreateUpdate(ctx context.Context, resou
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: clusterName,
 			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "clusterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}},
+				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: dataCenterName,
 			Constraints: []validation.Constraint{{Target: "dataCenterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "dataCenterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "dataCenterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}}}); err != nil {
+				{Target: "dataCenterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("documentdb.CassandraDataCentersClient", "CreateUpdate", err.Error())
 	}
 
@@ -76,7 +75,7 @@ func (client CassandraDataCentersClient) CreateUpdate(ctx context.Context, resou
 
 	result, err = client.CreateUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraDataCentersClient", "CreateUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraDataCentersClient", "CreateUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -111,6 +110,7 @@ func (client CassandraDataCentersClient) CreateUpdatePreparer(ctx context.Contex
 // http.Response Body if it receives an error.
 func (client CassandraDataCentersClient) CreateUpdateSender(req *http.Request) (future CassandraDataCentersCreateUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -155,16 +155,15 @@ func (client CassandraDataCentersClient) Delete(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: clusterName,
 			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "clusterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}},
+				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: dataCenterName,
 			Constraints: []validation.Constraint{{Target: "dataCenterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "dataCenterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "dataCenterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}}}); err != nil {
+				{Target: "dataCenterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("documentdb.CassandraDataCentersClient", "Delete", err.Error())
 	}
 
@@ -176,7 +175,7 @@ func (client CassandraDataCentersClient) Delete(ctx context.Context, resourceGro
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraDataCentersClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraDataCentersClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -209,6 +208,7 @@ func (client CassandraDataCentersClient) DeletePreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client CassandraDataCentersClient) DeleteSender(req *http.Request) (future CassandraDataCentersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -252,16 +252,15 @@ func (client CassandraDataCentersClient) Get(ctx context.Context, resourceGroupN
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: clusterName,
 			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "clusterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}},
+				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: dataCenterName,
 			Constraints: []validation.Constraint{{Target: "dataCenterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "dataCenterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "dataCenterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}}}); err != nil {
+				{Target: "dataCenterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("documentdb.CassandraDataCentersClient", "Get", err.Error())
 	}
 
@@ -347,12 +346,11 @@ func (client CassandraDataCentersClient) List(ctx context.Context, resourceGroup
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: clusterName,
 			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "clusterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}}}); err != nil {
+				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("documentdb.CassandraDataCentersClient", "List", err.Error())
 	}
 
@@ -439,16 +437,15 @@ func (client CassandraDataCentersClient) Update(ctx context.Context, resourceGro
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: clusterName,
 			Constraints: []validation.Constraint{{Target: "clusterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "clusterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}},
+				{Target: "clusterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}},
 		{TargetValue: dataCenterName,
 			Constraints: []validation.Constraint{{Target: "dataCenterName", Name: validation.MaxLength, Rule: 100, Chain: nil},
 				{Target: "dataCenterName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "dataCenterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*`, Chain: nil}}}}); err != nil {
+				{Target: "dataCenterName", Name: validation.Pattern, Rule: `^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("documentdb.CassandraDataCentersClient", "Update", err.Error())
 	}
 
@@ -460,7 +457,7 @@ func (client CassandraDataCentersClient) Update(ctx context.Context, resourceGro
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "documentdb.CassandraDataCentersClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "documentdb.CassandraDataCentersClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -495,6 +492,7 @@ func (client CassandraDataCentersClient) UpdatePreparer(ctx context.Context, res
 // http.Response Body if it receives an error.
 func (client CassandraDataCentersClient) UpdateSender(req *http.Request) (future CassandraDataCentersUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

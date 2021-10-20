@@ -80,15 +80,14 @@ This project uses Go modules for versioning and dependency management.
 As an example, to install the Azure Compute module, you would run :
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute
 ```
+
 We also recommend installing other packages for authentication and core functionalities :
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/armcore
 go get github.com/Azure/azure-sdk-for-go/sdk/azcore
 go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
-go get github.com/Azure/azure-sdk-for-go/sdk/to
 ```
 
 Authentication
@@ -108,18 +107,18 @@ For more details on how authentication works in `azidentity`, please see the doc
 Connecting to Azure 
 -------------------
 
-Once you have a credential, create a connection to the desired ARM endpoint.  The `armcore` module provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
+Once you have a credential, create a connection to the desired ARM endpoint.  The `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` package provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
 
 ```go
-con := armcore.NewDefaultConnection(cred, nil)
+con := arm.NewDefaultConnection(cred, nil)
 ```
 
-For more information on ARM connections, please see the documentation for `armcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/armcore).
+For more information on ARM connections, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
 
 Creating a Resource Management Client
 -------------------------------------
 
-Once you have a connection to ARM, you will need to decide what service to use and create a client to connect to that service. In this section, we will use `Compute` as our target service. The Compute modules consist of one or more clients. A client groups a set of related APIs, providing access to its functionality within the specified subscription. You will need to create one or more clients to access the APIs you require using your `armcore.Connection`.
+Once you have a connection to ARM, you will need to decide what service to use and create a client to connect to that service. In this section, we will use `Compute` as our target service. The Compute modules consist of one or more clients. A client groups a set of related APIs, providing access to its functionality within the specified subscription. You will need to create one or more clients to access the APIs you require using your `arm.Connection`.
 
 To show an example, we will create a client to manage Virtual Machines. The code to achieve this task would be:
 
@@ -141,12 +140,12 @@ To write the concrete code for the API call, you might need to look up the infor
 
 - [Official Go docs for new Azure Go SDK packages](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk) - This web-site contains the complete SDK references for each released package as well as embedded code snippets for some operation
 
-To see the reference for a certain package, you can either click into each package on the web-site, or directly add the SDK path to the end of URL. For example, to see the reference for Azure Compute package, you can use [https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/compute/armcompute). Certain development tool or IDE has features that allow you to directly look up API definitions as well.
+To see the reference for a certain package, you can either click into each package on the web-site, or directly add the SDK path to the end of URL. For example, to see the reference for Azure Compute package, you can use [https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute). Certain development tool or IDE has features that allow you to directly look up API definitions as well.
 
 Let's illustrate the SDK usage by a few quick examples. In the following sample. we are going to create a resource group using the SDK. To achieve this scenario, we can take the follow steps
 
-- **Step 1** : Decide which client we want to use, in our case, we know that it's related to Resource Group so our choice is the [ResourceGroupsClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources#ResourceGroupsClient)
-- **Step 2** : Find out which operation is responsible for creating a resource group. By locating the client in previous step, we are able to see all the functions under `ResourceGroupsClient`, and we can see [the `CreateOrUpdate` function](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resources/armresources#ResourceGroupsClient.CreateOrUpdate) is what need. 
+- **Step 1** : Decide which client we want to use, in our case, we know that it's related to Resource Group so our choice is the [ResourceGroupsClient](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources#ResourceGroupsClient)
+- **Step 2** : Find out which operation is responsible for creating a resource group. By locating the client in previous step, we are able to see all the functions under `ResourceGroupsClient`, and we can see [the `CreateOrUpdate` function](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources#ResourceGroupsClient.CreateOrUpdate) is what need. 
 - **Step 3** : Using the information about this operation, we can then fill in the required parameters, and implement it using the Go SDK. If we need extra information on what those parameters mean, we can also use the [Azure service documentation](https://docs.microsoft.com/azure/?product=featured) on Microsoft Docs
 
 Let's show our what final code looks like
@@ -162,10 +161,10 @@ import (
     "os"
     "time"
 
-    "github.com/Azure/azure-sdk-for-go/sdk/armcore"
-    "github.com/Azure/azure-sdk-for-go/sdk/resources/armresources"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+    "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+    "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
     "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-    "github.com/Azure/azure-sdk-for-go/sdk/to"
 )
 ```
 
@@ -182,8 +181,8 @@ var (
 
 ***Write a function to create a resource group***
 ```go
-func createResourceGroup(ctx context.Context, connection *armcore.Connection) (armresources.ResourceGroupResponse, error) {
-    rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
+func createResourceGroup(ctx context.Context, connection *arm.Connection) (armresources.ResourceGroupResponse, error) {
+	rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
 
     param := armresources.ResourceGroup{
         Location: to.StringPtr(location),
@@ -200,7 +199,7 @@ func main() {
     if err != nil {
         log.Fatalf("authentication failure: %+v", err)
     }
-    conn := armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{
+    conn := arm.NewDefaultConnection(cred, &arm.ConnectionOptions{
         Logging: azcore.LogOptions{
             IncludeBody: true,
         },
@@ -222,7 +221,7 @@ Example: Managing Resource Groups
 ***Update a resource group***
 
 ```go
-func updateResourceGroup(ctx context.Context, connection *armcore.Connection) (armresources.ResourceGroupResponse, error) {
+func updateResourceGroup(ctx context.Context, connection *arm.Connection) (armresources.ResourceGroupResponse, error) {
     rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
     
     update := armresources.ResourceGroupPatchable{
@@ -237,7 +236,7 @@ func updateResourceGroup(ctx context.Context, connection *armcore.Connection) (a
 ***List all resource groups***
 
 ```go
-func listResourceGroups(ctx context.Context, connection *armcore.Connection) ([]*armresources.ResourceGroup, error) {
+func listResourceGroups(ctx context.Context, connection *arm.Connection) ([]*armresources.ResourceGroup, error) {
     rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
     
     pager := rgClient.List(nil)
@@ -256,7 +255,7 @@ func listResourceGroups(ctx context.Context, connection *armcore.Connection) ([]
 ***Delete a resource group***
 
 ```go
-func deleteResourceGroup(ctx context.Context, connection *armcore.Connection) error {
+func deleteResourceGroup(ctx context.Context, connection *arm.Connection) error {
     rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
     
     poller, err := rgClient.BeginDelete(ctx, resourceGroupName, nil)
@@ -273,15 +272,15 @@ func deleteResourceGroup(ctx context.Context, connection *armcore.Connection) er
 ***Invoking the update, list and delete of resource group in the main function***
 ```go
 func main() {
-    cred, err := azidentity.NewDefaultAzureCredential(nil)
-    if err != nil {
-        log.Fatalf("authentication failure: %+v", err)
-    }
-    conn := armcore.NewDefaultConnection(cred, &armcore.ConnectionOptions{
-        Logging: azcore.LogOptions{
-            IncludeBody: true,
-        },
-    })
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("authentication failure: %+v", err)
+	}
+	conn := arm.NewDefaultConnection(cred, &arm.ConnectionOptions{
+		Logging: azcore.LogOptions{
+			IncludeBody: true,
+		},
+	})
 
 
     resourceGroup, err := createResourceGroup(ctx, conn)
@@ -340,7 +339,7 @@ For more advanced usage of LRO and design guidelines of LRO, please visit [this 
 
 More code samples for using the management library for Go SDK can be found in the following locations
 - [Go SDK Code Samples](https://aka.ms/azsdk/go/mgmt/samples)
-- Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/network/armnetwork/example_networkinterfaces_test.go)
+- Example files under each package. For example, examples for Network packages can be [found here](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/resourcemanager/network/armnetwork/example_networkinterfaces_test.go)
 
 Need help?
 ----------

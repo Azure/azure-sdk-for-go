@@ -9,20 +9,31 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-const (
-	certificatePath      = "testdata/certificate.pem"
-	wrongCertificatePath = "wrong_certificate_path.pem"
-)
+var pemCert, _ = os.ReadFile("testdata/certificate.pem")
+var pkcs12Cert, _ = os.ReadFile("testdata/certificate.pfx")
+var pkcs12CertEncrypted, _ = os.ReadFile("testdata/certificate_encrypted_key.pfx")
+
+var allCertTests = []struct {
+	name     string
+	certData []byte
+	password string
+}{
+	{"pem", pemCert, ""},
+	{"pkcs12", pkcs12Cert, ""},
+	{"pkcs12Encrypted", pkcs12CertEncrypted, "password"},
+}
 
 func TestClientCertificateCredential_InvalidTenantID(t *testing.T) {
-	cred, err := NewClientCertificateCredential(badTenantID, clientID, certificatePath, nil)
+	cred, err := NewClientCertificateCredential(badTenantID, clientID, pemCert, nil)
 	if err == nil {
 		t.Fatal("Expected an error but received none")
 	}
@@ -36,7 +47,7 @@ func TestClientCertificateCredential_InvalidTenantID(t *testing.T) {
 }
 
 func TestClientCertificateCredential_CreateAuthRequestSuccess(t *testing.T) {
-	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, nil)
+	cred, err := NewClientCertificateCredential(tenantID, clientID, pemCert, nil)
 	if err != nil {
 		t.Fatalf("Failed to instantiate credential")
 	}
@@ -44,10 +55,10 @@ func TestClientCertificateCredential_CreateAuthRequestSuccess(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpectedly received an error: %v", err)
 	}
-	if req.Request.Header.Get(headerContentType) != headerURLEncoded {
+	if req.Raw().Header.Get(headerContentType) != headerURLEncoded {
 		t.Fatalf("Unexpected value for Content-Type header")
 	}
-	body, err := ioutil.ReadAll(req.Request.Body)
+	body, err := ioutil.ReadAll(req.Raw().Body)
 	if err != nil {
 		t.Fatalf("Unable to read request body")
 	}
@@ -71,10 +82,10 @@ func TestClientCertificateCredential_CreateAuthRequestSuccess(t *testing.T) {
 	if len(reqQueryParams[qpClientAssertion][0]) == 0 {
 		t.Fatalf("Client assertion is not present on the request")
 	}
-	if req.Request.URL.Host != defaultTestAuthorityHost {
+	if req.Raw().URL.Host != defaultTestAuthorityHost {
 		t.Fatalf("Unexpected default authority host")
 	}
-	if req.Request.URL.Scheme != "https" {
+	if req.Raw().URL.Scheme != "https" {
 		t.Fatalf("Wrong request scheme")
 	}
 }
@@ -82,7 +93,7 @@ func TestClientCertificateCredential_CreateAuthRequestSuccess(t *testing.T) {
 func TestClientCertificateCredential_CreateAuthRequestSuccess_withCertificateChain(t *testing.T) {
 	opts := ClientCertificateCredentialOptions{}
 	opts.SendCertificateChain = true
-	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, &opts)
+	cred, err := NewClientCertificateCredential(tenantID, clientID, pemCert, &opts)
 	if err != nil {
 		t.Fatalf("Failed to instantiate credential")
 	}
@@ -90,13 +101,13 @@ func TestClientCertificateCredential_CreateAuthRequestSuccess_withCertificateCha
 	if err != nil {
 		t.Fatalf("Unexpectedly received an error: %v", err)
 	}
-	if req.Request.Header.Get(headerContentType) != headerURLEncoded {
+	if req.Raw().Header.Get(headerContentType) != headerURLEncoded {
 		t.Fatalf("Unexpected value for Content-Type header")
 	}
 	if len(cred.cert.publicCertificates) != 1 {
 		t.Fatalf("Wrong number of public certificates. Expected: %v, Received: %v", 1, len(cred.cert.publicCertificates))
 	}
-	body, err := ioutil.ReadAll(req.Request.Body)
+	body, err := ioutil.ReadAll(req.Raw().Body)
 	if err != nil {
 		t.Fatalf("Unable to read request body")
 	}
@@ -115,15 +126,11 @@ func TestClientCertificateCredential_CreateAuthRequestSuccess_withCertificateCha
 		t.Fatalf("Wrong client assertion type assigned to request")
 	}
 	// create a client assertion for comparison with the one in the request
-	certData, err := ioutil.ReadFile(certificatePath)
-	if err != nil {
-		t.Fatalf("Failed to read certificate: %v", err)
-	}
-	cert, err := extractFromPEMFile(certData, "", true)
+	cert, err := loadPEMCert(pemCert, "", true)
 	if err != nil {
 		t.Fatalf("Failed extract data from PEM file: %v", err)
 	}
-	assertion, err := createClientAssertionJWT(clientID, azcore.JoinPaths(AzurePublicCloud, tenantID, tokenEndpoint(oauthPath(tenantID))), cert, true)
+	assertion, err := createClientAssertionJWT(clientID, runtime.JoinPaths(string(AzurePublicCloud), tenantID, tokenEndpoint(oauthPath(tenantID))), cert, true)
 	if err != nil {
 		t.Fatalf("Failed to create client assertion: %v", err)
 	}
@@ -143,80 +150,82 @@ func TestClientCertificateCredential_CreateAuthRequestSuccess_withCertificateCha
 	if len(reqQueryParams[qpClientAssertion][0]) == 0 {
 		t.Fatalf("Client assertion is not present on the request")
 	}
-	if req.Request.URL.Host != defaultTestAuthorityHost {
+	if req.Raw().URL.Host != defaultTestAuthorityHost {
 		t.Fatalf("Unexpected default authority host")
 	}
-	if req.Request.URL.Scheme != "https" {
+	if req.Raw().URL.Scheme != "https" {
 		t.Fatalf("Wrong request scheme")
 	}
 }
 
 func TestClientCertificateCredential_GetTokenSuccess(t *testing.T) {
-	srv, close := mock.NewTLSServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
-	options.HTTPClient = srv
-	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, &options)
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
-	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
+	for _, test := range allCertTests {
+		t.Run(test.name, func(t *testing.T) {
+			srv, close := mock.NewTLSServer()
+			defer close()
+			srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+			options := ClientCertificateCredentialOptions{}
+			options.AuthorityHost = AuthorityHost(srv.URL())
+			options.HTTPClient = srv
+			options.Password = test.password
+			cred, err := NewClientCertificateCredential(tenantID, clientID, test.certData, &options)
+			if err != nil {
+				t.Fatalf("Expected an empty error but received: %s", err.Error())
+			}
+			_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
+			if err != nil {
+				t.Fatalf("Expected an empty error but received: %s", err.Error())
+			}
+		})
 	}
 }
 
 func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain(t *testing.T) {
-	srv, close := mock.NewTLSServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
-	options.SendCertificateChain = true
-	options.HTTPClient = srv
-	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, &options)
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
-	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
+	for _, test := range allCertTests {
+		t.Run(test.name, func(t *testing.T) {
+			srv, close := mock.NewTLSServer()
+			defer close()
+			srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+			options := ClientCertificateCredentialOptions{}
+			options.AuthorityHost = AuthorityHost(srv.URL())
+			options.SendCertificateChain = true
+			options.HTTPClient = srv
+			options.Password = test.password
+			cred, err := NewClientCertificateCredential(tenantID, clientID, test.certData, &options)
+			if err != nil {
+				t.Fatalf("Expected an empty error but received: %s", err.Error())
+			}
+			_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
+			if err != nil {
+				t.Fatalf("Expected an empty error but received: %s", err.Error())
+			}
+		})
 	}
 }
 
 func TestClientCertificateCredential_GetTokenInvalidCredentials(t *testing.T) {
-	srv, close := mock.NewTLSServer()
-	defer close()
-	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
-	options.HTTPClient = srv
-	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, &options)
-	if err != nil {
-		t.Fatalf("Did not expect an error but received one: %v", err)
-	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
-	if err == nil {
-		t.Fatalf("Expected to receive a nil error, but received: %v", err)
-	}
-	var authFailed *AuthenticationFailedError
-	if !errors.As(err, &authFailed) {
-		t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
-	}
-}
-
-func TestClientCertificateCredential_WrongCertificatePath(t *testing.T) {
-	srv, close := mock.NewTLSServer()
-	defer close()
-	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
-	options.HTTPClient = srv
-	_, err := NewClientCertificateCredential(tenantID, clientID, wrongCertificatePath, &options)
-	if err == nil {
-		t.Fatalf("Expected an error but did not receive one")
+	for _, test := range allCertTests {
+		t.Run(test.name, func(t *testing.T) {
+			srv, close := mock.NewTLSServer()
+			defer close()
+			srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
+			options := ClientCertificateCredentialOptions{}
+			options.AuthorityHost = AuthorityHost(srv.URL())
+			options.HTTPClient = srv
+			options.Password = test.password
+			cred, err := NewClientCertificateCredential(tenantID, clientID, test.certData, &options)
+			if err != nil {
+				t.Fatalf("Did not expect an error but received one: %v", err)
+			}
+			_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
+			if err == nil {
+				t.Fatalf("Expected to receive a nil error, but received: %v", err)
+			}
+			var authFailed *AuthenticationFailedError
+			if !errors.As(err, &authFailed) {
+				t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
+			}
+		})
 	}
 }
 
@@ -225,56 +234,64 @@ func TestClientCertificateCredential_GetTokenCheckPrivateKeyBlocks(t *testing.T)
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
-	cred, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_formatB.pem", &options)
+	certData, err := os.ReadFile("testdata/certificate_formatB.pem")
+	if err != nil {
+		t.Fatalf("Failed to read certificate file: %s", err.Error())
+	}
+	cred, err := NewClientCertificateCredential(tenantID, clientID, certData, &options)
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
+	_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{scope}})
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
 }
 
-func TestClientCertificateCredential_GetTokenCheckCertificateBlocks(t *testing.T) {
+func TestClientCertificateCredential_NoData(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
-	cred, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_formatA.pem", &options)
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
-	}
-	_, err = cred.GetToken(context.Background(), azcore.TokenRequestOptions{Scopes: []string{scope}})
-	if err != nil {
-		t.Fatalf("Expected an empty error but received: %s", err.Error())
-	}
-}
-
-func TestClientCertificateCredential_GetTokenEmptyCertificate(t *testing.T) {
-	srv, close := mock.NewTLSServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
-	options.HTTPClient = srv
-	_, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_empty.pem", &options)
+	_, err := NewClientCertificateCredential(tenantID, clientID, []byte{}, &options)
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")
 	}
 }
 
-func TestClientCertificateCredential_GetTokenNoPrivateKey(t *testing.T) {
+func TestClientCertificateCredential_NoCertificate(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
-	_, err := NewClientCertificateCredential(tenantID, clientID, "testdata/certificate_nokey.pem", &options)
+	certData, err := os.ReadFile("testdata/certificate_empty.pem")
+	if err != nil {
+		t.Fatalf("Failed to read certificate file: %s", err.Error())
+	}
+	_, err = NewClientCertificateCredential(tenantID, clientID, certData, &options)
+	if err == nil {
+		t.Fatalf("Expected an error but received nil")
+	}
+}
+
+func TestClientCertificateCredential_NoPrivateKey(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	options := ClientCertificateCredentialOptions{}
+	options.AuthorityHost = AuthorityHost(srv.URL())
+	options.HTTPClient = srv
+	certData, err := os.ReadFile("testdata/certificate_nokey.pem")
+	if err != nil {
+		t.Fatalf("Failed to read certificate file: %s", err.Error())
+	}
+	_, err = NewClientCertificateCredential(tenantID, clientID, certData, &options)
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")
 	}
@@ -286,14 +303,14 @@ func TestBearerPolicy_ClientCertificateCredential(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	options := ClientCertificateCredentialOptions{}
-	options.AuthorityHost = srv.URL()
+	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.HTTPClient = srv
-	cred, err := NewClientCertificateCredential(tenantID, clientID, certificatePath, &options)
+	cred, err := NewClientCertificateCredential(tenantID, clientID, pemCert, &options)
 	if err != nil {
 		t.Fatalf("Did not expect an error but received: %v", err)
 	}
 	pipeline := defaultTestPipeline(srv, cred, scope)
-	req, err := azcore.NewRequest(context.Background(), http.MethodGet, srv.URL())
+	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
 	}

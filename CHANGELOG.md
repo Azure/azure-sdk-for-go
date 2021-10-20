@@ -1,5 +1,117 @@
 # CHANGELOG
 
+## `v58.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2021-09-01/containerinstance`
+- `github.com/Azure/azure-sdk-for-go/services/hdinsight/mgmt/2021-06-01/hdinsight`
+- `github.com/Azure/azure-sdk-for-go/services/iotcentral/mgmt/2021-06-01/iotcentral`
+- `github.com/Azure/azure-sdk-for-go/services/preview/botservice/mgmt/2021-05-01-preview/botservice`
+- `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/v2.0/synapse`
+- `github.com/Azure/azure-sdk-for-go/services/preview/videoanalyzer/mgmt/2021-11-01-preview/videoanalyzer`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2020-03-01-preview/deviceupdate` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/deviceupdate/mgmt/2020-03-01-preview/deviceupdate/CHANGELOG.md) |
+
+## `v58.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/hybridkubernetes/mgmt/2021-10-01/hybridkubernetes`
+- `github.com/Azure/azure-sdk-for-go/services/logz/mgmt/2020-10-01/logz`
+- `github.com/Azure/azure-sdk-for-go/services/storagecache/mgmt/2021-09-01/storagecache`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-07-01/compute` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v58.1.0/services/compute/mgmt/2021-07-01/compute/CHANGELOG.md) |
+
+## `v58.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/preview/servicebus/mgmt/2021-06-01-preview/servicebus`
+- `github.com/Azure/azure-sdk-for-go/services/storagepool/mgmt/2021-08-01/storagepool`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2020-12-01/compute` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v58.0.0/services/compute/mgmt/2020-12-01/compute/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/resources/mgmt/2021-07-01/features` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v58.0.0/services/resources/mgmt/2021-07-01/features/CHANGELOG.md) |
+
+## `v57.4.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerinstance/mgmt/2021-07-01/containerinstance`
+- `github.com/Azure/azure-sdk-for-go/services/iothub/mgmt/2021-03-31/devices`
+- `github.com/Azure/azure-sdk-for-go/services/kusto/mgmt/2021-08-27/kusto`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-06-01/netapp` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v57.4.0/services/netapp/mgmt/2021-06-01/netapp/CHANGELOG.md) |
+
+## `v57.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/extendedlocation/mgmt/2021-08-15/extendedlocation`
+- `github.com/Azure/azure-sdk-for-go/services/preview/resources/mgmt/2021-06-01-preview/policy`
+
+## `v57.2.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-08-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/preview/quota/mgmt/2021-03-15-preview/quota`
+- `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/v1.0/synapse`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v57.2.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
+## `v57.1.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/mysql/mgmt/2021-05-01/mysqlflexibleservers`
+- `github.com/Azure/azure-sdk-for-go/services/servicefabric/mgmt/2021-06-01/servicefabric`
+
+## `v57.0.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/compute/mgmt/2021-07-01/compute`
+- `github.com/Azure/azure-sdk-for-go/services/dataprotection/mgmt/2021-07-01/dataprotection`
+- `github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2021-01-25/guestconfiguration`
+- `github.com/Azure/azure-sdk-for-go/services/netapp/mgmt/2021-06-01/netapp`
+- `github.com/Azure/azure-sdk-for-go/services/network/mgmt/2021-03-01/network`
+- `github.com/Azure/azure-sdk-for-go/services/preview/synapse/mgmt/2021-06-01-preview/synapse`
+
+### Updated Packages
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/datafactory/mgmt/2018-06-01/datafactory` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v57.0.0/services/datafactory/mgmt/2018-06-01/datafactory/CHANGELOG.md) |
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/guestconfiguration/mgmt/2020-06-25/guestconfiguration` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v57.0.0/services/guestconfiguration/mgmt/2020-06-25/guestconfiguration/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/postgresql/mgmt/2021-06-01/postgresqlflexibleservers` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v57.0.0/services/postgresql/mgmt/2021-06-01/postgresqlflexibleservers/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/cosmos-db/mgmt/2021-03-01-preview/documentdb` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v57.0.0/services/preview/cosmos-db/mgmt/2021-03-01-preview/documentdb/CHANGELOG.md) |
+
 ## `v56.3.0`
 
 ### New Packages
@@ -10,7 +122,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v56.3.0/services/preview/apimanagement/mgmt/2021-01-01-preview/apimanagement/CHANGELOG.md) |
 
 ## `v56.2.0`
 

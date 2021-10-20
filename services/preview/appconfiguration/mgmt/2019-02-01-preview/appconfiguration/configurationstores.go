@@ -64,7 +64,7 @@ func (client ConfigurationStoresClient) Create(ctx context.Context, resourceGrou
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -98,6 +98,7 @@ func (client ConfigurationStoresClient) CreatePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client ConfigurationStoresClient) CreateSender(req *http.Request) (future ConfigurationStoresCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -152,7 +153,7 @@ func (client ConfigurationStoresClient) Delete(ctx context.Context, resourceGrou
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -184,6 +185,7 @@ func (client ConfigurationStoresClient) DeletePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client ConfigurationStoresClient) DeleteSender(req *http.Request) (future ConfigurationStoresDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -872,7 +874,7 @@ func (client ConfigurationStoresClient) Update(ctx context.Context, resourceGrou
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "appconfiguration.ConfigurationStoresClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -906,6 +908,7 @@ func (client ConfigurationStoresClient) UpdatePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client ConfigurationStoresClient) UpdateSender(req *http.Request) (future ConfigurationStoresUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

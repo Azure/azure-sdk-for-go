@@ -152,7 +152,7 @@ func (client Client) CreateOrUpdate(ctx context.Context, resourceGroupName strin
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "signalr.Client", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "signalr.Client", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -189,6 +189,7 @@ func (client Client) CreateOrUpdatePreparer(ctx context.Context, resourceGroupNa
 // http.Response Body if it receives an error.
 func (client Client) CreateOrUpdateSender(req *http.Request) (future CreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -236,7 +237,7 @@ func (client Client) Delete(ctx context.Context, resourceGroupName string, resou
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "signalr.Client", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "signalr.Client", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -268,6 +269,7 @@ func (client Client) DeletePreparer(ctx context.Context, resourceGroupName strin
 // http.Response Body if it receives an error.
 func (client Client) DeleteSender(req *http.Request) (future DeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -700,7 +702,7 @@ func (client Client) RegenerateKey(ctx context.Context, resourceGroupName string
 
 	result, err = client.RegenerateKeySender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "signalr.Client", "RegenerateKey", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "signalr.Client", "RegenerateKey", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -737,6 +739,7 @@ func (client Client) RegenerateKeyPreparer(ctx context.Context, resourceGroupNam
 // http.Response Body if it receives an error.
 func (client Client) RegenerateKeySender(req *http.Request) (future RegenerateKeyFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -784,7 +787,7 @@ func (client Client) Restart(ctx context.Context, resourceGroupName string, reso
 
 	result, err = client.RestartSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "signalr.Client", "Restart", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "signalr.Client", "Restart", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -816,6 +819,7 @@ func (client Client) RestartPreparer(ctx context.Context, resourceGroupName stri
 // http.Response Body if it receives an error.
 func (client Client) RestartSender(req *http.Request) (future RestartFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -863,7 +867,7 @@ func (client Client) Update(ctx context.Context, resourceGroupName string, resou
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "signalr.Client", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "signalr.Client", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -900,6 +904,7 @@ func (client Client) UpdatePreparer(ctx context.Context, resourceGroupName strin
 // http.Response Body if it receives an error.
 func (client Client) UpdateSender(req *http.Request) (future UpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

@@ -138,7 +138,7 @@ func (client UsersClient) Delete(ctx context.Context, resourceGroupName string, 
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "labservices.UsersClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "labservices.UsersClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -172,6 +172,7 @@ func (client UsersClient) DeletePreparer(ctx context.Context, resourceGroupName 
 // http.Response Body if it receives an error.
 func (client UsersClient) DeleteSender(req *http.Request) (future UsersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

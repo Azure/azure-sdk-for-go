@@ -54,7 +54,7 @@ func (client MoveCollectionsClient) BulkRemove(ctx context.Context, resourceGrou
 
 	result, err = client.BulkRemoveSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "BulkRemove", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "BulkRemove", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -91,6 +91,7 @@ func (client MoveCollectionsClient) BulkRemovePreparer(ctx context.Context, reso
 // http.Response Body if it receives an error.
 func (client MoveCollectionsClient) BulkRemoveSender(req *http.Request) (future MoveCollectionsBulkRemoveFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -147,7 +148,7 @@ func (client MoveCollectionsClient) Commit(ctx context.Context, resourceGroupNam
 
 	result, err = client.CommitSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Commit", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Commit", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -184,6 +185,7 @@ func (client MoveCollectionsClient) CommitPreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client MoveCollectionsClient) CommitSender(req *http.Request) (future MoveCollectionsCommitFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -325,7 +327,7 @@ func (client MoveCollectionsClient) Delete(ctx context.Context, resourceGroupNam
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -357,6 +359,7 @@ func (client MoveCollectionsClient) DeletePreparer(ctx context.Context, resource
 // http.Response Body if it receives an error.
 func (client MoveCollectionsClient) DeleteSender(req *http.Request) (future MoveCollectionsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -413,7 +416,7 @@ func (client MoveCollectionsClient) Discard(ctx context.Context, resourceGroupNa
 
 	result, err = client.DiscardSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Discard", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Discard", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -450,6 +453,7 @@ func (client MoveCollectionsClient) DiscardPreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client MoveCollectionsClient) DiscardSender(req *http.Request) (future MoveCollectionsDiscardFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -582,7 +586,7 @@ func (client MoveCollectionsClient) InitiateMove(ctx context.Context, resourceGr
 
 	result, err = client.InitiateMoveSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "InitiateMove", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "InitiateMove", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -619,6 +623,7 @@ func (client MoveCollectionsClient) InitiateMovePreparer(ctx context.Context, re
 // http.Response Body if it receives an error.
 func (client MoveCollectionsClient) InitiateMoveSender(req *http.Request) (future MoveCollectionsInitiateMoveFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -904,7 +909,7 @@ func (client MoveCollectionsClient) Prepare(ctx context.Context, resourceGroupNa
 
 	result, err = client.PrepareSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Prepare", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "Prepare", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -941,6 +946,7 @@ func (client MoveCollectionsClient) PreparePreparer(ctx context.Context, resourc
 // http.Response Body if it receives an error.
 func (client MoveCollectionsClient) PrepareSender(req *http.Request) (future MoveCollectionsPrepareFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -987,7 +993,7 @@ func (client MoveCollectionsClient) ResolveDependencies(ctx context.Context, res
 
 	result, err = client.ResolveDependenciesSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "ResolveDependencies", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "resourcemover.MoveCollectionsClient", "ResolveDependencies", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -1019,6 +1025,7 @@ func (client MoveCollectionsClient) ResolveDependenciesPreparer(ctx context.Cont
 // http.Response Body if it receives an error.
 func (client MoveCollectionsClient) ResolveDependenciesSender(req *http.Request) (future MoveCollectionsResolveDependenciesFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

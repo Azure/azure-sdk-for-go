@@ -64,7 +64,7 @@ func (client BackupPoliciesClient) BackupNow(ctx context.Context, deviceName str
 
 	result, err = client.BackupNowSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupPoliciesClient", "BackupNow", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.BackupPoliciesClient", "BackupNow", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -99,6 +99,7 @@ func (client BackupPoliciesClient) BackupNowPreparer(ctx context.Context, device
 // http.Response Body if it receives an error.
 func (client BackupPoliciesClient) BackupNowSender(req *http.Request) (future BackupPoliciesBackupNowFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -157,7 +158,7 @@ func (client BackupPoliciesClient) CreateOrUpdate(ctx context.Context, deviceNam
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupPoliciesClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.BackupPoliciesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -193,6 +194,7 @@ func (client BackupPoliciesClient) CreateOrUpdatePreparer(ctx context.Context, d
 // http.Response Body if it receives an error.
 func (client BackupPoliciesClient) CreateOrUpdateSender(req *http.Request) (future BackupPoliciesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -248,7 +250,7 @@ func (client BackupPoliciesClient) Delete(ctx context.Context, deviceName string
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.BackupPoliciesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.BackupPoliciesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -282,6 +284,7 @@ func (client BackupPoliciesClient) DeletePreparer(ctx context.Context, deviceNam
 // http.Response Body if it receives an error.
 func (client BackupPoliciesClient) DeleteSender(req *http.Request) (future BackupPoliciesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

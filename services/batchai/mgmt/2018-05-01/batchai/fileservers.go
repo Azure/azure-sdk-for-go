@@ -87,7 +87,7 @@ func (client FileServersClient) Create(ctx context.Context, resourceGroupName st
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.FileServersClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.FileServersClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -122,6 +122,7 @@ func (client FileServersClient) CreatePreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client FileServersClient) CreateSender(req *http.Request) (future FileServersCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -186,7 +187,7 @@ func (client FileServersClient) Delete(ctx context.Context, resourceGroupName st
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "batchai.FileServersClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "batchai.FileServersClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -219,6 +220,7 @@ func (client FileServersClient) DeletePreparer(ctx context.Context, resourceGrou
 // http.Response Body if it receives an error.
 func (client FileServersClient) DeleteSender(req *http.Request) (future FileServersDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

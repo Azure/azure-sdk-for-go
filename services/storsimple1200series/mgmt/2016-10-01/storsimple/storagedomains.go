@@ -69,7 +69,7 @@ func (client StorageDomainsClient) CreateOrUpdate(ctx context.Context, storageDo
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.StorageDomainsClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.StorageDomainsClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -104,6 +104,7 @@ func (client StorageDomainsClient) CreateOrUpdatePreparer(ctx context.Context, s
 // http.Response Body if it receives an error.
 func (client StorageDomainsClient) CreateOrUpdateSender(req *http.Request) (future StorageDomainsCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -158,7 +159,7 @@ func (client StorageDomainsClient) Delete(ctx context.Context, storageDomainName
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.StorageDomainsClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.StorageDomainsClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -191,6 +192,7 @@ func (client StorageDomainsClient) DeletePreparer(ctx context.Context, storageDo
 // http.Response Body if it receives an error.
 func (client StorageDomainsClient) DeleteSender(req *http.Request) (future StorageDomainsDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

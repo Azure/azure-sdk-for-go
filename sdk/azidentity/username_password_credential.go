@@ -7,6 +7,7 @@ import (
 	"context"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 // UsernamePasswordCredentialOptions can be used to provide additional information to configure the UsernamePasswordCredential.
@@ -15,16 +16,16 @@ import (
 type UsernamePasswordCredentialOptions struct {
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
-	AuthorityHost string
+	AuthorityHost AuthorityHost
 	// HTTPClient sets the transport for making HTTP requests
 	// Leave this as nil to use the default HTTP transport
-	HTTPClient azcore.Transport
+	HTTPClient policy.Transporter
 	// Retry configures the built-in retry policy behavior
-	Retry azcore.RetryOptions
+	Retry policy.RetryOptions
 	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry azcore.TelemetryOptions
+	Telemetry policy.TelemetryOptions
 	// Logging configures the built-in logging policy behavior.
-	Logging azcore.LogOptions
+	Logging policy.LogOptions
 }
 
 // UsernamePasswordCredential enables authentication to Azure Active Directory using a user's  username and password. If the user has MFA enabled this
@@ -67,7 +68,7 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 // scopes: The list of scopes for which the token will have access.
 // ctx: The context used to control the request lifetime.
 // Returns an AccessToken which can be used to authenticate service client calls.
-func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts azcore.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	tk, err := c.client.authenticateUsernamePassword(ctx, c.tenantID, c.clientID, c.username, c.password, opts.Scopes)
 	if err != nil {
 		addGetTokenFailureLogs("Username Password Credential", err, true)
@@ -75,11 +76,6 @@ func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts azcore.T
 	}
 	logGetTokenSuccess(c, opts)
 	return tk, err
-}
-
-// NewAuthenticationPolicy implements the azcore.Credential interface on UsernamePasswordCredential.
-func (c *UsernamePasswordCredential) NewAuthenticationPolicy(options azcore.AuthenticationOptions) azcore.Policy {
-	return newBearerTokenPolicy(c, options)
 }
 
 var _ azcore.TokenCredential = (*UsernamePasswordCredential)(nil)

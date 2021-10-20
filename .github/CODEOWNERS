@@ -7,25 +7,35 @@
 
 # Catch all for non-code project files and unowned files | folders
 *                        @rickwinter @jhendrixMSFT
-/sdk/                    @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft @chamons
+/sdk/                    @rickwinter @chlowell @richardpark-msft @seankane-msft
 
 # Samples
-/samples/                @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft @chamons
+/samples/                @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
 
 # PRLabel: %Azure.Core
-/sdk/azcore/             @rickwinter @jhendrixMSFT @richardpark-msft @seankane-msft @chamons
+/sdk/azcore/             @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
 
 # PRLabel: %Azure.Identity
-/sdk/azidentity/         @rickwinter @jhendrixMSFT
+/sdk/azidentity/         @chlowell @jhendrixMSFT @rickwinter
+
+# PRLabel: %Internal
+/sdk/internal/           @rickwinter @chlowell @jhendrixMSFT @richardpark-msft @seankane-msft
 
 # PRLabel: %KeyVault
-/sdk/keyvault/           @rickwinter @jhendrixMSFT
+/sdk/keyvault/           @seankane-msft @jhendrixMSFT
 
 # PRLabel: %Storage
-/sdk/storage/            @rickwinter @jhendrixMSFT
+/sdk/storage/            @jhendrixMSFT @seankane-msft
 
-# PRLabel: %EngSys
-/sdk/template/           @benbp @Azure/azure-sdk-eng
+# PRLabel: %Cosmos
+/sdk/data/azcosmos/      @ealsur @ausfeldt 
+
+# PRLabel: %Tables
+/sdk/data/aztables/      @seankane-msft @jhendrixMSFT 
+
+# PRLabel: %Mgmt
+/sdk/resourcemanager/    @ArcturusZhang @lirenhe
+
 
 ###########
 # Eng Sys
@@ -34,11 +44,21 @@
 /**/ci.yml               @benbp @azure/azure-sdk-eng
 /**/tests.yml            @benbp @azure/azure-sdk-eng
 
+# PRLabel: %EngSys
+/sdk/template/           @benbp @Azure/azure-sdk-eng
+
 #############
 # SDK (track1 and track1.5)
 #############
 
-/profiles/ @ArcturusZhang @lirenhe
-/services/ @ArcturusZhang @lirenhe
-/storage/ @jhendrixMSFT
-/version/ @ArcturusZhang @lirenhe
+# PRLabel: %Track1
+/profiles/               @ArcturusZhang @lirenhe
+
+# PRLabel: %Track1
+/services/               @ArcturusZhang @lirenhe
+
+# PRLabel: %Track1
+/storage/                @jhendrixMSFT
+
+# PRLabel: %Track1
+/version/                @ArcturusZhang @lirenhe

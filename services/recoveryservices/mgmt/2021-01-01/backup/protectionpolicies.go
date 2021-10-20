@@ -140,7 +140,7 @@ func (client ProtectionPoliciesClient) Delete(ctx context.Context, vaultName str
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "backup.ProtectionPoliciesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "backup.ProtectionPoliciesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -173,6 +173,7 @@ func (client ProtectionPoliciesClient) DeletePreparer(ctx context.Context, vault
 // http.Response Body if it receives an error.
 func (client ProtectionPoliciesClient) DeleteSender(req *http.Request) (future ProtectionPoliciesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

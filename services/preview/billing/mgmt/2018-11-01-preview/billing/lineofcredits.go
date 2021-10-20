@@ -123,7 +123,7 @@ func (client LineOfCreditsClient) Update(ctx context.Context, parameters LineOfC
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "billing.LineOfCreditsClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "billing.LineOfCreditsClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -155,6 +155,7 @@ func (client LineOfCreditsClient) UpdatePreparer(ctx context.Context, parameters
 // http.Response Body if it receives an error.
 func (client LineOfCreditsClient) UpdateSender(req *http.Request) (future LineOfCreditsUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

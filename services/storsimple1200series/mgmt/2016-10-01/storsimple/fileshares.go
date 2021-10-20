@@ -70,7 +70,7 @@ func (client FileSharesClient) CreateOrUpdate(ctx context.Context, deviceName st
 
 	result, err = client.CreateOrUpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.FileSharesClient", "CreateOrUpdate", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.FileSharesClient", "CreateOrUpdate", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -107,6 +107,7 @@ func (client FileSharesClient) CreateOrUpdatePreparer(ctx context.Context, devic
 // http.Response Body if it receives an error.
 func (client FileSharesClient) CreateOrUpdateSender(req *http.Request) (future FileSharesCreateOrUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -163,7 +164,7 @@ func (client FileSharesClient) Delete(ctx context.Context, deviceName string, fi
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "storsimple.FileSharesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "storsimple.FileSharesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -198,6 +199,7 @@ func (client FileSharesClient) DeletePreparer(ctx context.Context, deviceName st
 // http.Response Body if it receives an error.
 func (client FileSharesClient) DeleteSender(req *http.Request) (future FileSharesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

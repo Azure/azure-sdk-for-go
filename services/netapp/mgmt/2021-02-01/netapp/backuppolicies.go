@@ -67,7 +67,7 @@ func (client BackupPoliciesClient) Create(ctx context.Context, resourceGroupName
 
 	result, err = client.CreateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.BackupPoliciesClient", "Create", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.BackupPoliciesClient", "Create", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -105,6 +105,7 @@ func (client BackupPoliciesClient) CreatePreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client BackupPoliciesClient) CreateSender(req *http.Request) (future BackupPoliciesCreateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -160,7 +161,7 @@ func (client BackupPoliciesClient) Delete(ctx context.Context, resourceGroupName
 
 	result, err = client.DeleteSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.BackupPoliciesClient", "Delete", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.BackupPoliciesClient", "Delete", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -193,6 +194,7 @@ func (client BackupPoliciesClient) DeletePreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client BackupPoliciesClient) DeleteSender(req *http.Request) (future BackupPoliciesDeleteFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return
@@ -418,7 +420,7 @@ func (client BackupPoliciesClient) Update(ctx context.Context, resourceGroupName
 
 	result, err = client.UpdateSender(req)
 	if err != nil {
-		err = autorest.NewErrorWithError(err, "netapp.BackupPoliciesClient", "Update", nil, "Failure sending request")
+		err = autorest.NewErrorWithError(err, "netapp.BackupPoliciesClient", "Update", result.Response(), "Failure sending request")
 		return
 	}
 
@@ -456,6 +458,7 @@ func (client BackupPoliciesClient) UpdatePreparer(ctx context.Context, resourceG
 // http.Response Body if it receives an error.
 func (client BackupPoliciesClient) UpdateSender(req *http.Request) (future BackupPoliciesUpdateFuture, err error) {
 	var resp *http.Response
+	future.FutureAPI = &azure.Future{}
 	resp, err = client.Send(req, azure.DoRetryWithRegistration(client.Client))
 	if err != nil {
 		return

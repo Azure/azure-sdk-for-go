@@ -36,7 +36,7 @@ func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Poli
 }
 
 func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-	if recording.GetRecordMode() != recording.LiveMode {
+	if recording.GetRecordMode() != "live" {
 		originalURLHost := req.Raw().URL.Host
 		req.Raw().URL.Scheme = "https"
 		req.Raw().URL.Host = p.options.Host

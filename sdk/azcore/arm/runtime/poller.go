@@ -64,13 +64,13 @@ func NewPollerFromResumeToken(pollerID string, token string, pl pipeline.Pipelin
 	var lro pollers.Operation
 	switch kind {
 	case async.Kind:
-		log.Writef(log.LongRunningOperation, "Resuming %s poller.", async.Kind)
+		log.Writef(log.EventLRO, "Resuming %s poller.", async.Kind)
 		lro = &async.Poller{}
 	case loc.Kind:
-		log.Writef(log.LongRunningOperation, "Resuming %s poller.", loc.Kind)
+		log.Writef(log.EventLRO, "Resuming %s poller.", loc.Kind)
 		lro = &loc.Poller{}
 	case body.Kind:
-		log.Writef(log.LongRunningOperation, "Resuming %s poller.", body.Kind)
+		log.Writef(log.EventLRO, "Resuming %s poller.", body.Kind)
 		lro = &body.Poller{}
 	default:
 		return nil, fmt.Errorf("unhandled poller type %s", kind)

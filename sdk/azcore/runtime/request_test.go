@@ -22,6 +22,7 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
 
@@ -564,7 +565,7 @@ func TestRequestValidFail(t *testing.T) {
 		t.Fatal(err)
 	}
 	req.Raw().Header.Add("inval d", "header")
-	p := NewPipeline(nil)
+	p := pipeline.NewPipeline(nil)
 	resp, err := p.Do(req)
 	if err == nil {
 		t.Fatal("unexpected nil error")

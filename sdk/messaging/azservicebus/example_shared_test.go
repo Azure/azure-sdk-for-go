@@ -60,7 +60,7 @@ func initExamples() {
 
 		ExampleNewClientFromConnectionString()
 
-		sender, err = client.NewSender("exampleQueue") // or topicName
+		sender, err = client.NewSender("exampleQueue", nil) // or topicName
 		exitOnError("Failed to create sender", err)
 
 		// send some messages so the receiver tests will be fine running.

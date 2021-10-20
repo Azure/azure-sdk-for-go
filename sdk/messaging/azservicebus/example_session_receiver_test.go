@@ -15,7 +15,7 @@ func init() {
 	initExamples()
 
 	if client != nil {
-		sender, err := client.NewSender(exampleSessionQueue)
+		sender, err := client.NewSender(exampleSessionQueue, nil)
 		exitOnError("Failed to create sender for session examples", err)
 
 		for i := 0; i < 2; i++ {

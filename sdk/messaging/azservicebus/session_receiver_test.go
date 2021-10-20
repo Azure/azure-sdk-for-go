@@ -23,7 +23,7 @@ func TestSessionReceiver_acceptSession(t *testing.T) {
 	ctx := context.Background()
 
 	// send a message to a specific session
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	err = sender.SendMessage(ctx, &Message{
@@ -57,7 +57,7 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 	ctx := context.Background()
 
 	// send a message to a specific session
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	err = sender.SendMessage(ctx, &Message{
@@ -106,7 +106,7 @@ func TestSessionReceiver_acceptNextSession(t *testing.T) {
 
 	ctx := context.Background()
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	err = sender.SendMessage(ctx, &Message{

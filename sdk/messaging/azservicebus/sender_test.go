@@ -121,7 +121,7 @@ func Test_Sender_SendMessages(t *testing.T) {
 	require.NoError(t, err)
 	defer receiver.Close(context.Background())
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 	defer sender.Close(context.Background())
 
@@ -148,7 +148,7 @@ func Test_Sender_SendMessages_resend(t *testing.T) {
 
 	ctx := context.Background()
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 
 	peekLockReceiver, err := client.NewReceiverForQueue(queueName, &ReceiverOptions{
@@ -210,7 +210,7 @@ func Test_Sender_ScheduleMessages(t *testing.T) {
 	require.NoError(t, err)
 	defer receiver.Close(context.Background())
 
-	sender, err := client.NewSender(queueName)
+	sender, err := client.NewSender(queueName, nil)
 	require.NoError(t, err)
 	defer sender.Close(context.Background())
 

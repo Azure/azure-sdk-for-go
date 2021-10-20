@@ -12,7 +12,7 @@ import (
 )
 
 func ExampleClient_NewSender() {
-	sender, err = client.NewSender("exampleQueue", ExampleClient_NewReceiverForQueue_deadLetterQueue()) // or topicName
+	sender, err = client.NewSender("exampleQueue", nil) // or topicName
 	exitOnError("Failed to create sender", err)
 }
 

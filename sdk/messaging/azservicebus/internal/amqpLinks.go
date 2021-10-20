@@ -273,7 +273,7 @@ func (links *amqpLinks) recoverConnection(ctx context.Context) error {
 }
 
 // Get will initialize a session and call its link.linkCreator function.
-// If this link has been closed via Close() it will return an non retriable error.
+// If this link has been closed via Close() it will return a non retriable error.
 func (l *amqpLinks) Get(ctx context.Context) (AMQPSender, AMQPReceiver, MgmtClient, uint64, error) {
 	retrier := l.baseRetrier.Copy()
 

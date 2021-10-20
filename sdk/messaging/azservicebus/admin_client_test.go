@@ -184,7 +184,7 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 	require.NoError(t, err)
 	require.EqualValues(t, propsFromCreate, propsFromGet)
 
-	client, err := NewClientWithConnectionString(getConnectionString(t), nil)
+	client, err := NewClientFromConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
 	sender, err := client.NewSender(queueName)

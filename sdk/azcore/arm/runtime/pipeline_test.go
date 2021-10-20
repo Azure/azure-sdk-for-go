@@ -81,13 +81,13 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 		t.Fatalf("Unexpected error: %v", err)
 	}
 	// log only RP registration
-	log.SetClassifications(LogRPRegistration)
+	log.SetEvents(LogRPRegistration)
 	defer func() {
 		// reset logging
-		log.SetClassifications()
+		log.SetEvents()
 	}()
 	logEntries := 0
-	log.SetListener(func(cls log.Classification, msg string) {
+	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
 	resp, err := NewPipeline("armtest", "v1.2.3", mockTokenCred{}, opts).Do(req)

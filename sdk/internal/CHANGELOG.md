@@ -1,5 +1,15 @@
 # Release History
 
+## 0.8.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 0.8.0 (2021-10-20)
 * Renamed log constant type and values to conform to guidelines.
 * Exports `RecordMode`, `PlaybackMode`, and `LiveMode` for determining test mode

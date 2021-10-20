@@ -29,6 +29,8 @@ var (
 
 	// DefaultFileAttributes is defaults for file attributes
 	DefaultFileAttributes = "None"
+
+	DefaultPermissionCopyMode = PermissionCopyModeType("")
 )
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -42,17 +44,17 @@ type FilePermissions struct {
 	FilePermissionKey *string
 }
 
-func (fp *FilePermissions) format(defaultFilePermissionStr string) (filePermission *string, filePermissionKey *string, err error) {
+func (fp *FilePermissions) format(defaultFilePermissionStr *string) (filePermission *string, filePermissionKey *string, err error) {
 	if fp == nil {
-		return &defaultFilePermissionStr, nil, nil
+		return defaultFilePermissionStr, nil, nil
 	}
-	filePermission = &defaultFilePermissionStr
+	filePermission = defaultFilePermissionStr
 	if fp.FilePermissionStr != nil {
 		filePermission = fp.FilePermissionStr
 	}
 
 	if fp.FilePermissionKey != nil {
-		if filePermission == &defaultFilePermissionStr {
+		if filePermission == defaultFilePermissionStr {
 			filePermission = nil
 		} else if filePermission != nil {
 			return nil, nil, errors.New("only permission string OR permission key may be used")
@@ -135,7 +137,7 @@ func (o *CreateFileOptions) format() (fileContentLength int64, fileAttributes st
 
 	fileAttributes, fileCreationTime, fileLastWriteTime = o.SMBProperties.format(false, DefaultFileAttributes, DefaultCurrentTimeString)
 
-	filePermission, filePermissionKey, err := o.FilePermissions.format(DefaultFilePermissionStr)
+	filePermission, filePermissionKey, err := o.FilePermissions.format(&DefaultFilePermissionStr)
 	if err != nil {
 		return
 	}
@@ -169,9 +171,9 @@ func (o *StartFileCopyOptions) format() (fileStartCopyOptions *FileStartCopyOpti
 		return
 	}
 
-	filePermission, filePermissionKey, err := o.FilePermissions.format(DefaultFilePermissionStr)
+	filePermission, filePermissionKey, err := o.FilePermissions.format(nil)
 	if err != nil {
-		return nil, nil, nil, err
+		return
 	}
 
 	fileStartCopyOptions = &FileStartCopyOptions{
@@ -182,7 +184,6 @@ func (o *StartFileCopyOptions) format() (fileStartCopyOptions *FileStartCopyOpti
 
 	copyFileSmbInfo = o.CopyFileSmbInfo
 	leaseAccessConditions = o.LeaseAccessConditions
-
 	return
 }
 
@@ -279,7 +280,7 @@ func (o *SetFileHTTPHeadersOptions) format() (fileAttributes string, fileCreatio
 
 	fileAttributes, fileCreationTime, fileLastWriteTime = "preserve", "preserve", "preserve"
 
-	filePermission, filePermissionKey, err := o.FilePermissions.format(DefaultPreserveString)
+	filePermission, filePermissionKey, err := o.FilePermissions.format(&DefaultPreserveString)
 	if err != nil {
 		return
 	}

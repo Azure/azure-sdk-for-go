@@ -12,6 +12,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+	"time"
 )
 
 var (
@@ -58,25 +59,26 @@ func (s *azfileLiveTestSuite) TestFileCreateDeleteDefault() {
 	dirClient := createNewDirectoryFromShare(_assert, dirName, srClient)
 	defer delDirectory(_assert, dirClient)
 
-	//// Create and delete fClient in named directory.
-	//fClient = dir.NewfClient(generateFileName())
-	//
-	//cResp, err = fClient.Create(ctx, 0, FileHTTPHeaders{}, nil)
-	//_assert.Nil(err)
-	//_assert(cResp.RawResponse.StatusCode, chk.Equals, 201)
-	//_assert(cResp.ETag, chk.Not(chk.Equals), "")
-	//_assert(cResp.LastModified.IsZero(), chk.Equals, false)
-	//_assert(cResp.RequestID, chk.Not(chk.Equals), "")
-	//_assert(cResp.Version, chk.Not(chk.Equals), "")
-	//_assert(cResp.Date.IsZero(), chk.Equals, false)
-	//_assert(cResp.IsServerEncrypted, chk.NotNil)
-	//
-	//delResp, err = fClient.Delete(ctx)
-	//_assert.Nil(err)
-	//_assert(delResp.RawResponse.StatusCode, chk.Equals, 202)
-	//_assert(delResp.RequestID, chk.Not(chk.Equals), "")
-	//_assert(delResp.Version, chk.Not(chk.Equals), "")
-	//_assert(delResp.Date.IsZero(), chk.Equals, false)
+	// Create and delete fClient in named directory.
+	afClient, err := dirClient.NewFileClient(generateFileName(testName))
+	_assert.Nil(err)
+
+	cResp, err = afClient.Create(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(cResp.RawResponse.StatusCode, 201)
+	_assert.NotEqual(cResp.ETag, "")
+	_assert.Equal(cResp.LastModified.IsZero(), false)
+	_assert.NotEqual(cResp.RequestID, "")
+	_assert.NotEqual(cResp.Version, "")
+	_assert.Equal(cResp.Date.IsZero(), false)
+	_assert.NotNil(cResp.IsServerEncrypted)
+
+	delResp, err = afClient.Delete(ctx, nil)
+	_assert.Nil(err)
+	_assert.Equal(delResp.RawResponse.StatusCode, 202)
+	_assert.NotEqual(delResp.RequestID, "")
+	_assert.NotEqual(delResp.Version, "")
+	_assert.Equal(delResp.Date.IsZero(), false)
 }
 
 func (s *azfileLiveTestSuite) TestFileCreateNonDefaultMetadataNonEmpty() {
@@ -476,7 +478,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //	srcFile, _ := createNewFileFromShare(_assert, generateFileName(testName), 2048, srClient)
 //	defer delFile(c, srcFile)
 //
-//	destFile, _ := getFileClientFromShare(c, srClient)
+//	destFile, _ := getFileClientFromShare(_assert, generateFileName(testName), srClient)
 //	defer delFile(c, destFile)
 //
 //	_, err := srcFile.UploadRange(ctx, 0, generateData(2048), nil)
@@ -520,47 +522,47 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //		_assert.(se.RawResponse.StatusCode, chk.Equals, http.StatusConflict)
 //	}
 //}
-//
-//func waitForCopy(, copyfClient fClient, fileCopyResponse *FileStartCopyResponse) {
-//	status := fileCopyResponse.CopyStatus
-//	// Wait for the copy to finish. If the copy takes longer than a minute, we will fail
-//	start := time.Now()
-//	for status != CopyStatusSuccess {
-//		GetPropertiesResult, _ := copyfClient.GetProperties(ctx)
-//		status = GetPropertiesResult.CopyStatus
-//		currentTime := time.Now()
-//		if currentTime.Sub(start) >= time.Minute {
-//			c.Fail()
-//		}
-//	}
-//}
-//
-//func (s *azfileLiveTestSuite) TestFileStartCopyDestEmpty() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
-//	defer delShare(_assert, srClient, nil)
-//	fClient := createNewFileFromShareWithGivenData(_assert, generateFileName(testName), fileDefaultData, srClient)
-//	copyfClient := getFileClientFromShare(_assert, generateFileName(testName), srClient)
-//
-//	fileCopyResponse, err := copyfClient.StartCopy(ctx, fClient.URL(), nil)
-//	_assert.Nil(err)
-//	waitForCopy(c, copyfClient, fileCopyResponse)
-//
-//	resp, err := copyfClient.Download(ctx, 0, CountToEnd, false)
-//	_assert.Nil(err)
-//
-//	// Read the file data to verify the copy
-//	data, _ := ioutil.ReadAll(resp.RawResponse.Body)
-//	_assert.(resp.ContentLength, chk.Equals, int64(len(fileDefaultData)))
-//	_assert.(string(data), chk.Equals, fileDefaultData)
-//	resp.RawResponse.Body.Close()
-//}
-//
+
+func waitForCopy(_assert *assert.Assertions, copyfClient FileClient, fileCopyResponse FileStartCopyResponse) {
+	status := fileCopyResponse.CopyStatus
+	// Wait for the copy to finish. If the copy takes longer than a minute, we will fail
+	start := time.Now()
+	for *status != CopyStatusTypeSuccess {
+		GetPropertiesResult, _ := copyfClient.GetProperties(ctx, nil)
+		status = GetPropertiesResult.CopyStatus
+		currentTime := time.Now()
+		if currentTime.Sub(start) >= time.Minute {
+			_assert.Fail("")
+		}
+	}
+}
+
+func (s *azfileLiveTestSuite) TestFileStartCopyDestEmpty() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
+	defer delShare(_assert, srClient, nil)
+	fClient := createNewFileFromShareWithGivenData(_assert, "src"+generateFileName(testName), fileDefaultData, srClient)
+	copyfClient := getFileClientFromShare(_assert, "dst"+generateFileName(testName), srClient)
+
+	fileCopyResponse, err := copyfClient.StartCopy(ctx, fClient.URL(), nil)
+	_assert.Nil(err)
+	waitForCopy(_assert, copyfClient, fileCopyResponse)
+
+	resp, err := copyfClient.Download(ctx, 0, CountToEnd, nil)
+	_assert.Nil(err)
+
+	// Read the file data to verify the copy
+	data, _ := ioutil.ReadAll(resp.RawResponse.Body)
+	_assert.Equal(*resp.ContentLength, int64(len(fileDefaultData)))
+	_assert.Equal(string(data), fileDefaultData)
+	resp.RawResponse.Body.Close()
+}
+
 //func (s *azfileLiveTestSuite) TestFileStartCopyMetadata() {
 //	_assert := assert.New(s.T())
 //	testName := s.T().Name()
@@ -570,102 +572,102 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //	}
 //	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
 //	defer delShare(_assert, srClient, nil)
-//	fClient := createNewFileFromShare(_assert, generateFileName(testName), 0, srClient)
-//	copyfClient := getFileClientFromShare(_assert, generateFileName(testName), srClient)
+//	fClient := createNewFileFromShare(_assert, "src" + generateFileName(testName), 0, srClient)
+//	copyfClient := getFileClientFromShare(_assert, "dst" + generateFileName(testName), srClient)
 //
-//	resp, err := copyfClient.StartCopy(ctx, fClient.URL(), basicMetadata)
+//	resp, err := copyfClient.StartCopy(ctx, fClient.URL(), &StartFileCopyOptions{Metadata: basicMetadata})
 //	_assert.Nil(err)
-//	waitForCopy(c, copyfClient, resp)
+//	waitForCopy(_assert, copyfClient, resp)
 //
-//	resp2, err := copyfClient.GetProperties(ctx)
+//	resp2, err := copyfClient.GetProperties(ctx, nil)
 //	_assert.Nil(err)
-//	_assert.(resp2.Metadata, chk.DeepEquals, basicMetadata)
+//	_assert.EqualValues(resp2.Metadata, basicMetadata)
 //}
-//
-//func (s *azfileLiveTestSuite) TestFileStartCopyMetadataNil() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
-//	defer delShare(_assert, srClient, nil)
-//	fClient := createNewFileFromShare(_assert, generateFileName(testName), 0, srClient)
-//	copyfClient := getFileClientFromShare(_assert, generateFileName(testName), srClient)
-//
-//	// Have the destination start with metadata so we ensure the nil metadata passed later takes effect
-//	_, err := copyfClient.Create(ctx, 0, FileHTTPHeaders{}, basicMetadata)
-//	_assert.Nil(err)
-//
-//	resp, err := copyfClient.StartCopy(ctx, fClient.URL(), nil)
-//	_assert.Nil(err)
-//
-//	waitForCopy(c, copyfClient, resp)
-//
-//	resp2, err := copyfClient.GetProperties(ctx)
-//	_assert.Nil(err)
-//	_assert.(resp2.Metadata, chk.HasLen, 0)
-//}
-//
-//func (s *azfileLiveTestSuite) TestFileStartCopyMetadataEmpty() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
-//	defer delShare(_assert, srClient, nil)
-//	fClient := createNewFileFromShare(_assert, generateFileName(testName), 0, srClient)
-//	copyfClient := getFileClientFromShare(_assert, generateFileName(testName), srClient)
-//
-//	// Have the destination start with metadata so we ensure the empty metadata passed later takes effect
-//	_, err := copyfClient.Create(ctx, 0, FileHTTPHeaders{}, basicMetadata)
-//	_assert.Nil(err)
-//
-//	resp, err := copyfClient.StartCopy(ctx, fClient.URL(), map[string]string)
-//	_assert.Nil(err)
-//
-//	waitForCopy(c, copyfClient, resp)
-//
-//	resp2, err := copyfClient.GetProperties(ctx)
-//	_assert.Nil(err)
-//	_assert.(resp2.Metadata, chk.HasLen, 0)
-//}
-//
-//func (s *azfileLiveTestSuite) TestFileStartCopyNegativeMetadataInvalidField() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
-//	defer delShare(_assert, srClient, nil)
-//	fClient := createNewFileFromShare(_assert, generateFileName(testName), 0, srClient)
-//	copyfClient := getFileClientFromShare(_assert, generateFileName(testName), srClient)
-//
-//	_, err := copyfClient.StartCopy(ctx, fClient.URL(), Metadata{"!@#$%^&*()": "!@#$%^&*()"})
-//	_assert.NotNil(err)
-//}
-//
-//func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistant() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
-//	defer delShare(_assert, srClient, nil)
-//	fClient := getFileClientFromShare(_assert, generateFileName(testName), srClient)
-//	copyfClient := getFileClientFromShare(_assert, generateFileName(testName), srClient)
-//
-//	_, err := copyfClient.StartCopy(ctx, fClient.URL(), nil)
-//	validateStorageError(_assert, err, ServiceCodeResourceNotFound)
-//}
-//
+
+func (s *azfileLiveTestSuite) TestFileStartCopyMetadataNil() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
+	defer delShare(_assert, srClient, nil)
+	fClient := createNewFileFromShare(_assert, "src"+generateFileName(testName), 0, srClient)
+	copyfClient := getFileClientFromShare(_assert, "dst"+generateFileName(testName), srClient)
+
+	// Have the destination start with metadata so we ensure the nil metadata passed later takes effect
+	_, err = copyfClient.Create(ctx, &CreateFileOptions{Metadata: basicMetadata})
+	_assert.Nil(err)
+
+	resp, err := copyfClient.StartCopy(ctx, fClient.URL(), nil)
+	_assert.Nil(err)
+
+	waitForCopy(_assert, copyfClient, resp)
+
+	resp2, err := copyfClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Len(resp2.Metadata, 0)
+}
+
+func (s *azfileLiveTestSuite) TestFileStartCopyMetadataEmpty() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
+	defer delShare(_assert, srClient, nil)
+	fClient := createNewFileFromShare(_assert, "src"+generateFileName(testName), 0, srClient)
+	copyfClient := getFileClientFromShare(_assert, "dst"+generateFileName(testName), srClient)
+
+	// Have the destination start with metadata so we ensure the nil metadata passed later takes effect
+	_, err = copyfClient.Create(ctx, &CreateFileOptions{Metadata: basicMetadata})
+	_assert.Nil(err)
+
+	resp, err := copyfClient.StartCopy(ctx, fClient.URL(), &StartFileCopyOptions{Metadata: map[string]string{}})
+	_assert.Nil(err)
+
+	waitForCopy(_assert, copyfClient, resp)
+
+	resp2, err := copyfClient.GetProperties(ctx, nil)
+	_assert.Nil(err)
+	_assert.Len(resp2.Metadata, 0)
+}
+
+func (s *azfileLiveTestSuite) TestFileStartCopyNegativeMetadataInvalidField() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
+	defer delShare(_assert, srClient, nil)
+	fClient := createNewFileFromShare(_assert, "src"+generateFileName(testName), 0, srClient)
+	copyfClient := getFileClientFromShare(_assert, "dst"+generateFileName(testName), srClient)
+
+	_, err = copyfClient.StartCopy(ctx, fClient.URL(), &StartFileCopyOptions{Metadata: map[string]string{"!@#$%^&*()": "!@#$%^&*()"}})
+	_assert.NotNil(err)
+}
+
+func (s *azfileLiveTestSuite) TestFileStartCopySourceNonExistent() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
+	defer delShare(_assert, srClient, nil)
+	fClient := getFileClientFromShare(_assert, "src"+generateFileName(testName), srClient)
+	copyfClient := getFileClientFromShare(_assert, "dst"+generateFileName(testName), srClient)
+
+	_, err = copyfClient.StartCopy(ctx, fClient.URL(), nil)
+	validateStorageError(_assert, err, StorageErrorCodeResourceNotFound)
+}
+
 //func (s *azfileLiveTestSuite) TestFileStartCopyUsingSASSrc() {
 //	_assert := assert.New(s.T())
 //	testName := s.T().Name()
@@ -765,7 +767,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //	_assert.(string(data), chk.Equals, fileDefaultData)
 //	resp2.Body(RetryReaderOptions{}).Close()
 //}
-//
+
 //func (s *azfileLiveTestSuite) TestFileAbortCopyInProgress() {
 //	_assert := assert.New(s.T())
 //	testName := s.T().Name()
@@ -773,9 +775,11 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //	if err != nil {
 //		s.Fail("Unable to fetch service client because " + err.Error())
 //	}
-//	srClient, shareName := createNewShare(_assert, generateShareName(testName), svcClient)
+//	shareName := generateShareName(testName)
+//	srClient := createNewShare(_assert, shareName, svcClient)
 //	defer delShare(_assert, srClient, nil)
-//	fClient, fileName := getFileClientFromShare(c, srClient)
+//	fileName := generateFileName(testName)
+//	fClient := getFileClientFromShare(_assert, fileName, srClient)
 //
 //	// Create a large file that takes time to copy
 //	fileSize := 12 * 1024 * 1024
@@ -783,26 +787,26 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //	for i := range fileData {
 //		fileData[i] = byte('a' + i%26)
 //	}
-//	_, err := fClient.Create(ctx, int64(fileSize), FileHTTPHeaders{}, nil)
+//	_, err = fClient.Create(ctx, &CreateFileOptions{FileContentLength: to.Int64Ptr(int64(fileSize)), FileHTTPHeaders: &FileHTTPHeaders{}})
 //	_assert.Nil(err)
 //
-//	_, err = fClient.UploadRange(ctx, 0, bytes.NewReader(fileData[0:4*1024*1024]), nil)
+//	_, err = fClient.UploadRange(ctx, 0, internal.NopCloser(bytes.NewReader(fileData[0:4*1024*1024])), nil)
 //	_assert.Nil(err)
-//	_, err = fClient.UploadRange(ctx, 4*1024*1024, bytes.NewReader(fileData[4*1024*1024:8*1024*1024]), nil)
+//	_, err = fClient.UploadRange(ctx, 4*1024*1024, internal.NopCloser(bytes.NewReader(fileData[4*1024*1024:8*1024*1024])), nil)
 //	_assert.Nil(err)
-//	_, err = fClient.UploadRange(ctx, 8*1024*1024, bytes.NewReader(fileData[8*1024*1024:]), nil)
+//	_, err = fClient.UploadRange(ctx, 8*1024*1024, internal.NopCloser(bytes.NewReader(fileData[8*1024*1024:])), nil)
 //	_assert.Nil(err)
 //	serviceSASValues := FileSASSignatureValues{ExpiryTime: time.Now().Add(time.Hour).UTC(),
 //		Permissions: FileSASPermissions{Read: true, Write: true, Create: true}.String(), ShareName: shareName, FilePath: fileName}
-//	credentials, _ := getCredential()
+//	credentials, _ := getGenericCredential(nil, testAccountDefault)
 //	queryParams, err := serviceSASValues.NewSASQueryParameters(credentials)
 //	_assert.Nil(err)
 //	srcFileWithSasURL := fClient.URL()
 //	srcFileWithSasURL.RawQuery = queryParams.Encode()
 //
-//	fsu2, err := getAlternateFSU()
+//	fsu2, err := getGenericCredential(nil, testAccountSecondary)
 //	_assert.Nil(err)
-//	copysrClient, _ := createNewShare(c, fsu2)
+//	copysrClient, _ := createNewShare(_assert, fsu2)
 //	copyfClient, _ := getFileClientFromShare(c, copysrClient)
 //
 //	defer delShare(c, copysrClient, DeleteSnapshotsOptionNone)
@@ -822,23 +826,23 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //	resp2, _ := copyfClient.GetProperties(ctx)
 //	_assert.(resp2.CopyStatus, chk.Equals, CopyStatusAborted)
 //}
-//
-//func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
-//	_assert := assert.New(s.T())
-//	testName := s.T().Name()
-//	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
-//	if err != nil {
-//		s.Fail("Unable to fetch service client because " + err.Error())
-//	}
-//	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
-//
-//	defer delShare(_assert, srClient, nil)
-//
-//	copyfClient := getFileClientFromShare(_assert, generateFileName(testName), srClient)
-//	_, err := copyfClient.AbortCopy(ctx, "copynotstarted")
-//	validateStorageError(_assert, err, ServiceCodeInvalidQueryParameterValue)
-//}
-//
+
+func (s *azfileLiveTestSuite) TestFileAbortCopyNoCopyStarted() {
+	_assert := assert.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := getServiceClient(nil, testAccountDefault, nil)
+	if err != nil {
+		s.Fail("Unable to fetch service client because " + err.Error())
+	}
+	srClient := createNewShare(_assert, generateShareName(testName), svcClient)
+
+	defer delShare(_assert, srClient, nil)
+
+	copyfClient := getFileClientFromShare(_assert, generateFileName(testName), srClient)
+	_, err = copyfClient.AbortCopy(ctx, "copynotstarted", nil)
+	validateStorageError(_assert, err, StorageErrorCodeInvalidQueryParameterValue)
+}
+
 //func (s *azfileLiveTestSuite) TestResizeFile() {
 //	_assert := assert.New(s.T())
 //	testName := s.T().Name()

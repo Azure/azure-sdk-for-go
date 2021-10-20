@@ -79,14 +79,16 @@ func (s ShareClient) NewDirectoryClient(directoryName string) DirectoryClient {
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/create-share.
 func (s ShareClient) Create(ctx context.Context, options *CreateShareOptions) (ShareCreateResponse, error) {
 	formattedOptions := options.format()
-	return s.client.Create(ctx, formattedOptions)
+	shareCreateResponse, err := s.client.Create(ctx, formattedOptions)
+	return shareCreateResponse, handleError(err)
 }
 
 // CreateSnapshot creates a read-only snapshot of a share.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/snapshot-share.
 func (s ShareClient) CreateSnapshot(ctx context.Context, options *CreateShareSnapshotOptions) (ShareCreateSnapshotResponse, error) {
 	formattedOptions := options.format()
-	return s.client.CreateSnapshot(ctx, formattedOptions)
+	shareCreateSnapshotResponse, err := s.client.CreateSnapshot(ctx, formattedOptions)
+	return shareCreateSnapshotResponse, handleError(err)
 }
 
 // Delete marks the specified share or share snapshot for deletion.
@@ -94,14 +96,16 @@ func (s ShareClient) CreateSnapshot(ctx context.Context, options *CreateShareSna
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-share.
 func (s ShareClient) Delete(ctx context.Context, options *DeleteShareOptions) (ShareDeleteResponse, error) {
 	formattedOptions, leaseAccessConditions := options.format()
-	return s.client.Delete(ctx, formattedOptions, leaseAccessConditions)
+	shareDeleteResponse, err := s.client.Delete(ctx, formattedOptions, leaseAccessConditions)
+	return shareDeleteResponse, handleError(err)
 }
 
 // GetProperties returns all user-defined metadata and system properties for the specified share or share snapshot.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-properties.
 func (s ShareClient) GetProperties(ctx context.Context, options *GetSharePropertiesOptions) (ShareGetPropertiesResponse, error) {
 	formattedOptions, leaseAccessCondition := options.format()
-	return s.client.GetProperties(ctx, formattedOptions, leaseAccessCondition)
+	shareGetPropertiesResponse, err := s.client.GetProperties(ctx, formattedOptions, leaseAccessCondition)
+	return shareGetPropertiesResponse, handleError(err)
 }
 
 // SetProperties sets service-defined properties for the specified share.
@@ -109,7 +113,8 @@ func (s ShareClient) GetProperties(ctx context.Context, options *GetSharePropert
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-properties.
 func (s ShareClient) SetProperties(ctx context.Context, options *SetSharePropertiesOptions) (ShareSetPropertiesResponse, error) {
 	formattedOptions, leaseAccessConditions := options.format()
-	return s.client.SetProperties(ctx, formattedOptions, leaseAccessConditions)
+	shareSetPropertiesResponse, err := s.client.SetProperties(ctx, formattedOptions, leaseAccessConditions)
+	return shareSetPropertiesResponse, handleError(err)
 }
 
 // SetMetadata sets the share's metadata.
@@ -119,14 +124,16 @@ func (s ShareClient) SetMetadata(ctx context.Context, metadata map[string]string
 	if err != nil {
 		return ShareSetMetadataResponse{}, err
 	}
-	return s.client.SetMetadata(ctx, formattedOptions, leaseAccessConditions)
+	shareSetMetadataResponse, err := s.client.SetMetadata(ctx, formattedOptions, leaseAccessConditions)
+	return shareSetMetadataResponse, handleError(err)
 }
 
 // GetPermissions returns information about stored access policies specified on the share.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-share-acl.
 func (s ShareClient) GetPermissions(ctx context.Context, options *GetShareAccessPolicyOptions) (ShareGetAccessPolicyResponse, error) {
 	leaseAccessConditions := options.format()
-	return s.client.GetAccessPolicy(ctx, nil, leaseAccessConditions)
+	shareGetAccessPolicyResponse, err := s.client.GetAccessPolicy(ctx, nil, leaseAccessConditions)
+	return shareGetAccessPolicyResponse, handleError(err)
 }
 
 // CreatePermission uploads a SDDL permission string, and returns a permission key to use in conjunction with a file or folder.
@@ -137,24 +144,28 @@ func (s ShareClient) GetPermissions(ctx context.Context, options *GetShareAccess
 // More info about SDDL strings can be located at: https://docs.microsoft.com/en-us/windows/win32/secauthz/security-descriptor-string-format
 func (s ShareClient) CreatePermission(ctx context.Context, sharePermission string, options *CreateSharePermissionOptions) (ShareCreatePermissionResponse, error) {
 	permission := SharePermission{Permission: to.StringPtr(sharePermission)}
-	return s.client.CreatePermission(ctx, permission, nil)
+	shareCreatePermissionResponse, err := s.client.CreatePermission(ctx, permission, nil)
+	return shareCreatePermissionResponse, handleError(err)
 }
 
 // GetPermission obtains a SDDL permission string from the service using a known permission key.
 func (s ShareClient) GetPermission(ctx context.Context, filePermissionKey string, options *GetSharePermissionOptions) (ShareGetPermissionResponse, error) {
-	return s.client.GetPermission(ctx, filePermissionKey, nil)
+	shareGetPermissionResponse, err := s.client.GetPermission(ctx, filePermissionKey, nil)
+	return shareGetPermissionResponse, handleError(err)
 }
 
 // SetPermissions sets a stored access policy for use with shared access signatures.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-share-acl.
 func (s ShareClient) SetPermissions(ctx context.Context, shareACLs []*SignedIdentifier, options *SetShareAccessPolicyOptions) (ShareSetAccessPolicyResponse, error) {
 	shareSetAccessPolicyOptions, leaseAccessConditions := options.format(shareACLs)
-	return s.client.SetAccessPolicy(ctx, shareSetAccessPolicyOptions, leaseAccessConditions)
+	shareSetAccessPolicyResponse, err := s.client.SetAccessPolicy(ctx, shareSetAccessPolicyOptions, leaseAccessConditions)
+	return shareSetAccessPolicyResponse, handleError(err)
 }
 
 // GetStatistics retrieves statistics related to the share.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/get-share-stats.
 func (s ShareClient) GetStatistics(ctx context.Context, options *GetShareStatisticsOptions) (ShareGetStatisticsResponse, error) {
 	formattedOptions, leaseAccessConditions := options.format()
-	return s.client.GetStatistics(ctx, formattedOptions, leaseAccessConditions)
+	shareGetStatisticsResponse, err := s.client.GetStatistics(ctx, formattedOptions, leaseAccessConditions)
+	return shareGetStatisticsResponse, handleError(err)
 }

@@ -59,20 +59,23 @@ func (d DirectoryClient) Create(ctx context.Context, options *CreateDirectoryOpt
 		return DirectoryCreateResponse{}, err
 	}
 
-	return d.client.Create(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, directoryCreateOptions)
+	directoryCreateResponse, err := d.client.Create(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, directoryCreateOptions)
+	return directoryCreateResponse, handleError(err)
 }
 
 // Delete removes the specified empty directory. Note that the directory must be empty before it can be deleted..
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/delete-directory.
 func (d DirectoryClient) Delete(ctx context.Context, options *DeleteDirectoryOptions) (DirectoryDeleteResponse, error) {
-	return d.client.Delete(ctx, nil)
+	directoryDeleteResponse, err := d.client.Delete(ctx, nil)
+	return directoryDeleteResponse, handleError(err)
 }
 
 // GetProperties returns the directory's metadata and system properties.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/get-directory-properties.
 func (d DirectoryClient) GetProperties(ctx context.Context, options *GetDirectoryPropertiesOptions) (DirectoryGetPropertiesResponse, error) {
 	directoryGetPropertiesOptions := options.format()
-	return d.client.GetProperties(ctx, directoryGetPropertiesOptions)
+	directoryGetPropertiesResponse, err := d.client.GetProperties(ctx, directoryGetPropertiesOptions)
+	return directoryGetPropertiesResponse, handleError(err)
 }
 
 //// SetProperties sets the directory's metadata and system properties.
@@ -90,7 +93,8 @@ func (d DirectoryClient) GetProperties(ctx context.Context, options *GetDirector
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-directory-metadata.
 func (d DirectoryClient) SetMetadata(ctx context.Context, options *SetDirectoryMetadataOptions) (DirectorySetMetadataResponse, error) {
 	formattedOptions := options.format()
-	return d.client.SetMetadata(ctx, formattedOptions)
+	directorySetMetadataResponse, err := d.client.SetMetadata(ctx, formattedOptions)
+	return directorySetMetadataResponse, handleError(err)
 }
 
 //// ListFilesAndDirectoriesSegment returns a single segment of files and directories starting from the specified Marker.

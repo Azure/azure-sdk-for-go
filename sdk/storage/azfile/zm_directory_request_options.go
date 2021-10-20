@@ -56,7 +56,7 @@ func (o *CreateDirectoryOptions) format() (fileAttributes string, fileCreationTi
 
 	fileAttributes, fileCreationTime, fileLastWriteTime = o.SMBProperties.format(false, DefaultFileAttributes, DefaultCurrentTimeString)
 
-	filePermission, filePermissionKey, err := o.FilePermissions.format(DefaultFilePermissionStr)
+	filePermission, filePermissionKey, err := o.FilePermissions.format(&DefaultFilePermissionStr)
 	if err != nil {
 		return
 	}

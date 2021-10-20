@@ -51,7 +51,8 @@ func (f FileClient) Create(ctx context.Context, options *CreateFileOptions) (Fil
 	if err != nil {
 		return FileCreateResponse{}, err
 	}
-	return f.client.Create(ctx, fileContentLength, fileAttributes, fileCreationTime, fileLastWriteTime, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions)
+	fileCreateResponse, err := f.client.Create(ctx, fileContentLength, fileAttributes, fileCreationTime, fileLastWriteTime, fileCreateOptions, fileHTTPHeaders, leaseAccessConditions)
+	return fileCreateResponse, handleError(err)
 }
 
 // StartCopy copies the data at the source URL to a file.
@@ -61,14 +62,16 @@ func (f FileClient) StartCopy(ctx context.Context, sourceURL string, options *St
 	if err != nil {
 		return FileStartCopyResponse{}, err
 	}
-	return f.client.StartCopy(ctx, sourceURL, fileStartCopyOptions, copyFileSmbInfo, leaseAccessConditions)
+	fileStartCopyResponse, err := f.client.StartCopy(ctx, sourceURL, fileStartCopyOptions, copyFileSmbInfo, leaseAccessConditions)
+	return fileStartCopyResponse, handleError(err)
 }
 
 // AbortCopy stops a pending copy that was previously started and leaves a destination file with 0 length and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/abort-copy-file.
 func (f FileClient) AbortCopy(ctx context.Context, copyID string, options *AbortFileCopyOptions) (FileAbortCopyResponse, error) {
 	fileAbortCopyOptions, leaseAccessConditions := options.format()
-	return f.client.AbortCopy(ctx, copyID, fileAbortCopyOptions, leaseAccessConditions)
+	fileAbortCopyResponse, err := f.client.AbortCopy(ctx, copyID, fileAbortCopyOptions, leaseAccessConditions)
+	return fileAbortCopyResponse, handleError(err)
 }
 
 // Download downloads Count bytes of data from the start Offset.
@@ -93,7 +96,7 @@ func (f FileClient) Download(ctx context.Context, offset, count int64, options *
 		f:                    f,
 		ctx:                  ctx,
 		info:                 HTTPGetterInfo{Offset: offset, Count: count, ETag: dr.ETag},
-	}, err
+	}, handleError(err)
 }
 
 // Delete immediately removes the file from the storage account.

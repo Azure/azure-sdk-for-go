@@ -482,6 +482,30 @@ func TestCloneWithoutReadOnlyFieldsTime(t *testing.T) {
 	}
 }
 
+func TestCloneWithoutReadOnlyFieldsNilField(t *testing.T) {
+	type zeroValues struct {
+		A *string `json:"a"`
+		B *string `json:"b" azure:"ro"`
+	}
+	expected := zeroValues{}
+	clone := cloneWithoutReadOnlyFields(expected)
+	if reflect.ValueOf(clone).Pointer() == uintptr(unsafe.Pointer(&expected)) {
+		t.Fatal("pointers match, clone was not made")
+	}
+	b, err := json.Marshal(clone)
+	if err != nil {
+		t.Fatal(err)
+	}
+	um := zeroValues{}
+	err = json.Unmarshal(b, &um)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if um.A != expected.A || um.B != expected.B {
+		t.Fatal("unexpected values in unmarshalled struct")
+	}
+}
+
 func TestAzureTagIsReadOnly(t *testing.T) {
 	if azureTagIsReadOnly("") {
 		t.Fatal("unexpected RO for empty string")

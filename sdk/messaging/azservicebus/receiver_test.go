@@ -311,7 +311,7 @@ func TestReceiver_UsingChannel(t *testing.T) {
 		Body: []byte("hello world1"),
 	})
 
-	err = sender.SendMessage(ctx, batch)
+	err = sender.SendMessageBatch(ctx, batch)
 	require.NoError(t, err)
 
 	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
@@ -344,7 +344,6 @@ func TestReceiver_UsingChannel(t *testing.T) {
 
 	require.EqualValues(t, []string{"hello world0", "hello world1", "hello world2", "hello world3"}, getSortedBodies(messages))
 }
-
 
 func TestReceiverOptions(t *testing.T) {
 	// defaults

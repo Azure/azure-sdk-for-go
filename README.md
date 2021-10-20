@@ -34,7 +34,7 @@ You can find the most up to date list of new packages on our [latest page](https
 
 ### Client: Previous Versions
 
-Last stable versions of packages that have been provided for usage with Azure and are production-ready. These libraries provide you with similar functionalities to the Preview ones as they allow you to use and consume existing resources and interact with them, for example: upload a blob. They might not implement the [guidelines](https://azure.github.io/azure-sdk/golang_introduction.html) or have the same feature set as the New releases. They do however offer wider coverage of services.
+The last stable versions of packages that have been provided for usage with Azure are production-ready. These libraries provide you with similar functionalities to the Preview ones as they allow you to use, consume, and interact with existing resources, for example, uploading a blob. They might not implement the [guidelines](https://azure.github.io/azure-sdk/golang_introduction.html) or have the same feature set as the New releases, however they do offer a wider coverage of services.
 
 Previous Go SDK packages are located under [/services folder](https://github.com/Azure/azure-sdk-for-go/tree/master/services), and you can see the full list [on this page](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/services). They might not have the same feature set as the new releases but they do offer wider coverage of services.
 

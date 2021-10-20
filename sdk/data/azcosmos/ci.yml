@@ -24,7 +24,6 @@ stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: 'data/azcosmos'
-    RunTests: true
 - stage: Emulator
   displayName: 'Cosmos Emulator'
   jobs:
@@ -70,11 +69,10 @@ stages:
     - template: /eng/pipelines/templates/steps/create-go-workspace.yml
 
     - template:  /eng/pipelines/templates/steps/build-test.yml
-      parameters: 
+      parameters:
         ServiceDirectory: 'data/azcosmos'
         GoWorkspace: $(GO_WORKSPACE_PATH)
         Image: $(vm.image)
         GoVersion: $(go.version)
-        RunTests: true
-        EnvVars: 
+        EnvVars:
           EMULATOR: 'true'

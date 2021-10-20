@@ -10,17 +10,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/stretchr/testify/require"
 )
 
-func setupLiveTest(t *testing.T, qd *internal.QueueDescription) (*Client, func(), string) {
+func setupLiveTest(t *testing.T, props *QueueProperties) (*Client, func(), string) {
 	cs := getConnectionString(t)
 
 	serviceBusClient, err := NewClientFromConnectionString(cs, nil)
 	require.NoError(t, err)
 
-	queueName, cleanupQueue := createQueue(t, cs, qd)
+	queueName, cleanupQueue := createQueue(t, cs, props)
 
 	testCleanup := func() {
 		require.NoError(t, serviceBusClient.Close(context.Background()))
@@ -44,34 +43,23 @@ func getConnectionString(t *testing.T) string {
 // createQueue creates a queue using a subset of entries in 'queueDescription':
 // - EnablePartitioning
 // - RequiresSession
-func createQueue(t *testing.T, connectionString string, queueDescription *internal.QueueDescription) (string, func()) {
+func createQueue(t *testing.T, connectionString string, queueProperties *QueueProperties) (string, func()) {
 	nanoSeconds := time.Now().UnixNano()
 	queueName := fmt.Sprintf("queue-%X", nanoSeconds)
 
-	qm, err := internal.NewQueueManagerWithConnectionString(connectionString)
+	adminClient, err := NewAdminClientWithConnectionString(connectionString, nil)
 	require.NoError(t, err)
 
-	var opts []internal.QueueManagementOption
-
-	if queueDescription != nil {
-		if queueDescription.EnablePartitioning != nil && *queueDescription.EnablePartitioning {
-			opts = append(opts, internal.QueueEntityWithPartitioning())
-		}
-
-		if queueDescription.RequiresSession != nil && *queueDescription.RequiresSession {
-			opts = append(opts, internal.QueueEntityWithRequiredSessions())
-		}
-
-		if queueDescription.RequiresSession != nil && *queueDescription.RequiresSession {
-			opts = append(opts, internal.QueueEntityWithRequiredSessions())
-		}
+	if queueProperties == nil {
+		queueProperties = &QueueProperties{}
 	}
 
-	_, err = qm.Put(context.TODO(), queueName, opts...)
+	queueProperties.Name = queueName
+	_, err = adminClient.CreateQueueWithProperties(context.Background(), queueProperties)
 	require.NoError(t, err)
 
 	return queueName, func() {
-		if err := qm.Delete(context.TODO(), queueName); err != nil {
+		if _, err := adminClient.DeleteQueue(context.TODO(), queueProperties.Name); err != nil {
 			require.NoError(t, err)
 		}
 	}

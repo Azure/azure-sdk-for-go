@@ -6,7 +6,6 @@ package internal
 import (
 	"context"
 	"errors"
-	"os"
 	"strings"
 	"testing"
 	"time"
@@ -14,38 +13,11 @@ import (
 	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/test"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
 	"github.com/Azure/go-amqp"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/stretchr/testify/require"
-	"github.com/stretchr/testify/suite"
 )
-
-type (
-	serviceBusSuite struct {
-		test.BaseSuite
-	}
-)
-
-func TestSB(t *testing.T) {
-	if os.Getenv("SERVICEBUS_CONNECTION_STRING") == "" {
-		t.Skipf("environment variable SERVICEBUS_CONNECTION_STRING was not set")
-	}
-
-	suite.Run(t, new(serviceBusSuite))
-}
-
-func (suite *serviceBusSuite) TestCreateNamespaceFromConnectionString() {
-	connStr := os.Getenv("SERVICEBUS_CONNECTION_STRING") // `Endpoint=sb://XXXX.servicebus.windows.net/;SharedAccessKeyName=XXXX;SharedAccessKey=XXXX`
-	if connStr == "" {
-		suite.T().Skipf("environment variable SERVICEBUS_CONNECTION_STRING was not set")
-	}
-
-	ns, err := NewNamespace(NamespaceWithConnectionString(connStr))
-	if suite.NoError(err) {
-		suite.Contains(connStr, ns.Name)
-	}
-}
 
 func TestNewNamespaceWithAzureEnvironment(t *testing.T) {
 	ns, err := NewNamespace(NamespaceWithAzureEnvironment("namespaceName", "AzureGermanCloud"))
@@ -114,7 +86,7 @@ func TestNamespaceNegotiateClaim(t *testing.T) {
 
 	ns := &Namespace{
 		baseRetrier:   retrier,
-		TokenProvider: newTokenProviderWithTokenCredential(&fakeTokenCredential{expires: expires}),
+		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: expires}),
 	}
 
 	cbsNegotiateClaimCalled := 0
@@ -163,7 +135,7 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 
 	ns := &Namespace{
 		baseRetrier:   retrier,
-		TokenProvider: newTokenProviderWithTokenCredential(&fakeTokenCredential{expires: expires}),
+		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: expires}),
 	}
 
 	cbsNegotiateClaimCalled := 0
@@ -222,7 +194,7 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {
 	ns := &Namespace{
 		baseRetrier:   noRetryRetrier.Copy(),
-		TokenProvider: newTokenProviderWithTokenCredential(&fakeTokenCredential{expires: time.Now()}),
+		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: time.Now()}),
 	}
 
 	cancel, err := ns.startNegotiateClaimRenewer(
@@ -244,7 +216,7 @@ func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {
 func TestNamespaceNegotiateClaimFails(t *testing.T) {
 	ns := &Namespace{
 		baseRetrier:   noRetryRetrier.Copy(),
-		TokenProvider: newTokenProviderWithTokenCredential(&fakeTokenCredential{expires: time.Now()}),
+		TokenProvider: sbauth.NewTokenProvider(&fakeTokenCredential{expires: time.Now()}),
 	}
 
 	cancel, err := ns.startNegotiateClaimRenewer(
@@ -277,59 +249,6 @@ func TestNamespaceNextClaimRefreshDuration(t *testing.T) {
 		"Just over the max refresh time, so we just get the max instead")
 
 	require.EqualValues(t, 3*time.Minute, nextClaimRefreshDuration(now.Add(3*time.Minute+clockDrift), now))
-}
-
-// TearDownSuite destroys created resources during the run of the suite
-func (suite *serviceBusSuite) TearDownSuite() {
-	suite.BaseSuite.TearDownSuite()
-	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
-	defer cancel()
-	suite.deleteAllTaggedQueues(ctx)
-	suite.deleteAllTaggedTopics(ctx)
-}
-
-func (suite *serviceBusSuite) deleteAllTaggedQueues(ctx context.Context) {
-	qm, err := NewQueueManagerWithConnectionString(suite.ConnStr)
-
-	if err != nil {
-		suite.T().Fatal(err)
-	}
-
-	qs, err := qm.List(ctx)
-	if err != nil {
-		suite.T().Fatal(err)
-	}
-
-	for _, q := range qs {
-		if strings.HasSuffix(q.Name, suite.TagID) {
-			err := qm.Delete(ctx, q.Name)
-			if err != nil {
-				suite.T().Fatal(err)
-			}
-		}
-	}
-}
-
-func (suite *serviceBusSuite) deleteAllTaggedTopics(ctx context.Context) {
-	tm, err := NewTopicManagerWithConnectionString(suite.ConnStr)
-
-	if err != nil {
-		suite.T().Fatal(err)
-	}
-
-	topics, err := tm.List(ctx)
-	if err != nil {
-		suite.T().Fatal(err)
-	}
-
-	for _, topic := range topics {
-		if strings.HasSuffix(topic.Name, suite.TagID) {
-			err := tm.Delete(ctx, topic.Name)
-			if err != nil {
-				suite.T().Fatal(err)
-			}
-		}
-	}
 }
 
 var noRetryRetrier = NewBackoffRetrier(struct {

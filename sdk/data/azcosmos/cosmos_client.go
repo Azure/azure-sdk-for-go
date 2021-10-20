@@ -12,7 +12,7 @@ import (
 type Client struct {
 	endpoint   string
 	connection *cosmosClientConnection
-	cred       *SharedKeyCredential
+	cred       *KeyCredential
 	options    *CosmosClientOptions
 }
 
@@ -21,11 +21,11 @@ func (c *Client) Endpoint() string {
 	return c.endpoint
 }
 
-// NewClientWithSharedKey creates a new instance of Cosmos client with the specified values. It uses the default pipeline configuration.
+// NewClientWithKey creates a new instance of Cosmos client with the specified values. It uses the default pipeline configuration.
 // endpoint - The cosmos service endpoint to use.
 // cred - The credential used to authenticate with the cosmos service.
 // options - Optional Cosmos client options.  Pass nil to accept default values.
-func NewClientWithSharedKey(endpoint string, cred *SharedKeyCredential, options *CosmosClientOptions) (*Client, error) {
+func NewClientWithKey(endpoint string, cred *KeyCredential, options *CosmosClientOptions) (*Client, error) {
 	if options == nil {
 		options = &CosmosClientOptions{}
 	}

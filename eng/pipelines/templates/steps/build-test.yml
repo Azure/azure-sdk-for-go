@@ -14,9 +14,6 @@ parameters:
   - name:  TestProxy
     type: boolean
     default: false
-  - name:  RunTests
-    type: boolean
-    default: false
   - name: EnvVars
     type: object
     default: {}
@@ -44,56 +41,48 @@ steps:
       arguments: -vet -skipBuild -filter '${{ parameters.ServiceDirectory }}'
       workingDirectory: '${{ parameters.GoWorkspace }}'
 
-  - ${{ if eq(parameters.RunTests, 'true') }}:
+  - pwsh: |
+      go install github.com/jstemmer/go-junit-report@v0.9.1
+      go install github.com/axw/gocov/gocov@v1.0.0
+      go install github.com/AlekSi/gocov-xml@v1.0.0
+      go install github.com/matm/gocov-html@v0.0.0-20200509184451-71874e2e203b
+    displayName: "Install Coverage and Junit Dependencies"
+    workingDirectory: '${{parameters.GoWorkspace}}'
+
+  - ${{ if eq(parameters.TestProxy, true) }}:
+    - template: /eng/common/testproxy/test-proxy-docker.yml
+
+  - task: PowerShell@2
+    displayName: 'Run Tests'
+    inputs:
+      targetType: 'filePath'
+      filePath: ./eng/scripts/run_tests.ps1
+      arguments: '${{ parameters.ServiceDirectory }}'
+      pwsh: true
+    env:
+      GO111MODULE: 'on'
+      PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
+      ${{ insert }}: ${{ parameters.EnvVars }}
+
+  - ${{ if eq(parameters.TestProxy, true) }}:
     - pwsh: |
-        go install github.com/jstemmer/go-junit-report@v0.9.1
-        go install github.com/axw/gocov/gocov@v1.0.0
-        go install github.com/AlekSi/gocov-xml@v1.0.0
-        go install github.com/matm/gocov-html@v0.0.0-20200509184451-71874e2e203b
-        go install github.com/wadey/gocovmerge@v0.0.0-20160331181800-b5bfa59ec0ad
-      displayName: "Install Coverage and Junit Dependencies"
-      workingDirectory: '${{parameters.GoWorkspace}}'
-
-    - ${{ if eq(parameters.TestProxy, true) }}:
-      - template: /eng/common/testproxy/test-proxy-docker.yml
-
-    - task: PowerShell@2
-      displayName: 'Run Tests'
-      inputs:
-        targetType: 'filePath'
-        filePath: ./eng/scripts/run_tests.ps1
-        arguments: '${{ parameters.ServiceDirectory }}'
-        pwsh: true
-      env:
-        GO111MODULE: 'on'
-        PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
-        ${{ insert }}: ${{ parameters.EnvVars }}
-
-    - ${{ if eq(parameters.TestProxy, true) }}:
-      - pwsh: |
-          # ambitious_azsdk_test_proxy is the hardcoded container name used
-          # by the test proxy startup script
-          docker logs ambitious_azsdk_test_proxy
-        displayName: 'Dump Test Proxy logs'
-        condition: succeededOrFailed()
-
-    - pwsh: ./eng/scripts/create_coverage.ps1 ${{parameters.ServiceDirectory}}
-      displayName: 'Generate Coverage XML'
-      env:
-        GO111MODULE: 'off'
-
-    - task: PublishTestResults@2
+        # ambitious_azsdk_test_proxy is the hardcoded container name used
+        # by the test proxy startup script
+        docker logs ambitious_azsdk_test_proxy
+      displayName: 'Dump Test Proxy logs'
       condition: succeededOrFailed()
-      inputs:
-        testRunner: JUnit
-        testResultsFiles: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/**/report.xml'
-        testRunTitle: 'Go ${{ parameters.GoVersion }} on ${{ parameters.Image }}'
-        failTaskOnFailedTests: true
 
-    - task: PublishCodeCoverageResults@1
-      condition: succeededOrFailed()
-      inputs:
-        codeCoverageTool: Cobertura
-        summaryFileLocation: './coverage.xml'
-        additionalCodeCoverageFiles: './coverage.html'
-        failIfCoverageEmpty: true
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testRunner: JUnit
+      testResultsFiles: '${{parameters.GoWorkspace}}sdk/${{parameters.ServiceDirectory}}/**/report.xml'
+      testRunTitle: 'Go ${{ parameters.GoVersion }} on ${{ parameters.Image }}'
+      failTaskOnFailedTests: true
+
+  - task: PublishCodeCoverageResults@1
+    condition: succeededOrFailed()
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: './coverage.xml'
+      additionalCodeCoverageFiles: './coverage.html'

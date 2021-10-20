@@ -25,7 +25,6 @@ if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simpl
     # Tests were actually run create a coverage report
     $repoRoot = Resolve-Path "$PSScriptRoot/../../"
 
-    # gocovmerge coverage.txt > mergedCoverage.txt
     gocov convert ./coverage.txt > ./coverage.json
 
     # gocov converts rely on standard input

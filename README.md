@@ -41,7 +41,7 @@ Previous Go SDK packages are located under [/services folder](https://github.com
 ### Management: New Releases
 A new set of management libraries that follow the [Azure SDK Design Guidelines for Go](https://azure.github.io/azure-sdk/golang_introduction.html). These new libraries provide a number of core capabilities that are shared amongst all Azure SDKs, including the intuitive Azure Identity library, an HTTP Pipeline with custom policies, error-handling, distributed tracing, and much more.
 
-To get started, please follow the [quickstart guide here](https://aka.ms/azsdk/go/mgmt). To see the benefits of migrating to the new libraries, please visit this [migration guide](https://aka.ms/azsdk/go/mgmt/migration) that shows how to transition from older versions of libraries.
+To get started, please follow the [quickstart guide here](https://aka.ms/azsdk/go/mgmt). To see the benefits of migrating and how to migrate to the new libraries, please visit the[migration guide](https://aka.ms/azsdk/go/mgmt/migration).
 
 You can find the [most up to date list of all of the new packages on our page](https://azure.github.io/azure-sdk/releases/latest/mgmt/go.html)
 

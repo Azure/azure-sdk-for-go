@@ -388,7 +388,10 @@ func TestRecordingOptions(t *testing.T) {
 	require.Equal(t, r.HostScheme(), "http://localhost:5000")
 
 	require.Equal(t, GetEnvVariable(t, "Nonexistentevnvar", "somefakevalue"), "somefakevalue")
+	temp := recordMode
+	recordMode = RecordingMode
 	require.NotEqual(t, GetEnvVariable(t, "PROXY_CERT", "fake/path/to/proxycert"), "fake/path/to/proxycert")
+	recordMode = temp
 
 	r.Init()
 	require.Equal(t, r.Host, "localhost:5000")
@@ -519,7 +522,7 @@ type Entry struct {
 
 func TestLiveModeOnly(t *testing.T) {
 	LiveOnly(t)
-	if GetRecordMode() == modePlayback {
+	if GetRecordMode() == PlaybackMode {
 		t.Fatalf("Test should not run in playback")
 	}
 }
@@ -528,7 +531,7 @@ func TestSleep(t *testing.T) {
 	start := time.Now()
 	Sleep(time.Second * 5)
 	duration := time.Since(start)
-	if GetRecordMode() == modePlayback {
+	if GetRecordMode() == PlaybackMode {
 		if duration > (time.Second * 1) {
 			t.Fatalf("Sleep took longer than five seconds")
 		}
@@ -553,8 +556,16 @@ func TestBackwardSlashPath(t *testing.T) {
 	os.Setenv("AZURE_RECORD_MODE", "record")
 	defer os.Unsetenv("AZURE_RECORD_MODE")
 
-	packagePathBackslash := "sdk\\internal\\recordings"
+	packagePathBackslash := "sdk\\internal\\recording"
 
 	err := StartRecording(t, packagePathBackslash, nil)
-	require.Error(t, err)
+	require.NoError(t, err)
+	err = StopRecording(t, nil)
+	require.NoError(t, err)
+}
+
+func TestLiveOnly(t *testing.T) {
+	require.Equal(t, IsLiveOnly(t), false)
+	LiveOnly(t)
+	require.Equal(t, IsLiveOnly(t), true)
 }

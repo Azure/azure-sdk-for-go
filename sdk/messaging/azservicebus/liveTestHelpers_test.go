@@ -17,7 +17,7 @@ import (
 func setupLiveTest(t *testing.T, qd *internal.QueueDescription) (*Client, func(), string) {
 	cs := getConnectionString(t)
 
-	serviceBusClient, err := NewClientWithConnectionString(cs, nil)
+	serviceBusClient, err := NewClientFromConnectionString(cs, nil)
 	require.NoError(t, err)
 
 	queueName, cleanupQueue := createQueue(t, cs, qd)
@@ -47,10 +47,9 @@ func getConnectionString(t *testing.T) string {
 func createQueue(t *testing.T, connectionString string, queueDescription *internal.QueueDescription) (string, func()) {
 	nanoSeconds := time.Now().UnixNano()
 	queueName := fmt.Sprintf("queue-%X", nanoSeconds)
-	ns, err := internal.NewNamespace(internal.NamespaceWithConnectionString(connectionString))
-	require.NoError(t, err)
 
-	qm := internal.NewQueueManager(ns.GetHTTPSHostURI(), ns.TokenProvider)
+	qm, err := internal.NewQueueManagerWithConnectionString(connectionString)
+	require.NoError(t, err)
 
 	var opts []internal.QueueManagementOption
 
@@ -59,7 +58,11 @@ func createQueue(t *testing.T, connectionString string, queueDescription *intern
 			opts = append(opts, internal.QueueEntityWithPartitioning())
 		}
 
-		if queueDescription != nil && queueDescription.RequiresSession != nil && *queueDescription.RequiresSession {
+		if queueDescription.RequiresSession != nil && *queueDescription.RequiresSession {
+			opts = append(opts, internal.QueueEntityWithRequiredSessions())
+		}
+
+		if queueDescription.RequiresSession != nil && *queueDescription.RequiresSession {
 			opts = append(opts, internal.QueueEntityWithRequiredSessions())
 		}
 	}

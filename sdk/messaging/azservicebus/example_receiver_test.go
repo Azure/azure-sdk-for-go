@@ -13,23 +13,46 @@ import (
 
 func ExampleClient_NewReceiverForSubscription() {
 	receiver, err = client.NewReceiverForSubscription(
-		topicName,
-		subscriptionName,
-		&azservicebus.ReceiverOptions{
-			ReceiveMode: azservicebus.PeekLock,
-		},
-	)
-	exitOnError("Failed to create receiver", err)
-}
-
-func ExampleClient_NewReceiverForQueue() {
-	receiver, err = client.NewReceiverForQueue(
-		queueName,
+		"exampleTopic",
+		"exampleSubscription",
 		&azservicebus.ReceiverOptions{
 			ReceiveMode: azservicebus.PeekLock,
 		},
 	)
 	exitOnError("Failed to create Receiver", err)
+}
+
+func ExampleClient_NewReceiverForQueue() {
+	receiver, err = client.NewReceiverForQueue(
+		"exampleQueue",
+		&azservicebus.ReceiverOptions{
+			ReceiveMode: azservicebus.PeekLock,
+		},
+	)
+	exitOnError("Failed to create Receiver", err)
+}
+
+func ExampleClient_NewReceiverForQueue_deadLetterQueue() {
+	receiver, err = client.NewReceiverForQueue(
+		"exampleQueue",
+		&azservicebus.ReceiverOptions{
+			ReceiveMode: azservicebus.PeekLock,
+			SubQueue:    azservicebus.SubQueueDeadLetter,
+		},
+	)
+	exitOnError("Failed to create Receiver for DeadLetterQueue", err)
+}
+
+func ExampleClient_NewReceiverForSubscription_deadLetterQueue() {
+	receiver, err = client.NewReceiverForSubscription(
+		"exampleTopic",
+		"exampleSubscription",
+		&azservicebus.ReceiverOptions{
+			ReceiveMode: azservicebus.PeekLock,
+			SubQueue:    azservicebus.SubQueueDeadLetter,
+		},
+	)
+	exitOnError("Failed to create Receiver for DeadLetterQueue", err)
 }
 
 func ExampleReceiver_ReceiveMessages() {

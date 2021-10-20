@@ -10,7 +10,7 @@ import (
 
 func ExampleNewClient() {
 	// NOTE: If you'd like to authenticate using a Service Bus connection string
-	// look at `NewClientWithConnectionString` instead.
+	// look at `NewClientFromConnectionString` instead.
 
 	credential, err := azidentity.NewDefaultAzureCredential(nil)
 	exitOnError("Failed to create a DefaultAzureCredential", err)
@@ -19,10 +19,10 @@ func ExampleNewClient() {
 	exitOnError("Failed to create ServiceBusClient in example", err)
 }
 
-func ExampleNewClientWithConnectionString() {
+func ExampleNewClientFromConnectionString() {
 	// NOTE: If you'd like to authenticate via Azure Active Directory look at
 	// the `NewClient` function instead.
 
-	client, err = azservicebus.NewClientWithConnectionString(connectionString, nil)
+	client, err = azservicebus.NewClientFromConnectionString(connectionString, nil)
 	exitOnError("Failed to create ServiceBusClient in example", err)
 }

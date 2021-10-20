@@ -21,7 +21,7 @@ func TestDatabaseResponseParsing(t *testing.T) {
 		Time: time.Unix(nowAsUnix, 0),
 	}
 
-	properties := &CosmosDatabaseProperties{
+	properties := &DatabaseProperties{
 		Id:           "someId",
 		ETag:         "someEtag",
 		SelfLink:     "someSelfLink",
@@ -29,7 +29,7 @@ func TestDatabaseResponseParsing(t *testing.T) {
 		LastModified: &now,
 	}
 
-	database := &CosmosDatabase{
+	database := &Database{
 		Id: "someId",
 	}
 
@@ -53,7 +53,7 @@ func TestDatabaseResponseParsing(t *testing.T) {
 
 	pl := azruntime.NewPipeline(srv)
 	resp, _ := pl.Do(req)
-	parsedResponse, err := newCosmosDatabaseResponse(resp, database)
+	parsedResponse, err := newDatabaseResponse(resp, database)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -86,16 +86,16 @@ func TestDatabaseResponseParsing(t *testing.T) {
 		t.Errorf("Expected properties.LastModified.Time to be %s, but got %s", properties.LastModified.Time.UTC(), parsedResponse.DatabaseProperties.LastModified.Time.UTC())
 	}
 
-	if parsedResponse.ActivityId() != "someActivityId" {
-		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId())
+	if parsedResponse.ActivityId != "someActivityId" {
+		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId)
 	}
 
-	if parsedResponse.RequestCharge() != 13.42 {
-		t.Errorf("Expected RequestCharge to be %f, but got %f", 13.42, parsedResponse.RequestCharge())
+	if parsedResponse.RequestCharge != 13.42 {
+		t.Errorf("Expected RequestCharge to be %f, but got %f", 13.42, parsedResponse.RequestCharge)
 	}
 
-	if parsedResponse.ETag() != "someEtag" {
-		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ActivityId())
+	if parsedResponse.ETag != "someEtag" {
+		t.Errorf("Expected ETag to be %s, but got %s", "someEtag", parsedResponse.ETag)
 	}
 
 	if parsedResponse.DatabaseProperties.Database != database {

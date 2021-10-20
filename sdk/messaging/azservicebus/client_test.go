@@ -19,8 +19,8 @@ func TestNewClientWithAzureIdentity(t *testing.T) {
 	defer cleanup()
 
 	// test with azure identity support
-	ns := os.Getenv("SERVICEBUS_FQDN")
-	dac, err := azidentity.NewDefaultAzureCredential(nil)
+	ns := os.Getenv("SERVICEBUS_ENDPOINT")
+	dac, err := azidentity.NewEnvironmentCredential(nil)
 
 	if err != nil || ns == "" {
 		t.Skip("Azure Identity compatible credentials not configured")
@@ -69,7 +69,7 @@ func TestNewClientUnitTests(t *testing.T) {
 		require.EqualValues(t, fakeTokenCredential, client.config.credential)
 		require.EqualValues(t, "mysb.windows.servicebus.net", client.config.fullyQualifiedNamespace)
 
-		_, err = NewClientWithConnectionString("", nil)
+		_, err = NewClientFromConnectionString("", nil)
 		require.EqualError(t, err, "connectionString must not be empty")
 
 		_, err = NewClient("", fakeTokenCredential, nil)

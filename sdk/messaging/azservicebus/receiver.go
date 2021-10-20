@@ -100,7 +100,7 @@ func applyReceiverOptions(receiver *Receiver, entity *entity, options *ReceiverO
 	return nil
 }
 
-func newReceiver(ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupOnClose func(), options *ReceiverOptions) (*Receiver, error) {
+func newReceiver(ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupOnClose func(), options *ReceiverOptions, newLinksFn func(ctx context.Context, session internal.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error)) (*Receiver, error) {
 	receiver := &Receiver{
 		lastPeekedSequenceNumber: 0,
 		// TODO: make this configurable
@@ -124,10 +124,14 @@ func newReceiver(ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupO
 		return nil, err
 	}
 
-	receiver.amqpLinks = ns.NewAMQPLinks(entityPath, func(ctx context.Context, session internal.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
-		linkOptions := createLinkOptions(receiver.receiveMode, entityPath)
-		return createReceiverLink(ctx, session, linkOptions)
-	})
+	if newLinksFn == nil {
+		newLinksFn = func(ctx context.Context, session internal.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
+			linkOptions := createLinkOptions(receiver.receiveMode, entityPath)
+			return createReceiverLink(ctx, session, linkOptions)
+		}
+	}
+
+	receiver.amqpLinks = ns.NewAMQPLinks(entityPath, newLinksFn)
 
 	// 'nil' settler handles returning an error message for receiveAndDelete links.
 	if receiver.receiveMode == PeekLock {

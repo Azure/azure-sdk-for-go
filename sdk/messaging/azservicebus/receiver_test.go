@@ -246,7 +246,7 @@ func TestReceiverPeek(t *testing.T) {
 		require.True(t, added)
 	}
 
-	err = sender.SendMessage(ctx, batch)
+	err = sender.SendMessageBatch(ctx, batch)
 	require.NoError(t, err)
 
 	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)

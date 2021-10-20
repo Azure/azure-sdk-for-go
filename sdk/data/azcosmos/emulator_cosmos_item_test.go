@@ -15,14 +15,14 @@ func TestItemCRUD(t *testing.T) {
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
-	properties := CosmosContainerProperties{
+	properties := ContainerProperties{
 		Id: "aContainer",
 		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths: []string{"/id"},
 		},
 	}
 
-	resp, err := database.CreateContainer(context.TODO(), properties, nil, nil)
+	resp, err := database.CreateContainer(context.TODO(), properties, nil)
 	if err != nil {
 		t.Fatalf("Failed to create container: %v", err)
 	}
@@ -38,9 +38,13 @@ func TestItemCRUD(t *testing.T) {
 		t.Fatalf("Failed to create pk: %v", err)
 	}
 
-	itemResponse, err := container.CreateItem(context.TODO(), pk, item, nil)
+	itemResponse, err := container.CreateItem(context.TODO(), *pk, item, nil)
 	if err != nil {
 		t.Fatalf("Failed to create item: %v", err)
+	}
+
+	if itemResponse.SessionToken == "" {
+		t.Fatalf("Session token is empty")
 	}
 
 	// No content on write by default
@@ -48,7 +52,7 @@ func TestItemCRUD(t *testing.T) {
 		t.Fatalf("Expected empty response, got %v", itemResponse.Value)
 	}
 
-	itemResponse, err = container.ReadItem(context.TODO(), pk, "1", nil)
+	itemResponse, err = container.ReadItem(context.TODO(), *pk, "1", nil)
 	if err != nil {
 		t.Fatalf("Failed to read item: %v", err)
 	}
@@ -70,7 +74,7 @@ func TestItemCRUD(t *testing.T) {
 	}
 
 	item["value"] = "3"
-	itemResponse, err = container.ReplaceItem(context.TODO(), pk, "1", item, &CosmosItemRequestOptions{EnableContentResponseOnWrite: true})
+	itemResponse, err = container.ReplaceItem(context.TODO(), *pk, "1", item, &ItemOptions{EnableContentResponseOnWrite: true})
 	if err != nil {
 		t.Fatalf("Failed to replace item: %v", err)
 	}
@@ -92,7 +96,7 @@ func TestItemCRUD(t *testing.T) {
 	}
 
 	item["value"] = "4"
-	itemResponse, err = container.UpsertItem(context.TODO(), pk, item, &CosmosItemRequestOptions{EnableContentResponseOnWrite: true})
+	itemResponse, err = container.UpsertItem(context.TODO(), *pk, item, &ItemOptions{EnableContentResponseOnWrite: true})
 	if err != nil {
 		t.Fatalf("Failed to upsert item: %v", err)
 	}
@@ -113,7 +117,7 @@ func TestItemCRUD(t *testing.T) {
 		t.Fatalf("Expected value to be 4, got %v", itemResponseBody["value"])
 	}
 
-	itemResponse, err = container.DeleteItem(context.TODO(), pk, "1", nil)
+	itemResponse, err = container.DeleteItem(context.TODO(), *pk, "1", nil)
 	if err != nil {
 		t.Fatalf("Failed to replace item: %v", err)
 	}

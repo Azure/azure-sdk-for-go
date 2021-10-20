@@ -45,6 +45,7 @@ const (
 	filePrefix                  = "azftestfile"
 	fileDefaultData             = "GoFileDefaultData"
 	invalidHeaderErrorSubstring = "invalid header field"
+	validationErrorSubstring    = "validation failed"
 )
 
 // Testsuite -----------------------------------------------------------------------------------------------------------

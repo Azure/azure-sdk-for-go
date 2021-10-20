@@ -14,9 +14,6 @@ parameters:
   - name:  TestProxy
     type: boolean
     default: false
-  # - name:  RunTests
-  #   type: boolean
-  #   default: false
   - name: EnvVars
     type: object
     default: {}
@@ -44,7 +41,6 @@ steps:
       arguments: -vet -skipBuild -filter '${{ parameters.ServiceDirectory }}'
       workingDirectory: '${{ parameters.GoWorkspace }}'
 
-  # - ${{ if eq(parameters.RunTests, 'true') }}:
   - pwsh: |
       go install github.com/jstemmer/go-junit-report@v0.9.1
       go install github.com/axw/gocov/gocov@v1.0.0

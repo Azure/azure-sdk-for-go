@@ -12,13 +12,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // CustomAssessmentAutomationsClient contains the methods for the CustomAssessmentAutomations group.
@@ -37,7 +36,7 @@ func NewCustomAssessmentAutomationsClient(con *arm.Connection, subscriptionID st
 // Create - Creates or updates a custom assessment automation for the provided subscription. Please note that providing an existing custom assessment automation
 // will replace the existing record.
 // If the operation fails it returns the *CloudError error type.
-func (client *CustomAssessmentAutomationsClient) Create(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, customAssessmentAutomationBody CustomAssessmentAutomation, options *CustomAssessmentAutomationsCreateOptions) (CustomAssessmentAutomationsCreateResponse, error) {
+func (client *CustomAssessmentAutomationsClient) Create(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, customAssessmentAutomationBody CustomAssessmentAutomationRequest, options *CustomAssessmentAutomationsCreateOptions) (CustomAssessmentAutomationsCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, customAssessmentAutomationName, customAssessmentAutomationBody, options)
 	if err != nil {
 		return CustomAssessmentAutomationsCreateResponse{}, err
@@ -53,7 +52,7 @@ func (client *CustomAssessmentAutomationsClient) Create(ctx context.Context, res
 }
 
 // createCreateRequest creates the Create request.
-func (client *CustomAssessmentAutomationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, customAssessmentAutomationBody CustomAssessmentAutomation, options *CustomAssessmentAutomationsCreateOptions) (*policy.Request, error) {
+func (client *CustomAssessmentAutomationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, customAssessmentAutomationBody CustomAssessmentAutomationRequest, options *CustomAssessmentAutomationsCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Security/customAssessmentAutomations/{customAssessmentAutomationName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")

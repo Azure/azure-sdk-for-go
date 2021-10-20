@@ -10,7 +10,7 @@ package armsecurity
 
 const (
 	module  = "armsecurity"
-	version = "v0.1.0"
+	version = "v0.2.0"
 )
 
 // AADConnectivityState - The connectivity state of the external AAD solution
@@ -754,21 +754,21 @@ func (c Enum58) ToPtr() *Enum58 {
 	return &c
 }
 
-type Enum6 string
+type Enum7 string
 
 const (
-	Enum6Current Enum6 = "current"
+	Enum7Current Enum7 = "current"
 )
 
-// PossibleEnum6Values returns the possible values for the Enum6 const type.
-func PossibleEnum6Values() []Enum6 {
-	return []Enum6{
-		Enum6Current,
+// PossibleEnum7Values returns the possible values for the Enum7 const type.
+func PossibleEnum7Values() []Enum7 {
+	return []Enum7{
+		Enum7Current,
 	}
 }
 
-// ToPtr returns a *Enum6 pointing to the current value.
-func (c Enum6) ToPtr() *Enum6 {
+// ToPtr returns a *Enum7 pointing to the current value.
+func (c Enum7) ToPtr() *Enum7 {
 	return &c
 }
 

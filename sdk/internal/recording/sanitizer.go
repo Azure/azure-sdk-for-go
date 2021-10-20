@@ -142,7 +142,6 @@ func AddBodyKeySanitizer(jsonPath, value, regex string, options *RecordingOption
 	return handleProxyResponse(client.Do(req))
 }
 
-
 // AddBodyRegexSanitizer offers regex replace within a returned JSON body. value is the
 // substitution value, regex can be a simple regex or a substitution operation if
 // options.GroupForReplace is set.

@@ -91,7 +91,13 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 		return nil, expectedErr
 	}
 	b := NewBearerTokenPolicy(failCredential, AuthenticationOptions{})
-	pipeline := newTestPipeline(&policy.ClientOptions{Transport: srv, PerRetryPolicies: []policy.Policy{b}})
+	pipeline := newTestPipeline(&policy.ClientOptions{
+		Transport: srv,
+		Retry: policy.RetryOptions{
+			RetryDelay: 10 * time.Millisecond,
+		},
+		PerRetryPolicies: []policy.Policy{b},
+	})
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)

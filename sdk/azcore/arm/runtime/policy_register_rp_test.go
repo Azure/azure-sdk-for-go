@@ -100,13 +100,13 @@ func TestRPRegistrationPolicySuccess(t *testing.T) {
 		t.Fatal(err)
 	}
 	// log only RP registration
-	log.SetClassifications(LogRPRegistration)
+	log.SetEvents(LogRPRegistration)
 	defer func() {
 		// reset logging
-		log.SetClassifications()
+		log.SetEvents()
 	}()
 	logEntries := 0
-	log.SetListener(func(cls log.Classification, msg string) {
+	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
 	resp, err := pl.Do(req)
@@ -140,12 +140,12 @@ func TestRPRegistrationPolicyNA(t *testing.T) {
 		t.Fatal(err)
 	}
 	// log only RP registration
-	log.SetClassifications(LogRPRegistration)
+	log.SetEvents(LogRPRegistration)
 	defer func() {
 		// reset logging
-		log.SetClassifications()
+		log.SetEvents()
 	}()
-	log.SetListener(func(cls log.Classification, msg string) {
+	log.SetListener(func(cls log.Event, msg string) {
 		t.Fatalf("unexpected log entry %s: %s", cls, msg)
 	})
 	resp, err := pl.Do(req)
@@ -179,12 +179,12 @@ func TestRPRegistrationPolicy409Other(t *testing.T) {
 		t.Fatal(err)
 	}
 	// log only RP registration
-	log.SetClassifications(LogRPRegistration)
+	log.SetEvents(LogRPRegistration)
 	defer func() {
 		// reset logging
-		log.SetClassifications()
+		log.SetEvents()
 	}()
-	log.SetListener(func(cls log.Classification, msg string) {
+	log.SetListener(func(cls log.Event, msg string) {
 		t.Fatalf("unexpected log entry %s: %s", cls, msg)
 	})
 	resp, err := pl.Do(req)
@@ -210,13 +210,13 @@ func TestRPRegistrationPolicyTimesOut(t *testing.T) {
 		t.Fatal(err)
 	}
 	// log only RP registration
-	log.SetClassifications(LogRPRegistration)
+	log.SetEvents(LogRPRegistration)
 	defer func() {
 		// reset logging
-		log.SetClassifications()
+		log.SetEvents()
 	}()
 	logEntries := 0
-	log.SetListener(func(cls log.Classification, msg string) {
+	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
 	resp, err := pl.Do(req)
@@ -254,13 +254,13 @@ func TestRPRegistrationPolicyExceedsAttempts(t *testing.T) {
 		t.Fatal(err)
 	}
 	// log only RP registration
-	log.SetClassifications(LogRPRegistration)
+	log.SetEvents(LogRPRegistration)
 	defer func() {
 		// reset logging
-		log.SetClassifications()
+		log.SetEvents()
 	}()
 	logEntries := 0
-	log.SetListener(func(cls log.Classification, msg string) {
+	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
 	resp, err := pl.Do(req)
@@ -298,13 +298,13 @@ func TestRPRegistrationPolicyCanCancel(t *testing.T) {
 	opts.Transport = srv
 	pl := newTestRPRegistrationPipeline(srv)
 	// log only RP registration
-	log.SetClassifications(LogRPRegistration)
+	log.SetEvents(LogRPRegistration)
 	defer func() {
 		// reset logging
-		log.SetClassifications()
+		log.SetEvents()
 	}()
 	logEntries := 0
-	log.SetListener(func(cls log.Classification, msg string) {
+	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
 
@@ -355,13 +355,13 @@ func TestRPRegistrationPolicyDisabled(t *testing.T) {
 		t.Fatal(err)
 	}
 	// log only RP registration
-	log.SetClassifications(LogRPRegistration)
+	log.SetEvents(LogRPRegistration)
 	defer func() {
 		// reset logging
-		log.SetClassifications()
+		log.SetEvents()
 	}()
 	logEntries := 0
-	log.SetListener(func(cls log.Classification, msg string) {
+	log.SetListener(func(cls log.Event, msg string) {
 		logEntries++
 	})
 	resp, err := pl.Do(req)

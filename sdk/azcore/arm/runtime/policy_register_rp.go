@@ -27,7 +27,7 @@ import (
 const (
 	// LogRPRegistration entries contain information specific to the automatic registration of an RP.
 	// Entries of this classification are written IFF the policy needs to take any action.
-	LogRPRegistration log.Classification = "RPRegistration"
+	LogRPRegistration log.Event = "RPRegistration"
 )
 
 // RegistrationOptions configures the registration policy's behavior.

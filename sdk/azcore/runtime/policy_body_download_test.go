@@ -11,6 +11,7 @@ import (
 	"io"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -73,7 +74,12 @@ func TestDownloadBodyFail(t *testing.T) {
 	defer close()
 	srv.SetResponse(mock.WithBodyReadError())
 	// download policy is automatically added during pipeline construction
-	pl := newTestPipeline(&policy.ClientOptions{Transport: srv})
+	pl := newTestPipeline(&policy.ClientOptions{
+		Transport: srv,
+		Retry: policy.RetryOptions{
+			RetryDelay: 10 * time.Millisecond,
+		},
+	})
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)

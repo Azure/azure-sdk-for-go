@@ -26,7 +26,7 @@ Each service might have a number of libraries available from each of the followi
 
 ### Client: New Releases
 
-New wave of packages that we are announcing as **GA** and several that are currently releasing in **preview**. These libraries allow you to use and consume existing resources and interact with them, for example: upload a blob. These libraries share a number of core functionalities such as: retries, logging, transport protocols, authentication protocols, etc. that can be found in the [azcore](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azcore) library. You can learn more about these libraries by reading guidelines that they follow [here](https://azure.github.io/azure-sdk/golang_introduction.html).
+We have a new wave of packages that are being announced as **GA** and several that are currently released in **preview**. These libraries allow you to use, consume, and interact with existing resources, for example, uploading a blob. These libraries share a number of core functionalities including retries, logging, transport protocols, authentication protocols, etc. that can be found in the [azcore](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/azcore) library. You can learn more about these libraries by reading about the [Azure SDK Go guidelines](https://azure.github.io/azure-sdk/golang_introduction.html).
 
 You can find the [most up to date list of all of the new packages on our page](https://azure.github.io/azure-sdk/releases/latest/index.html#go).  Those new libraries can be identified by locating them under the `/sdk` directory in the repo, and you can find the corresponding references [here](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk).
 

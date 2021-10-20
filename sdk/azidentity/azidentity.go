@@ -142,13 +142,19 @@ func setAuthorityHost(authorityHost AuthorityHost) (string, error) {
 
 // newDefaultPipeline creates a pipeline using the specified pipeline options.
 func newDefaultPipeline(o pipelineOptions) runtime.Pipeline {
-	policies := []policy.Policy{}
+	perCall := []policy.Policy{}
 	if !o.Telemetry.Disabled {
-		policies = append(policies, runtime.NewTelemetryPolicy(component, version, &o.Telemetry))
+		perCall = append(perCall, runtime.NewTelemetryPolicy(component, version, &o.Telemetry))
 	}
-	policies = append(policies, runtime.NewRetryPolicy(&o.Retry))
-	policies = append(policies, runtime.NewLogPolicy(&o.Logging))
-	return runtime.NewPipeline(o.HTTPClient, policies...)
+	perCall = append(perCall, runtime.NewLogPolicy(&o.Logging))
+	return runtime.NewPipeline(
+		"azidentity",
+		version,
+		perCall,
+		[]policy.Policy{runtime.NewRetryPolicy(&o.Retry)},
+		nil,
+	)
+	// return runtime.NewPipeline(o.HTTPClient, policies...)
 }
 
 // newDefaultMSIPipeline creates a pipeline using the specified pipeline options needed
@@ -179,13 +185,19 @@ func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) runtime.Pipeline 
 			http.StatusNotExtended,                    // 510
 			http.StatusNetworkAuthenticationRequired), // 511
 	}
-	policies := []policy.Policy{}
+	perCall := []policy.Policy{}
 	if !o.Telemetry.Disabled {
-		policies = append(policies, runtime.NewTelemetryPolicy(component, version, &o.Telemetry))
+		perCall = append(perCall, runtime.NewTelemetryPolicy(component, version, &o.Telemetry))
 	}
-	policies = append(policies, runtime.NewRetryPolicy(&retryOpts))
-	policies = append(policies, runtime.NewLogPolicy(&o.Logging))
-	return runtime.NewPipeline(o.HTTPClient, policies...)
+	perCall = append(perCall, runtime.NewLogPolicy(&o.Logging))
+	return runtime.NewPipeline(
+		"azidentity",
+		version,
+		perCall,
+		[]policy.Policy{runtime.NewRetryPolicy(&retryOpts)},
+		nil,
+	)
+	// return runtime.NewPipeline(o.HTTPClient, policies...)
 }
 
 // validTenantID return true is it receives a valid tenantID, returns false otherwise

@@ -113,7 +113,7 @@ stages:
           GoWorkspace: $(GO_WORKSPACE_PATH)
           Image: $(vm.image)
           GoVersion: $(go.version)
-          RunTests: ${{ parameters.RunTests }}
+          # RunTests: ${{ parameters.RunTests }}
           TestProxy: true # Do we need this conditional if it's always true? @benbp
           EnvVars:
             AZURE_RECORD_MODE: 'playback'

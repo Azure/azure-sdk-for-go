@@ -33,6 +33,8 @@ const (
 // RegistrationOptions configures the registration policy's behavior.
 // All zero-value fields will be initialized with their default values.
 type RegistrationOptions struct {
+	policy.ClientOptions
+
 	// MaxAttempts is the total number of times to attempt automatic registration
 	// in the event that an attempt fails.
 	// The default value is 3.
@@ -48,18 +50,6 @@ type RegistrationOptions struct {
 	// The default valule is 5 minutes.
 	// NOTE: Setting this to a small value might cause the policy to prematurely fail.
 	PollingDuration time.Duration
-
-	// HTTPClient sets the transport for making HTTP requests.
-	HTTPClient policy.Transporter
-
-	// Retry configures the built-in retry policy behavior.
-	Retry policy.RetryOptions
-
-	// Telemetry configures the built-in telemetry policy behavior.
-	Telemetry policy.TelemetryOptions
-
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
 }
 
 // init sets any default values
@@ -87,14 +77,11 @@ func NewRPRegistrationPolicy(endpoint string, cred azcore.TokenCredential, o *Re
 	if o == nil {
 		o = &RegistrationOptions{}
 	}
+	authPolicy := runtime.NewBearerTokenPolicy(cred, runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: []string{shared.EndpointToScope(endpoint)}}})
 	p := &rpRegistrationPolicy{
 		endpoint: endpoint,
-		pipeline: runtime.NewPipeline(o.HTTPClient,
-			runtime.NewTelemetryPolicy(shared.Module, shared.Version, &o.Telemetry),
-			runtime.NewRetryPolicy(&o.Retry),
-			runtime.NewBearerTokenPolicy(cred, runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: []string{shared.EndpointToScope(endpoint)}}}),
-			runtime.NewLogPolicy(&o.Logging)),
-		options: *o,
+		pipeline: runtime.NewPipeline(shared.Module, shared.Version, nil, []pipeline.Policy{authPolicy}, &o.ClientOptions),
+		options:  *o,
 	}
 	// init the copy
 	p.options.init()

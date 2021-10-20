@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -46,13 +47,18 @@ func (mc mockCredential) Do(req *policy.Request) (*http.Response, error) {
 func defaultTestPipeline(srv policy.Transporter, scope string) Pipeline {
 	retryOpts := policy.RetryOptions{
 		MaxRetryDelay: 500 * time.Millisecond,
-		RetryDelay:    50 * time.Millisecond,
+		RetryDelay:    time.Millisecond,
 	}
+	b := NewBearerTokenPolicy(
+		mockCredential{},
+		AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: []string{scope}}},
+	)
 	return NewPipeline(
-		srv,
-		NewRetryPolicy(&retryOpts),
-		NewBearerTokenPolicy(mockCredential{}, AuthenticationOptions{}),
-		NewLogPolicy(nil),
+		"testmodule",
+		"v0.1.0",
+		nil,
+		[]policy.Policy{b},
+		&azcore.ClientOptions{Retry: retryOpts, Transport: srv},
 	)
 }
 
@@ -84,8 +90,8 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 	failCredential.getTokenImpl = func(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 		return nil, expectedErr
 	}
-	policy := NewBearerTokenPolicy(failCredential, AuthenticationOptions{})
-	pipeline := NewPipeline(srv, policy)
+	b := NewBearerTokenPolicy(failCredential, AuthenticationOptions{})
+	pipeline := newTestPipeline(&policy.ClientOptions{Transport: srv, PerRetryPolicies: []policy.Policy{b}})
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -130,11 +136,8 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 		RetryDelay:    50 * time.Millisecond,
 		MaxRetries:    3,
 	}
-	pipeline := NewPipeline(
-		srv,
-		NewRetryPolicy(&retryOpts),
-		NewBearerTokenPolicy(mockCredential{}, AuthenticationOptions{}),
-	)
+	b := NewBearerTokenPolicy(mockCredential{}, AuthenticationOptions{})
+	pipeline := newTestPipeline(&policy.ClientOptions{Transport: srv, Retry: retryOpts, PerRetryPolicies: []pipeline.Policy{b}})
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatal(err)
@@ -160,19 +163,16 @@ func TestBearerTokenWithAuxiliaryTenants(t *testing.T) {
 		MaxRetryDelay: 500 * time.Millisecond,
 		RetryDelay:    50 * time.Millisecond,
 	}
-	pipeline := NewPipeline(
-		srv,
-		NewRetryPolicy(&retryOpts),
-		NewBearerTokenPolicy(
-			mockCredential{},
-			AuthenticationOptions{
-				TokenRequest: policy.TokenRequestOptions{
-					Scopes: []string{scope},
-				},
-				AuxiliaryTenants: []string{"tenant1", "tenant2", "tenant3"},
-			}),
-		NewLogPolicy(nil))
-
+	b := NewBearerTokenPolicy(
+		mockCredential{},
+		AuthenticationOptions{
+			TokenRequest: policy.TokenRequestOptions{
+				Scopes: []string{scope},
+			},
+			AuxiliaryTenants: []string{"tenant1", "tenant2", "tenant3"},
+		},
+	)
+	pipeline := newTestPipeline(&policy.ClientOptions{Transport: srv, Retry: retryOpts, PerRetryPolicies: []pipeline.Policy{b}})
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)

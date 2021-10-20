@@ -75,7 +75,7 @@ func TestDisableAutoRPRegistration(t *testing.T) {
 	defer close()
 	// initial response that RP is unregistered
 	srv.SetResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
-	opts := &arm.ClientOptions{DisableRPRegistration: true}
+	opts := &arm.ClientOptions{DisableRPRegistration: true, ClientOptions: policy.ClientOptions{Transport: srv}}
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -127,6 +127,7 @@ func TestPipelineWithCustomPolicies(t *testing.T) {
 			PerCallPolicies:  []policy.Policy{&perCallPolicy},
 			PerRetryPolicies: []policy.Policy{&perRetryPolicy},
 			Retry:            policy.RetryOptions{RetryDelay: time.Microsecond},
+			Transport:        srv,
 		},
 	}
 	req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())

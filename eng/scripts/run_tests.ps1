@@ -17,6 +17,29 @@ Get-Content outfile.txt | go-junit-report > report.xml
 if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simplematch -quiet) {
     Write-Host "##[command]Deleting empty coverage file"
     Remove-Item coverage.txt
-}
+    Remove-Item outfile.txt
+    Remove-Item report.xml
 
-Pop-Location
+    Pop-Location
+} else {
+    # Tests were actually run create a coverage report
+    $repoRoot = Resolve-Path "$PSScriptRoot/../../"
+    
+    gocovmerge outfile.txt > mergedCoverage.txt
+    gocov convert ./mergedCoverage.txt > ./coverage.json
+
+    # gocov converts rely on standard input
+    Get-Content ./coverage.json | gocov-xml > ./coverage.xml
+    Get-Content ./coverage.json | gocov-html > ./coverage.html
+
+    Move-Item ./coverage.xml $repoRoot
+    Move-Item ./coverage.html $repoRoot
+
+    # use internal tool to fail if coverage is too low
+    Pop-Location
+
+    go run $repoRoot/eng/tools/internal/coverage/coverage.go `
+        -config $repoRoot/eng/config.json `
+        -serviceDirectory $serviceDirectory `
+        -searchDirectory $repoRoot
+}

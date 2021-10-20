@@ -77,10 +77,10 @@ steps:
         displayName: 'Dump Test Proxy logs'
         condition: succeededOrFailed()
 
-    - pwsh: ./eng/scripts/create_coverage.ps1 ${{parameters.ServiceDirectory}}
-      displayName: 'Generate Coverage XML'
-      env:
-        GO111MODULE: 'off'
+    # - pwsh: ./eng/scripts/create_coverage.ps1 ${{parameters.ServiceDirectory}}
+    #   displayName: 'Generate Coverage XML'
+    #   env:
+    #     GO111MODULE: 'off'
 
     - task: PublishTestResults@2
       condition: succeededOrFailed()

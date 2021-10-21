@@ -12,22 +12,31 @@ package eventgrid
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2020-06-01/eventgrid"
+	original "github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2021-12-01/eventgrid"
 )
 
 const (
 	DefaultBaseURI = original.DefaultBaseURI
 )
 
+type CreatedByType = original.CreatedByType
+
+const (
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
+)
+
 type DomainProvisioningState = original.DomainProvisioningState
 
 const (
-	Canceled  DomainProvisioningState = original.Canceled
-	Creating  DomainProvisioningState = original.Creating
-	Deleting  DomainProvisioningState = original.Deleting
-	Failed    DomainProvisioningState = original.Failed
-	Succeeded DomainProvisioningState = original.Succeeded
-	Updating  DomainProvisioningState = original.Updating
+	DomainProvisioningStateCanceled  DomainProvisioningState = original.DomainProvisioningStateCanceled
+	DomainProvisioningStateCreating  DomainProvisioningState = original.DomainProvisioningStateCreating
+	DomainProvisioningStateDeleting  DomainProvisioningState = original.DomainProvisioningStateDeleting
+	DomainProvisioningStateFailed    DomainProvisioningState = original.DomainProvisioningStateFailed
+	DomainProvisioningStateSucceeded DomainProvisioningState = original.DomainProvisioningStateSucceeded
+	DomainProvisioningStateUpdating  DomainProvisioningState = original.DomainProvisioningStateUpdating
 )
 
 type DomainTopicProvisioningState = original.DomainTopicProvisioningState
@@ -57,16 +66,23 @@ const (
 type EndpointTypeBasicDeadLetterDestination = original.EndpointTypeBasicDeadLetterDestination
 
 const (
-	EndpointTypeDeadLetterDestination EndpointTypeBasicDeadLetterDestination = original.EndpointTypeDeadLetterDestination
-	EndpointTypeStorageBlob           EndpointTypeBasicDeadLetterDestination = original.EndpointTypeStorageBlob
+	EndpointTypeBasicDeadLetterDestinationEndpointTypeDeadLetterDestination EndpointTypeBasicDeadLetterDestination = original.EndpointTypeBasicDeadLetterDestinationEndpointTypeDeadLetterDestination
+	EndpointTypeBasicDeadLetterDestinationEndpointTypeStorageBlob           EndpointTypeBasicDeadLetterDestination = original.EndpointTypeBasicDeadLetterDestinationEndpointTypeStorageBlob
 )
 
 type EventDeliverySchema = original.EventDeliverySchema
 
 const (
-	CloudEventSchemaV10 EventDeliverySchema = original.CloudEventSchemaV10
-	CustomInputSchema   EventDeliverySchema = original.CustomInputSchema
-	EventGridSchema     EventDeliverySchema = original.EventGridSchema
+	EventDeliverySchemaCloudEventSchemaV10 EventDeliverySchema = original.EventDeliverySchemaCloudEventSchemaV10
+	EventDeliverySchemaCustomInputSchema   EventDeliverySchema = original.EventDeliverySchemaCustomInputSchema
+	EventDeliverySchemaEventGridSchema     EventDeliverySchema = original.EventDeliverySchemaEventGridSchema
+)
+
+type EventSubscriptionIdentityType = original.EventSubscriptionIdentityType
+
+const (
+	EventSubscriptionIdentityTypeSystemAssigned EventSubscriptionIdentityType = original.EventSubscriptionIdentityTypeSystemAssigned
+	EventSubscriptionIdentityTypeUserAssigned   EventSubscriptionIdentityType = original.EventSubscriptionIdentityTypeUserAssigned
 )
 
 type EventSubscriptionProvisioningState = original.EventSubscriptionProvisioningState
@@ -84,7 +100,16 @@ const (
 type IPActionType = original.IPActionType
 
 const (
-	Allow IPActionType = original.Allow
+	IPActionTypeAllow IPActionType = original.IPActionTypeAllow
+)
+
+type IdentityType = original.IdentityType
+
+const (
+	IdentityTypeNone                       IdentityType = original.IdentityTypeNone
+	IdentityTypeSystemAssigned             IdentityType = original.IdentityTypeSystemAssigned
+	IdentityTypeSystemAssignedUserAssigned IdentityType = original.IdentityTypeSystemAssignedUserAssigned
+	IdentityTypeUserAssigned               IdentityType = original.IdentityTypeUserAssigned
 )
 
 type InputSchema = original.InputSchema
@@ -123,17 +148,17 @@ const (
 type PersistedConnectionStatus = original.PersistedConnectionStatus
 
 const (
-	Approved     PersistedConnectionStatus = original.Approved
-	Disconnected PersistedConnectionStatus = original.Disconnected
-	Pending      PersistedConnectionStatus = original.Pending
-	Rejected     PersistedConnectionStatus = original.Rejected
+	PersistedConnectionStatusApproved     PersistedConnectionStatus = original.PersistedConnectionStatusApproved
+	PersistedConnectionStatusDisconnected PersistedConnectionStatus = original.PersistedConnectionStatusDisconnected
+	PersistedConnectionStatusPending      PersistedConnectionStatus = original.PersistedConnectionStatusPending
+	PersistedConnectionStatusRejected     PersistedConnectionStatus = original.PersistedConnectionStatusRejected
 )
 
 type PublicNetworkAccess = original.PublicNetworkAccess
 
 const (
-	Disabled PublicNetworkAccess = original.Disabled
-	Enabled  PublicNetworkAccess = original.Enabled
+	PublicNetworkAccessDisabled PublicNetworkAccess = original.PublicNetworkAccessDisabled
+	PublicNetworkAccessEnabled  PublicNetworkAccess = original.PublicNetworkAccessEnabled
 )
 
 type ResourceProvisioningState = original.ResourceProvisioningState
@@ -150,8 +175,8 @@ const (
 type ResourceRegionType = original.ResourceRegionType
 
 const (
-	GlobalResource   ResourceRegionType = original.GlobalResource
-	RegionalResource ResourceRegionType = original.RegionalResource
+	ResourceRegionTypeGlobalResource   ResourceRegionType = original.ResourceRegionTypeGlobalResource
+	ResourceRegionTypeRegionalResource ResourceRegionType = original.ResourceRegionTypeRegionalResource
 )
 
 type TopicProvisioningState = original.TopicProvisioningState
@@ -176,17 +201,30 @@ const (
 	TopicTypeProvisioningStateUpdating  TopicTypeProvisioningState = original.TopicTypeProvisioningStateUpdating
 )
 
+type Type = original.Type
+
+const (
+	TypeDeliveryAttributeMapping Type = original.TypeDeliveryAttributeMapping
+	TypeDynamic                  Type = original.TypeDynamic
+	TypeStatic                   Type = original.TypeStatic
+)
+
 type AdvancedFilter = original.AdvancedFilter
 type AzureFunctionEventSubscriptionDestination = original.AzureFunctionEventSubscriptionDestination
 type AzureFunctionEventSubscriptionDestinationProperties = original.AzureFunctionEventSubscriptionDestinationProperties
 type BaseClient = original.BaseClient
 type BasicAdvancedFilter = original.BasicAdvancedFilter
 type BasicDeadLetterDestination = original.BasicDeadLetterDestination
+type BasicDeliveryAttributeMapping = original.BasicDeliveryAttributeMapping
 type BasicEventSubscriptionDestination = original.BasicEventSubscriptionDestination
 type BasicInputSchemaMapping = original.BasicInputSchemaMapping
 type BoolEqualsAdvancedFilter = original.BoolEqualsAdvancedFilter
 type ConnectionState = original.ConnectionState
 type DeadLetterDestination = original.DeadLetterDestination
+type DeadLetterWithResourceIdentity = original.DeadLetterWithResourceIdentity
+type DeliveryAttributeListResult = original.DeliveryAttributeListResult
+type DeliveryAttributeMapping = original.DeliveryAttributeMapping
+type DeliveryWithResourceIdentity = original.DeliveryWithResourceIdentity
 type Domain = original.Domain
 type DomainProperties = original.DomainProperties
 type DomainRegenerateKeyRequest = original.DomainRegenerateKeyRequest
@@ -208,12 +246,15 @@ type DomainsListResult = original.DomainsListResult
 type DomainsListResultIterator = original.DomainsListResultIterator
 type DomainsListResultPage = original.DomainsListResultPage
 type DomainsUpdateFuture = original.DomainsUpdateFuture
+type DynamicDeliveryAttributeMapping = original.DynamicDeliveryAttributeMapping
+type DynamicDeliveryAttributeMappingProperties = original.DynamicDeliveryAttributeMappingProperties
 type EventHubEventSubscriptionDestination = original.EventHubEventSubscriptionDestination
 type EventHubEventSubscriptionDestinationProperties = original.EventHubEventSubscriptionDestinationProperties
 type EventSubscription = original.EventSubscription
 type EventSubscriptionDestination = original.EventSubscriptionDestination
 type EventSubscriptionFilter = original.EventSubscriptionFilter
 type EventSubscriptionFullURL = original.EventSubscriptionFullURL
+type EventSubscriptionIdentity = original.EventSubscriptionIdentity
 type EventSubscriptionProperties = original.EventSubscriptionProperties
 type EventSubscriptionUpdateParameters = original.EventSubscriptionUpdateParameters
 type EventSubscriptionsClient = original.EventSubscriptionsClient
@@ -226,8 +267,12 @@ type EventSubscriptionsUpdateFuture = original.EventSubscriptionsUpdateFuture
 type EventType = original.EventType
 type EventTypeProperties = original.EventTypeProperties
 type EventTypesListResult = original.EventTypesListResult
+type ExtensionTopic = original.ExtensionTopic
+type ExtensionTopicProperties = original.ExtensionTopicProperties
+type ExtensionTopicsClient = original.ExtensionTopicsClient
 type HybridConnectionEventSubscriptionDestination = original.HybridConnectionEventSubscriptionDestination
 type HybridConnectionEventSubscriptionDestinationProperties = original.HybridConnectionEventSubscriptionDestinationProperties
+type IdentityInfo = original.IdentityInfo
 type InboundIPRule = original.InboundIPRule
 type InputSchemaMapping = original.InputSchemaMapping
 type JSONField = original.JSONField
@@ -265,6 +310,8 @@ type ServiceBusQueueEventSubscriptionDestination = original.ServiceBusQueueEvent
 type ServiceBusQueueEventSubscriptionDestinationProperties = original.ServiceBusQueueEventSubscriptionDestinationProperties
 type ServiceBusTopicEventSubscriptionDestination = original.ServiceBusTopicEventSubscriptionDestination
 type ServiceBusTopicEventSubscriptionDestinationProperties = original.ServiceBusTopicEventSubscriptionDestinationProperties
+type StaticDeliveryAttributeMapping = original.StaticDeliveryAttributeMapping
+type StaticDeliveryAttributeMappingProperties = original.StaticDeliveryAttributeMappingProperties
 type StorageBlobDeadLetterDestination = original.StorageBlobDeadLetterDestination
 type StorageBlobDeadLetterDestinationProperties = original.StorageBlobDeadLetterDestinationProperties
 type StorageQueueEventSubscriptionDestination = original.StorageQueueEventSubscriptionDestination
@@ -274,6 +321,21 @@ type StringContainsAdvancedFilter = original.StringContainsAdvancedFilter
 type StringEndsWithAdvancedFilter = original.StringEndsWithAdvancedFilter
 type StringInAdvancedFilter = original.StringInAdvancedFilter
 type StringNotInAdvancedFilter = original.StringNotInAdvancedFilter
+type SystemData = original.SystemData
+type SystemTopic = original.SystemTopic
+type SystemTopicEventSubscriptionsClient = original.SystemTopicEventSubscriptionsClient
+type SystemTopicEventSubscriptionsCreateOrUpdateFuture = original.SystemTopicEventSubscriptionsCreateOrUpdateFuture
+type SystemTopicEventSubscriptionsDeleteFuture = original.SystemTopicEventSubscriptionsDeleteFuture
+type SystemTopicEventSubscriptionsUpdateFuture = original.SystemTopicEventSubscriptionsUpdateFuture
+type SystemTopicProperties = original.SystemTopicProperties
+type SystemTopicUpdateParameters = original.SystemTopicUpdateParameters
+type SystemTopicsClient = original.SystemTopicsClient
+type SystemTopicsCreateOrUpdateFuture = original.SystemTopicsCreateOrUpdateFuture
+type SystemTopicsDeleteFuture = original.SystemTopicsDeleteFuture
+type SystemTopicsListResult = original.SystemTopicsListResult
+type SystemTopicsListResultIterator = original.SystemTopicsListResultIterator
+type SystemTopicsListResultPage = original.SystemTopicsListResultPage
+type SystemTopicsUpdateFuture = original.SystemTopicsUpdateFuture
 type Topic = original.Topic
 type TopicProperties = original.TopicProperties
 type TopicRegenerateKeyRequest = original.TopicRegenerateKeyRequest
@@ -290,8 +352,10 @@ type TopicsDeleteFuture = original.TopicsDeleteFuture
 type TopicsListResult = original.TopicsListResult
 type TopicsListResultIterator = original.TopicsListResultIterator
 type TopicsListResultPage = original.TopicsListResultPage
+type TopicsRegenerateKeyFuture = original.TopicsRegenerateKeyFuture
 type TopicsUpdateFuture = original.TopicsUpdateFuture
 type TrackedResource = original.TrackedResource
+type UserIdentityProperties = original.UserIdentityProperties
 type WebHookEventSubscriptionDestination = original.WebHookEventSubscriptionDestination
 type WebHookEventSubscriptionDestinationProperties = original.WebHookEventSubscriptionDestinationProperties
 
@@ -334,6 +398,12 @@ func NewEventSubscriptionsListResultIterator(page EventSubscriptionsListResultPa
 func NewEventSubscriptionsListResultPage(cur EventSubscriptionsListResult, getNextPage func(context.Context, EventSubscriptionsListResult) (EventSubscriptionsListResult, error)) EventSubscriptionsListResultPage {
 	return original.NewEventSubscriptionsListResultPage(cur, getNextPage)
 }
+func NewExtensionTopicsClient(subscriptionID string) ExtensionTopicsClient {
+	return original.NewExtensionTopicsClient(subscriptionID)
+}
+func NewExtensionTopicsClientWithBaseURI(baseURI string, subscriptionID string) ExtensionTopicsClient {
+	return original.NewExtensionTopicsClientWithBaseURI(baseURI, subscriptionID)
+}
 func NewOperationsClient(subscriptionID string) OperationsClient {
 	return original.NewOperationsClient(subscriptionID)
 }
@@ -364,6 +434,24 @@ func NewPrivateLinkResourcesListResultIterator(page PrivateLinkResourcesListResu
 func NewPrivateLinkResourcesListResultPage(cur PrivateLinkResourcesListResult, getNextPage func(context.Context, PrivateLinkResourcesListResult) (PrivateLinkResourcesListResult, error)) PrivateLinkResourcesListResultPage {
 	return original.NewPrivateLinkResourcesListResultPage(cur, getNextPage)
 }
+func NewSystemTopicEventSubscriptionsClient(subscriptionID string) SystemTopicEventSubscriptionsClient {
+	return original.NewSystemTopicEventSubscriptionsClient(subscriptionID)
+}
+func NewSystemTopicEventSubscriptionsClientWithBaseURI(baseURI string, subscriptionID string) SystemTopicEventSubscriptionsClient {
+	return original.NewSystemTopicEventSubscriptionsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSystemTopicsClient(subscriptionID string) SystemTopicsClient {
+	return original.NewSystemTopicsClient(subscriptionID)
+}
+func NewSystemTopicsClientWithBaseURI(baseURI string, subscriptionID string) SystemTopicsClient {
+	return original.NewSystemTopicsClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewSystemTopicsListResultIterator(page SystemTopicsListResultPage) SystemTopicsListResultIterator {
+	return original.NewSystemTopicsListResultIterator(page)
+}
+func NewSystemTopicsListResultPage(cur SystemTopicsListResult, getNextPage func(context.Context, SystemTopicsListResult) (SystemTopicsListResult, error)) SystemTopicsListResultPage {
+	return original.NewSystemTopicsListResultPage(cur, getNextPage)
+}
 func NewTopicTypesClient(subscriptionID string) TopicTypesClient {
 	return original.NewTopicTypesClient(subscriptionID)
 }
@@ -385,6 +473,9 @@ func NewTopicsListResultPage(cur TopicsListResult, getNextPage func(context.Cont
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
 }
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return original.PossibleCreatedByTypeValues()
+}
 func PossibleDomainProvisioningStateValues() []DomainProvisioningState {
 	return original.PossibleDomainProvisioningStateValues()
 }
@@ -400,11 +491,17 @@ func PossibleEndpointTypeValues() []EndpointType {
 func PossibleEventDeliverySchemaValues() []EventDeliverySchema {
 	return original.PossibleEventDeliverySchemaValues()
 }
+func PossibleEventSubscriptionIdentityTypeValues() []EventSubscriptionIdentityType {
+	return original.PossibleEventSubscriptionIdentityTypeValues()
+}
 func PossibleEventSubscriptionProvisioningStateValues() []EventSubscriptionProvisioningState {
 	return original.PossibleEventSubscriptionProvisioningStateValues()
 }
 func PossibleIPActionTypeValues() []IPActionType {
 	return original.PossibleIPActionTypeValues()
+}
+func PossibleIdentityTypeValues() []IdentityType {
+	return original.PossibleIdentityTypeValues()
 }
 func PossibleInputSchemaMappingTypeValues() []InputSchemaMappingType {
 	return original.PossibleInputSchemaMappingTypeValues()
@@ -432,6 +529,9 @@ func PossibleTopicProvisioningStateValues() []TopicProvisioningState {
 }
 func PossibleTopicTypeProvisioningStateValues() []TopicTypeProvisioningState {
 	return original.PossibleTopicTypeProvisioningStateValues()
+}
+func PossibleTypeValues() []Type {
+	return original.PossibleTypeValues()
 }
 func UserAgent() string {
 	return original.UserAgent() + " profiles/latest"

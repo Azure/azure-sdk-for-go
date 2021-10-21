@@ -12,7 +12,7 @@ package containerservice
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-08-01/containerservice"
+	original "github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-09-01/containerservice"
 )
 
 const (
@@ -572,6 +572,7 @@ type TimeInWeek = original.TimeInWeek
 type TimeSpan = original.TimeSpan
 type UserAssignedIdentity = original.UserAssignedIdentity
 type VMDiagnostics = original.VMDiagnostics
+type WindowsGmsaProfile = original.WindowsGmsaProfile
 
 func New(subscriptionID string) BaseClient {
 	return original.New(subscriptionID)

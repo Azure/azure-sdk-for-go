@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## `v58.3.0`
+
+### New Packages
+
+- `github.com/Azure/azure-sdk-for-go/services/containerservice/mgmt/2021-09-01/containerservice`
+- `github.com/Azure/azure-sdk-for-go/services/eventgrid/mgmt/2021-12-01/eventgrid`
+- `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2021-06-01-preview/containerregistry`
+
+### Breaking Changes
+
+| Package Path | Changelog |
+| :--- | :---: |
+| `github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2020-11-01-preview/containerregistry` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/containerregistry/mgmt/2020-11-01-preview/containerregistry/CHANGELOG.md) |
+
 ## `v58.2.0`
 
 ### New Packages
@@ -15,7 +29,7 @@
 
 | Package Path | Changelog |
 | :--- | :---: |
-| `github.com/Azure/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2020-03-01-preview/deviceupdate` | [details](https://github.com/Azure/azure-sdk-for-go/tree/main/services/preview/deviceupdate/mgmt/2020-03-01-preview/deviceupdate/CHANGELOG.md) |
+| `github.com/Azure/azure-sdk-for-go/services/preview/deviceupdate/mgmt/2020-03-01-preview/deviceupdate` | [details](https://github.com/Azure/azure-sdk-for-go/blob/v58.2.0/services/preview/deviceupdate/mgmt/2020-03-01-preview/deviceupdate/CHANGELOG.md) |
 
 ## `v58.1.0`
 

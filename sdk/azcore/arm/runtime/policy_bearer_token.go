@@ -4,6 +4,7 @@
 package runtime
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"strings"
@@ -15,15 +16,19 @@ import (
 )
 
 type acquiringResourceState struct {
-	req *policy.Request
-	p   BearerTokenPolicy
+	ctx    context.Context
+	p      *BearerTokenPolicy
+	tenant string
 }
 
 // acquire acquires or updates the resource; only one
 // thread/goroutine at a time ever calls this function
 func acquire(state interface{}) (newResource interface{}, newExpiration time.Time, err error) {
 	s := state.(acquiringResourceState)
-	tk, err := s.p.cred.GetToken(s.req.Raw().Context(), s.p.options)
+	tk, err := s.p.cred.GetToken(s.ctx, policy.TokenRequestOptions{
+		Scopes:   s.p.options.Scopes,
+		TenantID: s.tenant,
+	})
 	if err != nil {
 		return nil, time.Time{}, err
 	}
@@ -38,7 +43,7 @@ type BearerTokenPolicy struct {
 	auxResources map[string]*shared.ExpiringResource
 	// the following fields are read-only
 	cred    azcore.TokenCredential
-	options policy.TokenRequestOptions
+	options AuthenticationOptions
 }
 
 // NewBearerTokenPolicy creates a policy object that authorizes requests with bearer tokens.
@@ -47,7 +52,7 @@ type BearerTokenPolicy struct {
 func NewBearerTokenPolicy(cred azcore.TokenCredential, opts AuthenticationOptions) *BearerTokenPolicy {
 	p := &BearerTokenPolicy{
 		cred:         cred,
-		options:      opts.TokenRequest,
+		options:      opts,
 		mainResource: shared.NewExpiringResource(acquire),
 	}
 	if len(opts.AuxiliaryTenants) > 0 {
@@ -63,8 +68,8 @@ func NewBearerTokenPolicy(cred azcore.TokenCredential, opts AuthenticationOption
 // Do authorizes a request with a bearer token
 func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 	as := acquiringResourceState{
-		p:   *b,
-		req: req,
+		ctx: req.Raw().Context(),
+		p:   b,
 	}
 	tk, err := b.mainResource.GetResource(as)
 	if err != nil {
@@ -75,13 +80,8 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 	}
 	auxTokens := []string{}
 	for tenant, er := range b.auxResources {
-		bCopy := *b
-		bCopy.options.TenantID = tenant
-		auxAS := acquiringResourceState{
-			p:   bCopy,
-			req: req,
-		}
-		auxTk, err := er.GetResource(auxAS)
+		as.tenant = tenant
+		auxTk, err := er.GetResource(as)
 		if err != nil {
 			return nil, err
 		}

@@ -178,9 +178,7 @@ func TestBearerTokenWithAuxiliaryTenants(t *testing.T) {
 	b := NewBearerTokenPolicy(
 		mockCredential{},
 		AuthenticationOptions{
-			TokenRequest: policy.TokenRequestOptions{
-				Scopes: []string{scope},
-			},
+			Scopes:           []string{scope},
 			AuxiliaryTenants: []string{"tenant1", "tenant2", "tenant3"},
 		},
 	)

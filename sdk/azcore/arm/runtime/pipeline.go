@@ -32,9 +32,7 @@ func NewPipeline(module, version string, cred azcore.TokenCredential, options *a
 	}
 	perRetryPolicies := []policy.Policy{
 		NewBearerTokenPolicy(cred, AuthenticationOptions{
-			TokenRequest: policy.TokenRequestOptions{
-				Scopes: []string{shared.EndpointToScope(string(ep))},
-			},
+			Scopes:           []string{shared.EndpointToScope(string(ep))},
 			AuxiliaryTenants: options.AuxiliaryTenants,
 		}),
 	}
@@ -43,10 +41,8 @@ func NewPipeline(module, version string, cred azcore.TokenCredential, options *a
 
 // AuthenticationOptions contains various options used to create a credential policy.
 type AuthenticationOptions struct {
-	// TokenRequest is a TokenRequestOptions that includes a scopes field which contains
-	// the list of OAuth2 authentication scopes used when requesting a token.
-	// This field is ignored for other forms of authentication (e.g. shared key).
-	TokenRequest policy.TokenRequestOptions
+	// Scopes contains the list of permission scopes required for the token.
+	Scopes []string
 	// AuxiliaryTenants contains a list of additional tenant IDs to be used to authenticate
 	// in cross-tenant applications.
 	AuxiliaryTenants []string

@@ -40,16 +40,16 @@ type processorOptions struct {
 	// of the queue or subscription.
 	SubQueue SubQueue
 
-	// ManualComplete controls whether messages must be settled explicitly via the
-	// settlement methods (ie, Complete, Abandon) or if the
-	// processor will automatically settle messages.
+	// DisableAutoComplete controls whether messages must be settled explicitly via the
+	// settlement methods (ie, Complete, Abandon) or if the processor will automatically
+	// settle messages.
 	//
 	// If true, no automatic settlement is done.
 	// If false, the return value of your `handleMessage` function will control if the
 	// message is abandoned (non-nil error return) or completed (nil error return).
 	//
-	// This option is enabled, by default.
-	ManualComplete bool
+	// This option is false, by default.
+	DisableAutoComplete bool
 
 	// MaxConcurrentCalls controls the maximum number of message processing
 	// goroutines that are active at any time.
@@ -89,7 +89,7 @@ func applyProcessorOptions(p *processor, entity *entity, options *processorOptio
 		return nil
 	}
 
-	p.autoComplete = !options.ManualComplete
+	p.autoComplete = !options.DisableAutoComplete
 
 	if err := checkReceiverMode(options.ReceiveMode); err != nil {
 		return err

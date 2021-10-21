@@ -44,7 +44,7 @@ func (s ShareClient) WithSnapshot(shareSnapshot string) ShareClient {
 
 // NewRootDirectoryClient creates a new DirectoryClient object using ShareClient's URL.
 // The new DirectoryClient uses the same request policy pipeline as the ShareClient.
-func (s ShareClient) NewRootDirectoryClient() DirectoryClient {
+func (s ShareClient) NewRootDirectoryClient() (DirectoryClient, error) {
 	directoryURL := s.URL()
 	conn := &connection{directoryURL, s.client.con.p}
 	return DirectoryClient{
@@ -53,7 +53,7 @@ func (s ShareClient) NewRootDirectoryClient() DirectoryClient {
 		},
 		cred: s.cred,
 		u:    s.u,
-	}
+	}, nil
 }
 
 // NewDirectoryClient creates a new DirectoryURL object by concatenating directoryName to the end of
@@ -61,9 +61,12 @@ func (s ShareClient) NewRootDirectoryClient() DirectoryClient {
 // To change the pipeline, create the DirectoryURL and then call its WithPipeline method passing in the
 // desired pipeline object. Or, call this package's NewDirectoryURL instead of calling this object's
 // NewDirectoryURL method.
-func (s ShareClient) NewDirectoryClient(directoryName string) DirectoryClient {
+func (s ShareClient) NewDirectoryClient(directoryName string) (DirectoryClient, error) {
 	directoryURL := appendToURLPath(s.URL(), directoryName)
-	u, _ := url.Parse(directoryURL)
+	u, err := url.Parse(directoryURL)
+	if err != nil {
+		return DirectoryClient{}, err
+	}
 	conn := &connection{directoryURL, s.client.con.p}
 	return DirectoryClient{
 		client: &directoryClient{
@@ -71,7 +74,7 @@ func (s ShareClient) NewDirectoryClient(directoryName string) DirectoryClient {
 		},
 		u:    *u,
 		cred: s.cred,
-	}
+	}, nil
 }
 
 // Create creates a new share within a storage account. If a share with the same name already exists, the operation fails.

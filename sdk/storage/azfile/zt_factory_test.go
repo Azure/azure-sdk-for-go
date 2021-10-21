@@ -157,21 +157,22 @@ func createNewShare(_assert *assert.Assertions, shareName string, serviceClient 
 	return srClient
 }
 
-func delShare(_assert *assert.Assertions, shareClient ShareClient, options *DeleteShareOptions) {
-	deleteShareResp, err := shareClient.Delete(context.Background(), options)
+func delShare(_assert *assert.Assertions, srClient ShareClient, options *DeleteShareOptions) {
+	deleteShareResp, err := srClient.Delete(context.Background(), options)
 	_assert.Nil(err)
 	_assert.Equal(deleteShareResp.RawResponse.StatusCode, 202)
 }
 
 // 3. DirectoryClient -----------------------------------------------------------------------------------------------------
 
-func getDirectoryClientFromShare(_assert *assert.Assertions, directoryName string, shareClient ShareClient) DirectoryClient {
-	dirClient := shareClient.NewDirectoryClient(directoryName)
+func getDirectoryClientFromShare(_assert *assert.Assertions, dirName string, srClient ShareClient) DirectoryClient {
+	dirClient, err := srClient.NewDirectoryClient(dirName)
+	_assert.Nil(err)
 	return dirClient
 }
 
-func createNewDirectoryFromShare(_assert *assert.Assertions, directoryName string, shareClient ShareClient) DirectoryClient {
-	dirClient := getDirectoryClientFromShare(_assert, directoryName, shareClient)
+func createNewDirectoryFromShare(_assert *assert.Assertions, dirName string, srClient ShareClient) DirectoryClient {
+	dirClient := getDirectoryClientFromShare(_assert, dirName, srClient)
 
 	cResp, err := dirClient.Create(ctx, nil)
 	_assert.Nil(err)
@@ -195,13 +196,16 @@ func getFileClientFromDirectory(_assert *assert.Assertions, fileName string, dir
 
 // This is a convenience method, No public API to create file URL from share now. This method uses share's root directory.
 func getFileClientFromShare(_assert *assert.Assertions, fileName string, srClient ShareClient) FileClient {
-	fClient, err := srClient.NewRootDirectoryClient().NewFileClient(fileName)
+	dirClient, err := srClient.NewRootDirectoryClient()
+	_assert.Nil(err)
+	fClient, err := dirClient.NewFileClient(fileName)
 	_assert.Nil(err)
 	return fClient
 }
 
 func createNewFileFromShare(_assert *assert.Assertions, fileName string, fileSize int64, srClient ShareClient) FileClient {
-	dirClient := srClient.NewRootDirectoryClient()
+	dirClient, err := srClient.NewRootDirectoryClient()
+	_assert.Nil(err)
 
 	fClient := getFileClientFromDirectory(_assert, fileName, dirClient)
 
@@ -219,8 +223,8 @@ func createNewFileFromShareWithPermissions(_assert *assert.Assertions, fileName 
 
 	cResp, err := fClient.Create(ctx, &CreateFileOptions{
 		FileContentLength: to.Int64Ptr(fileSize),
-		FilePermissions: &FilePermissions{
-			FilePermissionStr: &sampleSDDL,
+		FilePermissions: &Permissions{
+			PermissionStr: &sampleSDDL,
 		},
 	})
 	_assert.Nil(err)
@@ -235,8 +239,8 @@ func createNewFileFromShareWithGivenData(_assert *assert.Assertions, fileName st
 
 	cResp, err := fClient.Create(ctx, &CreateFileOptions{
 		FileContentLength: to.Int64Ptr(int64(len(fileData))),
-		FilePermissions: &FilePermissions{
-			FilePermissionStr: &sampleSDDL,
+		FilePermissions: &Permissions{
+			PermissionStr: &sampleSDDL,
 		},
 	})
 	_assert.Nil(err)

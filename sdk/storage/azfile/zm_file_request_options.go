@@ -35,32 +35,32 @@ var (
 
 //----------------------------------------------------------------------------------------------------------------------
 
-type FilePermissions struct {
+type Permissions struct {
 	// If specified the permission (security descriptor) shall be set for the directory/file. This header can be used if Permission size is <= 8KB, else x-ms-file-permission-key
 	// header shall be used. Default value: Inherit. If SDDL is specified as input, it must have owner, group and dacl. Note: Only one of the x-ms-file-permission
 	// or x-ms-file-permission-key should be specified.
-	FilePermissionStr *string
+	PermissionStr *string
 	// Key of the permission to be set for the directory/file. Note: Only one of the x-ms-file-permission or x-ms-file-permission-key should be specified.
-	FilePermissionKey *string
+	PermissionKey *string
 }
 
-func (fp *FilePermissions) format(defaultFilePermissionStr *string) (filePermission *string, filePermissionKey *string, err error) {
-	if fp == nil {
+func (p *Permissions) format(defaultFilePermissionStr *string) (filePermission *string, filePermissionKey *string, err error) {
+	if p == nil {
 		return defaultFilePermissionStr, nil, nil
 	}
 	filePermission = defaultFilePermissionStr
-	if fp.FilePermissionStr != nil {
-		filePermission = fp.FilePermissionStr
+	if p.PermissionStr != nil {
+		filePermission = p.PermissionStr
 	}
 
-	if fp.FilePermissionKey != nil {
+	if p.PermissionKey != nil {
 		if filePermission == defaultFilePermissionStr {
 			filePermission = nil
 		} else if filePermission != nil {
 			return nil, nil, errors.New("only permission string OR permission key may be used")
 		}
 
-		filePermissionKey = fp.FilePermissionKey
+		filePermissionKey = p.PermissionKey
 	}
 	return
 }
@@ -80,7 +80,7 @@ type SMBProperties struct {
 
 func (sp *SMBProperties) format(isDir bool, defaultFileAttributes, defaultCurrentTimeString string) (fileAttributes string, creationTime string, lastWriteTime string) {
 	if sp == nil {
-		return DefaultFileAttributes, DefaultCurrentTimeString, DefaultCurrentTimeString
+		return defaultFileAttributes, defaultCurrentTimeString, defaultCurrentTimeString
 	}
 
 	fileAttributes = defaultFileAttributes
@@ -117,7 +117,7 @@ type CreateFileOptions struct {
 
 	FileHTTPHeaders *FileHTTPHeaders
 
-	FilePermissions *FilePermissions
+	FilePermissions *Permissions
 
 	// In Windows, a 32 bit file attributes integer exists. This is that.
 	SMBProperties *SMBProperties
@@ -157,7 +157,7 @@ func (o *CreateFileOptions) format() (fileContentLength int64, fileAttributes st
 //----------------------------------------------------------------------------------------------------------------------
 
 type StartFileCopyOptions struct {
-	FilePermissions *FilePermissions
+	FilePermissions *Permissions
 	// A name-value pair to associate with a file storage object.
 	Metadata map[string]string
 
@@ -266,7 +266,7 @@ type SetFileHTTPHeadersOptions struct {
 	// then all ranges above the specified byte value are cleared.
 	FileContentLength *int64
 
-	FilePermissions *FilePermissions
+	FilePermissions *Permissions
 
 	SMBProperties *SMBProperties
 

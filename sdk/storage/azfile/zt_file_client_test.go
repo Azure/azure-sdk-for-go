@@ -35,7 +35,9 @@ func (s *azfileLiveTestSuite) TestFileCreateDeleteDefault() {
 
 	// Create and delete fClient in root directory.
 	fileName := generateFileName(testName)
-	fClient, err := srClient.NewRootDirectoryClient().NewFileClient(fileName)
+	dirClient1, err := srClient.NewRootDirectoryClient()
+	_assert.Nil(err)
+	fClient, err := dirClient1.NewFileClient(fileName)
 	_assert.Nil(err)
 
 	cResp, err := fClient.Create(ctx, nil)
@@ -170,7 +172,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //	_assert.Nil(err)
 //
 //	options := &SetFileHTTPHeadersOptions{
-//		FilePermissions: &FilePermissions{ FilePermissionStr: &sampleSDDL},
+//		Permissions: &Permissions{ PermissionStr: &sampleSDDL},
 //		SMBProperties: &SMBProperties{
 //			FileAttributes:    &attribs,
 //			FileCreationTime:  &creationTime,
@@ -209,7 +211,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //	_assert.EqualValues(getResp.ContentDisposition,  options.FileHTTPHeaders.FileContentDisposition)
 //	_assert.Equal(*getResp.ContentLength,  int64(0))
 //	// We'll just ensure a permission exists, no need to test overlapping functionality.
-//	_assert.NotEqual(*getResp.FilePermissionKey, "")
+//	_assert.NotEqual(*getResp.PermissionKey, "")
 //	// Ensure our attributes and other properties (after parsing) are equivalent to our original
 //	// There's an overlapping test for this in ntfs_property_bitflags_test.go, but it doesn't hurt to test it alongside other things.
 //	_assert.EqualValues(ParseFileAttributeFlagsString(*getResp.FileAttributes),  *options.SMBProperties.FileAttributes)
@@ -243,7 +245,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //	getResp, err := fClient.GetProperties(ctx)
 //	_assert.Nil(err)
 //
-//	oKey := getResp.FilePermissionKey()
+//	oKey := getResp.PermissionKey()
 //	timeAdapter := SMBPropertyAdapter{PropertySource: getResp}
 //	cTime := timeAdapter.FileCreationTime()
 //	lwTime := timeAdapter.FileLastWriteTime()
@@ -289,7 +291,7 @@ func (s *azfileLiveTestSuite) TestFileCreateNegativeMetadataInvalid() {
 //	_assert.(getResp.ContentDisposition, chk.Equals, properties.ContentDisposition)
 //	_assert.(getResp.ContentLength, chk.Equals, int64(0))
 //	// Ensure that the permission key gets preserved
-//	_assert.(getResp.FilePermissionKey(), chk.Equals, oKey)
+//	_assert.(getResp.PermissionKey(), chk.Equals, oKey)
 //	timeAdapter = SMBPropertyAdapter{PropertySource: getResp}
 //	c.Log("Original last write time: ", lwTime, " new time: ", timeAdapter.FileLastWriteTime())
 //	_assert.(timeAdapter.FileLastWriteTime().Equal(lwTime), chk.Equals, true)
@@ -1828,8 +1830,8 @@ func (s *azfileLiveTestSuite) TestCreateMaximumSizeFileShare() {
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 
 	defer delShare(_assert, srClient, &DeleteShareOptions{DeleteSnapshots: &deleteSnapshotsInclude})
-	dirClient := srClient.NewRootDirectoryClient()
-
+	dirClient, err := srClient.NewRootDirectoryClient()
+	_assert.Nil(err)
 	fClient := getFileClientFromDirectory(_assert, generateFileName(testName), dirClient)
 	_, err = fClient.Create(ctx, &CreateFileOptions{
 		FileContentLength: &fileMaxAllowedSizeInBytes,

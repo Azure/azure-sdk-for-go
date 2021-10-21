@@ -1,6 +1,7 @@
 package azfile
 
 import (
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"time"
 )
@@ -45,7 +46,7 @@ func (s *SMBPropertyAdapter) FileAttributes() FileAttributeFlags {
 
 type CreateDirectoryOptions struct {
 	SMBProperties   *SMBProperties
-	FilePermissions *FilePermissions
+	FilePermissions *Permissions
 	Metadata        map[string]string
 }
 
@@ -91,52 +92,62 @@ func (o *GetDirectoryPropertiesOptions) format() *DirectoryGetPropertiesOptions 
 
 // ListFilesAndDirectoriesOptions defines options available when calling ListFilesAndDirectoriesSegment.
 type ListFilesAndDirectoriesOptions struct {
-	Prefix     string // No Prefix header is produced if ""
-	MaxResults int32  // 0 means unspecified
+	// Specifies the maximum number of entries to return. If the request does not specify maxresults, or specifies a value greater than 5,000, the server will
+	// return up to 5,000 items.
+	MaxResults *int32
+	// Filters the results to return only entries whose name begins with the specified prefix.
+	Prefix *string
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	ShareSnapshot *string
 }
 
-func (o *ListFilesAndDirectoriesOptions) pointers() (prefix *string, maxResults *int32) {
-	if o.Prefix != "" {
-		prefix = &o.Prefix
+func (o *ListFilesAndDirectoriesOptions) format(marker *string) *DirectoryListFilesAndDirectoriesSegmentOptions {
+	if o == nil {
+		return &DirectoryListFilesAndDirectoriesSegmentOptions{Marker: marker}
 	}
-	if o.MaxResults != 0 {
-		maxResults = &o.MaxResults
+	return &DirectoryListFilesAndDirectoriesSegmentOptions{
+		Marker:        marker,
+		Maxresults:    o.MaxResults,
+		Prefix:        o.Prefix,
+		Sharesnapshot: o.ShareSnapshot,
+	}
+}
+
+type SetDirectoryPropertiesOptions struct {
+	SMBProperties *SMBProperties
+
+	FilePermissions *Permissions
+}
+
+func (o *SetDirectoryPropertiesOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string, directorySetPropertiesOptions *DirectorySetPropertiesOptions) {
+	if o == nil {
+		return DefaultPreserveString, DefaultPreserveString, DefaultPreserveString, nil
+	}
+	fileAttributes, fileCreationTime, fileLastWriteTime = o.SMBProperties.format(false, DefaultPreserveString, DefaultPreserveString)
+
+	filePermission, filePermissionKey, err := o.FilePermissions.format(&DefaultPreserveString)
+	if err != nil {
+		return
+	}
+	directorySetPropertiesOptions = &DirectorySetPropertiesOptions{
+		FilePermission:    filePermission,
+		FilePermissionKey: filePermissionKey,
 	}
 	return
 }
 
-type SetDirectoryPropertiesOptions struct {
-	FileAttributes *string
-
-	FileCreationTime *time.Time
-
-	FileLastWriteTime *time.Time
-
-	FilePermission *string
-
-	FilePermissionKey *string
-}
-
-func (o *SetDirectoryPropertiesOptions) format() (fileAttributes string, fileCreationTime string, fileLastWriteTime string, options *DirectorySetPropertiesOptions) {
-	//if o == nil {
-	//	return DefaultFileAttributes, DefaultCurrentTimeString, DefaultCurrentTimeString, &DirectorySetPropertiesOptions{
-	//		FilePermission:    &DefaultFilePermissionStr,
-	//	}
-	//}
-	panic("Write")
-}
-
 type SetDirectoryMetadataOptions struct {
 	// A name-value pair to associate with a file storage object.
-	Metadata map[string]string
+
 }
 
-func (o *SetDirectoryMetadataOptions) format() *DirectorySetMetadataOptions {
-	if o == nil {
-		return nil
+func (o *SetDirectoryMetadataOptions) format(metadata map[string]string) (*DirectorySetMetadataOptions, error) {
+	if metadata == nil {
+		return nil, errors.New("metadata cannot be nil")
+
 	}
 
 	return &DirectorySetMetadataOptions{
-		Metadata: o.Metadata,
-	}
+		Metadata: metadata,
+	}, nil
 }

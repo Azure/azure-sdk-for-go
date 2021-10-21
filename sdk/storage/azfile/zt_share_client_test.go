@@ -58,7 +58,8 @@ func (s *azfileLiveTestSuite) TestShareCreateDirectoryURL() {
 	}
 	srClient, err := svcClient.NewShareClient(sharePrefix)
 	_assert.Nil(err)
-	dirClient := srClient.NewDirectoryClient(directoryPrefix)
+	dirClient, err := srClient.NewDirectoryClient(directoryPrefix)
+	_assert.Nil(err)
 
 	correctURL := "https://" + os.Getenv("AZURE_STORAGE_ACCOUNT_NAME") + ".file.core.windows.net/" + sharePrefix + "/" + directoryPrefix
 	_assert.Equal(dirClient.URL(), correctURL)
@@ -745,7 +746,8 @@ func (s *azfileLiveTestSuite) TestSetAndGetStatistics() {
 	_assert.Equal(cResp.RawResponse.StatusCode, 201)
 	defer delShare(_assert, srClient, nil)
 
-	dirClient := srClient.NewDirectoryClient("testdir")
+	dirClient, err := srClient.NewDirectoryClient("testdir")
+	_assert.Nil(err)
 	_, err = dirClient.Create(ctx, nil)
 	_assert.Nil(err)
 

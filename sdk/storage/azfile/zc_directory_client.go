@@ -48,6 +48,22 @@ func (d DirectoryClient) NewFileClient(fileName string) (FileClient, error) {
 	}, nil
 }
 
+func (d DirectoryClient) NewDirectoryClient(directoryName string) (DirectoryClient, error) {
+	directoryURL := appendToURLPath(d.URL(), directoryName)
+	u, err := url.Parse(directoryURL)
+	if err != nil {
+		return DirectoryClient{}, err
+	}
+	conn := &connection{directoryURL, d.client.con.p}
+	return DirectoryClient{
+		client: &directoryClient{
+			con: conn,
+		},
+		u:    *u,
+		cred: d.cred,
+	}, nil
+}
+
 // Create creates a new directory within a storage account.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/create-directory.
 // Pass default values for SMB properties (ex: "None" for file attributes).
@@ -78,31 +94,33 @@ func (d DirectoryClient) GetProperties(ctx context.Context, options *GetDirector
 	return directoryGetPropertiesResponse, handleError(err)
 }
 
-//// SetProperties sets the directory's metadata and system properties.
-//// Preserves values for SMB properties.
-//// For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-properties.
-//func (d DirectoryClient) SetProperties(ctx context.Context, options *SetDirectoryPropertiesOptions) (*DirectorySetPropertiesResponse, error) {
-//	permStr, permKey, fileAttr, fileCreateTime, FileLastWriteTime, err := properties.selectSMBPropertyValues(true, DefaultPreserveString, DefaultPreserveString, DefaultPreserveString)
-//
-//	fileAttributes string, fileCreationTime time.Time, fileLastWriteTime time.Time, formattedOptions :=
-//
-//	return d.client.SetProperties(ctx, fileAttr, fileCreateTime, FileLastWriteTime, nil, permStr, permKey)
-//}
+// SetProperties sets the directory's metadata and system properties.
+// Preserve values for SMB properties.
+// For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/set-directory-properties.
+func (d DirectoryClient) SetProperties(ctx context.Context, options *SetDirectoryPropertiesOptions) (DirectorySetPropertiesResponse, error) {
+	fileAttributes, fileCreationTime, fileLastWriteTime, directorySetPropertiesOptions := options.format()
+
+	directorySetPropertiesResponse, err := d.client.SetProperties(ctx, fileAttributes, fileCreationTime, fileLastWriteTime, directorySetPropertiesOptions)
+	return directorySetPropertiesResponse, handleError(err)
+}
 
 // SetMetadata sets the directory's metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/set-directory-metadata.
-func (d DirectoryClient) SetMetadata(ctx context.Context, options *SetDirectoryMetadataOptions) (DirectorySetMetadataResponse, error) {
-	formattedOptions := options.format()
+func (d DirectoryClient) SetMetadata(ctx context.Context, metadata map[string]string, options *SetDirectoryMetadataOptions) (DirectorySetMetadataResponse, error) {
+	formattedOptions, err := options.format(metadata)
+	if err != nil {
+		return DirectorySetMetadataResponse{}, err
+	}
 	directorySetMetadataResponse, err := d.client.SetMetadata(ctx, formattedOptions)
 	return directorySetMetadataResponse, handleError(err)
 }
 
-//// ListFilesAndDirectoriesSegment returns a single segment of files and directories starting from the specified Marker.
-//// Use an empty Marker to start enumeration from the beginning. File and directory names are returned in lexicographic order.
-//// After getting a segment, process it, and then call ListFilesAndDirectoriesSegment again (passing the the previously-returned
-//// Marker) to get the next segment. This method lists the contents only for a single level of the directory hierarchy.
-//// For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files.
-//func (d DirectoryClient) ListFilesAndDirectoriesSegment(ctx context.Context, marker Marker, o ListFilesAndDirectoriesOptions) (*ListFilesAndDirectoriesSegmentResponse, error) {
-//	prefix, maxResults := o.format()
-//	return d.client.ListFilesAndDirectoriesSegment(ctx, prefix, nil, marker.Val, maxResults, nil)
-//}
+// ListFilesAndDirectories returns a single segment of files and directories starting from the specified Marker.
+// Use an empty Marker to start enumeration from the beginning. File and directory names are returned in lexicographic order.
+// After getting a segment, process it, and then call ListFilesAndDirectoriesSegment again (passing the the previously-returned
+// Marker) to get the next segment. This method lists the contents only for a single level of the directory hierarchy.
+// For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files.
+func (d DirectoryClient) ListFilesAndDirectories(ctx context.Context, marker *string, options *ListFilesAndDirectoriesOptions) *DirectoryListFilesAndDirectoriesSegmentPager {
+	formattedOptions := options.format(marker)
+	return d.client.ListFilesAndDirectoriesSegment(formattedOptions)
+}

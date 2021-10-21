@@ -44,18 +44,19 @@ func NewAuthorizationCodeCredential(tenantID string, clientID string, authCode s
 	if !validTenantID(tenantID) {
 		return nil, &CredentialUnavailableError{credentialType: "Authorization Code Credential", message: tenantIDValidationErr}
 	}
-	if options == nil {
-		options = &AuthorizationCodeCredentialOptions{}
+	cp := AuthorizationCodeCredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
-	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, &options.ClientOptions)
+	c, err := newAADIdentityClient(authorityHost, &cp.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
-	return &AuthorizationCodeCredential{tenantID: tenantID, clientID: clientID, authCode: authCode, clientSecret: options.ClientSecret, redirectURI: redirectURL, client: c}, nil
+	return &AuthorizationCodeCredential{tenantID: tenantID, clientID: clientID, authCode: authCode, clientSecret: cp.ClientSecret, redirectURI: redirectURL, client: c}, nil
 }
 
 // GetToken obtains a token from Azure Active Directory, using the specified authorization code to authenticate.

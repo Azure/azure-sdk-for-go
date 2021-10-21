@@ -51,27 +51,28 @@ func NewClientCertificateCredential(tenantID string, clientID string, certData [
 	if !validTenantID(tenantID) {
 		return nil, &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: tenantIDValidationErr}
 	}
-	if options == nil {
-		options = &ClientCertificateCredentialOptions{}
+	cp := ClientCertificateCredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
-	cert, err := loadPEMCert(certData, options.Password, options.SendCertificateChain)
+	cert, err := loadPEMCert(certData, cp.Password, cp.SendCertificateChain)
 	if err != nil {
-		cert, err = loadPKCS12Cert(certData, options.Password, options.SendCertificateChain)
+		cert, err = loadPKCS12Cert(certData, cp.Password, cp.SendCertificateChain)
 	}
 	if err != nil {
 		credErr := &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: err.Error()}
 		logCredentialError(credErr.credentialType, credErr)
 		return nil, credErr
 	}
-	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, &options.ClientOptions)
+	c, err := newAADIdentityClient(authorityHost, &cp.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
-	return &ClientCertificateCredential{tenantID: tenantID, clientID: clientID, cert: cert, sendCertificateChain: options.SendCertificateChain, client: c}, nil
+	return &ClientCertificateCredential{tenantID: tenantID, clientID: clientID, cert: cert, sendCertificateChain: cp.SendCertificateChain, client: c}, nil
 }
 
 // contains decoded cert contents we care about

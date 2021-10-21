@@ -39,14 +39,15 @@ func NewClientSecretCredential(tenantID string, clientID string, clientSecret st
 	if !validTenantID(tenantID) {
 		return nil, &CredentialUnavailableError{credentialType: "Client Secret Credential", message: tenantIDValidationErr}
 	}
-	if options == nil {
-		options = &ClientSecretCredentialOptions{}
+	cp := ClientSecretCredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
-	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, &options.ClientOptions)
+	c, err := newAADIdentityClient(authorityHost, &cp.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

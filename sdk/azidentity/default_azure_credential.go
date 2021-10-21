@@ -33,12 +33,13 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Chained
 	var creds []azcore.TokenCredential
 	errMsg := ""
 
-	if options == nil {
-		options = &DefaultAzureCredentialOptions{}
+	cp := DefaultAzureCredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
 
-	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{AuthorityHost: options.AuthorityHost,
-		ClientOptions: options.ClientOptions,
+	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{AuthorityHost: cp.AuthorityHost,
+		ClientOptions: cp.ClientOptions,
 	})
 	if err == nil {
 		creds = append(creds, envCred)
@@ -46,7 +47,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Chained
 		errMsg += err.Error()
 	}
 
-	msiCred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: options.ClientOptions})
+	msiCred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: cp.ClientOptions})
 	if err == nil {
 		creds = append(creds, msiCred)
 	} else {

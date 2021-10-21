@@ -40,8 +40,9 @@ type EnvironmentCredential struct {
 // If the expected environment variables are not found at this time, then a CredentialUnavailableError will be returned.
 // options: The options used to configure the management of the requests sent to Azure Active Directory.
 func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*EnvironmentCredential, error) {
-	if options == nil {
-		options = &EnvironmentCredentialOptions{}
+	cp := EnvironmentCredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
 	tenantID := os.Getenv("AZURE_TENANT_ID")
 	if tenantID == "" {
@@ -57,7 +58,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	}
 	if clientSecret := os.Getenv("AZURE_CLIENT_SECRET"); clientSecret != "" {
 		log.Write(EventCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientSecretCredential")
-		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, &ClientSecretCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions})
+		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, &ClientSecretCredentialOptions{AuthorityHost: cp.AuthorityHost, ClientOptions: cp.ClientOptions})
 		if err != nil {
 			return nil, err
 		}
@@ -69,7 +70,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		if err != nil {
 			return nil, &CredentialUnavailableError{credentialType: "Environment Credential", message: "Failed to read certificate file: " + err.Error()}
 		}
-		cred, err := NewClientCertificateCredential(tenantID, clientID, certData, &ClientCertificateCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions})
+		cred, err := NewClientCertificateCredential(tenantID, clientID, certData, &ClientCertificateCredentialOptions{AuthorityHost: cp.AuthorityHost, ClientOptions: cp.ClientOptions})
 		if err != nil {
 			return nil, err
 		}
@@ -78,7 +79,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	if username := os.Getenv("AZURE_USERNAME"); username != "" {
 		if password := os.Getenv("AZURE_PASSWORD"); password != "" {
 			log.Write(EventCredential, "Azure Identity => NewEnvironmentCredential() invoking UsernamePasswordCredential")
-			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, &UsernamePasswordCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions})
+			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, &UsernamePasswordCredentialOptions{AuthorityHost: cp.AuthorityHost, ClientOptions: cp.ClientOptions})
 			if err != nil {
 				return nil, err
 			}

@@ -75,10 +75,11 @@ type ManagedIdentityCredential struct {
 // options: ManagedIdentityCredentialOptions that configure the pipeline for requests sent to Azure Active Directory.
 func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
 	// Create a new Managed Identity Client with default options
-	if options == nil {
-		options = &ManagedIdentityCredentialOptions{}
+	cp := ManagedIdentityCredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
-	client := newManagedIdentityClient(options)
+	client := newManagedIdentityClient(&cp)
 	msiType, err := client.getMSIType()
 	// If there is an error that means that the code is not running in a Managed Identity environment
 	if err != nil {
@@ -89,7 +90,7 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 	// Assign the msiType discovered onto the client
 	client.msiType = msiType
 	// check if no clientID is specified then check if it exists in an environment variable
-	id := options.ID
+	id := cp.ID
 	if id == nil {
 		cID := os.Getenv("AZURE_CLIENT_ID")
 		if cID != "" {

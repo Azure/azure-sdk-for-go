@@ -11,7 +11,7 @@ import (
 )
 
 // UsernamePasswordCredentialOptions can be used to provide additional information to configure the UsernamePasswordCredential.
-// Use these options to modify the default pipeline behavior through the TokenCredentialOptions.
+// Use these options to modify the default pipeline behavior through the TokenCredentialcp.
 // All zero-value fields will be initialized with their default values.
 type UsernamePasswordCredentialOptions struct {
 	azcore.ClientOptions
@@ -43,14 +43,15 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 	if !validTenantID(tenantID) {
 		return nil, &CredentialUnavailableError{credentialType: "Username Password Credential", message: tenantIDValidationErr}
 	}
-	if options == nil {
-		options = &UsernamePasswordCredentialOptions{}
+	cp := UsernamePasswordCredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
-	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, &options.ClientOptions)
+	c, err := newAADIdentityClient(authorityHost, &cp.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

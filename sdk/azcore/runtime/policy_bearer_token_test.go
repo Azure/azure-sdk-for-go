@@ -36,7 +36,7 @@ func (mc mockCredential) GetToken(ctx context.Context, options policy.TokenReque
 	return &azcore.AccessToken{Token: "***", ExpiresOn: time.Now().Add(time.Hour)}, nil
 }
 
-func (mc mockCredential) NewAuthenticationPolicy(options AuthenticationOptions) policy.Policy {
+func (mc mockCredential) NewAuthenticationPolicy() policy.Policy {
 	return mc
 }
 
@@ -49,10 +49,7 @@ func defaultTestPipeline(srv policy.Transporter, scope string) Pipeline {
 		MaxRetryDelay: 500 * time.Millisecond,
 		RetryDelay:    time.Millisecond,
 	}
-	b := NewBearerTokenPolicy(
-		mockCredential{},
-		AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: []string{scope}}},
-	)
+	b := NewBearerTokenPolicy(mockCredential{}, []string{scope}, nil)
 	return NewPipeline(
 		"testmodule",
 		"v0.1.0",
@@ -90,7 +87,7 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 	failCredential.getTokenImpl = func(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 		return nil, expectedErr
 	}
-	b := NewBearerTokenPolicy(failCredential, AuthenticationOptions{})
+	b := NewBearerTokenPolicy(failCredential, nil, nil)
 	pipeline := newTestPipeline(&policy.ClientOptions{
 		Transport: srv,
 		Retry: policy.RetryOptions{
@@ -142,7 +139,7 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 		RetryDelay:    50 * time.Millisecond,
 		MaxRetries:    3,
 	}
-	b := NewBearerTokenPolicy(mockCredential{}, AuthenticationOptions{})
+	b := NewBearerTokenPolicy(mockCredential{}, nil, nil)
 	pipeline := newTestPipeline(&policy.ClientOptions{Transport: srv, Retry: retryOpts, PerRetryPolicies: []pipeline.Policy{b}})
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {

@@ -9,9 +9,10 @@ package runtime
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
@@ -25,25 +26,16 @@ func NewPipeline(module, version string, cred azcore.TokenCredential, options *a
 	if len(ep) == 0 {
 		ep = arm.AzurePublicCloud
 	}
-	perCallPolicies := []policy.Policy{}
+	perCallPolicies := []azpolicy.Policy{}
 	if !options.DisableRPRegistration {
-		regRPOpts := RegistrationOptions{ClientOptions: options.ClientOptions}
+		regRPOpts := armpolicy.RegistrationOptions{ClientOptions: options.ClientOptions}
 		perCallPolicies = append(perCallPolicies, NewRPRegistrationPolicy(string(ep), cred, &regRPOpts))
 	}
-	perRetryPolicies := []policy.Policy{
-		NewBearerTokenPolicy(cred, AuthenticationOptions{
+	perRetryPolicies := []azpolicy.Policy{
+		NewBearerTokenPolicy(cred, &armpolicy.BearerTokenOptions{
 			Scopes:           []string{shared.EndpointToScope(string(ep))},
 			AuxiliaryTenants: options.AuxiliaryTenants,
 		}),
 	}
 	return azruntime.NewPipeline(module, version, perCallPolicies, perRetryPolicies, &options.ClientOptions)
-}
-
-// AuthenticationOptions contains various options used to create a credential policy.
-type AuthenticationOptions struct {
-	// Scopes contains the list of permission scopes required for the token.
-	Scopes []string
-	// AuxiliaryTenants contains a list of additional tenant IDs to be used to authenticate
-	// in cross-tenant applications.
-	AuxiliaryTenants []string
 }

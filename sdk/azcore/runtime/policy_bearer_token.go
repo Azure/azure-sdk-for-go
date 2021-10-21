@@ -17,8 +17,8 @@ type BearerTokenPolicy struct {
 	// mainResource is the resource to be retreived using the tenant specified in the credential
 	mainResource *shared.ExpiringResource
 	// the following fields are read-only
-	cred    azcore.TokenCredential
-	options policy.TokenRequestOptions
+	cred   azcore.TokenCredential
+	scopes []string
 }
 
 type acquiringResourceState struct {
@@ -30,7 +30,7 @@ type acquiringResourceState struct {
 // thread/goroutine at a time ever calls this function
 func acquire(state interface{}) (newResource interface{}, newExpiration time.Time, err error) {
 	s := state.(acquiringResourceState)
-	tk, err := s.p.cred.GetToken(s.req.Raw().Context(), s.p.options)
+	tk, err := s.p.cred.GetToken(s.req.Raw().Context(), policy.TokenRequestOptions{Scopes: s.p.scopes})
 	if err != nil {
 		return nil, time.Time{}, err
 	}
@@ -39,11 +39,12 @@ func acquire(state interface{}) (newResource interface{}, newExpiration time.Tim
 
 // NewBearerTokenPolicy creates a policy object that authorizes requests with bearer tokens.
 // cred: an azcore.TokenCredential implementation such as a credential object from azidentity
+// scopes: the list of permission scopes required for the token.
 // opts: optional settings. Pass nil to accept default values; this is the same as passing a zero-value options.
-func NewBearerTokenPolicy(cred azcore.TokenCredential, opts AuthenticationOptions) *BearerTokenPolicy {
+func NewBearerTokenPolicy(cred azcore.TokenCredential, scopes []string, opts *policy.BearerTokenOptions) *BearerTokenPolicy {
 	return &BearerTokenPolicy{
 		cred:         cred,
-		options:      opts.TokenRequest,
+		scopes:       scopes,
 		mainResource: shared.NewExpiringResource(acquire),
 	}
 }

@@ -9,7 +9,9 @@
 * `runtime.NewPipeline` has a new signature that simplifies implementing custom authentication
 * `arm/runtime.RegistrationOptions` embeds `policy.ClientOptions`
 * Contents in the `log` package have been slightly renamed.
-* Removed `AuxiliaryTenants` from `runtime.AuthenticationOptions` as this is ARM-specific
+* Removed `AuthenticationOptions` in favor of `policy.BearerTokenOptions`
+* Changed parameters for `NewBearerTokenPolicy()`
+* Moved policy config options out of `arm/runtime` and into `arm/policy`
 
 ### Features Added
 * Updating Documentation

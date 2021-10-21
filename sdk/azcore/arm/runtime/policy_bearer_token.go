@@ -11,8 +11,9 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 type acquiringResourceState struct {
@@ -25,7 +26,7 @@ type acquiringResourceState struct {
 // thread/goroutine at a time ever calls this function
 func acquire(state interface{}) (newResource interface{}, newExpiration time.Time, err error) {
 	s := state.(acquiringResourceState)
-	tk, err := s.p.cred.GetToken(s.ctx, policy.TokenRequestOptions{
+	tk, err := s.p.cred.GetToken(s.ctx, azpolicy.TokenRequestOptions{
 		Scopes:   s.p.options.Scopes,
 		TenantID: s.tenant,
 	})
@@ -43,16 +44,19 @@ type BearerTokenPolicy struct {
 	auxResources map[string]*shared.ExpiringResource
 	// the following fields are read-only
 	cred    azcore.TokenCredential
-	options AuthenticationOptions
+	options armpolicy.BearerTokenOptions
 }
 
 // NewBearerTokenPolicy creates a policy object that authorizes requests with bearer tokens.
 // cred: an azcore.TokenCredential implementation such as a credential object from azidentity
 // opts: optional settings. Pass nil to accept default values; this is the same as passing a zero-value options.
-func NewBearerTokenPolicy(cred azcore.TokenCredential, opts AuthenticationOptions) *BearerTokenPolicy {
+func NewBearerTokenPolicy(cred azcore.TokenCredential, opts *armpolicy.BearerTokenOptions) *BearerTokenPolicy {
+	if opts == nil {
+		opts = &armpolicy.BearerTokenOptions{}
+	}
 	p := &BearerTokenPolicy{
 		cred:         cred,
-		options:      opts,
+		options:      *opts,
 		mainResource: shared.NewExpiringResource(acquire),
 	}
 	if len(opts.AuxiliaryTenants) > 0 {
@@ -66,7 +70,7 @@ func NewBearerTokenPolicy(cred azcore.TokenCredential, opts AuthenticationOption
 }
 
 // Do authorizes a request with a bearer token
-func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
+func (b *BearerTokenPolicy) Do(req *azpolicy.Request) (*http.Response, error) {
 	as := acquiringResourceState{
 		ctx: req.Raw().Context(),
 		p:   b,

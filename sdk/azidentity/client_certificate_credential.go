@@ -19,6 +19,8 @@ import (
 // ClientCertificateCredentialOptions contain optional parameters that can be used when configuring a ClientCertificateCredential.
 // All zero-value fields will be initialized with their default values.
 type ClientCertificateCredentialOptions struct {
+	azcore.ClientOptions
+
 	// The password required to decrypt the private key.  Leave empty if there is no password.
 	Password string
 	// Set to true to include x5c header in client claims when acquiring a token to enable
@@ -27,15 +29,6 @@ type ClientCertificateCredentialOptions struct {
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost AuthorityHost
-	// HTTPClient sets the transport for making HTTP requests
-	// Leave this as nil to use the default HTTP transport
-	HTTPClient policy.Transporter
-	// Retry configures the built-in retry policy behavior
-	Retry policy.RetryOptions
-	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry policy.TelemetryOptions
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
 }
 
 // ClientCertificateCredential enables authentication of a service principal to Azure Active Directory using a certificate that is assigned to its App Registration. More information

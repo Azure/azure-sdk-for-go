@@ -53,20 +53,12 @@ func (r ResourceID) String() string {
 // ManagedIdentityCredentialOptions contains parameters that can be used to configure the pipeline used with Managed Identity Credential.
 // All zero-value fields will be initialized with their default values.
 type ManagedIdentityCredentialOptions struct {
+	azcore.ClientOptions
+
 	// ID is the ID of a managed identity the credential should authenticate. Set this field to use a specific identity
 	// instead of the hosting environment's default. The value may be the identity's client ID or resource ID, but note that
 	// some platforms don't accept resource IDs.
 	ID ManagedIDKind
-
-	// HTTPClient sets the transport for making HTTP requests.
-	// Leave this as nil to use the default HTTP transport.
-	HTTPClient policy.Transporter
-
-	// Telemetry configures the built-in telemetry policy behavior.
-	Telemetry policy.TelemetryOptions
-
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
 }
 
 // ManagedIdentityCredential attempts authentication using a managed identity that has been assigned to the deployment environment. This authentication type works in several

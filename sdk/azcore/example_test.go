@@ -21,15 +21,15 @@ import (
 )
 
 // false positive by linter
-func ExampleSetClassifications() { //nolint:govet
+func ExampleSetEvents() { //nolint:govet
 	// only log HTTP requests and responses
-	log.SetClassifications(log.Request, log.Response)
+	log.SetEvents(log.EventRequest, log.EventResponse)
 }
 
 // false positive by linter
 func ExampleSetListener() { //nolint:govet
 	// a simple logger that writes to stdout
-	log.SetListener(func(cls log.Classification, msg string) {
+	log.SetListener(func(cls log.Event, msg string) {
 		fmt.Printf("%s: %s\n", cls, msg)
 	})
 }
@@ -65,7 +65,7 @@ func ExampleNullValue() {
 }
 
 func ExampleHTTPResponse() {
-	pipeline := runtime.NewPipeline(http.DefaultClient)
+	pipeline := runtime.NewPipeline("module", "version", nil, nil, nil)
 	req, err := runtime.NewRequest(context.Background(), "POST", "https://fakecontainerregisty.azurecr.io/acr/v1/nonexisteng/_tags")
 	if err != nil {
 		panic(err)

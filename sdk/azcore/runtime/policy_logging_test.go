@@ -14,19 +14,20 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 func TestPolicyLoggingSuccess(t *testing.T) {
-	rawlog := map[log.Classification]string{}
-	log.SetListener(func(cls log.Classification, s string) {
+	rawlog := map[log.Event]string{}
+	log.SetListener(func(cls log.Event, s string) {
 		rawlog[cls] = s
 	})
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetResponse()
-	pl := NewPipeline(srv, NewLogPolicy(nil))
+	pl := pipeline.NewPipeline(srv, NewLogPolicy(nil))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -42,7 +43,7 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Fatalf("unexpected status code: %d", resp.StatusCode)
 	}
-	if logReq, ok := rawlog[log.Request]; ok {
+	if logReq, ok := rawlog[log.EventRequest]; ok {
 		// Request ==> OUTGOING REQUEST (Try=1)
 		// 	GET http://127.0.0.1:49475?one=fish&sig=REDACTED
 		// 	(no headers)
@@ -52,7 +53,7 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 	} else {
 		t.Fatal("missing LogRequest")
 	}
-	if logResp, ok := rawlog[log.Response]; ok {
+	if logResp, ok := rawlog[log.EventResponse]; ok {
 		// Response ==> REQUEST/RESPONSE (Try=1/1.0034ms, OpTime=1.0034ms) -- RESPONSE SUCCESSFULLY RECEIVED
 		// 	GET http://127.0.0.1:49475?one=fish&sig=REDACTED
 		// 	(no headers)
@@ -69,14 +70,14 @@ func TestPolicyLoggingSuccess(t *testing.T) {
 }
 
 func TestPolicyLoggingError(t *testing.T) {
-	rawlog := map[log.Classification]string{}
-	log.SetListener(func(cls log.Classification, s string) {
+	rawlog := map[log.Event]string{}
+	log.SetListener(func(cls log.Event, s string) {
 		rawlog[cls] = s
 	})
 	srv, close := mock.NewServer()
 	defer close()
 	srv.SetError(errors.New("bogus error"))
-	pl := NewPipeline(srv, NewLogPolicy(nil))
+	pl := pipeline.NewPipeline(srv, NewLogPolicy(nil))
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -90,7 +91,7 @@ func TestPolicyLoggingError(t *testing.T) {
 	if resp != nil {
 		t.Fatal("unexpected respose")
 	}
-	if logReq, ok := rawlog[log.Request]; ok {
+	if logReq, ok := rawlog[log.EventRequest]; ok {
 		// Request ==> OUTGOING REQUEST (Try=1)
 		// 	GET http://127.0.0.1:50057
 		// 	Authorization: REDACTED
@@ -101,7 +102,7 @@ func TestPolicyLoggingError(t *testing.T) {
 	} else {
 		t.Fatal("missing LogRequest")
 	}
-	if logResponse, ok := rawlog[log.Response]; ok {
+	if logResponse, ok := rawlog[log.EventResponse]; ok {
 		// Response ==> REQUEST/RESPONSE (Try=1/0s, OpTime=0s) -- REQUEST ERROR
 		// 	GET http://127.0.0.1:50057
 		// 	Authorization: REDACTED

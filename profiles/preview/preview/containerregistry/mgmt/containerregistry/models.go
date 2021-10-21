@@ -12,7 +12,7 @@ package containerregistry
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2020-11-01-preview/containerregistry"
+	original "github.com/Azure/azure-sdk-for-go/services/preview/containerregistry/mgmt/2021-06-01-preview/containerregistry"
 )
 
 const (
@@ -22,58 +22,58 @@ const (
 type Action = original.Action
 
 const (
-	Allow Action = original.Allow
+	ActionAllow Action = original.ActionAllow
 )
 
 type ActionsRequired = original.ActionsRequired
 
 const (
-	None     ActionsRequired = original.None
-	Recreate ActionsRequired = original.Recreate
+	ActionsRequiredNone     ActionsRequired = original.ActionsRequiredNone
+	ActionsRequiredRecreate ActionsRequired = original.ActionsRequiredRecreate
 )
 
 type ActivationStatus = original.ActivationStatus
 
 const (
-	Active   ActivationStatus = original.Active
-	Inactive ActivationStatus = original.Inactive
+	ActivationStatusActive   ActivationStatus = original.ActivationStatusActive
+	ActivationStatusInactive ActivationStatus = original.ActivationStatusInactive
 )
 
 type Architecture = original.Architecture
 
 const (
-	Amd64         Architecture = original.Amd64
-	Arm           Architecture = original.Arm
-	Arm64         Architecture = original.Arm64
-	ThreeEightSix Architecture = original.ThreeEightSix
-	X86           Architecture = original.X86
+	ArchitectureAmd64         Architecture = original.ArchitectureAmd64
+	ArchitectureArm           Architecture = original.ArchitectureArm
+	ArchitectureArm64         Architecture = original.ArchitectureArm64
+	ArchitectureThreeEightSix Architecture = original.ArchitectureThreeEightSix
+	ArchitectureX86           Architecture = original.ArchitectureX86
 )
 
 type AuditLogStatus = original.AuditLogStatus
 
 const (
-	Disabled AuditLogStatus = original.Disabled
-	Enabled  AuditLogStatus = original.Enabled
+	AuditLogStatusDisabled AuditLogStatus = original.AuditLogStatusDisabled
+	AuditLogStatusEnabled  AuditLogStatus = original.AuditLogStatusEnabled
 )
 
 type BaseImageDependencyType = original.BaseImageDependencyType
 
 const (
-	BuildTime BaseImageDependencyType = original.BuildTime
-	RunTime   BaseImageDependencyType = original.RunTime
+	BaseImageDependencyTypeBuildTime BaseImageDependencyType = original.BaseImageDependencyTypeBuildTime
+	BaseImageDependencyTypeRunTime   BaseImageDependencyType = original.BaseImageDependencyTypeRunTime
 )
 
 type BaseImageTriggerType = original.BaseImageTriggerType
 
 const (
-	All     BaseImageTriggerType = original.All
-	Runtime BaseImageTriggerType = original.Runtime
+	BaseImageTriggerTypeAll     BaseImageTriggerType = original.BaseImageTriggerTypeAll
+	BaseImageTriggerTypeRuntime BaseImageTriggerType = original.BaseImageTriggerTypeRuntime
 )
 
 type CertificateType = original.CertificateType
 
 const (
-	LocalDirectory CertificateType = original.LocalDirectory
+	CertificateTypeLocalDirectory CertificateType = original.CertificateTypeLocalDirectory
 )
 
 type ConnectedRegistryMode = original.ConnectedRegistryMode
@@ -86,28 +86,28 @@ const (
 type ConnectionState = original.ConnectionState
 
 const (
-	Offline   ConnectionState = original.Offline
-	Online    ConnectionState = original.Online
-	Syncing   ConnectionState = original.Syncing
-	Unhealthy ConnectionState = original.Unhealthy
+	ConnectionStateOffline   ConnectionState = original.ConnectionStateOffline
+	ConnectionStateOnline    ConnectionState = original.ConnectionStateOnline
+	ConnectionStateSyncing   ConnectionState = original.ConnectionStateSyncing
+	ConnectionStateUnhealthy ConnectionState = original.ConnectionStateUnhealthy
 )
 
 type ConnectionStatus = original.ConnectionStatus
 
 const (
-	Approved     ConnectionStatus = original.Approved
-	Disconnected ConnectionStatus = original.Disconnected
-	Pending      ConnectionStatus = original.Pending
-	Rejected     ConnectionStatus = original.Rejected
+	ConnectionStatusApproved     ConnectionStatus = original.ConnectionStatusApproved
+	ConnectionStatusDisconnected ConnectionStatus = original.ConnectionStatusDisconnected
+	ConnectionStatusPending      ConnectionStatus = original.ConnectionStatusPending
+	ConnectionStatusRejected     ConnectionStatus = original.ConnectionStatusRejected
 )
 
 type CreatedByType = original.CreatedByType
 
 const (
-	Application     CreatedByType = original.Application
-	Key             CreatedByType = original.Key
-	ManagedIdentity CreatedByType = original.ManagedIdentity
-	User            CreatedByType = original.User
+	CreatedByTypeApplication     CreatedByType = original.CreatedByTypeApplication
+	CreatedByTypeKey             CreatedByType = original.CreatedByTypeKey
+	CreatedByTypeManagedIdentity CreatedByType = original.CreatedByTypeManagedIdentity
+	CreatedByTypeUser            CreatedByType = original.CreatedByTypeUser
 )
 
 type DefaultAction = original.DefaultAction
@@ -124,11 +124,18 @@ const (
 	EncryptionStatusEnabled  EncryptionStatus = original.EncryptionStatusEnabled
 )
 
+type ExportPolicyStatus = original.ExportPolicyStatus
+
+const (
+	ExportPolicyStatusDisabled ExportPolicyStatus = original.ExportPolicyStatusDisabled
+	ExportPolicyStatusEnabled  ExportPolicyStatus = original.ExportPolicyStatusEnabled
+)
+
 type ImportMode = original.ImportMode
 
 const (
-	Force   ImportMode = original.Force
-	NoForce ImportMode = original.NoForce
+	ImportModeForce   ImportMode = original.ImportModeForce
+	ImportModeNoForce ImportMode = original.ImportModeNoForce
 )
 
 type LastModifiedByType = original.LastModifiedByType
@@ -160,30 +167,30 @@ const (
 type OS = original.OS
 
 const (
-	Linux   OS = original.Linux
-	Windows OS = original.Windows
+	OSLinux   OS = original.OSLinux
+	OSWindows OS = original.OSWindows
 )
 
 type PasswordName = original.PasswordName
 
 const (
-	Password  PasswordName = original.Password
-	Password2 PasswordName = original.Password2
+	PasswordNamePassword  PasswordName = original.PasswordNamePassword
+	PasswordNamePassword2 PasswordName = original.PasswordNamePassword2
 )
 
 type PipelineOptions = original.PipelineOptions
 
 const (
-	ContinueOnErrors          PipelineOptions = original.ContinueOnErrors
-	DeleteSourceBlobOnSuccess PipelineOptions = original.DeleteSourceBlobOnSuccess
-	OverwriteBlobs            PipelineOptions = original.OverwriteBlobs
-	OverwriteTags             PipelineOptions = original.OverwriteTags
+	PipelineOptionsContinueOnErrors          PipelineOptions = original.PipelineOptionsContinueOnErrors
+	PipelineOptionsDeleteSourceBlobOnSuccess PipelineOptions = original.PipelineOptionsDeleteSourceBlobOnSuccess
+	PipelineOptionsOverwriteBlobs            PipelineOptions = original.PipelineOptionsOverwriteBlobs
+	PipelineOptionsOverwriteTags             PipelineOptions = original.PipelineOptionsOverwriteTags
 )
 
 type PipelineRunSourceType = original.PipelineRunSourceType
 
 const (
-	AzureStorageBlob PipelineRunSourceType = original.AzureStorageBlob
+	PipelineRunSourceTypeAzureStorageBlob PipelineRunSourceType = original.PipelineRunSourceTypeAzureStorageBlob
 )
 
 type PipelineRunTargetType = original.PipelineRunTargetType
@@ -195,7 +202,7 @@ const (
 type PipelineSourceType = original.PipelineSourceType
 
 const (
-	AzureStorageBlobContainer PipelineSourceType = original.AzureStorageBlobContainer
+	PipelineSourceTypeAzureStorageBlobContainer PipelineSourceType = original.PipelineSourceTypeAzureStorageBlobContainer
 )
 
 type PolicyStatus = original.PolicyStatus
@@ -208,12 +215,12 @@ const (
 type ProvisioningState = original.ProvisioningState
 
 const (
-	Canceled  ProvisioningState = original.Canceled
-	Creating  ProvisioningState = original.Creating
-	Deleting  ProvisioningState = original.Deleting
-	Failed    ProvisioningState = original.Failed
-	Succeeded ProvisioningState = original.Succeeded
-	Updating  ProvisioningState = original.Updating
+	ProvisioningStateCanceled  ProvisioningState = original.ProvisioningStateCanceled
+	ProvisioningStateCreating  ProvisioningState = original.ProvisioningStateCreating
+	ProvisioningStateDeleting  ProvisioningState = original.ProvisioningStateDeleting
+	ProvisioningStateFailed    ProvisioningState = original.ProvisioningStateFailed
+	ProvisioningStateSucceeded ProvisioningState = original.ProvisioningStateSucceeded
+	ProvisioningStateUpdating  ProvisioningState = original.ProvisioningStateUpdating
 )
 
 type PublicNetworkAccess = original.PublicNetworkAccess
@@ -226,8 +233,8 @@ const (
 type RegistryUsageUnit = original.RegistryUsageUnit
 
 const (
-	Bytes RegistryUsageUnit = original.Bytes
-	Count RegistryUsageUnit = original.Count
+	RegistryUsageUnitBytes RegistryUsageUnit = original.RegistryUsageUnitBytes
+	RegistryUsageUnitCount RegistryUsageUnit = original.RegistryUsageUnitCount
 )
 
 type ResourceIdentityType = original.ResourceIdentityType
@@ -255,26 +262,26 @@ const (
 type RunType = original.RunType
 
 const (
-	AutoBuild  RunType = original.AutoBuild
-	AutoRun    RunType = original.AutoRun
-	QuickBuild RunType = original.QuickBuild
-	QuickRun   RunType = original.QuickRun
+	RunTypeAutoBuild  RunType = original.RunTypeAutoBuild
+	RunTypeAutoRun    RunType = original.RunTypeAutoRun
+	RunTypeQuickBuild RunType = original.RunTypeQuickBuild
+	RunTypeQuickRun   RunType = original.RunTypeQuickRun
 )
 
 type SecretObjectType = original.SecretObjectType
 
 const (
-	Opaque      SecretObjectType = original.Opaque
-	Vaultsecret SecretObjectType = original.Vaultsecret
+	SecretObjectTypeOpaque      SecretObjectType = original.SecretObjectTypeOpaque
+	SecretObjectTypeVaultsecret SecretObjectType = original.SecretObjectTypeVaultsecret
 )
 
 type SkuName = original.SkuName
 
 const (
-	Basic    SkuName = original.Basic
-	Classic  SkuName = original.Classic
-	Premium  SkuName = original.Premium
-	Standard SkuName = original.Standard
+	SkuNameBasic    SkuName = original.SkuNameBasic
+	SkuNameClassic  SkuName = original.SkuNameClassic
+	SkuNamePremium  SkuName = original.SkuNamePremium
+	SkuNameStandard SkuName = original.SkuNameStandard
 )
 
 type SkuTier = original.SkuTier
@@ -289,8 +296,8 @@ const (
 type SourceControlType = original.SourceControlType
 
 const (
-	Github                  SourceControlType = original.Github
-	VisualStudioTeamService SourceControlType = original.VisualStudioTeamService
+	SourceControlTypeGithub                  SourceControlType = original.SourceControlTypeGithub
+	SourceControlTypeVisualStudioTeamService SourceControlType = original.SourceControlTypeVisualStudioTeamService
 )
 
 type SourceRegistryLoginMode = original.SourceRegistryLoginMode
@@ -303,8 +310,8 @@ const (
 type SourceTriggerEvent = original.SourceTriggerEvent
 
 const (
-	Commit      SourceTriggerEvent = original.Commit
-	Pullrequest SourceTriggerEvent = original.Pullrequest
+	SourceTriggerEventCommit      SourceTriggerEvent = original.SourceTriggerEventCommit
+	SourceTriggerEventPullrequest SourceTriggerEvent = original.SourceTriggerEventPullrequest
 )
 
 type TLSStatus = original.TLSStatus
@@ -324,8 +331,8 @@ const (
 type TokenCertificateName = original.TokenCertificateName
 
 const (
-	Certificate1 TokenCertificateName = original.Certificate1
-	Certificate2 TokenCertificateName = original.Certificate2
+	TokenCertificateNameCertificate1 TokenCertificateName = original.TokenCertificateNameCertificate1
+	TokenCertificateNameCertificate2 TokenCertificateName = original.TokenCertificateNameCertificate2
 )
 
 type TokenPasswordName = original.TokenPasswordName
@@ -345,8 +352,8 @@ const (
 type TokenType = original.TokenType
 
 const (
-	OAuth TokenType = original.OAuth
-	PAT   TokenType = original.PAT
+	TokenTypeOAuth TokenType = original.TokenTypeOAuth
+	TokenTypePAT   TokenType = original.TokenTypePAT
 )
 
 type TriggerStatus = original.TriggerStatus
@@ -359,7 +366,7 @@ const (
 type TrustPolicyType = original.TrustPolicyType
 
 const (
-	Notary TrustPolicyType = original.Notary
+	TrustPolicyTypeNotary TrustPolicyType = original.TrustPolicyTypeNotary
 )
 
 type Type = original.Type
@@ -375,10 +382,10 @@ const (
 type TypeBasicTaskStepProperties = original.TypeBasicTaskStepProperties
 
 const (
-	TypeDocker             TypeBasicTaskStepProperties = original.TypeDocker
-	TypeEncodedTask        TypeBasicTaskStepProperties = original.TypeEncodedTask
-	TypeFileTask           TypeBasicTaskStepProperties = original.TypeFileTask
-	TypeTaskStepProperties TypeBasicTaskStepProperties = original.TypeTaskStepProperties
+	TypeBasicTaskStepPropertiesTypeDocker             TypeBasicTaskStepProperties = original.TypeBasicTaskStepPropertiesTypeDocker
+	TypeBasicTaskStepPropertiesTypeEncodedTask        TypeBasicTaskStepProperties = original.TypeBasicTaskStepPropertiesTypeEncodedTask
+	TypeBasicTaskStepPropertiesTypeFileTask           TypeBasicTaskStepProperties = original.TypeBasicTaskStepPropertiesTypeFileTask
+	TypeBasicTaskStepPropertiesTypeTaskStepProperties TypeBasicTaskStepProperties = original.TypeBasicTaskStepPropertiesTypeTaskStepProperties
 )
 
 type TypeBasicTaskStepUpdateParameters = original.TypeBasicTaskStepUpdateParameters
@@ -400,19 +407,19 @@ const (
 type Variant = original.Variant
 
 const (
-	V6 Variant = original.V6
-	V7 Variant = original.V7
-	V8 Variant = original.V8
+	VariantV6 Variant = original.VariantV6
+	VariantV7 Variant = original.VariantV7
+	VariantV8 Variant = original.VariantV8
 )
 
 type WebhookAction = original.WebhookAction
 
 const (
-	ChartDelete WebhookAction = original.ChartDelete
-	ChartPush   WebhookAction = original.ChartPush
-	Delete      WebhookAction = original.Delete
-	Push        WebhookAction = original.Push
-	Quarantine  WebhookAction = original.Quarantine
+	WebhookActionChartDelete WebhookAction = original.WebhookActionChartDelete
+	WebhookActionChartPush   WebhookAction = original.WebhookActionChartPush
+	WebhookActionDelete      WebhookAction = original.WebhookActionDelete
+	WebhookActionPush        WebhookAction = original.WebhookActionPush
+	WebhookActionQuarantine  WebhookAction = original.WebhookActionQuarantine
 )
 
 type WebhookStatus = original.WebhookStatus
@@ -496,6 +503,7 @@ type ExportPipelineTargetProperties = original.ExportPipelineTargetProperties
 type ExportPipelinesClient = original.ExportPipelinesClient
 type ExportPipelinesCreateFuture = original.ExportPipelinesCreateFuture
 type ExportPipelinesDeleteFuture = original.ExportPipelinesDeleteFuture
+type ExportPolicy = original.ExportPolicy
 type FileTaskRunRequest = original.FileTaskRunRequest
 type FileTaskStep = original.FileTaskStep
 type FileTaskStepUpdateParameters = original.FileTaskStepUpdateParameters
@@ -527,6 +535,7 @@ type OperationDisplayDefinition = original.OperationDisplayDefinition
 type OperationListResult = original.OperationListResult
 type OperationListResultIterator = original.OperationListResultIterator
 type OperationListResultPage = original.OperationListResultPage
+type OperationLogSpecificationDefinition = original.OperationLogSpecificationDefinition
 type OperationMetricSpecificationDefinition = original.OperationMetricSpecificationDefinition
 type OperationPropertiesDefinition = original.OperationPropertiesDefinition
 type OperationServiceSpecificationDefinition = original.OperationServiceSpecificationDefinition
@@ -641,7 +650,6 @@ type SourceUpdateParameters = original.SourceUpdateParameters
 type SourceUploadDefinition = original.SourceUploadDefinition
 type Status = original.Status
 type StatusDetailProperties = original.StatusDetailProperties
-type StorageAccountProperties = original.StorageAccountProperties
 type SyncProperties = original.SyncProperties
 type SyncUpdateProperties = original.SyncUpdateProperties
 type SystemData = original.SystemData
@@ -948,6 +956,9 @@ func PossibleDefaultActionValues() []DefaultAction {
 }
 func PossibleEncryptionStatusValues() []EncryptionStatus {
 	return original.PossibleEncryptionStatusValues()
+}
+func PossibleExportPolicyStatusValues() []ExportPolicyStatus {
+	return original.PossibleExportPolicyStatusValues()
 }
 func PossibleImportModeValues() []ImportMode {
 	return original.PossibleImportModeValues()

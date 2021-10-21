@@ -2,9 +2,6 @@ parameters:
   - name: ServiceDirectory
     type: string
     default: ''
-  - name: RunTests
-    type: boolean
-    default: false
   - name: RunLiveTests
     type: boolean
     default: false
@@ -62,6 +59,9 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
+  - name: LicenseCheck
+    type: boolean
+    default: true
 
 
 stages:
@@ -110,9 +110,14 @@ stages:
           GoWorkspace: $(GO_WORKSPACE_PATH)
           Image: $(vm.image)
           GoVersion: $(go.version)
-          RunTests: ${{ parameters.RunTests }}
+          TestProxy: true # Do we need this conditional if it's always true? @benbp
           EnvVars:
             AZURE_RECORD_MODE: 'playback'
+
+      - pwsh: |
+          docker logs ambitious_azsdk_test_proxy
+        displayName: "Show Docker Logs"
+        condition: succeededOrFailed()
 
     - job: Analyze
       displayName: Analyze
@@ -135,6 +140,7 @@ stages:
           GoWorkspace: $(GO_WORKSPACE_PATH)
           LintVersion: $(GoLintCLIVersion)
           NonShipping: ${{ parameters.NonShipping }}
+          LicenseCheck: ${{ parameters.LicenseCheck }}
 
   # Run live tests for internal only, not public CI builds. This can be triggered manually for via an `/azp run` comment.
   - ${{if and(eq(variables['System.TeamProject'], 'internal'), eq(parameters.RunLiveTests, 'true'))}}:

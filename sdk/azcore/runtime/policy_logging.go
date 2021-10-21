@@ -49,7 +49,7 @@ func (p *logPolicy) Do(req *policy.Request) (*http.Response, error) {
 	req.SetOperationValue(opValues)
 
 	// Log the outgoing request as informational
-	if log.Should(log.Request) {
+	if log.Should(log.EventRequest) {
 		b := &bytes.Buffer{}
 		fmt.Fprintf(b, "==> OUTGOING REQUEST (Try=%d)\n", opValues.try)
 		writeRequestWithResponse(b, req, nil, nil)
@@ -57,7 +57,7 @@ func (p *logPolicy) Do(req *policy.Request) (*http.Response, error) {
 		if p.options.IncludeBody {
 			err = writeReqBody(req, b)
 		}
-		log.Write(log.Request, b.String())
+		log.Write(log.EventRequest, b.String())
 		if err != nil {
 			return nil, err
 		}
@@ -70,7 +70,7 @@ func (p *logPolicy) Do(req *policy.Request) (*http.Response, error) {
 	tryDuration := tryEnd.Sub(tryStart)
 	opDuration := tryEnd.Sub(opValues.start)
 
-	if log.Should(log.Response) {
+	if log.Should(log.EventResponse) {
 		// We're going to log this; build the string to log
 		b := &bytes.Buffer{}
 		fmt.Fprintf(b, "==> REQUEST/RESPONSE (Try=%d/%v, OpTime=%v) -- ", opValues.try, tryDuration, opDuration)
@@ -87,7 +87,7 @@ func (p *logPolicy) Do(req *policy.Request) (*http.Response, error) {
 		} else if p.options.IncludeBody {
 			err = writeRespBody(response, b)
 		}
-		log.Write(log.Response, b.String())
+		log.Write(log.EventResponse, b.String())
 	}
 	return response, err
 }

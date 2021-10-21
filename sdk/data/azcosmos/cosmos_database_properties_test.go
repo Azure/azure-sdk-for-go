@@ -16,7 +16,7 @@ func TestDatabasePropertiesSerialization(t *testing.T) {
 		Time: time.Unix(nowAsUnix, 0),
 	}
 
-	properties := &CosmosDatabaseProperties{
+	properties := &DatabaseProperties{
 		Id:           "someId",
 		ETag:         "someEtag",
 		SelfLink:     "someSelfLink",
@@ -29,7 +29,7 @@ func TestDatabasePropertiesSerialization(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	otherProperties := &CosmosDatabaseProperties{}
+	otherProperties := &DatabaseProperties{}
 	err = json.Unmarshal(jsonString, otherProperties)
 	if err != nil {
 		t.Fatal(err, string(jsonString))

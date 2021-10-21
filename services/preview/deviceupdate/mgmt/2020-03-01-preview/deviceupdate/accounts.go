@@ -51,7 +51,7 @@ func (client AccountsClient) Create(ctx context.Context, resourceGroupName strin
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9]+$`, Chain: nil}}}}); err != nil {
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("deviceupdate.AccountsClient", "Create", err.Error())
 	}
 
@@ -140,7 +140,7 @@ func (client AccountsClient) Delete(ctx context.Context, resourceGroupName strin
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9]+$`, Chain: nil}}}}); err != nil {
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("deviceupdate.AccountsClient", "Delete", err.Error())
 	}
 
@@ -226,7 +226,7 @@ func (client AccountsClient) Get(ctx context.Context, resourceGroupName string, 
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9]+$`, Chain: nil}}}}); err != nil {
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("deviceupdate.AccountsClient", "Get", err.Error())
 	}
 
@@ -288,6 +288,89 @@ func (client AccountsClient) GetResponder(resp *http.Response) (result Account, 
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// Head checks whether account exists.
+// Parameters:
+// resourceGroupName - the resource group name.
+// accountName - account name.
+func (client AccountsClient) Head(ctx context.Context, resourceGroupName string, accountName string) (result autorest.Response, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/AccountsClient.Head")
+		defer func() {
+			sc := -1
+			if result.Response != nil {
+				sc = result.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: accountName,
+			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
+				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("deviceupdate.AccountsClient", "Head", err.Error())
+	}
+
+	req, err := client.HeadPreparer(ctx, resourceGroupName, accountName)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "deviceupdate.AccountsClient", "Head", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.HeadSender(req)
+	if err != nil {
+		result.Response = resp
+		err = autorest.NewErrorWithError(err, "deviceupdate.AccountsClient", "Head", resp, "Failure sending request")
+		return
+	}
+
+	result, err = client.HeadResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "deviceupdate.AccountsClient", "Head", resp, "Failure responding to request")
+		return
+	}
+
+	return
+}
+
+// HeadPreparer prepares the Head request.
+func (client AccountsClient) HeadPreparer(ctx context.Context, resourceGroupName string, accountName string) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"accountName":       autorest.Encode("path", accountName),
+		"resourceGroupName": autorest.Encode("path", resourceGroupName),
+		"subscriptionId":    autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2020-03-01-preview"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsHead(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// HeadSender sends the Head request. The method will close the
+// http.Response Body if it receives an error.
+func (client AccountsClient) HeadSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// HeadResponder handles the response to the Head request. The method always
+// closes the http.Response Body.
+func (client AccountsClient) HeadResponder(resp *http.Response) (result autorest.Response, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByClosing())
+	result.Response = resp
 	return
 }
 
@@ -540,7 +623,7 @@ func (client AccountsClient) Update(ctx context.Context, resourceGroupName strin
 		{TargetValue: accountName,
 			Constraints: []validation.Constraint{{Target: "accountName", Name: validation.MaxLength, Rule: 24, Chain: nil},
 				{Target: "accountName", Name: validation.MinLength, Rule: 3, Chain: nil},
-				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z][A-Za-z0-9]+$`, Chain: nil}}}}); err != nil {
+				{Target: "accountName", Name: validation.Pattern, Rule: `^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$`, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("deviceupdate.AccountsClient", "Update", err.Error())
 	}
 
@@ -603,7 +686,7 @@ func (client AccountsClient) UpdateSender(req *http.Request) (future AccountsUpd
 func (client AccountsClient) UpdateResponder(resp *http.Response) (result Account, err error) {
 	err = autorest.Respond(
 		resp,
-		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		azure.WithErrorUnlessStatusCode(http.StatusOK, http.StatusCreated),
 		autorest.ByUnmarshallingJSON(&result),
 		autorest.ByClosing())
 	result.Response = autorest.Response{Response: resp}

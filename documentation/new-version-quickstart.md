@@ -156,7 +156,11 @@ Example: Creating a Resource Group
 ***Import the packages***
 ```go
 import (
-    "contexts"
+    "context"
+    "log"
+    "os"
+    "time"
+
     "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
     "github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
     "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
@@ -180,11 +184,11 @@ var (
 func createResourceGroup(ctx context.Context, connection *arm.Connection) (armresources.ResourceGroupResponse, error) {
 	rgClient := armresources.NewResourceGroupsClient(connection, subscriptionId)
 
-	param := armresources.ResourceGroup{
-		Location: to.StringPtr(location),
-	}
+    param := armresources.ResourceGroup{
+        Location: to.StringPtr(location),
+    }
 
-	return rgClient.CreateOrUpdate(context.Background(), resourceGroupName, param, nil)
+    return rgClient.CreateOrUpdate(context.Background(), resourceGroupName, param, nil)
 }
 ```
 
@@ -285,22 +289,22 @@ func main() {
     }
     log.Printf("Resource Group %s created", *resourceGroup.ResourceGroup.ID)
 
-	updatedRG, err := updateResourceGroup(ctx, conn)
-	if err != nil {
+    updatedRG, err := updateResourceGroup(ctx, conn)
+    if err != nil {
         log.Fatalf("cannot update resource group: %+v", err)
-	}
-	log.Printf("Resource Group %s updated", *updatedRG.ResourceGroup.ID)
+    }
+    log.Printf("Resource Group %s updated", *updatedRG.ResourceGroup.ID)
 
-	rgList, err := listResourceGroups(ctx, conn)
-	if err != nil {
+    rgList, err := listResourceGroups(ctx, conn)
+    if err != nil {
         log.Fatalf("cannot list resource group: %+v", err)
-	}
-	log.Printf("We totally have %d resource groups", len(rgList))
+    }
+    log.Printf("We totally have %d resource groups", len(rgList))
 
-	if err := deleteResourceGroup(ctx, conn); err != nil {
+    if err := deleteResourceGroup(ctx, conn); err != nil {
         log.Fatalf("cannot delete resource group: %+v", err)
-	}
-	log.Printf("Resource Group deleted")
+    }
+    log.Printf("Resource Group deleted")
 })
 ```
 
@@ -317,13 +321,13 @@ In the samples above, you might notice that some operations have a ``Begin`` pre
 ```go
 poller, err := client.BeginCreate(context.Background(), "resource_identifier", "additonal_parameter")
 if err != nil {
-	// handle error...
+    // handle error...
 }
 resp, err = poller.PollUntilDone(context.Background(), 5 * time.Second)
 if err != nil {
-	// handle error...
+    // handle error...
 }
-fmt.Printf("LRO done")
+log.Printf("LRO done")
 // dealing with `resp`
 ```
 

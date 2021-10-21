@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/go-amqp"
 	"github.com/devigned/tab"
 )
@@ -202,7 +203,7 @@ func newSender(ns internal.NamespaceWithNewAMQPLinks, queueOrTopic string, clean
 
 func (s *Sender) startProducerSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
 	ctx, span := tab.StartSpan(ctx, operationName)
-	internal.ApplyComponentInfo(span)
+	tracing.ApplyComponentInfo(span, internal.Version)
 	span.AddAttributes(
 		tab.StringAttribute("span.kind", "producer"),
 		tab.StringAttribute("message_bus.destination", s.links.Audience()),

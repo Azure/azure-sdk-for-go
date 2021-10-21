@@ -19,42 +19,164 @@ func PossibleActionTypeValues() []ActionType {
 	return []ActionType{Internal}
 }
 
+// CheckNameAvailabilityReason enumerates the values for check name availability reason.
+type CheckNameAvailabilityReason string
+
+const (
+	// AlreadyExists ...
+	AlreadyExists CheckNameAvailabilityReason = "AlreadyExists"
+	// Invalid ...
+	Invalid CheckNameAvailabilityReason = "Invalid"
+)
+
+// PossibleCheckNameAvailabilityReasonValues returns an array of possible values for the CheckNameAvailabilityReason const type.
+func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
+	return []CheckNameAvailabilityReason{AlreadyExists, Invalid}
+}
+
+// CreatedByType enumerates the values for created by type.
+type CreatedByType string
+
+const (
+	// Application ...
+	Application CreatedByType = "Application"
+	// Key ...
+	Key CreatedByType = "Key"
+	// ManagedIdentity ...
+	ManagedIdentity CreatedByType = "ManagedIdentity"
+	// User ...
+	User CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns an array of possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{Application, Key, ManagedIdentity, User}
+}
+
+// GroupIDProvisioningState enumerates the values for group id provisioning state.
+type GroupIDProvisioningState string
+
+const (
+	// Canceled ...
+	Canceled GroupIDProvisioningState = "Canceled"
+	// Failed ...
+	Failed GroupIDProvisioningState = "Failed"
+	// Succeeded ...
+	Succeeded GroupIDProvisioningState = "Succeeded"
+)
+
+// PossibleGroupIDProvisioningStateValues returns an array of possible values for the GroupIDProvisioningState const type.
+func PossibleGroupIDProvisioningStateValues() []GroupIDProvisioningState {
+	return []GroupIDProvisioningState{Canceled, Failed, Succeeded}
+}
+
+// ManagedServiceIdentityType enumerates the values for managed service identity type.
+type ManagedServiceIdentityType string
+
+const (
+	// None ...
+	None ManagedServiceIdentityType = "None"
+	// SystemAssigned ...
+	SystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+	// SystemAssignedUserAssigned ...
+	SystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	// UserAssigned ...
+	UserAssigned ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns an array of possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{None, SystemAssigned, SystemAssignedUserAssigned, UserAssigned}
+}
+
 // Origin enumerates the values for origin.
 type Origin string
 
 const (
-	// System ...
-	System Origin = "system"
-	// User ...
-	User Origin = "user"
-	// Usersystem ...
-	Usersystem Origin = "user,system"
+	// OriginSystem ...
+	OriginSystem Origin = "system"
+	// OriginUser ...
+	OriginUser Origin = "user"
+	// OriginUsersystem ...
+	OriginUsersystem Origin = "user,system"
 )
 
 // PossibleOriginValues returns an array of possible values for the Origin const type.
 func PossibleOriginValues() []Origin {
-	return []Origin{System, User, Usersystem}
+	return []Origin{OriginSystem, OriginUser, OriginUsersystem}
+}
+
+// PrivateEndpointConnectionProvisioningState enumerates the values for private endpoint connection
+// provisioning state.
+type PrivateEndpointConnectionProvisioningState string
+
+const (
+	// PrivateEndpointConnectionProvisioningStateCreating ...
+	PrivateEndpointConnectionProvisioningStateCreating PrivateEndpointConnectionProvisioningState = "Creating"
+	// PrivateEndpointConnectionProvisioningStateDeleting ...
+	PrivateEndpointConnectionProvisioningStateDeleting PrivateEndpointConnectionProvisioningState = "Deleting"
+	// PrivateEndpointConnectionProvisioningStateFailed ...
+	PrivateEndpointConnectionProvisioningStateFailed PrivateEndpointConnectionProvisioningState = "Failed"
+	// PrivateEndpointConnectionProvisioningStateSucceeded ...
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
+)
+
+// PossiblePrivateEndpointConnectionProvisioningStateValues returns an array of possible values for the PrivateEndpointConnectionProvisioningState const type.
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return []PrivateEndpointConnectionProvisioningState{PrivateEndpointConnectionProvisioningStateCreating, PrivateEndpointConnectionProvisioningStateDeleting, PrivateEndpointConnectionProvisioningStateFailed, PrivateEndpointConnectionProvisioningStateSucceeded}
+}
+
+// PrivateEndpointServiceConnectionStatus enumerates the values for private endpoint service connection status.
+type PrivateEndpointServiceConnectionStatus string
+
+const (
+	// Approved ...
+	Approved PrivateEndpointServiceConnectionStatus = "Approved"
+	// Pending ...
+	Pending PrivateEndpointServiceConnectionStatus = "Pending"
+	// Rejected ...
+	Rejected PrivateEndpointServiceConnectionStatus = "Rejected"
+)
+
+// PossiblePrivateEndpointServiceConnectionStatusValues returns an array of possible values for the PrivateEndpointServiceConnectionStatus const type.
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return []PrivateEndpointServiceConnectionStatus{Approved, Pending, Rejected}
 }
 
 // ProvisioningState enumerates the values for provisioning state.
 type ProvisioningState string
 
 const (
-	// Accepted ...
-	Accepted ProvisioningState = "Accepted"
-	// Canceled ...
-	Canceled ProvisioningState = "Canceled"
-	// Creating ...
-	Creating ProvisioningState = "Creating"
-	// Deleted ...
-	Deleted ProvisioningState = "Deleted"
-	// Failed ...
-	Failed ProvisioningState = "Failed"
-	// Succeeded ...
-	Succeeded ProvisioningState = "Succeeded"
+	// ProvisioningStateAccepted ...
+	ProvisioningStateAccepted ProvisioningState = "Accepted"
+	// ProvisioningStateCanceled ...
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	// ProvisioningStateCreating ...
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	// ProvisioningStateDeleted ...
+	ProvisioningStateDeleted ProvisioningState = "Deleted"
+	// ProvisioningStateFailed ...
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateSucceeded ...
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 )
 
 // PossibleProvisioningStateValues returns an array of possible values for the ProvisioningState const type.
 func PossibleProvisioningStateValues() []ProvisioningState {
-	return []ProvisioningState{Accepted, Canceled, Creating, Deleted, Failed, Succeeded}
+	return []ProvisioningState{ProvisioningStateAccepted, ProvisioningStateCanceled, ProvisioningStateCreating, ProvisioningStateDeleted, ProvisioningStateFailed, ProvisioningStateSucceeded}
+}
+
+// PublicNetworkAccess enumerates the values for public network access.
+type PublicNetworkAccess string
+
+const (
+	// Disabled ...
+	Disabled PublicNetworkAccess = "Disabled"
+	// Enabled ...
+	Enabled PublicNetworkAccess = "Enabled"
+)
+
+// PossiblePublicNetworkAccessValues returns an array of possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{Disabled, Enabled}
 }

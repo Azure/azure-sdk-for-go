@@ -22,7 +22,7 @@ type cosmosOffersResponse struct {
 func (c cosmosOffers) ReadThroughputIfExists(
 	ctx context.Context,
 	targetRID string,
-	requestOptions *ThroughputRequestOptions) (ThroughputResponse, error) {
+	requestOptions *ThroughputOptions) (ThroughputResponse, error) {
 	// TODO: might want to replace with query iterator once that is in
 	operationContext := cosmosOperationContext{
 		resourceType:    resourceTypeOffer,
@@ -51,7 +51,7 @@ func (c cosmosOffers) ReadThroughputIfExists(
 		return ThroughputResponse{}, err
 	}
 
-	queryRequestCharge := (&CosmosResponse{RawResponse: azResponse}).RequestCharge()
+	queryRequestCharge := newResponse(azResponse).RequestCharge
 	if len(theOffers.Offers) == 0 {
 		return ThroughputResponse{}, newCosmosErrorWithStatusCode(http.StatusNotFound, &queryRequestCharge)
 	}
@@ -85,14 +85,14 @@ func (c cosmosOffers) ReplaceThroughputIfExists(
 	ctx context.Context,
 	properties ThroughputProperties,
 	targetRID string,
-	requestOptions *ThroughputRequestOptions) (ThroughputResponse, error) {
+	requestOptions *ThroughputOptions) (ThroughputResponse, error) {
 
 	readResponse, err := c.ReadThroughputIfExists(ctx, targetRID, requestOptions)
 	if err != nil {
 		return ThroughputResponse{}, err
 	}
 
-	readRequestCharge := readResponse.RequestCharge()
+	readRequestCharge := readResponse.RequestCharge
 	readResponse.ThroughputProperties.offer = properties.offer
 
 	operationContext := cosmosOperationContext{

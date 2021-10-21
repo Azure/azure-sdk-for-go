@@ -24,8 +24,7 @@ pr:
     - eng/
 
 stages:
-- template: ../../eng/pipelines/templates/jobs/archetype-sdk-client.yml
+- template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: 'internal'
-    RunTests: true
+    ServiceDirectory: internal
     LicenseCheck: false

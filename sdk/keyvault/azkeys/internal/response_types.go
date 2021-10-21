@@ -8,9 +8,10 @@ package internal
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // HSMSecurityDomainDownloadPendingResponse contains the response from method HSMSecurityDomain.DownloadPending.

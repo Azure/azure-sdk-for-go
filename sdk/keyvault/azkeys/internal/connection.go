@@ -13,6 +13,7 @@ import (
 )
 
 var scopes = []string{"https://vault.azure.net/.default"}
+
 // ConnectionOptions contains configuration settings for the connection's pipeline.
 // All zero-value fields will be initialized with their default values.
 type ConnectionOptions struct {
@@ -50,7 +51,7 @@ func NewConnection(cred azcore.Credential, options *ConnectionOptions) *connecti
 	policies = append(policies, options.PerCallPolicies...)
 	policies = append(policies, runtime.NewRetryPolicy(&options.Retry))
 	policies = append(policies, options.PerRetryPolicies...)
-		policies = append(policies, cred.NewAuthenticationPolicy(runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: scopes}}))
+	policies = append(policies, cred.NewAuthenticationPolicy(runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: scopes}}))
 	policies = append(policies, runtime.NewLogPolicy(&options.Logging))
 	client := &connection{
 		p: runtime.NewPipeline(options.Transport, policies...),
@@ -59,7 +60,6 @@ func NewConnection(cred azcore.Credential, options *ConnectionOptions) *connecti
 }
 
 // Pipeline returns the connection's pipeline.
-func (c *connection) Pipeline() (runtime.Pipeline) {
+func (c *connection) Pipeline() runtime.Pipeline {
 	return c.p
 }
-

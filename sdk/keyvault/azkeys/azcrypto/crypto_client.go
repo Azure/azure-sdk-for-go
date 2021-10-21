@@ -60,7 +60,7 @@ func (c *ClientOptions) toConnectionOptions() *internal.ConnectionOptions {
 		return nil
 	}
 	return &internal.ConnectionOptions{
-		Transport:       c.Transport,
+		Transport:        c.Transport,
 		Retry:            c.Retry,
 		Telemetry:        c.Telemetry,
 		Logging:          c.Logging,

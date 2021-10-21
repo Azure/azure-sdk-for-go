@@ -47,7 +47,7 @@ func TestNewClient(t *testing.T) {
 		require.Equal(t, client.vaultURL, "https://mykeyvault.vault.azure.net/")
 		require.Equal(t, "keyabcdef", client.keyID)
 		if strings.Contains(key, "1234567890") {
-			 require.Equal(t, client.keyVersion, "1234567890")
+			require.Equal(t, client.keyVersion, "1234567890")
 		} else {
 			require.Equal(t, client.keyVersion, "")
 		}

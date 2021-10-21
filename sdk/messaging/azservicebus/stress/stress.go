@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/devigned/tab"
 	"github.com/joho/godotenv"
@@ -123,10 +124,10 @@ func runBasicSendAndReceiveTest() {
 			// internal.SpanProcessorLoop:  true,
 
 			//internal.SpanProcessorMessage: true,
-			internal.SpanRecover:        true,
-			internal.SpanNegotiateClaim: true,
-			internal.SpanRecoverClient:  true,
-			internal.SpanRecoverLink:    true,
+			tracing.SpanRecover:        true,
+			tracing.SpanNegotiateClaim: true,
+			tracing.SpanRecoverClient:  true,
+			tracing.SpanRecoverLink:    true,
 		},
 	})
 

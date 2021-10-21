@@ -37,7 +37,7 @@
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://seankane.vault.azure.net/keys/key1379313432/2c1264dbaa6d40f8bbdf1c1e8c854a1c",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key1379313432/2c1264dbaa6d40f8bbdf1c1e8c854a1c",
           "kty": "EC",
           "key_ops": [
             "sign",
@@ -88,11 +88,11 @@
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "recoveryId": "https://seankane.vault.azure.net/deletedkeys/key1379313432",
+        "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/key1379313432",
         "deletedDate": 1634850601,
         "scheduledPurgeDate": 1635455401,
         "key": {
-          "kid": "https://seankane.vault.azure.net/keys/key1379313432/2c1264dbaa6d40f8bbdf1c1e8c854a1c",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key1379313432/2c1264dbaa6d40f8bbdf1c1e8c854a1c",
           "kty": "EC",
           "key_ops": [
             "sign",
@@ -599,11 +599,11 @@
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "recoveryId": "https://seankane.vault.azure.net/deletedkeys/key1379313432",
+        "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/key1379313432",
         "deletedDate": 1634850601,
         "scheduledPurgeDate": 1635455401,
         "key": {
-          "kid": "https://seankane.vault.azure.net/keys/key1379313432/2c1264dbaa6d40f8bbdf1c1e8c854a1c",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key1379313432/2c1264dbaa6d40f8bbdf1c1e8c854a1c",
           "kty": "EC",
           "key_ops": [
             "sign",

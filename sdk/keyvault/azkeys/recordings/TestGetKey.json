@@ -38,7 +38,7 @@
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://seankane.vault.azure.net/keys/key1452004750/b22e1244c714426eb6cb42eed9beeea2",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key1452004750/b22e1244c714426eb6cb42eed9beeea2",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -93,7 +93,7 @@
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://seankane.vault.azure.net/keys/key1452004750/b22e1244c714426eb6cb42eed9beeea2",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key1452004750/b22e1244c714426eb6cb42eed9beeea2",
           "kty": "RSA",
           "key_ops": [
             "encrypt",

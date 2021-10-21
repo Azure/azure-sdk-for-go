@@ -560,7 +560,7 @@ func (client *KeyVaultClient) getKeyCreateRequest(ctx context.Context, vaultBase
 	if keyName == "" {
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
-	// urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
+	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
 	// if keyVersion == "" {
 	// 	return nil, errors.New("parameter keyVersion cannot be empty")
 	// }

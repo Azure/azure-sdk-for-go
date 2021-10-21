@@ -17,9 +17,10 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
@@ -30,30 +31,8 @@ const (
 	LogRPRegistration log.Event = "RPRegistration"
 )
 
-// RegistrationOptions configures the registration policy's behavior.
-// All zero-value fields will be initialized with their default values.
-type RegistrationOptions struct {
-	policy.ClientOptions
-
-	// MaxAttempts is the total number of times to attempt automatic registration
-	// in the event that an attempt fails.
-	// The default value is 3.
-	// Set to a value less than zero to disable the policy.
-	MaxAttempts int
-
-	// PollingDelay is the amount of time to sleep between polling intervals.
-	// The default value is 15 seconds.
-	// A value less than zero means no delay between polling intervals (not recommended).
-	PollingDelay time.Duration
-
-	// PollingDuration is the amount of time to wait before abandoning polling.
-	// The default valule is 5 minutes.
-	// NOTE: Setting this to a small value might cause the policy to prematurely fail.
-	PollingDuration time.Duration
-}
-
 // init sets any default values
-func (r *RegistrationOptions) init() {
+func setDefaults(r *armpolicy.RegistrationOptions) {
 	if r.MaxAttempts == 0 {
 		r.MaxAttempts = 3
 	} else if r.MaxAttempts < 0 {
@@ -73,28 +52,28 @@ func (r *RegistrationOptions) init() {
 // credentials and options.  The policy controls if an unregistered resource provider should
 // automatically be registered. See https://aka.ms/rps-not-found for more information.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
-func NewRPRegistrationPolicy(endpoint string, cred azcore.TokenCredential, o *RegistrationOptions) policy.Policy {
+func NewRPRegistrationPolicy(endpoint string, cred azcore.TokenCredential, o *armpolicy.RegistrationOptions) azpolicy.Policy {
 	if o == nil {
-		o = &RegistrationOptions{}
+		o = &armpolicy.RegistrationOptions{}
 	}
-	authPolicy := runtime.NewBearerTokenPolicy(cred, runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: []string{shared.EndpointToScope(endpoint)}}})
+	authPolicy := NewBearerTokenPolicy(cred, &armpolicy.BearerTokenOptions{Scopes: []string{shared.EndpointToScope(endpoint)}})
 	p := &rpRegistrationPolicy{
 		endpoint: endpoint,
 		pipeline: runtime.NewPipeline(shared.Module, shared.Version, nil, []pipeline.Policy{authPolicy}, &o.ClientOptions),
 		options:  *o,
 	}
 	// init the copy
-	p.options.init()
+	setDefaults(&p.options)
 	return p
 }
 
 type rpRegistrationPolicy struct {
 	endpoint string
 	pipeline pipeline.Pipeline
-	options  RegistrationOptions
+	options  armpolicy.RegistrationOptions
 }
 
-func (r *rpRegistrationPolicy) Do(req *policy.Request) (*http.Response, error) {
+func (r *rpRegistrationPolicy) Do(req *azpolicy.Request) (*http.Response, error) {
 	if r.options.MaxAttempts == 0 {
 		// policy is disabled
 		return req.Next()
@@ -250,7 +229,7 @@ func (client *providersOperations) Get(ctx context.Context, resourceProviderName
 }
 
 // getCreateRequest creates the Get request.
-func (client *providersOperations) getCreateRequest(ctx context.Context, resourceProviderNamespace string) (*policy.Request, error) {
+func (client *providersOperations) getCreateRequest(ctx context.Context, resourceProviderNamespace string) (*azpolicy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subID))
@@ -307,7 +286,7 @@ func (client *providersOperations) Register(ctx context.Context, resourceProvide
 }
 
 // registerCreateRequest creates the Register request.
-func (client *providersOperations) registerCreateRequest(ctx context.Context, resourceProviderNamespace string) (*policy.Request, error) {
+func (client *providersOperations) registerCreateRequest(ctx context.Context, resourceProviderNamespace string) (*azpolicy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/register"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subID))

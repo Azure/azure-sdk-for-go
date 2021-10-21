@@ -5,7 +5,6 @@ package runtime
 
 import (
 	"context"
-	"strings"
 
 	"errors"
 	"net/http"
@@ -14,6 +13,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -36,7 +36,7 @@ func (mc mockCredential) GetToken(ctx context.Context, options policy.TokenReque
 	return &azcore.AccessToken{Token: "***", ExpiresOn: time.Now().Add(time.Hour)}, nil
 }
 
-func (mc mockCredential) NewAuthenticationPolicy(options AuthenticationOptions) policy.Policy {
+func (mc mockCredential) NewAuthenticationPolicy() policy.Policy {
 	return mc
 }
 
@@ -49,10 +49,7 @@ func defaultTestPipeline(srv policy.Transporter, scope string) Pipeline {
 		MaxRetryDelay: 500 * time.Millisecond,
 		RetryDelay:    time.Millisecond,
 	}
-	b := NewBearerTokenPolicy(
-		mockCredential{},
-		AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: []string{scope}}},
-	)
+	b := NewBearerTokenPolicy(mockCredential{}, []string{scope}, nil)
 	return NewPipeline(
 		"testmodule",
 		"v0.1.0",
@@ -76,8 +73,8 @@ func TestBearerPolicy_SuccessGetToken(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Expected nil error but received one")
 	}
-	const expectedToken = bearerTokenPrefix + tokenValue
-	if token := resp.Request.Header.Get(headerAuthorization); token != expectedToken {
+	const expectedToken = shared.BearerTokenPrefix + tokenValue
+	if token := resp.Request.Header.Get(shared.HeaderAuthorization); token != expectedToken {
 		t.Fatalf("expected token '%s', got '%s'", expectedToken, token)
 	}
 }
@@ -90,7 +87,7 @@ func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 	failCredential.getTokenImpl = func(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 		return nil, expectedErr
 	}
-	b := NewBearerTokenPolicy(failCredential, AuthenticationOptions{})
+	b := NewBearerTokenPolicy(failCredential, nil, nil)
 	pipeline := newTestPipeline(&policy.ClientOptions{
 		Transport: srv,
 		Retry: policy.RetryOptions{
@@ -142,7 +139,7 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 		RetryDelay:    50 * time.Millisecond,
 		MaxRetries:    3,
 	}
-	b := NewBearerTokenPolicy(mockCredential{}, AuthenticationOptions{})
+	b := NewBearerTokenPolicy(mockCredential{}, nil, nil)
 	pipeline := newTestPipeline(&policy.ClientOptions{Transport: srv, Retry: retryOpts, PerRetryPolicies: []pipeline.Policy{b}})
 	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
@@ -154,45 +151,5 @@ func TestBearerPolicy_GetTokenFailsNoDeadlock(t *testing.T) {
 	}
 	if resp != nil {
 		t.Fatal("expected nil response")
-	}
-}
-
-func TestBearerTokenWithAuxiliaryTenants(t *testing.T) {
-	srv, close := mock.NewTLSServer()
-	defer close()
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	srv.AppendResponse()
-	retryOpts := policy.RetryOptions{
-		MaxRetryDelay: 500 * time.Millisecond,
-		RetryDelay:    50 * time.Millisecond,
-	}
-	b := NewBearerTokenPolicy(
-		mockCredential{},
-		AuthenticationOptions{
-			TokenRequest: policy.TokenRequestOptions{
-				Scopes: []string{scope},
-			},
-			AuxiliaryTenants: []string{"tenant1", "tenant2", "tenant3"},
-		},
-	)
-	pipeline := newTestPipeline(&policy.ClientOptions{Transport: srv, Retry: retryOpts, PerRetryPolicies: []pipeline.Policy{b}})
-	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
-	if err != nil {
-		t.Fatalf("Unexpected error: %v", err)
-	}
-	resp, err := pipeline.Do(req)
-	if err != nil {
-		t.Fatalf("Unexpected error: %v", err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		t.Fatalf("unexpected status code: %d", resp.StatusCode)
-	}
-	expectedHeader := strings.Repeat(bearerTokenPrefix+tokenValue+", ", 3)
-	expectedHeader = expectedHeader[:len(expectedHeader)-2]
-	if auxH := resp.Request.Header.Get(headerAuxiliaryAuthorization); auxH != expectedHeader {
-		t.Fatalf("unexpected auxiliary authorization header %s", auxH)
 	}
 }

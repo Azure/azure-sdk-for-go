@@ -59,7 +59,7 @@ func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Poli
 }
 
 func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-	if recording.GetRecordMode() != recording.LiveMode {
+	if recording.GetRecordMode() != "live" {
 		originalURLHost := req.Raw().URL.Host
 		req.Raw().URL.Scheme = "https"
 		req.Raw().URL.Host = p.options.Host
@@ -81,7 +81,7 @@ func lookupEnvVar(s string) string {
 }
 
 func getCredential(t *testing.T) azcore.TokenCredential {
-	if recording.GetRecordMode() != recording.PlaybackMode {
+	if recording.GetRecordMode() != "playback" {
 		tenantId := lookupEnvVar("KEYVAULT_TENANT_ID")
 		clientId := lookupEnvVar("KEYVAULT_CLIENT_ID")
 		clientSecret := lookupEnvVar("KEYVAULT_CLIENT_SECRET")

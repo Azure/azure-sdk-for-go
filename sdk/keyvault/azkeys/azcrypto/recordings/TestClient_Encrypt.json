@@ -37,7 +37,7 @@
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://seankane.vault.azure.net/keys/key4081119768/ea4927a921d84aa1988213c739d2afac",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key4081119768/ea4927a921d84aa1988213c739d2afac",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -96,7 +96,7 @@
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "kid": "https://seankane.vault.azure.net/keys/key4081119768/ea4927a921d84aa1988213c739d2afac",
+        "kid": "https://fakekvurl.vault.azure.net/keys/key4081119768/ea4927a921d84aa1988213c739d2afac",
         "value": "Zx-TLTQz5WxMXOz18wcI0aUgwkF1M7pdnR-Avs2e6yibsxoxzDyOh_1Mfzec4Dy7m1Ben0Wfy86IOeSiQTJR8V7Mz1KAHgiJeg-Fh_QcIa6qZQGl88e0fROcxQo7blVL3AirynsVKVaE_u4Uf5odJ0kKFQecf3nNwxZEtyaRMk5WwlzbKexN1LawMUUZoR5fFpCRlUsuxhAvcFa3slofJlnskIX728u-2X8zIXjo8V_Kyace9OsTxtu32KLq2WxVcy89_D23VJffCVvyMj4QPBtDdndpZ0um-fx3fMkGGm71v_8SinH9vJAH_5k6yT3GAw0miIa5Mz4fY8LDEw-XpQ"
       }
     }

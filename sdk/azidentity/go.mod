@@ -2,10 +2,8 @@ module github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
 go 1.16
 
-replace github.com/Azure/azure-sdk-for-go/sdk/azcore => ../azcore
-
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.19.0
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v0.20.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v0.8.1
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/pkg/browser v0.0.0-20180916011732-0a3d74bf9ce4

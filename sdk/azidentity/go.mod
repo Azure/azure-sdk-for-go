@@ -1,6 +1,6 @@
 module github.com/Azure/azure-sdk-for-go/sdk/azidentity
 
-go 1.14
+go 1.16
 
 replace github.com/Azure/azure-sdk-for-go/sdk/azcore => ../azcore
 

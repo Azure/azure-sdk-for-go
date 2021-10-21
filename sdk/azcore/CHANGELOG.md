@@ -3,16 +3,22 @@
 ## 0.20.0 (Unreleased)
 
 ### Breaking Changes
-* The endpoint parameter for `arm/Connection` constructors has changed to a string typedef in order to provide a hint for applicable values.
+* Removed `arm.Connection`
 * Removed `azcore.Credential` and `.NewAnonymousCredential()`
   * `NewRPRegistrationPolicy` now requires an `azcore.TokenCredential`
+* `runtime.NewPipeline` has a new signature that simplifies implementing custom authentication
+* `arm/runtime.RegistrationOptions` embeds `policy.ClientOptions`
+* Contents in the `log` package have been slightly renamed.
 
 ### Features Added
 * Updating Documentation
+* Added string typdef `arm.Endpoint` to provide a hint toward expected ARM client endpoints
+* `azcore.ClientOptions` contains common pipeline configuration settings
 
 ### Bug Fixes
 * Fixed a potential panic when creating the default Transporter.
 * Close LRO initial response body when creating a poller.
+* Fixed a panic when recursively cloning structs that contain time.Time.
 
 ## 0.19.0 (2021-08-25)
 

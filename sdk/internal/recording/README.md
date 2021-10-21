@@ -2,165 +2,121 @@
 
 [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/go/Azure.azure-sdk-for-go?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=1842&branchName=master)
 
-The `testframework` package makes it easy to add recorded tests to your track-2 client package.
+The `recording` package makes it easy to add recorded tests to your track-2 client package.
 Below are some examples that walk through setting up a recorded test end to end.
 
-## Examples
+## Set Up
+The `recording` package supports three different test modes. These modes are set by setting the `AZURE_RECORD_MODE` environment variable to one of the three values:
+1. `record`: Used when making requests against real resources. In this mode new recording will be generated and saved to file.
+2. `playback`: This mode is for running tests against local recordings.
+3. `live`: This mode should not be used locally, it is used by the nightly live pipelines to run against real resources and skip any routing to the proxy. This mode closely mimics how our customers will use the libraries.
 
-### Initializing a Recording instance for a test
-
-The first step in instrumenting a client to interact with recorded tests is to create a `TestContext`.
-This acts as the interface between the recorded test framework and your chosen test package.
-In these examples we'll use testify's [assert](https://pkg.go.dev/github.com/stretchr/testify/assert),
-but you can use the framework of your choice.
-
-In the snippet below, demonstrates an example test setup func in which we are initializing the `TestContext`
-with the methods that will be invoked when your recorded test needs to Log, Fail, get the Name of the test,
-or indicate that the test IsFailed.
-
-***Note**: an instance of TestContext should be initialized for each test.*
-
-```go
-type testState struct {
-    recording *recording.Recording
-    client    *TableServiceClient
-    context   *recording.TestContext
-}
-// a map to store our created test contexts
-var clientsMap map[string]*testState = make(map[string]*testState)
-
-// recordedTestSetup is called before each test execution by the test suite's BeforeTest method
-func recordedTestSetup(t *testing.T, testName string, mode recording.RecordMode) {
-    var accountName string
-    var suffix string
-    var cred *SharedKeyCredential
-    var secret string
-    var uri string
-    assert := assert.New(t)
-
-    // init the test framework
-    context := recording.NewTestContext(func(msg string) { assert.FailNow(msg) }, func(msg string) { t.Log(msg) }, func() string { return testName })
-    //mode should be recording.Playback. This will automatically record if no test recording is available and playback if it is.
-    recording, err := recording.NewRecording(context, mode) 
-    assert.Nil(err)
+After you've set the `AZURE_RECORD_MODE`, set the `PROXY_CERT` environment variable to:
+```pwsh
+$ENV:PROXY_CERT="C:/ <path-to-repo> /azure-sdk-for-go/eng/common/testproxy/dotnet-devcert.crt"
 ```
 
-After creating the TestContext, it must be passed to a new instance of `Recording` along with the current test mode.
-`Recording` is the main component of the testframework package.
+## Routing Traffic
+
+The first step in instrumenting a client to interact with recorded tests is to direct traffic to the proxy through a custom `policy`. In these examples we'll use testify's [`require`](https://pkg.go.dev/github.com/stretchr/testify/require) library but you can use the framework of your choice. Each test has to call `recording.StartRecording` and `recording.StopRecording`, the rest is taken care of by the `recording` library and the [`test-proxy`](https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy)
+
+The snippet below demonstrates an example test policy:
 
 ```go
-//func recordedTestSetup(t *testing.T, testName string, mode recording.RecordMode) {
-//  <...>
-    record, err := recording.NewRecording(context, mode)
-    assert.Nil(err)
-```
+// This should be a 'testdata' directory in your module. `testdata` is ignored by the go tool, making it perfect for ancillary data
+var pathToPackage = "sdk/data/aztables/testdata"
 
-### Initializing recorded variables
-
-A key component to recorded tests is recorded variables.
-They allow creation of values that stay with the test recording so that playback of service operations is consistent.
-
-In the snippet below we are calling `GetRecordedVariable` to acquire details such as the service account name and
-client secret to configure the client.
-
-```go
-//func recordedTestSetup(t *testing.T, testName string, mode recording.RecordMode) {
-//  <...>
-    accountName, err := record.GetEnvVar(storageAccountNameEnvVar, recording.NoSanitization)
-    suffix := record.GetOptionalEnvVar(storageEndpointSuffixEnvVar, DefaultStorageSuffix, recording.NoSanitization)
-    secret, err := record.GetEnvVar(storageAccountKeyEnvVar, recording.Secret_Base64String)
-    cred, _ := NewSharedKeyCredential(accountName, secret)
-    uri := storageURI(accountName, suffix)
-```
-
-The last step is to instrument your client by replacing its transport with your `Recording` instance.
-`Recording` satisfies the `azcore.Transport` interface.
-
-```go
-//func recordedTestSetup(t *testing.T, testName string, mode recording.RecordMode) {
-//  <...>
-    // Set our client's HTTPClient to our recording instance.
-    // Optionally, we can also configure MaxRetries to -1 to avoid the default retry behavior.
-    client, err := NewTableServiceClient(uri, cred, &TableClientOptions{HTTPClient: recording, Retry: azcore.RetryOptions{MaxRetries: -1}})
-    assert.Nil(err)
-
-    // either return your client instance, or store it somewhere that your test can use it for test execution.
-    clientsMap[testName] = &testState{client: client, recording: recording, context: &context}
+type recordingPolicy struct {
+    options recording.RecordingOptions
+    t       *testing.T
 }
 
-
-func getTestState(key string) *testState {
-    return clientsMap[key]
-}
-```
-
-### Completing the recorded test session
-
-After the test run completes we need to signal the `Recording` instance to save the recording.
-
-```go
-// recordedTestTeardown fetches the context from our map based on test name and calls Stop on the Recording instance.
-func recordedTestTeardown(key string) {
-    context, ok := clientsMap[key]
-    if ok && !(*context.context).IsFailed() {
-        context.recording.Stop()
+func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Policy {
+    if o == nil {
+        o = &recording.RecordingOptions{UseHTTPS: true}
     }
+    p := &recordingPolicy{options: *o, t: t}
+    return p
+}
+
+func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
+    if recording.GetRecordMode() != recording.LiveMode {
+        originalURLHost := req.Raw().URL.Host
+        req.Raw().URL.Scheme = "https"
+        req.Raw().URL.Host = p.options.Host
+        req.Raw().Host = p.options.Host
+
+		req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%s://%s", p.options.Scheme, originalURLHost))
+		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
+		req.Raw().Header.Set(recording.IdHeader, recording.GetRecordingId(p.t))
+    }
+    return req.Next()
+}
+
+```
+
+After creating a recording policy, it has to be added to the client on the `ClientOptions.PerCallPolicies` option:
+```go
+func TestSomething(t *testing.T) {
+    p := NewRecordingPolicy(t)
+    httpClient, err := recording.GetHTTPClient(t)
+    require.NoError(t, err)
+
+    options := &ClientOptions{
+        PerCallPolicies: []policy.Policy{*p},
+        Transport:       client,
+    }
+
+    client, err := NewClient("https://mystorageaccount.table.core.windows.net", myCred, options)
+    require.NoError(t, err)
+    // Continue test
 }
 ```
 
-### Setting up a test to use our Recording instance
+## Starting and Stopping a Test
+To start and stop your tests use the `recording.StartRecording` and `recording.StopRecording` (make sure to use `defer recording.StopRecording` to ensure the proxy cleans up your test on failure) methods:
+```go
+func TestSomething(t *testing.T) {
+    err := recording.StartRecording(nil)
+    defer recording.StopRecording(nil)
 
-Test frameworks like testify suite allow for configuration of a `BeforeTest` method to be executed before each test.
-We can use this to call our `recordedTestSetup` method
+    // Continue test
+}
+```
 
-Below is an example test setup which executes a single test.
+## Using Sanitizers
+The recording files generated by the test-proxy are committed along with the code to the public repository. We have to keep our recording files free of secrets that can be used by bad actors to infilitrate services. To do so, the `recording` package has several sanitizers for taking care of this. Sanitizers are added at the session level (ie. for an entire test run) to apply to all recordings generated during a test run. For example, to replace the account name from a storage url use the `recording.AddURISanitizer` method:
+```go
+func TestSomething(t *testing.T) {
+    err := recording.AddURISanitizer("fakeaccountname", "my-real-account-name", nil)
+    require.NoError(t, err)
+
+    // To remove the sanitizer after this test use the following:
+    defer recording.ResetSanitizers(nil)
+
+    err := recording.StartRecording(nil)
+    defer recording.StopRecording(nil)
+
+    // Continue test
+}
+```
+
+In addition to URI sanitizers, there are sanitizers for headers, response bodies, OAuth responses, continuation tokens, and more. For more information about all the sanitizers check out the [source code](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/internal/recording/sanitizer.go)
+
+
+## Reading Environment Variables
+The CI pipelines for PRs do not run against live resources, you will need to make sure that the values that are replaced in the recording files are also replaced in your requests when running in playback. The best way to do this is to use the `recording.GetEnvVariable` and use the replaced value as the `recordedValue` argument:
 
 ```go
-package aztable
+func TestSomething(t *testing.T) {
+    accountName := recording.GetEnvVariable(t, "TABLES_PRIMARY_ACCOUNT_NAME", "fakeaccountname")
+    if recording.GetRecordMode() = recording.RecordMode {
+        err := recording.AddURISanitizer("fakeaccountname", accountName, nil)
+        require.NoError(t, err)
+    }
 
-import (
-    "errors"
-    "fmt"
-    "net/http"
-    "testing"
-
-    "github.com/Azure/azure-sdk-for-go/sdk/internal/runtime"
-    "github.com/Azure/azure-sdk-for-go/sdk/internal/testframework"
-    "github.com/stretchr/testify/assert"
-    "github.com/stretchr/testify/suite"
-)
-
-type tableServiceClientLiveTests struct {
-    suite.Suite
-    mode         recording.RecordMode
-}
-
-// Hookup to the testing framework
-func TestServiceClient_Storage(t *testing.T) {
-    storage := tableServiceClientLiveTests{mode: recording.Playback /* change to Record to re-record tests */}
-    suite.Run(t, &storage)
-}
-
-func (s *tableServiceClientLiveTests) TestCreateTable() {
-    assert := assert.New(s.T())
-    context := getTestState(s.T().Name())
-    // generate a random recorded value for our table name.
-    tableName, err := context.recording.GenerateAlphaNumericID(tableNamePrefix, 20, true)
-
-    resp, err := context.client.Create(ctx, tableName)
-    defer context.client.Delete(ctx, tableName)
-
-    assert.Nil(err)
-    assert.Equal(*resp.TableResponse.TableName, tableName)
-}
-
-func (s *tableServiceClientLiveTests) BeforeTest(suite string, test string) {
-    // setup the test environment
-    recordedTestSetup(s.T(), s.T().Name(), s.mode)
-}
-
-func (s *tableServiceClientLiveTests) AfterTest(suite string, test string) {
-    // teardown the test context
-    recordedTestTeardown(s.T().Name())
+    // Continue test
 }
 ```
+In this snippet, if the test is running in live mode and we have the real account name, we want to add a URI sanitizer for the account name to ensure the value does not appear in any recordings.
+

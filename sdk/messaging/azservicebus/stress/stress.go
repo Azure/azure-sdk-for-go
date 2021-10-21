@@ -13,6 +13,8 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/devigned/tab"
 	"github.com/joho/godotenv"
@@ -107,7 +109,7 @@ func runBasicSendAndReceiveTest() {
 	ctx, cancel := context.WithTimeout(context.Background(), 24*5*time.Hour)
 	defer cancel()
 
-	serviceBusClient, err := azservicebus.NewClientWithConnectionString(cs, nil)
+	serviceBusClient, err := azservicebus.NewClientFromConnectionString(cs, nil)
 	if err != nil {
 		trackException(nil, telemetryClient, "Failed to create service bus client", err)
 		return
@@ -121,13 +123,13 @@ func runBasicSendAndReceiveTest() {
 
 	tab.Register(&utils.StderrTracer{
 		Include: map[string]bool{
-			internal.SpanProcessorClose: true,
-			internal.SpanProcessorLoop:  true,
-			//internal.SpanProcessorMessage: true,
-			internal.SpanRecover:        true,
-			internal.SpanNegotiateClaim: true,
-			internal.SpanRecoverClient:  true,
-			internal.SpanRecoverLink:    true,
+			tracing.SpanProcessorClose: true,
+			tracing.SpanProcessorLoop:  true,
+			//tracing.SpanProcessorMessage: true,
+			tracing.SpanRecover:        true,
+			tracing.SpanNegotiateClaim: true,
+			tracing.SpanRecoverClient:  true,
+			tracing.SpanRecoverLink:    true,
 		},
 	})
 
@@ -251,21 +253,20 @@ func continuallySend(ctx context.Context, client *azservicebus.Client, queueName
 func createSubscriptions(telemetryClient appinsights.TelemetryClient, connectionString string, topicName string, subscriptionNames []string) (func(), error) {
 	log.Printf("[BEGIN] Creating topic %s", topicName)
 	defer log.Printf("[END] Creating topic %s", topicName)
-	ns, err := internal.NewNamespace(internal.NamespaceWithConnectionString(connectionString))
+
+	tm, err := atom.NewTopicManagerWithConnectionString(connectionString, internal.Version)
 
 	if err != nil {
-		trackException(nil, telemetryClient, "Failed to create namespace client", err)
+		trackException(nil, telemetryClient, "Failed to create a topic manager", err)
 		return nil, err
 	}
-
-	tm := ns.NewTopicManager()
 
 	if _, err := tm.Put(context.TODO(), topicName); err != nil {
 		trackException(nil, telemetryClient, "Failed to create topic", err)
 		return nil, err
 	}
 
-	sm, err := ns.NewSubscriptionManager(topicName)
+	sm, err := atom.NewSubscriptionManagerForConnectionString(topicName, connectionString, internal.Version)
 
 	if err != nil {
 		trackException(nil, telemetryClient, "Failed to create subscription manager", err)

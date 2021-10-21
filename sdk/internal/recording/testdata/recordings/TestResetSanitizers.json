@@ -1,0 +1,31 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "http://host.docker.internal:8080/",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/",
+        ":scheme": "https",
+        "Accept-Encoding": "gzip",
+        "Content-Length": "0",
+        "fakestoragelocation": "https://fakeaccount.blob.core.windows.net",
+        "User-Agent": "Go-http-client/2.0"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "88",
+        "Content-Type": "application/json",
+        "Date": "Tue, 19 Oct 2021 21:51:49 GMT",
+        "Location": "Next-Location",
+        "Success": "2021-10-19 17:51:49.6603671 -0400 EDT m=\u002B24907.458770201"
+      },
+      "ResponseBody": [
+        "{\u0022Tag\u0022:\u0022Value\u0022,\u0022Tag2\u0022:\u0022Value2\u0022,\u0022Tag3\u0022:\u0022https://storageaccount.table.core.windows.net/\u0022}\n"
+      ]
+    }
+  ],
+  "Variables": {}
+}

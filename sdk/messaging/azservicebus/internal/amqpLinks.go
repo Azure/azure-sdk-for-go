@@ -10,6 +10,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/devigned/tab"
 )
 
@@ -119,7 +120,7 @@ func (links *amqpLinks) ManagementPath() string {
 // recoverLink will recycle all associated links (mgmt, receiver, sender and session)
 // and recreate them using the link.linkCreator function.
 func (links *amqpLinks) recoverLink(ctx context.Context, theirLinkRevision *uint64) error {
-	ctx, span := tab.StartSpan(ctx, SpanRecoverLink)
+	ctx, span := tab.StartSpan(ctx, tracing.SpanRecoverLink)
 	defer span.End()
 
 	links.mu.RLock()
@@ -179,7 +180,7 @@ func (links *amqpLinks) recoverLink(ctx context.Context, theirLinkRevision *uint
 // on the severity of the error. This function uses the `baseRetrier`
 // defined in the links struct.
 func (links *amqpLinks) RecoverIfNeeded(ctx context.Context, linksRevision uint64, origErr error) error {
-	ctx, span := tab.StartSpan(ctx, SpanRecover)
+	ctx, span := tab.StartSpan(ctx, tracing.SpanRecover)
 	defer span.End()
 
 	var err error = origErr
@@ -200,7 +201,7 @@ func (links *amqpLinks) RecoverIfNeeded(ctx context.Context, linksRevision uint6
 }
 
 func (links *amqpLinks) recoverImpl(ctx context.Context, try int, linksRevision uint64, origErr error) error {
-	_, span := tab.StartSpan(ctx, SpanRecoverLink)
+	_, span := tab.StartSpan(ctx, tracing.SpanRecoverLink)
 	defer span.End()
 
 	if origErr == nil || IsCancelError(origErr) {

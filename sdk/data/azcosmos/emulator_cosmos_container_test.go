@@ -14,7 +14,7 @@ func TestContainerCRUD(t *testing.T) {
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "containerCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
-	properties := CosmosContainerProperties{
+	properties := ContainerProperties{
 		Id: "aContainer",
 		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths: []string{"/id"},
@@ -33,7 +33,7 @@ func TestContainerCRUD(t *testing.T) {
 
 	throughput := NewManualThroughputProperties(400)
 
-	resp, err := database.CreateContainer(context.TODO(), properties, throughput, nil)
+	resp, err := database.CreateContainer(context.TODO(), properties, &CreateContainerOptions{ThroughputProperties: throughput})
 	if err != nil {
 		t.Fatalf("Failed to create container: %v", err)
 	}
@@ -52,7 +52,7 @@ func TestContainerCRUD(t *testing.T) {
 		t.Fatalf("Failed to read container: %v", err)
 	}
 
-	updatedProperties := CosmosContainerProperties{
+	updatedProperties := ContainerProperties{
 		Id: "aContainer",
 		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths: []string{"/id"},
@@ -102,7 +102,7 @@ func TestContainerAutoscaleCRUD(t *testing.T) {
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "containerCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
-	properties := CosmosContainerProperties{
+	properties := ContainerProperties{
 		Id: "aContainer",
 		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths: []string{"/id"},
@@ -121,7 +121,7 @@ func TestContainerAutoscaleCRUD(t *testing.T) {
 
 	throughput := NewAutoscaleThroughputProperties(5000)
 
-	resp, err := database.CreateContainer(context.TODO(), properties, throughput, nil)
+	resp, err := database.CreateContainer(context.TODO(), properties, &CreateContainerOptions{ThroughputProperties: throughput})
 	if err != nil {
 		t.Fatalf("Failed to create container: %v", err)
 	}

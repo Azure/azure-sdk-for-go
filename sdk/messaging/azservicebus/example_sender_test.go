@@ -12,10 +12,8 @@ import (
 )
 
 func ExampleClient_NewSender() {
-	sender, err = client.NewSender(queueName) // or topicName
+	sender, err = client.NewSender("exampleQueue") // or topicName
 	exitOnError("Failed to create sender", err)
-
-	// Output:
 }
 
 func ExampleSender_SendMessage_message() {
@@ -87,6 +85,4 @@ func ExampleSender_ScheduleMessages() {
 			},
 		})
 	exitOnError("Failed to schedule messages using SendMessages", err)
-
-	// Output:
 }

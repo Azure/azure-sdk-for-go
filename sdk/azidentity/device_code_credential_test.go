@@ -18,7 +18,7 @@ import (
 
 const (
 	deviceCode                   = "device_code"
-	deviceCodeResponse           = `{"user_code":"test_code","device_code":"test_device_code","verification_uri":"https://microsoft.com/devicelogin","expires_in":900,"interval":5,"message":"To sign in, use a web browser to open the page https://microsoft.com/devicelogin and enter the code test_code to authenticate."}`
+	deviceCodeResponse           = `{"user_code":"test_code","device_code":"test_device_code","verification_uri":"https://microsoft.com/devicelogin","expires_in":900,"interval":0,"message":"To sign in, use a web browser to open the page https://microsoft.com/devicelogin and enter the code test_code to authenticate."}`
 	deviceCodeScopes             = "user.read offline_access openid profile email"
 	authorizationPendingResponse = `{"error": "authorization_pending","error_description": "Authorization pending.","error_codes": [],"timestamp": "2019-12-01 19:00:00Z","trace_id": "2d091b0","correlation_id": "a999","error_uri": "https://login.contoso.com/error?code=0"}`
 	expiredTokenResponse         = `{"error": "expired_token","error_description": "Token has expired.","error_codes": [],"timestamp": "2019-12-01 19:00:00Z","trace_id": "2d091b0","correlation_id": "a999","error_uri": "https://login.contoso.com/error?code=0"}`
@@ -221,7 +221,7 @@ func TestDeviceCodeCredential_GetTokenAuthorizationPending(t *testing.T) {
 	options.TenantID = tenantID
 	options.HTTPClient = srv
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.UserPrompt = func(DeviceCodeMessage) {}
+	options.UserPrompt = func(context.Context, DeviceCodeMessage) error { return nil }
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -243,7 +243,7 @@ func TestDeviceCodeCredential_GetTokenExpiredToken(t *testing.T) {
 	options.TenantID = tenantID
 	options.HTTPClient = srv
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.UserPrompt = func(DeviceCodeMessage) {}
+	options.UserPrompt = func(context.Context, DeviceCodeMessage) error { return nil }
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -290,7 +290,7 @@ func TestDeviceCodeCredential_GetTokenWithRefreshTokenSuccess(t *testing.T) {
 	options.TenantID = tenantID
 	options.HTTPClient = srv
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.UserPrompt = func(DeviceCodeMessage) {}
+	options.UserPrompt = func(context.Context, DeviceCodeMessage) error { return nil }
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -316,7 +316,7 @@ func TestBearerPolicy_DeviceCodeCredential(t *testing.T) {
 	options.TenantID = tenantID
 	options.HTTPClient = srv
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.UserPrompt = func(DeviceCodeMessage) {}
+	options.UserPrompt = func(context.Context, DeviceCodeMessage) error { return nil }
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -329,5 +329,71 @@ func TestBearerPolicy_DeviceCodeCredential(t *testing.T) {
 	_, err = pipeline.Do(req)
 	if err != nil {
 		t.Fatalf("Expected an empty error but receive: %v", err)
+	}
+}
+
+func TestDeviceCodeCredential_UserPrompt(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(deviceCodeResponse)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	called := false
+	key := "key"
+	val := "value"
+	options := DeviceCodeCredentialOptions{
+		AuthorityHost: AuthorityHost(srv.URL()),
+		ClientID:      clientID,
+		HTTPClient:    srv,
+		TenantID:      tenantID,
+		UserPrompt: func(ctx context.Context, m DeviceCodeMessage) error {
+			called = true
+			if ctx.Value(key) != val {
+				return errors.New("UserPrompt received unexpected Context")
+			}
+			return nil
+		},
+	}
+	cred, err := NewDeviceCodeCredential(&options)
+	if err != nil {
+		t.Fatalf("Unable to create credential: %v", err)
+	}
+	ctx := context.WithValue(context.Background(), key, val)
+	_, err = cred.GetToken(ctx, policy.TokenRequestOptions{Scopes: []string{scope}})
+	if err != nil {
+		t.Fatalf("Unexpected error: %v", err)
+	}
+	if !called {
+		t.Fatal("UserPrompt wasn't called")
+	}
+}
+
+func TestDeviceCodeCredential_UserPromptError(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.AppendResponse(mock.WithBody([]byte(deviceCodeResponse)))
+	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	expectedCtx := context.WithValue(context.Background(), "", "")
+	msg := "it worked"
+	options := DeviceCodeCredentialOptions{
+		AuthorityHost: AuthorityHost(srv.URL()),
+		ClientID:      clientID,
+		HTTPClient:    srv,
+		TenantID:      tenantID,
+		UserPrompt: func(ctx context.Context, m DeviceCodeMessage) error {
+			if ctx != expectedCtx {
+				return errors.New("UserPrompt received unexpected Context")
+			}
+			return errors.New(msg)
+		},
+	}
+	cred, err := NewDeviceCodeCredential(&options)
+	if err != nil {
+		t.Fatalf("Unable to create credential: %v", err)
+	}
+	_, err = cred.GetToken(expectedCtx, policy.TokenRequestOptions{Scopes: []string{scope}})
+	if err.Error() != msg {
+		t.Fatalf("Unexpected error: %v", err)
 	}
 }

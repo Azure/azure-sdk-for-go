@@ -5,6 +5,7 @@ package azservicebus
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -64,38 +65,17 @@ func TestMessageSettlementUsingReceiver(t *testing.T) {
 }
 
 func TestDeferredMessages(t *testing.T) {
+	ctx := context.TODO()
+
 	testStuff := newTestStuff(t)
 	defer testStuff.Close()
 
-	receiver, deadLetterReceiver := testStuff.Receiver, testStuff.DeadLetterReceiver
-	ctx := context.TODO()
-
-	deferMessage := func() *ReceivedMessage {
-		err := testStuff.Sender.SendMessage(context.Background(), &Message{
-			Body: []byte("hello"),
-		})
-		require.NoError(t, err)
-
-		var msg *ReceivedMessage
-		msg, err = receiver.ReceiveMessage(ctx, nil)
-		require.NoError(t, err)
-		require.NotNil(t, msg)
-
-		require.EqualValues(t, 1, msg.DeliveryCount)
-
-		err = receiver.DeferMessage(ctx, msg)
-		require.NoError(t, err)
-
-		msg, err = receiver.ReceiveDeferredMessage(ctx, *msg.SequenceNumber)
-		require.NoError(t, err)
-
-		return msg
-	}
+	receiver := testStuff.Receiver
 
 	t.Run("Abandon", func(t *testing.T) {
 		t.Skip("This test is currently broken, https://github.com/Azure/azure-sdk-for-go/issues/15626")
 
-		msg := deferMessage()
+		msg := testStuff.deferMessageForTest(t)
 
 		// abandon the deferred message, which should return
 		// it to the queue.
@@ -110,25 +90,8 @@ func TestDeferredMessages(t *testing.T) {
 		require.NotNil(t, msg)
 	})
 
-	t.Run("DeadLetter", func(t *testing.T) {
-		msg := deferMessage()
-
-		err := receiver.DeadLetterMessage(ctx, msg, nil)
-		require.NoError(t, err)
-
-		// check that the message made it to the dead letter queue
-		msg, err = deadLetterReceiver.ReceiveMessage(ctx, nil)
-		require.NoError(t, err)
-
-		// remove it from the DLQ
-		require.NoError(t, deadLetterReceiver.CompleteMessage(ctx, msg))
-
-		// and...everything should be clean
-		assertEntityEmpty(t, deadLetterReceiver)
-	})
-
 	t.Run("Complete", func(t *testing.T) {
-		msg := deferMessage()
+		msg := testStuff.deferMessageForTest(t)
 
 		err := receiver.CompleteMessage(ctx, msg)
 		require.NoError(t, err)
@@ -137,7 +100,7 @@ func TestDeferredMessages(t *testing.T) {
 	})
 
 	t.Run("Defer", func(t *testing.T) {
-		msg := deferMessage()
+		msg := testStuff.deferMessageForTest(t)
 
 		// double defer!
 		err := receiver.DeferMessage(ctx, msg)
@@ -151,6 +114,32 @@ func TestDeferredMessages(t *testing.T) {
 
 		assertEntityEmpty(t, receiver)
 	})
+}
+
+func TestDeferredMessage_DeadLettering(t *testing.T) {
+	testStuff := newTestStuff(t)
+	defer testStuff.Close()
+
+	receiver, deadLetterReceiver := testStuff.Receiver, testStuff.DeadLetterReceiver
+
+	msg := testStuff.deferMessageForTest(t)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	err := receiver.DeadLetterMessage(ctx, msg, nil)
+	require.NoError(t, err)
+
+	// check that the message made it to the dead letter queue
+	msg, err = deadLetterReceiver.ReceiveMessage(context.Background(), nil)
+	require.NoError(t, err)
+	require.NotNil(t, msg)
+
+	// remove it from the DLQ
+	require.NoError(t, deadLetterReceiver.CompleteMessage(context.Background(), msg))
+
+	// and...everything should be clean
+	assertEntityEmpty(t, deadLetterReceiver)
 }
 
 func TestMessageSettlementUsingOnlyBackupSettlement(t *testing.T) {
@@ -252,4 +241,26 @@ func assertEntityEmpty(t *testing.T, receiver *Receiver) {
 	messages, err := receiver.PeekMessages(context.TODO(), 1, nil)
 	require.NoError(t, err)
 	require.Empty(t, messages)
+}
+
+func (testStuff *testStuff) deferMessageForTest(t *testing.T) *ReceivedMessage {
+	err := testStuff.Sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello"),
+	})
+	require.NoError(t, err)
+
+	var msg *ReceivedMessage
+	msg, err = testStuff.Receiver.ReceiveMessage(context.Background(), nil)
+	require.NoError(t, err)
+	require.NotNil(t, msg)
+
+	require.EqualValues(t, 1, msg.DeliveryCount)
+
+	err = testStuff.Receiver.DeferMessage(context.Background(), msg)
+	require.NoError(t, err)
+
+	msg, err = testStuff.Receiver.ReceiveDeferredMessage(context.Background(), *msg.SequenceNumber)
+	require.NoError(t, err)
+
+	return msg
 }

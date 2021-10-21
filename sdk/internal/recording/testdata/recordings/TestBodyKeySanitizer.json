@@ -1,0 +1,31 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "http://host.docker.internal:8080/",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/",
+        ":scheme": "https",
+        "Accept-Encoding": "gzip",
+        "User-Agent": "Go-http-client/2.0"
+      },
+      "RequestBody": "eyJrZXkxIjoidmFsdWUxIn0=",
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "91",
+        "Content-Type": "application/json",
+        "Date": "Tue, 19 Oct 2021 21:51:48 GMT",
+        "Location": "Next-Location",
+        "Success": "2021-10-19 17:51:48.8551603 -0400 EDT m=\u002B24906.653563401"
+      },
+      "ResponseBody": {
+        "Tag": "Sanitized",
+        "Tag2": "Value2",
+        "Tag3": "https://storageaccount.table.core.windows.net/"
+      }
+    }
+  ],
+  "Variables": {}
+}

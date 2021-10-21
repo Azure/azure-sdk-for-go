@@ -18,6 +18,8 @@ import (
 	"github.com/Azure/azure-amqp-common-go/v3/conn"
 	"github.com/Azure/azure-amqp-common-go/v3/rpc"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/sbauth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/go-amqp"
 	"github.com/Azure/go-autorest/autorest/azure"
 	"github.com/devigned/tab"
@@ -34,7 +36,7 @@ type (
 	Namespace struct {
 		Name          string
 		Suffix        string
-		TokenProvider *tokenProvider
+		TokenProvider *sbauth.TokenProvider
 		Environment   azure.Environment
 		tlsConfig     *tls.Config
 		userAgent     string
@@ -88,7 +90,7 @@ func NamespaceWithConnectionString(connStr string) NamespaceOption {
 			ns.Suffix = parsed.Suffix
 		}
 
-		provider, err := newTokenProviderWithConnectionString(parsed.KeyName, parsed.Key)
+		provider, err := sbauth.NewTokenProviderWithConnectionString(parsed.KeyName, parsed.Key)
 		if err != nil {
 			return err
 		}
@@ -143,7 +145,7 @@ func NamespaceWithAzureEnvironment(namespaceName, environmentName string) Namesp
 // fullyQualifiedNamespace is the Service Bus namespace name (ex: myservicebus.servicebus.windows.net)
 func NamespacesWithTokenCredential(fullyQualifiedNamespace string, tokenCredential azcore.TokenCredential) NamespaceOption {
 	return func(ns *Namespace) error {
-		ns.TokenProvider = newTokenProviderWithTokenCredential(tokenCredential)
+		ns.TokenProvider = sbauth.NewTokenProvider(tokenCredential)
 
 		parts := strings.SplitN(fullyQualifiedNamespace, ".", 2)
 
@@ -279,7 +281,7 @@ func (ns *Namespace) Recover(ctx context.Context, clientRevision uint64) error {
 	ns.clientMu.Lock()
 	defer ns.clientMu.Unlock()
 
-	_, span := tab.StartSpan(ctx, SpanRecoverClient)
+	_, span := tab.StartSpan(ctx, tracing.SpanRecoverClient)
 	defer span.End()
 
 	span.AddAttributes(
@@ -341,7 +343,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 
 		for retrier.Try(ctx) {
 			expiration, lastErr = func() (time.Time, error) {
-				ctx, span := ns.startSpanFromContext(ctx, SpanNegotiateClaim)
+				ctx, span := ns.startSpanFromContext(ctx, tracing.SpanNegotiateClaim)
 				defer span.End()
 
 				amqpClient, clientRevision, err := nsGetAMQPClientImpl(ctx)
@@ -482,6 +484,12 @@ func (ns *Namespace) resolveSuffix() string {
 		return ns.Suffix
 	}
 	return azure.PublicCloud.ServiceBusEndpointSuffix
+}
+
+func (ns *Namespace) startSpanFromContext(ctx context.Context, operationName string) (context.Context, tab.Spanner) {
+	ctx, span := tab.StartSpan(ctx, operationName)
+	tracing.ApplyComponentInfo(span, Version)
+	return ctx, span
 }
 
 // nextClaimRefreshDuration figures out the proper interval for the next authorization

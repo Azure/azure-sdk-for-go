@@ -35,7 +35,7 @@ type Poller struct {
 
 // New creates a new Poller from the provided initial response.
 func New(resp *http.Response, pollerID string) (*Poller, error) {
-	log.Write(log.LongRunningOperation, "Using Operation-Location poller.")
+	log.Write(log.EventLRO, "Using Operation-Location poller.")
 	opURL := resp.Header.Get(shared.HeaderOperationLocation)
 	if opURL == "" {
 		return nil, errors.New("response is missing Operation-Location header")

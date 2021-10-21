@@ -56,7 +56,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		return nil, err
 	}
 	if clientSecret := os.Getenv("AZURE_CLIENT_SECRET"); clientSecret != "" {
-		log.Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientSecretCredential")
+		log.Write(EventCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientSecretCredential")
 		cred, err := NewClientSecretCredential(tenantID, clientID, clientSecret, &ClientSecretCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions})
 		if err != nil {
 			return nil, err
@@ -64,7 +64,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		return &EnvironmentCredential{cred: cred}, nil
 	}
 	if certPath := os.Getenv("AZURE_CLIENT_CERTIFICATE_PATH"); certPath != "" {
-		log.Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientCertificateCredential")
+		log.Write(EventCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientCertificateCredential")
 		certData, err := os.ReadFile(certPath)
 		if err != nil {
 			return nil, &CredentialUnavailableError{credentialType: "Environment Credential", message: "Failed to read certificate file: " + err.Error()}
@@ -77,7 +77,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	}
 	if username := os.Getenv("AZURE_USERNAME"); username != "" {
 		if password := os.Getenv("AZURE_PASSWORD"); password != "" {
-			log.Write(LogCredential, "Azure Identity => NewEnvironmentCredential() invoking UsernamePasswordCredential")
+			log.Write(EventCredential, "Azure Identity => NewEnvironmentCredential() invoking UsernamePasswordCredential")
 			cred, err := NewUsernamePasswordCredential(tenantID, clientID, username, password, &UsernamePasswordCredentialOptions{AuthorityHost: options.AuthorityHost, ClientOptions: options.ClientOptions})
 			if err != nil {
 				return nil, err

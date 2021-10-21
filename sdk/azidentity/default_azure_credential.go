@@ -66,6 +66,6 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Chained
 		logCredentialError(err.credentialType, err)
 		return nil, err
 	}
-	log.Write(LogCredential, "Azure Identity => NewDefaultAzureCredential() invoking NewChainedTokenCredential()")
+	log.Write(EventCredential, "Azure Identity => NewDefaultAzureCredential() invoking NewChainedTokenCredential()")
 	return NewChainedTokenCredential(creds, nil)
 }

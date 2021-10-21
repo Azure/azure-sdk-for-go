@@ -50,6 +50,7 @@
 * `DeviceCodeCredentialOptions.UserPrompt` has a new type: `func(context.Context, DeviceCodeMessage) error`
 * Credential options structs now embed `azcore.ClientOptions`. In addition to changing literal initialization
   syntax, this change renames `HTTPClient` fields to `Transport`.
+* Renamed `LogCredential` to `EventCredential`
 
 ### Features Added
 * Added connection configuration options to `DefaultAzureCredentialOptions`

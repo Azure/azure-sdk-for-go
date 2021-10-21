@@ -82,7 +82,7 @@ func TestAuthorizationCodeCredential_GetTokenSuccess(t *testing.T) {
 	options := AuthorizationCodeCredentialOptions{}
 	options.ClientSecret = secret
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, testRedirectURI, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -100,7 +100,7 @@ func TestAuthorizationCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
 	options := AuthorizationCodeCredentialOptions{}
 	options.ClientSecret = secret
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, testRedirectURI, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -125,7 +125,7 @@ func TestAuthorizationCodeCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	options := AuthorizationCodeCredentialOptions{}
 	options.ClientSecret = secret
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	cred, err := NewAuthorizationCodeCredential(tenantID, clientID, testAuthCode, testRedirectURI, &options)
 	if err != nil {
 		t.Fatalf("Failed to create the credential")

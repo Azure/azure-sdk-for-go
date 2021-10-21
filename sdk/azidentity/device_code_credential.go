@@ -94,7 +94,7 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: cp.HTTPClient, Retry: cp.Retry, Telemetry: cp.Telemetry, Logging: cp.Logging})
+	c, err := newAADIdentityClient(authorityHost, cp.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

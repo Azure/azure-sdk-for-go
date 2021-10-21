@@ -50,7 +50,7 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry, Logging: options.Logging})
+	c, err := newAADIdentityClient(authorityHost, options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

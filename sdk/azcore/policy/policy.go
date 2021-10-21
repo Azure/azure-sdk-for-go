@@ -106,6 +106,11 @@ type TokenRequestOptions struct {
 	TenantID string
 }
 
+// BearerTokenOptions configures the bearer token policy's behavior.
+type BearerTokenOptions struct {
+	// placeholder for future options
+}
+
 // WithHTTPHeader adds the specified http.Header to the parent context.
 // Use this to specify custom HTTP headers at the API-call level.
 // Any overlapping headers will have their values replaced with the values specified here.

@@ -16,9 +16,10 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pipeline"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	azpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -57,11 +58,11 @@ const requestEndpoint = "/subscriptions/00000000-0000-0000-0000-000000000000/res
 func newTestRPRegistrationPipeline(srv *mock.Server) pipeline.Pipeline {
 	opts := azcore.ClientOptions{Transport: srv}
 	rp := NewRPRegistrationPolicy(srv.URL(), mockTokenCred{}, testRPRegistrationOptions(srv))
-	return runtime.NewPipeline("test", "v0.1.0", []policy.Policy{rp}, nil, &opts)
+	return runtime.NewPipeline("test", "v0.1.0", []azpolicy.Policy{rp}, nil, &opts)
 }
 
-func testRPRegistrationOptions(t policy.Transporter) *RegistrationOptions {
-	def := RegistrationOptions{}
+func testRPRegistrationOptions(t azpolicy.Transporter) *armpolicy.RegistrationOptions {
+	def := armpolicy.RegistrationOptions{}
 	def.Transport = t
 	def.PollingDelay = 100 * time.Millisecond
 	def.PollingDuration = 1 * time.Second
@@ -70,13 +71,13 @@ func testRPRegistrationOptions(t policy.Transporter) *RegistrationOptions {
 
 type mockTokenCred struct{}
 
-func (mockTokenCred) NewAuthenticationPolicy(runtime.AuthenticationOptions) policy.Policy {
-	return pipeline.PolicyFunc(func(req *policy.Request) (*http.Response, error) {
+func (mockTokenCred) NewAuthenticationPolicy() azpolicy.Policy {
+	return pipeline.PolicyFunc(func(req *azpolicy.Request) (*http.Response, error) {
 		return req.Next()
 	})
 }
 
-func (mockTokenCred) GetToken(context.Context, policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+func (mockTokenCred) GetToken(context.Context, azpolicy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	return &azcore.AccessToken{
 		Token:     "abc123",
 		ExpiresOn: time.Now().Add(1 * time.Hour),
@@ -294,7 +295,7 @@ func TestRPRegistrationPolicyCanCancel(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusConflict), mock.WithBody([]byte(rpUnregisteredResp)))
 	// polling responses to Register() and Get(), in progress but slow so we have time to cancel
 	srv.RepeatResponse(10, mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(rpRegisteringResp)), mock.WithSlowResponse(300*time.Millisecond))
-	opts := RegistrationOptions{}
+	opts := armpolicy.RegistrationOptions{}
 	opts.Transport = srv
 	pl := newTestRPRegistrationPipeline(srv)
 	// log only RP registration
@@ -317,7 +318,7 @@ func TestRPRegistrationPolicyCanCancel(t *testing.T) {
 	go func() {
 		defer wg.Done()
 		// create request and start pipeline
-		var req *policy.Request
+		var req *azpolicy.Request
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(srv.URL(), requestEndpoint))
 		if err != nil {
 			return

@@ -9,13 +9,9 @@ import (
 	"net/url"
 	"os"
 	"path"
-	"reflect"
 	"regexp"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
@@ -123,41 +119,6 @@ func setAuthorityHost(authorityHost AuthorityHost) (string, error) {
 		return "", errors.New("cannot use an authority host without https")
 	}
 	return host, nil
-}
-
-// newDefaultMSIPipeline creates a pipeline using the specified pipeline options needed
-// for a Managed Identity, such as a MSI specific retry policy.
-func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) runtime.Pipeline {
-	cp := o.ClientOptions
-	v := reflect.ValueOf(cp.Retry)
-	// if the caller hasn't set retry options, set defaults appropriate for IMDS
-	if !v.IsValid() || reflect.DeepEqual(v.Interface(), reflect.Zero(v.Type()).Interface()) {
-		cp.Retry = policy.RetryOptions{
-			MaxRetries:    5,
-			MaxRetryDelay: 1 * time.Minute,
-			RetryDelay:    2 * time.Second,
-			TryTimeout:    1 * time.Minute,
-			StatusCodes: []int{
-				// The following status codes are a subset of those found in azcore.StatusCodesForRetry, these are the only ones specifically needed for IMDS
-				http.StatusRequestTimeout,      // 408
-				http.StatusTooManyRequests,     // 429
-				http.StatusInternalServerError, // 500
-				http.StatusBadGateway,          // 502
-				http.StatusGatewayTimeout,      // 504
-				http.StatusNotFound,            // 404
-				http.StatusGone,                // 410
-				// all remaining 5xx
-				http.StatusNotImplemented,                // 501
-				http.StatusHTTPVersionNotSupported,       // 505
-				http.StatusVariantAlsoNegotiates,         // 506
-				http.StatusInsufficientStorage,           // 507
-				http.StatusLoopDetected,                  // 508
-				http.StatusNotExtended,                   // 510
-				http.StatusNetworkAuthenticationRequired, // 511
-			},
-		}
-	}
-	return runtime.NewPipeline(component, version, nil, nil, &cp)
 }
 
 // validTenantID return true is it receives a valid tenantID, returns false otherwise

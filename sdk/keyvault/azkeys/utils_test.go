@@ -111,7 +111,6 @@ func delay() time.Duration {
 func cleanUpKey(t *testing.T, client *Client, key string) {
 	resp, err := client.BeginDeleteKey(context.Background(), key, nil)
 	if err != nil {
-		fmt.Println("Could not find key with name ", key)
 		return
 	}
 

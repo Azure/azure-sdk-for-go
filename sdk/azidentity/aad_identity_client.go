@@ -55,9 +55,9 @@ type aadIdentityClient struct {
 }
 
 // newAADIdentityClient creates a new instance of the aadIdentityClient
-func newAADIdentityClient(authorityHost string, options azcore.ClientOptions) (*aadIdentityClient, error) {
+func newAADIdentityClient(authorityHost string, options *azcore.ClientOptions) (*aadIdentityClient, error) {
 	logEnvVars()
-	pl := runtime.NewPipeline(component, version, nil, nil, &options)
+	pl := runtime.NewPipeline(component, version, nil, nil, options)
 	return &aadIdentityClient{authorityHost: authorityHost, pipeline: pl}, nil
 }
 

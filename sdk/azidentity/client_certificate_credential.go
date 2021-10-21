@@ -67,7 +67,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, certData [
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, options.ClientOptions)
+	c, err := newAADIdentityClient(authorityHost, &options.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

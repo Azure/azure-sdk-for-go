@@ -53,7 +53,7 @@ func (c *ClientOptions) toConnectionOptions() *internal.ConnectionOptions {
 	}
 
 	return &internal.ConnectionOptions{
-		HTTPClient:       c.Transport,
+		Transport:       c.Transport,
 		Retry:            c.Retry,
 		Telemetry:        c.Telemetry,
 		Logging:          c.Logging,

@@ -7,10 +7,8 @@
 package recording
 
 import (
-	"bytes"
 	"crypto/tls"
 	"crypto/x509"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -443,14 +441,12 @@ var modeMap = map[RecordMode]recorder.Mode{
 var recordMode = os.Getenv("AZURE_RECORD_MODE")
 
 const (
-	RecordingMode      = "record"
-	PlaybackMode       = "playback"
-	LiveMode           = "live"
-	baseProxyURLSecure = "localhost:5001"
-	baseProxyURL       = "localhost:5000"
-	IdHeader           = "x-recording-id"
-	ModeHeader         = "x-recording-mode"
-	UpstreamUriHeader  = "x-recording-upstream-base-uri"
+	RecordingMode     = "record"
+	PlaybackMode      = "playback"
+	LiveMode          = "live"
+	IDHeader          = "x-recording-id"
+	ModeHeader        = "x-recording-mode"
+	UpstreamURIHeader = "x-recording-upstream-base-uri"
 )
 
 type recordedTest struct {
@@ -467,20 +463,17 @@ var client = http.Client{
 }
 
 type RecordingOptions struct {
-	UseHTTPS bool
-	Host     string
-	Scheme   string
+	UseHTTPS        bool
+	GroupForReplace string
 }
 
 func defaultOptions() *RecordingOptions {
 	return &RecordingOptions{
 		UseHTTPS: true,
-		Host:     "localhost:5001",
-		Scheme:   "https",
 	}
 }
 
-func (r RecordingOptions) HostScheme() string {
+func (r RecordingOptions) hostScheme() string {
 	if r.UseHTTPS {
 		return "https://localhost:5001"
 	}
@@ -491,7 +484,7 @@ func getTestId(pathToRecordings string, t *testing.T) string {
 	return path.Join(pathToRecordings, "recordings", t.Name()+".json")
 }
 
-func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOptions) error {
+func Start(t *testing.T, pathToRecordings string, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
@@ -511,7 +504,8 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 
 	testId := getTestId(pathToRecordings, t)
 
-	url := fmt.Sprintf("%s/%s/start", options.HostScheme(), recordMode)
+	url := fmt.Sprintf("%s/%s/start", options.hostScheme(), recordMode)
+
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -522,7 +516,7 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 	if err != nil {
 		return err
 	}
-	recId := resp.Header.Get(IdHeader)
+	recId := resp.Header.Get(IDHeader)
 	if recId == "" {
 		b, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
@@ -539,7 +533,7 @@ func StartRecording(t *testing.T, pathToRecordings string, options *RecordingOpt
 	return nil
 }
 
-func StopRecording(t *testing.T, options *RecordingOptions) error {
+func Stop(t *testing.T, options *RecordingOptions) error {
 	if options == nil {
 		options = defaultOptions()
 	}
@@ -554,7 +548,7 @@ func StopRecording(t *testing.T, options *RecordingOptions) error {
 		}
 	}
 
-	url := fmt.Sprintf("%v/%v/stop", options.HostScheme(), recordMode)
+	url := fmt.Sprintf("%v/%v/stop", options.hostScheme(), recordMode)
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		return err
@@ -572,48 +566,10 @@ func StopRecording(t *testing.T, options *RecordingOptions) error {
 	return nil
 }
 
-func AddUriSanitizer(replacement, regex string, options *RecordingOptions) error {
-	if options == nil {
-		options = defaultOptions()
-	}
-	url := fmt.Sprintf("%v/Admin/AddSanitizer", options.HostScheme())
-	req, err := http.NewRequest("POST", url, nil)
-	if err != nil {
-		return err
-	}
-	req.Header.Set("x-abstraction-identifier", "UriRegexSanitizer")
-	bodyContent := map[string]string{
-		"value": replacement,
-		"regex": regex,
-	}
-	marshalled, err := json.Marshal(bodyContent)
-	if err != nil {
-		return err
-	}
-	req.Body = ioutil.NopCloser(bytes.NewReader(marshalled))
-	req.ContentLength = int64(len(marshalled))
-	_, err = client.Do(req)
-	return err
-}
-
-func (o *RecordingOptions) Init() {
-	if o.UseHTTPS {
-		o.Host = baseProxyURLSecure
-		o.Scheme = "https"
-	} else {
-		o.Host = baseProxyURL
-		o.Scheme = "http"
-	}
-}
-
 // This looks up an environment variable and if it is not found, returns the recordedValue
-func GetEnvVariable(t *testing.T, varName string, recordedValue string) string {
-	if GetRecordMode() == PlaybackMode {
-		return recordedValue
-	}
+func GetEnvVariable(varName string, recordedValue string) string {
 	val, ok := os.LookupEnv(varName)
-	if !ok {
-		t.Logf("Could not find environment variable: %v", varName)
+	if !ok || GetRecordMode() == PlaybackMode {
 		return recordedValue
 	}
 	return val

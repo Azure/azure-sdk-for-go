@@ -114,6 +114,11 @@ stages:
           EnvVars:
             AZURE_RECORD_MODE: 'playback'
 
+      - pwsh: |
+          docker logs ambitious_azsdk_test_proxy
+        displayName: "Show Docker Logs"
+        condition: succeededOrFailed()
+
     - job: Analyze
       displayName: Analyze
       variables:

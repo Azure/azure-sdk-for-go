@@ -80,15 +80,19 @@ type SetSharePropertiesOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
-func (o *SetSharePropertiesOptions) format() (*ShareSetPropertiesOptions, *LeaseAccessConditions) {
+func (o *SetSharePropertiesOptions) format() (*ShareSetPropertiesOptions, *LeaseAccessConditions, error) {
 	if o == nil {
-		return nil, nil
+		return nil, nil, nil
+	}
+
+	if o.Quota != nil && *o.Quota < 0 {
+		return nil, nil, errors.New("validation failed: share quote cannot be negative")
 	}
 
 	return &ShareSetPropertiesOptions{
 		AccessTier: o.AccessTier,
 		Quota:      o.Quota,
-	}, o.LeaseAccessConditions
+	}, o.LeaseAccessConditions, nil
 }
 
 type SetShareMetadataOptions struct {
@@ -96,7 +100,7 @@ type SetShareMetadataOptions struct {
 }
 
 func (o *SetShareMetadataOptions) format(metadata map[string]string) (shareSetMetadataOptions *ShareSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions, err error) {
-	if metadata == nil || len(metadata) == 0 {
+	if metadata == nil {
 		err = errors.New("metadata cannot be nil")
 		return
 	}

@@ -30,11 +30,8 @@ func (s *azfileLiveTestSuite) TestPutAndGetPermission() {
 	}
 
 	shareName := generateShareName(testName)
-	srClient, err := getShareClient(shareName, svcClient)
-	_assert.Nil(err)
-
-	// Create the share.
-	_, err = srClient.Create(ctx, nil)
+	srClient := createNewShare(_assert, shareName, svcClient)
+	defer delShare(_assert, srClient, nil)
 	_assert.Nil(err)
 
 	// Create a permission and check that it's not empty.
@@ -222,7 +219,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPropertiesDefault() {
 	srClient := createNewShare(_assert, shareName, svcClient)
 	defer delShare(_assert, srClient, nil)
 
-	sResp, err := srClient.SetProperties(ctx, &SetSharePropertiesOptions{Quota: to.Int32Ptr(0)})
+	sResp, err := srClient.SetProperties(ctx, nil)
 	_assert.Nil(err)
 	_assert.Equal(sResp.RawResponse.StatusCode, 200)
 	_assert.NotEqual(*sResp.ETag, "")
@@ -239,7 +236,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPropertiesDefault() {
 	_assert.NotEqual(*props.RequestID, "")
 	_assert.NotEqual(*props.Version, "")
 	_assert.Equal(props.Date.IsZero(), false)
-	_assert.GreaterOrEqual(props.Quota, 0) // When using service default quota, it could be any value
+	_assert.True(*props.Quota >= 0) // When using service default quota, it could be any value
 }
 
 func (s *azfileLiveTestSuite) TestShareSetQuotaNegative() {
@@ -255,7 +252,7 @@ func (s *azfileLiveTestSuite) TestShareSetQuotaNegative() {
 
 	_, err = srClient.SetProperties(ctx, &SetSharePropertiesOptions{Quota: to.Int32Ptr(-1)})
 	_assert.NotNil(err)
-	_assert.Contains(err.Error(), validationErrorSubstring)
+	_assert.Contains(err.Error(), "validation failed: share quote cannot be negative")
 }
 
 func (s *azfileLiveTestSuite) TestShareGetPropertiesNegative() {
@@ -324,7 +321,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetPermissionsNonDefault() {
 	_assert.Equal(gResp.RawResponse.StatusCode, 200)
 	_assert.Equal(gResp.Date.IsZero(), false)
 	_assert.NotEqual(*gResp.ETag, "")
-	_assert.NotEqual(gResp.LastModified.IsZero(), false)
+	_assert.Equal(gResp.LastModified.IsZero(), false)
 	_assert.NotEqual(*gResp.RequestID, "")
 	_assert.NotEqual(*gResp.Version, "")
 	_assert.Len(gResp.SignedIdentifiers, 1)
@@ -529,7 +526,6 @@ func (s *azfileLiveTestSuite) TestShareSetPermissionsNegativeInvalidPolicyTimes(
 	}
 	shareName := generateShareName(testName)
 	srClient := createNewShare(_assert, shareName, svcClient)
-
 	defer delShare(_assert, srClient, nil)
 
 	// Swap start and expiry
@@ -629,7 +625,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetMetadataDefault() {
 	_assert.Equal(gResp.RawResponse.StatusCode, 200)
 	_assert.Equal(gResp.Date.IsZero(), false)
 	_assert.NotEqual(*gResp.ETag, "")
-	_assert.NotEqual(gResp.LastModified.IsZero(), false)
+	_assert.Equal(gResp.LastModified.IsZero(), false)
 	_assert.NotEqual(*gResp.RequestID, "")
 	_assert.NotEqual(*gResp.Version, "")
 	_assert.Len(gResp.Metadata, 0)
@@ -647,8 +643,8 @@ func (s *azfileLiveTestSuite) TestShareGetSetMetadataNonDefault() {
 	defer delShare(_assert, srClient, nil)
 
 	md := map[string]string{
-		"foo": "FooValuE",
-		"bar": "bArvaLue", // Note: As testing result, currently only support case-insensitive keys(key will be saved in lower-case).
+		"Foo": "FooValuE",
+		"Bar": "bArvaLue", // Note: As testing result, currently only support case-insensitive keys(key will be saved in lower-case).
 	}
 	sResp, err := srClient.SetMetadata(context.Background(), md, nil)
 	_assert.Nil(err)
@@ -664,7 +660,7 @@ func (s *azfileLiveTestSuite) TestShareGetSetMetadataNonDefault() {
 	_assert.Equal(gResp.RawResponse.StatusCode, 200)
 	_assert.Equal(gResp.Date.IsZero(), false)
 	_assert.NotEqual(*gResp.ETag, "")
-	_assert.NotEqual(gResp.LastModified.IsZero(), false)
+	_assert.Equal(gResp.LastModified.IsZero(), false)
 	_assert.NotEqual(*gResp.RequestID, "")
 	_assert.NotEqual(*gResp.Version, "")
 	_assert.EqualValues(gResp.Metadata, md)
@@ -711,10 +707,10 @@ func (s *azfileLiveTestSuite) TestShareGetStats() {
 	_assert.Equal(gResp.RawResponse.StatusCode, 200)
 	_assert.Equal(gResp.Date.IsZero(), false)
 	// _assert.NotEqual(*gResp.ETag, "") // TODO: The ETag would be ""
-	// _assert.NotEqual(gResp.LastModified.IsZero(), false) // TODO: Even share is once updated, no LastModified would be returned.
+	// _assert.Equal(gResp.LastModified.IsZero(), false) // TODO: Even share is once updated, no LastModified would be returned.
 	_assert.NotEqual(*gResp.RequestID, "")
 	_assert.NotEqual(*gResp.Version, "")
-	_assert.Equal(*gResp.ShareUsageBytes, int32(0))
+	_assert.Equal(*gResp.ShareUsageBytes, int64(0))
 }
 
 func (s *azfileLiveTestSuite) TestShareGetStatsNegative() {
@@ -759,7 +755,7 @@ func (s *azfileLiveTestSuite) TestSetAndGetStatistics() {
 
 	getStats, err := srClient.GetStatistics(ctx, nil)
 	_assert.Nil(err)
-	_assert.Equal(*getStats.ShareUsageBytes, 1024*1024*1024*1024)
+	_assert.Equal(*getStats.ShareUsageBytes, int64(1024*1024*1024*1024))
 }
 
 //func (s *azfileLiveTestSuite) TestShareCreateSnapshotNonDefault() {

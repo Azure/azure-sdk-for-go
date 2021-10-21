@@ -112,7 +112,10 @@ func (s ShareClient) GetProperties(ctx context.Context, options *GetSharePropert
 // quotaInGB specifies the maximum size of the share in gigabytes, 0 means no quote and uses service's default value.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/set-share-properties.
 func (s ShareClient) SetProperties(ctx context.Context, options *SetSharePropertiesOptions) (ShareSetPropertiesResponse, error) {
-	formattedOptions, leaseAccessConditions := options.format()
+	formattedOptions, leaseAccessConditions, err := options.format()
+	if err != nil {
+		return ShareSetPropertiesResponse{}, handleError(err)
+	}
 	shareSetPropertiesResponse, err := s.client.SetProperties(ctx, formattedOptions, leaseAccessConditions)
 	return shareSetPropertiesResponse, handleError(err)
 }

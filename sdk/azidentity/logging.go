@@ -17,7 +17,7 @@ import (
 // LogCredential entries contain information about authentication.
 // This includes information like the names of environment variables
 // used when obtaining credentials and the type of credential used.
-const LogCredential log.Classification = "Credential"
+const LogCredential log.Event = "Credential"
 
 // log environment variables that can be used for credential types
 func logEnvVars() {

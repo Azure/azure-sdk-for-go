@@ -128,27 +128,6 @@ func createKeyClient(t *testing.T) (*azkeys.Client, error) {
 	return azkeys.NewClient(vaultUrl, cred, options)
 }
 
-// func delay() time.Duration {
-// 	if recording.GetRecordMode() == "playback" {
-// 		return 1 * time.Microsecond
-// 	}
-// 	return 250 * time.Millisecond
-// }
-
-// func cleanUpKey(t *testing.T, client *azkeys.Client, key string) {
-// 	resp, err := client.BeginDeleteKey(context.Background(), key, nil)
-// 	if err != nil {
-// 		fmt.Println("Could not find key with name ", key)
-// 		return
-// 	}
-
-// 	_, err = resp.PollUntilDone(context.Background(), delay())
-// 	require.NoError(t, err)
-
-// 	_, err = client.PurgeDeletedKey(context.Background(), key, nil)
-// 	require.NoError(t, err)
-// }
-
 type FakeCredential struct {
 	accountName string
 	accountKey  string
@@ -185,12 +164,3 @@ func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenReque
 		ExpiresOn: time.Date(2040, time.January, 1, 1, 1, 1, 1, time.UTC),
 	}, nil
 }
-
-// func toBytes(s string, t *testing.T) []byte {
-// 	if len(s)%2 == 1 {
-// 		s = fmt.Sprintf("0%s", s)
-// 	}
-// 	ret, err := hex.DecodeString(s)
-// 	require.NoError(t, err)
-// 	return ret
-// }

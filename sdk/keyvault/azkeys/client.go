@@ -53,7 +53,7 @@ func (c *ClientOptions) toConnectionOptions() *internal.ConnectionOptions {
 	}
 
 	return &internal.ConnectionOptions{
-		HTTPClient:       c.Transport,
+		Transport:        c.Transport,
 		Retry:            c.Retry,
 		Telemetry:        c.Telemetry,
 		Logging:          c.Logging,
@@ -786,13 +786,13 @@ func (b *beginRecoverPoller) FinalResponse(ctx context.Context) (RecoverDeletedK
 func (b *beginRecoverPoller) pollUntilDone(ctx context.Context, t time.Duration) (RecoverDeletedKeyResponse, error) {
 	for {
 		resp, err := b.Poll(ctx)
-		if err != nil {
-			b.RawResponse = resp
+		if err != nil && resp.StatusCode != http.StatusNotFound {
+			return RecoverDeletedKeyResponse{}, err
 		}
+		b.RawResponse = resp
 		if b.Done() {
 			break
 		}
-		b.RawResponse = resp
 		time.Sleep(t)
 	}
 	return recoverDeletedKeyResponseFromGenerated(b.recoverResponse), nil

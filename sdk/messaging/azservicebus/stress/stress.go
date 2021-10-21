@@ -14,7 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/devigned/tab"
 	"github.com/joho/godotenv"
@@ -34,7 +33,6 @@ type stats struct {
 	Errors   int32
 }
 
-var processorStats stats
 var receiverStats stats
 var senderStats stats
 
@@ -65,11 +63,9 @@ func runBasicSendAndReceiveTest() {
 		ticker := time.NewTicker(5 * time.Second)
 
 		for range ticker.C {
-			log.Printf("Received: (p:%d,r:%d), Sent: %d, Errors: (p:%d,r:%d,s:%d)",
-				atomic.LoadInt32(&processorStats.Received),
+			log.Printf("Received: (r:%d), Sent: %d, Errors: (r:%d,s:%d)",
 				atomic.LoadInt32(&receiverStats.Received),
 				atomic.LoadInt32(&senderStats.Sent),
-				atomic.LoadInt32(&processorStats.Errors),
 				atomic.LoadInt32(&receiverStats.Errors),
 				atomic.LoadInt32(&senderStats.Errors))
 		}
@@ -98,7 +94,7 @@ func runBasicSendAndReceiveTest() {
 
 	telemetryClient.Track(startEvent)
 
-	cleanup, err := createSubscriptions(telemetryClient, cs, topicName, []string{"processor", "batch"})
+	cleanup, err := createSubscriptions(telemetryClient, cs, topicName, []string{"batch"})
 	defer cleanup()
 
 	if err != nil {
@@ -123,31 +119,22 @@ func runBasicSendAndReceiveTest() {
 
 	tab.Register(&utils.StderrTracer{
 		Include: map[string]bool{
-			tracing.SpanProcessorClose: true,
-			tracing.SpanProcessorLoop:  true,
-			//tracing.SpanProcessorMessage: true,
-			tracing.SpanRecover:        true,
-			tracing.SpanNegotiateClaim: true,
-			tracing.SpanRecoverClient:  true,
-			tracing.SpanRecoverLink:    true,
+			// internal.SpanProcessorClose: true,
+			// internal.SpanProcessorLoop:  true,
+
+			//internal.SpanProcessorMessage: true,
+			internal.SpanRecover:        true,
+			internal.SpanNegotiateClaim: true,
+			internal.SpanRecoverClient:  true,
+			internal.SpanRecoverLink:    true,
 		},
 	})
 
-	runProcessorTest := true
-
-	if runProcessorTest {
-		go func() {
-			for {
-				runProcessor(ctx, serviceBusClient, topicName, "processor", telemetryClient)
-			}
-		}()
-	} else {
-		go func() {
-			for {
-				runBatchReceiver(ctx, serviceBusClient, topicName, "batch", telemetryClient)
-			}
-		}()
-	}
+	go func() {
+		for {
+			runBatchReceiver(ctx, serviceBusClient, topicName, "batch", telemetryClient)
+		}
+	}()
 
 	go func() {
 		for {
@@ -183,38 +170,6 @@ func runBatchReceiver(ctx context.Context, serviceBusClient *azservicebus.Client
 			}(msg)
 		}
 	}
-}
-
-func runProcessor(ctx context.Context, client *azservicebus.Client, topicName string, subscriptionName string, telemetryClient appinsights.TelemetryClient) {
-	log.Printf("Starting processor...")
-	processor, err := client.NewProcessorForSubscription(
-		topicName, subscriptionName,
-		&azservicebus.ProcessorOptions{MaxConcurrentCalls: 10})
-
-	if err != nil {
-		trackException(&processorStats, telemetryClient, "Failed when creating processor", err)
-		return
-	}
-
-	err = processor.Start(ctx, func(msg *azservicebus.ReceivedMessage) error {
-		atomic.AddInt32(&processorStats.Received, 1)
-		telemetryClient.TrackMetric("MessageReceived", 1)
-		return nil
-	}, func(err error) {
-		log.Printf("Exception in processor: %s", err.Error())
-		trackException(&processorStats, telemetryClient, "Processor.HandleError", err)
-	})
-
-	if err != nil {
-		log.Printf("Exception when starting processor: %s", err.Error())
-		trackException(&processorStats, telemetryClient, "Processor.Start", err)
-		return
-	}
-
-	<-ctx.Done()
-
-	telemetryClient.TrackEvent("ProcessorStopped")
-	log.Print("Processor was stopped!")
 }
 
 func continuallySend(ctx context.Context, client *azservicebus.Client, queueName string, telemetryClient appinsights.TelemetryClient) {

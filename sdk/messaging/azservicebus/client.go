@@ -120,34 +120,6 @@ func newClientImpl(config clientConfig, options *ClientOptions) (*Client, error)
 	return client, err
 }
 
-// NewProcessor creates a Processor for a queue.
-func (client *Client) NewProcessorForQueue(queue string, options *ProcessorOptions) (*Processor, error) {
-	id, cleanupOnClose := client.getCleanupForCloseable()
-
-	processor, err := newProcessor(client.namespace, &entity{Queue: queue}, cleanupOnClose, options)
-
-	if err != nil {
-		return nil, err
-	}
-
-	client.addCloseable(id, processor)
-	return processor, nil
-}
-
-// NewProcessor creates a Processor for a subscription.
-func (client *Client) NewProcessorForSubscription(topic string, subscription string, options *ProcessorOptions) (*Processor, error) {
-	id, cleanupOnClose := client.getCleanupForCloseable()
-
-	processor, err := newProcessor(client.namespace, &entity{Topic: topic, Subscription: subscription}, cleanupOnClose, options)
-
-	if err != nil {
-		return nil, err
-	}
-
-	client.addCloseable(id, processor)
-	return processor, nil
-}
-
 // NewReceiver creates a Receiver for a queue. A receiver allows you to receive messages.
 func (client *Client) NewReceiverForQueue(queue string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()

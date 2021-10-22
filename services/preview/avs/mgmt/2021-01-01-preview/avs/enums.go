@@ -10,6 +10,8 @@ package avs
 type AddonProvisioningState string
 
 const (
+	// Building ...
+	Building AddonProvisioningState = "Building"
 	// Cancelled ...
 	Cancelled AddonProvisioningState = "Cancelled"
 	// Deleting ...
@@ -24,7 +26,7 @@ const (
 
 // PossibleAddonProvisioningStateValues returns an array of possible values for the AddonProvisioningState const type.
 func PossibleAddonProvisioningStateValues() []AddonProvisioningState {
-	return []AddonProvisioningState{Cancelled, Deleting, Failed, Succeeded, Updating}
+	return []AddonProvisioningState{Building, Cancelled, Deleting, Failed, Succeeded, Updating}
 }
 
 // AddonType enumerates the values for addon type.
@@ -61,6 +63,27 @@ const (
 // PossibleClusterProvisioningStateValues returns an array of possible values for the ClusterProvisioningState const type.
 func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
 	return []ClusterProvisioningState{ClusterProvisioningStateCancelled, ClusterProvisioningStateDeleting, ClusterProvisioningStateFailed, ClusterProvisioningStateSucceeded, ClusterProvisioningStateUpdating}
+}
+
+// DatastoreProvisioningState enumerates the values for datastore provisioning state.
+type DatastoreProvisioningState string
+
+const (
+	// DatastoreProvisioningStateCancelled ...
+	DatastoreProvisioningStateCancelled DatastoreProvisioningState = "Cancelled"
+	// DatastoreProvisioningStateDeleting ...
+	DatastoreProvisioningStateDeleting DatastoreProvisioningState = "Deleting"
+	// DatastoreProvisioningStateFailed ...
+	DatastoreProvisioningStateFailed DatastoreProvisioningState = "Failed"
+	// DatastoreProvisioningStateSucceeded ...
+	DatastoreProvisioningStateSucceeded DatastoreProvisioningState = "Succeeded"
+	// DatastoreProvisioningStateUpdating ...
+	DatastoreProvisioningStateUpdating DatastoreProvisioningState = "Updating"
+)
+
+// PossibleDatastoreProvisioningStateValues returns an array of possible values for the DatastoreProvisioningState const type.
+func PossibleDatastoreProvisioningStateValues() []DatastoreProvisioningState {
+	return []DatastoreProvisioningState{DatastoreProvisioningStateCancelled, DatastoreProvisioningStateDeleting, DatastoreProvisioningStateFailed, DatastoreProvisioningStateSucceeded, DatastoreProvisioningStateUpdating}
 }
 
 // DhcpType enumerates the values for dhcp type.

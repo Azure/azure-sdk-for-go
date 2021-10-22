@@ -10,6 +10,8 @@ package avs
 type AddonProvisioningState string
 
 const (
+	// Building ...
+	Building AddonProvisioningState = "Building"
 	// Cancelled ...
 	Cancelled AddonProvisioningState = "Cancelled"
 	// Deleting ...
@@ -24,22 +26,77 @@ const (
 
 // PossibleAddonProvisioningStateValues returns an array of possible values for the AddonProvisioningState const type.
 func PossibleAddonProvisioningStateValues() []AddonProvisioningState {
-	return []AddonProvisioningState{Cancelled, Deleting, Failed, Succeeded, Updating}
+	return []AddonProvisioningState{Building, Cancelled, Deleting, Failed, Succeeded, Updating}
 }
 
 // AddonType enumerates the values for addon type.
 type AddonType string
 
 const (
-	// SRM ...
-	SRM AddonType = "SRM"
-	// VR ...
-	VR AddonType = "VR"
+	// AddonTypeAddonProperties ...
+	AddonTypeAddonProperties AddonType = "AddonProperties"
+	// AddonTypeHCX ...
+	AddonTypeHCX AddonType = "HCX"
+	// AddonTypeSRM ...
+	AddonTypeSRM AddonType = "SRM"
+	// AddonTypeVR ...
+	AddonTypeVR AddonType = "VR"
 )
 
 // PossibleAddonTypeValues returns an array of possible values for the AddonType const type.
 func PossibleAddonTypeValues() []AddonType {
-	return []AddonType{SRM, VR}
+	return []AddonType{AddonTypeAddonProperties, AddonTypeHCX, AddonTypeSRM, AddonTypeVR}
+}
+
+// AffinityType enumerates the values for affinity type.
+type AffinityType string
+
+const (
+	// Affinity ...
+	Affinity AffinityType = "Affinity"
+	// AntiAffinity ...
+	AntiAffinity AffinityType = "AntiAffinity"
+)
+
+// PossibleAffinityTypeValues returns an array of possible values for the AffinityType const type.
+func PossibleAffinityTypeValues() []AffinityType {
+	return []AffinityType{Affinity, AntiAffinity}
+}
+
+// AvailabilityStrategy enumerates the values for availability strategy.
+type AvailabilityStrategy string
+
+const (
+	// DualZone ...
+	DualZone AvailabilityStrategy = "DualZone"
+	// SingleZone ...
+	SingleZone AvailabilityStrategy = "SingleZone"
+)
+
+// PossibleAvailabilityStrategyValues returns an array of possible values for the AvailabilityStrategy const type.
+func PossibleAvailabilityStrategyValues() []AvailabilityStrategy {
+	return []AvailabilityStrategy{DualZone, SingleZone}
+}
+
+// CloudLinkStatus enumerates the values for cloud link status.
+type CloudLinkStatus string
+
+const (
+	// CloudLinkStatusActive ...
+	CloudLinkStatusActive CloudLinkStatus = "Active"
+	// CloudLinkStatusBuilding ...
+	CloudLinkStatusBuilding CloudLinkStatus = "Building"
+	// CloudLinkStatusDeleting ...
+	CloudLinkStatusDeleting CloudLinkStatus = "Deleting"
+	// CloudLinkStatusDisconnected ...
+	CloudLinkStatusDisconnected CloudLinkStatus = "Disconnected"
+	// CloudLinkStatusFailed ...
+	CloudLinkStatusFailed CloudLinkStatus = "Failed"
+)
+
+// PossibleCloudLinkStatusValues returns an array of possible values for the CloudLinkStatus const type.
+func PossibleCloudLinkStatusValues() []CloudLinkStatus {
+	return []CloudLinkStatus{CloudLinkStatusActive, CloudLinkStatusBuilding, CloudLinkStatusDeleting, CloudLinkStatusDisconnected, CloudLinkStatusFailed}
 }
 
 // ClusterProvisioningState enumerates the values for cluster provisioning state.
@@ -61,6 +118,56 @@ const (
 // PossibleClusterProvisioningStateValues returns an array of possible values for the ClusterProvisioningState const type.
 func PossibleClusterProvisioningStateValues() []ClusterProvisioningState {
 	return []ClusterProvisioningState{ClusterProvisioningStateCancelled, ClusterProvisioningStateDeleting, ClusterProvisioningStateFailed, ClusterProvisioningStateSucceeded, ClusterProvisioningStateUpdating}
+}
+
+// DatastoreProvisioningState enumerates the values for datastore provisioning state.
+type DatastoreProvisioningState string
+
+const (
+	// DatastoreProvisioningStateCancelled ...
+	DatastoreProvisioningStateCancelled DatastoreProvisioningState = "Cancelled"
+	// DatastoreProvisioningStateCreating ...
+	DatastoreProvisioningStateCreating DatastoreProvisioningState = "Creating"
+	// DatastoreProvisioningStateDeleting ...
+	DatastoreProvisioningStateDeleting DatastoreProvisioningState = "Deleting"
+	// DatastoreProvisioningStateFailed ...
+	DatastoreProvisioningStateFailed DatastoreProvisioningState = "Failed"
+	// DatastoreProvisioningStatePending ...
+	DatastoreProvisioningStatePending DatastoreProvisioningState = "Pending"
+	// DatastoreProvisioningStateSucceeded ...
+	DatastoreProvisioningStateSucceeded DatastoreProvisioningState = "Succeeded"
+	// DatastoreProvisioningStateUpdating ...
+	DatastoreProvisioningStateUpdating DatastoreProvisioningState = "Updating"
+)
+
+// PossibleDatastoreProvisioningStateValues returns an array of possible values for the DatastoreProvisioningState const type.
+func PossibleDatastoreProvisioningStateValues() []DatastoreProvisioningState {
+	return []DatastoreProvisioningState{DatastoreProvisioningStateCancelled, DatastoreProvisioningStateCreating, DatastoreProvisioningStateDeleting, DatastoreProvisioningStateFailed, DatastoreProvisioningStatePending, DatastoreProvisioningStateSucceeded, DatastoreProvisioningStateUpdating}
+}
+
+// DatastoreStatus enumerates the values for datastore status.
+type DatastoreStatus string
+
+const (
+	// Accessible ...
+	Accessible DatastoreStatus = "Accessible"
+	// Attached ...
+	Attached DatastoreStatus = "Attached"
+	// DeadOrError ...
+	DeadOrError DatastoreStatus = "DeadOrError"
+	// Detached ...
+	Detached DatastoreStatus = "Detached"
+	// Inaccessible ...
+	Inaccessible DatastoreStatus = "Inaccessible"
+	// LostCommunication ...
+	LostCommunication DatastoreStatus = "LostCommunication"
+	// Unknown ...
+	Unknown DatastoreStatus = "Unknown"
+)
+
+// PossibleDatastoreStatusValues returns an array of possible values for the DatastoreStatus const type.
+func PossibleDatastoreStatusValues() []DatastoreStatus {
+	return []DatastoreStatus{Accessible, Attached, DeadOrError, Detached, Inaccessible, LostCommunication, Unknown}
 }
 
 // DhcpType enumerates the values for dhcp type.
@@ -116,6 +223,51 @@ func PossibleDNSServiceStatusEnumValues() []DNSServiceStatusEnum {
 	return []DNSServiceStatusEnum{FAILURE, SUCCESS}
 }
 
+// EncryptionKeyStatus enumerates the values for encryption key status.
+type EncryptionKeyStatus string
+
+const (
+	// AccessDenied ...
+	AccessDenied EncryptionKeyStatus = "AccessDenied"
+	// Connected ...
+	Connected EncryptionKeyStatus = "Connected"
+)
+
+// PossibleEncryptionKeyStatusValues returns an array of possible values for the EncryptionKeyStatus const type.
+func PossibleEncryptionKeyStatusValues() []EncryptionKeyStatus {
+	return []EncryptionKeyStatus{AccessDenied, Connected}
+}
+
+// EncryptionState enumerates the values for encryption state.
+type EncryptionState string
+
+const (
+	// Disabled ...
+	Disabled EncryptionState = "Disabled"
+	// Enabled ...
+	Enabled EncryptionState = "Enabled"
+)
+
+// PossibleEncryptionStateValues returns an array of possible values for the EncryptionState const type.
+func PossibleEncryptionStateValues() []EncryptionState {
+	return []EncryptionState{Disabled, Enabled}
+}
+
+// EncryptionVersionType enumerates the values for encryption version type.
+type EncryptionVersionType string
+
+const (
+	// AutoDetected ...
+	AutoDetected EncryptionVersionType = "AutoDetected"
+	// Fixed ...
+	Fixed EncryptionVersionType = "Fixed"
+)
+
+// PossibleEncryptionVersionTypeValues returns an array of possible values for the EncryptionVersionType const type.
+func PossibleEncryptionVersionTypeValues() []EncryptionVersionType {
+	return []EncryptionVersionType{AutoDetected, Fixed}
+}
+
 // ExpressRouteAuthorizationProvisioningState enumerates the values for express route authorization
 // provisioning state.
 type ExpressRouteAuthorizationProvisioningState string
@@ -155,17 +307,17 @@ func PossibleGlobalReachConnectionProvisioningStateValues() []GlobalReachConnect
 type GlobalReachConnectionStatus string
 
 const (
-	// Connected ...
-	Connected GlobalReachConnectionStatus = "Connected"
-	// Connecting ...
-	Connecting GlobalReachConnectionStatus = "Connecting"
-	// Disconnected ...
-	Disconnected GlobalReachConnectionStatus = "Disconnected"
+	// GlobalReachConnectionStatusConnected ...
+	GlobalReachConnectionStatusConnected GlobalReachConnectionStatus = "Connected"
+	// GlobalReachConnectionStatusConnecting ...
+	GlobalReachConnectionStatusConnecting GlobalReachConnectionStatus = "Connecting"
+	// GlobalReachConnectionStatusDisconnected ...
+	GlobalReachConnectionStatusDisconnected GlobalReachConnectionStatus = "Disconnected"
 )
 
 // PossibleGlobalReachConnectionStatusValues returns an array of possible values for the GlobalReachConnectionStatus const type.
 func PossibleGlobalReachConnectionStatusValues() []GlobalReachConnectionStatus {
-	return []GlobalReachConnectionStatus{Connected, Connecting, Disconnected}
+	return []GlobalReachConnectionStatus{GlobalReachConnectionStatusConnected, GlobalReachConnectionStatusConnecting, GlobalReachConnectionStatusDisconnected}
 }
 
 // HcxEnterpriseSiteStatus enumerates the values for hcx enterprise site status.
@@ -191,41 +343,113 @@ func PossibleHcxEnterpriseSiteStatusValues() []HcxEnterpriseSiteStatus {
 type InternetEnum string
 
 const (
-	// Disabled ...
-	Disabled InternetEnum = "Disabled"
-	// Enabled ...
-	Enabled InternetEnum = "Enabled"
+	// InternetEnumDisabled ...
+	InternetEnumDisabled InternetEnum = "Disabled"
+	// InternetEnumEnabled ...
+	InternetEnumEnabled InternetEnum = "Enabled"
 )
 
 // PossibleInternetEnumValues returns an array of possible values for the InternetEnum const type.
 func PossibleInternetEnumValues() []InternetEnum {
-	return []InternetEnum{Disabled, Enabled}
+	return []InternetEnum{InternetEnumDisabled, InternetEnumEnabled}
+}
+
+// MountOptionEnum enumerates the values for mount option enum.
+type MountOptionEnum string
+
+const (
+	// ATTACH ...
+	ATTACH MountOptionEnum = "ATTACH"
+	// MOUNT ...
+	MOUNT MountOptionEnum = "MOUNT"
+)
+
+// PossibleMountOptionEnumValues returns an array of possible values for the MountOptionEnum const type.
+func PossibleMountOptionEnumValues() []MountOptionEnum {
+	return []MountOptionEnum{ATTACH, MOUNT}
+}
+
+// OptionalParamEnum enumerates the values for optional param enum.
+type OptionalParamEnum string
+
+const (
+	// Optional ...
+	Optional OptionalParamEnum = "Optional"
+	// Required ...
+	Required OptionalParamEnum = "Required"
+)
+
+// PossibleOptionalParamEnumValues returns an array of possible values for the OptionalParamEnum const type.
+func PossibleOptionalParamEnumValues() []OptionalParamEnum {
+	return []OptionalParamEnum{Optional, Required}
+}
+
+// PlacementPolicyProvisioningState enumerates the values for placement policy provisioning state.
+type PlacementPolicyProvisioningState string
+
+const (
+	// PlacementPolicyProvisioningStateBuilding ...
+	PlacementPolicyProvisioningStateBuilding PlacementPolicyProvisioningState = "Building"
+	// PlacementPolicyProvisioningStateDeleting ...
+	PlacementPolicyProvisioningStateDeleting PlacementPolicyProvisioningState = "Deleting"
+	// PlacementPolicyProvisioningStateFailed ...
+	PlacementPolicyProvisioningStateFailed PlacementPolicyProvisioningState = "Failed"
+	// PlacementPolicyProvisioningStateSucceeded ...
+	PlacementPolicyProvisioningStateSucceeded PlacementPolicyProvisioningState = "Succeeded"
+	// PlacementPolicyProvisioningStateUpdating ...
+	PlacementPolicyProvisioningStateUpdating PlacementPolicyProvisioningState = "Updating"
+)
+
+// PossiblePlacementPolicyProvisioningStateValues returns an array of possible values for the PlacementPolicyProvisioningState const type.
+func PossiblePlacementPolicyProvisioningStateValues() []PlacementPolicyProvisioningState {
+	return []PlacementPolicyProvisioningState{PlacementPolicyProvisioningStateBuilding, PlacementPolicyProvisioningStateDeleting, PlacementPolicyProvisioningStateFailed, PlacementPolicyProvisioningStateSucceeded, PlacementPolicyProvisioningStateUpdating}
+}
+
+// PlacementPolicyState enumerates the values for placement policy state.
+type PlacementPolicyState string
+
+const (
+	// PlacementPolicyStateDisabled ...
+	PlacementPolicyStateDisabled PlacementPolicyState = "Disabled"
+	// PlacementPolicyStateEnabled ...
+	PlacementPolicyStateEnabled PlacementPolicyState = "Enabled"
+)
+
+// PossiblePlacementPolicyStateValues returns an array of possible values for the PlacementPolicyState const type.
+func PossiblePlacementPolicyStateValues() []PlacementPolicyState {
+	return []PlacementPolicyState{PlacementPolicyStateDisabled, PlacementPolicyStateEnabled}
 }
 
 // PortMirroringDirectionEnum enumerates the values for port mirroring direction enum.
 type PortMirroringDirectionEnum string
 
 const (
-	// INGRESSEGRESSBIDIRECTIONAL ...
-	INGRESSEGRESSBIDIRECTIONAL PortMirroringDirectionEnum = "INGRESS, EGRESS, BIDIRECTIONAL"
+	// BIDIRECTIONAL ...
+	BIDIRECTIONAL PortMirroringDirectionEnum = "BIDIRECTIONAL"
+	// EGRESS ...
+	EGRESS PortMirroringDirectionEnum = "EGRESS"
+	// INGRESS ...
+	INGRESS PortMirroringDirectionEnum = "INGRESS"
 )
 
 // PossiblePortMirroringDirectionEnumValues returns an array of possible values for the PortMirroringDirectionEnum const type.
 func PossiblePortMirroringDirectionEnumValues() []PortMirroringDirectionEnum {
-	return []PortMirroringDirectionEnum{INGRESSEGRESSBIDIRECTIONAL}
+	return []PortMirroringDirectionEnum{BIDIRECTIONAL, EGRESS, INGRESS}
 }
 
 // PortMirroringStatusEnum enumerates the values for port mirroring status enum.
 type PortMirroringStatusEnum string
 
 const (
-	// SUCCESSFAILURE ...
-	SUCCESSFAILURE PortMirroringStatusEnum = "SUCCESS, FAILURE"
+	// PortMirroringStatusEnumFAILURE ...
+	PortMirroringStatusEnumFAILURE PortMirroringStatusEnum = "FAILURE"
+	// PortMirroringStatusEnumSUCCESS ...
+	PortMirroringStatusEnumSUCCESS PortMirroringStatusEnum = "SUCCESS"
 )
 
 // PossiblePortMirroringStatusEnumValues returns an array of possible values for the PortMirroringStatusEnum const type.
 func PossiblePortMirroringStatusEnumValues() []PortMirroringStatusEnum {
-	return []PortMirroringStatusEnum{SUCCESSFAILURE}
+	return []PortMirroringStatusEnum{PortMirroringStatusEnumFAILURE, PortMirroringStatusEnumSUCCESS}
 }
 
 // PrivateCloudProvisioningState enumerates the values for private cloud provisioning state.
@@ -268,17 +492,101 @@ func PossibleQuotaEnabledValues() []QuotaEnabled {
 	return []QuotaEnabled{QuotaEnabledDisabled, QuotaEnabledEnabled}
 }
 
+// ResourceIdentityType enumerates the values for resource identity type.
+type ResourceIdentityType string
+
+const (
+	// None ...
+	None ResourceIdentityType = "None"
+	// SystemAssigned ...
+	SystemAssigned ResourceIdentityType = "SystemAssigned"
+)
+
+// PossibleResourceIdentityTypeValues returns an array of possible values for the ResourceIdentityType const type.
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return []ResourceIdentityType{None, SystemAssigned}
+}
+
+// ScriptExecutionProvisioningState enumerates the values for script execution provisioning state.
+type ScriptExecutionProvisioningState string
+
+const (
+	// ScriptExecutionProvisioningStateCancelled ...
+	ScriptExecutionProvisioningStateCancelled ScriptExecutionProvisioningState = "Cancelled"
+	// ScriptExecutionProvisioningStateCancelling ...
+	ScriptExecutionProvisioningStateCancelling ScriptExecutionProvisioningState = "Cancelling"
+	// ScriptExecutionProvisioningStateDeleting ...
+	ScriptExecutionProvisioningStateDeleting ScriptExecutionProvisioningState = "Deleting"
+	// ScriptExecutionProvisioningStateFailed ...
+	ScriptExecutionProvisioningStateFailed ScriptExecutionProvisioningState = "Failed"
+	// ScriptExecutionProvisioningStatePending ...
+	ScriptExecutionProvisioningStatePending ScriptExecutionProvisioningState = "Pending"
+	// ScriptExecutionProvisioningStateRunning ...
+	ScriptExecutionProvisioningStateRunning ScriptExecutionProvisioningState = "Running"
+	// ScriptExecutionProvisioningStateSucceeded ...
+	ScriptExecutionProvisioningStateSucceeded ScriptExecutionProvisioningState = "Succeeded"
+)
+
+// PossibleScriptExecutionProvisioningStateValues returns an array of possible values for the ScriptExecutionProvisioningState const type.
+func PossibleScriptExecutionProvisioningStateValues() []ScriptExecutionProvisioningState {
+	return []ScriptExecutionProvisioningState{ScriptExecutionProvisioningStateCancelled, ScriptExecutionProvisioningStateCancelling, ScriptExecutionProvisioningStateDeleting, ScriptExecutionProvisioningStateFailed, ScriptExecutionProvisioningStatePending, ScriptExecutionProvisioningStateRunning, ScriptExecutionProvisioningStateSucceeded}
+}
+
+// ScriptOutputStreamType enumerates the values for script output stream type.
+type ScriptOutputStreamType string
+
+const (
+	// Error ...
+	Error ScriptOutputStreamType = "Error"
+	// Information ...
+	Information ScriptOutputStreamType = "Information"
+	// Output ...
+	Output ScriptOutputStreamType = "Output"
+	// Warning ...
+	Warning ScriptOutputStreamType = "Warning"
+)
+
+// PossibleScriptOutputStreamTypeValues returns an array of possible values for the ScriptOutputStreamType const type.
+func PossibleScriptOutputStreamTypeValues() []ScriptOutputStreamType {
+	return []ScriptOutputStreamType{Error, Information, Output, Warning}
+}
+
+// ScriptParameterTypes enumerates the values for script parameter types.
+type ScriptParameterTypes string
+
+const (
+	// Bool ...
+	Bool ScriptParameterTypes = "Bool"
+	// Credential ...
+	Credential ScriptParameterTypes = "Credential"
+	// Float ...
+	Float ScriptParameterTypes = "Float"
+	// Int ...
+	Int ScriptParameterTypes = "Int"
+	// SecureString ...
+	SecureString ScriptParameterTypes = "SecureString"
+	// String ...
+	String ScriptParameterTypes = "String"
+)
+
+// PossibleScriptParameterTypesValues returns an array of possible values for the ScriptParameterTypes const type.
+func PossibleScriptParameterTypesValues() []ScriptParameterTypes {
+	return []ScriptParameterTypes{Bool, Credential, Float, Int, SecureString, String}
+}
+
 // SegmentStatusEnum enumerates the values for segment status enum.
 type SegmentStatusEnum string
 
 const (
-	// SegmentStatusEnumSUCCESSFAILURE ...
-	SegmentStatusEnumSUCCESSFAILURE SegmentStatusEnum = "SUCCESS, FAILURE"
+	// SegmentStatusEnumFAILURE ...
+	SegmentStatusEnumFAILURE SegmentStatusEnum = "FAILURE"
+	// SegmentStatusEnumSUCCESS ...
+	SegmentStatusEnumSUCCESS SegmentStatusEnum = "SUCCESS"
 )
 
 // PossibleSegmentStatusEnumValues returns an array of possible values for the SegmentStatusEnum const type.
 func PossibleSegmentStatusEnumValues() []SegmentStatusEnum {
-	return []SegmentStatusEnum{SegmentStatusEnumSUCCESSFAILURE}
+	return []SegmentStatusEnum{SegmentStatusEnumFAILURE, SegmentStatusEnumSUCCESS}
 }
 
 // SslEnum enumerates the values for ssl enum.
@@ -313,30 +621,102 @@ func PossibleTrialStatusValues() []TrialStatus {
 	return []TrialStatus{TrialAvailable, TrialDisabled, TrialUsed}
 }
 
+// Type enumerates the values for type.
+type Type string
+
+const (
+	// TypePlacementPolicyProperties ...
+	TypePlacementPolicyProperties Type = "PlacementPolicyProperties"
+	// TypeVMHost ...
+	TypeVMHost Type = "VmHost"
+	// TypeVMVM ...
+	TypeVMVM Type = "VmVm"
+)
+
+// PossibleTypeValues returns an array of possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{TypePlacementPolicyProperties, TypeVMHost, TypeVMVM}
+}
+
+// TypeBasicScriptExecutionParameter enumerates the values for type basic script execution parameter.
+type TypeBasicScriptExecutionParameter string
+
+const (
+	// TypeCredential ...
+	TypeCredential TypeBasicScriptExecutionParameter = "Credential"
+	// TypeScriptExecutionParameter ...
+	TypeScriptExecutionParameter TypeBasicScriptExecutionParameter = "ScriptExecutionParameter"
+	// TypeSecureValue ...
+	TypeSecureValue TypeBasicScriptExecutionParameter = "SecureValue"
+	// TypeValue ...
+	TypeValue TypeBasicScriptExecutionParameter = "Value"
+)
+
+// PossibleTypeBasicScriptExecutionParameterValues returns an array of possible values for the TypeBasicScriptExecutionParameter const type.
+func PossibleTypeBasicScriptExecutionParameterValues() []TypeBasicScriptExecutionParameter {
+	return []TypeBasicScriptExecutionParameter{TypeCredential, TypeScriptExecutionParameter, TypeSecureValue, TypeValue}
+}
+
+// VirtualMachineRestrictMovementState enumerates the values for virtual machine restrict movement state.
+type VirtualMachineRestrictMovementState string
+
+const (
+	// VirtualMachineRestrictMovementStateDisabled ...
+	VirtualMachineRestrictMovementStateDisabled VirtualMachineRestrictMovementState = "Disabled"
+	// VirtualMachineRestrictMovementStateEnabled ...
+	VirtualMachineRestrictMovementStateEnabled VirtualMachineRestrictMovementState = "Enabled"
+)
+
+// PossibleVirtualMachineRestrictMovementStateValues returns an array of possible values for the VirtualMachineRestrictMovementState const type.
+func PossibleVirtualMachineRestrictMovementStateValues() []VirtualMachineRestrictMovementState {
+	return []VirtualMachineRestrictMovementState{VirtualMachineRestrictMovementStateDisabled, VirtualMachineRestrictMovementStateEnabled}
+}
+
+// VisibilityParameterEnum enumerates the values for visibility parameter enum.
+type VisibilityParameterEnum string
+
+const (
+	// Hidden ...
+	Hidden VisibilityParameterEnum = "Hidden"
+	// Visible ...
+	Visible VisibilityParameterEnum = "Visible"
+)
+
+// PossibleVisibilityParameterEnumValues returns an array of possible values for the VisibilityParameterEnum const type.
+func PossibleVisibilityParameterEnumValues() []VisibilityParameterEnum {
+	return []VisibilityParameterEnum{Hidden, Visible}
+}
+
 // VMGroupStatusEnum enumerates the values for vm group status enum.
 type VMGroupStatusEnum string
 
 const (
-	// VMGroupStatusEnumSUCCESSFAILURE ...
-	VMGroupStatusEnumSUCCESSFAILURE VMGroupStatusEnum = "SUCCESS, FAILURE"
+	// VMGroupStatusEnumFAILURE ...
+	VMGroupStatusEnumFAILURE VMGroupStatusEnum = "FAILURE"
+	// VMGroupStatusEnumSUCCESS ...
+	VMGroupStatusEnumSUCCESS VMGroupStatusEnum = "SUCCESS"
 )
 
 // PossibleVMGroupStatusEnumValues returns an array of possible values for the VMGroupStatusEnum const type.
 func PossibleVMGroupStatusEnumValues() []VMGroupStatusEnum {
-	return []VMGroupStatusEnum{VMGroupStatusEnumSUCCESSFAILURE}
+	return []VMGroupStatusEnum{VMGroupStatusEnumFAILURE, VMGroupStatusEnumSUCCESS}
 }
 
 // VMTypeEnum enumerates the values for vm type enum.
 type VMTypeEnum string
 
 const (
-	// REGULAREDGESERVICE ...
-	REGULAREDGESERVICE VMTypeEnum = "REGULAR, EDGE, SERVICE"
+	// EDGE ...
+	EDGE VMTypeEnum = "EDGE"
+	// REGULAR ...
+	REGULAR VMTypeEnum = "REGULAR"
+	// SERVICE ...
+	SERVICE VMTypeEnum = "SERVICE"
 )
 
 // PossibleVMTypeEnumValues returns an array of possible values for the VMTypeEnum const type.
 func PossibleVMTypeEnumValues() []VMTypeEnum {
-	return []VMTypeEnum{REGULAREDGESERVICE}
+	return []VMTypeEnum{EDGE, REGULAR, SERVICE}
 }
 
 // WorkloadNetworkDhcpProvisioningState enumerates the values for workload network dhcp provisioning state.
@@ -424,6 +804,28 @@ const (
 // PossibleWorkloadNetworkPortMirroringProvisioningStateValues returns an array of possible values for the WorkloadNetworkPortMirroringProvisioningState const type.
 func PossibleWorkloadNetworkPortMirroringProvisioningStateValues() []WorkloadNetworkPortMirroringProvisioningState {
 	return []WorkloadNetworkPortMirroringProvisioningState{WorkloadNetworkPortMirroringProvisioningStateBuilding, WorkloadNetworkPortMirroringProvisioningStateDeleting, WorkloadNetworkPortMirroringProvisioningStateFailed, WorkloadNetworkPortMirroringProvisioningStateSucceeded, WorkloadNetworkPortMirroringProvisioningStateUpdating}
+}
+
+// WorkloadNetworkPublicIPProvisioningState enumerates the values for workload network public ip provisioning
+// state.
+type WorkloadNetworkPublicIPProvisioningState string
+
+const (
+	// WorkloadNetworkPublicIPProvisioningStateBuilding ...
+	WorkloadNetworkPublicIPProvisioningStateBuilding WorkloadNetworkPublicIPProvisioningState = "Building"
+	// WorkloadNetworkPublicIPProvisioningStateDeleting ...
+	WorkloadNetworkPublicIPProvisioningStateDeleting WorkloadNetworkPublicIPProvisioningState = "Deleting"
+	// WorkloadNetworkPublicIPProvisioningStateFailed ...
+	WorkloadNetworkPublicIPProvisioningStateFailed WorkloadNetworkPublicIPProvisioningState = "Failed"
+	// WorkloadNetworkPublicIPProvisioningStateSucceeded ...
+	WorkloadNetworkPublicIPProvisioningStateSucceeded WorkloadNetworkPublicIPProvisioningState = "Succeeded"
+	// WorkloadNetworkPublicIPProvisioningStateUpdating ...
+	WorkloadNetworkPublicIPProvisioningStateUpdating WorkloadNetworkPublicIPProvisioningState = "Updating"
+)
+
+// PossibleWorkloadNetworkPublicIPProvisioningStateValues returns an array of possible values for the WorkloadNetworkPublicIPProvisioningState const type.
+func PossibleWorkloadNetworkPublicIPProvisioningStateValues() []WorkloadNetworkPublicIPProvisioningState {
+	return []WorkloadNetworkPublicIPProvisioningState{WorkloadNetworkPublicIPProvisioningStateBuilding, WorkloadNetworkPublicIPProvisioningStateDeleting, WorkloadNetworkPublicIPProvisioningStateFailed, WorkloadNetworkPublicIPProvisioningStateSucceeded, WorkloadNetworkPublicIPProvisioningStateUpdating}
 }
 
 // WorkloadNetworkSegmentProvisioningState enumerates the values for workload network segment provisioning

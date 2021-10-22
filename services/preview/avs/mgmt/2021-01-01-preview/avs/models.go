@@ -17,7 +17,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/avs/mgmt/2020-07-17-preview/avs"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/avs/mgmt/2021-01-01-preview/avs"
 
 // Addon an addon resource
 type Addon struct {
@@ -261,7 +261,7 @@ func NewAddonListPage(cur AddonList, getNextPage func(context.Context, AddonList
 type AddonProperties struct {
 	// AddonType - The type of private cloud addon. Possible values include: 'SRM', 'VR'
 	AddonType AddonType `json:"addonType,omitempty"`
-	// ProvisioningState - READ-ONLY; The state of the addon provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'
+	// ProvisioningState - READ-ONLY; The state of the addon provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Building', 'Deleting', 'Updating'
 	ProvisioningState AddonProvisioningState `json:"provisioningState,omitempty"`
 	// LicenseKey - The SRM license
 	LicenseKey *string `json:"licenseKey,omitempty"`
@@ -1025,6 +1025,354 @@ func (ccp CommonClusterProperties) MarshalJSON() ([]byte, error) {
 		objectMap["clusterSize"] = ccp.ClusterSize
 	}
 	return json.Marshal(objectMap)
+}
+
+// Datastore a datastore resource
+type Datastore struct {
+	autorest.Response `json:"-"`
+	// DatastoreProperties - The properties of a datastore resource
+	*DatastoreProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Resource ID.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; Resource name.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; Resource type.
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Datastore.
+func (d Datastore) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if d.DatastoreProperties != nil {
+		objectMap["properties"] = d.DatastoreProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for Datastore struct.
+func (d *Datastore) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "properties":
+			if v != nil {
+				var datastoreProperties DatastoreProperties
+				err = json.Unmarshal(*v, &datastoreProperties)
+				if err != nil {
+					return err
+				}
+				d.DatastoreProperties = &datastoreProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				d.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				d.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				d.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// DatastoreList a paged list of datastores
+type DatastoreList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The items on a page
+	Value *[]Datastore `json:"value,omitempty"`
+	// NextLink - READ-ONLY; URL to get the next page if any
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatastoreList.
+func (dl DatastoreList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// DatastoreListIterator provides access to a complete listing of Datastore values.
+type DatastoreListIterator struct {
+	i    int
+	page DatastoreListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *DatastoreListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatastoreListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *DatastoreListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter DatastoreListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter DatastoreListIterator) Response() DatastoreList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter DatastoreListIterator) Value() Datastore {
+	if !iter.page.NotDone() {
+		return Datastore{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the DatastoreListIterator type.
+func NewDatastoreListIterator(page DatastoreListPage) DatastoreListIterator {
+	return DatastoreListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (dl DatastoreList) IsEmpty() bool {
+	return dl.Value == nil || len(*dl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (dl DatastoreList) hasNextLink() bool {
+	return dl.NextLink != nil && len(*dl.NextLink) != 0
+}
+
+// datastoreListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (dl DatastoreList) datastoreListPreparer(ctx context.Context) (*http.Request, error) {
+	if !dl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(dl.NextLink)))
+}
+
+// DatastoreListPage contains a page of Datastore values.
+type DatastoreListPage struct {
+	fn func(context.Context, DatastoreList) (DatastoreList, error)
+	dl DatastoreList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *DatastoreListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/DatastoreListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.dl)
+		if err != nil {
+			return err
+		}
+		page.dl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *DatastoreListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page DatastoreListPage) NotDone() bool {
+	return !page.dl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page DatastoreListPage) Response() DatastoreList {
+	return page.dl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page DatastoreListPage) Values() []Datastore {
+	if page.dl.IsEmpty() {
+		return nil
+	}
+	return *page.dl.Value
+}
+
+// Creates a new instance of the DatastoreListPage type.
+func NewDatastoreListPage(cur DatastoreList, getNextPage func(context.Context, DatastoreList) (DatastoreList, error)) DatastoreListPage {
+	return DatastoreListPage{
+		fn: getNextPage,
+		dl: cur,
+	}
+}
+
+// DatastoreProperties the properties of a datastore
+type DatastoreProperties struct {
+	// ProvisioningState - READ-ONLY; The state of the datastore provisioning. Possible values include: 'DatastoreProvisioningStateSucceeded', 'DatastoreProvisioningStateFailed', 'DatastoreProvisioningStateCancelled', 'DatastoreProvisioningStateDeleting', 'DatastoreProvisioningStateUpdating'
+	ProvisioningState DatastoreProvisioningState `json:"provisioningState,omitempty"`
+	// NetAppVolume - An Azure NetApp Files volume
+	NetAppVolume *NetAppVolume `json:"netAppVolume,omitempty"`
+	// DiskPoolVolume - An iSCSI volume
+	DiskPoolVolume *DiskPoolVolume `json:"diskPoolVolume,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for DatastoreProperties.
+func (dp DatastoreProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if dp.NetAppVolume != nil {
+		objectMap["netAppVolume"] = dp.NetAppVolume
+	}
+	if dp.DiskPoolVolume != nil {
+		objectMap["diskPoolVolume"] = dp.DiskPoolVolume
+	}
+	return json.Marshal(objectMap)
+}
+
+// DatastoresCreateFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DatastoresCreateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DatastoresClient) (Datastore, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *DatastoresCreateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for DatastoresCreateFuture.Result.
+func (future *DatastoresCreateFuture) result(client DatastoresClient) (d Datastore, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.DatastoresCreateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		d.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.DatastoresCreateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if d.Response.Response, err = future.GetResult(sender); err == nil && d.Response.Response.StatusCode != http.StatusNoContent {
+		d, err = client.CreateResponder(d.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "avs.DatastoresCreateFuture", "Result", d.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// DatastoresDeleteFuture an abstraction for monitoring and retrieving the results of a long-running
+// operation.
+type DatastoresDeleteFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(DatastoresClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *DatastoresDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for DatastoresDeleteFuture.Result.
+func (future *DatastoresDeleteFuture) result(client DatastoresClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "avs.DatastoresDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("avs.DatastoresDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// DiskPoolVolume an iSCSI volume from Microsoft.StoragePool provider
+type DiskPoolVolume struct {
+	// Endpoints - iSCSI provider target IP address list
+	Endpoints *[]string `json:"endpoints,omitempty"`
+	// LunName - Name of the LUN to be used
+	LunName *string `json:"lunName,omitempty"`
 }
 
 // Endpoints endpoint addresses
@@ -2018,6 +2366,14 @@ type MetricSpecification struct {
 	SourceMdmAccount *string `json:"sourceMdmAccount,omitempty"`
 	// SourceMdmNamespace - The name of the MDM namespace.
 	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty"`
+}
+
+// NetAppVolume an Azure NetApp Files volume from Microsoft.NetApp provider
+type NetAppVolume struct {
+	// NfsProviderIP - IP address of the NFS provider
+	NfsProviderIP *string `json:"nfsProviderIp,omitempty"`
+	// NfsFilePath - File path through which the NFS volume is exposed by the provider
+	NfsFilePath *string `json:"nfsFilePath,omitempty"`
 }
 
 // Operation a REST API operation

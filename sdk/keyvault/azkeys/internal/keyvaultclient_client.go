@@ -1031,9 +1031,9 @@ func (client *KeyVaultClient) releaseCreateRequest(ctx context.Context, vaultBas
 		return nil, errors.New("parameter keyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
-	if keyVersion == "" {
-		return nil, errors.New("parameter keyVersion cannot be empty")
-	}
+	// if keyVersion == "" {
+	// 	return nil, errors.New("parameter keyVersion cannot be empty")
+	// }
 	urlPath = strings.ReplaceAll(urlPath, "{key-version}", url.PathEscape(keyVersion))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
 	if err != nil {

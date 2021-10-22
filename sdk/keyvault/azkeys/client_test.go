@@ -8,6 +8,7 @@ package azkeys
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -467,3 +468,40 @@ func TestGetKeyRotationPolicy(t *testing.T) {
 	_, err = client.GetKeyRotationPolicy(ctx, key, nil)
 	require.NoError(t, err)
 }
+
+func TestReleaseKey(t *testing.T) {
+	t.Skip("Release is not currently not enabled in API Version 7.3-preview")
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	key, err := createRandomName(t, "key")
+	require.NoError(t, err)
+	_, err = client.CreateRSAKey(context.Background(), key, nil)
+	require.NoError(t, err)
+	defer cleanUpKey(t, client, key)
+
+	// Get attestation token from service
+	attestationURL := recording.GetEnvVariable(t, "AZURE_KEYVAULT_ATTESTATION_URL", "https://fakewebsite.net/")
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", attestationURL), nil)
+	require.NoError(t, err)
+
+	resp, err := http.DefaultClient.Do(req)
+	require.NoError(t, err)
+	require.Equal(t, resp.StatusCode, http.StatusOK)
+	defer resp.Body.Close()
+
+	type targetResponse struct {
+		Token string `json:"token"`
+	}
+
+	var tR targetResponse
+	err = json.NewDecoder(resp.Body).Decode(&tR)
+	require.NoError(t, err)
+
+	_, err = client.ReleaseKey(ctx, key, tR.Token, nil)
+	require.NoError(t, err)
+}
+

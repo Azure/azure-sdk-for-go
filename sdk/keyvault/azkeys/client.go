@@ -1367,3 +1367,51 @@ func (c *Client) GetKeyRotationPolicy(ctx context.Context, name string, options 
 
 	return getKeyRotationPolicyResponseFromGenerated(resp), nil
 }
+
+type ReleaseKeyOptions struct {
+	// The version of the key to release
+	Version string
+
+	// The encryption algorithm to use to protected the exported key material
+	Enc *KeyEncryptionAlgorithm `json:"enc,omitempty"`
+
+	// A client provided nonce for freshness.
+	Nonce *string `json:"nonce,omitempty"`
+}
+
+// ReleaseKeyResponse contains the response of Client.ReleaseKey
+type ReleaseKeyResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+
+	// READ-ONLY; A signed object containing the released key.
+	Value *string `json:"value,omitempty" azure:"ro"`
+}
+
+func (c *Client) ReleaseKey(ctx context.Context, name string, target string, options *ReleaseKeyOptions) (ReleaseKeyResponse, error) {
+	if options == nil {
+		options = &ReleaseKeyOptions{}
+	}
+
+	resp, err := c.kvClient.Release(
+		ctx,
+		c.vaultUrl,
+		name,
+		options.Version,
+		internal.KeyReleaseParameters{
+			Target: &target,
+			Enc:    (*internal.KeyEncryptionAlgorithm)(options.Enc),
+			Nonce:  options.Nonce,
+		},
+		&internal.KeyVaultClientReleaseOptions{},
+	)
+
+	if err != nil {
+		return ReleaseKeyResponse{}, err
+	}
+
+	return ReleaseKeyResponse{
+		RawResponse: resp.RawResponse,
+		Value:       resp.Value,
+	}, err
+}

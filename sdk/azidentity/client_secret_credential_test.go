@@ -18,7 +18,7 @@ import (
 const (
 	tenantID                 = "expected-tenant"
 	badTenantID              = "bad_tenant"
-	clientID                 = "expected_client"
+	clientID                 = "expected-client-id"
 	secret                   = "secret"
 	wrongSecret              = "wrong_secret"
 	tokenValue               = "new_token"

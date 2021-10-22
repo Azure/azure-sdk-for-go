@@ -1,6 +1,6 @@
 # Release History
 
-## 0.20.0 (Unreleased)
+## 0.20.0 (2021-10-22)
 
 ### Breaking Changes
 * Removed `arm.Connection`

@@ -24,10 +24,6 @@ func TestInteractiveBrowserCredential_InvalidTenantID(t *testing.T) {
 	if cred != nil {
 		t.Fatalf("Expected a nil credential value. Received: %v", cred)
 	}
-	var errType *CredentialUnavailableError
-	if !errors.As(err, &errType) {
-		t.Fatalf("Did not receive a CredentialUnavailableError. Received: %t", err)
-	}
 }
 
 func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
@@ -105,7 +101,7 @@ func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
-	var authFailed *AuthenticationFailedError
+	var authFailed AuthenticationFailedError
 	if !errors.As(err, &authFailed) {
 		t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
 	}

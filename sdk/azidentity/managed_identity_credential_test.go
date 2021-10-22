@@ -374,7 +374,7 @@ func TestManagedIdentityCredential_GetTokenIMDS400(t *testing.T) {
 	}
 	// cred should return CredentialUnavailableError when IMDS responds 400 to a token request.
 	// Also, it shouldn't send another token request (mockIMDS will appropriately panic if it does).
-	var expected *CredentialUnavailableError
+	var expected CredentialUnavailableError
 	for i := 0; i < 3; i++ {
 		_, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{msiScope}})
 		if !errors.As(err, &expected) {

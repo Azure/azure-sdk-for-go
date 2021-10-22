@@ -18,6 +18,7 @@ const (
 	accessTokenRespError     = `{"error": "invalid_client","error_description": "Invalid client secret is provided.","error_codes": [0],"timestamp": "2019-12-01 19:00:00Z","trace_id": "2d091b0","correlation_id": "a999","error_uri": "https://login.contoso.com/error?code=0"}`
 	accessTokenRespSuccess   = `{"access_token": "` + tokenValue + `", "expires_in": 3600}`
 	accessTokenRespMalformed = `{"access_token": 0, "expires_in": 3600}`
+	tokenValue               = "new_token"
 )
 
 func defaultTestPipeline(srv policy.Transporter, cred azcore.TokenCredential, scope string) runtime.Pipeline {

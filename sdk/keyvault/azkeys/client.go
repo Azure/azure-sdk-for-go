@@ -1229,3 +1229,39 @@ func (c *Client) ImportKey(ctx context.Context, keyName string, key JSONWebKey, 
 
 	return importKeyResponseFromGenerated(resp), nil
 }
+
+// GetRandomBytesOptions contains the optional parameters for the Client.GetRandomBytes function.
+type GetRandomBytesOptions struct{}
+
+// GetRandomBytesResponse is the response struct for the Client.GetRandomBytes function.
+type GetRandomBytesResponse struct {
+	// The bytes encoded as a base64url string.
+	Value []byte `json:"value,omitempty"`
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GetRandomBytes gets the requested number of bytes containing random values from a managed HSM.
+// If the operation fails it returns the *KeyVaultError error type.
+func (c *Client) GetRandomBytes(ctx context.Context, count *int32, options *GetRandomBytesOptions) (GetRandomBytesResponse, error) {
+	if options == nil {
+		options = &GetRandomBytesOptions{}
+	}
+
+	resp, err := c.kvClient.GetRandomNumbers(
+		ctx,
+		c.vaultUrl,
+		internal.GetRandomNumbersRequest{BytesLength: count},
+		&internal.KeyVaultClientGetRandomNumbersOptions{},
+	)
+
+	if err != nil {
+		return GetRandomBytesResponse{}, err
+	}
+
+	return GetRandomBytesResponse{
+		Value:       resp.Value,
+		RawResponse: resp.RawResponse,
+	}, nil
+}

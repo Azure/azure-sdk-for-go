@@ -415,5 +415,17 @@ func TestImportKey(t *testing.T) {
 	resp, err := client.ImportKey(ctx, "importedKey", jwk, nil)
 	require.NoError(t, err)
 	require.NotNil(t, resp.Key)
-	// require.Equal(t, *resp.Key.Kty, createResp.Key.Kty)
+}
+
+func TestGetRandomBytes(t *testing.T) {
+	t.Skip("Managed HSM Only")
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	resp, err := client.GetRandomBytes(context.Background(), to.Int32Ptr(100), nil)
+	require.NoError(t, err)
+	require.Equal(t, 100, len(resp.Value))
 }

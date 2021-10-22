@@ -25,7 +25,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var pathToPackage = "sdk/keyvault/azkeys"
+var pathToPackage = "sdk/keyvault/azkeys/testdata"
 
 const headerAuthorization = "Authorization"
 

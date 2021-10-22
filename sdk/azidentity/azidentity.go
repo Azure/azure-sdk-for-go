@@ -12,7 +12,6 @@ import (
 	"regexp"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
 // AuthorityHost is the base URL for Azure Active Directory
@@ -52,55 +51,6 @@ type tokenResponse struct {
 	token        *azcore.AccessToken
 	refreshToken string
 }
-
-// AuthenticationFailedError is returned when the authentication request has failed.
-type AuthenticationFailedError struct {
-	inner error
-	msg   string
-	resp  *http.Response
-}
-
-// Unwrap method on AuthenticationFailedError provides access to the inner error if available.
-func (e *AuthenticationFailedError) Unwrap() error {
-	return e.inner
-}
-
-// NonRetriable indicates that this error should not be retried.
-func (e *AuthenticationFailedError) NonRetriable() {
-	// marker method
-}
-
-func (e *AuthenticationFailedError) Error() string {
-	return e.msg
-}
-
-// RawResponse returns the HTTP response motivating the error, if available
-func (e *AuthenticationFailedError) RawResponse() *http.Response {
-	return e.resp
-}
-
-var _ azcore.HTTPResponse = (*AuthenticationFailedError)(nil)
-var _ errorinfo.NonRetriable = (*AuthenticationFailedError)(nil)
-
-// CredentialUnavailableError is the error type returned when the conditions required to
-// create a credential do not exist or are unavailable.
-type CredentialUnavailableError struct {
-	// CredentialType holds the name of the credential that is unavailable
-	credentialType string
-	// Message contains the reason why the credential is unavailable
-	message string
-}
-
-func (e *CredentialUnavailableError) Error() string {
-	return e.credentialType + ": " + e.message
-}
-
-// NonRetriable indicates that this error should not be retried.
-func (e *CredentialUnavailableError) NonRetriable() {
-	// marker method
-}
-
-var _ errorinfo.NonRetriable = (*CredentialUnavailableError)(nil)
 
 // setAuthorityHost initializes the authority host for credentials.
 func setAuthorityHost(authorityHost AuthorityHost) (string, error) {

@@ -173,10 +173,10 @@ func TestProcessorUnitTests(t *testing.T) {
 	}
 
 	require.NoError(t, applyProcessorOptions(p, e, &processorOptions{
-		ReceiveMode:        ReceiveAndDelete,
-		SubQueue:           SubQueueDeadLetter,
-		DisableAutoComplete:     true,
-		MaxConcurrentCalls: 101,
+		ReceiveMode:         ReceiveAndDelete,
+		SubQueue:            SubQueueDeadLetter,
+		DisableAutoComplete: true,
+		MaxConcurrentCalls:  101,
 	}))
 
 	require.False(t, p.autoComplete)

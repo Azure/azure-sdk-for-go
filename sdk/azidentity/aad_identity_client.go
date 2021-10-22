@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -84,7 +85,7 @@ func getError(resp *http.Response) error {
 	} else {
 		msg = fmt.Sprintf("authentication failed: %s", authFailed.Message)
 	}
-	return &AuthenticationFailedError{msg: msg, resp: resp}
+	return newAuthenticationFailedError(errors.New(msg), resp)
 }
 
 // refreshAccessToken creates a refresh token request and returns the resulting Access Token or

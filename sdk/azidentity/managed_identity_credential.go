@@ -110,12 +110,12 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *ManagedIdentityCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	if opts.Scopes == nil {
-		err := &AuthenticationFailedError{msg: "must specify a resource in order to authenticate"}
+		err := errors.New("must specify a resource in order to authenticate")
 		addGetTokenFailureLogs("Managed Identity Credential", err, true)
 		return nil, err
 	}
 	if len(opts.Scopes) != 1 {
-		err := &AuthenticationFailedError{msg: "can only specify one resource to authenticate with ManagedIdentityCredential"}
+		err := errors.New("can only specify one resource to authenticate with ManagedIdentityCredential")
 		addGetTokenFailureLogs("Managed Identity Credential", err, true)
 		return nil, err
 	}

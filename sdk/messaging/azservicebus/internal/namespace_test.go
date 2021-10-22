@@ -69,7 +69,7 @@ func (r *fakeRetrier) CurrentTry() int {
 }
 
 type fakeTokenCredential struct {
-	azcore.Credential
+	azcore.TokenCredential
 	expires time.Time
 }
 

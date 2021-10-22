@@ -505,3 +505,33 @@ func TestReleaseKey(t *testing.T) {
 	require.NoError(t, err)
 }
 
+func TestUpdateKeyRotationPolicy(t *testing.T) {
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	key, err := createRandomName(t, "key")
+	require.NoError(t, err)
+	_, err = client.CreateRSAKey(context.Background(), key, nil)
+	require.NoError(t, err)
+	defer cleanUpKey(t, client, key)
+
+	_, err = client.UpdateKeyRotationPolicy(ctx, key, &UpdateKeyRotationPolicyOptions{
+		Attributes: &KeyRotationPolicyAttributes{
+			ExpiryTime: to.StringPtr("P90D"),
+		},
+		LifetimeActions: []*LifetimeActions{
+			{
+				Action: &LifetimeActionsType{
+					Type: ActionTypeNotify.ToPtr(),
+				},
+				Trigger: &LifetimeActionsTrigger{
+					TimeBeforeExpiry: to.StringPtr("P30D"),
+				},
+			},
+		},
+	})
+	require.NoError(t, err)
+}

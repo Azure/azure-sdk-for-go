@@ -1415,3 +1415,88 @@ func (c *Client) ReleaseKey(ctx context.Context, name string, target string, opt
 		Value:       resp.Value,
 	}, err
 }
+
+// UpdateKeyRotationPolicyOptions contains the optional parameters for the Client.UpdateKeyRotationPolicy function
+type UpdateKeyRotationPolicyOptions struct {
+	// The key rotation policy attributes.
+	Attributes *KeyRotationPolicyAttributes `json:"attributes,omitempty"`
+
+	// Actions that will be performed by Key Vault over the lifetime of a key. For preview, lifetimeActions can only have two items at maximum: one for rotate,
+	// one for notify. Notification time would be
+	// default to 30 days before expiry and it is not configurable.
+	LifetimeActions []*LifetimeActions `json:"lifetimeActions,omitempty"`
+
+	// READ-ONLY; The key policy id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+}
+
+func (u UpdateKeyRotationPolicyOptions) toGenerated() internal.KeyRotationPolicy {
+	var attribs *internal.KeyRotationPolicyAttributes
+	if u.Attributes != nil {
+		attribs = u.Attributes.toGenerated()
+	}
+	var la []*internal.LifetimeActions
+	for _, l := range u.LifetimeActions {
+		if l == nil {
+			la = append(la, nil)
+		} else {
+			la = append(la, l.toGenerated())
+		}
+	}
+
+	return internal.KeyRotationPolicy{
+		ID:              u.ID,
+		LifetimeActions: la,
+		Attributes:      attribs,
+	}
+}
+
+// UpdateKeyRotationPolicyResponse contains the response for the Client.UpdateKeyRotationPolicy function
+type UpdateKeyRotationPolicyResponse struct {
+	KeyRotationPolicy
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func updateKeyRotationPolicyResponseFromGenerated(i internal.KeyVaultClientUpdateKeyRotationPolicyResponse) UpdateKeyRotationPolicyResponse {
+	var acts []*LifetimeActions
+	for _, a := range i.LifetimeActions {
+		acts = append(acts, lifetimeActionsFromGenerated(a))
+	}
+	var attribs *KeyRotationPolicyAttributes
+	if i.Attributes != nil {
+		attribs = &KeyRotationPolicyAttributes{
+			ExpiryTime: i.Attributes.ExpiryTime,
+			Created:    i.Attributes.Created,
+			Updated:    i.Attributes.Updated,
+		}
+	}
+	return UpdateKeyRotationPolicyResponse{
+		RawResponse: i.RawResponse,
+		KeyRotationPolicy: KeyRotationPolicy{
+			ID:              i.ID,
+			LifetimeActions: acts,
+			Attributes:      attribs,
+		},
+	}
+}
+
+func (c *Client) UpdateKeyRotationPolicy(ctx context.Context, name string, options *UpdateKeyRotationPolicyOptions) (UpdateKeyRotationPolicyResponse, error) {
+	if options == nil {
+		options = &UpdateKeyRotationPolicyOptions{}
+	}
+
+	resp, err := c.kvClient.UpdateKeyRotationPolicy(
+		ctx,
+		c.vaultUrl,
+		name,
+		options.toGenerated(),
+		&internal.KeyVaultClientUpdateKeyRotationPolicyOptions{},
+	)
+
+	if err != nil {
+		return UpdateKeyRotationPolicyResponse{}, err
+	}
+
+	return updateKeyRotationPolicyResponseFromGenerated(resp), nil
+}

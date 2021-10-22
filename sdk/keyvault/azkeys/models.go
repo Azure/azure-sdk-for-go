@@ -330,6 +330,14 @@ type KeyRotationPolicyAttributes struct {
 	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
 }
 
+func (k KeyRotationPolicyAttributes) toGenerated() *internal.KeyRotationPolicyAttributes {
+	return &internal.KeyRotationPolicyAttributes{
+		ExpiryTime: k.ExpiryTime,
+		Created:    k.Created,
+		Updated:    k.Updated,
+	}
+}
+
 // LifetimeActions - Action and its trigger that will be performed by Key Vault over the lifetime of a key.
 type LifetimeActions struct {
 	// The action that will be executed.
@@ -337,6 +345,18 @@ type LifetimeActions struct {
 
 	// The condition that will execute the action.
 	Trigger *LifetimeActionsTrigger `json:"trigger,omitempty"`
+}
+
+func (l LifetimeActions) toGenerated() *internal.LifetimeActions {
+	return &internal.LifetimeActions{
+		Action: &internal.LifetimeActionsType{
+			Type: (*internal.ActionType)(l.Action.Type),
+		},
+		Trigger: &internal.LifetimeActionsTrigger{
+			TimeAfterCreate:  l.Trigger.TimeAfterCreate,
+			TimeBeforeExpiry: l.Trigger.TimeBeforeExpiry,
+		},
+	}
 }
 
 func lifetimeActionsFromGenerated(i *internal.LifetimeActions) *LifetimeActions {

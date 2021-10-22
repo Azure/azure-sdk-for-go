@@ -117,3 +117,18 @@ const (
 func (c JSONWebKeyOperation) ToPtr() *JSONWebKeyOperation {
 	return &c
 }
+
+// ActionType - The type of the action.
+type ActionType string
+
+const (
+	// ActionTypeRotate - Rotate the key based on the key policy.
+	ActionTypeRotate ActionType = "rotate"
+	// ActionTypeNotify - Trigger event grid events. For preview, the notification time is not configurable and it is default to 30 days before expiry.
+	ActionTypeNotify ActionType = "notify"
+)
+
+// ToPtr returns a *ActionType pointing to the current value.
+func (c ActionType) ToPtr() *ActionType {
+	return &c
+}

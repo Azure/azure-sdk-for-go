@@ -1310,3 +1310,60 @@ func (c *Client) RotateKey(ctx context.Context, name string, options *RotateKeyO
 		},
 	}, nil
 }
+
+// GetKeyRotationPolicyOptions contains the optional parameters for the Client.GetKeyRotationPolicy function
+type GetKeyRotationPolicyOptions struct{}
+
+func (g GetKeyRotationPolicyOptions) toGenerated() *internal.KeyVaultClientGetKeyRotationPolicyOptions {
+	return &internal.KeyVaultClientGetKeyRotationPolicyOptions{}
+}
+
+// GetKeyRotationPolicyResponse contains the response struct for the Client.GetKeyRotationPolicy function
+type GetKeyRotationPolicyResponse struct {
+	KeyRotationPolicy
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func getKeyRotationPolicyResponseFromGenerated(i internal.KeyVaultClientGetKeyRotationPolicyResponse) GetKeyRotationPolicyResponse {
+	var acts []*LifetimeActions
+	for _, a := range i.LifetimeActions {
+		acts = append(acts, lifetimeActionsFromGenerated(a))
+	}
+	var attribs *KeyRotationPolicyAttributes
+	if i.Attributes != nil {
+		attribs = &KeyRotationPolicyAttributes{
+			ExpiryTime: i.Attributes.ExpiryTime,
+			Created:    i.Attributes.Created,
+			Updated:    i.Attributes.Updated,
+		}
+	}
+	return GetKeyRotationPolicyResponse{
+		RawResponse: i.RawResponse,
+		KeyRotationPolicy: KeyRotationPolicy{
+			ID:              i.ID,
+			LifetimeActions: acts,
+			Attributes:      attribs,
+		},
+	}
+}
+
+// The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This operation requires
+// the keys/get permission.
+func (c *Client) GetKeyRotationPolicy(ctx context.Context, name string, options *GetKeyRotationPolicyOptions) (GetKeyRotationPolicyResponse, error) {
+	if options == nil {
+		options = &GetKeyRotationPolicyOptions{}
+	}
+
+	resp, err := c.kvClient.GetKeyRotationPolicy(
+		ctx,
+		c.vaultUrl,
+		name,
+		options.toGenerated(),
+	)
+	if err != nil {
+		return GetKeyRotationPolicyResponse{}, err
+	}
+
+	return getKeyRotationPolicyResponseFromGenerated(resp), nil
+}

@@ -84,6 +84,9 @@ type KeyBundle struct {
 	// The Json web key.
 	Key *JSONWebKey `json:"key,omitempty"`
 
+	// The policy rules under which the key can be exported.
+	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
+
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
 
@@ -282,5 +285,20 @@ func deletedKeyItemFromGenerated(i *internal.DeletedKeyItem) *DeletedKeyItem {
 		DeletedDate:        i.DeletedDate,
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
 		KeyItem:            *keyItemFromGenerated(&i.KeyItem),
+	}
+}
+
+type KeyReleasePolicy struct {
+	// Content type and version of key release policy
+	ContentType *string `json:"contentType,omitempty"`
+
+	// Blob encoding the policy rules under which the key can be released.
+	Data []byte `json:"data,omitempty"`
+}
+
+func keyReleasePolicyFromGenerated(i internal.KeyReleasePolicy) *KeyReleasePolicy {
+	return &KeyReleasePolicy{
+		ContentType: i.ContentType,
+		Data:        i.Data,
 	}
 }

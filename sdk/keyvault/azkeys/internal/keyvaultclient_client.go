@@ -598,6 +598,66 @@ func (client *KeyVaultClient) getKeyHandleError(resp *http.Response) error {
 	return runtime.NewResponseError(&errType, resp)
 }
 
+// GetKeyRotationPolicy - The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This operation requires
+// the keys/get permission.
+// If the operation fails it returns the *KeyVaultError error type.
+func (client *KeyVaultClient) GetKeyRotationPolicy(ctx context.Context, vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyRotationPolicyOptions) (KeyVaultClientGetKeyRotationPolicyResponse, error) {
+	req, err := client.getKeyRotationPolicyCreateRequest(ctx, vaultBaseURL, keyName, options)
+	if err != nil {
+		return KeyVaultClientGetKeyRotationPolicyResponse{}, err
+	}
+	resp, err := client.Con.Pipeline().Do(req)
+	if err != nil {
+		return KeyVaultClientGetKeyRotationPolicyResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return KeyVaultClientGetKeyRotationPolicyResponse{}, client.getKeyRotationPolicyHandleError(resp)
+	}
+	return client.getKeyRotationPolicyHandleResponse(resp)
+}
+
+// getKeyRotationPolicyCreateRequest creates the GetKeyRotationPolicy request.
+func (client *KeyVaultClient) getKeyRotationPolicyCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyRotationPolicyOptions) (*policy.Request, error) {
+	host := "{vaultBaseUrl}"
+	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
+	urlPath := "/keys/{key-name}/rotationpolicy"
+	if keyName == "" {
+		return nil, errors.New("parameter keyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "7.3-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// getKeyRotationPolicyHandleResponse handles the GetKeyRotationPolicy response.
+func (client *KeyVaultClient) getKeyRotationPolicyHandleResponse(resp *http.Response) (KeyVaultClientGetKeyRotationPolicyResponse, error) {
+	result := KeyVaultClientGetKeyRotationPolicyResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.KeyRotationPolicy); err != nil {
+		return KeyVaultClientGetKeyRotationPolicyResponse{}, err
+	}
+	return result, nil
+}
+
+// getKeyRotationPolicyHandleError handles the GetKeyRotationPolicy error response.
+func (client *KeyVaultClient) getKeyRotationPolicyHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
+	if err != nil {
+		return runtime.NewResponseError(err, resp)
+	}
+	errType := KeyVaultError{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	}
+	return runtime.NewResponseError(&errType, resp)
+}
+
 // GetKeyVersions - The full key identifier, attributes, and tags are provided in the response. This operation requires the keys/list permission.
 // If the operation fails it returns the *KeyVaultError error type.
 func (client *KeyVaultClient) GetKeyVersions(vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyVersionsOptions) *KeyVaultClientGetKeyVersionsPager {
@@ -715,28 +775,28 @@ func (client *KeyVaultClient) getKeysHandleError(resp *http.Response) error {
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// GetRandomNumbers - Get the requested number of bytes containing random values from a managed HSM.
+// GetRandomBytes - Get the requested number of bytes containing random values from a managed HSM.
 // If the operation fails it returns the *KeyVaultError error type.
-func (client *KeyVaultClient) GetRandomNumbers(ctx context.Context, vaultBaseURL string, parameters GetRandomNumbersRequest, options *KeyVaultClientGetRandomNumbersOptions) (KeyVaultClientGetRandomNumbersResponse, error) {
-	req, err := client.getRandomNumbersCreateRequest(ctx, vaultBaseURL, parameters, options)
+func (client *KeyVaultClient) GetRandomBytes(ctx context.Context, vaultBaseURL string, parameters GetRandomBytesRequest, options *KeyVaultClientGetRandomBytesOptions) (KeyVaultClientGetRandomBytesResponse, error) {
+	req, err := client.getRandomBytesCreateRequest(ctx, vaultBaseURL, parameters, options)
 	if err != nil {
-		return KeyVaultClientGetRandomNumbersResponse{}, err
+		return KeyVaultClientGetRandomBytesResponse{}, err
 	}
 	resp, err := client.Con.Pipeline().Do(req)
 	if err != nil {
-		return KeyVaultClientGetRandomNumbersResponse{}, err
+		return KeyVaultClientGetRandomBytesResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return KeyVaultClientGetRandomNumbersResponse{}, client.getRandomNumbersHandleError(resp)
+		return KeyVaultClientGetRandomBytesResponse{}, client.getRandomBytesHandleError(resp)
 	}
-	return client.getRandomNumbersHandleResponse(resp)
+	return client.getRandomBytesHandleResponse(resp)
 }
 
-// getRandomNumbersCreateRequest creates the GetRandomNumbers request.
-func (client *KeyVaultClient) getRandomNumbersCreateRequest(ctx context.Context, vaultBaseURL string, parameters GetRandomNumbersRequest, options *KeyVaultClientGetRandomNumbersOptions) (*policy.Request, error) {
+// getRandomBytesCreateRequest creates the GetRandomBytes request.
+func (client *KeyVaultClient) getRandomBytesCreateRequest(ctx context.Context, vaultBaseURL string, parameters GetRandomBytesRequest, options *KeyVaultClientGetRandomBytesOptions) (*policy.Request, error) {
 	host := "{vaultBaseUrl}"
 	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
-	urlPath := "/randomnumbers"
+	urlPath := "/rng"
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
 	if err != nil {
 		return nil, err
@@ -748,17 +808,17 @@ func (client *KeyVaultClient) getRandomNumbersCreateRequest(ctx context.Context,
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
 
-// getRandomNumbersHandleResponse handles the GetRandomNumbers response.
-func (client *KeyVaultClient) getRandomNumbersHandleResponse(resp *http.Response) (KeyVaultClientGetRandomNumbersResponse, error) {
-	result := KeyVaultClientGetRandomNumbersResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.GetRandomNumbersResponse); err != nil {
-		return KeyVaultClientGetRandomNumbersResponse{}, err
+// getRandomBytesHandleResponse handles the GetRandomBytes response.
+func (client *KeyVaultClient) getRandomBytesHandleResponse(resp *http.Response) (KeyVaultClientGetRandomBytesResponse, error) {
+	result := KeyVaultClientGetRandomBytesResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RandomBytes); err != nil {
+		return KeyVaultClientGetRandomBytesResponse{}, err
 	}
 	return result, nil
 }
 
-// getRandomNumbersHandleError handles the GetRandomNumbers error response.
-func (client *KeyVaultClient) getRandomNumbersHandleError(resp *http.Response) error {
+// getRandomBytesHandleError handles the GetRandomBytes error response.
+func (client *KeyVaultClient) getRandomBytesHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -1071,6 +1131,65 @@ func (client *KeyVaultClient) restoreKeyHandleError(resp *http.Response) error {
 	return runtime.NewResponseError(&errType, resp)
 }
 
+// RotateKey - The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
+// If the operation fails it returns the *KeyVaultError error type.
+func (client *KeyVaultClient) RotateKey(ctx context.Context, vaultBaseURL string, keyName string, options *KeyVaultClientRotateKeyOptions) (KeyVaultClientRotateKeyResponse, error) {
+	req, err := client.rotateKeyCreateRequest(ctx, vaultBaseURL, keyName, options)
+	if err != nil {
+		return KeyVaultClientRotateKeyResponse{}, err
+	}
+	resp, err := client.Con.Pipeline().Do(req)
+	if err != nil {
+		return KeyVaultClientRotateKeyResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return KeyVaultClientRotateKeyResponse{}, client.rotateKeyHandleError(resp)
+	}
+	return client.rotateKeyHandleResponse(resp)
+}
+
+// rotateKeyCreateRequest creates the RotateKey request.
+func (client *KeyVaultClient) rotateKeyCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, options *KeyVaultClientRotateKeyOptions) (*policy.Request, error) {
+	host := "{vaultBaseUrl}"
+	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
+	urlPath := "/keys/{key-name}/rotate"
+	if keyName == "" {
+		return nil, errors.New("parameter keyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "7.3-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, nil
+}
+
+// rotateKeyHandleResponse handles the RotateKey response.
+func (client *KeyVaultClient) rotateKeyHandleResponse(resp *http.Response) (KeyVaultClientRotateKeyResponse, error) {
+	result := KeyVaultClientRotateKeyResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.KeyBundle); err != nil {
+		return KeyVaultClientRotateKeyResponse{}, err
+	}
+	return result, nil
+}
+
+// rotateKeyHandleError handles the RotateKey error response.
+func (client *KeyVaultClient) rotateKeyHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
+	if err != nil {
+		return runtime.NewResponseError(err, resp)
+	}
+	errType := KeyVaultError{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	}
+	return runtime.NewResponseError(&errType, resp)
+}
+
 // Sign - The SIGN operation is applicable to asymmetric and symmetric keys stored in Azure Key Vault since this operation uses the private portion of the
 // key. This operation requires the keys/sign permission.
 // If the operation fails it returns the *KeyVaultError error type.
@@ -1253,6 +1372,65 @@ func (client *KeyVaultClient) updateKeyHandleResponse(resp *http.Response) (KeyV
 
 // updateKeyHandleError handles the UpdateKey error response.
 func (client *KeyVaultClient) updateKeyHandleError(resp *http.Response) error {
+	body, err := runtime.Payload(resp)
+	if err != nil {
+		return runtime.NewResponseError(err, resp)
+	}
+	errType := KeyVaultError{raw: string(body)}
+	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
+		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
+	}
+	return runtime.NewResponseError(&errType, resp)
+}
+
+// UpdateKeyRotationPolicy - Set specified members in the key policy. Leave others as undefined. This operation requires the keys/update permission.
+// If the operation fails it returns the *KeyVaultError error type.
+func (client *KeyVaultClient) UpdateKeyRotationPolicy(ctx context.Context, vaultBaseURL string, keyName string, keyRotationPolicy KeyRotationPolicy, options *KeyVaultClientUpdateKeyRotationPolicyOptions) (KeyVaultClientUpdateKeyRotationPolicyResponse, error) {
+	req, err := client.updateKeyRotationPolicyCreateRequest(ctx, vaultBaseURL, keyName, keyRotationPolicy, options)
+	if err != nil {
+		return KeyVaultClientUpdateKeyRotationPolicyResponse{}, err
+	}
+	resp, err := client.Con.Pipeline().Do(req)
+	if err != nil {
+		return KeyVaultClientUpdateKeyRotationPolicyResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return KeyVaultClientUpdateKeyRotationPolicyResponse{}, client.updateKeyRotationPolicyHandleError(resp)
+	}
+	return client.updateKeyRotationPolicyHandleResponse(resp)
+}
+
+// updateKeyRotationPolicyCreateRequest creates the UpdateKeyRotationPolicy request.
+func (client *KeyVaultClient) updateKeyRotationPolicyCreateRequest(ctx context.Context, vaultBaseURL string, keyName string, keyRotationPolicy KeyRotationPolicy, options *KeyVaultClientUpdateKeyRotationPolicyOptions) (*policy.Request, error) {
+	host := "{vaultBaseUrl}"
+	host = strings.ReplaceAll(host, "{vaultBaseUrl}", vaultBaseURL)
+	urlPath := "/keys/{key-name}/rotationpolicy"
+	if keyName == "" {
+		return nil, errors.New("parameter keyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{key-name}", url.PathEscape(keyName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(host, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", "7.3-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header.Set("Accept", "application/json")
+	return req, runtime.MarshalAsJSON(req, keyRotationPolicy)
+}
+
+// updateKeyRotationPolicyHandleResponse handles the UpdateKeyRotationPolicy response.
+func (client *KeyVaultClient) updateKeyRotationPolicyHandleResponse(resp *http.Response) (KeyVaultClientUpdateKeyRotationPolicyResponse, error) {
+	result := KeyVaultClientUpdateKeyRotationPolicyResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.KeyRotationPolicy); err != nil {
+		return KeyVaultClientUpdateKeyRotationPolicyResponse{}, err
+	}
+	return result, nil
+}
+
+// updateKeyRotationPolicyHandleError handles the UpdateKeyRotationPolicy error response.
+func (client *KeyVaultClient) updateKeyRotationPolicyHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)

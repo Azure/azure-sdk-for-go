@@ -128,7 +128,7 @@ func (b *BackupKeyResult) UnmarshalJSON(data []byte) error {
 
 type CertificateInfoObject struct {
 	// REQUIRED; Certificates needed from customer
-	Certificates []*SecurityDomainCertificateItem `json:"certificates,omitempty"`
+	Certificates []*SecurityDomainJSONWebKey `json:"certificates,omitempty"`
 
 	// Customer to specify the number of certificates (minimum 2 and maximum 10) to restore Security Domain
 	Required *int32 `json:"required,omitempty"`
@@ -283,43 +283,10 @@ type Error struct {
 	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
-// GetRandomNumbersRequest - The get random numbers request object.
-type GetRandomNumbersRequest struct {
+// GetRandomBytesRequest - The get random bytes request object.
+type GetRandomBytesRequest struct {
 	// REQUIRED; The requested number of random bytes.
-	BytesLength *int32 `json:"bytesLength,omitempty"`
-}
-
-// GetRandomNumbersResponse - The get random numbers response object containing the bytes.
-type GetRandomNumbersResponse struct {
-	// The bytes encoded as a base64url string.
-	Value []byte `json:"value,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GetRandomNumbersResponse.
-func (g GetRandomNumbersResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populateByteArray(objectMap, "value", g.Value, runtime.Base64URLFormat)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type GetRandomNumbersResponse.
-func (g *GetRandomNumbersResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "value":
-			err = runtime.DecodeByteArray(string(val), &g.Value, runtime.Base64URLFormat)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+	Count *int32 `json:"count,omitempty"`
 }
 
 // HSMSecurityDomainBeginDownloadOptions contains the optional parameters for the HSMSecurityDomain.BeginDownload method.
@@ -995,6 +962,81 @@ func (k *KeyRestoreParameters) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// KeyRotationPolicy - Management policy for a key.
+type KeyRotationPolicy struct {
+	// The key rotation policy attributes.
+	Attributes *KeyRotationPolicyAttributes `json:"attributes,omitempty"`
+
+	// Actions that will be performed by Key Vault over the lifetime of a key. For preview, lifetimeActions can only have two items at maximum: one for rotate,
+	// one for notify. Notification time would be
+	// default to 30 days before expiry and it is not configurable.
+	LifetimeActions []*LifetimeActions `json:"lifetimeActions,omitempty"`
+
+	// READ-ONLY; The key policy id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type KeyRotationPolicy.
+func (k KeyRotationPolicy) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "attributes", k.Attributes)
+	populate(objectMap, "id", k.ID)
+	populate(objectMap, "lifetimeActions", k.LifetimeActions)
+	return json.Marshal(objectMap)
+}
+
+// KeyRotationPolicyAttributes - The key rotation policy attributes.
+type KeyRotationPolicyAttributes struct {
+	// The expiryTime will be applied on the new key version. It should be at least 28 days. It will be in ISO 8601 Format. Examples: 90 days: P90D, 3 months:
+	// P3M, 48 hours: PT48H, 1 year and 10 days: P1Y10D
+	ExpiryTime *string `json:"expiryTime,omitempty"`
+
+	// READ-ONLY; The key rotation policy created time in UTC.
+	Created *time.Time `json:"created,omitempty" azure:"ro"`
+
+	// READ-ONLY; The key rotation policy's last updated time in UTC.
+	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type KeyRotationPolicyAttributes.
+func (k KeyRotationPolicyAttributes) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "created", (*timeUnix)(k.Created))
+	populate(objectMap, "expiryTime", k.ExpiryTime)
+	populate(objectMap, "updated", (*timeUnix)(k.Updated))
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type KeyRotationPolicyAttributes.
+func (k *KeyRotationPolicyAttributes) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "created":
+			var aux timeUnix
+			err = unpopulate(val, &aux)
+			k.Created = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "expiryTime":
+			err = unpopulate(val, &k.ExpiryTime)
+			delete(rawMsg, key)
+		case "updated":
+			var aux timeUnix
+			err = unpopulate(val, &aux)
+			k.Updated = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // KeySignParameters - The key operations parameters.
 type KeySignParameters struct {
 	// REQUIRED; The signing/verification algorithm identifier. For more information on possible algorithm types, see JsonWebKeySignatureAlgorithm.
@@ -1106,6 +1148,11 @@ type KeyVaultClientGetKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
+// KeyVaultClientGetKeyRotationPolicyOptions contains the optional parameters for the KeyVaultClient.GetKeyRotationPolicy method.
+type KeyVaultClientGetKeyRotationPolicyOptions struct {
+	// placeholder for future optional parameters
+}
+
 // KeyVaultClientGetKeyVersionsOptions contains the optional parameters for the KeyVaultClient.GetKeyVersions method.
 type KeyVaultClientGetKeyVersionsOptions struct {
 	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
@@ -1118,8 +1165,8 @@ type KeyVaultClientGetKeysOptions struct {
 	Maxresults *int32
 }
 
-// KeyVaultClientGetRandomNumbersOptions contains the optional parameters for the KeyVaultClient.GetRandomNumbers method.
-type KeyVaultClientGetRandomNumbersOptions struct {
+// KeyVaultClientGetRandomBytesOptions contains the optional parameters for the KeyVaultClient.GetRandomBytes method.
+type KeyVaultClientGetRandomBytesOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1148,6 +1195,11 @@ type KeyVaultClientRestoreKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
+// KeyVaultClientRotateKeyOptions contains the optional parameters for the KeyVaultClient.RotateKey method.
+type KeyVaultClientRotateKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
 // KeyVaultClientSignOptions contains the optional parameters for the KeyVaultClient.Sign method.
 type KeyVaultClientSignOptions struct {
 	// placeholder for future optional parameters
@@ -1160,6 +1212,11 @@ type KeyVaultClientUnwrapKeyOptions struct {
 
 // KeyVaultClientUpdateKeyOptions contains the optional parameters for the KeyVaultClient.UpdateKey method.
 type KeyVaultClientUpdateKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// KeyVaultClientUpdateKeyRotationPolicyOptions contains the optional parameters for the KeyVaultClient.UpdateKeyRotationPolicy method.
+type KeyVaultClientUpdateKeyRotationPolicyOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1240,19 +1297,43 @@ type KeyVerifyResult struct {
 	Value *bool `json:"value,omitempty" azure:"ro"`
 }
 
+// LifetimeActions - Action and its trigger that will be performed by Key Vault over the lifetime of a key.
+type LifetimeActions struct {
+	// The action that will be executed.
+	Action *LifetimeActionsType `json:"action,omitempty"`
+
+	// The condition that will execute the action.
+	Trigger *LifetimeActionsTrigger `json:"trigger,omitempty"`
+}
+
+// LifetimeActionsTrigger - A condition to be satisfied for an action to be executed.
+type LifetimeActionsTrigger struct {
+	// Time after creation to attempt to rotate. It only applies to rotate. It will be in ISO 8601 duration format. Example: 90 days : "P90D"
+	TimeAfterCreate *string `json:"timeAfterCreate,omitempty"`
+
+	// Time before expiry to attempt to rotate or notify. It will be in ISO 8601 duration format. Example: 90 days : "P90D"
+	TimeBeforeExpiry *string `json:"timeBeforeExpiry,omitempty"`
+}
+
+// LifetimeActionsType - The action that will be executed.
+type LifetimeActionsType struct {
+	// The type of the action.
+	Type *ActionType `json:"type,omitempty"`
+}
+
 // Permission - Role definition permissions.
 type Permission struct {
-	// Allowed actions.
+	// Action permissions that are granted.
 	Actions []*string `json:"actions,omitempty"`
 
-	// Allowed Data actions.
-	DataActions []*string `json:"dataActions,omitempty"`
+	// Data action permissions that are granted.
+	DataActions []*DataAction `json:"dataActions,omitempty"`
 
-	// Denied actions.
+	// Action permissions that are excluded but not denied. They may be granted by other role definitions assigned to a principal.
 	NotActions []*string `json:"notActions,omitempty"`
 
-	// Denied Data actions.
-	NotDataActions []*string `json:"notDataActions,omitempty"`
+	// Data action permissions that are excluded but not denied. They may be granted by other role definitions assigned to a principal.
+	NotDataActions []*DataAction `json:"notDataActions,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type Permission.
@@ -1263,6 +1344,39 @@ func (p Permission) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "notActions", p.NotActions)
 	populate(objectMap, "notDataActions", p.NotDataActions)
 	return json.Marshal(objectMap)
+}
+
+// RandomBytes - The get random bytes response object containing the bytes.
+type RandomBytes struct {
+	// REQUIRED; The bytes encoded as a base64url string.
+	Value []byte `json:"value,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type RandomBytes.
+func (r RandomBytes) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populateByteArray(objectMap, "value", r.Value, runtime.Base64URLFormat)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RandomBytes.
+func (r *RandomBytes) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "value":
+			err = runtime.DecodeByteArray(string(val), &r.Value, runtime.Base64URLFormat)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // RoleAssignment - Role Assignments
@@ -1280,7 +1394,7 @@ type RoleAssignment struct {
 	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
-// RoleAssignmentCreateParameters - Role assignment creation parameters.
+// RoleAssignmentCreateParameters - Role assignment create parameters.
 type RoleAssignmentCreateParameters struct {
 	// REQUIRED; Role assignment properties.
 	Properties *RoleAssignmentProperties `json:"properties,omitempty"`
@@ -1327,8 +1441,8 @@ type RoleAssignmentPropertiesWithScope struct {
 	// The role definition ID.
 	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
 
-	// The role assignment scope.
-	Scope *string `json:"scope,omitempty"`
+	// The role scope.
+	Scope *RoleScope `json:"scope,omitempty"`
 }
 
 // RoleAssignmentsCreateOptions contains the optional parameters for the RoleAssignments.Create method.
@@ -1365,10 +1479,10 @@ type RoleDefinition struct {
 	Name *string `json:"name,omitempty" azure:"ro"`
 
 	// READ-ONLY; The role definition type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *RoleDefinitionType `json:"type,omitempty" azure:"ro"`
 }
 
-// RoleDefinitionCreateParameters - Role definition creation parameters.
+// RoleDefinitionCreateParameters - Role definition create parameters.
 type RoleDefinitionCreateParameters struct {
 	// REQUIRED; Role definition properties.
 	Properties *RoleDefinitionProperties `json:"properties,omitempty"`
@@ -1400,7 +1514,7 @@ func (r RoleDefinitionListResult) MarshalJSON() ([]byte, error) {
 // RoleDefinitionProperties - Role definition properties.
 type RoleDefinitionProperties struct {
 	// Role definition assignable scopes.
-	AssignableScopes []*string `json:"assignableScopes,omitempty"`
+	AssignableScopes []*RoleScope `json:"assignableScopes,omitempty"`
 
 	// The role definition description.
 	Description *string `json:"description,omitempty"`
@@ -1412,7 +1526,7 @@ type RoleDefinitionProperties struct {
 	RoleName *string `json:"roleName,omitempty"`
 
 	// The role type.
-	RoleType *string `json:"type,omitempty"`
+	RoleType *RoleType `json:"type,omitempty"`
 }
 
 // MarshalJSON implements the json.Marshaller interface for type RoleDefinitionProperties.
@@ -1445,11 +1559,6 @@ type RoleDefinitionsGetOptions struct {
 type RoleDefinitionsListOptions struct {
 	// The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as well.
 	Filter *string
-}
-
-type SecurityDomainCertificateItem struct {
-	// REQUIRED; Customer generated certificate containing public key in JWK format
-	Value *SecurityDomainJSONWebKey `json:"value,omitempty"`
 }
 
 type SecurityDomainJSONWebKey struct {

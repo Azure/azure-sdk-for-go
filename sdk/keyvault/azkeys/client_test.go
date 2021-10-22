@@ -429,3 +429,25 @@ func TestGetRandomBytes(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, 100, len(resp.Value))
 }
+
+
+func TestRotateKey(t *testing.T) {
+	t.Skip("Forbidden")
+	stop := startTest(t)
+	defer stop()
+
+	client, err := createClient(t)
+	require.NoError(t, err)
+
+	key, err := createRandomName(t, "key")
+	require.NoError(t, err)
+	createResp, err := client.CreateRSAKey(context.Background(), key, nil)
+	require.NoError(t, err)
+	defer cleanUpKey(t, client, key)
+
+	resp, err := client.RotateKey(ctx, key, nil)
+	require.NoError(t, err)
+
+	require.NotEqual(t, *createResp.Key.ID, *resp.Key.ID)
+	require.NotEqual(t, createResp.Key.N, resp.Key.N)
+}

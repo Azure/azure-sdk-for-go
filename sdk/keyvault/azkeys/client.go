@@ -21,6 +21,7 @@ import (
 type Client struct {
 	kvClient *internal.KeyVaultClient
 	vaultUrl string
+	cred     azcore.Credential // keeping this here for NewCryptoClient
 }
 
 // ClientOptions are the configurable options on a Client.
@@ -75,6 +76,7 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 			Con: conn,
 		},
 		vaultUrl: vaultUrl,
+		cred:     credential,
 	}, nil
 }
 
@@ -1233,6 +1235,10 @@ func (c *Client) ImportKey(ctx context.Context, keyName string, key JSONWebKey, 
 // GetRandomBytesOptions contains the optional parameters for the Client.GetRandomBytes function.
 type GetRandomBytesOptions struct{}
 
+func (g GetRandomBytesOptions) toGenerated() *internal.KeyVaultClientGetRandomBytesOptions {
+	return &internal.KeyVaultClientGetRandomBytesOptions{}
+}
+
 // GetRandomBytesResponse is the response struct for the Client.GetRandomBytes function.
 type GetRandomBytesResponse struct {
 	// The bytes encoded as a base64url string.
@@ -1249,11 +1255,11 @@ func (c *Client) GetRandomBytes(ctx context.Context, count *int32, options *GetR
 		options = &GetRandomBytesOptions{}
 	}
 
-	resp, err := c.kvClient.GetRandomNumbers(
+	resp, err := c.kvClient.GetRandomBytes(
 		ctx,
 		c.vaultUrl,
-		internal.GetRandomNumbersRequest{BytesLength: count},
-		&internal.KeyVaultClientGetRandomNumbersOptions{},
+		internal.GetRandomBytesRequest{Count: count},
+		options.toGenerated(),
 	)
 
 	if err != nil {
@@ -1263,5 +1269,44 @@ func (c *Client) GetRandomBytes(ctx context.Context, count *int32, options *GetR
 	return GetRandomBytesResponse{
 		Value:       resp.Value,
 		RawResponse: resp.RawResponse,
+	}, nil
+}
+
+type RotateKeyOptions struct{}
+
+func (r RotateKeyOptions) toGenerated() *internal.KeyVaultClientRotateKeyOptions {
+	return &internal.KeyVaultClientRotateKeyOptions{}
+}
+
+type RotateKeyResponse struct {
+	KeyBundle
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func (c *Client) RotateKey(ctx context.Context, name string, options *RotateKeyOptions) (RotateKeyResponse, error) {
+	if options == nil {
+		options = &RotateKeyOptions{}
+	}
+
+	resp, err := c.kvClient.RotateKey(
+		ctx,
+		c.vaultUrl,
+		name,
+		options.toGenerated(),
+	)
+	if err != nil {
+		return RotateKeyResponse{}, err
+	}
+
+	return RotateKeyResponse{
+		RawResponse: resp.RawResponse,
+		KeyBundle: KeyBundle{
+			Attributes:    keyAttributesFromGenerated(resp.Attributes),
+			Key:           jsonWebKeyFromGenerated(resp.Key),
+			ReleasePolicy: keyReleasePolicyFromGenerated(*resp.ReleasePolicy),
+			Tags:          resp.Tags,
+			Managed:       resp.Managed,
+		},
 	}, nil
 }

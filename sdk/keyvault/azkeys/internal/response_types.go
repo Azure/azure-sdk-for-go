@@ -259,6 +259,18 @@ type KeyVaultClientGetKeyResult struct {
 	KeyBundle
 }
 
+// KeyVaultClientGetKeyRotationPolicyResponse contains the response from method KeyVaultClient.GetKeyRotationPolicy.
+type KeyVaultClientGetKeyRotationPolicyResponse struct {
+	KeyVaultClientGetKeyRotationPolicyResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// KeyVaultClientGetKeyRotationPolicyResult contains the result from method KeyVaultClient.GetKeyRotationPolicy.
+type KeyVaultClientGetKeyRotationPolicyResult struct {
+	KeyRotationPolicy
+}
+
 // KeyVaultClientGetKeyVersionsResponse contains the response from method KeyVaultClient.GetKeyVersions.
 type KeyVaultClientGetKeyVersionsResponse struct {
 	KeyVaultClientGetKeyVersionsResult
@@ -283,16 +295,16 @@ type KeyVaultClientGetKeysResult struct {
 	KeyListResult
 }
 
-// KeyVaultClientGetRandomNumbersResponse contains the response from method KeyVaultClient.GetRandomNumbers.
-type KeyVaultClientGetRandomNumbersResponse struct {
-	KeyVaultClientGetRandomNumbersResult
+// KeyVaultClientGetRandomBytesResponse contains the response from method KeyVaultClient.GetRandomBytes.
+type KeyVaultClientGetRandomBytesResponse struct {
+	KeyVaultClientGetRandomBytesResult
 	// RawResponse contains the underlying HTTP response.
 	RawResponse *http.Response
 }
 
-// KeyVaultClientGetRandomNumbersResult contains the result from method KeyVaultClient.GetRandomNumbers.
-type KeyVaultClientGetRandomNumbersResult struct {
-	GetRandomNumbersResponse
+// KeyVaultClientGetRandomBytesResult contains the result from method KeyVaultClient.GetRandomBytes.
+type KeyVaultClientGetRandomBytesResult struct {
+	RandomBytes
 }
 
 // KeyVaultClientImportKeyResponse contains the response from method KeyVaultClient.ImportKey.
@@ -349,6 +361,18 @@ type KeyVaultClientRestoreKeyResult struct {
 	KeyBundle
 }
 
+// KeyVaultClientRotateKeyResponse contains the response from method KeyVaultClient.RotateKey.
+type KeyVaultClientRotateKeyResponse struct {
+	KeyVaultClientRotateKeyResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// KeyVaultClientRotateKeyResult contains the result from method KeyVaultClient.RotateKey.
+type KeyVaultClientRotateKeyResult struct {
+	KeyBundle
+}
+
 // KeyVaultClientSignResponse contains the response from method KeyVaultClient.Sign.
 type KeyVaultClientSignResponse struct {
 	KeyVaultClientSignResult
@@ -383,6 +407,18 @@ type KeyVaultClientUpdateKeyResponse struct {
 // KeyVaultClientUpdateKeyResult contains the result from method KeyVaultClient.UpdateKey.
 type KeyVaultClientUpdateKeyResult struct {
 	KeyBundle
+}
+
+// KeyVaultClientUpdateKeyRotationPolicyResponse contains the response from method KeyVaultClient.UpdateKeyRotationPolicy.
+type KeyVaultClientUpdateKeyRotationPolicyResponse struct {
+	KeyVaultClientUpdateKeyRotationPolicyResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// KeyVaultClientUpdateKeyRotationPolicyResult contains the result from method KeyVaultClient.UpdateKeyRotationPolicy.
+type KeyVaultClientUpdateKeyRotationPolicyResult struct {
+	KeyRotationPolicy
 }
 
 // KeyVaultClientVerifyResponse contains the response from method KeyVaultClient.Verify.

@@ -67,63 +67,22 @@ sender.SendMessage(ctx, batch)
 
 ### Processing and receiving messages
 
-Receiving has split into two types:
-- the [Processor](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#Processor), for continuously streaming messages to a user provided callback (similar to `Listen`).
-- the [Receiver](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#Receiver), for receiving of messages in batches.
+Receiving has been changed to be pull-based, rather than using callbacks. 
 
-The `Processor` replaces the `Listen` functions on the previous Receiver type that could be created from a `Queue` or `Subscription`. It also adds in more robust error handling, which means that previous errors (like a link detaching) do not cause the Processor to exit. 
-
-The Processor will only exit when you call `Close`.
-
-```go
-// NOTE: there is also NewProcessorForSubscription for subscriptions.
-processor, err = client.NewProcessorForQueue(
-  queueName,
-  nil)
-
-handleMessage := func(message *azservicebus.ReceivedMessage) error {
-  log.Printf("Message arrived: %s", message.)
-  processor.CompleteMessage(ctx, message)
-}
-
-handleError := func(err error) {
-  // called whenever errors occur. Note, that unlike the
-  // Listen, errors are automatically recovered.
-}
-
-// blocks until the Processor is closed.
-processor.Start(ctx, handleMessage, handleError, nil)
-
-// close at a time of your choosing
-processor.Close(ctx)
-```
+You can receive messages using the [Receiver](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus#Receiver), for receiving of messages in batches.
 
 ### Receivers
 
-Receivers allow you to request messages in batches, or easily receive a single message. This can be useful
-for programs that need more control over when messages are received and when they are processed.
+Receivers allow you to request messages in batches, or easily receive a single message.
 
 ```go
 receiver, err := client.NewReceiverForQueue(queue)
 // or for a subscription
 receiver, err := client.NewReceiverForSubscription(topicName, subscriptionName)
-```
-
-`ReceiveOne` has been split into two functions to allow for receiving
-multiple messages at a time (`ReceiveMessages`) or a single message (`ReceiveMessage`).
-
-```go
-// new code
 
 // receiving multiple messages at a time, with a configurable timeout.
 var messages []*azservicebus.ReceivedMessage
 messages, err = receiver.ReceiveMessages(ctx, numMessages, nil)
-
-// receiving a single message time, with a configurable timeout.
-var message *azservicebus.ReceivedMessage
-
-// this is similar to the `ReceiveOne`
-message, err = receiver.ReceiveMessage(ctx, nil)
 ```
 
 ### Using dead letter queues
@@ -192,12 +151,7 @@ Now, using `azservicebus`:
 ```go
 // new code
 
-// with the Processor
-processor.Start(ctx, func(msg *azservicebus.ReceivedMessage) {
-  processor.CompleteMessage(ctx, msg)
-})
-
-// or with a Receiver
+// with a Receiver
 message, err := receiver.ReceiveMessage(ctx)   // or ReceiveMessages()
 receiver.CompleteMessage(ctx, message)
 ```

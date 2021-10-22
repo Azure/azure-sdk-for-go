@@ -16,7 +16,7 @@ import (
 	"github.com/devigned/tab"
 )
 
-// Client provides methods to create Sender, Receiver and Processor
+// Client provides methods to create Sender and Receiver
 // instances to send and receive messages from Service Bus.
 type Client struct {
 	config    clientConfig
@@ -251,7 +251,7 @@ func (client *Client) AcceptNextSessionForSubscription(ctx context.Context, topi
 	return sessionReceiver, nil
 }
 
-// Close closes the current connection Service Bus as well as any Sender, Receiver or Processors created
+// Close closes the current connection Service Bus as well as any Senders or Receivers created
 // using this client.
 func (client *Client) Close(ctx context.Context) error {
 	var lastError error

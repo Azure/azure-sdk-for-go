@@ -21,7 +21,7 @@ type ReceiveMode = internal.ReceiveMode
 
 const (
 	// PeekLock will lock messages as they are received and can be settled
-	// using the Receiver or Processor's (Complete|Abandon|DeadLetter|Defer)Message
+	// using the Receiver's (Complete|Abandon|DeadLetter|Defer)Message
 	// functions.
 	PeekLock ReceiveMode = internal.PeekLock
 	// ReceiveAndDelete will delete messages as they are received.
@@ -42,7 +42,6 @@ const (
 )
 
 // Receiver receives messages using pull based functions (ReceiveMessages).
-// For push-based receiving via callbacks look at the `Processor` type.
 type Receiver struct {
 	receiveMode ReceiveMode
 
@@ -64,8 +63,8 @@ type ReceiverOptions struct {
 	//
 	// `azservicebus.PeekLock` is the default. The message is locked, preventing multiple
 	// receivers from processing the message at once. You control the lock state of the message
-	// using one of the message settlement functions like processor.CompleteMessage(), which removes
-	// it from Service Bus, or processor.AbandonMessage(), which makes it available again.
+	// using one of the message settlement functions like Receiver.CompleteMessage(), which removes
+	// it from Service Bus, or Receiver.AbandonMessage(), which makes it available again.
 	//
 	// `azservicebus.ReceiveAndDelete` causes Service Bus to remove the message as soon
 	// as it's received.

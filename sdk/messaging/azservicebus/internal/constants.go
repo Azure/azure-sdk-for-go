@@ -9,7 +9,7 @@ type ReceiveMode int
 
 const (
 	// PeekLock will lock messages as they are received and can be settled
-	// using the Receiver or Processor's (Complete|Abandon|DeadLetter|Defer)Message
+	// using the Receiver's (Complete|Abandon|DeadLetter|Defer)Message
 	// functions.
 	PeekLock ReceiveMode = 0
 	// ReceiveAndDelete will delete messages as they are received.

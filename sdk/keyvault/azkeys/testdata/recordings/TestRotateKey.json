@@ -37,7 +37,7 @@
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://seankane.vault.azure.net/keys/key949124673/49de8799657a4277a0319b4e0042876d",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key949124673/49de8799657a4277a0319b4e0042876d",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -94,7 +94,7 @@
       "ResponseBody": {
         "error": {
           "code": "Forbidden",
-          "message": "The user, group or application \u0027appid=92bd63f3-28d8-472d-88a3-c0e9e5f7a922;oid=33c86593-67d9-4482-a6dc-4daf23a27051;iss=https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/\u0027 does not have keys rotate permission on key vault \u0027seankane;location=westus2\u0027. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125287",
+          "message": "The user, group or application \u0027appid=92bd63f3-28d8-472d-88a3-c0e9e5f7a922;oid=33c86593-67d9-4482-a6dc-4daf23a27051;iss=https://sts.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47/\u0027 does not have keys rotate permission on key vault \u0027fakekvurl;location=westus2\u0027. For help resolving this issue, please see https://go.microsoft.com/fwlink/?linkid=2125287",
           "innererror": {
             "code": "ForbiddenByPolicy"
           }
@@ -133,11 +133,11 @@
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "recoveryId": "https://seankane.vault.azure.net/deletedkeys/key949124673",
+        "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/key949124673",
         "deletedDate": 1634927881,
         "scheduledPurgeDate": 1635532681,
         "key": {
-          "kid": "https://seankane.vault.azure.net/keys/key949124673/49de8799657a4277a0319b4e0042876d",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key949124673/49de8799657a4277a0319b4e0042876d",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -533,11 +533,11 @@
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "recoveryId": "https://seankane.vault.azure.net/deletedkeys/key949124673",
+        "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/key949124673",
         "deletedDate": 1634927881,
         "scheduledPurgeDate": 1635532681,
         "key": {
-          "kid": "https://seankane.vault.azure.net/keys/key949124673/49de8799657a4277a0319b4e0042876d",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key949124673/49de8799657a4277a0319b4e0042876d",
           "kty": "RSA",
           "key_ops": [
             "encrypt",

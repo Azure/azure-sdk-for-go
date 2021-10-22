@@ -54,13 +54,11 @@ type aadIdentityClient struct {
 	pipeline      runtime.Pipeline
 }
 
-// newAADIdentityClient creates a new instance of the aadIdentityClient with the TokenCredentialOptions
-// that are passed into it along with a default pipeline.
-// options: TokenCredentialOptions that can configure policies for the pipeline and the authority host that
-// will be used to retrieve tokens and authenticate
-func newAADIdentityClient(authorityHost string, options pipelineOptions) (*aadIdentityClient, error) {
+// newAADIdentityClient creates a new instance of the aadIdentityClient
+func newAADIdentityClient(authorityHost string, options *azcore.ClientOptions) (*aadIdentityClient, error) {
 	logEnvVars()
-	return &aadIdentityClient{authorityHost: authorityHost, pipeline: newDefaultPipeline(options)}, nil
+	pl := runtime.NewPipeline(component, version, nil, nil, options)
+	return &aadIdentityClient{authorityHost: authorityHost, pipeline: pl}, nil
 }
 
 // aadAuthenticationError is used to unmarshal error responses received from Azure Active Directory

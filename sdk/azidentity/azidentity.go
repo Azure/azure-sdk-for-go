@@ -10,11 +10,8 @@ import (
 	"os"
 	"path"
 	"regexp"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
@@ -105,22 +102,6 @@ func (e *CredentialUnavailableError) NonRetriable() {
 
 var _ errorinfo.NonRetriable = (*CredentialUnavailableError)(nil)
 
-// pipelineOptions are used to configure how requests are made to Azure Active Directory.
-type pipelineOptions struct {
-	// HTTPClient sets the transport for making HTTP requests
-	// Leave this as nil to use the default HTTP transport
-	HTTPClient policy.Transporter
-
-	// Retry configures the built-in retry policy behavior
-	Retry policy.RetryOptions
-
-	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry policy.TelemetryOptions
-
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
-}
-
 // setAuthorityHost initializes the authority host for credentials.
 func setAuthorityHost(authorityHost AuthorityHost) (string, error) {
 	host := string(authorityHost)
@@ -138,54 +119,6 @@ func setAuthorityHost(authorityHost AuthorityHost) (string, error) {
 		return "", errors.New("cannot use an authority host without https")
 	}
 	return host, nil
-}
-
-// newDefaultPipeline creates a pipeline using the specified pipeline options.
-func newDefaultPipeline(o pipelineOptions) runtime.Pipeline {
-	policies := []policy.Policy{}
-	if !o.Telemetry.Disabled {
-		policies = append(policies, runtime.NewTelemetryPolicy(component, version, &o.Telemetry))
-	}
-	policies = append(policies, runtime.NewRetryPolicy(&o.Retry))
-	policies = append(policies, runtime.NewLogPolicy(&o.Logging))
-	return runtime.NewPipeline(o.HTTPClient, policies...)
-}
-
-// newDefaultMSIPipeline creates a pipeline using the specified pipeline options needed
-// for a Managed Identity, such as a MSI specific retry policy.
-func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) runtime.Pipeline {
-	var statusCodes []int
-	// retry policy for MSI is not end-user configurable
-	retryOpts := policy.RetryOptions{
-		MaxRetries:    5,
-		MaxRetryDelay: 1 * time.Minute,
-		RetryDelay:    2 * time.Second,
-		TryTimeout:    1 * time.Minute,
-		StatusCodes: append(statusCodes,
-			// The following status codes are a subset of those found in azcore.StatusCodesForRetry, these are the only ones specifically needed for MSI scenarios
-			http.StatusRequestTimeout,      // 408
-			http.StatusTooManyRequests,     // 429
-			http.StatusInternalServerError, // 500
-			http.StatusBadGateway,          // 502
-			http.StatusGatewayTimeout,      // 504
-			http.StatusNotFound,            //404
-			http.StatusGone,                //410
-			// all remaining 5xx
-			http.StatusNotImplemented,                 // 501
-			http.StatusHTTPVersionNotSupported,        // 505
-			http.StatusVariantAlsoNegotiates,          // 506
-			http.StatusInsufficientStorage,            // 507
-			http.StatusLoopDetected,                   // 508
-			http.StatusNotExtended,                    // 510
-			http.StatusNetworkAuthenticationRequired), // 511
-	}
-	policies := []policy.Policy{}
-	if !o.Telemetry.Disabled {
-		policies = append(policies, runtime.NewTelemetryPolicy(component, version, &o.Telemetry))
-	}
-	policies = append(policies, runtime.NewRetryPolicy(&retryOpts))
-	policies = append(policies, runtime.NewLogPolicy(&o.Logging))
-	return runtime.NewPipeline(o.HTTPClient, policies...)
 }
 
 // validTenantID return true is it receives a valid tenantID, returns false otherwise

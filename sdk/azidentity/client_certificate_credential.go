@@ -19,6 +19,8 @@ import (
 // ClientCertificateCredentialOptions contain optional parameters that can be used when configuring a ClientCertificateCredential.
 // All zero-value fields will be initialized with their default values.
 type ClientCertificateCredentialOptions struct {
+	azcore.ClientOptions
+
 	// The password required to decrypt the private key.  Leave empty if there is no password.
 	Password string
 	// Set to true to include x5c header in client claims when acquiring a token to enable
@@ -27,15 +29,6 @@ type ClientCertificateCredentialOptions struct {
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost AuthorityHost
-	// HTTPClient sets the transport for making HTTP requests
-	// Leave this as nil to use the default HTTP transport
-	HTTPClient policy.Transporter
-	// Retry configures the built-in retry policy behavior
-	Retry policy.RetryOptions
-	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry policy.TelemetryOptions
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
 }
 
 // ClientCertificateCredential enables authentication of a service principal to Azure Active Directory using a certificate that is assigned to its App Registration. More information
@@ -58,27 +51,28 @@ func NewClientCertificateCredential(tenantID string, clientID string, certData [
 	if !validTenantID(tenantID) {
 		return nil, &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: tenantIDValidationErr}
 	}
-	if options == nil {
-		options = &ClientCertificateCredentialOptions{}
+	cp := ClientCertificateCredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
-	cert, err := loadPEMCert(certData, options.Password, options.SendCertificateChain)
+	cert, err := loadPEMCert(certData, cp.Password, cp.SendCertificateChain)
 	if err != nil {
-		cert, err = loadPKCS12Cert(certData, options.Password, options.SendCertificateChain)
+		cert, err = loadPKCS12Cert(certData, cp.Password, cp.SendCertificateChain)
 	}
 	if err != nil {
 		credErr := &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: err.Error()}
 		logCredentialError(credErr.credentialType, credErr)
 		return nil, credErr
 	}
-	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry, Logging: options.Logging})
+	c, err := newAADIdentityClient(authorityHost, &cp.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
-	return &ClientCertificateCredential{tenantID: tenantID, clientID: clientID, cert: cert, sendCertificateChain: options.SendCertificateChain, client: c}, nil
+	return &ClientCertificateCredential{tenantID: tenantID, clientID: clientID, cert: cert, sendCertificateChain: cp.SendCertificateChain, client: c}, nil
 }
 
 // contains decoded cert contents we care about

@@ -53,20 +53,12 @@ func (r ResourceID) String() string {
 // ManagedIdentityCredentialOptions contains parameters that can be used to configure the pipeline used with Managed Identity Credential.
 // All zero-value fields will be initialized with their default values.
 type ManagedIdentityCredentialOptions struct {
+	azcore.ClientOptions
+
 	// ID is the ID of a managed identity the credential should authenticate. Set this field to use a specific identity
 	// instead of the hosting environment's default. The value may be the identity's client ID or resource ID, but note that
 	// some platforms don't accept resource IDs.
 	ID ManagedIDKind
-
-	// HTTPClient sets the transport for making HTTP requests.
-	// Leave this as nil to use the default HTTP transport.
-	HTTPClient policy.Transporter
-
-	// Telemetry configures the built-in telemetry policy behavior.
-	Telemetry policy.TelemetryOptions
-
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
 }
 
 // ManagedIdentityCredential attempts authentication using a managed identity that has been assigned to the deployment environment. This authentication type works in several
@@ -83,10 +75,11 @@ type ManagedIdentityCredential struct {
 // options: ManagedIdentityCredentialOptions that configure the pipeline for requests sent to Azure Active Directory.
 func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*ManagedIdentityCredential, error) {
 	// Create a new Managed Identity Client with default options
-	if options == nil {
-		options = &ManagedIdentityCredentialOptions{}
+	cp := ManagedIdentityCredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
-	client := newManagedIdentityClient(options)
+	client := newManagedIdentityClient(&cp)
 	msiType, err := client.getMSIType()
 	// If there is an error that means that the code is not running in a Managed Identity environment
 	if err != nil {
@@ -97,7 +90,7 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 	// Assign the msiType discovered onto the client
 	client.msiType = msiType
 	// check if no clientID is specified then check if it exists in an environment variable
-	id := options.ID
+	id := cp.ID
 	if id == nil {
 		cID := os.Getenv("AZURE_CLIENT_ID")
 		if cID != "" {

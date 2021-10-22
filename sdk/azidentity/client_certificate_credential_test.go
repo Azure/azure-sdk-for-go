@@ -166,7 +166,7 @@ func TestClientCertificateCredential_GetTokenSuccess(t *testing.T) {
 			srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 			options := ClientCertificateCredentialOptions{}
 			options.AuthorityHost = AuthorityHost(srv.URL())
-			options.HTTPClient = srv
+			options.Transport = srv
 			options.Password = test.password
 			cred, err := NewClientCertificateCredential(tenantID, clientID, test.certData, &options)
 			if err != nil {
@@ -189,7 +189,7 @@ func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain(t *tes
 			options := ClientCertificateCredentialOptions{}
 			options.AuthorityHost = AuthorityHost(srv.URL())
 			options.SendCertificateChain = true
-			options.HTTPClient = srv
+			options.Transport = srv
 			options.Password = test.password
 			cred, err := NewClientCertificateCredential(tenantID, clientID, test.certData, &options)
 			if err != nil {
@@ -211,7 +211,7 @@ func TestClientCertificateCredential_GetTokenInvalidCredentials(t *testing.T) {
 			srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
 			options := ClientCertificateCredentialOptions{}
 			options.AuthorityHost = AuthorityHost(srv.URL())
-			options.HTTPClient = srv
+			options.Transport = srv
 			options.Password = test.password
 			cred, err := NewClientCertificateCredential(tenantID, clientID, test.certData, &options)
 			if err != nil {
@@ -235,7 +235,7 @@ func TestClientCertificateCredential_GetTokenCheckPrivateKeyBlocks(t *testing.T)
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	certData, err := os.ReadFile("testdata/certificate_formatB.pem")
 	if err != nil {
 		t.Fatalf("Failed to read certificate file: %s", err.Error())
@@ -256,7 +256,7 @@ func TestClientCertificateCredential_NoData(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	_, err := NewClientCertificateCredential(tenantID, clientID, []byte{}, &options)
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")
@@ -269,7 +269,7 @@ func TestClientCertificateCredential_NoCertificate(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	certData, err := os.ReadFile("testdata/certificate_empty.pem")
 	if err != nil {
 		t.Fatalf("Failed to read certificate file: %s", err.Error())
@@ -286,7 +286,7 @@ func TestClientCertificateCredential_NoPrivateKey(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	certData, err := os.ReadFile("testdata/certificate_nokey.pem")
 	if err != nil {
 		t.Fatalf("Failed to read certificate file: %s", err.Error())
@@ -304,7 +304,7 @@ func TestBearerPolicy_ClientCertificateCredential(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	options := ClientCertificateCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	cred, err := NewClientCertificateCredential(tenantID, clientID, pemCert, &options)
 	if err != nil {
 		t.Fatalf("Did not expect an error but received: %v", err)

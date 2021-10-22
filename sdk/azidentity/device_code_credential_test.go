@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -176,7 +177,7 @@ func TestDeviceCodeCredential_GetTokenSuccess(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	options := DeviceCodeCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -197,7 +198,7 @@ func TestDeviceCodeCredential_GetTokenInvalidCredentials(t *testing.T) {
 	options := DeviceCodeCredentialOptions{}
 	options.ClientID = clientID
 	options.TenantID = tenantID
-	options.HTTPClient = srv
+	options.Transport = srv
 	options.AuthorityHost = AuthorityHost(srv.URL())
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
@@ -219,7 +220,7 @@ func TestDeviceCodeCredential_GetTokenAuthorizationPending(t *testing.T) {
 	options := DeviceCodeCredentialOptions{}
 	options.ClientID = clientID
 	options.TenantID = tenantID
-	options.HTTPClient = srv
+	options.Transport = srv
 	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.UserPrompt = func(context.Context, DeviceCodeMessage) error { return nil }
 	cred, err := NewDeviceCodeCredential(&options)
@@ -241,7 +242,7 @@ func TestDeviceCodeCredential_GetTokenExpiredToken(t *testing.T) {
 	options := DeviceCodeCredentialOptions{}
 	options.ClientID = clientID
 	options.TenantID = tenantID
-	options.HTTPClient = srv
+	options.Transport = srv
 	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.UserPrompt = func(context.Context, DeviceCodeMessage) error { return nil }
 	cred, err := NewDeviceCodeCredential(&options)
@@ -261,7 +262,7 @@ func TestDeviceCodeCredential_GetTokenWithRefreshTokenFailure(t *testing.T) {
 	options := DeviceCodeCredentialOptions{}
 	options.ClientID = clientID
 	options.TenantID = tenantID
-	options.HTTPClient = srv
+	options.Transport = srv
 	options.AuthorityHost = AuthorityHost(srv.URL())
 	cred, err := NewDeviceCodeCredential(&options)
 	if err != nil {
@@ -288,7 +289,7 @@ func TestDeviceCodeCredential_GetTokenWithRefreshTokenSuccess(t *testing.T) {
 	options := DeviceCodeCredentialOptions{}
 	options.ClientID = clientID
 	options.TenantID = tenantID
-	options.HTTPClient = srv
+	options.Transport = srv
 	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.UserPrompt = func(context.Context, DeviceCodeMessage) error { return nil }
 	cred, err := NewDeviceCodeCredential(&options)
@@ -314,7 +315,7 @@ func TestBearerPolicy_DeviceCodeCredential(t *testing.T) {
 	options := DeviceCodeCredentialOptions{}
 	options.ClientID = clientID
 	options.TenantID = tenantID
-	options.HTTPClient = srv
+	options.Transport = srv
 	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.UserPrompt = func(context.Context, DeviceCodeMessage) error { return nil }
 	cred, err := NewDeviceCodeCredential(&options)
@@ -342,9 +343,9 @@ func TestDeviceCodeCredential_UserPrompt(t *testing.T) {
 	key := "key"
 	val := "value"
 	options := DeviceCodeCredentialOptions{
+		ClientOptions: azcore.ClientOptions{Transport: srv},
 		AuthorityHost: AuthorityHost(srv.URL()),
 		ClientID:      clientID,
-		HTTPClient:    srv,
 		TenantID:      tenantID,
 		UserPrompt: func(ctx context.Context, m DeviceCodeMessage) error {
 			called = true
@@ -377,9 +378,9 @@ func TestDeviceCodeCredential_UserPromptError(t *testing.T) {
 	expectedCtx := context.WithValue(context.Background(), "", "")
 	msg := "it worked"
 	options := DeviceCodeCredentialOptions{
+		ClientOptions: azcore.ClientOptions{Transport: srv},
 		AuthorityHost: AuthorityHost(srv.URL()),
 		ClientID:      clientID,
-		HTTPClient:    srv,
 		TenantID:      tenantID,
 		UserPrompt: func(ctx context.Context, m DeviceCodeMessage) error {
 			if ctx != expectedCtx {

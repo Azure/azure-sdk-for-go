@@ -5,7 +5,6 @@ package azidentity
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
@@ -17,18 +16,11 @@ const (
 // DefaultAzureCredentialOptions contains options for configuring authentication. These options
 // may not apply to all credentials in the default chain.
 type DefaultAzureCredentialOptions struct {
+	azcore.ClientOptions
+
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost AuthorityHost
-	// HTTPClient sets the transport for making HTTP requests
-	// Leave this as nil to use the default HTTP transport
-	HTTPClient policy.Transporter
-	// Retry configures the built-in retry policy behavior
-	Retry policy.RetryOptions
-	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry policy.TelemetryOptions
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
 }
 
 // NewDefaultAzureCredential provides a default ChainedTokenCredential configuration for applications that will be deployed to Azure.  The following credential
@@ -41,15 +33,13 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Chained
 	var creds []azcore.TokenCredential
 	errMsg := ""
 
-	if options == nil {
-		options = &DefaultAzureCredentialOptions{}
+	cp := DefaultAzureCredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
 
-	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{AuthorityHost: options.AuthorityHost,
-		HTTPClient: options.HTTPClient,
-		Logging:    options.Logging,
-		Retry:      options.Retry,
-		Telemetry:  options.Telemetry,
+	envCred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{AuthorityHost: cp.AuthorityHost,
+		ClientOptions: cp.ClientOptions,
 	})
 	if err == nil {
 		creds = append(creds, envCred)
@@ -57,10 +47,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Chained
 		errMsg += err.Error()
 	}
 
-	msiCred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{HTTPClient: options.HTTPClient,
-		Logging:   options.Logging,
-		Telemetry: options.Telemetry,
-	})
+	msiCred, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{ClientOptions: cp.ClientOptions})
 	if err == nil {
 		creds = append(creds, msiCred)
 	} else {
@@ -80,6 +67,6 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Chained
 		logCredentialError(err.credentialType, err)
 		return nil, err
 	}
-	log.Write(LogCredential, "Azure Identity => NewDefaultAzureCredential() invoking NewChainedTokenCredential()")
+	log.Write(EventCredential, "Azure Identity => NewDefaultAzureCredential() invoking NewChainedTokenCredential()")
 	return NewChainedTokenCredential(creds, nil)
 }

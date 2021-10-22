@@ -25,11 +25,8 @@ func defaultTestPipeline(srv policy.Transporter, cred azcore.TokenCredential, sc
 		MaxRetryDelay: 500 * time.Millisecond,
 		RetryDelay:    50 * time.Millisecond,
 	}
-	return runtime.NewPipeline(
-		srv,
-		runtime.NewRetryPolicy(&retryOpts),
-		runtime.NewBearerTokenPolicy(cred, runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: []string{scope}}}),
-		runtime.NewLogPolicy(nil))
+	b := runtime.NewBearerTokenPolicy(cred, []string{scope}, nil)
+	return runtime.NewPipeline("azidentity-test", version, nil, []policy.Policy{b}, &azcore.ClientOptions{Retry: retryOpts, Transport: srv})
 }
 
 // constants for this file

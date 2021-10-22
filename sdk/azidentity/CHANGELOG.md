@@ -2,6 +2,7 @@
 
 ## 0.12.0 (Unreleased)
 ### Breaking Changes
+* Raised minimum go version to 1.16
 * Removed `NewAuthenticationPolicy()` from credentials. Clients should instead use azcore's
  `runtime.NewBearerTokenPolicy()` to construct a bearer token authorization policy.
 * The `AuthorityHost` field in credential options structs is now a custom type,
@@ -47,6 +48,9 @@
   cred, err := NewManagedIdentityCredential(opts)
   ```
 * `DeviceCodeCredentialOptions.UserPrompt` has a new type: `func(context.Context, DeviceCodeMessage) error`
+* Credential options structs now embed `azcore.ClientOptions`. In addition to changing literal initialization
+  syntax, this change renames `HTTPClient` fields to `Transport`.
+* Renamed `LogCredential` to `EventCredential`
 
 ### Features Added
 * Added connection configuration options to `DefaultAzureCredentialOptions`

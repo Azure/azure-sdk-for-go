@@ -73,6 +73,48 @@ func (n *wrappedNumber) UnmarshalJSON(b []byte) error {
 	return json.Unmarshal(b, (*json.Number)(n))
 }
 
+// setRetryOptionDefaults sets zero-valued fields to default values appropriate for IMDS
+func setRetryOptionDefaults(o *policy.RetryOptions) {
+	if o.MaxRetries == 0 {
+		o.MaxRetries = 5
+	}
+	if o.MaxRetryDelay == 0 {
+		o.MaxRetryDelay = 1 * time.Minute
+	}
+	if o.RetryDelay == 0 {
+		o.RetryDelay = 2 * time.Second
+	}
+	if o.StatusCodes == nil {
+		o.StatusCodes = []int{
+			// IMDS docs recommend retrying 404, 429 and all 5xx
+			// https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token#error-handling
+			http.StatusNotFound,                      // 404
+			http.StatusTooManyRequests,               // 429
+			http.StatusInternalServerError,           // 500
+			http.StatusNotImplemented,                // 501
+			http.StatusBadGateway,                    // 502
+			http.StatusGatewayTimeout,                // 504
+			http.StatusHTTPVersionNotSupported,       // 505
+			http.StatusVariantAlsoNegotiates,         // 506
+			http.StatusInsufficientStorage,           // 507
+			http.StatusLoopDetected,                  // 508
+			http.StatusNotExtended,                   // 510
+			http.StatusNetworkAuthenticationRequired, // 511
+		}
+	}
+	if o.TryTimeout == 0 {
+		o.TryTimeout = 1 * time.Minute
+	}
+}
+
+// newDefaultMSIPipeline creates a pipeline using the specified pipeline options needed
+// for a Managed Identity, such as a MSI specific retry policy.
+func newDefaultMSIPipeline(o ManagedIdentityCredentialOptions) runtime.Pipeline {
+	cp := o.ClientOptions
+	setRetryOptionDefaults(&cp.Retry)
+	return runtime.NewPipeline(component, version, nil, nil, &cp)
+}
+
 // newManagedIdentityClient creates a new instance of the ManagedIdentityClient with the ManagedIdentityCredentialOptions
 // that are passed into it along with a default pipeline.
 // options: ManagedIdentityCredentialOptions configure policies for the pipeline and the authority host that

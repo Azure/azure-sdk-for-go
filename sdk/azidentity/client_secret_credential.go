@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -37,7 +38,7 @@ type ClientSecretCredential struct {
 // options: allow to configure the management of the requests sent to Azure Active Directory.
 func NewClientSecretCredential(tenantID string, clientID string, clientSecret string, options *ClientSecretCredentialOptions) (*ClientSecretCredential, error) {
 	if !validTenantID(tenantID) {
-		return nil, &CredentialUnavailableError{credentialType: "Client Secret Credential", message: tenantIDValidationErr}
+		return nil, errors.New(tenantIDValidationErr)
 	}
 	cp := ClientSecretCredentialOptions{}
 	if options != nil {

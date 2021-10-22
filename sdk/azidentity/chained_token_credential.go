@@ -25,15 +25,11 @@ type ChainedTokenCredential struct {
 // NewChainedTokenCredential creates an instance of ChainedTokenCredential with the specified TokenCredential sources.
 func NewChainedTokenCredential(sources []azcore.TokenCredential, options *ChainedTokenCredentialOptions) (*ChainedTokenCredential, error) {
 	if len(sources) == 0 {
-		credErr := &CredentialUnavailableError{credentialType: "Chained Token Credential", message: "Length of sources cannot be 0"}
-		logCredentialError(credErr.credentialType, credErr)
-		return nil, credErr
+		return nil, errors.New("sources must contain at least one TokenCredential")
 	}
 	for _, source := range sources {
 		if source == nil { // cannot have a nil credential in the chain or else the application will panic when GetToken() is called on nil
-			credErr := &CredentialUnavailableError{credentialType: "Chained Token Credential", message: "Sources cannot contain a nil TokenCredential"}
-			logCredentialError(credErr.credentialType, credErr)
-			return nil, credErr
+			return nil, errors.New("sources cannot contain nil")
 		}
 	}
 	cp := make([]azcore.TokenCredential, len(sources))

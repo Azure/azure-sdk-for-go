@@ -7,6 +7,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/base64"
+	"errors"
 	"math/rand"
 	"net/url"
 	"path"
@@ -64,7 +65,7 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 	}
 	cp.init()
 	if !validTenantID(cp.TenantID) {
-		return nil, &CredentialUnavailableError{credentialType: "Interactive Browser Credential", message: tenantIDValidationErr}
+		return nil, errors.New(tenantIDValidationErr)
 	}
 	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
 	if err != nil {

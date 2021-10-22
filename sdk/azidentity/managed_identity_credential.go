@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -83,9 +84,8 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 	msiType, err := client.getMSIType()
 	// If there is an error that means that the code is not running in a Managed Identity environment
 	if err != nil {
-		credErr := &CredentialUnavailableError{credentialType: "Managed Identity Credential", message: "Please make sure you are running in a managed identity environment, such as a VM, Azure Functions, Cloud Shell, etc..."}
-		logCredentialError(credErr.credentialType, credErr)
-		return nil, credErr
+		logCredentialError("Managed Identity Credential", err)
+		return nil, err
 	}
 	// Assign the msiType discovered onto the client
 	client.msiType = msiType

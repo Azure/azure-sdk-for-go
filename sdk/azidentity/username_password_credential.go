@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -41,7 +42,7 @@ type UsernamePasswordCredential struct {
 // options: UsernamePasswordCredentialOptions used to configure the pipeline for the requests sent to Azure Active Directory.
 func NewUsernamePasswordCredential(tenantID string, clientID string, username string, password string, options *UsernamePasswordCredentialOptions) (*UsernamePasswordCredential, error) {
 	if !validTenantID(tenantID) {
-		return nil, &CredentialUnavailableError{credentialType: "Username Password Credential", message: tenantIDValidationErr}
+		return nil, errors.New(tenantIDValidationErr)
 	}
 	cp := UsernamePasswordCredentialOptions{}
 	if options != nil {

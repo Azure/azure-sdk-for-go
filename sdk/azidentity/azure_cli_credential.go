@@ -20,12 +20,15 @@ import (
 )
 
 // used by tests to fake invoking the CLI
-type azureCLITokenProvider func(ctx context.Context, resource string) ([]byte, error)
+type azureCLITokenProvider func(ctx context.Context, resource string, tenantID string) ([]byte, error)
 
 // AzureCLICredentialOptions contains options used to configure the AzureCLICredential
 // All zero-value fields will be initialized with their default values.
 type AzureCLICredentialOptions struct {
 	tokenProvider azureCLITokenProvider
+	// TenantID identifies the tenant the credential should authenticate in.
+	// Defaults to the CLI's default tenant, which is typically the home tenant of the user logged in to the CLI.
+	TenantID string
 }
 
 // init returns an instance of AzureCLICredentialOptions initialized with default values.
@@ -38,6 +41,7 @@ func (o *AzureCLICredentialOptions) init() {
 // AzureCLICredential enables authentication to Azure Active Directory using the Azure CLI command "az account get-access-token".
 type AzureCLICredential struct {
 	tokenProvider azureCLITokenProvider
+	tenantID      string
 }
 
 // NewAzureCLICredential constructs a new AzureCLICredential with the details needed to authenticate against Azure Active Directory
@@ -50,6 +54,7 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 	cp.init()
 	return &AzureCLICredential{
 		tokenProvider: cp.tokenProvider,
+		tenantID:      cp.TenantID,
 	}, nil
 }
 
@@ -76,7 +81,7 @@ const timeoutCLIRequest = 10000 * time.Millisecond
 // ctx: The current request context
 // scopes: The scopes for which the token has access
 func (c *AzureCLICredential) authenticate(ctx context.Context, resource string) (*azcore.AccessToken, error) {
-	output, err := c.tokenProvider(ctx, resource)
+	output, err := c.tokenProvider(ctx, resource, c.tenantID)
 	if err != nil {
 		return nil, err
 	}
@@ -84,8 +89,8 @@ func (c *AzureCLICredential) authenticate(ctx context.Context, resource string) 
 	return c.createAccessToken(output)
 }
 
-func defaultTokenProvider() func(ctx context.Context, resource string) ([]byte, error) {
-	return func(ctx context.Context, resource string) ([]byte, error) {
+func defaultTokenProvider() func(ctx context.Context, resource string, tenantID string) ([]byte, error) {
+	return func(ctx context.Context, resource string, tenantID string) ([]byte, error) {
 		// This is the path that a developer can set to tell this class what the install path for Azure CLI is.
 		const azureCLIPath = "AZURE_CLI_PATH"
 
@@ -121,7 +126,9 @@ func defaultTokenProvider() func(ctx context.Context, resource string) ([]byte, 
 			cliCmd.Env = append(cliCmd.Env, fmt.Sprintf("PATH=%s:%s", os.Getenv(azureCLIPath), azureCLIDefaultPath))
 		}
 		cliCmd.Args = append(cliCmd.Args, "account", "get-access-token", "-o", "json", "--resource", resource)
-
+		if tenantID != "" {
+			cliCmd.Args = append(cliCmd.Args, "--tenant", tenantID)
+		}
 		var stderr bytes.Buffer
 		cliCmd.Stderr = &stderr
 

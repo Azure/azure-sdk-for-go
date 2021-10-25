@@ -198,7 +198,7 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 	receiver, err := client.NewReceiverForQueue(forwardToQueueName, nil)
 	require.NoError(t, err)
 
-	forwardedMessage, err := receiver.ReceiveMessage(context.Background(), nil)
+	forwardedMessage, err := receiver.receiveMessage(context.Background(), nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, "this message will be auto-forwarded", string(forwardedMessage.Body))

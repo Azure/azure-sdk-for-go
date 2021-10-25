@@ -32,7 +32,7 @@ type ThroughputProperties struct {
 
 // NewManualThroughputProperties returns a ThroughputProperties object with the given throughput in manual mode.
 // throughput - the throughput in RU/s
-func NewManualThroughputProperties(throughput int) ThroughputProperties {
+func NewManualThroughputProperties(throughput int32) ThroughputProperties {
 	return ThroughputProperties{
 		version: offerVersion2,
 		offer:   newManualOffer(throughput),
@@ -42,7 +42,7 @@ func NewManualThroughputProperties(throughput int) ThroughputProperties {
 // NewAutoscaleThroughputPropertiesWithIncrement returns a ThroughputProperties object with the given max throughput on autoscale mode.
 // maxThroughput - the max throughput in RU/s
 // incrementPercentage - the auto upgrade max throughput increment percentage
-func NewAutoscaleThroughputPropertiesWithIncrement(startingMaxThroughput int, incrementPercentage int) ThroughputProperties {
+func NewAutoscaleThroughputPropertiesWithIncrement(startingMaxThroughput int32, incrementPercentage int32) ThroughputProperties {
 	return ThroughputProperties{
 		version: offerVersion2,
 		offer:   newAutoscaleOfferWithIncrement(startingMaxThroughput, incrementPercentage),
@@ -51,7 +51,7 @@ func NewAutoscaleThroughputPropertiesWithIncrement(startingMaxThroughput int, in
 
 // NewAutoscaleThroughputProperties returns a ThroughputProperties object with the given max throughput on autoscale mode.
 // maxThroughput - the max throughput in RU/s
-func NewAutoscaleThroughputProperties(startingMaxThroughput int) ThroughputProperties {
+func NewAutoscaleThroughputProperties(startingMaxThroughput int32) ThroughputProperties {
 	return ThroughputProperties{
 		version: offerVersion2,
 		offer:   newAutoscaleOffer(startingMaxThroughput),
@@ -164,7 +164,7 @@ func (tp *ThroughputProperties) UnmarshalJSON(b []byte) error {
 }
 
 // ManualThroughput returns the provisioned throughput in manual mode.
-func (tp *ThroughputProperties) ManualThroughput() (int, error) {
+func (tp *ThroughputProperties) ManualThroughput() (int32, error) {
 	if tp.offer.Throughput == nil {
 		return 0, fmt.Errorf("offer is not a manual offer")
 	}
@@ -173,7 +173,7 @@ func (tp *ThroughputProperties) ManualThroughput() (int, error) {
 }
 
 // AutoscaleMaxThroughput returns the configured max throughput on autoscale mode.
-func (tp *ThroughputProperties) AutoscaleMaxThroughput() (int, error) {
+func (tp *ThroughputProperties) AutoscaleMaxThroughput() (int32, error) {
 	if tp.offer.AutoScale == nil {
 		return 0, fmt.Errorf("offer is not an autoscale offer")
 	}
@@ -187,24 +187,24 @@ func (tp *ThroughputProperties) addHeadersToRequest(req *policy.Request) {
 	}
 
 	if tp.offer.Throughput != nil {
-		req.Raw().Header.Add(cosmosHeaderOfferThroughput, strconv.Itoa(*tp.offer.Throughput))
+		req.Raw().Header.Add(cosmosHeaderOfferThroughput, strconv.Itoa(int(*tp.offer.Throughput)))
 	} else {
 		req.Raw().Header.Add(cosmosHeaderOfferAutoscale, tp.offer.AutoScale.ToJsonString())
 	}
 }
 
 type offer struct {
-	Throughput *int               `json:"offerThroughput,omitempty"`
+	Throughput *int32             `json:"offerThroughput,omitempty"`
 	AutoScale  *autoscaleSettings `json:"offerAutopilotSettings,omitempty"`
 }
 
-func newManualOffer(throughput int) *offer {
+func newManualOffer(throughput int32) *offer {
 	return &offer{
 		Throughput: &throughput,
 	}
 }
 
-func newAutoscaleOfferWithIncrement(startingMaxThroughput int, incrementPercentage int) *offer {
+func newAutoscaleOfferWithIncrement(startingMaxThroughput int32, incrementPercentage int32) *offer {
 	return &offer{
 		AutoScale: &autoscaleSettings{
 			MaxThroughput: startingMaxThroughput,
@@ -217,7 +217,7 @@ func newAutoscaleOfferWithIncrement(startingMaxThroughput int, incrementPercenta
 	}
 }
 
-func newAutoscaleOffer(startingMaxThroughput int) *offer {
+func newAutoscaleOffer(startingMaxThroughput int32) *offer {
 	return &offer{
 		AutoScale: &autoscaleSettings{
 			MaxThroughput: startingMaxThroughput,
@@ -226,7 +226,7 @@ func newAutoscaleOffer(startingMaxThroughput int) *offer {
 }
 
 type autoscaleSettings struct {
-	MaxThroughput                  int                             `json:"maxThroughput,omitempty"`
+	MaxThroughput                  int32                           `json:"maxThroughput,omitempty"`
 	AutoscaleAutoUpgradeProperties *autoscaleAutoUpgradeProperties `json:"autoUpgradePolicy,omitempty"`
 }
 
@@ -245,5 +245,5 @@ type autoscaleAutoUpgradeProperties struct {
 }
 
 type autoscaleThroughputPolicy struct {
-	IncrementPercent int `json:"incrementPercent,omitempty"`
+	IncrementPercent int32 `json:"incrementPercent,omitempty"`
 }

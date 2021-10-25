@@ -144,7 +144,7 @@ func Example() {
 		log.Fatal(err)
 	}
 
-	var itemResponseBody map[string]interface{}
+	var itemResponseBody map[string]string
 	err = json.Unmarshal(itemResponse.Value, &itemResponseBody)
 	if err != nil {
 		log.Fatal(err)
@@ -189,7 +189,7 @@ func Example() {
 			log.Fatal(err)
 		}
 
-		var itemResponseBody map[string]interface{}
+		var itemResponseBody map[string]string
 		err = json.Unmarshal(itemResponse.Value, &itemResponseBody)
 		if err != nil {
 			log.Fatal(err)

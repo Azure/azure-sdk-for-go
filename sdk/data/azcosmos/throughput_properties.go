@@ -20,7 +20,7 @@ const (
 // ThroughputProperties describes the throughput configuration of a resource.
 type ThroughputProperties struct {
 	ETag         azcore.ETag
-	LastModified *UnixTime
+	LastModified int64
 
 	version         string
 	offerType       string
@@ -32,8 +32,8 @@ type ThroughputProperties struct {
 
 // NewManualThroughputProperties returns a ThroughputProperties object with the given throughput in manual mode.
 // throughput - the throughput in RU/s
-func NewManualThroughputProperties(throughput int) *ThroughputProperties {
-	return &ThroughputProperties{
+func NewManualThroughputProperties(throughput int) ThroughputProperties {
+	return ThroughputProperties{
 		version: offerVersion2,
 		offer:   newManualOffer(throughput),
 	}
@@ -42,8 +42,8 @@ func NewManualThroughputProperties(throughput int) *ThroughputProperties {
 // NewAutoscaleThroughputPropertiesWithIncrement returns a ThroughputProperties object with the given max throughput on autoscale mode.
 // maxThroughput - the max throughput in RU/s
 // incrementPercentage - the auto upgrade max throughput increment percentage
-func NewAutoscaleThroughputPropertiesWithIncrement(startingMaxThroughput int, incrementPercentage int) *ThroughputProperties {
-	return &ThroughputProperties{
+func NewAutoscaleThroughputPropertiesWithIncrement(startingMaxThroughput int, incrementPercentage int) ThroughputProperties {
+	return ThroughputProperties{
 		version: offerVersion2,
 		offer:   newAutoscaleOfferWithIncrement(startingMaxThroughput, incrementPercentage),
 	}
@@ -51,8 +51,8 @@ func NewAutoscaleThroughputPropertiesWithIncrement(startingMaxThroughput int, in
 
 // NewAutoscaleThroughputProperties returns a ThroughputProperties object with the given max throughput on autoscale mode.
 // maxThroughput - the max throughput in RU/s
-func NewAutoscaleThroughputProperties(startingMaxThroughput int) *ThroughputProperties {
-	return &ThroughputProperties{
+func NewAutoscaleThroughputProperties(startingMaxThroughput int) ThroughputProperties {
+	return ThroughputProperties{
 		version: offerVersion2,
 		offer:   newAutoscaleOffer(startingMaxThroughput),
 	}
@@ -92,7 +92,7 @@ func (tp *ThroughputProperties) MarshalJSON() ([]byte, error) {
 		buffer.WriteString(fmt.Sprintf(",\"_self\":\"%s\"", tp.selfLink))
 	}
 
-	if tp.LastModified != nil {
+	if tp.LastModified > 0 {
 		buffer.WriteString(",\"_ts\":")
 		ts, err := json.Marshal(tp.LastModified)
 		if err != nil {

@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -18,7 +19,7 @@ func TestThroughputResponseParsing(t *testing.T) {
 	properties.offerId = "HFln"
 	properties.offerResourceId = "4SRTANCD3Dw="
 	properties.ETag = "\"00000000-0000-0000-9b8c-8ea3e19601d7\""
-	jsonString, err := json.Marshal(properties)
+	jsonString, err := json.Marshal(&properties)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -35,8 +36,7 @@ func TestThroughputResponseParsing(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	pl := azruntime.NewPipeline(srv)
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
 	resp, _ := pl.Do(req)
 	parsedResponse, err := newThroughputResponse(resp, nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func TestThroughputResponseParsingWithPreviousRU(t *testing.T) {
 	properties.offerId = "HFln"
 	properties.offerResourceId = "4SRTANCD3Dw="
 	properties.ETag = "\"00000000-0000-0000-9b8c-8ea3e19601d7\""
-	jsonString, err := json.Marshal(properties)
+	jsonString, err := json.Marshal(&properties)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -101,7 +101,7 @@ func TestThroughputResponseParsingWithPreviousRU(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	pl := azruntime.NewPipeline(srv)
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
 	resp, _ := pl.Do(req)
 	parsedResponse, err := newThroughputResponse(resp, &queryRequestCharge)
 	if err != nil {

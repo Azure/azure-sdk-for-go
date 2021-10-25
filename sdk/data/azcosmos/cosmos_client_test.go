@@ -30,9 +30,9 @@ func TestEnsureErrorIsGeneratedOnResponse(t *testing.T) {
 		mock.WithBody(jsonString),
 		mock.WithStatusCode(404))
 
-	pl := azruntime.NewPipeline(srv)
-	connection := &cosmosClientConnection{endpoint: srv.URL(), Pipeline: pl}
-	operationContext := cosmosOperationContext{
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	connection := &Client{endpoint: srv.URL(), pipeline: pl}
+	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
 	}
@@ -57,9 +57,9 @@ func TestEnsureErrorIsNotGeneratedOnResponse(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 
-	pl := azruntime.NewPipeline(srv)
-	connection := &cosmosClientConnection{endpoint: srv.URL(), Pipeline: pl}
-	operationContext := cosmosOperationContext{
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	connection := &Client{endpoint: srv.URL(), pipeline: pl}
+	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
 	}
@@ -75,9 +75,9 @@ func TestRequestEnricherIsCalled(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 
-	pl := azruntime.NewPipeline(srv)
-	connection := &cosmosClientConnection{endpoint: srv.URL(), Pipeline: pl}
-	operationContext := cosmosOperationContext{
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	connection := &Client{endpoint: srv.URL(), pipeline: pl}
+	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
 	}
@@ -102,9 +102,9 @@ func TestNoOptionsIsCalled(t *testing.T) {
 	srv.SetResponse(
 		mock.WithStatusCode(200))
 
-	pl := azruntime.NewPipeline(srv)
-	connection := &cosmosClientConnection{endpoint: srv.URL(), Pipeline: pl}
-	operationContext := cosmosOperationContext{
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
+	connection := &Client{endpoint: srv.URL(), pipeline: pl}
+	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "",
 	}

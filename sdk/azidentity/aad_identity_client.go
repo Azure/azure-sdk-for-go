@@ -170,7 +170,7 @@ func (c *aadIdentityClient) createAccessToken(res *http.Response) (*azcore.Acces
 		ExpiresOn string      `json:"expires_on"`
 	}{}
 	if err := runtime.UnmarshalAsJSON(res, &value); err != nil {
-		return nil, fmt.Errorf("internal AccessToken: %w", err)
+		return nil, fmt.Errorf("internal AccessToken: %v", err)
 	}
 	t, err := value.ExpiresIn.Int64()
 	if err != nil {
@@ -192,7 +192,7 @@ func (c *aadIdentityClient) createRefreshAccessToken(res *http.Response) (*token
 		ExpiresOn    string      `json:"expires_on"`
 	}{}
 	if err := runtime.UnmarshalAsJSON(res, &value); err != nil {
-		return nil, fmt.Errorf("internal AccessToken: %w", err)
+		return nil, fmt.Errorf("internal AccessToken: %v", err)
 	}
 	t, err := value.ExpiresIn.Int64()
 	if err != nil {
@@ -320,7 +320,7 @@ func (c *aadIdentityClient) createUsernamePasswordAuthRequest(ctx context.Contex
 func createDeviceCodeResult(res *http.Response) (*deviceCodeResult, error) {
 	value := &deviceCodeResult{}
 	if err := runtime.UnmarshalAsJSON(res, &value); err != nil {
-		return nil, fmt.Errorf("DeviceCodeResult: %w", err)
+		return nil, fmt.Errorf("DeviceCodeResult: %v", err)
 	}
 	return value, nil
 }

@@ -66,7 +66,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		log.Write(EventCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientCertificateCredential")
 		certData, err := os.ReadFile(certPath)
 		if err != nil {
-			return nil, fmt.Errorf("Failed to read certificate file: %w", err)
+			return nil, fmt.Errorf("Failed to read certificate file: %v", err)
 		}
 		cred, err := NewClientCertificateCredential(tenantID, clientID, certData, &ClientCertificateCredentialOptions{AuthorityHost: cp.AuthorityHost, ClientOptions: cp.ClientOptions})
 		if err != nil {

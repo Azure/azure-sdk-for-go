@@ -173,7 +173,7 @@ func (c *managedIdentityClient) createAccessToken(res *http.Response) (*azcore.A
 		ExpiresOn    interface{}   `json:"expires_on,omitempty"` // the value returned in this field varies between a number and a date string
 	}{}
 	if err := runtime.UnmarshalAsJSON(res, &value); err != nil {
-		return nil, fmt.Errorf("internal AccessToken: %w", err)
+		return nil, fmt.Errorf("internal AccessToken: %v", err)
 	}
 	if value.ExpiresIn != "" {
 		expiresIn, err := json.Number(value.ExpiresIn).Int64()
@@ -342,7 +342,7 @@ func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, resour
 	}
 	key, err := ioutil.ReadFile(header[pos+1:])
 	if err != nil {
-		return "", fmt.Errorf("could not read file (%s) contents: %w", header[pos+1:], err)
+		return "", fmt.Errorf("could not read file (%s) contents: %v", header[pos+1:], err)
 	}
 	return string(key), nil
 }

@@ -51,6 +51,8 @@
 * Credential options structs now embed `azcore.ClientOptions`. In addition to changing literal initialization
   syntax, this change renames `HTTPClient` fields to `Transport`.
 * Renamed `LogCredential` to `EventCredential`
+* Unexported `AuthenticationFailedError` and `CredentialUnavailableError` structs. In their place are two
+  interfaces having the same names.
 
 ### Features Added
 * Added connection configuration options to `DefaultAzureCredentialOptions`

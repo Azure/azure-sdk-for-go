@@ -432,7 +432,7 @@ func TestGetRandomBytes(t *testing.T) {
 }
 
 func TestRotateKey(t *testing.T) {
-	t.Skip("Forbidden")
+	// t.Skip("Forbidden")
 	stop := startTest(t)
 	defer stop()
 

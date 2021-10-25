@@ -1304,7 +1304,7 @@ func (c *Client) RotateKey(ctx context.Context, name string, options *RotateKeyO
 		KeyBundle: KeyBundle{
 			Attributes:    keyAttributesFromGenerated(resp.Attributes),
 			Key:           jsonWebKeyFromGenerated(resp.Key),
-			ReleasePolicy: keyReleasePolicyFromGenerated(*resp.ReleasePolicy),
+			ReleasePolicy: keyReleasePolicyFromGenerated(resp.ReleasePolicy),
 			Tags:          resp.Tags,
 			Managed:       resp.Managed,
 		},

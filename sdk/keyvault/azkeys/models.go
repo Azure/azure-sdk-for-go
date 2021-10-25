@@ -296,7 +296,10 @@ type KeyReleasePolicy struct {
 	Data []byte `json:"data,omitempty"`
 }
 
-func keyReleasePolicyFromGenerated(i internal.KeyReleasePolicy) *KeyReleasePolicy {
+func keyReleasePolicyFromGenerated(i *internal.KeyReleasePolicy) *KeyReleasePolicy {
+	if i == nil {
+		return nil
+	}
 	return &KeyReleasePolicy{
 		ContentType: i.ContentType,
 		Data:        i.Data,

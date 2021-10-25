@@ -201,7 +201,7 @@ func (c *managedIdentityClient) createAccessToken(res *http.Response) (*azcore.A
 			return nil, err
 		}
 	default:
-		err := errors.New(fmt.Sprintf("unsupported type received in expires_on: %T, %v", v, v))
+		err := fmt.Errorf("unsupported type received in expires_on: %T, %v", v, v)
 		return nil, newAuthenticationFailedError(err, res)
 	}
 }
@@ -328,7 +328,7 @@ func (c *managedIdentityClient) getAzureArcSecretKey(ctx context.Context, resour
 	// the endpoint is expected to return a 401 with the WWW-Authenticate header set to the location
 	// of the secret key file. Any other status code indicates an error in the request.
 	if response.StatusCode != 401 {
-		err := errors.New(fmt.Sprintf("expected a 401 response, received %d", response.StatusCode))
+		err := fmt.Errorf("expected a 401 response, received %d", response.StatusCode)
 		return "", newAuthenticationFailedError(err, response)
 	}
 	header := response.Header.Get("WWW-Authenticate")

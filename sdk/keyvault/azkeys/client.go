@@ -21,6 +21,7 @@ import (
 type Client struct {
 	kvClient *internal.KeyVaultClient
 	vaultUrl string
+	cred     azcore.Credential // keeping this here for NewCryptoClient
 }
 
 // ClientOptions are the configurable options on a Client.
@@ -53,7 +54,7 @@ func (c *ClientOptions) toConnectionOptions() *internal.ConnectionOptions {
 	}
 
 	return &internal.ConnectionOptions{
-		HTTPClient:       c.Transport,
+		Transport:        c.Transport,
 		Retry:            c.Retry,
 		Telemetry:        c.Telemetry,
 		Logging:          c.Logging,
@@ -75,6 +76,7 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 			Con: conn,
 		},
 		vaultUrl: vaultUrl,
+		cred:     credential,
 	}, nil
 }
 
@@ -1228,4 +1230,273 @@ func (c *Client) ImportKey(ctx context.Context, keyName string, key JSONWebKey, 
 	}
 
 	return importKeyResponseFromGenerated(resp), nil
+}
+
+// GetRandomBytesOptions contains the optional parameters for the Client.GetRandomBytes function.
+type GetRandomBytesOptions struct{}
+
+func (g GetRandomBytesOptions) toGenerated() *internal.KeyVaultClientGetRandomBytesOptions {
+	return &internal.KeyVaultClientGetRandomBytesOptions{}
+}
+
+// GetRandomBytesResponse is the response struct for the Client.GetRandomBytes function.
+type GetRandomBytesResponse struct {
+	// The bytes encoded as a base64url string.
+	Value []byte `json:"value,omitempty"`
+
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// GetRandomBytes gets the requested number of bytes containing random values from a managed HSM.
+// If the operation fails it returns the *KeyVaultError error type.
+func (c *Client) GetRandomBytes(ctx context.Context, count *int32, options *GetRandomBytesOptions) (GetRandomBytesResponse, error) {
+	if options == nil {
+		options = &GetRandomBytesOptions{}
+	}
+
+	resp, err := c.kvClient.GetRandomBytes(
+		ctx,
+		c.vaultUrl,
+		internal.GetRandomBytesRequest{Count: count},
+		options.toGenerated(),
+	)
+
+	if err != nil {
+		return GetRandomBytesResponse{}, err
+	}
+
+	return GetRandomBytesResponse{
+		Value:       resp.Value,
+		RawResponse: resp.RawResponse,
+	}, nil
+}
+
+type RotateKeyOptions struct{}
+
+func (r RotateKeyOptions) toGenerated() *internal.KeyVaultClientRotateKeyOptions {
+	return &internal.KeyVaultClientRotateKeyOptions{}
+}
+
+type RotateKeyResponse struct {
+	KeyBundle
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func (c *Client) RotateKey(ctx context.Context, name string, options *RotateKeyOptions) (RotateKeyResponse, error) {
+	if options == nil {
+		options = &RotateKeyOptions{}
+	}
+
+	resp, err := c.kvClient.RotateKey(
+		ctx,
+		c.vaultUrl,
+		name,
+		options.toGenerated(),
+	)
+	if err != nil {
+		return RotateKeyResponse{}, err
+	}
+
+	return RotateKeyResponse{
+		RawResponse: resp.RawResponse,
+		KeyBundle: KeyBundle{
+			Attributes:    keyAttributesFromGenerated(resp.Attributes),
+			Key:           jsonWebKeyFromGenerated(resp.Key),
+			ReleasePolicy: keyReleasePolicyFromGenerated(resp.ReleasePolicy),
+			Tags:          resp.Tags,
+			Managed:       resp.Managed,
+		},
+	}, nil
+}
+
+// GetKeyRotationPolicyOptions contains the optional parameters for the Client.GetKeyRotationPolicy function
+type GetKeyRotationPolicyOptions struct{}
+
+func (g GetKeyRotationPolicyOptions) toGenerated() *internal.KeyVaultClientGetKeyRotationPolicyOptions {
+	return &internal.KeyVaultClientGetKeyRotationPolicyOptions{}
+}
+
+// GetKeyRotationPolicyResponse contains the response struct for the Client.GetKeyRotationPolicy function
+type GetKeyRotationPolicyResponse struct {
+	KeyRotationPolicy
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func getKeyRotationPolicyResponseFromGenerated(i internal.KeyVaultClientGetKeyRotationPolicyResponse) GetKeyRotationPolicyResponse {
+	var acts []*LifetimeActions
+	for _, a := range i.LifetimeActions {
+		acts = append(acts, lifetimeActionsFromGenerated(a))
+	}
+	var attribs *KeyRotationPolicyAttributes
+	if i.Attributes != nil {
+		attribs = &KeyRotationPolicyAttributes{
+			ExpiryTime: i.Attributes.ExpiryTime,
+			Created:    i.Attributes.Created,
+			Updated:    i.Attributes.Updated,
+		}
+	}
+	return GetKeyRotationPolicyResponse{
+		RawResponse: i.RawResponse,
+		KeyRotationPolicy: KeyRotationPolicy{
+			ID:              i.ID,
+			LifetimeActions: acts,
+			Attributes:      attribs,
+		},
+	}
+}
+
+// The GetKeyRotationPolicy operation returns the specified key policy resources in the specified key vault. This operation requires
+// the keys/get permission.
+func (c *Client) GetKeyRotationPolicy(ctx context.Context, name string, options *GetKeyRotationPolicyOptions) (GetKeyRotationPolicyResponse, error) {
+	if options == nil {
+		options = &GetKeyRotationPolicyOptions{}
+	}
+
+	resp, err := c.kvClient.GetKeyRotationPolicy(
+		ctx,
+		c.vaultUrl,
+		name,
+		options.toGenerated(),
+	)
+	if err != nil {
+		return GetKeyRotationPolicyResponse{}, err
+	}
+
+	return getKeyRotationPolicyResponseFromGenerated(resp), nil
+}
+
+type ReleaseKeyOptions struct {
+	// The version of the key to release
+	Version string
+
+	// The encryption algorithm to use to protected the exported key material
+	Enc *KeyEncryptionAlgorithm `json:"enc,omitempty"`
+
+	// A client provided nonce for freshness.
+	Nonce *string `json:"nonce,omitempty"`
+}
+
+// ReleaseKeyResponse contains the response of Client.ReleaseKey
+type ReleaseKeyResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+
+	// READ-ONLY; A signed object containing the released key.
+	Value *string `json:"value,omitempty" azure:"ro"`
+}
+
+func (c *Client) ReleaseKey(ctx context.Context, name string, target string, options *ReleaseKeyOptions) (ReleaseKeyResponse, error) {
+	if options == nil {
+		options = &ReleaseKeyOptions{}
+	}
+
+	resp, err := c.kvClient.Release(
+		ctx,
+		c.vaultUrl,
+		name,
+		options.Version,
+		internal.KeyReleaseParameters{
+			Target: &target,
+			Enc:    (*internal.KeyEncryptionAlgorithm)(options.Enc),
+			Nonce:  options.Nonce,
+		},
+		&internal.KeyVaultClientReleaseOptions{},
+	)
+
+	if err != nil {
+		return ReleaseKeyResponse{}, err
+	}
+
+	return ReleaseKeyResponse{
+		RawResponse: resp.RawResponse,
+		Value:       resp.Value,
+	}, err
+}
+
+// UpdateKeyRotationPolicyOptions contains the optional parameters for the Client.UpdateKeyRotationPolicy function
+type UpdateKeyRotationPolicyOptions struct {
+	// The key rotation policy attributes.
+	Attributes *KeyRotationPolicyAttributes `json:"attributes,omitempty"`
+
+	// Actions that will be performed by Key Vault over the lifetime of a key. For preview, lifetimeActions can only have two items at maximum: one for rotate,
+	// one for notify. Notification time would be
+	// default to 30 days before expiry and it is not configurable.
+	LifetimeActions []*LifetimeActions `json:"lifetimeActions,omitempty"`
+
+	// READ-ONLY; The key policy id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+}
+
+func (u UpdateKeyRotationPolicyOptions) toGenerated() internal.KeyRotationPolicy {
+	var attribs *internal.KeyRotationPolicyAttributes
+	if u.Attributes != nil {
+		attribs = u.Attributes.toGenerated()
+	}
+	var la []*internal.LifetimeActions
+	for _, l := range u.LifetimeActions {
+		if l == nil {
+			la = append(la, nil)
+		} else {
+			la = append(la, l.toGenerated())
+		}
+	}
+
+	return internal.KeyRotationPolicy{
+		ID:              u.ID,
+		LifetimeActions: la,
+		Attributes:      attribs,
+	}
+}
+
+// UpdateKeyRotationPolicyResponse contains the response for the Client.UpdateKeyRotationPolicy function
+type UpdateKeyRotationPolicyResponse struct {
+	KeyRotationPolicy
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+func updateKeyRotationPolicyResponseFromGenerated(i internal.KeyVaultClientUpdateKeyRotationPolicyResponse) UpdateKeyRotationPolicyResponse {
+	var acts []*LifetimeActions
+	for _, a := range i.LifetimeActions {
+		acts = append(acts, lifetimeActionsFromGenerated(a))
+	}
+	var attribs *KeyRotationPolicyAttributes
+	if i.Attributes != nil {
+		attribs = &KeyRotationPolicyAttributes{
+			ExpiryTime: i.Attributes.ExpiryTime,
+			Created:    i.Attributes.Created,
+			Updated:    i.Attributes.Updated,
+		}
+	}
+	return UpdateKeyRotationPolicyResponse{
+		RawResponse: i.RawResponse,
+		KeyRotationPolicy: KeyRotationPolicy{
+			ID:              i.ID,
+			LifetimeActions: acts,
+			Attributes:      attribs,
+		},
+	}
+}
+
+func (c *Client) UpdateKeyRotationPolicy(ctx context.Context, name string, options *UpdateKeyRotationPolicyOptions) (UpdateKeyRotationPolicyResponse, error) {
+	if options == nil {
+		options = &UpdateKeyRotationPolicyOptions{}
+	}
+
+	resp, err := c.kvClient.UpdateKeyRotationPolicy(
+		ctx,
+		c.vaultUrl,
+		name,
+		options.toGenerated(),
+		&internal.KeyVaultClientUpdateKeyRotationPolicyOptions{},
+	)
+
+	if err != nil {
+		return UpdateKeyRotationPolicyResponse{}, err
+	}
+
+	return updateKeyRotationPolicyResponseFromGenerated(resp), nil
 }

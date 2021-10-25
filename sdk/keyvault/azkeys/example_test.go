@@ -64,7 +64,7 @@ func ExampleClient_CreateECKey() {
 		panic(err)
 	}
 
-	resp, err := client.CreateECKey(context.TODO(), "new-rsa-key", &azkeys.CreateECKeyOptions{CurveName: azkeys.P256.ToPtr()})
+	resp, err := client.CreateECKey(context.TODO(), "new-rsa-key", &azkeys.CreateECKeyOptions{CurveName: azkeys.JSONWebKeyCurveNameP256.ToPtr()})
 	if err != nil {
 		panic(err)
 	}
@@ -108,7 +108,7 @@ func ExampleClient_UpdateKeyProperties() {
 			"Tag1": to.StringPtr("val1"),
 		},
 		KeyAttributes: &azkeys.KeyAttributes{
-			RecoveryLevel: azkeys.CustomizedRecoverablePurgeable.ToPtr(),
+			RecoveryLevel: azkeys.DeletionRecoveryLevelCustomizedRecoverablePurgeable.ToPtr(),
 		},
 	})
 	if err != nil {

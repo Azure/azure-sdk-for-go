@@ -34,7 +34,7 @@
         },
         {
             "Name": "azkeys",
-            "CoverageGoal": 0.75
+            "CoverageGoal": 0.72
         }
     ]
 }

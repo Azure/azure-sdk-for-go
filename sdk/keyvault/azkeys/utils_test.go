@@ -25,9 +25,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-var pathToPackage = "sdk/keyvault/azkeys"
+var pathToPackage = "sdk/keyvault/azkeys/testdata"
 
 const headerAuthorization = "Authorization"
+
+var fakeURL = "https://fakekvurl.vault.azure.net/"
 
 func createRandomName(t *testing.T, prefix string) (string, error) {
 	h := fnv.New32a()
@@ -71,10 +73,14 @@ func lookupEnvVar(s string) string {
 	return ret
 }
 
-func createClient(t *testing.T) (*Client, error) {
-	vaultUrl := recording.GetEnvVariable(t, "AZURE_KEYVAULT_URL", "https://fakekvurl.vault.azure.net/")
+func createClient(t *testing.T, testType string) (*Client, error) {
+	vaultUrl := recording.GetEnvVariable(t, "AZURE_KEYVAULT_URL", fakeURL)
+	var credOptions *azidentity.ClientSecretCredentialOptions
+	if testType == HSMTEST {
+		vaultUrl = recording.GetEnvVariable(t, "AZURE_MANAGEDHSM_URL", fakeURL)
+	}
 	if recording.GetRecordMode() == "playback" {
-		vaultUrl = "https://fakekvurl.vault.azure.net/"
+		vaultUrl = fakeURL
 	}
 
 	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
@@ -92,7 +98,7 @@ func createClient(t *testing.T) (*Client, error) {
 		tenantId := lookupEnvVar("KEYVAULT_TENANT_ID")
 		clientId := lookupEnvVar("KEYVAULT_CLIENT_ID")
 		clientSecret := lookupEnvVar("KEYVAULT_CLIENT_SECRET")
-		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
+		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, credOptions)
 		require.NoError(t, err)
 	} else {
 		cred = NewFakeCredential("fake", "fake")
@@ -111,7 +117,6 @@ func delay() time.Duration {
 func cleanUpKey(t *testing.T, client *Client, key string) {
 	resp, err := client.BeginDeleteKey(context.Background(), key, nil)
 	if err != nil {
-		fmt.Println("Could not find key with name ", key)
 		return
 	}
 

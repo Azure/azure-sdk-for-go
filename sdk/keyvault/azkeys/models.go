@@ -84,6 +84,9 @@ type KeyBundle struct {
 	// The Json web key.
 	Key *JSONWebKey `json:"key,omitempty"`
 
+	// The policy rules under which the key can be exported.
+	ReleasePolicy *KeyReleasePolicy `json:"release_policy,omitempty"`
+
 	// Application specific metadata in the form of key-value pairs.
 	Tags map[string]*string `json:"tags,omitempty"`
 
@@ -283,4 +286,108 @@ func deletedKeyItemFromGenerated(i *internal.DeletedKeyItem) *DeletedKeyItem {
 		ScheduledPurgeDate: i.ScheduledPurgeDate,
 		KeyItem:            *keyItemFromGenerated(&i.KeyItem),
 	}
+}
+
+type KeyReleasePolicy struct {
+	// Content type and version of key release policy
+	ContentType *string `json:"contentType,omitempty"`
+
+	// Blob encoding the policy rules under which the key can be released.
+	Data []byte `json:"data,omitempty"`
+}
+
+func keyReleasePolicyFromGenerated(i *internal.KeyReleasePolicy) *KeyReleasePolicy {
+	if i == nil {
+		return nil
+	}
+	return &KeyReleasePolicy{
+		ContentType: i.ContentType,
+		Data:        i.Data,
+	}
+}
+
+// KeyRotationPolicy - Management policy for a key.
+type KeyRotationPolicy struct {
+	// The key rotation policy attributes.
+	Attributes *KeyRotationPolicyAttributes `json:"attributes,omitempty"`
+
+	// Actions that will be performed by Key Vault over the lifetime of a key. For preview, lifetimeActions can only have two items at maximum: one for rotate,
+	// one for notify. Notification time would be
+	// default to 30 days before expiry and it is not configurable.
+	LifetimeActions []*LifetimeActions `json:"lifetimeActions,omitempty"`
+
+	// READ-ONLY; The key policy id.
+	ID *string `json:"id,omitempty" azure:"ro"`
+}
+
+// KeyRotationPolicyAttributes - The key rotation policy attributes.
+type KeyRotationPolicyAttributes struct {
+	// The expiryTime will be applied on the new key version. It should be at least 28 days. It will be in ISO 8601 Format. Examples: 90 days: P90D, 3 months:
+	// P3M, 48 hours: PT48H, 1 year and 10 days: P1Y10D
+	ExpiryTime *string `json:"expiryTime,omitempty"`
+
+	// READ-ONLY; The key rotation policy created time in UTC.
+	Created *time.Time `json:"created,omitempty" azure:"ro"`
+
+	// READ-ONLY; The key rotation policy's last updated time in UTC.
+	Updated *time.Time `json:"updated,omitempty" azure:"ro"`
+}
+
+func (k KeyRotationPolicyAttributes) toGenerated() *internal.KeyRotationPolicyAttributes {
+	return &internal.KeyRotationPolicyAttributes{
+		ExpiryTime: k.ExpiryTime,
+		Created:    k.Created,
+		Updated:    k.Updated,
+	}
+}
+
+// LifetimeActions - Action and its trigger that will be performed by Key Vault over the lifetime of a key.
+type LifetimeActions struct {
+	// The action that will be executed.
+	Action *LifetimeActionsType `json:"action,omitempty"`
+
+	// The condition that will execute the action.
+	Trigger *LifetimeActionsTrigger `json:"trigger,omitempty"`
+}
+
+func (l LifetimeActions) toGenerated() *internal.LifetimeActions {
+	return &internal.LifetimeActions{
+		Action: &internal.LifetimeActionsType{
+			Type: (*internal.ActionType)(l.Action.Type),
+		},
+		Trigger: &internal.LifetimeActionsTrigger{
+			TimeAfterCreate:  l.Trigger.TimeAfterCreate,
+			TimeBeforeExpiry: l.Trigger.TimeBeforeExpiry,
+		},
+	}
+}
+
+func lifetimeActionsFromGenerated(i *internal.LifetimeActions) *LifetimeActions {
+	if i == nil {
+		return nil
+	}
+	return &LifetimeActions{
+		Trigger: &LifetimeActionsTrigger{
+			TimeAfterCreate:  i.Trigger.TimeAfterCreate,
+			TimeBeforeExpiry: i.Trigger.TimeBeforeExpiry,
+		},
+		Action: &LifetimeActionsType{
+			Type: (*ActionType)(i.Action.Type),
+		},
+	}
+}
+
+// LifetimeActionsType - The action that will be executed.
+type LifetimeActionsType struct {
+	// The type of the action.
+	Type *ActionType `json:"type,omitempty"`
+}
+
+// LifetimeActionsTrigger - A condition to be satisfied for an action to be executed.
+type LifetimeActionsTrigger struct {
+	// Time after creation to attempt to rotate. It only applies to rotate. It will be in ISO 8601 duration format. Example: 90 days : "P90D"
+	TimeAfterCreate *string `json:"timeAfterCreate,omitempty"`
+
+	// Time before expiry to attempt to rotate or notify. It will be in ISO 8601 duration format. Example: 90 days : "P90D"
+	TimeBeforeExpiry *string `json:"timeBeforeExpiry,omitempty"`
 }

@@ -14,41 +14,41 @@ import "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal"
 type DeletionRecoveryLevel string
 
 const (
-	// CustomizedRecoverable - Denotes a vault state in which deletion is recoverable without the possibility for immediate and permanent
+	// DeletionRecoveryLevelCustomizedRecoverable - Denotes a vault state in which deletion is recoverable without the possibility for immediate and permanent
 	// deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90).This level guarantees the recoverability of the deleted entity during the retention interval
 	// and while the subscription is still available.
-	CustomizedRecoverable DeletionRecoveryLevel = "CustomizedRecoverable"
+	DeletionRecoveryLevelCustomizedRecoverable DeletionRecoveryLevel = "CustomizedRecoverable"
 
-	// CustomizedRecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion is recoverable, immediate
+	// DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion is recoverable, immediate
 	// and permanent deletion (i.e. purge) is not permitted, and in which the subscription itself cannot be permanently canceled when 7<= SoftDeleteRetentionInDays
 	// < 90. This level guarantees the recoverability of the deleted entity during the retention interval, and also reflects the fact that the subscription
 	// itself cannot be cancelled.
-	CustomizedRecoverableProtectedSubscription DeletionRecoveryLevel = "CustomizedRecoverable+ProtectedSubscription"
+	DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription DeletionRecoveryLevel = "CustomizedRecoverable+ProtectedSubscription"
 
-	// CustomizedRecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which also permits immediate and permanent
+	// DeletionRecoveryLevelCustomizedRecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which also permits immediate and permanent
 	// deletion (i.e. purge when 7<= SoftDeleteRetentionInDays < 90). This level guarantees the recoverability of the deleted entity during the retention interval,
 	// unless a Purge operation is requested, or the subscription is cancelled.
-	CustomizedRecoverablePurgeable DeletionRecoveryLevel = "CustomizedRecoverable+Purgeable"
+	DeletionRecoveryLevelCustomizedRecoverablePurgeable DeletionRecoveryLevel = "CustomizedRecoverable+Purgeable"
 
-	// Purgeable - Denotes a vault state in which deletion is an irreversible operation, without the possibility for recovery. This level
+	// DeletionRecoveryLevelPurgeable - Denotes a vault state in which deletion is an irreversible operation, without the possibility for recovery. This level
 	// corresponds to no protection being available against a Delete operation; the data is irretrievably lost upon accepting a Delete operation at the entity
 	// level or higher (vault, resource group, subscription etc.)
-	Purgeable DeletionRecoveryLevel = "Purgeable"
+	DeletionRecoveryLevelPurgeable DeletionRecoveryLevel = "Purgeable"
 
-	// Recoverable - Denotes a vault state in which deletion is recoverable without the possibility for immediate and permanent deletion
+	// DeletionRecoveryLevelRecoverable - Denotes a vault state in which deletion is recoverable without the possibility for immediate and permanent deletion
 	// (i.e. purge). This level guarantees the recoverability of the deleted entity during the retention interval(90 days) and while the subscription is still
 	// available. System wil permanently delete it after 90 days, if not recovered
-	Recoverable DeletionRecoveryLevel = "Recoverable"
+	DeletionRecoveryLevelRecoverable DeletionRecoveryLevel = "Recoverable"
 
-	// RecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion is recoverable within retention interval
+	// DeletionRecoveryLevelRecoverableProtectedSubscription - Denotes a vault and subscription state in which deletion is recoverable within retention interval
 	// (90 days), immediate and permanent deletion (i.e. purge) is not permitted, and in which the subscription itself cannot be permanently canceled. System
 	// wil permanently delete it after 90 days, if not recovered
-	RecoverableProtectedSubscription DeletionRecoveryLevel = "Recoverable+ProtectedSubscription"
+	DeletionRecoveryLevelRecoverableProtectedSubscription DeletionRecoveryLevel = "Recoverable+ProtectedSubscription"
 
-	// RecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which also permits immediate and permanent deletion
+	// DeletionRecoveryLevelRecoverablePurgeable - Denotes a vault state in which deletion is recoverable, and which also permits immediate and permanent deletion
 	// (i.e. purge). This level guarantees the recoverability of the deleted entity during the retention interval (90 days), unless a Purge operation is requested,
 	// or the subscription is cancelled. System wil permanently delete it after 90 days, if not recovered
-	RecoverablePurgeable DeletionRecoveryLevel = "Recoverable+Purgeable"
+	DeletionRecoveryLevelRecoverablePurgeable DeletionRecoveryLevel = "Recoverable+Purgeable"
 )
 
 // ToPtr returns a *DeletionRecoveryLevel pointing to the current value.
@@ -61,17 +61,17 @@ func recoveryLevelToGenerated(d *DeletionRecoveryLevel) *internal.DeletionRecove
 	if d == nil {
 		return nil
 	}
-	if *d == CustomizedRecoverable {
+	if *d == DeletionRecoveryLevelCustomizedRecoverable {
 		return internal.DeletionRecoveryLevelCustomizedRecoverable.ToPtr()
-	} else if *d == CustomizedRecoverableProtectedSubscription {
+	} else if *d == DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription {
 		return internal.DeletionRecoveryLevelCustomizedRecoverableProtectedSubscription.ToPtr()
-	} else if *d == CustomizedRecoverablePurgeable {
+	} else if *d == DeletionRecoveryLevelCustomizedRecoverablePurgeable {
 		return internal.DeletionRecoveryLevelCustomizedRecoverablePurgeable.ToPtr()
-	} else if *d == Purgeable {
+	} else if *d == DeletionRecoveryLevelPurgeable {
 		return internal.DeletionRecoveryLevelPurgeable.ToPtr()
-	} else if *d == RecoverableProtectedSubscription {
+	} else if *d == DeletionRecoveryLevelRecoverableProtectedSubscription {
 		return internal.DeletionRecoveryLevelRecoverableProtectedSubscription.ToPtr()
-	} else if *d == Recoverable {
+	} else if *d == DeletionRecoveryLevelRecoverable {
 		return internal.DeletionRecoveryLevelRecoverable.ToPtr()
 	} else {
 		return internal.DeletionRecoveryLevelRecoverablePurgeable.ToPtr()
@@ -82,17 +82,17 @@ func recoveryLevelToGenerated(d *DeletionRecoveryLevel) *internal.DeletionRecove
 type JSONWebKeyCurveName string
 
 const (
-	// P256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
-	P256 JSONWebKeyCurveName = "P-256"
+	// JSONWebKeyCurveNameP256 - The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
+	JSONWebKeyCurveNameP256 JSONWebKeyCurveName = "P-256"
 
-	// P256K - The SECG SECP256K1 elliptic curve.
-	P256K JSONWebKeyCurveName = "P-256K"
+	// JSONWebKeyCurveNameP256K - The SECG SECP256K1 elliptic curve.
+	JSONWebKeyCurveNameP256K JSONWebKeyCurveName = "P-256K"
 
-	// P384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
-	P384 JSONWebKeyCurveName = "P-384"
+	// JSONWebKeyCurveNameP384 - The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
+	JSONWebKeyCurveNameP384 JSONWebKeyCurveName = "P-384"
 
-	// P521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
-	P521 JSONWebKeyCurveName = "P-521"
+	// JSONWebKeyCurveNameP521 - The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
+	JSONWebKeyCurveNameP521 JSONWebKeyCurveName = "P-521"
 )
 
 // ToPtr returns a *JSONWebKeyCurveName pointing to the current value.
@@ -115,5 +115,34 @@ const (
 
 // ToPtr returns a *JSONWebKeyOperation pointing to the current value.
 func (c JSONWebKeyOperation) ToPtr() *JSONWebKeyOperation {
+	return &c
+}
+
+// ActionType - The type of the action.
+type ActionType string
+
+const (
+	// ActionTypeRotate - Rotate the key based on the key policy.
+	ActionTypeRotate ActionType = "rotate"
+	// ActionTypeNotify - Trigger event grid events. For preview, the notification time is not configurable and it is default to 30 days before expiry.
+	ActionTypeNotify ActionType = "notify"
+)
+
+// ToPtr returns a *ActionType pointing to the current value.
+func (c ActionType) ToPtr() *ActionType {
+	return &c
+}
+
+// KeyEncryptionAlgorithm - The encryption algorithm to use to protected the exported key material
+type KeyEncryptionAlgorithm string
+
+const (
+	KeyEncryptionAlgorithmCKMRSAAESKEYWRAP KeyEncryptionAlgorithm = "CKM_RSA_AES_KEY_WRAP"
+	KeyEncryptionAlgorithmRSAAESKEYWRAP256 KeyEncryptionAlgorithm = "RSA_AES_KEY_WRAP_256"
+	KeyEncryptionAlgorithmRSAAESKEYWRAP384 KeyEncryptionAlgorithm = "RSA_AES_KEY_WRAP_384"
+)
+
+// ToPtr returns a *KeyEncryptionAlgorithm pointing to the current value.
+func (c KeyEncryptionAlgorithm) ToPtr() *KeyEncryptionAlgorithm {
 	return &c
 }

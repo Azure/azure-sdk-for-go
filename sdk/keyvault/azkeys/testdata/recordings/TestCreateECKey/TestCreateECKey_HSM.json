@@ -1,0 +1,44 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://rosebudhsm.managedhsm.azure.net/keys/key1053998307/create?api-version=7.3-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/keys/key1053998307/create?api-version=7.3-preview",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "12",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Mon, 25 Oct 2021 17:52:44 GMT"
+      },
+      "RequestBody": {
+        "kty": "EC"
+      },
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "189",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-request-id": "5ac61918-35bc-11ec-b248-000d3a706e2f",
+        "x-ms-server-latency": "1"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "Unauthorized",
+          "message": "Found token with aud=https://vault.azure.net, but expected aud=https://managedhsm.azure.net (Activity ID: 5ac61918-35bc-11ec-b248-000d3a706e2f)"
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

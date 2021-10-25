@@ -73,7 +73,6 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		errMsg += err.Error()
 	}
 
-	// if no credentials are added to the slice of TokenCredentials then return a CredentialUnavailableError
 	if len(creds) == 0 {
 		err := errors.New(errMsg)
 		logCredentialError("Default Azure Credential", err)

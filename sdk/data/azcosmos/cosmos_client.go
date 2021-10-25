@@ -254,16 +254,19 @@ func (c *Client) createRequest(
 }
 
 func (c *Client) attachContent(content interface{}, req *policy.Request) error {
+	var err error
 	switch v := content.(type) {
 	case []byte:
 		// If its a raw byte array, we can just set the body
-		req.SetBody(streaming.NopCloser(bytes.NewReader(v)), "application/json")
+		err = req.SetBody(streaming.NopCloser(bytes.NewReader(v)), "application/json")
 	default:
 		// Otherwise, we need to marshal it
-		err := azruntime.MarshalAsJSON(req, content)
-		if err != nil {
-			return err
-		}
+		err = azruntime.MarshalAsJSON(req, content)
+
+	}
+
+	if err != nil {
+		return err
 	}
 
 	return nil

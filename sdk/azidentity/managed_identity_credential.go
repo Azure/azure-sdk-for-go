@@ -6,7 +6,6 @@ package azidentity
 import (
 	"context"
 	"fmt"
-	"os"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -89,20 +88,7 @@ func NewManagedIdentityCredential(options *ManagedIdentityCredentialOptions) (*M
 	}
 	// Assign the msiType discovered onto the client
 	client.msiType = msiType
-	// check if no clientID is specified then check if it exists in an environment variable
-	id := cp.ID
-	if id == nil {
-		cID := os.Getenv("AZURE_CLIENT_ID")
-		if cID != "" {
-			id = ClientID(cID)
-		} else {
-			rID := os.Getenv("AZURE_RESOURCE_ID")
-			if rID != "" {
-				id = ResourceID(rID)
-			}
-		}
-	}
-	return &ManagedIdentityCredential{id: id, client: client}, nil
+	return &ManagedIdentityCredential{id: cp.ID, client: client}, nil
 }
 
 // GetToken obtains an AccessToken from the Managed Identity service if available.

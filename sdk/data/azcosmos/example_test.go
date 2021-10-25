@@ -36,16 +36,18 @@ func Example() {
 
 	// ===== 1. Creating a database =====
 
-	databaseName := azcosmos.DatabaseProperties{Id: "databaseName"}
-	database, err := client.CreateDatabase(ctx, databaseName, nil)
+	databaseProperties := azcosmos.DatabaseProperties{ID: "databaseName"}
+	databaseResponse, err := client.CreateDatabase(ctx, databaseProperties, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	log.Printf("Database created. ActivityId %s", databaseResponse.ActivityId)
+
 	// ===== 2. Creating a container =====
 
 	properties := azcosmos.ContainerProperties{
-		Id: "aContainer",
+		ID: "aContainer",
 		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
 			Paths: []string{"/myPartitionKey"},
 		},
@@ -53,12 +55,22 @@ func Example() {
 
 	throughput := azcosmos.NewManualThroughputProperties(400)
 
-	resp, err := database.DatabaseProperties.Database.CreateContainer(ctx, properties, &azcosmos.CreateContainerOptions{ThroughputProperties: throughput})
+	database, err := client.NewDatabase("databaseName")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	container := resp.ContainerProperties.Container
+	resp, err := database.CreateContainer(ctx, properties, &azcosmos.CreateContainerOptions{ThroughputProperties: &throughput})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Printf("Container created. ActivityId %s", resp.ActivityId)
+
+	container, err := client.NewContainer("databaseName", "aContainer")
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// ===== 3. Update container properties =====
 
@@ -68,11 +80,10 @@ func Example() {
 	}
 
 	updatedProperties := azcosmos.ContainerProperties{
-		Id: "aContainer",
+		ID: "aContainer",
 		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
 			Paths: []string{"/myPartitionKey"},
 		},
-		ETag: "someEtag",
 		IndexingPolicy: &azcosmos.IndexingPolicy{
 			IncludedPaths: []azcosmos.IncludedPath{},
 			ExcludedPaths: []azcosmos.ExcludedPath{},
@@ -102,14 +113,14 @@ func Example() {
 	// Replace manual throughput property
 
 	newScale := azcosmos.NewManualThroughputProperties(500)
-	_, err = container.ReplaceThroughput(ctx, *newScale, nil)
+	_, err = container.ReplaceThroughput(ctx, newScale, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Migrate from manual throughput to autoscale
 	newScale = azcosmos.NewAutoscaleThroughputProperties(10000)
-	replaceThroughputResponse, err := container.ReplaceThroughput(ctx, *newScale, nil)
+	replaceThroughputResponse, err := container.ReplaceThroughput(ctx, newScale, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -124,7 +135,7 @@ func Example() {
 	// ===== 4. Item CRUD =====
 
 	// Items in an Azure Cosmos container are uniquely identified by their id and partition key value.
-	pk, err := azcosmos.NewPartitionKey("newPartitionKey")
+	pk := azcosmos.NewPartitionKeyString("newPartitionKey")
 
 	item := map[string]string{
 		"id":             "1",
@@ -132,14 +143,19 @@ func Example() {
 		"myPartitionKey": "newPartitionKey",
 	}
 
+	marshalled, err := json.Marshal(item)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// Create item.
-	itemResponse, err := container.CreateItem(ctx, *pk, item, nil)
+	itemResponse, err := container.CreateItem(ctx, pk, marshalled, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Read item.
-	itemResponse, err = container.ReadItem(ctx, *pk, "1", nil)
+	itemResponse, err = container.ReadItem(ctx, pk, "1", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -152,28 +168,32 @@ func Example() {
 
 	// Modify some property
 	itemResponseBody["value"] = "newValue"
+	marshalledReplace, err := json.Marshal(itemResponseBody)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// Replace item
-	itemResponse, err = container.ReplaceItem(ctx, *pk, "1", itemResponseBody, nil)
+	itemResponse, err = container.ReplaceItem(ctx, pk, "1", marshalledReplace, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Delete item.
-	itemResponse, err = container.DeleteItem(ctx, *pk, "1", nil)
+	itemResponse, err = container.DeleteItem(ctx, pk, "1", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// ===== 5. Session consistency =====
 
-	itemResponse, err = container.UpsertItem(ctx, *pk, item, nil)
+	itemResponse, err = container.UpsertItem(ctx, pk, marshalled, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	itemSessionToken := itemResponse.SessionToken
-	itemResponse, err = container.ReadItem(ctx, *pk, "1", &azcosmos.ItemOptions{SessionToken: itemSessionToken})
+	itemResponse, err = container.ReadItem(ctx, pk, "1", &azcosmos.ItemOptions{SessionToken: itemSessionToken})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -184,7 +204,7 @@ func Example() {
 	// Check the item response status code. If an error is imitted and the response code is 412 then retry operation.
 	numberRetry := 3
 	err = retryOptimisticConcurrency(numberRetry, 1000*time.Millisecond, func() (bool, error) {
-		itemResponse, err = container.ReadItem(ctx, *pk, "1", nil)
+		itemResponse, err = container.ReadItem(ctx, pk, "1", nil)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -198,9 +218,14 @@ func Example() {
 		// Change a value in the item response body.
 		itemResponseBody["value"] = "newValue"
 
+		marshalledReplace, err := json.Marshal(itemResponseBody)
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		// Replace with Etag
 		etag := itemResponse.ETag
-		itemResponse, err = container.ReplaceItem(ctx, *pk, "1", itemResponseBody, &azcosmos.ItemOptions{IfMatchEtag: &etag})
+		itemResponse, err = container.ReplaceItem(ctx, pk, "1", marshalledReplace, &azcosmos.ItemOptions{IfMatchEtag: &etag})
 		var httpErr azcore.HTTPResponse
 
 		return (errors.As(err, &httpErr) && itemResponse.RawResponse.StatusCode == 412), err

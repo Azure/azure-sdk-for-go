@@ -20,12 +20,12 @@ import (
 
 // KeyCredential creates an immutable KeyCredential containing the
 // account's primary or secondary key.
-func NewKeyCredential(accountKey string) (*KeyCredential, error) {
+func NewKeyCredential(accountKey string) (KeyCredential, error) {
 	c := KeyCredential{}
 	if err := c.Update(accountKey); err != nil {
-		return nil, err
+		return c, err
 	}
-	return &c, nil
+	return c, nil
 }
 
 // KeyCredential contains an account's name and its primary or secondary key.
@@ -53,7 +53,7 @@ func (c *KeyCredential) computeHMACSHA256(s string) (base64String string) {
 }
 
 func (c *KeyCredential) buildCanonicalizedAuthHeaderFromRequest(req *policy.Request) (string, error) {
-	var opValues cosmosOperationContext
+	var opValues pipelineRequestOptions
 	value := ""
 
 	if req.OperationValue(&opValues) {
@@ -88,10 +88,10 @@ func (c *KeyCredential) buildCanonicalizedAuthHeader(method, resourceType, resou
 }
 
 type sharedKeyCredPolicy struct {
-	cred *KeyCredential
+	cred KeyCredential
 }
 
-func newSharedKeyCredPolicy(cred *KeyCredential) *sharedKeyCredPolicy {
+func newSharedKeyCredPolicy(cred KeyCredential) *sharedKeyCredPolicy {
 	s := &sharedKeyCredPolicy{
 		cred: cred,
 	}
@@ -117,7 +117,7 @@ func (s *sharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 	response, err := req.Next()
 	if err != nil && response != nil && response.StatusCode == http.StatusForbidden {
 		// Service failed to authenticate request, log it
-		log.Write(log.Response, "===== HTTP Forbidden status, Authorization:\n"+authHeader+"\n=====\n")
+		log.Write(log.EventResponse, "===== HTTP Forbidden status, Authorization:\n"+authHeader+"\n=====\n")
 	}
 	return response, err
 }

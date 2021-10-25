@@ -7,10 +7,12 @@ import (
 	"encoding/json"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 func TestThroughputPropertiesManualRawSerialization(t *testing.T) {
-	nowAsUnix := time.Unix(1630100602, 0)
+	nowAsUnix := int64(1630100602)
 
 	jsonString := []byte("{\"offerType\":\"Invalid\",\"offerResourceId\":\"4SRTANCD3Dw=\",\"offerVersion\":\"V2\",\"content\":{\"offerThroughput\":400},\"id\":\"HFln\",\"_etag\":\"\\\"00000000-0000-0000-9b8c-8ea3e19601d7\\\"\",\"_ts\":1630100602}")
 
@@ -36,12 +38,12 @@ func TestThroughputPropertiesManualRawSerialization(t *testing.T) {
 		t.Errorf("OfferId mismatch %v", otherProperties.offerId)
 	}
 
-	if otherProperties.ETag != "\"00000000-0000-0000-9b8c-8ea3e19601d7\"" {
+	if *otherProperties.ETag != "\"00000000-0000-0000-9b8c-8ea3e19601d7\"" {
 		t.Errorf("Etag mismatch %v", otherProperties.ETag)
 	}
 
-	if otherProperties.LastModified.Time != nowAsUnix {
-		t.Errorf("Timestamp mismatch %v", otherProperties.LastModified.Time)
+	if otherProperties.LastModified != nowAsUnix {
+		t.Errorf("Timestamp mismatch %v", otherProperties.LastModified)
 	}
 
 	mt, err := otherProperties.ManualThroughput()
@@ -57,16 +59,13 @@ func TestThroughputPropertiesManualRawSerialization(t *testing.T) {
 func TestThroughputPropertiesManualE2ESerialization(t *testing.T) {
 	nowAsUnix := time.Now().Unix()
 
-	now := UnixTime{
-		Time: time.Unix(nowAsUnix, 0),
-	}
-
+	etag := azcore.ETag("\"00000000-0000-0000-9b8c-8ea3e19601d7\"")
 	properties := NewManualThroughputProperties(400)
 	properties.offerId = "HFln"
 	properties.offerResourceId = "4SRTANCD3Dw="
-	properties.ETag = "\"00000000-0000-0000-9b8c-8ea3e19601d7\""
-	properties.LastModified = &now
-	jsonString, err := json.Marshal(properties)
+	properties.ETag = &etag
+	properties.LastModified = nowAsUnix
+	jsonString, err := json.Marshal(&properties)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -93,12 +92,12 @@ func TestThroughputPropertiesManualE2ESerialization(t *testing.T) {
 		t.Errorf("OfferId mismatch %v", otherProperties.offerId)
 	}
 
-	if otherProperties.ETag != "\"00000000-0000-0000-9b8c-8ea3e19601d7\"" {
+	if *otherProperties.ETag != etag {
 		t.Errorf("Etag mismatch %v", otherProperties.ETag)
 	}
 
-	if otherProperties.LastModified.Time != properties.LastModified.Time {
-		t.Errorf("Timestamp mismatch %v", otherProperties.LastModified.Time)
+	if otherProperties.LastModified != properties.LastModified {
+		t.Errorf("Timestamp mismatch %v", otherProperties.LastModified)
 	}
 
 	mt, err := otherProperties.ManualThroughput()
@@ -114,16 +113,13 @@ func TestThroughputPropertiesManualE2ESerialization(t *testing.T) {
 func TestThroughputPropertiesAutoscaleE2ESerialization(t *testing.T) {
 	nowAsUnix := time.Now().Unix()
 
-	now := UnixTime{
-		Time: time.Unix(nowAsUnix, 0),
-	}
-
+	etag := azcore.ETag("\"00000000-0000-0000-9b8c-8ea3e19601d7\"")
 	properties := NewAutoscaleThroughputProperties(400)
 	properties.offerId = "HFln"
 	properties.offerResourceId = "4SRTANCD3Dw="
-	properties.ETag = "\"00000000-0000-0000-9b8c-8ea3e19601d7\""
-	properties.LastModified = &now
-	jsonString, err := json.Marshal(properties)
+	properties.ETag = &etag
+	properties.LastModified = nowAsUnix
+	jsonString, err := json.Marshal(&properties)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -150,12 +146,12 @@ func TestThroughputPropertiesAutoscaleE2ESerialization(t *testing.T) {
 		t.Errorf("OfferId mismatch %v", otherProperties.offerId)
 	}
 
-	if otherProperties.ETag != "\"00000000-0000-0000-9b8c-8ea3e19601d7\"" {
+	if *otherProperties.ETag != etag {
 		t.Errorf("Etag mismatch %v", otherProperties.ETag)
 	}
 
-	if otherProperties.LastModified.Time != properties.LastModified.Time {
-		t.Errorf("Timestamp mismatch %v", otherProperties.LastModified.Time)
+	if otherProperties.LastModified != properties.LastModified {
+		t.Errorf("Timestamp mismatch %v", otherProperties.LastModified)
 	}
 
 	at, err := otherProperties.AutoscaleMaxThroughput()
@@ -175,16 +171,13 @@ func TestThroughputPropertiesAutoscaleE2ESerialization(t *testing.T) {
 func TestThroughputPropertiesAutoscaleIncrementE2ESerialization(t *testing.T) {
 	nowAsUnix := time.Now().Unix()
 
-	now := UnixTime{
-		Time: time.Unix(nowAsUnix, 0),
-	}
-
+	etag := azcore.ETag("\"00000000-0000-0000-9b8c-8ea3e19601d7\"")
 	properties := NewAutoscaleThroughputPropertiesWithIncrement(400, 10)
 	properties.offerId = "HFln"
 	properties.offerResourceId = "4SRTANCD3Dw="
-	properties.ETag = "\"00000000-0000-0000-9b8c-8ea3e19601d7\""
-	properties.LastModified = &now
-	jsonString, err := json.Marshal(properties)
+	properties.ETag = &etag
+	properties.LastModified = nowAsUnix
+	jsonString, err := json.Marshal(&properties)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -211,12 +204,12 @@ func TestThroughputPropertiesAutoscaleIncrementE2ESerialization(t *testing.T) {
 		t.Errorf("OfferId mismatch %v", otherProperties.offerId)
 	}
 
-	if otherProperties.ETag != "\"00000000-0000-0000-9b8c-8ea3e19601d7\"" {
+	if *otherProperties.ETag != etag {
 		t.Errorf("Etag mismatch %v", otherProperties.ETag)
 	}
 
-	if otherProperties.LastModified.Time != properties.LastModified.Time {
-		t.Errorf("Timestamp mismatch %v", otherProperties.LastModified.Time)
+	if otherProperties.LastModified != properties.LastModified {
+		t.Errorf("Timestamp mismatch %v", otherProperties.LastModified)
 	}
 
 	at, err := otherProperties.AutoscaleMaxThroughput()

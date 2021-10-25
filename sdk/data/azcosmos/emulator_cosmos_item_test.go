@@ -34,11 +34,13 @@ func TestItemCRUD(t *testing.T) {
 
 	container, _ := database.NewContainer("aContainer")
 	pk := NewPartitionKeyString("1")
+
+	marshalled, err := json.Marshal(item)
 	if err != nil {
-		t.Fatalf("Failed to create pk: %v", err)
+		t.Fatal(err)
 	}
 
-	itemResponse, err := container.CreateItem(context.TODO(), pk, item, nil)
+	itemResponse, err := container.CreateItem(context.TODO(), pk, marshalled, nil)
 	if err != nil {
 		t.Fatalf("Failed to create item: %v", err)
 	}
@@ -74,7 +76,11 @@ func TestItemCRUD(t *testing.T) {
 	}
 
 	item["value"] = "3"
-	itemResponse, err = container.ReplaceItem(context.TODO(), pk, "1", item, &ItemOptions{EnableContentResponseOnWrite: true})
+	marshalled, err = json.Marshal(item)
+	if err != nil {
+		t.Fatal(err)
+	}
+	itemResponse, err = container.ReplaceItem(context.TODO(), pk, "1", marshalled, &ItemOptions{EnableContentResponseOnWrite: true})
 	if err != nil {
 		t.Fatalf("Failed to replace item: %v", err)
 	}
@@ -96,7 +102,11 @@ func TestItemCRUD(t *testing.T) {
 	}
 
 	item["value"] = "4"
-	itemResponse, err = container.UpsertItem(context.TODO(), pk, item, &ItemOptions{EnableContentResponseOnWrite: true})
+	marshalled, err = json.Marshal(item)
+	if err != nil {
+		t.Fatal(err)
+	}
+	itemResponse, err = container.UpsertItem(context.TODO(), pk, marshalled, &ItemOptions{EnableContentResponseOnWrite: true})
 	if err != nil {
 		t.Fatalf("Failed to upsert item: %v", err)
 	}

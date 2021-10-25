@@ -144,8 +144,13 @@ func Example() {
 		"myPartitionKey": "newPartitionKey",
 	}
 
+	marshalled, err := json.Marshal(item)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// Create item.
-	itemResponse, err := container.CreateItem(ctx, pk, item, nil)
+	itemResponse, err := container.CreateItem(ctx, pk, marshalled, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -164,9 +169,13 @@ func Example() {
 
 	// Modify some property
 	itemResponseBody["value"] = "newValue"
+	marshalledReplace, err := json.Marshal(itemResponseBody)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// Replace item
-	itemResponse, err = container.ReplaceItem(ctx, pk, "1", itemResponseBody, nil)
+	itemResponse, err = container.ReplaceItem(ctx, pk, "1", marshalledReplace, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -179,7 +188,7 @@ func Example() {
 
 	// ===== 5. Session consistency =====
 
-	itemResponse, err = container.UpsertItem(ctx, pk, item, nil)
+	itemResponse, err = container.UpsertItem(ctx, pk, marshalled, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -210,9 +219,14 @@ func Example() {
 		// Change a value in the item response body.
 		itemResponseBody["value"] = "newValue"
 
+		marshalledReplace, err := json.Marshal(itemResponseBody)
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		// Replace with Etag
 		etag := itemResponse.ETag
-		itemResponse, err = container.ReplaceItem(ctx, pk, "1", itemResponseBody, &azcosmos.ItemOptions{IfMatchEtag: &etag})
+		itemResponse, err = container.ReplaceItem(ctx, pk, "1", marshalledReplace, &azcosmos.ItemOptions{IfMatchEtag: &etag})
 		var httpErr azcore.HTTPResponse
 
 		return (errors.As(err, &httpErr) && itemResponse.RawResponse.StatusCode == 412), err

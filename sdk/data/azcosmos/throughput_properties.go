@@ -19,7 +19,7 @@ const (
 
 // ThroughputProperties describes the throughput configuration of a resource.
 type ThroughputProperties struct {
-	ETag         azcore.ETag
+	ETag         *azcore.ETag
 	LastModified int64
 
 	version         string
@@ -79,7 +79,7 @@ func (tp *ThroughputProperties) MarshalJSON() ([]byte, error) {
 	buffer.WriteString(fmt.Sprintf(",\"offerType\":\"%s\"", tp.offerType))
 	buffer.WriteString(fmt.Sprintf(",\"offerVersion\":\"%s\"", tp.version))
 
-	if tp.ETag != "" {
+	if tp.ETag != nil {
 		buffer.WriteString(",\"_etag\":")
 		etag, err := json.Marshal(tp.ETag)
 		if err != nil {

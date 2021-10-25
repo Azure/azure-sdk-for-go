@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 )
 
 // Cosmos client is used to interact with the Azure Cosmos DB database service.
@@ -124,7 +126,7 @@ func (c *Client) sendPostRequest(
 		return nil, err
 	}
 
-	err = azruntime.MarshalAsJSON(req, content)
+	err = c.attachContent(content, req)
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +176,7 @@ func (c *Client) sendPutRequest(
 		return nil, err
 	}
 
-	err = azruntime.MarshalAsJSON(req, content)
+	err = c.attachContent(content, req)
 	if err != nil {
 		return nil, err
 	}
@@ -249,6 +251,22 @@ func (c *Client) createRequest(
 	}
 
 	return req, nil
+}
+
+func (c *Client) attachContent(content interface{}, req *policy.Request) error {
+	switch v := content.(type) {
+	case []byte:
+		// If its a raw byte array, we can just set the body
+		req.SetBody(streaming.NopCloser(bytes.NewReader(v)), "application/json")
+	default:
+		// Otherwise, we need to marshal it
+		err := azruntime.MarshalAsJSON(req, content)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func (c *Client) executeAndEnsureSuccessResponse(request *policy.Request) (*http.Response, error) {

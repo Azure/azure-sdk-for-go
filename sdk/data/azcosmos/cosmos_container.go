@@ -180,7 +180,7 @@ func (c *ContainerClient) ReplaceThroughput(
 func (c *ContainerClient) CreateItem(
 	ctx context.Context,
 	partitionKey PartitionKey,
-	item interface{},
+	item []byte,
 	o *ItemOptions) (ItemResponse, error) {
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
@@ -225,7 +225,7 @@ func (c *ContainerClient) CreateItem(
 func (c *ContainerClient) UpsertItem(
 	ctx context.Context,
 	partitionKey PartitionKey,
-	item interface{},
+	item []byte,
 	o *ItemOptions) (ItemResponse, error) {
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,
@@ -276,7 +276,7 @@ func (c *ContainerClient) ReplaceItem(
 	ctx context.Context,
 	partitionKey PartitionKey,
 	itemId string,
-	item interface{},
+	item []byte,
 	o *ItemOptions) (ItemResponse, error) {
 	h := headerOptionsOverride{
 		partitionKey: &partitionKey,

@@ -12,7 +12,7 @@ type ContainerProperties struct {
 	// ID contains the unique id of the container.
 	ID string `json:"id"`
 	// ETag contains the entity etag of the container.
-	ETag azcore.ETag `json:"_etag,omitempty"`
+	ETag *azcore.ETag `json:"_etag,omitempty"`
 	// SelfLink contains the self-link of the container.
 	SelfLink string `json:"_self,omitempty"`
 	// ResourceID contains the resource id of the container.

@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -16,9 +17,12 @@ import (
 
 func TestThroughputResponseParsing(t *testing.T) {
 	properties := NewManualThroughputProperties(400)
+
+	etag := azcore.ETag("\"00000000-0000-0000-9b8c-8ea3e19601d7\"")
+
 	properties.offerId = "HFln"
 	properties.offerResourceId = "4SRTANCD3Dw="
-	properties.ETag = "\"00000000-0000-0000-9b8c-8ea3e19601d7\""
+	properties.ETag = &etag
 	jsonString, err := json.Marshal(&properties)
 	if err != nil {
 		t.Fatal(err)
@@ -59,8 +63,8 @@ func TestThroughputResponseParsing(t *testing.T) {
 		t.Fatalf("parsedResponse.ThroughputProperties.offerResourceId is %s, expected %s", parsedResponse.ThroughputProperties.offerResourceId, properties.offerResourceId)
 	}
 
-	if parsedResponse.ThroughputProperties.ETag != properties.ETag {
-		t.Fatalf("parsedResponse.ThroughputProperties.ETag is %s, expected %s", parsedResponse.ThroughputProperties.ETag, properties.ETag)
+	if *parsedResponse.ThroughputProperties.ETag != *properties.ETag {
+		t.Fatalf("parsedResponse.ThroughputProperties.ETag is %s, expected %s", *parsedResponse.ThroughputProperties.ETag, *properties.ETag)
 	}
 
 	if parsedResponse.ActivityId != "someActivityId" {
@@ -79,10 +83,11 @@ func TestThroughputResponseParsing(t *testing.T) {
 func TestThroughputResponseParsingWithPreviousRU(t *testing.T) {
 	var queryRequestCharge float32 = 10.0
 
+	etag := azcore.ETag("\"00000000-0000-0000-9b8c-8ea3e19601d7\"")
 	properties := NewManualThroughputProperties(400)
 	properties.offerId = "HFln"
 	properties.offerResourceId = "4SRTANCD3Dw="
-	properties.ETag = "\"00000000-0000-0000-9b8c-8ea3e19601d7\""
+	properties.ETag = &etag
 	jsonString, err := json.Marshal(&properties)
 	if err != nil {
 		t.Fatal(err)
@@ -124,8 +129,8 @@ func TestThroughputResponseParsingWithPreviousRU(t *testing.T) {
 		t.Fatalf("parsedResponse.ThroughputProperties.offerResourceId is %s, expected %s", parsedResponse.ThroughputProperties.offerResourceId, properties.offerResourceId)
 	}
 
-	if parsedResponse.ThroughputProperties.ETag != properties.ETag {
-		t.Fatalf("parsedResponse.ThroughputProperties.ETag is %s, expected %s", parsedResponse.ThroughputProperties.ETag, properties.ETag)
+	if *parsedResponse.ThroughputProperties.ETag != *properties.ETag {
+		t.Fatalf("parsedResponse.ThroughputProperties.ETag is %s, expected %s", *parsedResponse.ThroughputProperties.ETag, *properties.ETag)
 	}
 
 	if parsedResponse.ActivityId != "someActivityId" {

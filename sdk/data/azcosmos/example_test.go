@@ -84,7 +84,6 @@ func Example() {
 		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
 			Paths: []string{"/myPartitionKey"},
 		},
-		ETag: "someEtag",
 		IndexingPolicy: &azcosmos.IndexingPolicy{
 			IncludedPaths: []azcosmos.IncludedPath{},
 			ExcludedPaths: []azcosmos.ExcludedPath{},

@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
@@ -18,9 +19,10 @@ import (
 func TestContainerResponseParsing(t *testing.T) {
 	nowAsUnix := time.Now().Unix()
 
+	etag := azcore.ETag("etag")
 	properties := &ContainerProperties{
 		ID:           "someId",
-		ETag:         "someEtag",
+		ETag:         &etag,
 		SelfLink:     "someSelfLink",
 		ResourceID:   "someResourceId",
 		LastModified: nowAsUnix,
@@ -67,8 +69,8 @@ func TestContainerResponseParsing(t *testing.T) {
 		t.Errorf("Expected Id to be %s, but got %s", properties.ID, parsedResponse.ContainerProperties.ID)
 	}
 
-	if properties.ETag != parsedResponse.ContainerProperties.ETag {
-		t.Errorf("Expected ETag to be %s, but got %s", properties.ETag, parsedResponse.ContainerProperties.ETag)
+	if *properties.ETag != *parsedResponse.ContainerProperties.ETag {
+		t.Errorf("Expected ETag to be %s, but got %s", *properties.ETag, *parsedResponse.ContainerProperties.ETag)
 	}
 
 	if properties.SelfLink != parsedResponse.ContainerProperties.SelfLink {

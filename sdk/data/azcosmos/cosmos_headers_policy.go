@@ -21,15 +21,11 @@ type headerOptionsOverride struct {
 func (p *headerPolicies) Do(req *policy.Request) (*http.Response, error) {
 	o := pipelineRequestOptions{}
 	if req.OperationValue(&o) {
+		enableContentResponseOnWrite := p.enableContentResponseOnWrite
+
 		if o.headerOptionsOverride != nil {
-			if o.isWriteOperation {
-				enableContentResponseOnWrite := p.enableContentResponseOnWrite
-				if o.headerOptionsOverride.enableContentResponseOnWrite != nil {
-					enableContentResponseOnWrite = *o.headerOptionsOverride.enableContentResponseOnWrite
-				}
-				if !enableContentResponseOnWrite {
-					req.Raw().Header.Set(cosmosHeaderPrefer, cosmosHeaderValuesPreferMinimal)
-				}
+			if o.headerOptionsOverride.enableContentResponseOnWrite != nil {
+				enableContentResponseOnWrite = *o.headerOptionsOverride.enableContentResponseOnWrite
 			}
 
 			if o.headerOptionsOverride.partitionKey != nil {
@@ -39,6 +35,10 @@ func (p *headerPolicies) Do(req *policy.Request) (*http.Response, error) {
 				}
 				req.Raw().Header.Add(cosmosHeaderPartitionKey, string(pkAsString))
 			}
+		}
+
+		if o.isWriteOperation && !enableContentResponseOnWrite {
+			req.Raw().Header.Add(cosmosHeaderPrefer, cosmosHeaderValuesPreferMinimal)
 		}
 	}
 

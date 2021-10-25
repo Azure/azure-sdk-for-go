@@ -15,7 +15,7 @@ import (
 )
 
 type (
-	// ReceivedMessage is a received message from a Client.NewReceiver() or Client.NewProcessor().
+	// ReceivedMessage is a received message from a Client.NewReceiver().
 	ReceivedMessage struct {
 		Message
 

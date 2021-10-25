@@ -14,7 +14,7 @@
         "Content-Length": "26",
         "Content-Type": "application/json",
         "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 25 Oct 2021 15:43:27 GMT"
+        "x-ms-date": "Mon, 25 Oct 2021 17:52:51 GMT"
       },
       "RequestBody": {
         "key_ops": [],
@@ -23,22 +23,22 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "675",
+        "Content-Length": "684",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 25 Oct 2021 15:43:27 GMT",
+        "Date": "Mon, 25 Oct 2021 17:52:50 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-region": "southcentralus",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "0112c6d1-e639-4edb-ac49-899c1d10aaf9",
+        "x-ms-request-id": "a7e5f550-c5b9-4af6-8705-9ee8be5f76b7",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://rosebud.vault.azure.net/keys/key398251057/aab7cf009ce649d6880995c0a02b93c7",
+          "kid": "https://rosebud.vault.azure.net/keys/key398251057/6dd7f663539945df87ad1055da2a93c7",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -48,15 +48,15 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "ohmOlqp4UTCopOd7VKGZgqKkCgzrVChpL63SrOGiBn60SaqZPpkk4_BetACkXZLGEyX7iRNV1xQTtc1i5Y-j2ZRKMzdg5LfDjVbKHTGrtmd421wUVokb3ejP-66ffOknn2RcUYx85fcxj0XkuP3a5ZhdHy2wIDSWtenqd_DW2M0Ma49SHcq1nG0-u_Xt8oE5USavSZePX7niPYZKRXQx7EfkuwbngsU-ALaQJFycJHoGSWsUg0URV3iXpz5Dd4_d65OiF1fAKjS3svsPc9nD349DVtYlxCwUcLCwDCWjMPl9j5F7BSggkYYQINIFUuWx8jgf8gdmzzlDdXK59RdgpQ",
+          "n": "2suT-86awJwd7IhAPqBfJC6LcgKQpuodLrtoR00yEsiEuFFzP48sHhlz5f_06XrDGeIjS2Q-9t1HbfdAx4JEliSo4rTDK4LBsIgdkklsbT3CS48qIstzd3MZrSMMhGOREEVv8eYPzCJo4ggxwFXPeJDskSzwbn_meaWOMnTr7acAW5tOpP-VDaqtadmOBH_YvRl9MWYnQefrjVD_IzjRY_fMd-AdzSaXd6FoUCAwxOmi0ZXY7FiD6rGBPqBaKCKI2cqu9BN97c2EcO1xbb3kGHAFQFHk3NS2P62lmaRdhGlfIAXUl9fK9Dki_BcMkisdYrhoQAC6Yyonuii2oxKdXQ",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
-          "created": 1635176607,
-          "updated": 1635176607,
-          "recoveryLevel": "Recoverable\u002BPurgeable",
-          "recoverableDays": 90
+          "created": 1635184371,
+          "updated": 1635184371,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
         }
       }
     },
@@ -72,28 +72,28 @@
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.19.0 (go1.17; Windows_NT)",
-        "x-ms-date": "Mon, 25 Oct 2021 15:43:28 GMT"
+        "x-ms-date": "Mon, 25 Oct 2021 17:52:52 GMT"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "675",
+        "Content-Length": "684",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Mon, 25 Oct 2021 15:43:27 GMT",
+        "Date": "Mon, 25 Oct 2021 17:52:51 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
+        "x-ms-keyvault-region": "southcentralus",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "929faca2-1d41-4dcf-9650-80a7019dc6b0",
+        "x-ms-request-id": "8f2d8a65-1a96-444d-90fd-0104daa49104",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://rosebud.vault.azure.net/keys/key398251057/aab7cf009ce649d6880995c0a02b93c7",
+          "kid": "https://rosebud.vault.azure.net/keys/key398251057/6dd7f663539945df87ad1055da2a93c7",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -103,15 +103,15 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "ohmOlqp4UTCopOd7VKGZgqKkCgzrVChpL63SrOGiBn60SaqZPpkk4_BetACkXZLGEyX7iRNV1xQTtc1i5Y-j2ZRKMzdg5LfDjVbKHTGrtmd421wUVokb3ejP-66ffOknn2RcUYx85fcxj0XkuP3a5ZhdHy2wIDSWtenqd_DW2M0Ma49SHcq1nG0-u_Xt8oE5USavSZePX7niPYZKRXQx7EfkuwbngsU-ALaQJFycJHoGSWsUg0URV3iXpz5Dd4_d65OiF1fAKjS3svsPc9nD349DVtYlxCwUcLCwDCWjMPl9j5F7BSggkYYQINIFUuWx8jgf8gdmzzlDdXK59RdgpQ",
+          "n": "2suT-86awJwd7IhAPqBfJC6LcgKQpuodLrtoR00yEsiEuFFzP48sHhlz5f_06XrDGeIjS2Q-9t1HbfdAx4JEliSo4rTDK4LBsIgdkklsbT3CS48qIstzd3MZrSMMhGOREEVv8eYPzCJo4ggxwFXPeJDskSzwbn_meaWOMnTr7acAW5tOpP-VDaqtadmOBH_YvRl9MWYnQefrjVD_IzjRY_fMd-AdzSaXd6FoUCAwxOmi0ZXY7FiD6rGBPqBaKCKI2cqu9BN97c2EcO1xbb3kGHAFQFHk3NS2P62lmaRdhGlfIAXUl9fK9Dki_BcMkisdYrhoQAC6Yyonuii2oxKdXQ",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
-          "created": 1635176607,
-          "updated": 1635176607,
-          "recoveryLevel": "Recoverable\u002BPurgeable",
-          "recoverableDays": 90
+          "created": 1635184371,
+          "updated": 1635184371,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
         }
       }
     }

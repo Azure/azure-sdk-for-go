@@ -65,7 +65,7 @@ func TestCreateKeyRSA(t *testing.T) {
 			stop := startTest(t)
 			defer stop()
 
-			client, err := createClient(t)
+			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			key, err := createRandomName(t, "key")
@@ -94,7 +94,7 @@ func TestCreateECKey(t *testing.T) {
 			stop := startTest(t)
 			defer stop()
 
-			client, err := createClient(t)
+			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			key, err := createRandomName(t, "key")
@@ -112,14 +112,14 @@ func TestCreateECKey(t *testing.T) {
 func TestCreateOCTKey(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			if testType == HSMTEST {
-				t.Skip("HSM NOT READY")
+			if testType == REGULARTEST {
+				t.Skip("OCT Key is HSM only")
 			}
 			t.Skipf("OCT Key is HSM only")
 			stop := startTest(t)
 			defer stop()
 
-			client, err := createClient(t)
+			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			key, err := createRandomName(t, "key")
@@ -143,7 +143,7 @@ func TestListKeys(t *testing.T) {
 			stop := startTest(t)
 			defer stop()
 
-			client, err := createClient(t)
+			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			for i := 0; i < 4; i++ {
@@ -184,7 +184,7 @@ func TestGetKey(t *testing.T) {
 			stop := startTest(t)
 			defer stop()
 
-			client, err := createClient(t)
+			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			key, err := createRandomName(t, "key")
@@ -209,7 +209,7 @@ func TestDeleteKey(t *testing.T) {
 			stop := startTest(t)
 			defer stop()
 
-			client, err := createClient(t)
+			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			key, err := createRandomName(t, "key")
@@ -254,7 +254,7 @@ func TestBackupKey(t *testing.T) {
 			stop := startTest(t)
 			defer stop()
 
-			client, err := createClient(t)
+			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			key, err := createRandomName(t, "backup-key")
@@ -316,7 +316,7 @@ func TestRecoverDeletedKey(t *testing.T) {
 			stop := startTest(t)
 			defer stop()
 
-			client, err := createClient(t)
+			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			key, err := createRandomName(t, "key")
@@ -355,7 +355,7 @@ func TestUpdateKeyProperties(t *testing.T) {
 			stop := startTest(t)
 			defer stop()
 
-			client, err := createClient(t)
+			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			key, err := createRandomName(t, "key")
@@ -394,7 +394,7 @@ func TestListDeletedKeys(t *testing.T) {
 			stop := startTest(t)
 			defer stop()
 
-			client, err := createClient(t)
+			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			key, err := createRandomName(t, "list-key0")
@@ -450,7 +450,7 @@ func TestListKeyVersions(t *testing.T) {
 			stop := startTest(t)
 			defer stop()
 
-			client, err := createClient(t)
+			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			key, err := createRandomName(t, "key")
@@ -484,7 +484,7 @@ func TestImportKey(t *testing.T) {
 			stop := startTest(t)
 			defer stop()
 
-			client, err := createClient(t)
+			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			r := RSA
@@ -511,14 +511,14 @@ func TestImportKey(t *testing.T) {
 func TestGetRandomBytes(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			if testType == HSMTEST {
-				t.Skip("HSM NOT READY")
+			if testType == REGULARTEST {
+				t.Skip("Managed HSM Only")
 			}
-			t.Skip("Managed HSM Only")
+			t.Skip("HSM Tests not ready yet")
 			stop := startTest(t)
 			defer stop()
 
-			client, err := createClient(t)
+			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			resp, err := client.GetRandomBytes(ctx, to.Int32Ptr(100), nil)
@@ -537,7 +537,7 @@ func TestRotateKey(t *testing.T) {
 			stop := startTest(t)
 			defer stop()
 
-			client, err := createClient(t)
+			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			key, err := createRandomName(t, "key")
@@ -564,7 +564,7 @@ func TestGetKeyRotationPolicy(t *testing.T) {
 			stop := startTest(t)
 			defer stop()
 
-			client, err := createClient(t)
+			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			key, err := createRandomName(t, "key")
@@ -589,7 +589,7 @@ func TestReleaseKey(t *testing.T) {
 			stop := startTest(t)
 			defer stop()
 
-			client, err := createClient(t)
+			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			key, err := createRandomName(t, "key")
@@ -631,7 +631,7 @@ func TestUpdateKeyRotationPolicy(t *testing.T) {
 			stop := startTest(t)
 			defer stop()
 
-			client, err := createClient(t)
+			client, err := createClient(t, testType)
 			require.NoError(t, err)
 
 			key, err := createRandomName(t, "key")

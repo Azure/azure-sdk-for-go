@@ -10,10 +10,9 @@ package armcompute
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // AvailabilitySetsCreateOrUpdateResponse contains the response from method AvailabilitySets.CreateOrUpdate.
@@ -1140,6 +1139,42 @@ type CloudServicesUpdateResponse struct {
 // CloudServicesUpdateResult contains the result from method CloudServices.Update.
 type CloudServicesUpdateResult struct {
 	CloudService
+}
+
+// CommunityGalleriesGetResponse contains the response from method CommunityGalleries.Get.
+type CommunityGalleriesGetResponse struct {
+	CommunityGalleriesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CommunityGalleriesGetResult contains the result from method CommunityGalleries.Get.
+type CommunityGalleriesGetResult struct {
+	CommunityGallery
+}
+
+// CommunityGalleryImageVersionsGetResponse contains the response from method CommunityGalleryImageVersions.Get.
+type CommunityGalleryImageVersionsGetResponse struct {
+	CommunityGalleryImageVersionsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CommunityGalleryImageVersionsGetResult contains the result from method CommunityGalleryImageVersions.Get.
+type CommunityGalleryImageVersionsGetResult struct {
+	CommunityGalleryImageVersion
+}
+
+// CommunityGalleryImagesGetResponse contains the response from method CommunityGalleryImages.Get.
+type CommunityGalleryImagesGetResponse struct {
+	CommunityGalleryImagesGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// CommunityGalleryImagesGetResult contains the result from method CommunityGalleryImages.Get.
+type CommunityGalleryImagesGetResult struct {
+	CommunityGalleryImage
 }
 
 // DedicatedHostGroupsCreateOrUpdateResponse contains the response from method DedicatedHostGroups.CreateOrUpdate.

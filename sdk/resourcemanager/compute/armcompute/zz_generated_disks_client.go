@@ -11,14 +11,13 @@ package armcompute
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // DisksClient contains the methods for the Disks group.

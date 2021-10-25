@@ -10,10 +10,9 @@ package armcompute
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // APIEntityReference - The API entity reference.
@@ -1265,6 +1264,184 @@ type CloudServicesUpdateDomainGetUpdateDomainOptions struct {
 
 // CloudServicesUpdateDomainListUpdateDomainsOptions contains the optional parameters for the CloudServicesUpdateDomain.ListUpdateDomains method.
 type CloudServicesUpdateDomainListUpdateDomainsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CommunityGalleriesGetOptions contains the optional parameters for the CommunityGalleries.Get method.
+type CommunityGalleriesGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CommunityGallery - Specifies information about the Community Gallery that you want to create or update.
+type CommunityGallery struct {
+	PirCommunityGalleryResource
+}
+
+// CommunityGalleryIdentifier - The identifier information of community gallery.
+type CommunityGalleryIdentifier struct {
+	// The unique id of this community gallery.
+	UniqueID *string `json:"uniqueId,omitempty"`
+}
+
+// CommunityGalleryImage - Specifies information about the gallery image definition that you want to create or update.
+type CommunityGalleryImage struct {
+	PirCommunityGalleryResource
+	// Describes the properties of a gallery image definition.
+	Properties *CommunityGalleryImageProperties `json:"properties,omitempty"`
+}
+
+// CommunityGalleryImageProperties - Describes the properties of a gallery image definition.
+type CommunityGalleryImageProperties struct {
+	// REQUIRED; This is the gallery image definition identifier.
+	Identifier *GalleryImageIdentifier `json:"identifier,omitempty"`
+
+	// REQUIRED; This property allows the user to specify whether the virtual machines created under this image are 'Generalized' or 'Specialized'.
+	OSState *OperatingSystemStateTypes `json:"osState,omitempty"`
+
+	// REQUIRED; This property allows you to specify the type of the OS that is included in the disk when creating a VM from a managed image.
+	// Possible values are:
+	// Windows
+	// Linux
+	OSType *OperatingSystemTypes `json:"osType,omitempty"`
+
+	// Describes the disallowed disk types.
+	Disallowed *Disallowed `json:"disallowed,omitempty"`
+
+	// The end of life date of the gallery image definition. This property can be used for decommissioning purposes. This property is updatable.
+	EndOfLifeDate *time.Time `json:"endOfLifeDate,omitempty"`
+
+	// A list of gallery image features.
+	Features []*GalleryImageFeature `json:"features,omitempty"`
+
+	// The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
+	HyperVGeneration *HyperVGeneration `json:"hyperVGeneration,omitempty"`
+
+	// Describes the gallery image definition purchase plan. This is used by marketplace images.
+	PurchasePlan *ImagePurchasePlan `json:"purchasePlan,omitempty"`
+
+	// The properties describe the recommended machine configuration for this Image Definition. These properties are updatable.
+	Recommended *RecommendedMachineConfiguration `json:"recommended,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CommunityGalleryImageProperties.
+func (c CommunityGalleryImageProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "disallowed", c.Disallowed)
+	populate(objectMap, "endOfLifeDate", (*timeRFC3339)(c.EndOfLifeDate))
+	populate(objectMap, "features", c.Features)
+	populate(objectMap, "hyperVGeneration", c.HyperVGeneration)
+	populate(objectMap, "identifier", c.Identifier)
+	populate(objectMap, "osState", c.OSState)
+	populate(objectMap, "osType", c.OSType)
+	populate(objectMap, "purchasePlan", c.PurchasePlan)
+	populate(objectMap, "recommended", c.Recommended)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CommunityGalleryImageProperties.
+func (c *CommunityGalleryImageProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "disallowed":
+			err = unpopulate(val, &c.Disallowed)
+			delete(rawMsg, key)
+		case "endOfLifeDate":
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			c.EndOfLifeDate = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "features":
+			err = unpopulate(val, &c.Features)
+			delete(rawMsg, key)
+		case "hyperVGeneration":
+			err = unpopulate(val, &c.HyperVGeneration)
+			delete(rawMsg, key)
+		case "identifier":
+			err = unpopulate(val, &c.Identifier)
+			delete(rawMsg, key)
+		case "osState":
+			err = unpopulate(val, &c.OSState)
+			delete(rawMsg, key)
+		case "osType":
+			err = unpopulate(val, &c.OSType)
+			delete(rawMsg, key)
+		case "purchasePlan":
+			err = unpopulate(val, &c.PurchasePlan)
+			delete(rawMsg, key)
+		case "recommended":
+			err = unpopulate(val, &c.Recommended)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// CommunityGalleryImageVersion - Specifies information about the gallery image version that you want to create or update.
+type CommunityGalleryImageVersion struct {
+	PirCommunityGalleryResource
+	// Describes the properties of a gallery image version.
+	Properties *CommunityGalleryImageVersionProperties `json:"properties,omitempty"`
+}
+
+// CommunityGalleryImageVersionProperties - Describes the properties of a gallery image version.
+type CommunityGalleryImageVersionProperties struct {
+	// The end of life date of the gallery image version Definition. This property can be used for decommissioning purposes. This property is updatable.
+	EndOfLifeDate *time.Time `json:"endOfLifeDate,omitempty"`
+
+	// The published date of the gallery image version Definition. This property can be used for decommissioning purposes. This property is updatable.
+	PublishedDate *time.Time `json:"publishedDate,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CommunityGalleryImageVersionProperties.
+func (c CommunityGalleryImageVersionProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "endOfLifeDate", (*timeRFC3339)(c.EndOfLifeDate))
+	populate(objectMap, "publishedDate", (*timeRFC3339)(c.PublishedDate))
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CommunityGalleryImageVersionProperties.
+func (c *CommunityGalleryImageVersionProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return err
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "endOfLifeDate":
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			c.EndOfLifeDate = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		case "publishedDate":
+			var aux timeRFC3339
+			err = unpopulate(val, &aux)
+			c.PublishedDate = (*time.Time)(&aux)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// CommunityGalleryImageVersionsGetOptions contains the optional parameters for the CommunityGalleryImageVersions.Get method.
+type CommunityGalleryImageVersionsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CommunityGalleryImagesGetOptions contains the optional parameters for the CommunityGalleryImages.Get method.
+type CommunityGalleryImagesGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5043,6 +5220,21 @@ type PatchSettings struct {
 	// AutomaticByPlatform - the virtual machine will automatically updated by the platform. The properties provisionVMAgent and WindowsConfiguration.enableAutomaticUpdates
 	// must be true
 	PatchMode *WindowsVMGuestPatchMode `json:"patchMode,omitempty"`
+}
+
+// PirCommunityGalleryResource - Base information about the community gallery resource in pir.
+type PirCommunityGalleryResource struct {
+	// The identifier information of community gallery.
+	Identifier *CommunityGalleryIdentifier `json:"identifier,omitempty"`
+
+	// READ-ONLY; Resource location
+	Location *string `json:"location,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource name
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Resource type
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // PirResource - The Resource model definition.
@@ -11278,7 +11470,7 @@ type VirtualMachinesBeginDeallocateOptions struct {
 
 // VirtualMachinesBeginDeleteOptions contains the optional parameters for the VirtualMachines.BeginDelete method.
 type VirtualMachinesBeginDeleteOptions struct {
-	// Optional parameter to force delete virtual machines.(Feature in Preview)
+	// Optional parameter to force delete virtual machines.
 	ForceDeletion *bool
 }
 

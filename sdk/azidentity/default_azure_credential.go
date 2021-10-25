@@ -66,7 +66,7 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		errMsg += err.Error()
 	}
 
-	cliCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TenantID: options.TenantID})
+	cliCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TenantID: cp.TenantID})
 	if err == nil {
 		creds = append(creds, cliCred)
 	} else {

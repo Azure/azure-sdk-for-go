@@ -64,9 +64,12 @@ func NewAzureCLICredential(options *AzureCLICredentialOptions) (*AzureCLICredent
 // opts: TokenRequestOptions contains the list of scopes for which the token will have access.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *AzureCLICredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
-	// The following code will remove the /.default suffix from the scope passed into the method since AzureCLI expect a resource string instead of a scope string
-	opts.Scopes[0] = strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
-	at, err := c.authenticate(ctx, opts.Scopes[0])
+	if len(opts.Scopes) != 1 {
+		return nil, errors.New("this credential requires exactly one scope per token request")
+	}
+	// CLI expects an AAD v1 resource, not a v2 scope
+	scope := strings.TrimSuffix(opts.Scopes[0], defaultSuffix)
+	at, err := c.authenticate(ctx, scope)
 	if err != nil {
 		addGetTokenFailureLogs("Azure CLI Credential", err, true)
 		return nil, err

@@ -16,7 +16,7 @@
   },
   "initOptions": {
     "initScript": {
-      "path": "sh ./initScript.sh",
+      "path": "sh ./eng/initScript.sh",
       "stderr": {
         "scriptWarning": false
       }

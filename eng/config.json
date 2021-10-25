@@ -1,36 +1,36 @@
 {
     "Packages": [
         {
-            "Name": "azidentity",
-            "CoverageGoal": 0.68
-        },
-        {
-            "Name": "azcosmos",
-            "CoverageGoal": 0.40
+            "Name": "azblob",
+            "CoverageGoal": 0.45
         },
         {
             "Name": "azcore",
             "CoverageGoal": 0.85
         },
         {
-            "Name": "internal",
-            "CoverageGoal": 0.70
+            "Name": "azcosmos",
+            "CoverageGoal": 0.40
+        },
+        {
+            "Name": "azidentity",
+            "CoverageGoal": 0.68
+        },
+        {
+            "Name": "azsecrets",
+            "CoverageGoal": 0.76
         },
         {
             "Name": "data",
             "CoverageGoal": 0.62
         },
         {
-            "Name": "azblob",
-            "CoverageGoal": 0.45
+            "Name": "eng/tools",
+            "CoverageGoal": 0.0
         },
         {
-            "Name": "messaging",
-            "CoverageGoal": 0.10
-        }, 
-        {
-            "Name": "azsecrets",
-            "CoverageGoal": 0.76
+            "Name": "internal",
+            "CoverageGoal": 0.70
         },
         {
             "Name": "messaging",

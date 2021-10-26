@@ -70,10 +70,10 @@ func createClientForRecording(t *testing.T, tableName string, serviceURL string,
 	client, err := recording.GetHTTPClient(t)
 	require.NoError(t, err)
 
-	options := &ClientOptions{
+	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
 		PerCallPolicies: []policy.Policy{p},
 		Transport:       client,
-	}
+	}}
 	if !strings.HasSuffix(serviceURL, "/") && tableName != "" {
 		serviceURL += "/"
 	}
@@ -87,10 +87,10 @@ func createClientForRecordingWithNoCredential(t *testing.T, tableName string, se
 	client, err := recording.GetHTTPClient(t)
 	require.NoError(t, err)
 
-	options := &ClientOptions{
+	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
 		PerCallPolicies: []policy.Policy{p},
 		Transport:       client,
-	}
+	}}
 	if !strings.HasSuffix(serviceURL, "/") && tableName != "" {
 		serviceURL += "/"
 	}
@@ -104,10 +104,10 @@ func createServiceClientForRecording(t *testing.T, serviceURL string, cred Share
 	client, err := recording.GetHTTPClient(t)
 	require.NoError(t, err)
 
-	options := &ClientOptions{
+	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
 		PerCallPolicies: []policy.Policy{p},
 		Transport:       client,
-	}
+	}}
 	return NewServiceClientWithSharedKey(serviceURL, &cred, options)
 }
 
@@ -116,10 +116,10 @@ func createServiceClientForRecordingWithNoCredential(t *testing.T, serviceURL st
 	client, err := recording.GetHTTPClient(t)
 	require.NoError(t, err)
 
-	options := &ClientOptions{
+	options := &ClientOptions{ClientOptions: azcore.ClientOptions{
 		PerCallPolicies: []policy.Policy{p},
 		Transport:       client,
-	}
+	}}
 	return NewServiceClientWithNoCredential(serviceURL, options)
 }
 
@@ -134,7 +134,7 @@ func initClientTest(t *testing.T, service string, createTable bool) (*Client, fu
 		require.NoError(t, err)
 	}
 
-	err = recording.StartRecording(t, pathToPackage, nil)
+	err = recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
 
 	if createTable {
@@ -145,7 +145,7 @@ func initClientTest(t *testing.T, service string, createTable bool) (*Client, fu
 	return client, func() {
 		_, err = client.Delete(context.Background(), nil)
 		require.NoError(t, err)
-		err = recording.StopRecording(t, nil)
+		err = recording.Stop(t, nil)
 		require.NoError(t, err)
 	}
 }
@@ -161,11 +161,11 @@ func initServiceTest(t *testing.T, service string) (*ServiceClient, func()) {
 		require.NoError(t, err)
 	}
 
-	err = recording.StartRecording(t, pathToPackage, nil)
+	err = recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
 
 	return client, func() {
-		err = recording.StopRecording(t, nil)
+		err = recording.Stop(t, nil)
 		require.NoError(t, err)
 	}
 }
@@ -184,8 +184,8 @@ func getSharedKeyCredential(t *testing.T) (*SharedKeyCredential, error) {
 		return NewSharedKeyCredential("accountName", "daaaaaaaaaabbbbbbbbbbcccccccccccccccccccdddddddddddddddddddeeeeeeeeeeefffffffffffggggg==")
 	}
 
-	accountName := recording.GetEnvVariable(t, "TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
-	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_COSMOS_ACCOUNT_KEY", "fakeAccountKey")
+	accountName := recording.GetEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
+	accountKey := recording.GetEnvVariable("TABLES_PRIMARY_COSMOS_ACCOUNT_KEY", "fakeAccountKey")
 
 	return NewSharedKeyCredential(accountName, accountKey)
 }
@@ -193,8 +193,8 @@ func getSharedKeyCredential(t *testing.T) (*SharedKeyCredential, error) {
 func createStorageClient(t *testing.T) (*Client, error) {
 	var cred *SharedKeyCredential
 	var err error
-	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
-	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakestorageaccountkey")
+	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
+	accountKey := recording.GetEnvVariable("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakestorageaccountkey")
 
 	if recording.GetRecordMode() == "playback" {
 		cred, err = getSharedKeyCredential(t)
@@ -214,7 +214,7 @@ func createStorageClient(t *testing.T) (*Client, error) {
 
 func createCosmosClient(t *testing.T) (*Client, error) {
 	var cred *SharedKeyCredential
-	accountName := recording.GetEnvVariable(t, "TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
+	accountName := recording.GetEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
 	if recording.GetRecordMode() == "playback" {
 		accountName = "fakestorageaccount"
 	}
@@ -233,8 +233,8 @@ func createCosmosClient(t *testing.T) (*Client, error) {
 func createStorageServiceClient(t *testing.T) (*ServiceClient, error) {
 	var cred *SharedKeyCredential
 	var err error
-	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
-	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakestorageaccountkey")
+	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
+	accountKey := recording.GetEnvVariable("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakestorageaccountkey")
 
 	if recording.GetRecordMode() == "playback" {
 		cred, err = getSharedKeyCredential(t)
@@ -251,7 +251,7 @@ func createStorageServiceClient(t *testing.T) (*ServiceClient, error) {
 
 func createCosmosServiceClient(t *testing.T) (*ServiceClient, error) {
 	var cred *SharedKeyCredential
-	accountName := recording.GetEnvVariable(t, "TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
+	accountName := recording.GetEnvVariable("TABLES_COSMOS_ACCOUNT_NAME", "fakestorageaccount")
 	if recording.GetRecordMode() == "playback" {
 		accountName = "fakestorageaccount"
 	}

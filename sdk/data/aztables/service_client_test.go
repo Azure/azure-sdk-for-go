@@ -165,16 +165,16 @@ func TestGetStatistics(t *testing.T) {
 	var cred *SharedKeyCredential
 	var err error
 
-	err = recording.StartRecording(t, pathToPackage, nil)
+	err = recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
 	stop := func() {
-		err = recording.StopRecording(t, nil)
+		err = recording.Stop(t, nil)
 		require.NoError(t, err)
 	}
 	defer stop()
 
-	accountName := recording.GetEnvVariable(t, "TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
-	accountKey := recording.GetEnvVariable(t, "TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakeAccountKey")
+	accountName := recording.GetEnvVariable("TABLES_STORAGE_ACCOUNT_NAME", "fakestorageaccount")
+	accountKey := recording.GetEnvVariable("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY", "fakeAccountKey")
 
 	if recording.GetRecordMode() == "playback" {
 		cred, err = NewSharedKeyCredential("fakestorageaccount", "fakeAccountKey==")

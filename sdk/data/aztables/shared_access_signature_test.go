@@ -56,11 +56,11 @@ func TestSASServiceClient(t *testing.T) {
 	sasUrl, err := serviceClient.GetAccountSASToken(resources, permissions, start, expiry)
 	require.NoError(t, err)
 
-	err = recording.StartRecording(t, pathToPackage, nil)
+	err = recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
 	svcClient, err := createServiceClientForRecordingWithNoCredential(t, sasUrl)
 	require.NoError(t, err)
-	defer recording.StopRecording(t, nil) //nolint
+	defer recording.Stop(t, nil) //nolint
 
 	_, err = svcClient.CreateTable(context.Background(), tableName+"002", nil)
 	require.NoError(t, err)
@@ -102,11 +102,11 @@ func TestSASClient(t *testing.T) {
 	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
 	require.NoError(t, err)
 
-	err = recording.StartRecording(t, pathToPackage, nil)
+	err = recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
 	client, err := createClientForRecordingWithNoCredential(t, "", sasUrl)
 	require.NoError(t, err)
-	defer recording.StopRecording(t, nil) //nolint
+	defer recording.Stop(t, nil) //nolint
 
 	entity := map[string]string{
 		"PartitionKey": "pk001",
@@ -156,11 +156,11 @@ func TestSASClientReadOnly(t *testing.T) {
 	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
 	require.NoError(t, err)
 
-	err = recording.StartRecording(t, pathToPackage, nil)
+	err = recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
 	client, err = createClientForRecordingWithNoCredential(t, "", sasUrl)
 	require.NoError(t, err)
-	defer recording.StopRecording(t, nil) //nolint
+	defer recording.Stop(t, nil) //nolint
 
 	entity := map[string]string{
 		"PartitionKey": "pk001",
@@ -221,11 +221,11 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	sasUrl, err := c.GetTableSASToken(permissions, start, expiry)
 	require.NoError(t, err)
 
-	err = recording.StartRecording(t, pathToPackage, nil)
+	err = recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
 	client, err = createClientForRecordingWithNoCredential(t, "", sasUrl)
 	require.NoError(t, err)
-	defer recording.StopRecording(t, nil) //nolint
+	defer recording.Stop(t, nil) //nolint
 
 	entity := map[string]string{
 		"PartitionKey": "pk001",

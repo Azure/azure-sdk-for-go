@@ -58,6 +58,7 @@ func (ac *AdminClient) AddQueueWithProperties(ctx context.Context, properties *Q
 	return ac.createOrUpdateQueueImpl(ctx, properties, true)
 }
 
+// GetQueue gets a queue by name.
 func (ac *AdminClient) GetQueue(ctx context.Context, queueName string) (*QueueProperties, error) {
 	name, desc, err := ac.getQueueImpl(ctx, queueName)
 
@@ -76,19 +77,7 @@ func (ac *AdminClient) GetQueueRuntimeProperties(ctx context.Context, queueName 
 		return nil, err
 	}
 
-	return &QueueRuntimeProperties{
-		Name:                           name,
-		SizeInBytes:                    int64OrZero(desc.SizeInBytes),
-		CreatedAt:                      dateTimeToTime(desc.CreatedAt),
-		UpdatedAt:                      dateTimeToTime(desc.UpdatedAt),
-		AccessedAt:                     dateTimeToTime(desc.AccessedAt),
-		TotalMessageCount:              int64OrZero(desc.MessageCount),
-		ActiveMessageCount:             int32OrZero(desc.CountDetails.ActiveMessageCount),
-		DeadLetterMessageCount:         int32OrZero(desc.CountDetails.DeadLetterMessageCount),
-		ScheduledMessageCount:          int32OrZero(desc.CountDetails.ScheduledMessageCount),
-		TransferDeadLetterMessageCount: int32OrZero(desc.CountDetails.TransferDeadLetterMessageCount),
-		TransferMessageCount:           int32OrZero(desc.CountDetails.TransferMessageCount),
-	}, nil
+	return newQueueRuntimeProperties(name, desc), nil
 }
 
 // QueueExists checks if a queue exists.
@@ -116,6 +105,7 @@ func (ac *AdminClient) UpdateQueue(ctx context.Context, properties *QueuePropert
 	return ac.createOrUpdateQueueImpl(ctx, properties, false)
 }
 
+// DeleteQueue deletes a queue.
 func (ac *AdminClient) DeleteQueue(ctx context.Context, queueName string) (*http.Response, error) {
 	resp, err := ac.em.Delete(ctx, "/"+queueName)
 
@@ -126,7 +116,7 @@ func (ac *AdminClient) DeleteQueue(ctx context.Context, queueName string) (*http
 	return resp, nil
 }
 
-// ListQueuesOptions can be used to configure teh ListQueues method.
+// ListQueuesOptions can be used to configure the ListQueues method.
 type ListQueuesOptions struct {
 	// Top is the maximum size of each page of results.
 	Top int
@@ -147,7 +137,7 @@ type QueuePropertiesPager interface {
 	Err() error
 }
 
-// ListQueues lists all queues with an optional start point
+// ListQueues lists queues.
 func (ac *AdminClient) ListQueues(options *ListQueuesOptions) QueuePropertiesPager {
 	var pageSize int
 	var skip int
@@ -164,8 +154,42 @@ func (ac *AdminClient) ListQueues(options *ListQueuesOptions) QueuePropertiesPag
 	}
 }
 
-func (ac *AdminClient) ListQueuesRuntimeProperties() {
+// ListQueuesRuntimePropertiesOptions can be used to configure the ListQueuesRuntimeProperties method.
+type ListQueuesRuntimePropertiesOptions struct {
+	// Top is the maximum size of each page of results.
+	Top int
+	// Skip is the starting index for the paging operation.
+	Skip int
+}
 
+// QueueRuntimePropertiesPager provides iteration over ListQueueRuntimeProperties pages.
+type QueueRuntimePropertiesPager interface {
+	// NextPage returns true if the pager advanced to the next page.
+	// Returns false if there are no more pages or an error occurred.
+	NextPage(context.Context) bool
+
+	// PageResponse returns the current QueueRuntimeProperties.
+	PageResponse() []*QueueRuntimeProperties
+
+	// Err returns the last error encountered while paging.
+	Err() error
+}
+
+// ListQueuesRuntimeProperties lists runtime properties for queues.
+func (ac *AdminClient) ListQueuesRuntimeProperties(options *ListQueuesRuntimePropertiesOptions) QueueRuntimePropertiesPager {
+	var pageSize int
+	var skip int
+
+	if options != nil {
+		skip = options.Skip
+		pageSize = options.Top
+	}
+
+	return &queueRuntimePropertiesPager{
+		adminClient: ac,
+		pageSize:    pageSize,
+		skip:        skip,
+	}
 }
 
 // func (ac *AdminClient) GetNamespaceProperties() {}

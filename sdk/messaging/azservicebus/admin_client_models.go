@@ -67,6 +67,7 @@ type QueueProperties struct {
 	ForwardDeadLetteredMessagesTo *string
 }
 
+// QueueRuntimeProperties represent dynamic properties of a queue, such as the ActiveMessageCount.
 type QueueRuntimeProperties struct {
 	// Name is the name of the queue.
 	Name string

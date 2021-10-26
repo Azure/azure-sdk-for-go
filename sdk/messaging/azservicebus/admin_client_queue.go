@@ -71,13 +71,12 @@ type queuePropertiesPager struct {
 // NextPage returns true if the pager advanced to the next page.
 // Returns false if there are no more pages or an error occurred.
 func (p *queuePropertiesPager) NextPage(ctx context.Context) bool {
-	p.lastResponse, p.lastErr = p.adminClient.getQueuePage(ctx, p.pageSize, p.skip)
+	p.lastResponse, p.lastErr = p.getQueuePage(ctx)
 	p.skip += len(p.lastResponse)
-
 	return p.lastResponse != nil
 }
 
-// PageResponse returns the current QueueProperties.
+// PageResponse returns the current page.
 func (p *queuePropertiesPager) PageResponse() []*QueueProperties {
 	return p.lastResponse
 }
@@ -87,7 +86,82 @@ func (p *queuePropertiesPager) Err() error {
 	return p.lastErr
 }
 
-func (ac *AdminClient) getQueuePage(ctx context.Context, top int, skip int) ([]*QueueProperties, error) {
+func (p *queuePropertiesPager) getQueuePage(ctx context.Context) ([]*QueueProperties, error) {
+	var envelopes []atom.QueueEnvelope
+	envelopes, err := p.adminClient.getQueuePage(ctx, p.pageSize, p.skip)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var all []*QueueProperties
+
+	for _, env := range envelopes {
+		props, err := newQueueProperties(env.Title, &env.Content.QueueDescription)
+
+		if err != nil {
+			return nil, err
+		}
+
+		all = append(all, props)
+	}
+
+	return all, nil
+}
+
+// queueRuntimePropertiesPager provides iteration over QueueRuntimeProperties pages.
+type queueRuntimePropertiesPager struct {
+	adminClient *AdminClient
+
+	pageSize int
+	skip     int
+
+	lastErr      error
+	lastResponse []*QueueRuntimeProperties
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *queueRuntimePropertiesPager) NextPage(ctx context.Context) bool {
+	p.lastResponse, p.lastErr = p.getQueuePage(ctx)
+	p.skip += len(p.lastResponse)
+	return p.lastResponse != nil
+}
+
+// PageResponse returns the current page.
+func (p *queueRuntimePropertiesPager) PageResponse() []*QueueRuntimeProperties {
+	return p.lastResponse
+}
+
+// Err returns the last error encountered while paging.
+func (p *queueRuntimePropertiesPager) Err() error {
+	return p.lastErr
+}
+
+func (p *queueRuntimePropertiesPager) getQueuePage(ctx context.Context) ([]*QueueRuntimeProperties, error) {
+	var envelopes []atom.QueueEnvelope
+	envelopes, err := p.adminClient.getQueuePage(ctx, p.pageSize, p.skip)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var all []*QueueRuntimeProperties
+
+	for _, env := range envelopes {
+		runtimeProps := newQueueRuntimeProperties(env.Title, &env.Content.QueueDescription)
+
+		if err != nil {
+			return nil, err
+		}
+
+		all = append(all, runtimeProps)
+	}
+
+	return all, nil
+}
+
+func (ac *AdminClient) getQueuePage(ctx context.Context, top int, skip int) ([]atom.QueueEnvelope, error) {
 	fragment := "/$Resources/Queues?"
 
 	if top > 0 {
@@ -116,19 +190,7 @@ func (ac *AdminClient) getQueuePage(ctx context.Context, top int, skip int) ([]*
 		return nil, err
 	}
 
-	var all []*QueueProperties
-
-	for _, env := range feed.Entries {
-		props, err := newQueueProperties(env.Title, &env.Content.QueueDescription)
-
-		if err != nil {
-			return nil, err
-		}
-
-		all = append(all, props)
-	}
-
-	return all, nil
+	return feed.Entries, nil
 }
 
 func (ac *AdminClient) getQueueImpl(ctx context.Context, queueName string) (string, *atom.QueueDescription, error) {
@@ -239,6 +301,22 @@ func newQueueProperties(name string, desc *atom.QueueDescription) (*QueuePropert
 	}
 
 	return queuePropsResult, nil
+}
+
+func newQueueRuntimeProperties(name string, desc *atom.QueueDescription) *QueueRuntimeProperties {
+	return &QueueRuntimeProperties{
+		Name:                           name,
+		SizeInBytes:                    int64OrZero(desc.SizeInBytes),
+		CreatedAt:                      dateTimeToTime(desc.CreatedAt),
+		UpdatedAt:                      dateTimeToTime(desc.UpdatedAt),
+		AccessedAt:                     dateTimeToTime(desc.AccessedAt),
+		TotalMessageCount:              int64OrZero(desc.MessageCount),
+		ActiveMessageCount:             int32OrZero(desc.CountDetails.ActiveMessageCount),
+		DeadLetterMessageCount:         int32OrZero(desc.CountDetails.DeadLetterMessageCount),
+		ScheduledMessageCount:          int32OrZero(desc.CountDetails.ScheduledMessageCount),
+		TransferDeadLetterMessageCount: int32OrZero(desc.CountDetails.TransferDeadLetterMessageCount),
+		TransferMessageCount:           int32OrZero(desc.CountDetails.TransferMessageCount),
+	}
 }
 
 func dateTimeToTime(t *date.Time) time.Time {

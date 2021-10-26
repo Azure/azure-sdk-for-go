@@ -356,6 +356,68 @@ func TestAdminClient_getQueuePage(t *testing.T) {
 	require.False(t, pager.NextPage(context.Background()))
 }
 
+func TestAdminClient_ListQueuesRuntimeProperties(t *testing.T) {
+	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	require.NoError(t, err)
+
+	var expectedQueues []string
+	now := time.Now().UnixNano()
+
+	for i := 0; i < 3; i++ {
+		queueName := strings.ToLower(fmt.Sprintf("queue-%d-%X", i, now))
+		expectedQueues = append(expectedQueues, queueName)
+
+		_, err = adminClient.AddQueueWithProperties(context.Background(), &QueueProperties{
+			Name:             queueName,
+			MaxDeliveryCount: to.Int32Ptr(int32(i + 10)),
+		})
+		require.NoError(t, err)
+
+		defer adminClient.DeleteQueue(context.Background(), queueName)
+	}
+
+	// we skipped the first queue so it shouldn't come back in the results.
+	pager := adminClient.ListQueuesRuntimeProperties(nil)
+	all := map[string]*QueueRuntimeProperties{}
+	var allNames []string
+
+	for pager.NextPage(context.Background()) {
+		page := pager.PageResponse()
+
+		for _, props := range page {
+			_, exists := all[props.Name]
+			require.False(t, exists, "Each queue result should be unique")
+			all[props.Name] = props
+			allNames = append(allNames, props.Name)
+		}
+	}
+
+	require.NoError(t, pager.Err())
+
+	// sanity check - the queues we created exist and their deserialization is
+	// working.
+	for _, expectedQueue := range expectedQueues {
+		props, exists := all[expectedQueue]
+		require.True(t, exists)
+		require.NotEqualValues(t, time.Time{}, props.CreatedAt)
+	}
+
+	// grab the second to last item
+	pager = adminClient.ListQueuesRuntimeProperties(&ListQueuesRuntimePropertiesOptions{
+		Skip: len(allNames) - 2,
+		Top:  1,
+	})
+
+	require.True(t, pager.NextPage(context.Background()))
+	require.EqualValues(t, 1, len(pager.PageResponse()))
+	require.EqualValues(t, allNames[len(allNames)-2], pager.PageResponse()[0].Name)
+	require.NoError(t, pager.Err())
+
+	require.True(t, pager.NextPage(context.Background()))
+	require.EqualValues(t, allNames[len(allNames)-1], pager.PageResponse()[0].Name)
+	require.False(t, pager.NextPage(context.Background()))
+}
+
 func TestAdminClient_deserializeATOMQueueEnvelope(t *testing.T) {
 	reader, err := os.Open("testdata/queue_create_response.xml")
 	require.NoError(t, err)

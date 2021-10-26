@@ -4,4 +4,4 @@
 package azcosmos
 
 // serviceLibVersion is the semantic version (see http://semver.org) of this module.
-const serviceLibVersion = "v0.0.1" //nolint
+const serviceLibVersion = "v0.1.0" //nolint

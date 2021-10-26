@@ -398,10 +398,6 @@ func (mc *mgmtClient) RenewLocks(ctx context.Context, linkName string, lockToken
 	ctx, span := tracing.StartConsumerSpanFromContext(ctx, tracing.SpanRenewLock, Version)
 	defer span.End()
 
-	if len(lockTokens) == 0 {
-		return nil, errors.New("lockTokens was empty")
-	}
-
 	renewRequestMsg := &amqp.Message{
 		ApplicationProperties: map[string]interface{}{
 			"operation": "com.microsoft:renew-lock",

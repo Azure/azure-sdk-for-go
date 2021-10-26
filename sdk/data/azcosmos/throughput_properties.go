@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -18,9 +19,10 @@ const (
 )
 
 // ThroughputProperties describes the throughput configuration of a resource.
+// It must be initialized through the available constructors.
 type ThroughputProperties struct {
 	ETag         *azcore.ETag
-	LastModified int64
+	LastModified time.Time
 
 	version         string
 	offerType       string
@@ -92,13 +94,8 @@ func (tp *ThroughputProperties) MarshalJSON() ([]byte, error) {
 		buffer.WriteString(fmt.Sprintf(",\"_self\":\"%s\"", tp.selfLink))
 	}
 
-	if tp.LastModified > 0 {
-		buffer.WriteString(",\"_ts\":")
-		ts, err := json.Marshal(tp.LastModified)
-		if err != nil {
-			return nil, err
-		}
-		buffer.Write(ts)
+	if !tp.LastModified.IsZero() {
+		buffer.WriteString(fmt.Sprintf(",\"_ts\":%v", strconv.FormatInt(tp.LastModified.Unix(), 10)))
 	}
 
 	buffer.WriteString("}")
@@ -143,9 +140,11 @@ func (tp *ThroughputProperties) UnmarshalJSON(b []byte) error {
 	}
 
 	if ts, ok := attributes["_ts"]; ok {
-		if err := json.Unmarshal(ts, &tp.LastModified); err != nil {
+		var timestamp int64
+		if err := json.Unmarshal(ts, &timestamp); err != nil {
 			return err
 		}
+		tp.LastModified = time.Unix(timestamp, 0)
 	}
 
 	if id, ok := attributes["id"]; ok {
@@ -164,21 +163,32 @@ func (tp *ThroughputProperties) UnmarshalJSON(b []byte) error {
 }
 
 // ManualThroughput returns the provisioned throughput in manual mode.
-func (tp *ThroughputProperties) ManualThroughput() (int32, error) {
+func (tp *ThroughputProperties) ManualThroughput() (int32, bool) {
 	if tp.offer.Throughput == nil {
-		return 0, fmt.Errorf("offer is not a manual offer")
+		return 0, false
 	}
 
-	return *tp.offer.Throughput, nil
+	return *tp.offer.Throughput, true
 }
 
 // AutoscaleMaxThroughput returns the configured max throughput on autoscale mode.
-func (tp *ThroughputProperties) AutoscaleMaxThroughput() (int32, error) {
+func (tp *ThroughputProperties) AutoscaleMaxThroughput() (int32, bool) {
 	if tp.offer.AutoScale == nil {
-		return 0, fmt.Errorf("offer is not an autoscale offer")
+		return 0, false
 	}
 
-	return tp.offer.AutoScale.MaxThroughput, nil
+	return tp.offer.AutoScale.MaxThroughput, true
+}
+
+// AutoscaleIncrement returns the configured percent increment on autoscale mode.
+func (tp *ThroughputProperties) AutoscaleIncrement() (int32, bool) {
+	if tp.offer.AutoScale == nil ||
+		tp.offer.AutoScale.AutoscaleAutoUpgradeProperties == nil ||
+		tp.offer.AutoScale.AutoscaleAutoUpgradeProperties.ThroughputPolicy == nil {
+		return 0, false
+	}
+
+	return tp.offer.AutoScale.AutoscaleAutoUpgradeProperties.ThroughputPolicy.IncrementPercent, true
 }
 
 func (tp *ThroughputProperties) addHeadersToRequest(req *policy.Request) {

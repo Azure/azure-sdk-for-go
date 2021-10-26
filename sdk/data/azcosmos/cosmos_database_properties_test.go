@@ -7,14 +7,17 @@ import (
 	"encoding/json"
 	"testing"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 func TestDatabasePropertiesSerialization(t *testing.T) {
-	nowAsUnix := time.Now().Unix()
+	nowAsUnix := time.Unix(time.Now().Unix(), 0)
 
-	properties := &DatabaseProperties{
+	etag := azcore.ETag("someETag")
+	properties := DatabaseProperties{
 		ID:           "someId",
-		ETag:         "someEtag",
+		ETag:         &etag,
 		SelfLink:     "someSelfLink",
 		ResourceID:   "someResourceId",
 		LastModified: nowAsUnix,
@@ -35,8 +38,8 @@ func TestDatabasePropertiesSerialization(t *testing.T) {
 		t.Errorf("Expected otherProperties.Id to be %s, but got %s", properties.ID, otherProperties.ID)
 	}
 
-	if properties.ETag != otherProperties.ETag {
-		t.Errorf("Expected otherProperties.ETag to be %s, but got %s", properties.ETag, otherProperties.ETag)
+	if *properties.ETag != *otherProperties.ETag {
+		t.Errorf("Expected otherProperties.ETag to be %s, but got %s", *properties.ETag, *otherProperties.ETag)
 	}
 
 	if properties.SelfLink != otherProperties.SelfLink {

@@ -51,6 +51,12 @@
 * Credential options structs now embed `azcore.ClientOptions`. In addition to changing literal initialization
   syntax, this change renames `HTTPClient` fields to `Transport`.
 * Renamed `LogCredential` to `EventCredential`
+* `AzureCLICredential` no longer reads the environment variable `AZURE_CLI_PATH`
+* `NewManagedIdentityCredential` no longer reads environment variables `AZURE_CLIENT_ID` and
+  `AZURE_RESOURCE_ID`. Use `ManagedIdentityCredentialOptions.ID` instead.
+
+### Bugs Fixed
+* `AzureCLICredential.GetToken` no longer mutates its `opts.Scopes`
 
 ### Features Added
 * Added connection configuration options to `DefaultAzureCredentialOptions`

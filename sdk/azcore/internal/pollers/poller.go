@@ -169,9 +169,11 @@ func (l *Poller) FinalResponse(ctx context.Context, respType interface{}) (*http
 // PollUntilDone will handle the entire span of the polling operation until a terminal state is reached,
 // then return the final HTTP response for the polling operation and unmarshal the content of the payload
 // into the respType interface that is provided.
-// freq - the time to wait between polling intervals if the endpoint doesn't send a Retry-After header.
-//        A good starting value is 30 seconds.  Note that some resources might benefit from a different value.
+// freq - the time to wait between intervals in absence of a Retry-After header.  Minimum is one second.
 func (l *Poller) PollUntilDone(ctx context.Context, freq time.Duration, respType interface{}) (*http.Response, error) {
+	if freq < time.Second {
+		return nil, errors.New("polling frequency minimum is one second")
+	}
 	start := time.Now()
 	logPollUntilDoneExit := func(v interface{}) {
 		log.Writef(log.EventLRO, "END PollUntilDone() for %T: %v, total time: %s", l.lro, v, time.Since(start))

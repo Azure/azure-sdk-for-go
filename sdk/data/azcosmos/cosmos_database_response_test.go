@@ -10,17 +10,19 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
 func TestDatabaseResponseParsing(t *testing.T) {
-	nowAsUnix := time.Now().Unix()
+	nowAsUnix := time.Unix(time.Now().Unix(), 0)
 
-	properties := &DatabaseProperties{
+	etag := azcore.ETag("someETag")
+	properties := DatabaseProperties{
 		ID:           "someId",
-		ETag:         "someEtag",
+		ETag:         &etag,
 		SelfLink:     "someSelfLink",
 		ResourceID:   "someResourceId",
 		LastModified: nowAsUnix,
@@ -63,8 +65,8 @@ func TestDatabaseResponseParsing(t *testing.T) {
 		t.Errorf("Expected properties.Id to be %s, but got %s", properties.ID, parsedResponse.DatabaseProperties.ID)
 	}
 
-	if properties.ETag != parsedResponse.DatabaseProperties.ETag {
-		t.Errorf("Expected properties.ETag to be %s, but got %s", properties.ETag, parsedResponse.DatabaseProperties.ETag)
+	if *properties.ETag != *parsedResponse.DatabaseProperties.ETag {
+		t.Errorf("Expected properties.ETag to be %s, but got %s", *properties.ETag, *parsedResponse.DatabaseProperties.ETag)
 	}
 
 	if properties.SelfLink != parsedResponse.DatabaseProperties.SelfLink {

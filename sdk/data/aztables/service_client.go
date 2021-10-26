@@ -17,20 +17,20 @@ import (
 
 // A ServiceClient represents a client to the table service. It can be used to query the available tables, create/delete tables, and various other service level operations.
 type ServiceClient struct {
-	client  *generated.TableClient
-	service *generated.ServiceClient
-	cred    interface{}
+	client        *generated.TableClient
+	service       *generated.ServiceClient
+	cred          interface{}
 }
 
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
 func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil))
-	con := generated.NewConnection(serviceURL, conOptions)
+	con := generated.NewConnection(serviceURL, conOptions.toPolicyOptions())
 	return &ServiceClient{
-		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
-		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
-		cred:    cred,
+		client:        generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
+		service:       generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
+		cred:          cred,
 	}, nil
 }
 
@@ -41,7 +41,7 @@ func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions)
 	if isCosmosEndpoint(serviceURL) {
 		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
 	}
-	con := generated.NewConnection(serviceURL, conOptions)
+	con := generated.NewConnection(serviceURL, conOptions.toPolicyOptions())
 	return &ServiceClient{
 		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
 		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
@@ -52,7 +52,7 @@ func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions)
 func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, newSharedKeyCredPolicy(cred))
-	con := generated.NewConnection(serviceURL, conOptions)
+	con := generated.NewConnection(serviceURL, conOptions.toPolicyOptions())
 	return &ServiceClient{
 		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
 		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
@@ -60,17 +60,16 @@ func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential,
 	}, nil
 }
 
-func getConnectionOptions(serviceURL string, options *ClientOptions) *azcore.ClientOptions {
+func getConnectionOptions(serviceURL string, options *ClientOptions) *ClientOptions {
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	conOptions := options.getConnectionOptions()
 	if isCosmosEndpoint(serviceURL) {
-		conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
+		options.PerCallPolicies = append(options.PerCallPolicies, cosmosPatchTransformPolicy{})
 	}
-	conOptions.PerCallPolicies = append(conOptions.PerCallPolicies, options.PerCallPolicies...)
-	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, options.PerTryPolicies...)
-	return conOptions
+	options.PerCallPolicies = append(options.PerCallPolicies, options.PerCallPolicies...)
+	options.PerRetryPolicies = append(options.PerRetryPolicies, options.PerRetryPolicies...)
+	return options
 }
 
 // NewClient returns a pointer to a Client affinitized to the specified table name and initialized with the same serviceURL and credentials as this ServiceClient

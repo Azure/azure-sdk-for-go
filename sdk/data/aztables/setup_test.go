@@ -18,7 +18,7 @@ func TestMain(m *testing.M) {
 	if recording.GetRecordMode() == "record" {
 		for _, val := range []string{"TABLES_COSMOS_ACCOUNT_NAME", "TABLES_STORAGE_ACCOUNT_NAME"} {
 			account := os.Getenv(val)
-			err := recording.AddUriSanitizer("fakeaccount", account, nil)
+			err := recording.AddURISanitizer("fakeaccount", account, nil)
 			if err != nil {
 				panic(err)
 			}
@@ -34,4 +34,11 @@ func TestMain(m *testing.M) {
 
 	// 4. Error out if applicable
 	os.Exit(exitVal)
+
+	if recording.GetRecordMode() == "record" {
+		err := recording.ResetSanitizers(nil)
+		if err != nil {
+			panic(err)
+		}
+	}
 }

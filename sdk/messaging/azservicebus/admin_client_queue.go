@@ -1,0 +1,165 @@
+package azservicebus
+
+import (
+	"context"
+	"encoding/xml"
+	"errors"
+	"io"
+	"io/ioutil"
+	"net/http"
+
+	"github.com/Azure/azure-amqp-common-go/v3/auth"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/devigned/tab"
+)
+
+func (ac *AdminClient) createOrUpdateQueueImpl(ctx context.Context, props *QueueProperties, creating bool) (*QueueProperties, error) {
+	if props == nil {
+		return nil, errors.New("properties are required and cannot be nil")
+	}
+
+	reqBytes, mw, err := serializeQueueProperties(props, ac.em.TokenProvider())
+
+	if err != nil {
+		return nil, err
+	}
+
+	if !creating {
+		// an update requires the entity to already exist.
+		mw = append(mw, func(next atom.RestHandler) atom.RestHandler {
+			return func(ctx context.Context, req *http.Request) (*http.Response, error) {
+				req.Header.Set("If-Match", "*")
+				return next(ctx, req)
+			}
+		})
+	}
+
+	resp, err := ac.em.Put(ctx, "/"+props.Name, reqBytes, mw...)
+	defer atom.CloseRes(ctx, resp)
+
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return nil, err
+	}
+
+	atomResp, err := deserializeQueueEnvelope(resp.Body)
+
+	if err != nil {
+		tab.For(ctx).Error(err)
+		return nil, err
+	}
+
+	return newQueueProperties(props.Name, &atomResp.Content.QueueDescription)
+}
+
+func (ac *AdminClient) getQueueImpl(ctx context.Context, queueName string) (string, *atom.QueueDescription, error) {
+	ctx, span := tab.StartSpan(ctx, tracing.SpanGetEntity)
+	defer span.End()
+
+	resp, err := ac.em.Get(ctx, "/"+queueName)
+
+	if err != nil {
+		return "", nil, err
+	}
+
+	atomResp, err := deserializeQueueEnvelope(resp.Body)
+
+	if err != nil {
+		return "", nil, err
+	}
+
+	return atomResp.Title, &atomResp.Content.QueueDescription, nil
+}
+
+func deserializeQueueEnvelope(body io.Reader) (*atom.QueueEnvelope, error) {
+	b, err := ioutil.ReadAll(body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var atomResp atom.QueueEnvelope
+
+	if err := xml.Unmarshal(b, &atomResp); err != nil {
+		return nil, atom.FormatManagementError(b)
+	}
+
+	return &atomResp, nil
+}
+
+func serializeQueueProperties(props *QueueProperties, tokenProvider auth.TokenProvider) ([]byte, []atom.MiddlewareFunc, error) {
+	qpr := &atom.QueueDescription{
+		LockDuration:                        utils.DurationToStringPtr(props.LockDuration),
+		MaxSizeInMegabytes:                  props.MaxSizeInMegabytes,
+		RequiresDuplicateDetection:          props.RequiresDuplicateDetection,
+		RequiresSession:                     props.RequiresSession,
+		DefaultMessageTimeToLive:            utils.DurationToStringPtr(props.DefaultMessageTimeToLive),
+		DeadLetteringOnMessageExpiration:    props.DeadLetteringOnMessageExpiration,
+		DuplicateDetectionHistoryTimeWindow: utils.DurationToStringPtr(props.DuplicateDetectionHistoryTimeWindow),
+		MaxDeliveryCount:                    props.MaxDeliveryCount,
+		EnableBatchedOperations:             props.EnableBatchedOperations,
+		Status:                              (*atom.EntityStatus)(props.Status),
+		AutoDeleteOnIdle:                    utils.DurationToStringPtr(props.AutoDeleteOnIdle),
+		EnablePartitioning:                  props.EnablePartitioning,
+		ForwardTo:                           props.ForwardTo,
+		ForwardDeadLetteredMessagesTo:       props.ForwardDeadLetteredMessagesTo,
+	}
+
+	atomRequest, mw := atom.ConvertToQueueRequest(qpr, tokenProvider)
+
+	bytes, err := xml.MarshalIndent(atomRequest, "", "  ")
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return bytes, mw, nil
+}
+
+func newQueueProperties(name string, desc *atom.QueueDescription) (*QueueProperties, error) {
+	lockDuration, err := utils.ISO8601StringToDuration(desc.LockDuration)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defaultMessageTimeToLive, err := utils.ISO8601StringToDuration(desc.DefaultMessageTimeToLive)
+
+	if err != nil {
+		return nil, err
+	}
+
+	duplicateDetectionHistoryTimeWindow, err := utils.ISO8601StringToDuration(desc.DuplicateDetectionHistoryTimeWindow)
+
+	if err != nil {
+		return nil, err
+	}
+
+	autoDeleteOnIdle, err := utils.ISO8601StringToDuration(desc.AutoDeleteOnIdle)
+
+	if err != nil {
+		return nil, err
+	}
+
+	queuePropsResult := &QueueProperties{
+		Name:                                name,
+		LockDuration:                        lockDuration,
+		MaxSizeInMegabytes:                  desc.MaxSizeInMegabytes,
+		RequiresDuplicateDetection:          desc.RequiresDuplicateDetection,
+		RequiresSession:                     desc.RequiresSession,
+		DefaultMessageTimeToLive:            defaultMessageTimeToLive,
+		DeadLetteringOnMessageExpiration:    desc.DeadLetteringOnMessageExpiration,
+		DuplicateDetectionHistoryTimeWindow: duplicateDetectionHistoryTimeWindow,
+		MaxDeliveryCount:                    desc.MaxDeliveryCount,
+		EnableBatchedOperations:             desc.EnableBatchedOperations,
+		Status:                              (*EntityStatus)(desc.Status),
+		AutoDeleteOnIdle:                    autoDeleteOnIdle,
+		EnablePartitioning:                  desc.EnablePartitioning,
+		ForwardTo:                           desc.ForwardTo,
+		ForwardDeadLetteredMessagesTo:       desc.ForwardDeadLetteredMessagesTo,
+	}
+
+	return queuePropsResult, nil
+}

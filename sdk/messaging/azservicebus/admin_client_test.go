@@ -6,7 +6,6 @@ package azservicebus
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"testing"
 	"time"
@@ -30,7 +29,7 @@ func TestAdminClient_UsingIdentity(t *testing.T) {
 	require.NoError(t, err)
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
-	props, err := adminClient.CreateQueue(context.Background(), queueName)
+	props, err := adminClient.AddQueue(context.Background(), queueName)
 	require.NoError(t, err)
 	require.EqualValues(t, queueName, props.Name)
 
@@ -48,7 +47,7 @@ func TestAdminClient_QueueWithMaxValues(t *testing.T) {
 
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 
-	_, err = adminClient.CreateQueueWithProperties(context.Background(), &QueueProperties{
+	_, err = adminClient.AddQueueWithProperties(context.Background(), &QueueProperties{
 		Name:         queueName,
 		LockDuration: toDurationPtr(45 * time.Second),
 		// when you enable partitioning Service Bus will automatically create 16 partitions, each with the size
@@ -100,7 +99,7 @@ func TestAdminClient_Queue(t *testing.T) {
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 
 	es := EntityStatusReceiveDisabled
-	propsFromCreate, err := adminClient.CreateQueueWithProperties(context.Background(), &QueueProperties{
+	propsFromCreate, err := adminClient.AddQueueWithProperties(context.Background(), &QueueProperties{
 		Name:         queueName,
 		LockDuration: toDurationPtr(45 * time.Second),
 		// when you enable partitioning Service Bus will automatically create 16 partitions, each with the size
@@ -154,7 +153,7 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
 	forwardToQueueName := fmt.Sprintf("queue-fwd-%X", time.Now().UnixNano())
 
-	_, err = adminClient.CreateQueue(context.Background(), forwardToQueueName)
+	_, err = adminClient.AddQueue(context.Background(), forwardToQueueName)
 	require.NoError(t, err)
 
 	defer func() {
@@ -164,7 +163,7 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 
 	formatted := fmt.Sprintf("%s%s", adminClient.em.Host, forwardToQueueName)
 
-	propsFromCreate, err := adminClient.CreateQueueWithProperties(context.Background(), &QueueProperties{
+	propsFromCreate, err := adminClient.AddQueueWithProperties(context.Background(), &QueueProperties{
 		Name:                          queueName,
 		ForwardTo:                     &formatted,
 		ForwardDeadLetteredMessagesTo: &formatted,
@@ -204,11 +203,103 @@ func TestAdminClient_Queue_Forwarding(t *testing.T) {
 	require.EqualValues(t, "this message will be auto-forwarded", string(forwardedMessage.Body))
 }
 
-func TestAdminClient_deserializeATOMQueueEnvelope(t *testing.T) {
-	xmlBody, err := ioutil.ReadFile("testdata/queue_create_response.xml")
+func TestAdminClient_UpdateQueue(t *testing.T) {
+	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
-	queueProps, err := deserializeQueueEnvelope("myqueuename", xmlBody)
+	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
+	createdProps, err := adminClient.AddQueue(context.Background(), queueName)
+	require.NoError(t, err)
+
+	defer func() {
+		_, err := adminClient.DeleteQueue(context.Background(), queueName)
+		require.NoError(t, err)
+	}()
+
+	createdProps.MaxDeliveryCount = to.Int32Ptr(101)
+	updatedProps, err := adminClient.UpdateQueue(context.Background(), createdProps)
+	require.NoError(t, err)
+
+	require.EqualValues(t, 101, *updatedProps.MaxDeliveryCount)
+
+	// try changing a value that's not allowed
+	updatedProps.RequiresSession = to.BoolPtr(true)
+	updatedProps, err = adminClient.UpdateQueue(context.Background(), updatedProps)
+	require.Contains(t, err.Error(), "The value for the RequiresSession property of an existing Queue cannot be changed")
+	require.Nil(t, updatedProps)
+
+	createdProps.Name = "non-existent-queue"
+	updatedProps, err = adminClient.UpdateQueue(context.Background(), createdProps)
+	// a little awkward, we'll make these programatically inspectable as we add in better error handling.
+	require.Contains(t, err.Error(), "error code: 404")
+	require.Nil(t, updatedProps)
+}
+
+func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
+	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
+	require.NoError(t, err)
+
+	client, err := NewClientFromConnectionString(getConnectionString(t), nil)
+	require.NoError(t, err)
+	defer client.Close(context.Background())
+
+	queueName := fmt.Sprintf("queue-%X", time.Now().UnixNano())
+	_, err = adminClient.AddQueue(context.Background(), queueName)
+	require.NoError(t, err)
+
+	defer adminClient.DeleteQueue(context.Background(), queueName)
+
+	sender, err := client.NewSender(queueName)
+	require.NoError(t, err)
+
+	for i := 0; i < 3; i++ {
+		err = sender.SendMessage(context.Background(), &Message{
+			Body: []byte("hello"),
+		})
+		require.NoError(t, err)
+	}
+
+	sequenceNumbers, err := sender.ScheduleMessages(context.Background(), []SendableMessage{
+		&Message{Body: []byte("hello")},
+	}, time.Now().Add(2*time.Hour))
+	require.NoError(t, err)
+	require.NotEmpty(t, sequenceNumbers)
+
+	receiver, err := client.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 2, nil)
+	require.NoError(t, err)
+
+	require.NoError(t, receiver.DeadLetterMessage(context.Background(), messages[0], nil))
+
+	props, err := adminClient.GetQueueRuntimeProperties(context.Background(), queueName)
+	require.NoError(t, err)
+
+	require.EqualValues(t, queueName, props.Name)
+
+	require.EqualValues(t, 4, props.TotalMessageCount)
+
+	require.EqualValues(t, 2, props.ActiveMessageCount)
+	require.EqualValues(t, 1, props.DeadLetterMessageCount)
+	require.EqualValues(t, 1, props.ScheduledMessageCount)
+	require.EqualValues(t, 0, props.TransferDeadLetterMessageCount)
+	require.EqualValues(t, 0, props.TransferMessageCount)
+
+	require.Greater(t, props.SizeInBytes, int64(0))
+
+	require.NotEqual(t, time.Time{}, props.CreatedAt)
+	require.NotEqual(t, time.Time{}, props.UpdatedAt)
+	require.NotEqual(t, time.Time{}, props.AccessedAt)
+}
+
+func TestAdminClient_deserializeATOMQueueEnvelope(t *testing.T) {
+	reader, err := os.Open("testdata/queue_create_response.xml")
+	require.NoError(t, err)
+	envelope, err := deserializeQueueEnvelope(reader)
+	require.NoError(t, err)
+
+	queueProps, err := newQueueProperties("myqueuename", &envelope.Content.QueueDescription)
 	require.NoError(t, err)
 	require.NotNil(t, queueProps)
 

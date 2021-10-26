@@ -359,7 +359,7 @@ func TraceReqAndResponseMiddleware() MiddlewareFunc {
 }
 
 func isEmptyFeed(b []byte) bool {
-	var emptyFeed queueFeed
+	var emptyFeed QueueFeed
 	feedErr := xml.Unmarshal(b, &emptyFeed)
 	return feedErr == nil && emptyFeed.Title == "Publicly Listed Services"
 }

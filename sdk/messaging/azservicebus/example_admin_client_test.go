@@ -32,7 +32,7 @@ func ExampleNewAdminClientWithConnectionString() {
 }
 
 func ExampleAdminClient_CreateQueue() {
-	queueProperties, err := adminClient.CreateQueue(context.TODO(), "queue-name")
+	queueProperties, err := adminClient.AddQueue(context.TODO(), "queue-name")
 	exitOnError("Failed to create queue", err)
 
 	fmt.Printf("Queue name: %s", queueProperties.Name)
@@ -42,7 +42,7 @@ func ExampleAdminClient_CreateQueueWithProperties() {
 	lockDuration := time.Minute
 	maxDeliveryCount := int32(10)
 
-	queueProperties, err := adminClient.CreateQueueWithProperties(context.TODO(), &azservicebus.QueueProperties{
+	queueProperties, err := adminClient.AddQueueWithProperties(context.TODO(), &azservicebus.QueueProperties{
 		Name: "queue-name",
 
 		// some example properties

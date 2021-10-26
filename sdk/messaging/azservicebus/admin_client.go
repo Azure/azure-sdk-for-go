@@ -5,18 +5,14 @@ package azservicebus
 
 import (
 	"context"
-	"encoding/xml"
 	"errors"
-	"io/ioutil"
 	"net/http"
+	"time"
 
-	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
-	"github.com/devigned/tab"
+	"github.com/Azure/go-autorest/autorest/date"
 )
 
 // AdminClient allows you to administer resources in a Service Bus Namespace.
@@ -52,148 +48,74 @@ func NewAdminClient(fullyQualifiedNamespace string, tokenCredential azcore.Token
 	return &AdminClient{em: em}, nil
 }
 
-// CreateQueue creates a queue using defaults for all options.
-func (ac *AdminClient) CreateQueue(ctx context.Context, queueName string) (*QueueProperties, error) {
-	return ac.CreateQueueWithProperties(ctx, &QueueProperties{
+// AddQueue creates a queue using defaults for all options.
+func (ac *AdminClient) AddQueue(ctx context.Context, queueName string) (*QueueProperties, error) {
+	return ac.AddQueueWithProperties(ctx, &QueueProperties{
 		Name: queueName,
 	})
 }
 
 // CreateQueue creates a queue with configurable properties.
-func (ac *AdminClient) CreateQueueWithProperties(ctx context.Context, props *QueueProperties) (*QueueProperties, error) {
-	if props == nil {
-		return nil, errors.New("properties are required and cannot be nil")
-	}
-
-	reqBytes, mw, err := serializeQueueProperties(props, ac.em.TokenProvider())
-
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err := ac.em.Put(ctx, "/"+props.Name, reqBytes, mw...)
-	defer atom.CloseRes(ctx, resp)
-
-	if err != nil {
-		tab.For(ctx).Error(err)
-		return nil, err
-	}
-
-	b, err := ioutil.ReadAll(resp.Body)
-
-	if err != nil {
-		tab.For(ctx).Error(err)
-		return nil, err
-	}
-
-	return deserializeQueueEnvelope(props.Name, b)
-}
-
-func serializeQueueProperties(props *QueueProperties, tokenProvider auth.TokenProvider) ([]byte, []atom.MiddlewareFunc, error) {
-	qpr := &atom.QueuePutRequest{
-		LockDuration:                        utils.DurationToStringPtr(props.LockDuration),
-		MaxSizeInMegabytes:                  props.MaxSizeInMegabytes,
-		RequiresDuplicateDetection:          props.RequiresDuplicateDetection,
-		RequiresSession:                     props.RequiresSession,
-		DefaultMessageTimeToLive:            utils.DurationToStringPtr(props.DefaultMessageTimeToLive),
-		DeadLetteringOnMessageExpiration:    props.DeadLetteringOnMessageExpiration,
-		DuplicateDetectionHistoryTimeWindow: utils.DurationToStringPtr(props.DuplicateDetectionHistoryTimeWindow),
-		MaxDeliveryCount:                    props.MaxDeliveryCount,
-		EnableBatchedOperations:             props.EnableBatchedOperations,
-		Status:                              (*atom.EntityStatus)(props.Status),
-		AutoDeleteOnIdle:                    utils.DurationToStringPtr(props.AutoDeleteOnIdle),
-		EnablePartitioning:                  props.EnablePartitioning,
-		ForwardTo:                           props.ForwardTo,
-		ForwardDeadLetteredMessagesTo:       props.ForwardDeadLetteredMessagesTo,
-	}
-
-	atomRequest, mw := atom.ConvertToQueueRequest(qpr, tokenProvider)
-
-	bytes, err := xml.MarshalIndent(atomRequest, "", "  ")
-
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return bytes, mw, nil
-}
-
-func deserializeQueueEnvelope(name string, b []byte) (*QueueProperties, error) {
-	var atomResp atom.QueueEnvelope
-
-	if err := xml.Unmarshal(b, &atomResp); err != nil {
-		return nil, atom.FormatManagementError(b)
-	}
-
-	respQD := atomResp.Content.QueueDescription
-
-	lockDuration, err := utils.ISO8601StringToDuration(respQD.LockDuration)
-
-	if err != nil {
-		return nil, err
-	}
-
-	defaultMessageTimeToLive, err := utils.ISO8601StringToDuration(respQD.DefaultMessageTimeToLive)
-
-	if err != nil {
-		return nil, err
-	}
-
-	duplicateDetectionHistoryTimeWindow, err := utils.ISO8601StringToDuration(respQD.DuplicateDetectionHistoryTimeWindow)
-
-	if err != nil {
-		return nil, err
-	}
-
-	autoDeleteOnIdle, err := utils.ISO8601StringToDuration(respQD.AutoDeleteOnIdle)
-
-	if err != nil {
-		return nil, err
-	}
-
-	queuePropsResult := &QueueProperties{
-		Name:                                name,
-		LockDuration:                        lockDuration,
-		MaxSizeInMegabytes:                  respQD.MaxSizeInMegabytes,
-		RequiresDuplicateDetection:          respQD.RequiresDuplicateDetection,
-		RequiresSession:                     respQD.RequiresSession,
-		DefaultMessageTimeToLive:            defaultMessageTimeToLive,
-		DeadLetteringOnMessageExpiration:    respQD.DeadLetteringOnMessageExpiration,
-		DuplicateDetectionHistoryTimeWindow: duplicateDetectionHistoryTimeWindow,
-		MaxDeliveryCount:                    respQD.MaxDeliveryCount,
-		EnableBatchedOperations:             respQD.EnableBatchedOperations,
-		Status:                              (*EntityStatus)(respQD.Status),
-		AutoDeleteOnIdle:                    autoDeleteOnIdle,
-		EnablePartitioning:                  respQD.EnablePartitioning,
-		ForwardTo:                           respQD.ForwardTo,
-		ForwardDeadLetteredMessagesTo:       respQD.ForwardDeadLetteredMessagesTo,
-	}
-
-	return queuePropsResult, nil
+func (ac *AdminClient) AddQueueWithProperties(ctx context.Context, properties *QueueProperties) (*QueueProperties, error) {
+	return ac.createOrUpdateQueueImpl(ctx, properties, true)
 }
 
 func (ac *AdminClient) GetQueue(ctx context.Context, queueName string) (*QueueProperties, error) {
-	ctx, span := tab.StartSpan(ctx, tracing.SpanGetEntity)
-	defer span.End()
-
-	resp, err := ac.em.Get(ctx, "/"+queueName)
+	name, desc, err := ac.getQueueImpl(ctx, queueName)
 
 	if err != nil {
 		return nil, err
 	}
 
-	b, err := ioutil.ReadAll(resp.Body)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return deserializeQueueEnvelope(queueName, b)
+	return newQueueProperties(name, desc)
 }
 
-// func (ac *AdminClient) GetQueueRuntimeProperties() (*QueueRuntimeProperties, error) {
-// 	return nil, nil
-// }
+// GetQueueRuntimeProperties gets runtime properties of a queue, like the SizeInBytes, or ActiveMessageCount.
+func (ac *AdminClient) GetQueueRuntimeProperties(ctx context.Context, queueName string) (*QueueRuntimeProperties, error) {
+	name, desc, err := ac.getQueueImpl(ctx, queueName)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &QueueRuntimeProperties{
+		Name:                           name,
+		SizeInBytes:                    Int64OrZero(desc.SizeInBytes),
+		CreatedAt:                      DateTimeToTime(desc.CreatedAt),
+		UpdatedAt:                      DateTimeToTime(desc.UpdatedAt),
+		AccessedAt:                     DateTimeToTime(desc.AccessedAt),
+		TotalMessageCount:              Int64OrZero(desc.MessageCount),
+		ActiveMessageCount:             Int32OrZero(desc.CountDetails.ActiveMessageCount),
+		DeadLetterMessageCount:         Int32OrZero(desc.CountDetails.DeadLetterMessageCount),
+		ScheduledMessageCount:          Int32OrZero(desc.CountDetails.ScheduledMessageCount),
+		TransferDeadLetterMessageCount: Int32OrZero(desc.CountDetails.TransferDeadLetterMessageCount),
+		TransferMessageCount:           Int32OrZero(desc.CountDetails.TransferMessageCount),
+	}, nil
+}
+
+func DateTimeToTime(t *date.Time) time.Time {
+	if t == nil {
+		return time.Time{}
+	}
+
+	return t.Time
+}
+
+func Int32OrZero(i *int32) int32 {
+	if i == nil {
+		return 0
+	}
+
+	return *i
+}
+
+func Int64OrZero(i *int64) int64 {
+	if i == nil {
+		return 0
+	}
+
+	return *i
+}
 
 // QueueExists checks if a queue exists.
 // Returns true if the queue is found
@@ -215,9 +137,10 @@ func (ac *AdminClient) QueueExists(ctx context.Context, queueName string) (bool,
 	return false, err
 }
 
-// func (ac *AdminClient) UpdateQueue(properties *QueueProperties) (*QueueProperties, error) {
-// 	return nil, nil
-// }
+// UpdateQueue updates an existing queue.
+func (ac *AdminClient) UpdateQueue(ctx context.Context, properties *QueueProperties) (*QueueProperties, error) {
+	return ac.createOrUpdateQueueImpl(ctx, properties, false)
+}
 
 func (ac *AdminClient) DeleteQueue(ctx context.Context, queueName string) (*http.Response, error) {
 	resp, err := ac.em.Delete(ctx, "/"+queueName)
@@ -229,8 +152,13 @@ func (ac *AdminClient) DeleteQueue(ctx context.Context, queueName string) (*http
 	return resp, nil
 }
 
-// func (ac *AdminClient) ListQueues()                  {}
-// func (ac *AdminClient) ListQueuesRuntimeProperties() {}
+func (ac *AdminClient) ListQueues() {
+
+}
+
+func (ac *AdminClient) ListQueuesRuntimeProperties() {
+
+}
 
 // func (ac *AdminClient) GetNamespaceProperties() {}
 

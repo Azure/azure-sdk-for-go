@@ -72,6 +72,10 @@ func setConnectionOptions(serviceURL string, policyOptions *policy.ClientOptions
 
 	policyOptions.PerCallPolicies = append(policyOptions.PerCallPolicies, clientOptions.PerCallPolicies...)
 	policyOptions.PerRetryPolicies = append(policyOptions.PerRetryPolicies, clientOptions.PerRetryPolicies...)
+	policyOptions.Transport = clientOptions.Transport
+	policyOptions.Logging = clientOptions.Logging
+	policyOptions.Retry = clientOptions.Retry
+	policyOptions.Telemetry = clientOptions.Telemetry
 	return policyOptions
 }
 

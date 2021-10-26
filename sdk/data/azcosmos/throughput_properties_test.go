@@ -12,7 +12,7 @@ import (
 )
 
 func TestThroughputPropertiesManualRawSerialization(t *testing.T) {
-	nowAsUnix := int64(1630100602)
+	nowAsUnix := time.Unix(1630100602, 0)
 
 	jsonString := []byte("{\"offerType\":\"Invalid\",\"offerResourceId\":\"4SRTANCD3Dw=\",\"offerVersion\":\"V2\",\"content\":{\"offerThroughput\":400},\"id\":\"HFln\",\"_etag\":\"\\\"00000000-0000-0000-9b8c-8ea3e19601d7\\\"\",\"_ts\":1630100602}")
 
@@ -57,7 +57,7 @@ func TestThroughputPropertiesManualRawSerialization(t *testing.T) {
 }
 
 func TestThroughputPropertiesManualE2ESerialization(t *testing.T) {
-	nowAsUnix := time.Now().Unix()
+	nowAsUnix := time.Unix(time.Now().Unix(), 0)
 
 	etag := azcore.ETag("\"00000000-0000-0000-9b8c-8ea3e19601d7\"")
 	properties := NewManualThroughputProperties(400)
@@ -111,7 +111,7 @@ func TestThroughputPropertiesManualE2ESerialization(t *testing.T) {
 }
 
 func TestThroughputPropertiesAutoscaleE2ESerialization(t *testing.T) {
-	nowAsUnix := time.Now().Unix()
+	nowAsUnix := time.Unix(time.Now().Unix(), 0)
 
 	etag := azcore.ETag("\"00000000-0000-0000-9b8c-8ea3e19601d7\"")
 	properties := NewAutoscaleThroughputProperties(400)
@@ -169,7 +169,7 @@ func TestThroughputPropertiesAutoscaleE2ESerialization(t *testing.T) {
 }
 
 func TestThroughputPropertiesAutoscaleIncrementE2ESerialization(t *testing.T) {
-	nowAsUnix := time.Now().Unix()
+	nowAsUnix := time.Unix(time.Now().Unix(), 0)
 
 	etag := azcore.ETag("\"00000000-0000-0000-9b8c-8ea3e19601d7\"")
 	properties := NewAutoscaleThroughputPropertiesWithIncrement(400, 10)

@@ -53,6 +53,10 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	if len(certs) == 0 {
 		return nil, errors.New("at least one certificate is required")
 	}
+	pk, ok := key.(*rsa.PrivateKey)
+	if !ok {
+		return nil, errors.New("'key' must be an RSA private key")
+	}
 	if !validTenantID(tenantID) {
 		return nil, errors.New(tenantIDValidationErr)
 	}
@@ -65,7 +69,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 		logCredentialError("Client Certificate Credential", err)
 		return nil, err
 	}
-	cert, err := newCertContents(certs, key, cp.SendCertificateChain)
+	cert, err := newCertContents(certs, pk, cp.SendCertificateChain)
 	if err != nil {
 		return nil, err
 	}
@@ -147,19 +151,15 @@ type certContents struct {
 	x5c []string        // concatenation of every provided cert, base64 encoded
 }
 
-func newCertContents(certs []*x509.Certificate, key crypto.PrivateKey, sendCertificateChain bool) (*certContents, error) {
-	pk, ok := key.(*rsa.PrivateKey)
-	if !ok {
-		return nil, errors.New("'key' must be an RSA private key")
-	}
-	cc := certContents{pk: pk}
+func newCertContents(certs []*x509.Certificate, key *rsa.PrivateKey, sendCertificateChain bool) (*certContents, error) {
+	cc := certContents{pk: key}
 	// need the the signing cert's fingerprint: identify that cert by matching its public key to the private key
 	for _, cert := range certs {
 		if sendCertificateChain {
 			cc.x5c = append(cc.x5c, base64.StdEncoding.EncodeToString(cert.Raw))
 		}
 		certKey, ok := cert.PublicKey.(*rsa.PublicKey)
-		if ok && pk.E == certKey.E && pk.N.Cmp(certKey.N) == 0 {
+		if ok && key.E == certKey.E && key.N.Cmp(certKey.N) == 0 {
 			fp := sha1.Sum(cert.Raw)
 			cc.fp = fp[:]
 		}

@@ -20,7 +20,7 @@ import (
 type ServiceClient struct {
 	client  *generated.TableClient
 	service *generated.ServiceClient
-	cred    azcore.TokenCredential
+	cred    interface{}
 }
 
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.

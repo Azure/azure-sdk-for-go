@@ -147,7 +147,7 @@ This project is licensed under MIT.
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Azure.data.azcosmos` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Cosmos` label.
 
 ## Contributing
 

@@ -7,6 +7,7 @@
 package aztables
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
@@ -17,7 +18,12 @@ func TestMain(m *testing.M) {
 	// 1. Set up session level sanitizers
 	if recording.GetRecordMode() == "record" {
 		for _, val := range []string{"TABLES_COSMOS_ACCOUNT_NAME", "TABLES_STORAGE_ACCOUNT_NAME"} {
-			account := os.Getenv(val)
+			account, ok := os.LookupEnv(val)
+			if !ok {
+				fmt.Printf("Could not find environment variable: %s", val)
+				os.Exit(1)
+			}
+
 			err := recording.AddURISanitizer("fakeaccount", account, nil)
 			if err != nil {
 				panic(err)

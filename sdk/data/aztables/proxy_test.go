@@ -28,16 +28,16 @@ type recordingPolicy struct {
 
 func (r recordingPolicy) Host() string {
 	if r.options.UseHTTPS {
-		return "https"
+		return "localhost:5001"
 	}
-	return "http"
+	return "localhost:5000"
 }
 
 func (r recordingPolicy) Scheme() string {
 	if r.options.UseHTTPS {
-		return "localhost:5001"
+		return "https"
 	}
-	return "localhost:5000"
+	return "http"
 }
 
 func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Policy {
@@ -50,14 +50,17 @@ func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Poli
 
 func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 	if recording.GetRecordMode() != "live" {
+		fmt.Println("BEFORE: ", req.Raw().URL)
 		originalURLHost := req.Raw().URL.Host
-		req.Raw().URL.Scheme = "https"
+		req.Raw().URL.Scheme = p.Scheme()
 		req.Raw().URL.Host = p.Host()
 		req.Raw().Host = p.Host()
+		fmt.Println("AFTER: ", req.Raw().URL)
 
 		req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%v://%v", p.Scheme(), originalURLHost))
 		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
 		req.Raw().Header.Set(recording.IDHeader, recording.GetRecordingId(p.t))
+		fmt.Println(req.Raw().Header.Get(recording.UpstreamURIHeader))
 	}
 	return req.Next()
 }

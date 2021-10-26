@@ -11,15 +11,16 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	generated "github.com/Azure/azure-sdk-for-go/sdk/data/aztables/internal"
 )
 
 // A ServiceClient represents a client to the table service. It can be used to query the available tables, create/delete tables, and various other service level operations.
 type ServiceClient struct {
-	client        *generated.TableClient
-	service       *generated.ServiceClient
-	cred          interface{}
+	client  *generated.TableClient
+	service *generated.ServiceClient
+	cred    interface{}
 }
 
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
@@ -28,9 +29,9 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil))
 	con := generated.NewConnection(serviceURL, conOptions.toPolicyOptions())
 	return &ServiceClient{
-		client:        generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
-		service:       generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
-		cred:          cred,
+		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
+		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
+		cred:    cred,
 	}, nil
 }
 
@@ -50,14 +51,28 @@ func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions)
 
 // NewServiceClientWithSharedKey creates a ServiceClient struct using the specified serviceURL, credential, and options.
 func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*ServiceClient, error) {
-	conOptions := getConnectionOptions(serviceURL, options)
+	conOptions := &policy.ClientOptions{}
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, newSharedKeyCredPolicy(cred))
-	con := generated.NewConnection(serviceURL, conOptions.toPolicyOptions())
+
+	policyOptions := setConnectionOptions(serviceURL, conOptions, options)
+
+	con := generated.NewConnection(serviceURL, policyOptions)
 	return &ServiceClient{
 		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
 		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
 		cred:    cred,
 	}, nil
+}
+
+// used to merge the ClientOptions into the policy.ClientOptions. Most importantly it sets any client options last (this is important for testing where the request is modified to send to proxy)
+func setConnectionOptions(serviceURL string, policyOptions *policy.ClientOptions, clientOptions *ClientOptions) *policy.ClientOptions {
+	if isCosmosEndpoint(serviceURL) {
+		policyOptions.PerCallPolicies = append(policyOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
+	}
+
+	policyOptions.PerCallPolicies = append(policyOptions.PerCallPolicies, clientOptions.PerCallPolicies...)
+	policyOptions.PerRetryPolicies = append(policyOptions.PerRetryPolicies, clientOptions.PerRetryPolicies...)
+	return policyOptions
 }
 
 func getConnectionOptions(serviceURL string, options *ClientOptions) *ClientOptions {

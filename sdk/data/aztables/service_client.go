@@ -20,7 +20,7 @@ import (
 type ServiceClient struct {
 	client  *generated.TableClient
 	service *generated.ServiceClient
-	cred    interface{}
+	cred    azcore.TokenCredential
 }
 
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
@@ -72,7 +72,7 @@ func setConnectionOptions(serviceURL string, policyOptions *policy.ClientOptions
 	if policyOptions == nil {
 		policyOptions = &policy.ClientOptions{}
 	}
-	
+
 	if isCosmosEndpoint(serviceURL) {
 		policyOptions.PerCallPolicies = append(policyOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
 	}

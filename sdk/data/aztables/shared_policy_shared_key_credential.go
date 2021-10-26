@@ -5,6 +5,7 @@ package aztables
 
 import (
 	"bytes"
+	"context"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
@@ -15,6 +16,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
@@ -136,4 +138,9 @@ func (s *sharedKeyCredPolicy) Do(req *policy.Request) (*http.Response, error) {
 		log.Write(log.EventResponse, "===== HTTP Forbidden status, String-to-Sign:\n"+stringToSign+"\n===============================\n")
 	}
 	return response, err
+}
+
+// GetToken implements the azcore.TokenCredential interface, this method does not generate the value for the header.
+func (s *SharedKeyCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+	return &azcore.AccessToken{}, nil
 }

@@ -21,7 +21,7 @@ import (
 type Client struct {
 	client  *generated.TableClient
 	service *ServiceClient
-	cred    interface{}
+	cred    azcore.TokenCredential
 	name    string
 }
 

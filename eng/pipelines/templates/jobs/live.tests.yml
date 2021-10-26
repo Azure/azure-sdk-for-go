@@ -88,6 +88,7 @@ jobs:
           RunTests: true
           EnvVars:
             AZURE_RECORD_MODE: 'live'
+            ${{ insert }}: ${{ parameters.EnvVars }}
 
       - ${{ parameters.PostSteps }}
 

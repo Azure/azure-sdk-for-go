@@ -9,7 +9,9 @@ import (
 
 // ThroughputOptions includes options for throughput operations.
 type ThroughputOptions struct {
-	IfMatchEtag     *azcore.ETag
+	// IfMatchEtag If-Match (ETag) associated with the request.
+	IfMatchEtag *azcore.ETag
+	// IfNoneMatchEtag If-None-Match (ETag) associated with the request.
 	IfNoneMatchEtag *azcore.ETag
 }
 

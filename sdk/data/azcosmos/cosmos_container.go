@@ -27,6 +27,7 @@ func newContainer(id string, database *DatabaseClient) (ContainerClient, error) 
 		link:     createLink(database.link, pathSegmentCollection, id)}, nil
 }
 
+// ID returns the identifier of the Cosmos container.
 func (c *ContainerClient) ID() string {
 	return c.id
 }

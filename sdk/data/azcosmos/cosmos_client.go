@@ -49,7 +49,7 @@ func newPipeline(cred KeyCredential, options *ClientOptions) azruntime.Pipeline 
 		&options.ClientOptions)
 }
 
-// GetDatabase returns a Database object.
+// NewDatabase returns a struct that represents a database and allows database level operations.
 // id - The id of the database.
 func (c *Client) NewDatabase(id string) (DatabaseClient, error) {
 	if id == "" {
@@ -59,7 +59,7 @@ func (c *Client) NewDatabase(id string) (DatabaseClient, error) {
 	return newDatabase(id, c)
 }
 
-// NewContainer returns a Container object.
+// NewContainer returns a struct that represents a container and allows container level operations.
 // databaseId - The id of the database.
 // containerId - The id of the container.
 func (c *Client) NewContainer(databaseId string, containerId string) (ContainerClient, error) {

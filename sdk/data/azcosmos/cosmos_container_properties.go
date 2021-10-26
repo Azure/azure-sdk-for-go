@@ -41,23 +41,38 @@ type ContainerProperties struct {
 	ConflictResolutionPolicy *ConflictResolutionPolicy
 }
 
-func (tp *ContainerProperties) MarshalJSON() ([]byte, error) {
+func (tp ContainerProperties) MarshalJSON() ([]byte, error) {
 	pkDefinition, err := json.Marshal(tp.PartitionKeyDefinition)
 	if err != nil {
 		return nil, err
 	}
 
 	buffer := bytes.NewBufferString("{")
-	buffer.WriteString("\"partitionKey\":")
-	buffer.Write(pkDefinition)
-
-	if tp.ID != "" {
-		buffer.WriteString(fmt.Sprintf(",\"id\":\"%s\"", tp.ID))
-	}
+	buffer.WriteString(fmt.Sprintf("\"id\":\"%s\"", tp.ID))
 
 	if tp.ResourceID != "" {
 		buffer.WriteString(fmt.Sprintf(",\"_rid\":\"%s\"", tp.ResourceID))
 	}
+
+	if tp.ETag != nil {
+		buffer.WriteString(",\"_etag\":")
+		etag, err := json.Marshal(tp.ETag)
+		if err != nil {
+			return nil, err
+		}
+		buffer.Write(etag)
+	}
+
+	if tp.SelfLink != "" {
+		buffer.WriteString(fmt.Sprintf(",\"_self\":\"%s\"", tp.SelfLink))
+	}
+
+	if !tp.LastModified.IsZero() {
+		buffer.WriteString(fmt.Sprintf(",\"_ts\":%v", strconv.FormatInt(tp.LastModified.Unix(), 10)))
+	}
+
+	buffer.WriteString(",\"partitionKey\":")
+	buffer.Write(pkDefinition)
 
 	if tp.DefaultTimeToLive != nil {
 		buffer.WriteString(fmt.Sprintf(",\"defaultTtl\":%v", *tp.DefaultTimeToLive))
@@ -92,23 +107,6 @@ func (tp *ContainerProperties) MarshalJSON() ([]byte, error) {
 		}
 		buffer.WriteString(",\"conflictResolutionPolicy\":")
 		buffer.Write(conflictPolicy)
-	}
-
-	if tp.ETag != nil {
-		buffer.WriteString(",\"_etag\":")
-		etag, err := json.Marshal(tp.ETag)
-		if err != nil {
-			return nil, err
-		}
-		buffer.Write(etag)
-	}
-
-	if tp.SelfLink != "" {
-		buffer.WriteString(fmt.Sprintf(",\"_self\":\"%s\"", tp.SelfLink))
-	}
-
-	if !tp.LastModified.IsZero() {
-		buffer.WriteString(fmt.Sprintf(",\"_ts\":%v", strconv.FormatInt(tp.LastModified.Unix(), 10)))
 	}
 
 	buffer.WriteString("}")

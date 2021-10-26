@@ -20,7 +20,7 @@ func TestDatabaseResponseParsing(t *testing.T) {
 	nowAsUnix := time.Unix(time.Now().Unix(), 0)
 
 	etag := azcore.ETag("someETag")
-	properties := &DatabaseProperties{
+	properties := DatabaseProperties{
 		ID:           "someId",
 		ETag:         &etag,
 		SelfLink:     "someSelfLink",

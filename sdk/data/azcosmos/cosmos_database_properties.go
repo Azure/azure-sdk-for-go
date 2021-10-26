@@ -27,7 +27,7 @@ type DatabaseProperties struct {
 	LastModified time.Time `json:"_ts,omitempty"`
 }
 
-func (tp *DatabaseProperties) MarshalJSON() ([]byte, error) {
+func (tp DatabaseProperties) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString("{")
 
 	buffer.WriteString(fmt.Sprintf("\"id\":\"%s\"", tp.ID))

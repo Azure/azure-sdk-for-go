@@ -20,7 +20,7 @@ func TestContainerResponseParsing(t *testing.T) {
 	nowAsUnix := time.Unix(time.Now().Unix(), 0)
 
 	etag := azcore.ETag("etag")
-	properties := &ContainerProperties{
+	properties := ContainerProperties{
 		ID:           "someId",
 		ETag:         &etag,
 		SelfLink:     "someSelfLink",

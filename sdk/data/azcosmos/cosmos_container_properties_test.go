@@ -16,7 +16,7 @@ func TestContainerPropertiesSerialization(t *testing.T) {
 
 	etag := azcore.ETag("etag")
 
-	properties := &ContainerProperties{
+	properties := ContainerProperties{
 		ID:           "someId",
 		ETag:         &etag,
 		SelfLink:     "someSelfLink",

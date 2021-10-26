@@ -10,7 +10,7 @@ package armstreamanalytics
 
 const (
 	module  = "armstreamanalytics"
-	version = "v0.1.0"
+	version = "v0.1.1"
 )
 
 // AuthenticationMode - Authentication Mode. Valid modes are ConnectionString, Msi and 'UserToken'.

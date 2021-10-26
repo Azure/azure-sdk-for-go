@@ -98,8 +98,12 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.
 // certData: certificate data encoded in PEM or PKCS12 format, including the certificate's private key. Typically, the contents of a file.
 // password: the password required to decrypt the private key. Pass nil if the key is not encrypted. This method can't decrypt keys in PEM format.
 func LoadCerts(certData []byte, password []byte) ([]*x509.Certificate, crypto.PrivateKey, error) {
-	blocks, err := loadPEMCert(certData)
-	if err != nil {
+	var blocks []*pem.Block
+	var err error
+	if len(password) == 0 {
+		blocks, err = loadPEMCert(certData)
+	}
+	if len(blocks) == 0 || err != nil {
 		blocks, err = loadPKCS12Cert(certData, string(password))
 	}
 	if err != nil {

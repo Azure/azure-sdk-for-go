@@ -63,6 +63,8 @@ Using the client created in previous example, you can create a database like thi
 database := azcosmos.DatabaseProperties{Id: dbName}
 response, err := client.CreateDatabase(context, database, nil)
 handle(err)
+database, err := azcosmos.NewDatabase(dbName)
+handle(err)
 ```
 
 ### Create Container
@@ -90,22 +92,43 @@ item := map[string]string{
     "value": "2",
 }
 
-// Create partition key
+marshalled, err := json.Marshal(item)
+if err != nil {
+    log.Fatal(err)
+}
+
 container, err := client.NewContainer(dbName, containerName)
 handle(err)
+
 pk := azcosmos.NewPartitionKeyString("1")
+id := "1"
 
 // Create an item
-itemResponse, err := container.CreateItem(context, pk, item, nil)
+itemResponse, err := container.CreateItem(context, pk, marshalled, nil)
 handle(err)
 
-itemResponse, err = container.ReadItem(context, pk, "1", nil)
+// Read an item
+itemResponse, err = container.ReadItem(context, pk, id, nil)
 handle(err)
 
-itemResponse, err = container.ReplaceItem(context, pk, "1", item, nil)
+var itemResponseBody map[string]string
+err = json.Unmarshal(itemResponse.Value, &itemResponseBody)
+if err != nil {
+    log.Fatal(err)
+}
+
+itemResponseBody["value"] = "3"
+marshalledReplace, err := json.Marshal(itemResponseBody)
+if err != nil {
+    log.Fatal(err)
+}
+
+// Replace an item
+itemResponse, err = container.ReplaceItem(context, pk, id, marshalledReplace, nil)
 handle(err)
 
-itemResponse, err = container.DeleteItem(context, pk, "1", nil)
+// Delete an item
+itemResponse, err = container.DeleteItem(context, pk, id, nil)
 handle(err)
 ```
 

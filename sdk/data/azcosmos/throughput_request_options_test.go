@@ -21,8 +21,8 @@ func TestThroughputRequestOptionsToHeaders(t *testing.T) {
 	options.IfNoneMatchEtag = &noneetag
 
 	header := options.toHeaders()
-	if *header == nil {
-		t.Error("toHeaders should return non-nil")
+	if header == nil {
+		t.Fatal("toHeaders should return non-nil")
 	}
 
 	headers := *header

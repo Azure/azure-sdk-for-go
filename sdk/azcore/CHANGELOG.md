@@ -28,6 +28,7 @@
 * Added string typdef `arm.Endpoint` to provide a hint toward expected ARM client endpoints
 * `azcore.ClientOptions` contains common pipeline configuration settings
 * Added support for multi-tenant authorization in `arm/runtime`
+* Require one second minimum when calling `PollUntilDone()`
 
 ### Bug Fixes
 * Fixed a potential panic when creating the default Transporter.

@@ -21,10 +21,6 @@ func exitOnError(message string, err error) {
 	log.Panicf("(error in example): %s: %s", message, err.Error())
 }
 
-func yourLogicForProcessing(message *azservicebus.ReceivedMessage) {
-	log.Printf("Message received")
-}
-
 // these just make it so our examples don't have to have a bunch of extra declarations
 // for unrelated entities.
 var connectionString string

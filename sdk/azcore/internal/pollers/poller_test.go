@@ -132,6 +132,13 @@ func TestNewPoller(t *testing.T) {
 		t.Fatal("unexpected empty resume token")
 	}
 	resp, err = p.PollUntilDone(context.Background(), 1*time.Millisecond, nil)
+	if err == nil {
+		t.Fatal("unexpected nil error")
+	}
+	if resp != nil {
+		t.Fatal("expected nil response")
+	}
+	resp, err = p.PollUntilDone(context.Background(), time.Second, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -167,7 +174,7 @@ func TestNewPollerWithFinalGET(t *testing.T) {
 		Shape string `json:"shape"`
 	}
 	var w widget
-	resp, err := p.PollUntilDone(context.Background(), 1*time.Millisecond, &w)
+	resp, err := p.PollUntilDone(context.Background(), time.Second, &w)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -198,7 +205,7 @@ func TestNewPollerFail1(t *testing.T) {
 	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl, func(*http.Response) error {
 		return errors.New("failed")
 	})
-	resp, err := p.PollUntilDone(context.Background(), 1*time.Millisecond, nil)
+	resp, err := p.PollUntilDone(context.Background(), time.Second, nil)
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	} else if s := err.Error(); s != "failed" {
@@ -221,7 +228,7 @@ func TestNewPollerFail2(t *testing.T) {
 	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl, func(*http.Response) error {
 		return errors.New("failed")
 	})
-	resp, err := p.PollUntilDone(context.Background(), 1*time.Millisecond, nil)
+	resp, err := p.PollUntilDone(context.Background(), time.Second, nil)
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	} else if s := err.Error(); s != "failed" {
@@ -244,7 +251,7 @@ func TestNewPollerError(t *testing.T) {
 	p := NewPoller(&fakePoller{Ep: srv.URL()}, firstResp, pl, func(*http.Response) error {
 		return errors.New("failed")
 	})
-	resp, err := p.PollUntilDone(context.Background(), 1*time.Millisecond, nil)
+	resp, err := p.PollUntilDone(context.Background(), time.Second, nil)
 	if err == nil {
 		t.Fatal("unexpected nil error")
 	} else if s := err.Error(); s != "fatal" {

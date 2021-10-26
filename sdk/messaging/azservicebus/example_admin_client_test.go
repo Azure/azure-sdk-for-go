@@ -32,17 +32,17 @@ func ExampleNewAdminClientWithConnectionString() {
 }
 
 func ExampleAdminClient_AddQueue() {
-	queueProperties, err := adminClient.AddQueue(context.TODO(), "queue-name")
+	resp, err := adminClient.AddQueue(context.TODO(), "queue-name")
 	exitOnError("Failed to add queue", err)
 
-	fmt.Printf("Queue name: %s", queueProperties.Name)
+	fmt.Printf("Queue name: %s", resp.Value.Name)
 }
 
 func ExampleAdminClient_AddQueueWithProperties() {
 	lockDuration := time.Minute
 	maxDeliveryCount := int32(10)
 
-	queueProperties, err := adminClient.AddQueueWithProperties(context.TODO(), &azservicebus.QueueProperties{
+	resp, err := adminClient.AddQueueWithProperties(context.TODO(), &azservicebus.QueueProperties{
 		Name: "queue-name",
 
 		// some example properties
@@ -51,14 +51,14 @@ func ExampleAdminClient_AddQueueWithProperties() {
 	})
 	exitOnError("Failed to create queue", err)
 
-	fmt.Printf("Queue name: %s", queueProperties.Name)
+	fmt.Printf("Queue name: %s", resp.Value.Name)
 }
 
 func ExampleAdminClient_ListQueues() {
 	queuePager := adminClient.ListQueues(nil)
 
 	for queuePager.NextPage(context.TODO()) {
-		for _, queue := range queuePager.PageResponse() {
+		for _, queue := range queuePager.PageResponse().Value {
 			fmt.Printf("Queue name: %s, max size in MB: %d", queue.Name, queue.MaxSizeInMegabytes)
 		}
 	}
@@ -70,7 +70,7 @@ func ExampleAdminClient_ListQueuesRuntimeProperties() {
 	queuePager := adminClient.ListQueuesRuntimeProperties(nil)
 
 	for queuePager.NextPage(context.TODO()) {
-		for _, queue := range queuePager.PageResponse() {
+		for _, queue := range queuePager.PageResponse().Value {
 			fmt.Printf("Queue name: %s, active messages: %d", queue.Name, queue.ActiveMessageCount)
 		}
 	}

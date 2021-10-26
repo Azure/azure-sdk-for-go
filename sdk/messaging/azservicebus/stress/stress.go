@@ -12,8 +12,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/devigned/tab"
@@ -210,33 +208,26 @@ func createSubscriptions(telemetryClient appinsights.TelemetryClient, connection
 	log.Printf("[BEGIN] Creating topic %s", topicName)
 	defer log.Printf("[END] Creating topic %s", topicName)
 
-	tm, err := atom.NewTopicManagerWithConnectionString(connectionString, internal.Version)
+	ac, err := azservicebus.NewAdminClientWithConnectionString(connectionString, nil)
 
 	if err != nil {
 		trackException(nil, telemetryClient, "Failed to create a topic manager", err)
 		return nil, err
 	}
 
-	if _, err := tm.Put(context.TODO(), topicName); err != nil {
+	if _, err := ac.AddTopic(context.Background(), topicName); err != nil {
 		trackException(nil, telemetryClient, "Failed to create topic", err)
 		return nil, err
 	}
 
-	sm, err := atom.NewSubscriptionManagerForConnectionString(topicName, connectionString, internal.Version)
-
-	if err != nil {
-		trackException(nil, telemetryClient, "Failed to create subscription manager", err)
-		return nil, err
-	}
-
 	for _, name := range subscriptionNames {
-		if _, err := sm.Put(context.Background(), name); err != nil {
+		if _, err := ac.AddSubscription(context.Background(), topicName, name); err != nil {
 			trackException(nil, telemetryClient, "Failed to create subscription manager", err)
 		}
 	}
 
 	return func() {
-		if err := tm.Delete(context.TODO(), topicName); err != nil {
+		if _, err := ac.DeleteTopic(context.Background(), topicName); err != nil {
 			trackException(nil, telemetryClient, fmt.Sprintf("Failed to delete topic %s", topicName), err)
 		}
 	}, nil

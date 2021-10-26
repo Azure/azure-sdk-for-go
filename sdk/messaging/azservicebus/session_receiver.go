@@ -101,12 +101,15 @@ func newSessionReceiver(ctx context.Context, sessionID *string, ns internal.Name
 	return sessionReceiver, nil
 }
 
+// SessionID is the session ID for this SessionReceiver.
 func (sr *SessionReceiver) SessionID() string {
 	// return the ultimately assigned session ID for this link (anonymous will get it from the
 	// link filter options, non-anonymous is set in newSessionReceiver)
 	return *sr.sessionID
 }
 
+// LockedUntil is the time the lock on this session expires.
+// The lock can be renewed using `SessionReceiver.RenewSessionLock`.
 func (sr *SessionReceiver) LockedUntil() time.Time {
 	return sr.lockedUntil
 }

@@ -31,14 +31,14 @@ func ExampleNewAdminClientWithConnectionString() {
 	exitOnError("Failed to create ServiceBusClient in example", err)
 }
 
-func ExampleAdminClient_CreateQueue() {
+func ExampleAdminClient_AddQueue() {
 	queueProperties, err := adminClient.AddQueue(context.TODO(), "queue-name")
-	exitOnError("Failed to create queue", err)
+	exitOnError("Failed to add queue", err)
 
 	fmt.Printf("Queue name: %s", queueProperties.Name)
 }
 
-func ExampleAdminClient_CreateQueueWithProperties() {
+func ExampleAdminClient_AddQueueWithProperties() {
 	lockDuration := time.Minute
 	maxDeliveryCount := int32(10)
 

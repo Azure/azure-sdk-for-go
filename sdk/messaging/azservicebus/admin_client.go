@@ -7,12 +7,10 @@ import (
 	"context"
 	"errors"
 	"net/http"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
-	"github.com/Azure/go-autorest/autorest/date"
 )
 
 // AdminClient allows you to administer resources in a Service Bus Namespace.

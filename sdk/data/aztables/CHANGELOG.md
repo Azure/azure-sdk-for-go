@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.0 (Unreleased)
+## 0.2.1 (Unreleased)
 
 ### Features Added
 * Added `NewClientWithNoCredential` and `NewServiceClientWithNoCredential` for authenticating the `Client` and `ServiceClient` with SAS URLs

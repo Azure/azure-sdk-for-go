@@ -1,0 +1,64 @@
+{
+    "checkoutSDKRepo": false,
+    "tasks": [
+        {
+            "name": "GenerateCode",
+            "script": "bash",
+            "path": "eng/automation/Generate_code.sh",
+            "output": {
+                "log": "generateCode.log",
+                "package": "src/SDKDir/compute.zip"
+            },
+            "resultParseCriterion": {
+                "stderr": {
+                    "prefix": {
+                        "FATAL": 1,
+                        "Exception": 3,
+                        "Error": 1
+                    },
+                    "ignore": [
+                        "[WARNING]"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Build",
+            "script": "bash",
+            "path": "eng/automation/Build.sh",
+            "output": {
+                "log": "Build.log",
+                "package": "src/SDKDir/compute.zip"
+            },
+            "resultParseCriterion": {
+                "stderr": {
+                    "prefix": {
+                        "FATAL": 1,
+                        "Exception": 3,
+                        "Error": 1
+                    },
+                    "ignore": [
+                        "[WARNING]"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "MockTest",
+            "script": "bash",
+            "path": "eng/automation/RunMockTest.sh",
+            "resultParseCriterion": {
+                "stderr": {
+                    "perfix":{
+                        "FATAL": 1,
+                        "Exception": 3,
+                        "Error": "1"
+                    }
+                },
+                "apiCoverage": {
+                    "pattern": "Coverage: %*"
+                }
+            }
+        }
+    ]
+}

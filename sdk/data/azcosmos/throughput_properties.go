@@ -163,21 +163,32 @@ func (tp *ThroughputProperties) UnmarshalJSON(b []byte) error {
 }
 
 // ManualThroughput returns the provisioned throughput in manual mode.
-func (tp *ThroughputProperties) ManualThroughput() (int32, error) {
+func (tp *ThroughputProperties) ManualThroughput() (int32, bool) {
 	if tp.offer.Throughput == nil {
-		return 0, fmt.Errorf("offer is not a manual offer")
+		return 0, false
 	}
 
-	return *tp.offer.Throughput, nil
+	return *tp.offer.Throughput, true
 }
 
 // AutoscaleMaxThroughput returns the configured max throughput on autoscale mode.
-func (tp *ThroughputProperties) AutoscaleMaxThroughput() (int32, error) {
+func (tp *ThroughputProperties) AutoscaleMaxThroughput() (int32, bool) {
 	if tp.offer.AutoScale == nil {
-		return 0, fmt.Errorf("offer is not an autoscale offer")
+		return 0, false
 	}
 
-	return tp.offer.AutoScale.MaxThroughput, nil
+	return tp.offer.AutoScale.MaxThroughput, true
+}
+
+// AutoscaleIncrement returns the configured percent increment on autoscale mode.
+func (tp *ThroughputProperties) AutoscaleIncrement() (int32, bool) {
+	if tp.offer.AutoScale == nil ||
+		tp.offer.AutoScale.AutoscaleAutoUpgradeProperties == nil ||
+		tp.offer.AutoScale.AutoscaleAutoUpgradeProperties.ThroughputPolicy == nil {
+		return 0, false
+	}
+
+	return tp.offer.AutoScale.AutoscaleAutoUpgradeProperties.ThroughputPolicy.IncrementPercent, true
 }
 
 func (tp *ThroughputProperties) addHeadersToRequest(req *policy.Request) {

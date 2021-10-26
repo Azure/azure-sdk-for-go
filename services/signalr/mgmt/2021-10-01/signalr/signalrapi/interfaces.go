@@ -8,7 +8,7 @@ package signalrapi
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/services/preview/signalr/mgmt/2020-07-01-preview/signalr"
+	"github.com/Azure/azure-sdk-for-go/services/signalr/mgmt/2021-10-01/signalr"
 )
 
 // OperationsClientAPI contains the set of methods on the OperationsClient type.
@@ -21,8 +21,8 @@ var _ OperationsClientAPI = (*signalr.OperationsClient)(nil)
 
 // ClientAPI contains the set of methods on the Client type.
 type ClientAPI interface {
-	CheckNameAvailability(ctx context.Context, location string, parameters *signalr.NameAvailabilityParameters) (result signalr.NameAvailability, err error)
-	CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters *signalr.ResourceType) (result signalr.CreateOrUpdateFuture, err error)
+	CheckNameAvailability(ctx context.Context, location string, parameters signalr.NameAvailabilityParameters) (result signalr.NameAvailability, err error)
+	CreateOrUpdate(ctx context.Context, parameters signalr.ResourceType, resourceGroupName string, resourceName string) (result signalr.CreateOrUpdateFuture, err error)
 	Delete(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.DeleteFuture, err error)
 	Get(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.ResourceType, err error)
 	ListByResourceGroup(ctx context.Context, resourceGroupName string) (result signalr.ResourceListPage, err error)
@@ -30,9 +30,10 @@ type ClientAPI interface {
 	ListBySubscription(ctx context.Context) (result signalr.ResourceListPage, err error)
 	ListBySubscriptionComplete(ctx context.Context) (result signalr.ResourceListIterator, err error)
 	ListKeys(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.Keys, err error)
-	RegenerateKey(ctx context.Context, resourceGroupName string, resourceName string, parameters *signalr.RegenerateKeyParameters) (result signalr.RegenerateKeyFuture, err error)
+	ListSkus(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.SkuList, err error)
+	RegenerateKey(ctx context.Context, parameters signalr.RegenerateKeyParameters, resourceGroupName string, resourceName string) (result signalr.RegenerateKeyFuture, err error)
 	Restart(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.RestartFuture, err error)
-	Update(ctx context.Context, resourceGroupName string, resourceName string, parameters *signalr.ResourceType) (result signalr.UpdateFuture, err error)
+	Update(ctx context.Context, parameters signalr.ResourceType, resourceGroupName string, resourceName string) (result signalr.UpdateFuture, err error)
 }
 
 var _ ClientAPI = (*signalr.Client)(nil)
@@ -49,7 +50,9 @@ var _ UsagesClientAPI = (*signalr.UsagesClient)(nil)
 type PrivateEndpointConnectionsClientAPI interface {
 	Delete(ctx context.Context, privateEndpointConnectionName string, resourceGroupName string, resourceName string) (result signalr.PrivateEndpointConnectionsDeleteFuture, err error)
 	Get(ctx context.Context, privateEndpointConnectionName string, resourceGroupName string, resourceName string) (result signalr.PrivateEndpointConnection, err error)
-	Update(ctx context.Context, privateEndpointConnectionName string, resourceGroupName string, resourceName string, parameters *signalr.PrivateEndpointConnection) (result signalr.PrivateEndpointConnection, err error)
+	List(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.PrivateEndpointConnectionListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.PrivateEndpointConnectionListIterator, err error)
+	Update(ctx context.Context, privateEndpointConnectionName string, parameters signalr.PrivateEndpointConnection, resourceGroupName string, resourceName string) (result signalr.PrivateEndpointConnection, err error)
 }
 
 var _ PrivateEndpointConnectionsClientAPI = (*signalr.PrivateEndpointConnectionsClient)(nil)
@@ -61,3 +64,14 @@ type PrivateLinkResourcesClientAPI interface {
 }
 
 var _ PrivateLinkResourcesClientAPI = (*signalr.PrivateLinkResourcesClient)(nil)
+
+// SharedPrivateLinkResourcesClientAPI contains the set of methods on the SharedPrivateLinkResourcesClient type.
+type SharedPrivateLinkResourcesClientAPI interface {
+	CreateOrUpdate(ctx context.Context, sharedPrivateLinkResourceName string, parameters signalr.SharedPrivateLinkResource, resourceGroupName string, resourceName string) (result signalr.SharedPrivateLinkResourcesCreateOrUpdateFuture, err error)
+	Delete(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string) (result signalr.SharedPrivateLinkResourcesDeleteFuture, err error)
+	Get(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string) (result signalr.SharedPrivateLinkResource, err error)
+	List(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.SharedPrivateLinkResourceListPage, err error)
+	ListComplete(ctx context.Context, resourceGroupName string, resourceName string) (result signalr.SharedPrivateLinkResourceListIterator, err error)
+}
+
+var _ SharedPrivateLinkResourcesClientAPI = (*signalr.SharedPrivateLinkResourcesClient)(nil)

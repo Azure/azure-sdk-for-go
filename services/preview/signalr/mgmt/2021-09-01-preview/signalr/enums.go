@@ -21,12 +21,33 @@ func PossibleACLActionValues() []ACLAction {
 	return []ACLAction{Allow, Deny}
 }
 
+// CreatedByType enumerates the values for created by type.
+type CreatedByType string
+
+const (
+	// CreatedByTypeApplication ...
+	CreatedByTypeApplication CreatedByType = "Application"
+	// CreatedByTypeKey ...
+	CreatedByTypeKey CreatedByType = "Key"
+	// CreatedByTypeManagedIdentity ...
+	CreatedByTypeManagedIdentity CreatedByType = "ManagedIdentity"
+	// CreatedByTypeUser ...
+	CreatedByTypeUser CreatedByType = "User"
+)
+
+// PossibleCreatedByTypeValues returns an array of possible values for the CreatedByType const type.
+func PossibleCreatedByTypeValues() []CreatedByType {
+	return []CreatedByType{CreatedByTypeApplication, CreatedByTypeKey, CreatedByTypeManagedIdentity, CreatedByTypeUser}
+}
+
 // FeatureFlags enumerates the values for feature flags.
 type FeatureFlags string
 
 const (
 	// EnableConnectivityLogs ...
 	EnableConnectivityLogs FeatureFlags = "EnableConnectivityLogs"
+	// EnableLiveTrace ...
+	EnableLiveTrace FeatureFlags = "EnableLiveTrace"
 	// EnableMessagingLogs ...
 	EnableMessagingLogs FeatureFlags = "EnableMessagingLogs"
 	// ServiceMode ...
@@ -35,7 +56,7 @@ const (
 
 // PossibleFeatureFlagsValues returns an array of possible values for the FeatureFlags const type.
 func PossibleFeatureFlagsValues() []FeatureFlags {
-	return []FeatureFlags{EnableConnectivityLogs, EnableMessagingLogs, ServiceMode}
+	return []FeatureFlags{EnableConnectivityLogs, EnableLiveTrace, EnableMessagingLogs, ServiceMode}
 }
 
 // KeyType enumerates the values for key type.
@@ -44,13 +65,32 @@ type KeyType string
 const (
 	// Primary ...
 	Primary KeyType = "Primary"
+	// Salt ...
+	Salt KeyType = "Salt"
 	// Secondary ...
 	Secondary KeyType = "Secondary"
 )
 
 // PossibleKeyTypeValues returns an array of possible values for the KeyType const type.
 func PossibleKeyTypeValues() []KeyType {
-	return []KeyType{Primary, Secondary}
+	return []KeyType{Primary, Salt, Secondary}
+}
+
+// ManagedIdentityType enumerates the values for managed identity type.
+type ManagedIdentityType string
+
+const (
+	// None ...
+	None ManagedIdentityType = "None"
+	// SystemAssigned ...
+	SystemAssigned ManagedIdentityType = "SystemAssigned"
+	// UserAssigned ...
+	UserAssigned ManagedIdentityType = "UserAssigned"
+)
+
+// PossibleManagedIdentityTypeValues returns an array of possible values for the ManagedIdentityType const type.
+func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
+	return []ManagedIdentityType{None, SystemAssigned, UserAssigned}
 }
 
 // PrivateLinkServiceConnectionStatus enumerates the values for private link service connection status.
@@ -120,6 +160,23 @@ func PossibleRequestTypeValues() []RequestType {
 	return []RequestType{ClientConnection, RESTAPI, ServerConnection, Trace}
 }
 
+// ScaleType enumerates the values for scale type.
+type ScaleType string
+
+const (
+	// ScaleTypeAutomatic ...
+	ScaleTypeAutomatic ScaleType = "Automatic"
+	// ScaleTypeManual ...
+	ScaleTypeManual ScaleType = "Manual"
+	// ScaleTypeNone ...
+	ScaleTypeNone ScaleType = "None"
+)
+
+// PossibleScaleTypeValues returns an array of possible values for the ScaleType const type.
+func PossibleScaleTypeValues() []ScaleType {
+	return []ScaleType{ScaleTypeAutomatic, ScaleTypeManual, ScaleTypeNone}
+}
+
 // ServiceKind enumerates the values for service kind.
 type ServiceKind string
 
@@ -133,6 +190,27 @@ const (
 // PossibleServiceKindValues returns an array of possible values for the ServiceKind const type.
 func PossibleServiceKindValues() []ServiceKind {
 	return []ServiceKind{RawWebSockets, SignalR}
+}
+
+// SharedPrivateLinkResourceStatus enumerates the values for shared private link resource status.
+type SharedPrivateLinkResourceStatus string
+
+const (
+	// SharedPrivateLinkResourceStatusApproved ...
+	SharedPrivateLinkResourceStatusApproved SharedPrivateLinkResourceStatus = "Approved"
+	// SharedPrivateLinkResourceStatusDisconnected ...
+	SharedPrivateLinkResourceStatusDisconnected SharedPrivateLinkResourceStatus = "Disconnected"
+	// SharedPrivateLinkResourceStatusPending ...
+	SharedPrivateLinkResourceStatusPending SharedPrivateLinkResourceStatus = "Pending"
+	// SharedPrivateLinkResourceStatusRejected ...
+	SharedPrivateLinkResourceStatusRejected SharedPrivateLinkResourceStatus = "Rejected"
+	// SharedPrivateLinkResourceStatusTimeout ...
+	SharedPrivateLinkResourceStatusTimeout SharedPrivateLinkResourceStatus = "Timeout"
+)
+
+// PossibleSharedPrivateLinkResourceStatusValues returns an array of possible values for the SharedPrivateLinkResourceStatus const type.
+func PossibleSharedPrivateLinkResourceStatusValues() []SharedPrivateLinkResourceStatus {
+	return []SharedPrivateLinkResourceStatus{SharedPrivateLinkResourceStatusApproved, SharedPrivateLinkResourceStatusDisconnected, SharedPrivateLinkResourceStatusPending, SharedPrivateLinkResourceStatusRejected, SharedPrivateLinkResourceStatusTimeout}
 }
 
 // SkuTier enumerates the values for sku tier.
@@ -152,4 +230,19 @@ const (
 // PossibleSkuTierValues returns an array of possible values for the SkuTier const type.
 func PossibleSkuTierValues() []SkuTier {
 	return []SkuTier{Basic, Free, Premium, Standard}
+}
+
+// UpstreamAuthType enumerates the values for upstream auth type.
+type UpstreamAuthType string
+
+const (
+	// UpstreamAuthTypeManagedIdentity ...
+	UpstreamAuthTypeManagedIdentity UpstreamAuthType = "ManagedIdentity"
+	// UpstreamAuthTypeNone ...
+	UpstreamAuthTypeNone UpstreamAuthType = "None"
+)
+
+// PossibleUpstreamAuthTypeValues returns an array of possible values for the UpstreamAuthType const type.
+func PossibleUpstreamAuthTypeValues() []UpstreamAuthType {
+	return []UpstreamAuthType{UpstreamAuthTypeManagedIdentity, UpstreamAuthTypeNone}
 }

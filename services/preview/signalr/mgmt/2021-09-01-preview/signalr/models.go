@@ -11,13 +11,14 @@ import (
 	"encoding/json"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/Azure/go-autorest/autorest/to"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/signalr/mgmt/2020-07-01-preview/signalr"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/preview/signalr/mgmt/2021-09-01-preview/signalr"
 
 // CorsSettings cross-Origin Resource Sharing (CORS) settings.
 type CorsSettings struct {
@@ -68,23 +69,6 @@ func (future *CreateOrUpdateFuture) result(client Client) (rt ResourceType, err 
 	return
 }
 
-// CreateOrUpdateProperties settings used to provision or configure the resource.
-type CreateOrUpdateProperties struct {
-	// Features - List of SignalR featureFlags. e.g. ServiceMode.
-	//
-	// FeatureFlags that are not included in the parameters for the update operation will not be modified.
-	// And the response will only include featureFlags that are explicitly set.
-	// When a featureFlag is not explicitly set, SignalR service will use its globally default value.
-	// But keep in mind, the default value doesn't mean "false". It varies in terms of different FeatureFlags.
-	Features *[]Feature `json:"features,omitempty"`
-	// Cors - Cross-Origin Resource Sharing (CORS) settings.
-	Cors *CorsSettings `json:"cors,omitempty"`
-	// Upstream - Upstream settings when the Azure SignalR is in server-less mode.
-	Upstream *ServerlessUpstreamSettings `json:"upstream,omitempty"`
-	// NetworkACLs - Network ACLs
-	NetworkACLs *NetworkACLs `json:"networkACLs,omitempty"`
-}
-
 // DeleteFuture an abstraction for monitoring and retrieving the results of a long-running operation.
 type DeleteFuture struct {
 	azure.FutureAPI
@@ -133,30 +117,54 @@ type Dimension struct {
 	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
 }
 
-// ErrorResponse contains information about an API error.
-type ErrorResponse struct {
-	// Error - Describes a particular API error with an error code and a message.
-	Error *ErrorResponseBody `json:"error,omitempty"`
+// ErrorAdditionalInfo the resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// Type - READ-ONLY; The additional info type.
+	Type *string `json:"type,omitempty"`
+	// Info - READ-ONLY; The additional info.
+	Info interface{} `json:"info,omitempty"`
 }
 
-// ErrorResponseBody describes a particular API error with an error code and a message.
-type ErrorResponseBody struct {
-	// Code - An error code that describes the error condition more precisely than an HTTP status code.
-	// Can be used to programmatically handle specific error cases.
+// MarshalJSON is the custom marshaler for ErrorAdditionalInfo.
+func (eai ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ErrorDetail the error detail.
+type ErrorDetail struct {
+	// Code - READ-ONLY; The error code.
 	Code *string `json:"code,omitempty"`
-	// Message - A message that describes the error in detail and provides debugging information.
+	// Message - READ-ONLY; The error message.
 	Message *string `json:"message,omitempty"`
-	// Target - The target of the particular error (for example, the name of the property in error).
+	// Target - READ-ONLY; The error target.
 	Target *string `json:"target,omitempty"`
-	// Details - Contains nested errors that are related to this error.
-	Details *[]ErrorResponseBody `json:"details,omitempty"`
+	// Details - READ-ONLY; The error details.
+	Details *[]ErrorDetail `json:"details,omitempty"`
+	// AdditionalInfo - READ-ONLY; The error additional info.
+	AdditionalInfo *[]ErrorAdditionalInfo `json:"additionalInfo,omitempty"`
 }
 
-// Feature feature of a SignalR resource, which controls the SignalR runtime behavior.
+// MarshalJSON is the custom marshaler for ErrorDetail.
+func (ed ErrorDetail) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// ErrorResponse common error response for all Azure Resource Manager APIs to return error details for
+// failed operations. (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// Error - The error object.
+	Error *ErrorDetail `json:"error,omitempty"`
+}
+
+// Feature feature of a resource, which controls the runtime behavior.
 type Feature struct {
 	// Flag - FeatureFlags is the supported features of Azure SignalR service.
 	// - ServiceMode: Flag for backend server for SignalR service. Values allowed: "Default": have your own backend server; "Serverless": your application doesn't have a backend server; "Classic": for backward compatibility. Support both Default and Serverless mode but not recommended; "PredefinedOnly": for future use.
-	// - EnableConnectivityLogs: "true"/"false", to enable/disable the connectivity log category respectively. Possible values include: 'ServiceMode', 'EnableConnectivityLogs', 'EnableMessagingLogs'
+	// - EnableConnectivityLogs: "true"/"false", to enable/disable the connectivity log category respectively.
+	// - EnableMessagingLogs: "true"/"false", to enable/disable the connectivity log category respectively.
+	// - EnableLiveTrace: Live Trace allows you to know what's happening inside Azure SignalR service, it will give you live traces in real time, it will be helpful when you developing your own Azure SignalR based web application or self-troubleshooting some issues. Please note that live traces are counted as outbound messages that will be charged. Values allowed: "true"/"false", to enable/disable live trace feature. Possible values include: 'ServiceMode', 'EnableConnectivityLogs', 'EnableMessagingLogs', 'EnableLiveTrace'
 	Flag FeatureFlags `json:"flag,omitempty"`
 	// Value - Value of the feature flag. See Azure SignalR service document https://docs.microsoft.com/azure/azure-signalr/ for allowed values.
 	Value *string `json:"value,omitempty"`
@@ -271,7 +279,7 @@ type NameAvailability struct {
 type NameAvailabilityParameters struct {
 	// Type - The resource type. Can be "Microsoft.SignalRService/SignalR" or "Microsoft.SignalRService/webPubSub"
 	Type *string `json:"type,omitempty"`
-	// Name - The SignalR service name to validate. e.g."my-signalR-name-here"
+	// Name - The resource name to validate. e.g."my-resource-name"
 	Name *string `json:"name,omitempty"`
 }
 
@@ -501,9 +509,11 @@ type PrivateEndpointACL struct {
 	Deny *[]RequestType `json:"deny,omitempty"`
 }
 
-// PrivateEndpointConnection a private endpoint connection to SignalR resource
+// PrivateEndpointConnection a private endpoint connection to an azure resource
 type PrivateEndpointConnection struct {
 	autorest.Response `json:"-"`
+	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// PrivateEndpointConnectionProperties - Properties of the private endpoint connection
 	*PrivateEndpointConnectionProperties `json:"properties,omitempty"`
 	// ID - READ-ONLY; Fully qualified resource Id for the resource.
@@ -532,6 +542,15 @@ func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
 	}
 	for k, v := range m {
 		switch k {
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				pec.SystemData = &systemData
+			}
 		case "properties":
 			if v != nil {
 				var privateEndpointConnectionProperties PrivateEndpointConnectionProperties
@@ -572,6 +591,166 @@ func (pec *PrivateEndpointConnection) UnmarshalJSON(body []byte) error {
 	}
 
 	return nil
+}
+
+// PrivateEndpointConnectionList a list of private endpoint connections
+type PrivateEndpointConnectionList struct {
+	autorest.Response `json:"-"`
+	// Value - The list of the private endpoint connections
+	Value *[]PrivateEndpointConnection `json:"value,omitempty"`
+	// NextLink - Request URL that can be used to query next page of private endpoint connections. Returned when the total number of requested private endpoint connections exceed maximum page size.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// PrivateEndpointConnectionListIterator provides access to a complete listing of PrivateEndpointConnection
+// values.
+type PrivateEndpointConnectionListIterator struct {
+	i    int
+	page PrivateEndpointConnectionListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *PrivateEndpointConnectionListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *PrivateEndpointConnectionListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter PrivateEndpointConnectionListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter PrivateEndpointConnectionListIterator) Response() PrivateEndpointConnectionList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter PrivateEndpointConnectionListIterator) Value() PrivateEndpointConnection {
+	if !iter.page.NotDone() {
+		return PrivateEndpointConnection{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the PrivateEndpointConnectionListIterator type.
+func NewPrivateEndpointConnectionListIterator(page PrivateEndpointConnectionListPage) PrivateEndpointConnectionListIterator {
+	return PrivateEndpointConnectionListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (pecl PrivateEndpointConnectionList) IsEmpty() bool {
+	return pecl.Value == nil || len(*pecl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (pecl PrivateEndpointConnectionList) hasNextLink() bool {
+	return pecl.NextLink != nil && len(*pecl.NextLink) != 0
+}
+
+// privateEndpointConnectionListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (pecl PrivateEndpointConnectionList) privateEndpointConnectionListPreparer(ctx context.Context) (*http.Request, error) {
+	if !pecl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(pecl.NextLink)))
+}
+
+// PrivateEndpointConnectionListPage contains a page of PrivateEndpointConnection values.
+type PrivateEndpointConnectionListPage struct {
+	fn   func(context.Context, PrivateEndpointConnectionList) (PrivateEndpointConnectionList, error)
+	pecl PrivateEndpointConnectionList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *PrivateEndpointConnectionListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/PrivateEndpointConnectionListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.pecl)
+		if err != nil {
+			return err
+		}
+		page.pecl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *PrivateEndpointConnectionListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page PrivateEndpointConnectionListPage) NotDone() bool {
+	return !page.pecl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page PrivateEndpointConnectionListPage) Response() PrivateEndpointConnectionList {
+	return page.pecl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page PrivateEndpointConnectionListPage) Values() []PrivateEndpointConnection {
+	if page.pecl.IsEmpty() {
+		return nil
+	}
+	return *page.pecl.Value
+}
+
+// Creates a new instance of the PrivateEndpointConnectionListPage type.
+func NewPrivateEndpointConnectionListPage(cur PrivateEndpointConnectionList, getNextPage func(context.Context, PrivateEndpointConnectionList) (PrivateEndpointConnectionList, error)) PrivateEndpointConnectionListPage {
+	return PrivateEndpointConnectionListPage{
+		fn:   getNextPage,
+		pecl: cur,
+	}
 }
 
 // PrivateEndpointConnectionProperties private endpoint connection properties
@@ -705,8 +884,7 @@ func (plr *PrivateLinkResource) UnmarshalJSON(body []byte) error {
 	return nil
 }
 
-// PrivateLinkResourceList contains a list of AzSignalR.Models.Response.PrivateLink.PrivateLinkResource and
-// a possible link to query more results
+// PrivateLinkResourceList contains a list of PrivateLinkResource and a possible link to query more results
 type PrivateLinkResourceList struct {
 	autorest.Response `json:"-"`
 	// Value - List of PrivateLinkResource
@@ -874,6 +1052,8 @@ type PrivateLinkResourceProperties struct {
 	RequiredMembers *[]string `json:"requiredMembers,omitempty"`
 	// RequiredZoneNames - Required private DNS zone names
 	RequiredZoneNames *[]string `json:"requiredZoneNames,omitempty"`
+	// ShareablePrivateLinkResourceTypes - The list of resources that are onboarded to private link service
+	ShareablePrivateLinkResourceTypes *[]ShareablePrivateLinkResourceType `json:"shareablePrivateLinkResourceTypes,omitempty"`
 }
 
 // PrivateLinkServiceConnectionState connection state of the private endpoint connection
@@ -902,21 +1082,37 @@ type Properties struct {
 	Version *string `json:"version,omitempty"`
 	// PrivateEndpointConnections - READ-ONLY; Private endpoint connections to the resource.
 	PrivateEndpointConnections *[]PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+	// SharedPrivateLinkResources - READ-ONLY; The list of shared private link resources.
+	SharedPrivateLinkResources *[]SharedPrivateLinkResource `json:"sharedPrivateLinkResources,omitempty"`
 	// TLS - TLS settings.
 	TLS *TLSSettings `json:"tls,omitempty"`
-	// Features - List of SignalR featureFlags. e.g. ServiceMode.
+	// HostNamePrefix - READ-ONLY; Deprecated.
+	HostNamePrefix *string `json:"hostNamePrefix,omitempty"`
+	// Features - List of the featureFlags.
 	//
 	// FeatureFlags that are not included in the parameters for the update operation will not be modified.
 	// And the response will only include featureFlags that are explicitly set.
-	// When a featureFlag is not explicitly set, SignalR service will use its globally default value.
+	// When a featureFlag is not explicitly set, its globally default value will be used
 	// But keep in mind, the default value doesn't mean "false". It varies in terms of different FeatureFlags.
 	Features *[]Feature `json:"features,omitempty"`
 	// Cors - Cross-Origin Resource Sharing (CORS) settings.
 	Cors *CorsSettings `json:"cors,omitempty"`
-	// Upstream - Upstream settings when the Azure SignalR is in server-less mode.
+	// Upstream - Upstream settings when the service is in server-less mode.
 	Upstream *ServerlessUpstreamSettings `json:"upstream,omitempty"`
 	// NetworkACLs - Network ACLs
 	NetworkACLs *NetworkACLs `json:"networkACLs,omitempty"`
+	// PublicNetworkAccess - Enable or disable public network access. Default to "Enabled".
+	// When it's Enabled, network ACLs still apply.
+	// When it's Disabled, public network access is always disabled no matter what you set in network ACLs.
+	PublicNetworkAccess *string `json:"publicNetworkAccess,omitempty"`
+	// DisableLocalAuth - DisableLocalAuth
+	// Enable or disable local auth with AccessKey
+	// When set as true, connection with AccessKey=xxx won't work.
+	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	// DisableAadAuth - DisableLocalAuth
+	// Enable or disable aad auth
+	// When set as true, connection with AuthType=aad won't work.
+	DisableAadAuth *bool `json:"disableAadAuth,omitempty"`
 }
 
 // MarshalJSON is the custom marshaler for Properties.
@@ -936,6 +1132,15 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 	}
 	if p.NetworkACLs != nil {
 		objectMap["networkACLs"] = p.NetworkACLs
+	}
+	if p.PublicNetworkAccess != nil {
+		objectMap["publicNetworkAccess"] = p.PublicNetworkAccess
+	}
+	if p.DisableLocalAuth != nil {
+		objectMap["disableLocalAuth"] = p.DisableLocalAuth
+	}
+	if p.DisableAadAuth != nil {
+		objectMap["disableAadAuth"] = p.DisableAadAuth
 	}
 	return json.Marshal(objectMap)
 }
@@ -1002,7 +1207,7 @@ func (future *RegenerateKeyFuture) result(client Client) (kVar Keys, err error) 
 
 // RegenerateKeyParameters parameters describes the request to regenerate access keys
 type RegenerateKeyParameters struct {
-	// KeyType - The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive). Possible values include: 'Primary', 'Secondary'
+	// KeyType - The keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive). Possible values include: 'Primary', 'Secondary', 'Salt'
 	KeyType KeyType `json:"keyType,omitempty"`
 }
 
@@ -1196,7 +1401,7 @@ type ResourceSku struct {
 	Size *string `json:"size,omitempty"`
 	// Family - READ-ONLY; Not used. Retained for future use.
 	Family *string `json:"family,omitempty"`
-	// Capacity - Optional, integer. The unit count of SignalR resource. 1 by default.
+	// Capacity - Optional, integer. The unit count of the resource. 1 by default.
 	//
 	// If present, following values are allowed:
 	//     Free: 1
@@ -1230,6 +1435,8 @@ type ResourceType struct {
 	Kind ServiceKind `json:"kind,omitempty"`
 	// Identity - The managed identity response
 	Identity *ManagedIdentity `json:"identity,omitempty"`
+	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
 	// Location - The GEO location of the resource. e.g. West US | East US | North Central US | South Central US.
 	Location *string `json:"location,omitempty"`
 	// Tags - Tags of the service which is a list of key value pairs that describe the resource.
@@ -1310,6 +1517,15 @@ func (rt *ResourceType) UnmarshalJSON(body []byte) error {
 					return err
 				}
 				rt.Identity = &identity
+			}
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				rt.SystemData = &systemData
 			}
 		case "location":
 			if v != nil {
@@ -1410,6 +1626,447 @@ type ServiceSpecification struct {
 	MetricSpecifications *[]MetricSpecification `json:"metricSpecifications,omitempty"`
 	// LogSpecifications - Specifications of the Logs for Azure Monitoring.
 	LogSpecifications *[]LogSpecification `json:"logSpecifications,omitempty"`
+}
+
+// ShareablePrivateLinkResourceProperties describes the properties of a resource type that has been
+// onboarded to private link service
+type ShareablePrivateLinkResourceProperties struct {
+	// Description - The description of the resource type that has been onboarded to private link service
+	Description *string `json:"description,omitempty"`
+	// GroupID - The resource provider group id for the resource that has been onboarded to private link service
+	GroupID *string `json:"groupId,omitempty"`
+	// Type - The resource provider type for the resource that has been onboarded to private link service
+	Type *string `json:"type,omitempty"`
+}
+
+// ShareablePrivateLinkResourceType describes a  resource type that has been onboarded to private link
+// service
+type ShareablePrivateLinkResourceType struct {
+	// Name - The name of the resource type that has been onboarded to private link service
+	Name *string `json:"name,omitempty"`
+	// Properties - Describes the properties of a resource type that has been onboarded to private link service
+	Properties *ShareablePrivateLinkResourceProperties `json:"properties,omitempty"`
+}
+
+// SharedPrivateLinkResource describes a Shared Private Link Resource
+type SharedPrivateLinkResource struct {
+	autorest.Response `json:"-"`
+	// SystemData - READ-ONLY; Metadata pertaining to creation and last modification of the resource.
+	SystemData *SystemData `json:"systemData,omitempty"`
+	// SharedPrivateLinkResourceProperties - Describes the properties of a Shared Private Link Resource
+	*SharedPrivateLinkResourceProperties `json:"properties,omitempty"`
+	// ID - READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string `json:"id,omitempty"`
+	// Name - READ-ONLY; The name of the resource.
+	Name *string `json:"name,omitempty"`
+	// Type - READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
+	Type *string `json:"type,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SharedPrivateLinkResource.
+func (splr SharedPrivateLinkResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if splr.SharedPrivateLinkResourceProperties != nil {
+		objectMap["properties"] = splr.SharedPrivateLinkResourceProperties
+	}
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON is the custom unmarshaler for SharedPrivateLinkResource struct.
+func (splr *SharedPrivateLinkResource) UnmarshalJSON(body []byte) error {
+	var m map[string]*json.RawMessage
+	err := json.Unmarshal(body, &m)
+	if err != nil {
+		return err
+	}
+	for k, v := range m {
+		switch k {
+		case "systemData":
+			if v != nil {
+				var systemData SystemData
+				err = json.Unmarshal(*v, &systemData)
+				if err != nil {
+					return err
+				}
+				splr.SystemData = &systemData
+			}
+		case "properties":
+			if v != nil {
+				var sharedPrivateLinkResourceProperties SharedPrivateLinkResourceProperties
+				err = json.Unmarshal(*v, &sharedPrivateLinkResourceProperties)
+				if err != nil {
+					return err
+				}
+				splr.SharedPrivateLinkResourceProperties = &sharedPrivateLinkResourceProperties
+			}
+		case "id":
+			if v != nil {
+				var ID string
+				err = json.Unmarshal(*v, &ID)
+				if err != nil {
+					return err
+				}
+				splr.ID = &ID
+			}
+		case "name":
+			if v != nil {
+				var name string
+				err = json.Unmarshal(*v, &name)
+				if err != nil {
+					return err
+				}
+				splr.Name = &name
+			}
+		case "type":
+			if v != nil {
+				var typeVar string
+				err = json.Unmarshal(*v, &typeVar)
+				if err != nil {
+					return err
+				}
+				splr.Type = &typeVar
+			}
+		}
+	}
+
+	return nil
+}
+
+// SharedPrivateLinkResourceList a list of shared private link resources
+type SharedPrivateLinkResourceList struct {
+	autorest.Response `json:"-"`
+	// Value - The list of the shared private link resources
+	Value *[]SharedPrivateLinkResource `json:"value,omitempty"`
+	// NextLink - Request URL that can be used to query next page of private endpoint connections. Returned when the total number of requested private endpoint connections exceed maximum page size.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// SharedPrivateLinkResourceListIterator provides access to a complete listing of SharedPrivateLinkResource
+// values.
+type SharedPrivateLinkResourceListIterator struct {
+	i    int
+	page SharedPrivateLinkResourceListPage
+}
+
+// NextWithContext advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+func (iter *SharedPrivateLinkResourceListIterator) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SharedPrivateLinkResourceListIterator.NextWithContext")
+		defer func() {
+			sc := -1
+			if iter.Response().Response.Response != nil {
+				sc = iter.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	iter.i++
+	if iter.i < len(iter.page.Values()) {
+		return nil
+	}
+	err = iter.page.NextWithContext(ctx)
+	if err != nil {
+		iter.i--
+		return err
+	}
+	iter.i = 0
+	return nil
+}
+
+// Next advances to the next value.  If there was an error making
+// the request the iterator does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (iter *SharedPrivateLinkResourceListIterator) Next() error {
+	return iter.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the enumeration should be started or is not yet complete.
+func (iter SharedPrivateLinkResourceListIterator) NotDone() bool {
+	return iter.page.NotDone() && iter.i < len(iter.page.Values())
+}
+
+// Response returns the raw server response from the last page request.
+func (iter SharedPrivateLinkResourceListIterator) Response() SharedPrivateLinkResourceList {
+	return iter.page.Response()
+}
+
+// Value returns the current value or a zero-initialized value if the
+// iterator has advanced beyond the end of the collection.
+func (iter SharedPrivateLinkResourceListIterator) Value() SharedPrivateLinkResource {
+	if !iter.page.NotDone() {
+		return SharedPrivateLinkResource{}
+	}
+	return iter.page.Values()[iter.i]
+}
+
+// Creates a new instance of the SharedPrivateLinkResourceListIterator type.
+func NewSharedPrivateLinkResourceListIterator(page SharedPrivateLinkResourceListPage) SharedPrivateLinkResourceListIterator {
+	return SharedPrivateLinkResourceListIterator{page: page}
+}
+
+// IsEmpty returns true if the ListResult contains no values.
+func (splrl SharedPrivateLinkResourceList) IsEmpty() bool {
+	return splrl.Value == nil || len(*splrl.Value) == 0
+}
+
+// hasNextLink returns true if the NextLink is not empty.
+func (splrl SharedPrivateLinkResourceList) hasNextLink() bool {
+	return splrl.NextLink != nil && len(*splrl.NextLink) != 0
+}
+
+// sharedPrivateLinkResourceListPreparer prepares a request to retrieve the next set of results.
+// It returns nil if no more results exist.
+func (splrl SharedPrivateLinkResourceList) sharedPrivateLinkResourceListPreparer(ctx context.Context) (*http.Request, error) {
+	if !splrl.hasNextLink() {
+		return nil, nil
+	}
+	return autorest.Prepare((&http.Request{}).WithContext(ctx),
+		autorest.AsJSON(),
+		autorest.AsGet(),
+		autorest.WithBaseURL(to.String(splrl.NextLink)))
+}
+
+// SharedPrivateLinkResourceListPage contains a page of SharedPrivateLinkResource values.
+type SharedPrivateLinkResourceListPage struct {
+	fn    func(context.Context, SharedPrivateLinkResourceList) (SharedPrivateLinkResourceList, error)
+	splrl SharedPrivateLinkResourceList
+}
+
+// NextWithContext advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+func (page *SharedPrivateLinkResourceListPage) NextWithContext(ctx context.Context) (err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/SharedPrivateLinkResourceListPage.NextWithContext")
+		defer func() {
+			sc := -1
+			if page.Response().Response.Response != nil {
+				sc = page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	for {
+		next, err := page.fn(ctx, page.splrl)
+		if err != nil {
+			return err
+		}
+		page.splrl = next
+		if !next.hasNextLink() || !next.IsEmpty() {
+			break
+		}
+	}
+	return nil
+}
+
+// Next advances to the next page of values.  If there was an error making
+// the request the page does not advance and the error is returned.
+// Deprecated: Use NextWithContext() instead.
+func (page *SharedPrivateLinkResourceListPage) Next() error {
+	return page.NextWithContext(context.Background())
+}
+
+// NotDone returns true if the page enumeration should be started or is not yet complete.
+func (page SharedPrivateLinkResourceListPage) NotDone() bool {
+	return !page.splrl.IsEmpty()
+}
+
+// Response returns the raw server response from the last page request.
+func (page SharedPrivateLinkResourceListPage) Response() SharedPrivateLinkResourceList {
+	return page.splrl
+}
+
+// Values returns the slice of values for the current page or nil if there are no values.
+func (page SharedPrivateLinkResourceListPage) Values() []SharedPrivateLinkResource {
+	if page.splrl.IsEmpty() {
+		return nil
+	}
+	return *page.splrl.Value
+}
+
+// Creates a new instance of the SharedPrivateLinkResourceListPage type.
+func NewSharedPrivateLinkResourceListPage(cur SharedPrivateLinkResourceList, getNextPage func(context.Context, SharedPrivateLinkResourceList) (SharedPrivateLinkResourceList, error)) SharedPrivateLinkResourceListPage {
+	return SharedPrivateLinkResourceListPage{
+		fn:    getNextPage,
+		splrl: cur,
+	}
+}
+
+// SharedPrivateLinkResourceProperties describes the properties of an existing Shared Private Link Resource
+type SharedPrivateLinkResourceProperties struct {
+	// GroupID - The group id from the provider of resource the shared private link resource is for
+	GroupID *string `json:"groupId,omitempty"`
+	// PrivateLinkResourceID - The resource id of the resource the shared private link resource is for
+	PrivateLinkResourceID *string `json:"privateLinkResourceId,omitempty"`
+	// ProvisioningState - READ-ONLY; Provisioning state of the shared private link resource. Possible values include: 'Unknown', 'Succeeded', 'Failed', 'Canceled', 'Running', 'Creating', 'Updating', 'Deleting', 'Moving'
+	ProvisioningState ProvisioningState `json:"provisioningState,omitempty"`
+	// RequestMessage - The request message for requesting approval of the shared private link resource
+	RequestMessage *string `json:"requestMessage,omitempty"`
+	// Status - READ-ONLY; Status of the shared private link resource. Possible values include: 'SharedPrivateLinkResourceStatusPending', 'SharedPrivateLinkResourceStatusApproved', 'SharedPrivateLinkResourceStatusRejected', 'SharedPrivateLinkResourceStatusDisconnected', 'SharedPrivateLinkResourceStatusTimeout'
+	Status SharedPrivateLinkResourceStatus `json:"status,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SharedPrivateLinkResourceProperties.
+func (splrp SharedPrivateLinkResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	if splrp.GroupID != nil {
+		objectMap["groupId"] = splrp.GroupID
+	}
+	if splrp.PrivateLinkResourceID != nil {
+		objectMap["privateLinkResourceId"] = splrp.PrivateLinkResourceID
+	}
+	if splrp.RequestMessage != nil {
+		objectMap["requestMessage"] = splrp.RequestMessage
+	}
+	return json.Marshal(objectMap)
+}
+
+// SharedPrivateLinkResourcesCreateOrUpdateFuture an abstraction for monitoring and retrieving the results
+// of a long-running operation.
+type SharedPrivateLinkResourcesCreateOrUpdateFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SharedPrivateLinkResourcesClient) (SharedPrivateLinkResource, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *SharedPrivateLinkResourcesCreateOrUpdateFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for SharedPrivateLinkResourcesCreateOrUpdateFuture.Result.
+func (future *SharedPrivateLinkResourcesCreateOrUpdateFuture) result(client SharedPrivateLinkResourcesClient) (splr SharedPrivateLinkResource, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "signalr.SharedPrivateLinkResourcesCreateOrUpdateFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		splr.Response.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("signalr.SharedPrivateLinkResourcesCreateOrUpdateFuture")
+		return
+	}
+	sender := autorest.DecorateSender(client, autorest.DoRetryForStatusCodes(client.RetryAttempts, client.RetryDuration, autorest.StatusCodesForRetry...))
+	if splr.Response.Response, err = future.GetResult(sender); err == nil && splr.Response.Response.StatusCode != http.StatusNoContent {
+		splr, err = client.CreateOrUpdateResponder(splr.Response.Response)
+		if err != nil {
+			err = autorest.NewErrorWithError(err, "signalr.SharedPrivateLinkResourcesCreateOrUpdateFuture", "Result", splr.Response.Response, "Failure responding to request")
+		}
+	}
+	return
+}
+
+// SharedPrivateLinkResourcesDeleteFuture an abstraction for monitoring and retrieving the results of a
+// long-running operation.
+type SharedPrivateLinkResourcesDeleteFuture struct {
+	azure.FutureAPI
+	// Result returns the result of the asynchronous operation.
+	// If the operation has not completed it will return an error.
+	Result func(SharedPrivateLinkResourcesClient) (autorest.Response, error)
+}
+
+// UnmarshalJSON is the custom unmarshaller for CreateFuture.
+func (future *SharedPrivateLinkResourcesDeleteFuture) UnmarshalJSON(body []byte) error {
+	var azFuture azure.Future
+	if err := json.Unmarshal(body, &azFuture); err != nil {
+		return err
+	}
+	future.FutureAPI = &azFuture
+	future.Result = future.result
+	return nil
+}
+
+// result is the default implementation for SharedPrivateLinkResourcesDeleteFuture.Result.
+func (future *SharedPrivateLinkResourcesDeleteFuture) result(client SharedPrivateLinkResourcesClient) (ar autorest.Response, err error) {
+	var done bool
+	done, err = future.DoneWithContext(context.Background(), client)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "signalr.SharedPrivateLinkResourcesDeleteFuture", "Result", future.Response(), "Polling failure")
+		return
+	}
+	if !done {
+		ar.Response = future.Response()
+		err = azure.NewAsyncOpIncompleteError("signalr.SharedPrivateLinkResourcesDeleteFuture")
+		return
+	}
+	ar.Response = future.Response()
+	return
+}
+
+// Sku describes an available sku."
+type Sku struct {
+	// ResourceType - READ-ONLY; The resource type that this object applies to
+	ResourceType *string `json:"resourceType,omitempty"`
+	// Sku - READ-ONLY; The exact set of keys that define this sku.
+	Sku *ResourceSku `json:"sku,omitempty"`
+	// Capacity - READ-ONLY; Specifies the unit of the resource.
+	Capacity *SkuCapacity `json:"capacity,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for Sku.
+func (s Sku) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// SkuCapacity describes scaling information of a sku.
+type SkuCapacity struct {
+	// Minimum - READ-ONLY; The lowest permitted capacity for this resource
+	Minimum *int32 `json:"minimum,omitempty"`
+	// Maximum - READ-ONLY; The highest permitted capacity for this resource
+	Maximum *int32 `json:"maximum,omitempty"`
+	// Default - READ-ONLY; The default capacity.
+	Default *int32 `json:"default,omitempty"`
+	// AllowedValues - READ-ONLY; Allows capacity value list.
+	AllowedValues *[]int32 `json:"allowedValues,omitempty"`
+	// ScaleType - READ-ONLY; The scale type applicable to the sku. Possible values include: 'ScaleTypeNone', 'ScaleTypeManual', 'ScaleTypeAutomatic'
+	ScaleType ScaleType `json:"scaleType,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuCapacity.
+func (sc SkuCapacity) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// SkuList the list skus operation response
+type SkuList struct {
+	autorest.Response `json:"-"`
+	// Value - READ-ONLY; The list of skus available for the resource.
+	Value *[]Sku `json:"value,omitempty"`
+	// NextLink - READ-ONLY; The URL the client should use to fetch the next page (per server side paging).
+	// It's null for now, added for future use.
+	NextLink *string `json:"nextLink,omitempty"`
+}
+
+// MarshalJSON is the custom marshaler for SkuList.
+func (sl SkuList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	return json.Marshal(objectMap)
+}
+
+// SystemData metadata pertaining to creation and last modification of the resource.
+type SystemData struct {
+	// CreatedBy - The identity that created the resource.
+	CreatedBy *string `json:"createdBy,omitempty"`
+	// CreatedByType - The type of identity that created the resource. Possible values include: 'CreatedByTypeUser', 'CreatedByTypeApplication', 'CreatedByTypeManagedIdentity', 'CreatedByTypeKey'
+	CreatedByType CreatedByType `json:"createdByType,omitempty"`
+	// CreatedAt - The timestamp of resource creation (UTC).
+	CreatedAt *date.Time `json:"createdAt,omitempty"`
+	// LastModifiedBy - The identity that last modified the resource.
+	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	// LastModifiedByType - The type of identity that last modified the resource. Possible values include: 'CreatedByTypeUser', 'CreatedByTypeApplication', 'CreatedByTypeManagedIdentity', 'CreatedByTypeKey'
+	LastModifiedByType CreatedByType `json:"lastModifiedByType,omitempty"`
+	// LastModifiedAt - The timestamp of resource last modification (UTC)
+	LastModifiedAt *date.Time `json:"lastModifiedAt,omitempty"`
 }
 
 // TLSSettings TLS settings for the resource

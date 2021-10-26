@@ -419,6 +419,26 @@ func (r *Receiver) receiveMessage(ctx context.Context, options *ReceiveOptions) 
 	return messages[0], nil
 }
 
+// RenewLock renews the lock on a message, updating the `LockedUntil` field on `msg`.
+func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage) error {
+	_, _, mgmt, _, err := r.amqpLinks.Get(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	newExpirationTime, err := mgmt.RenewLocks(ctx, msg.rawAMQPMessage.LinkName(), []amqp.UUID{
+		(amqp.UUID)(msg.LockToken),
+	})
+
+	if err != nil {
+		return err
+	}
+
+	msg.LockedUntil = &newExpirationTime[0]
+	return nil
+}
+
 // Close permanently closes the receiver.
 func (r *Receiver) Close(ctx context.Context) error {
 	r.cleanupOnClose()

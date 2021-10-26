@@ -183,6 +183,43 @@ func TestSessionReceiver_nonSessionReceiver(t *testing.T) {
 	require.Contains(t, amqpError.Description, "It is not possible for an entity that requires sessions to create a non-sessionful message receiver.")
 }
 
+func TestSessionReceiver_RenewSessionLock(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
+		RequiresSession: to.BoolPtr(true),
+	})
+	defer cleanup()
+
+	sessionReceiver, err := client.AcceptSessionForQueue(context.Background(), queueName, "session-1", nil)
+	require.NoError(t, err)
+
+	sender, err := client.NewSender(queueName)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body:      []byte("hello world"),
+		SessionID: to.StringPtr("session-1"),
+	})
+	require.NoError(t, err)
+
+	messages, err := sessionReceiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.NotNil(t, messages)
+
+	// surprisingly this works. Not sure what it accomplishes though. C# has a manual check for it.
+	// err = sessionReceiver.RenewMessageLock(context.Background(), messages[0])
+	// require.NoError(t, err)
+
+	orig := sessionReceiver.LockedUntil()
+	require.NoError(t, sessionReceiver.RenewSessionLock(context.Background()))
+	require.Greater(t, sessionReceiver.LockedUntil().UnixNano(), orig.UnixNano())
+
+	// bogus renewal
+	sessionReceiver.sessionID = to.StringPtr("bogus")
+
+	err = sessionReceiver.RenewSessionLock(context.Background())
+	require.Contains(t, err.Error(), "status code 410 and description: The session lock has expired on the MessageSession")
+}
+
 func Test_toReceiverOptions(t *testing.T) {
 	require.Nil(t, toReceiverOptions(nil))
 

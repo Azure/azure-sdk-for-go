@@ -57,6 +57,7 @@ type MgmtClient interface {
 	CancelScheduled(ctx context.Context, seq ...int64) error
 
 	RenewLocks(ctx context.Context, linkName string, lockTokens []amqp.UUID) ([]time.Time, error)
+	RenewSessionLock(ctx context.Context, sessionID string) (time.Time, error)
 }
 
 func newMgmtClient(ctx context.Context, links AMQPLinks, ns NamespaceForMgmtClient) (MgmtClient, error) {
@@ -448,6 +449,40 @@ func (mc *mgmtClient) RenewLocks(ctx context.Context, linkName string, lockToken
 	}
 
 	return asTimes, nil
+}
+
+// RenewSessionLocks renews a session lock.
+func (mc *mgmtClient) RenewSessionLock(ctx context.Context, sessionID string) (time.Time, error) {
+	body := map[string]interface{}{
+		"session-id": sessionID,
+	}
+
+	msg := &amqp.Message{
+		Value: body,
+		ApplicationProperties: map[string]interface{}{
+			"operation": "com.microsoft:renew-session-lock",
+		},
+	}
+
+	resp, err := mc.doRPCWithRetry(ctx, msg, 5, 5*time.Second)
+
+	if err != nil {
+		return time.Time{}, err
+	}
+
+	m, ok := resp.Message.Value.(map[string]interface{})
+
+	if !ok {
+		return time.Time{}, NewErrIncorrectType("Message.Value", map[string]interface{}{}, resp.Message.Value)
+	}
+
+	lockedUntil, ok := m["expiration"].(time.Time)
+
+	if !ok {
+		return time.Time{}, NewErrIncorrectType("Message.Value[\"expiration\"] as times", time.Time{}, resp.Message.Value)
+	}
+
+	return lockedUntil, nil
 }
 
 // SendDisposition allows you settle a message using the management link, rather than via your

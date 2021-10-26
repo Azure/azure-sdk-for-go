@@ -80,41 +80,17 @@ func (ac *AdminClient) GetQueueRuntimeProperties(ctx context.Context, queueName 
 
 	return &QueueRuntimeProperties{
 		Name:                           name,
-		SizeInBytes:                    Int64OrZero(desc.SizeInBytes),
-		CreatedAt:                      DateTimeToTime(desc.CreatedAt),
-		UpdatedAt:                      DateTimeToTime(desc.UpdatedAt),
-		AccessedAt:                     DateTimeToTime(desc.AccessedAt),
-		TotalMessageCount:              Int64OrZero(desc.MessageCount),
-		ActiveMessageCount:             Int32OrZero(desc.CountDetails.ActiveMessageCount),
-		DeadLetterMessageCount:         Int32OrZero(desc.CountDetails.DeadLetterMessageCount),
-		ScheduledMessageCount:          Int32OrZero(desc.CountDetails.ScheduledMessageCount),
-		TransferDeadLetterMessageCount: Int32OrZero(desc.CountDetails.TransferDeadLetterMessageCount),
-		TransferMessageCount:           Int32OrZero(desc.CountDetails.TransferMessageCount),
+		SizeInBytes:                    int64OrZero(desc.SizeInBytes),
+		CreatedAt:                      dateTimeToTime(desc.CreatedAt),
+		UpdatedAt:                      dateTimeToTime(desc.UpdatedAt),
+		AccessedAt:                     dateTimeToTime(desc.AccessedAt),
+		TotalMessageCount:              int64OrZero(desc.MessageCount),
+		ActiveMessageCount:             int32OrZero(desc.CountDetails.ActiveMessageCount),
+		DeadLetterMessageCount:         int32OrZero(desc.CountDetails.DeadLetterMessageCount),
+		ScheduledMessageCount:          int32OrZero(desc.CountDetails.ScheduledMessageCount),
+		TransferDeadLetterMessageCount: int32OrZero(desc.CountDetails.TransferDeadLetterMessageCount),
+		TransferMessageCount:           int32OrZero(desc.CountDetails.TransferMessageCount),
 	}, nil
-}
-
-func DateTimeToTime(t *date.Time) time.Time {
-	if t == nil {
-		return time.Time{}
-	}
-
-	return t.Time
-}
-
-func Int32OrZero(i *int32) int32 {
-	if i == nil {
-		return 0
-	}
-
-	return *i
-}
-
-func Int64OrZero(i *int64) int64 {
-	if i == nil {
-		return 0
-	}
-
-	return *i
 }
 
 // QueueExists checks if a queue exists.

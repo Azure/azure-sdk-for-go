@@ -7,11 +7,13 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	"github.com/Azure/azure-amqp-common-go/v3/auth"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/tracing"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
+	"github.com/Azure/go-autorest/autorest/date"
 	"github.com/devigned/tab"
 )
 
@@ -162,4 +164,28 @@ func newQueueProperties(name string, desc *atom.QueueDescription) (*QueuePropert
 	}
 
 	return queuePropsResult, nil
+}
+
+func dateTimeToTime(t *date.Time) time.Time {
+	if t == nil {
+		return time.Time{}
+	}
+
+	return t.Time
+}
+
+func int32OrZero(i *int32) int32 {
+	if i == nil {
+		return 0
+	}
+
+	return *i
+}
+
+func int64OrZero(i *int64) int64 {
+	if i == nil {
+		return 0
+	}
+
+	return *i
 }

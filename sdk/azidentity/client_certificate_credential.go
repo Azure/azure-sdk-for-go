@@ -46,8 +46,8 @@ type ClientCertificateCredential struct {
 // NewClientCertificateCredential creates an instance of ClientCertificateCredential with the details needed to authenticate against Azure Active Directory with the specified certificate.
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
-// certs: one or more certificates, as returned by LoadCerts()
-// key: the signing certificate's private key, as returned by LoadCerts()
+// certs: one or more certificates, for example as returned by LoadCerts()
+// key: the signing certificate's private key, for example as returned by LoadCerts()
 // options: ClientCertificateCredentialOptions that can be used to provide additional configurations for the credential, such as the certificate password.
 func NewClientCertificateCredential(tenantID string, clientID string, certs []*x509.Certificate, key crypto.PrivateKey, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
 	if len(certs) == 0 {

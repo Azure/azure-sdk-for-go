@@ -1,0 +1,100 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakeaccount.table.cosmos.azure.com/Tables",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/Tables",
+        ":scheme": "https",
+        "Accept": "application/json;odata=minimalmetadata",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "35",
+        "Content-Type": "application/json",
+        "dataserviceversion": "3.0",
+        "User-Agent": "azsdk-go-aztables/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 26 Oct 2021 20:12:20 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": {
+        "TableName": "tableName4289488389"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "Date": "Tue, 26 Oct 2021 20:12:21 GMT",
+        "ETag": "W/\u0022datetime\u00272021-10-26T20%3A12%3A20.8959496Z\u0027\u0022",
+        "Location": "https://seankaneprim.table.cosmos.azure.com/Tables(\u0027tableName4289488389\u0027)",
+        "Transfer-Encoding": "chunked",
+        "x-ms-request-id": "bf6ace5e-6ddc-49e6-a45d-bf79d7339640"
+      },
+      "ResponseBody": {
+        "TableName": "tableName4289488389",
+        "odata.metadata": "https://seankaneprim.table.cosmos.azure.com/$metadata#Tables/@Element"
+      }
+    },
+    {
+      "RequestUri": "https://fakeaccount.table.cosmos.azure.com/tableName4289488389",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/tableName4289488389",
+        ":scheme": "https",
+        "Accept": "application/json;odata=minimalmetadata",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "125",
+        "Content-Type": "application/json",
+        "dataserviceversion": "3.0",
+        "prefer": "return-no-content",
+        "User-Agent": "azsdk-go-aztables/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 26 Oct 2021 20:12:21 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": {
+        "Bool": true,
+        "Integer": 1,
+        "PartitionKey": "partition",
+        "RowKey": "1",
+        "String": "some string 1",
+        "Timestamp": "0001-01-01T00:00:00Z"
+      },
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Date": "Tue, 26 Oct 2021 20:12:21 GMT",
+        "ETag": "W/\u0022datetime\u00272021-10-26T20%3A12%3A21.5546888Z\u0027\u0022",
+        "Location": "https://seankaneprim.table.cosmos.azure.com/tableName4289488389(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)",
+        "Preference-Applied": "return-no-content",
+        "x-ms-request-id": "28026fc1-e4dc-4197-9fac-54d4c789f488"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.table.cosmos.azure.com/Tables(\u0027tableName4289488389\u0027)",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "DELETE",
+        ":path": "/Tables(\u0027tableName4289488389\u0027)",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-aztables/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 26 Oct 2021 20:12:21 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Date": "Tue, 26 Oct 2021 20:12:21 GMT",
+        "x-ms-request-id": "ff9af784-e10f-4c77-9f09-45c5b6e52e05"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

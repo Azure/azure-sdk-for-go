@@ -66,6 +66,13 @@ func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential,
 
 // used to merge the ClientOptions into the policy.ClientOptions. Most importantly it sets any client options last (this is important for testing where the request is modified to send to proxy)
 func setConnectionOptions(serviceURL string, policyOptions *policy.ClientOptions, clientOptions *ClientOptions) *policy.ClientOptions {
+	if clientOptions == nil {
+		clientOptions = &ClientOptions{}
+	}
+	if policyOptions == nil {
+		policyOptions = &policy.ClientOptions{}
+	}
+	
 	if isCosmosEndpoint(serviceURL) {
 		policyOptions.PerCallPolicies = append(policyOptions.PerCallPolicies, cosmosPatchTransformPolicy{})
 	}

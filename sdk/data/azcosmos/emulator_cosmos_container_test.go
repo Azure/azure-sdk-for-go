@@ -75,9 +75,9 @@ func TestContainerCRUD(t *testing.T) {
 		t.Fatalf("Failed to read throughput: %v", err)
 	}
 
-	mt, err := throughputResponse.ThroughputProperties.ManualThroughput()
-	if err != nil {
-		t.Errorf("Failed to read throughput: %v", err)
+	mt, hasManualThroughput := throughputResponse.ThroughputProperties.ManualThroughput()
+	if !hasManualThroughput {
+		t.Fatalf("Expected manual throughput to be available")
 	}
 
 	if mt != 400 {
@@ -145,9 +145,9 @@ func TestContainerAutoscaleCRUD(t *testing.T) {
 		t.Fatalf("Failed to read throughput: %v", err)
 	}
 
-	maxru, err := throughputResponse.ThroughputProperties.AutoscaleMaxThroughput()
-	if err != nil {
-		t.Errorf("Failed to read throughput: %v", err)
+	maxru, hasAutoscale := throughputResponse.ThroughputProperties.AutoscaleMaxThroughput()
+	if !hasAutoscale {
+		t.Fatalf("Expected autoscale throughput to be available")
 	}
 
 	if maxru != 5000 {

@@ -74,9 +74,9 @@ func TestDatabaseWithOfferCRUD(t *testing.T) {
 		t.Fatalf("Failed to read throughput: %v", err)
 	}
 
-	mt, err := throughputResponse.ThroughputProperties.ManualThroughput()
-	if err != nil {
-		t.Errorf("Failed to read throughput: %v", err)
+	mt, hasManualThroughput := throughputResponse.ThroughputProperties.ManualThroughput()
+	if !hasManualThroughput {
+		t.Fatalf("Expected manual throughput to be available")
 	}
 
 	if mt != 400 {

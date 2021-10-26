@@ -390,7 +390,7 @@ func ExampleContainerClient_DeleteItem() {
 	fmt.Printf("Item deleted. ActivityId %s consuming %v RU", itemResponse.ActivityId, itemResponse.RequestCharge)
 }
 
-func ExampleItemOptions_SessionToken() {
+func ExampleContainerClient_ReadItem_sessionConsistency() {
 	endpoint, ok := os.LookupEnv("SOME_ENDPOINT")
 	if !ok {
 		panic("SOME_ENDPOINT could not be found")
@@ -448,7 +448,7 @@ func ExampleItemOptions_SessionToken() {
 
 // Azure Cosmos DB supports optimistic concurrency control to prevent lost updates or deletes and detection of conflicting operations.
 // Check the item response status code. If an error is imitted and the response code is 412 then retry operation.
-func ExampleItemOptions_IfMatchEtag() {
+func ExampleContainerClient_ReplaceItem_optimisticConcurrency() {
 	endpoint, ok := os.LookupEnv("SOME_ENDPOINT")
 	if !ok {
 		panic("SOME_ENDPOINT could not be found")

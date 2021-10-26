@@ -18,21 +18,22 @@ To create a client, you will need the account's endpoint URL and a key credentia
 	client, err := azcosmos.NewClientWithKey("myAccountEndpointURL", cred, nil)
 	handle(err)
 
+
 Key Concepts
 
-* A client is a connection to an Azure Cosmos DB account.
-* An account can have multiple databases, and the client allows you to create, read, and delete databases.
-* A database can have multiple containers, and the client allows you to create, read, update, and delete containers, and to modify throughput provision.
-* Information is stored as items inside containers and the client allows you to create, read, update, and delete items in containers.
+The following are relevant concepts for the usage of the client:
+	- A client is a connection to an Azure Cosmos DB account.
+	- An account can have multiple databases, and the client allows you to create, read, and delete databases.
+	- A database can have multiple containers, and the client allows you to create, read, update, and delete containers, and to modify throughput provision.
+	- Information is stored as items inside containers and the client allows you to create, read, update, and delete items in containers.
 
 
 More Examples
 
 The following sections provide several code snippets covering some of the most common Table tasks, including:
-
-* Creating a database
-* Creating a container
-* Creating, reading, and deleting items
+	- Creating a database
+	- Creating a container
+	- Creating, reading, and deleting items
 
 
 Creating a database

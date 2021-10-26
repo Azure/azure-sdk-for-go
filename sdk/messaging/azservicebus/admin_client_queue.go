@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/xml"
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -54,6 +55,80 @@ func (ac *AdminClient) createOrUpdateQueueImpl(ctx context.Context, props *Queue
 	}
 
 	return newQueueProperties(props.Name, &atomResp.Content.QueueDescription)
+}
+
+// queuePropertiesPager provides iteration over QueueProperties pages.
+type queuePropertiesPager struct {
+	adminClient *AdminClient
+
+	pageSize int
+	skip     int
+
+	lastErr      error
+	lastResponse []*QueueProperties
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *queuePropertiesPager) NextPage(ctx context.Context) bool {
+	p.lastResponse, p.lastErr = p.adminClient.getQueuePage(ctx, p.pageSize, p.skip)
+	p.skip += len(p.lastResponse)
+
+	return p.lastResponse != nil
+}
+
+// PageResponse returns the current QueueProperties.
+func (p *queuePropertiesPager) PageResponse() []*QueueProperties {
+	return p.lastResponse
+}
+
+// Err returns the last error encountered while paging.
+func (p *queuePropertiesPager) Err() error {
+	return p.lastErr
+}
+
+func (ac *AdminClient) getQueuePage(ctx context.Context, top int, skip int) ([]*QueueProperties, error) {
+	fragment := "/$Resources/Queues?"
+
+	if top > 0 {
+		fragment += fmt.Sprintf("&$top=%d", top)
+	}
+
+	if skip > 0 {
+		fragment += fmt.Sprintf("&$skip=%d", skip)
+	}
+
+	resp, err := ac.em.Get(ctx, fragment)
+
+	if err != nil {
+		return nil, err
+	}
+
+	bytes, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var feed *atom.QueueFeed
+
+	if err := xml.Unmarshal(bytes, &feed); err != nil {
+		return nil, err
+	}
+
+	var all []*QueueProperties
+
+	for _, env := range feed.Entries {
+		props, err := newQueueProperties(env.Title, &env.Content.QueueDescription)
+
+		if err != nil {
+			return nil, err
+		}
+
+		all = append(all, props)
+	}
+
+	return all, nil
 }
 
 func (ac *AdminClient) getQueueImpl(ctx context.Context, queueName string) (string, *atom.QueueDescription, error) {

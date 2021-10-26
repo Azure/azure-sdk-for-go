@@ -126,8 +126,42 @@ func (ac *AdminClient) DeleteQueue(ctx context.Context, queueName string) (*http
 	return resp, nil
 }
 
-func (ac *AdminClient) ListQueues() {
+// ListQueuesOptions can be used to configure teh ListQueues method.
+type ListQueuesOptions struct {
+	// Top is the maximum size of each page of results.
+	Top int
+	// Skip is the starting index for the paging operation.
+	Skip int
+}
 
+// QueuePropertiesPager provides iteration over ListQueueProperties pages.
+type QueuePropertiesPager interface {
+	// NextPage returns true if the pager advanced to the next page.
+	// Returns false if there are no more pages or an error occurred.
+	NextPage(context.Context) bool
+
+	// PageResponse returns the current QueueProperties.
+	PageResponse() []*QueueProperties
+
+	// Err returns the last error encountered while paging.
+	Err() error
+}
+
+// ListQueues lists all queues with an optional start point
+func (ac *AdminClient) ListQueues(options *ListQueuesOptions) QueuePropertiesPager {
+	var pageSize int
+	var skip int
+
+	if options != nil {
+		skip = options.Skip
+		pageSize = options.Top
+	}
+
+	return &queuePropertiesPager{
+		adminClient: ac,
+		pageSize:    pageSize,
+		skip:        skip,
+	}
 }
 
 func (ac *AdminClient) ListQueuesRuntimeProperties() {

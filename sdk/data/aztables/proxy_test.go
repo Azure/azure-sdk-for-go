@@ -15,7 +15,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -52,6 +51,8 @@ func TestMain(m *testing.M) {
 }
 
 var pathToPackage = "sdk/data/aztables/testdata"
+
+const tableNamePrefix = "tableName"
 
 type recordingPolicy struct {
 	options recording.RecordingOptions
@@ -183,12 +184,12 @@ func initClientTest(t *testing.T, service string, createTable bool) (*Client, fu
 	require.NoError(t, err)
 
 	if createTable {
-		_, err = client.Create(context.Background(), nil)
+		_, err = client.Create(ctx, nil)
 		require.NoError(t, err)
 	}
 
 	return client, func() {
-		_, err = client.Delete(context.Background(), nil)
+		_, err = client.Delete(ctx, nil)
 		require.NoError(t, err)
 		err = recording.Stop(t, nil)
 		require.NoError(t, err)
@@ -215,14 +216,14 @@ func initServiceTest(t *testing.T, service string) (*ServiceClient, func()) {
 	}
 }
 
-func getAADCredential(t *testing.T) (azcore.TokenCredential, error) { //nolint
-	if recording.GetRecordMode() == "playback" {
-		cred := NewFakeCredential("fakeaccount", "fakeAccountKey")
-		return cred, nil
-	}
+// func getAADCredential(t *testing.T) (azcore.TokenCredential, error) {
+// 	if recording.GetRecordMode() == "playback" {
+// 		cred := NewFakeCredential("fakeaccount", "fakeAccountKey")
+// 		return cred, nil
+// 	}
 
-	return azidentity.NewDefaultAzureCredential(nil)
-}
+// 	return azidentity.NewDefaultAzureCredential(nil)
+// }
 
 func getSharedKeyCredential(t *testing.T) (*SharedKeyCredential, error) {
 	if recording.GetRecordMode() == "playback" {

@@ -4,7 +4,6 @@
 package aztables
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -29,12 +28,12 @@ func TestSASServiceClient(t *testing.T) {
 	require.NoError(t, err)
 
 	delete := func() {
-		_, err := serviceClient.DeleteTable(context.Background(), tableName, nil)
+		_, err := serviceClient.DeleteTable(ctx, tableName, nil)
 		require.NoError(t, err)
 	}
 	defer delete()
 
-	_, err = serviceClient.CreateTable(context.Background(), tableName, nil)
+	_, err = serviceClient.CreateTable(ctx, tableName, nil)
 	require.NoError(t, err)
 
 	resources := AccountSASResourceTypes{
@@ -62,10 +61,10 @@ func TestSASServiceClient(t *testing.T) {
 	require.NoError(t, err)
 	defer recording.Stop(t, nil) //nolint
 
-	_, err = svcClient.CreateTable(context.Background(), tableName+"002", nil)
+	_, err = svcClient.CreateTable(ctx, tableName+"002", nil)
 	require.NoError(t, err)
 
-	_, err = svcClient.DeleteTable(context.Background(), tableName+"002", nil)
+	_, err = svcClient.DeleteTable(ctx, tableName+"002", nil)
 	require.NoError(t, err)
 }
 
@@ -83,12 +82,12 @@ func TestSASClient(t *testing.T) {
 	require.NoError(t, err)
 
 	delete := func() {
-		_, err := serviceClient.DeleteTable(context.Background(), tableName, nil)
+		_, err := serviceClient.DeleteTable(ctx, tableName, nil)
 		require.NoError(t, err)
 	}
 	defer delete()
 
-	_, err = serviceClient.CreateTable(context.Background(), tableName, nil)
+	_, err = serviceClient.CreateTable(ctx, tableName, nil)
 	require.NoError(t, err)
 
 	permissions := SASPermissions{
@@ -116,7 +115,7 @@ func TestSASClient(t *testing.T) {
 	marshalled, err := json.Marshal(entity)
 	require.NoError(t, err)
 
-	_, err = client.AddEntity(context.Background(), marshalled, nil)
+	_, err = client.AddEntity(ctx, marshalled, nil)
 	require.NoError(t, err)
 }
 
@@ -134,12 +133,12 @@ func TestSASClientReadOnly(t *testing.T) {
 	require.NoError(t, err)
 
 	delete := func() {
-		_, err := serviceClient.DeleteTable(context.Background(), tableName, nil)
+		_, err := serviceClient.DeleteTable(ctx, tableName, nil)
 		require.NoError(t, err)
 	}
 	defer delete()
 
-	_, err = serviceClient.CreateTable(context.Background(), tableName, nil)
+	_, err = serviceClient.CreateTable(ctx, tableName, nil)
 	require.NoError(t, err)
 
 	client := serviceClient.NewClient(tableName)
@@ -171,13 +170,13 @@ func TestSASClientReadOnly(t *testing.T) {
 	require.NoError(t, err)
 
 	// Failure on a read
-	_, err = client.AddEntity(context.Background(), marshalled, nil)
+	_, err = client.AddEntity(ctx, marshalled, nil)
 	require.Error(t, err)
 
 	// Success on a list
 	pager := client.List(nil)
 	count := 0
-	for pager.NextPage(context.Background()) {
+	for pager.NextPage(ctx) {
 		count += len(pager.PageResponse().Entities)
 	}
 
@@ -199,12 +198,12 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	require.NoError(t, err)
 
 	delete := func() {
-		_, err := serviceClient.DeleteTable(context.Background(), tableName, nil)
+		_, err := serviceClient.DeleteTable(ctx, tableName, nil)
 		require.NoError(t, err)
 	}
 	defer delete()
 
-	_, err = serviceClient.CreateTable(context.Background(), tableName, nil)
+	_, err = serviceClient.CreateTable(ctx, tableName, nil)
 	require.NoError(t, err)
 
 	client := serviceClient.NewClient(tableName)
@@ -236,13 +235,13 @@ func TestSASCosmosClientReadOnly(t *testing.T) {
 	require.NoError(t, err)
 
 	// Failure on a read
-	_, err = client.AddEntity(context.Background(), marshalled, nil)
+	_, err = client.AddEntity(ctx, marshalled, nil)
 	require.Error(t, err)
 
 	// Success on a list
 	pager := client.List(nil)
 	count := 0
-	for pager.NextPage(context.Background()) {
+	for pager.NextPage(ctx) {
 		count += len(pager.PageResponse().Entities)
 	}
 

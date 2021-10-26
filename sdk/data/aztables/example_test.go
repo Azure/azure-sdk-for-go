@@ -56,6 +56,46 @@ func ExampleNewServiceClient() {
 	fmt.Println(client)
 }
 
+func ExampleNewServiceClientWithSharedKey() {
+	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	accountKey, ok := os.LookupEnv("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY")
+	if !ok {
+		panic("TABLES_PRIMARY_STORAGE_ACCOUNT_KEY could not be found")
+	}
+	serviceURL := accountName + ".table.core.windows.net"
+
+	cred, err := aztables.NewSharedKeyCredential(accountName, accountKey)
+	if err != nil {
+		panic(err)
+	}
+	client, err := aztables.NewServiceClientWithSharedKey(serviceURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(client)
+}
+
+func ExampleNewServiceClientWithNoCredential() {
+	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	sharedAccessSignature, ok := os.LookupEnv("TABLES_SHARED_ACCESS_SIGNATURE")
+	if !ok {
+		panic("TABLES_SHARED_ACCESS_SIGNATURE could not be found")
+	}
+	serviceURL := fmt.Sprintf("%s.table.core.windows.net/?%s", accountName, sharedAccessSignature)
+
+	client, err := aztables.NewServiceClientWithNoCredential(serviceURL, nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(client)
+}
+
 type MyEntity struct {
 	aztables.Entity
 	Price       float32
@@ -265,6 +305,24 @@ func ExampleClient_Delete() {
 }
 
 func ExampleNewClient() {
+	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	serviceURL := fmt.Sprintf("https://%s.table.core.windows.net/%s", accountName, "myTableName")
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		panic(err)
+	}
+	client, err := aztables.NewClient(serviceURL, cred, nil)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(client)
+}
+
+func ExampleNewClientWithSharedKey() {
 	accountName, ok := os.LookupEnv("TABLES_STORAGE_ACCOUNT_NAME")
 	if !ok {
 		panic("TABLES_STORAGE_ACCOUNT_NAME could not be found")

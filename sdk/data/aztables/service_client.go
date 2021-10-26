@@ -28,8 +28,8 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, runtime.NewBearerTokenPolicy(cred, []string{"https://storage.azure.com/.default"}, nil))
 	con := generated.NewConnection(serviceURL, conOptions)
 	return &ServiceClient{
-		client:  generated.NewTableClient(con),
-		service: generated.NewServiceClient(con),
+		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
+		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
 		cred:    cred,
 	}, nil
 }
@@ -43,24 +43,24 @@ func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions)
 	}
 	con := generated.NewConnection(serviceURL, conOptions)
 	return &ServiceClient{
-		client:  generated.NewTableClient(con),
-		service: generated.NewServiceClient(con),
+		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
+		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
 	}, nil
 }
 
 // NewServiceClientWithSharedKey creates a ServiceClient struct using the specified serviceURL, credential, and options.
 func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*ServiceClient, error) {
 	conOptions := getConnectionOptions(serviceURL, options)
-	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, newSharedKeyCredPolicy(cred, runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: generated.Scopes}}))
+	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, newSharedKeyCredPolicy(cred))
 	con := generated.NewConnection(serviceURL, conOptions)
 	return &ServiceClient{
-		client:  generated.NewTableClient(con),
-		service: generated.NewServiceClient(con),
+		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
+		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
 		cred:    cred,
 	}, nil
 }
 
-func getConnectionOptions(serviceURL string, options *ClientOptions) *generated.ConnectionOptions {
+func getConnectionOptions(serviceURL string, options *ClientOptions) *azcore.ClientOptions {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -96,7 +96,7 @@ func (t *ServiceClient) CreateTable(ctx context.Context, name string, options *C
 	if options == nil {
 		options = &CreateTableOptions{}
 	}
-	_, err := t.client.Create(ctx, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
+	_, err := t.client.Create(ctx, generated.Enum1Three0, generated.TableProperties{TableName: &name}, options.toGenerated(), &generated.QueryOptions{})
 	return t.NewClient(name), err
 }
 
@@ -250,7 +250,7 @@ func (p *tableQueryResponsePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	var resp generated.TableQueryResponseEnvelope
-	resp, p.err = p.client.Query(ctx, p.tableQueryOptions, p.listOptions.toQueryOptions())
+	resp, p.err = p.client.Query(ctx, generated.Enum1Three0, p.tableQueryOptions, p.listOptions.toQueryOptions())
 	p.current = &resp
 	p.tableQueryOptions.NextTableName = resp.XMSContinuationNextTableName
 	return p.err == nil && resp.TableQueryResponse.Value != nil && len(resp.TableQueryResponse.Value) > 0
@@ -309,7 +309,7 @@ func (t *ServiceClient) GetStatistics(ctx context.Context, options *GetStatistic
 	if options == nil {
 		options = &GetStatisticsOptions{}
 	}
-	resp, err := t.service.GetStatistics(ctx, options.toGenerated())
+	resp, err := t.service.GetStatistics(ctx, generated.Enum5Service, generated.Enum7Stats, options.toGenerated())
 	return getStatisticsResponseFromGenerated(&resp), err
 }
 
@@ -354,7 +354,7 @@ func (t *ServiceClient) GetProperties(ctx context.Context, options *GetPropertie
 	if options == nil {
 		options = &GetPropertiesOptions{}
 	}
-	resp, err := t.service.GetProperties(ctx, options.toGenerated())
+	resp, err := t.service.GetProperties(ctx, generated.Enum5Service, generated.Enum6Properties, options.toGenerated())
 	return getPropertiesResponseFromGenerated(&resp), err
 }
 
@@ -387,7 +387,7 @@ func (t *ServiceClient) SetProperties(ctx context.Context, properties ServicePro
 	if options == nil {
 		options = &SetPropertiesOptions{}
 	}
-	resp, err := t.service.SetProperties(ctx, *properties.toGenerated(), options.toGenerated())
+	resp, err := t.service.SetProperties(ctx, generated.Enum5Service, generated.Enum6Properties, *properties.toGenerated(), options.toGenerated())
 	return setPropertiesResponseFromGenerated(&resp), err
 }
 

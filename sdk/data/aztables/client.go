@@ -118,7 +118,7 @@ func (t *Client) Create(ctx context.Context, options *CreateTableOptions) (Creat
 	if options == nil {
 		options = &CreateTableOptions{}
 	}
-	resp, err := t.client.Create(ctx, generated.TableProperties{TableName: &t.name}, options.toGenerated(), &generated.QueryOptions{})
+	resp, err := t.client.Create(ctx, generated.Enum1Three0, generated.TableProperties{TableName: &t.name}, options.toGenerated(), &generated.QueryOptions{})
 	return createTableResponseFromGen(&resp), err
 }
 
@@ -235,7 +235,7 @@ func (p *tableEntityQueryResponsePager) NextPage(ctx context.Context) bool {
 		return false
 	}
 	var resp generated.TableQueryEntitiesResponse
-	resp, p.err = p.tableClient.client.QueryEntities(ctx, p.tableClient.name, p.tableQueryOptions, p.listOptions.toQueryOptions())
+	resp, p.err = p.tableClient.client.QueryEntities(ctx, generated.Enum1Three0, p.tableClient.name, p.tableQueryOptions, p.listOptions.toQueryOptions())
 
 	c, err := newListEntitiesPage(&resp)
 	if err != nil {
@@ -324,7 +324,7 @@ func (t *Client) GetEntity(ctx context.Context, partitionKey string, rowKey stri
 	}
 
 	genOptions, queryOptions := options.toGenerated()
-	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, t.name, partitionKey, rowKey, genOptions, queryOptions)
+	resp, err := t.client.QueryEntityWithPartitionAndRowKey(ctx, generated.Enum1Three0, t.name, partitionKey, rowKey, genOptions, queryOptions)
 	if err != nil {
 		return GetEntityResponse{}, err
 	}
@@ -366,7 +366,7 @@ func (t *Client) AddEntity(ctx context.Context, entity []byte, options *AddEntit
 	if err != nil {
 		return AddEntityResponse{}, err
 	}
-	resp, err := t.client.InsertEntity(ctx, t.name, &generated.TableInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr()}, nil)
+	resp, err := t.client.InsertEntity(ctx, generated.Enum1Three0, t.name, &generated.TableInsertEntityOptions{TableEntityProperties: mapEntity, ResponsePreference: generated.ResponseFormatReturnNoContent.ToPtr()}, nil)
 	if err != nil {
 		err = checkEntityForPkRk(&mapEntity, err)
 		return AddEntityResponse{}, err
@@ -404,7 +404,7 @@ func (t *Client) DeleteEntity(ctx context.Context, partitionKey string, rowKey s
 		nilEtag := azcore.ETag("*")
 		options.IfMatch = &nilEtag
 	}
-	resp, err := t.client.DeleteEntity(ctx, t.name, partitionKey, rowKey, string(*options.IfMatch), options.toGenerated(), &generated.QueryOptions{})
+	resp, err := t.client.DeleteEntity(ctx, generated.Enum1Three0, t.name, partitionKey, rowKey, string(*options.IfMatch), options.toGenerated(), &generated.QueryOptions{})
 	return deleteEntityResponseFromGenerated(&resp), err
 }
 
@@ -499,10 +499,10 @@ func (t *Client) UpdateEntity(ctx context.Context, entity []byte, options *Updat
 
 	switch options.UpdateMode {
 	case MergeEntity:
-		resp, err := t.client.MergeEntity(ctx, t.name, partKey, rowkey, options.toGeneratedMergeEntity(mapEntity), &generated.QueryOptions{})
+		resp, err := t.client.MergeEntity(ctx, generated.Enum1Three0, t.name, partKey, rowkey, options.toGeneratedMergeEntity(mapEntity), &generated.QueryOptions{})
 		return updateEntityResponseFromMergeGenerated(&resp), err
 	case ReplaceEntity:
-		resp, err := t.client.UpdateEntity(ctx, t.name, partKey, rowkey, options.toGeneratedUpdateEntity(mapEntity), &generated.QueryOptions{})
+		resp, err := t.client.UpdateEntity(ctx, generated.Enum1Three0, t.name, partKey, rowkey, options.toGeneratedUpdateEntity(mapEntity), &generated.QueryOptions{})
 		return updateEntityResponseFromUpdateGenerated(&resp), err
 	}
 	if pk == "" || rk == "" {
@@ -575,10 +575,10 @@ func (t *Client) InsertEntity(ctx context.Context, entity []byte, options *Inser
 
 	switch options.UpdateMode {
 	case MergeEntity:
-		resp, err := t.client.MergeEntity(ctx, t.name, partKey, rowkey, &generated.TableMergeEntityOptions{TableEntityProperties: mapEntity}, &generated.QueryOptions{})
+		resp, err := t.client.MergeEntity(ctx, generated.Enum1Three0, t.name, partKey, rowkey, &generated.TableMergeEntityOptions{TableEntityProperties: mapEntity}, &generated.QueryOptions{})
 		return insertEntityFromGeneratedMerge(&resp), err
 	case ReplaceEntity:
-		resp, err := t.client.UpdateEntity(ctx, t.name, partKey, rowkey, &generated.TableUpdateEntityOptions{TableEntityProperties: mapEntity}, &generated.QueryOptions{})
+		resp, err := t.client.UpdateEntity(ctx, generated.Enum1Three0, t.name, partKey, rowkey, &generated.TableUpdateEntityOptions{TableEntityProperties: mapEntity}, &generated.QueryOptions{})
 		return insertEntityFromGeneratedUpdate(&resp), err
 	}
 	if pk == "" || rk == "" {
@@ -616,7 +616,7 @@ func getAccessPolicyResponseFromGenerated(g *generated.TableGetAccessPolicyRespo
 
 // GetAccessPolicy retrieves details about any stored access policies specified on the table that may be used with the Shared Access Signature
 func (t *Client) GetAccessPolicy(ctx context.Context, options *GetAccessPolicyOptions) (GetAccessPolicyResponse, error) {
-	resp, err := t.client.GetAccessPolicy(ctx, t.name, options.toGenerated())
+	resp, err := t.client.GetAccessPolicy(ctx, t.name, generated.Enum4ACL, options.toGenerated())
 	return getAccessPolicyResponseFromGenerated(&resp), err
 }
 
@@ -648,7 +648,7 @@ func (s *SetAccessPolicyOptions) toGenerated() *generated.TableSetAccessPolicyOp
 
 // SetAccessPolicy sets stored access policies for the table that may be used with SharedAccessSignature
 func (t *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOptions) (SetAccessPolicyResponse, error) {
-	response, err := t.client.SetAccessPolicy(ctx, t.name, options.toGenerated())
+	response, err := t.client.SetAccessPolicy(ctx, t.name, generated.Enum4ACL, options.toGenerated())
 	if len(options.TableACL) > 5 {
 		err = errTooManyAccessPoliciesError
 	}

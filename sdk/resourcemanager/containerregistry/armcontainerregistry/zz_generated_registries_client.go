@@ -12,14 +12,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // RegistriesClient contains the methods for the Registries group.
@@ -65,7 +64,7 @@ func (client *RegistriesClient) checkNameAvailabilityCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, registryNameCheckRequest)
@@ -149,7 +148,7 @@ func (client *RegistriesClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, registry)
@@ -224,7 +223,7 @@ func (client *RegistriesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -298,7 +297,7 @@ func (client *RegistriesClient) generateCredentialsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, generateCredentialsParameters)
@@ -353,7 +352,7 @@ func (client *RegistriesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -502,7 +501,7 @@ func (client *RegistriesClient) importImageCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, runtime.MarshalAsJSON(req, parameters)
 }
@@ -545,7 +544,7 @@ func (client *RegistriesClient) listCreateRequest(ctx context.Context, options *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -602,7 +601,7 @@ func (client *RegistriesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -666,7 +665,7 @@ func (client *RegistriesClient) listCredentialsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -727,7 +726,7 @@ func (client *RegistriesClient) listPrivateLinkResourcesCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -791,7 +790,7 @@ func (client *RegistriesClient) listUsagesCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -855,7 +854,7 @@ func (client *RegistriesClient) regenerateCredentialCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, regenerateCredentialParameters)
@@ -1015,7 +1014,7 @@ func (client *RegistriesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, registryUpdateParameters)

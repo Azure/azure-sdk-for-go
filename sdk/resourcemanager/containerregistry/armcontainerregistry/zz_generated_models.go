@@ -10,10 +10,9 @@ package armcontainerregistry
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // ActivationProperties - The activation properties of the connected registry.
@@ -343,6 +342,9 @@ type ConnectedRegistryProperties struct {
 	// The login server properties of the connected registry.
 	LoginServer *LoginServerProperties `json:"loginServer,omitempty"`
 
+	// The list of notifications subscription information for the connected registry.
+	NotificationsList []*string `json:"notificationsList,omitempty"`
+
 	// READ-ONLY; The activation properties of the connected registry.
 	Activation *ActivationProperties `json:"activation,omitempty" azure:"ro"`
 
@@ -372,6 +374,7 @@ func (c ConnectedRegistryProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "logging", c.Logging)
 	populate(objectMap, "loginServer", c.LoginServer)
 	populate(objectMap, "mode", c.Mode)
+	populate(objectMap, "notificationsList", c.NotificationsList)
 	populate(objectMap, "parent", c.Parent)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
 	populate(objectMap, "statusDetails", c.StatusDetails)
@@ -410,6 +413,9 @@ func (c *ConnectedRegistryProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "mode":
 			err = unpopulate(val, &c.Mode)
+			delete(rawMsg, key)
+		case "notificationsList":
+			err = unpopulate(val, &c.NotificationsList)
 			delete(rawMsg, key)
 		case "parent":
 			err = unpopulate(val, &c.Parent)
@@ -452,6 +458,9 @@ type ConnectedRegistryUpdateProperties struct {
 	// The logging properties of the connected registry.
 	Logging *LoggingProperties `json:"logging,omitempty"`
 
+	// The list of notifications subscription information for the connected registry.
+	NotificationsList []*string `json:"notificationsList,omitempty"`
+
 	// The sync properties of the connected registry with its parent.
 	SyncProperties *SyncUpdateProperties `json:"syncProperties,omitempty"`
 }
@@ -461,6 +470,7 @@ func (c ConnectedRegistryUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "clientTokenIds", c.ClientTokenIDs)
 	populate(objectMap, "logging", c.Logging)
+	populate(objectMap, "notificationsList", c.NotificationsList)
 	populate(objectMap, "syncProperties", c.SyncProperties)
 	return json.Marshal(objectMap)
 }

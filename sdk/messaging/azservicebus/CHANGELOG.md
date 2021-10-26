@@ -11,6 +11,7 @@
   enough to fit into a single batch.
 - Receiving from sessions using a SessionReceiver, created using Client.AcceptSessionFor(Queue|Subscription)
   or Client.AcceptNextSessionFor(Queue|Subscription).
+- Can fully create, update, delete and list queues (and queue runtime properties) using the `AdministrationClient`.
 
 ### Breaking Changes
 

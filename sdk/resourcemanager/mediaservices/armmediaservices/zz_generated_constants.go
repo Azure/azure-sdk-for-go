@@ -10,7 +10,7 @@ package armmediaservices
 
 const (
 	module  = "armmediaservices"
-	version = "v0.1.0"
+	version = "v0.1.1"
 )
 
 // AacAudioProfile - The encoding profile to be used when encoding audio with AAC.

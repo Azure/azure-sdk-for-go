@@ -27,24 +27,7 @@
 - Function `NewManagedRuleSetsClient` parameter(s) have been changed from `(*arm.Connection, string)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
 - Function `NewRoutesClient` parameter(s) have been changed from `(*arm.Connection, string)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
 
-### New Content
-
-- New function `CustomDomainProperties.MarshalJSON() ([]byte, error)`
-- New function `*CustomDomainProperties.UnmarshalJSON([]byte) error`
-- New field `CustomHTTPSParameters` in struct `CustomDomainProperties`
-
 Total 23 breaking change(s), 3 additive change(s).
-
-
-## 0.1.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 0.1.0 (2021-10-15)
 

@@ -24,10 +24,6 @@ func TestInteractiveBrowserCredential_InvalidTenantID(t *testing.T) {
 	if cred != nil {
 		t.Fatalf("Expected a nil credential value. Received: %v", cred)
 	}
-	var errType *CredentialUnavailableError
-	if !errors.As(err, &errType) {
-		t.Fatalf("Did not receive a CredentialUnavailableError. Received: %t", err)
-	}
 }
 
 func TestInteractiveBrowserCredential_CreateWithNilOptions(t *testing.T) {
@@ -58,7 +54,7 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := InteractiveBrowserCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = client
+	options.Transport = client
 	cred, err := NewInteractiveBrowserCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -90,7 +86,7 @@ func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
 	options := InteractiveBrowserCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = client
+	options.Transport = client
 	cred, err := NewInteractiveBrowserCredential(&options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -105,7 +101,7 @@ func TestInteractiveBrowserCredential_GetTokenInvalidCredentials(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
-	var authFailed *AuthenticationFailedError
+	var authFailed AuthenticationFailedError
 	if !errors.As(err, &authFailed) {
 		t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
 	}

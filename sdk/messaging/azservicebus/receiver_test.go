@@ -291,6 +291,45 @@ func TestReceiverPeek(t *testing.T) {
 	require.Empty(t, noMessagesExpected)
 }
 
+func TestReceiver_RenewMessageLock(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, nil)
+	defer cleanup()
+
+	sender, err := client.NewSender(queueName)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body: []byte("hello world"),
+	})
+	require.NoError(t, err)
+
+	receiver, err := client.NewReceiverForQueue(queueName, nil)
+	require.NoError(t, err)
+
+	messages, err := receiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+
+	time.Sleep(2 * time.Second)
+	lockedUntilOld := messages[0].LockedUntil
+	require.NoError(t, receiver.RenewMessageLock(context.Background(), messages[0]))
+
+	// these should hopefully be unaffected by clock drift since both values come from
+	// the service's times, not ours.
+	require.Greater(t, messages[0].LockedUntil.UnixNano(), lockedUntilOld.UnixNano())
+
+	// try renewing a bogus token
+	for i := 0; i < len(messages[0].LockToken); i++ {
+		messages[0].LockToken[i] = 0
+	}
+
+	expectedLockBadError := receiver.RenewMessageLock(context.Background(), messages[0])
+	// String matching can go away once we fix #15644
+	// For now it at least provides the user with good context that something is incorrect about their lock token.
+	require.Contains(t, expectedLockBadError.Error(),
+		"status code 410 and description: The lock supplied is invalid. Either the lock expired, or the message has already been removed from the queue",
+		"error message from SB comes through")
+}
+
 func TestReceiverOptions(t *testing.T) {
 	// defaults
 	receiver := &Receiver{}

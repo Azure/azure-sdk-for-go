@@ -18,10 +18,9 @@ import (
 const (
 	tenantID                 = "expected-tenant"
 	badTenantID              = "bad_tenant"
-	clientID                 = "expected_client"
+	clientID                 = "expected-client-id"
 	secret                   = "secret"
 	wrongSecret              = "wrong_secret"
-	tokenValue               = "new_token"
 	scope                    = "https://storage.azure.com/.default"
 	defaultTestAuthorityHost = "login.microsoftonline.com"
 )
@@ -33,10 +32,6 @@ func TestClientSecretCredential_InvalidTenantID(t *testing.T) {
 	}
 	if cred != nil {
 		t.Fatalf("Expected a nil credential value. Received: %v", cred)
-	}
-	var errType *CredentialUnavailableError
-	if !errors.As(err, &errType) {
-		t.Fatalf("Did not receive a CredentialUnavailableError. Received: %t", err)
 	}
 }
 
@@ -84,7 +79,7 @@ func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientSecretCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -101,7 +96,7 @@ func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv.SetResponse(mock.WithBody([]byte(accessTokenRespError)), mock.WithStatusCode(http.StatusUnauthorized))
 	options := ClientSecretCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, wrongSecret, &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -110,7 +105,7 @@ func TestClientSecretCredential_GetTokenInvalidCredentials(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one.")
 	}
-	var authFailed *AuthenticationFailedError
+	var authFailed AuthenticationFailedError
 	if !errors.As(err, &authFailed) {
 		t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
 	}
@@ -125,7 +120,7 @@ func TestClientSecretCredential_GetTokenUnexpectedJSON(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespMalformed)))
 	options := ClientSecretCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	cred, err := NewClientSecretCredential(tenantID, clientID, secret, &options)
 	if err != nil {
 		t.Fatalf("Failed to create the credential")

@@ -5,6 +5,8 @@ package azcosmos
 
 import (
 	"testing"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 func TestThroughputRequestOptionsToHeaders(t *testing.T) {
@@ -13,18 +15,21 @@ func TestThroughputRequestOptionsToHeaders(t *testing.T) {
 		t.Error("toHeaders should return nil")
 	}
 
-	options.IfMatchEtag = "etag"
-	options.IfNoneMatchEtag = "noneetag"
+	etag := azcore.ETag("etag")
+	noneetag := azcore.ETag("noneetag")
+	options.IfMatchEtag = &etag
+	options.IfNoneMatchEtag = &noneetag
+
 	header := options.toHeaders()
 	if header == nil {
-		t.Error("toHeaders should return non-nil")
+		t.Fatal("toHeaders should return non-nil")
 	}
 
 	headers := *header
-	if headers[headerIfMatch] != options.IfMatchEtag {
+	if headers[headerIfMatch] != string(*options.IfMatchEtag) {
 		t.Errorf("IfMatchEtag not set matching expected %v got %v", options.IfMatchEtag, headers[headerIfMatch])
 	}
-	if headers[headerIfNoneMatch] != options.IfNoneMatchEtag {
+	if headers[headerIfNoneMatch] != string(*options.IfNoneMatchEtag) {
 		t.Errorf("IfNoneMatchEtag not set matching expected %v got %v", options.IfNoneMatchEtag, headers[headerIfNoneMatch])
 	}
 }

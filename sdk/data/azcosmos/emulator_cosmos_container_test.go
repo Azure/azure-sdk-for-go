@@ -15,7 +15,7 @@ func TestContainerCRUD(t *testing.T) {
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "containerCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
 	properties := ContainerProperties{
-		Id: "aContainer",
+		ID: "aContainer",
 		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths: []string{"/id"},
 		},
@@ -33,12 +33,12 @@ func TestContainerCRUD(t *testing.T) {
 
 	throughput := NewManualThroughputProperties(400)
 
-	resp, err := database.CreateContainer(context.TODO(), properties, &CreateContainerOptions{ThroughputProperties: throughput})
+	resp, err := database.CreateContainer(context.TODO(), properties, &CreateContainerOptions{ThroughputProperties: &throughput})
 	if err != nil {
 		t.Fatalf("Failed to create container: %v", err)
 	}
 
-	if resp.ContainerProperties.Id != properties.Id {
+	if resp.ContainerProperties.ID != properties.ID {
 		t.Errorf("Unexpected id match: %v", resp.ContainerProperties)
 	}
 
@@ -46,14 +46,14 @@ func TestContainerCRUD(t *testing.T) {
 		t.Errorf("Unexpected path match: %v", resp.ContainerProperties)
 	}
 
-	container := resp.ContainerProperties.Container
+	container, _ := database.NewContainer("aContainer")
 	resp, err = container.Read(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to read container: %v", err)
 	}
 
 	updatedProperties := ContainerProperties{
-		Id: "aContainer",
+		ID: "aContainer",
 		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths: []string{"/id"},
 		},
@@ -75,9 +75,9 @@ func TestContainerCRUD(t *testing.T) {
 		t.Fatalf("Failed to read throughput: %v", err)
 	}
 
-	mt, err := throughputResponse.ThroughputProperties.ManualThroughput()
-	if err != nil {
-		t.Errorf("Failed to read throughput: %v", err)
+	mt, hasManualThroughput := throughputResponse.ThroughputProperties.ManualThroughput()
+	if !hasManualThroughput {
+		t.Fatalf("Expected manual throughput to be available")
 	}
 
 	if mt != 400 {
@@ -85,7 +85,7 @@ func TestContainerCRUD(t *testing.T) {
 	}
 
 	newScale := NewManualThroughputProperties(500)
-	_, err = container.ReplaceThroughput(context.TODO(), *newScale, nil)
+	_, err = container.ReplaceThroughput(context.TODO(), newScale, nil)
 	if err != nil {
 		t.Errorf("Failed to read throughput: %v", err)
 	}
@@ -103,7 +103,7 @@ func TestContainerAutoscaleCRUD(t *testing.T) {
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "containerCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
 	properties := ContainerProperties{
-		Id: "aContainer",
+		ID: "aContainer",
 		PartitionKeyDefinition: PartitionKeyDefinition{
 			Paths: []string{"/id"},
 		},
@@ -121,12 +121,12 @@ func TestContainerAutoscaleCRUD(t *testing.T) {
 
 	throughput := NewAutoscaleThroughputProperties(5000)
 
-	resp, err := database.CreateContainer(context.TODO(), properties, &CreateContainerOptions{ThroughputProperties: throughput})
+	resp, err := database.CreateContainer(context.TODO(), properties, &CreateContainerOptions{ThroughputProperties: &throughput})
 	if err != nil {
 		t.Fatalf("Failed to create container: %v", err)
 	}
 
-	if resp.ContainerProperties.Id != properties.Id {
+	if resp.ContainerProperties.ID != properties.ID {
 		t.Errorf("Unexpected id match: %v", resp.ContainerProperties)
 	}
 
@@ -134,7 +134,7 @@ func TestContainerAutoscaleCRUD(t *testing.T) {
 		t.Errorf("Unexpected path match: %v", resp.ContainerProperties)
 	}
 
-	container := resp.ContainerProperties.Container
+	container, _ := database.NewContainer("aContainer")
 	resp, err = container.Read(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to read container: %v", err)
@@ -145,9 +145,9 @@ func TestContainerAutoscaleCRUD(t *testing.T) {
 		t.Fatalf("Failed to read throughput: %v", err)
 	}
 
-	maxru, err := throughputResponse.ThroughputProperties.AutoscaleMaxThroughput()
-	if err != nil {
-		t.Errorf("Failed to read throughput: %v", err)
+	maxru, hasAutoscale := throughputResponse.ThroughputProperties.AutoscaleMaxThroughput()
+	if !hasAutoscale {
+		t.Fatalf("Expected autoscale throughput to be available")
 	}
 
 	if maxru != 5000 {
@@ -155,7 +155,7 @@ func TestContainerAutoscaleCRUD(t *testing.T) {
 	}
 
 	newScale := NewAutoscaleThroughputProperties(10000)
-	_, err = container.ReplaceThroughput(context.TODO(), *newScale, nil)
+	_, err = container.ReplaceThroughput(context.TODO(), newScale, nil)
 	if err != nil {
 		t.Errorf("Failed to read throughput: %v", err)
 	}

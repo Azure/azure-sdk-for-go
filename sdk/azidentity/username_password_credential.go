@@ -5,27 +5,21 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 // UsernamePasswordCredentialOptions can be used to provide additional information to configure the UsernamePasswordCredential.
-// Use these options to modify the default pipeline behavior through the TokenCredentialOptions.
+// Use these options to modify the default pipeline behavior through the TokenCredentialcp.
 // All zero-value fields will be initialized with their default values.
 type UsernamePasswordCredentialOptions struct {
+	azcore.ClientOptions
+
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost AuthorityHost
-	// HTTPClient sets the transport for making HTTP requests
-	// Leave this as nil to use the default HTTP transport
-	HTTPClient policy.Transporter
-	// Retry configures the built-in retry policy behavior
-	Retry policy.RetryOptions
-	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry policy.TelemetryOptions
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
 }
 
 // UsernamePasswordCredential enables authentication to Azure Active Directory using a user's  username and password. If the user has MFA enabled this
@@ -48,16 +42,17 @@ type UsernamePasswordCredential struct {
 // options: UsernamePasswordCredentialOptions used to configure the pipeline for the requests sent to Azure Active Directory.
 func NewUsernamePasswordCredential(tenantID string, clientID string, username string, password string, options *UsernamePasswordCredentialOptions) (*UsernamePasswordCredential, error) {
 	if !validTenantID(tenantID) {
-		return nil, &CredentialUnavailableError{credentialType: "Username Password Credential", message: tenantIDValidationErr}
+		return nil, errors.New(tenantIDValidationErr)
 	}
-	if options == nil {
-		options = &UsernamePasswordCredentialOptions{}
+	cp := UsernamePasswordCredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
-	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry, Logging: options.Logging})
+	c, err := newAADIdentityClient(authorityHost, &cp.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

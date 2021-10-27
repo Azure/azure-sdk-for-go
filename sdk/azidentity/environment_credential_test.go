@@ -4,7 +4,6 @@
 package azidentity
 
 import (
-	"errors"
 	"os"
 	"testing"
 )
@@ -43,10 +42,6 @@ func TestEnvironmentCredential_TenantIDNotSet(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")
 	}
-	var credentialUnavailable *CredentialUnavailableError
-	if !errors.As(err, &credentialUnavailable) {
-		t.Fatalf("Expected a credential unavailable error, instead received: %T", err)
-	}
 }
 
 func TestEnvironmentCredential_ClientIDNotSet(t *testing.T) {
@@ -63,10 +58,6 @@ func TestEnvironmentCredential_ClientIDNotSet(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")
 	}
-	var credentialUnavailable *CredentialUnavailableError
-	if !errors.As(err, &credentialUnavailable) {
-		t.Fatalf("Expected a credential unavailable error, instead received: %T", err)
-	}
 }
 
 func TestEnvironmentCredential_ClientSecretNotSet(t *testing.T) {
@@ -82,10 +73,6 @@ func TestEnvironmentCredential_ClientSecretNotSet(t *testing.T) {
 	_, err = NewEnvironmentCredential(nil)
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")
-	}
-	var credentialUnavailable *CredentialUnavailableError
-	if !errors.As(err, &credentialUnavailable) {
-		t.Fatalf("Expected a credential unavailable error, instead received: %T", err)
 	}
 }
 
@@ -152,10 +139,6 @@ func TestEnvironmentCredential_UsernameOnlySet(t *testing.T) {
 	_, err = NewEnvironmentCredential(nil)
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")
-	}
-	var credentialUnavailable *CredentialUnavailableError
-	if !errors.As(err, &credentialUnavailable) {
-		t.Fatalf("Expected a credential unavailable error, instead received: %T", err)
 	}
 }
 

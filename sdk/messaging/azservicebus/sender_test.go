@@ -171,7 +171,7 @@ func Test_Sender_SendMessages_resend(t *testing.T) {
 		err = sender.SendMessage(ctx, msg)
 		require.NoError(t, err)
 
-		message, err := receiver.ReceiveMessage(ctx, nil)
+		message, err := receiver.receiveMessage(ctx, nil)
 		require.NoError(t, err)
 		require.EqualValues(t, "first send", msg.ApplicationProperties["Status"])
 		require.EqualValues(t, "ResendableMessage", string(msg.Body))
@@ -184,7 +184,7 @@ func Test_Sender_SendMessages_resend(t *testing.T) {
 		err = sender.SendMessage(ctx, msg)
 		require.NoError(t, err)
 
-		message, err = receiver.ReceiveMessage(ctx, nil)
+		message, err = receiver.receiveMessage(ctx, nil)
 		require.NoError(t, err)
 		require.EqualValues(t, "resend", msg.ApplicationProperties["Status"])
 		require.EqualValues(t, "ResendableMessage", string(msg.Body))

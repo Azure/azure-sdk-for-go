@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -25,9 +26,7 @@ func TestMSITelemetryDefaultUserAgent(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := ManagedIdentityCredentialOptions{
-		HTTPClient: srv,
-	}
+	options := ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}}
 	pipeline := newDefaultMSIPipeline(options)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())
 	if err != nil {
@@ -50,9 +49,7 @@ func TestMSITelemetryCustom(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
-	options := ManagedIdentityCredentialOptions{
-		HTTPClient: srv,
-	}
+	options := ManagedIdentityCredentialOptions{ClientOptions: azcore.ClientOptions{Transport: srv}}
 	options.Telemetry.ApplicationID = customTelemetry
 	pipeline := newDefaultMSIPipeline(options)
 	req, err := runtime.NewRequest(context.Background(), http.MethodGet, srv.URL())

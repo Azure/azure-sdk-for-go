@@ -132,7 +132,7 @@ func createKeyClient(t *testing.T) (*azkeys.Client, error) {
 	require.NoError(t, err)
 
 	options := &azkeys.ClientOptions{
-		azcore.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
 			PerCallPolicies: []policy.Policy{p},
 			Transport:       client,
 		},

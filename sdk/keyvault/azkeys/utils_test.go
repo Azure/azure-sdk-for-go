@@ -120,7 +120,7 @@ func createClient(t *testing.T, testType string) (*Client, error) {
 	require.NoError(t, err)
 
 	options := &ClientOptions{
-		azcore.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
 			PerCallPolicies: []policy.Policy{p},
 			Transport:       client,
 		},

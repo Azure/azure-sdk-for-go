@@ -4,8 +4,12 @@
 package azidentity
 
 import (
+	"context"
 	"os"
 	"testing"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 func initEnvironmentVarsForTest() error {
@@ -166,5 +170,62 @@ func TestEnvironmentCredential_UsernamePasswordSet(t *testing.T) {
 	}
 	if _, ok := cred.cred.(*UsernamePasswordCredential); !ok {
 		t.Fatalf("Did not receive the right credential type. Expected *azidentity.UsernamePasswordCredential, Received: %t", cred)
+	}
+}
+
+func TestEnvironmentCredential_ClientSecretLive(t *testing.T) {
+	vars := map[string]string{
+		"AZURE_CLIENT_ID":     liveSP.clientID,
+		"AZURE_CLIENT_SECRET": liveSP.secret,
+		"AZURE_TENANT_ID":     liveSP.tenantID,
+	}
+	for _, v := range vars {
+		if v == "" {
+			t.Skip("missing live service principal configuration")
+		}
+	}
+	setEnvironmentVariables(t, vars)
+	cred, err := NewEnvironmentCredential(nil)
+	if err != nil {
+		t.Fatalf("failed to construct credential: %v", err)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatalf("GetToken failed: %v", err)
+	}
+	if tk.Token == "" {
+		t.Fatalf("GetToken returned an invalid token")
+	}
+	if !tk.ExpiresOn.After(time.Now().UTC()) {
+		t.Fatalf("GetToken returned an invalid expiration time")
+	}
+}
+
+func TestEnvironmentCredential_UserPasswordLive(t *testing.T) {
+	vars := map[string]string{
+		"AZURE_CLIENT_ID": developerSignOnClientID,
+		"AZURE_TENANT_ID": os.Getenv("AZURE_IDENTITY_TEST_TENANTID"),
+		"AZURE_USERNAME":  os.Getenv("AZURE_IDENTITY_TEST_USERNAME"),
+		"AZURE_PASSWORD":  os.Getenv("AZURE_IDENTITY_TEST_PASSWORD"),
+	}
+	for _, v := range vars {
+		if v == "" {
+			t.Skip("missing live user configuration")
+		}
+	}
+	setEnvironmentVariables(t, vars)
+	cred, err := NewEnvironmentCredential(nil)
+	if err != nil {
+		t.Fatalf("failed to construct credential: %v", err)
+	}
+	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	if err != nil {
+		t.Fatalf("GetToken failed: %v", err)
+	}
+	if tk.Token == "" {
+		t.Fatalf("GetToken returned an invalid token")
+	}
+	if !tk.ExpiresOn.After(time.Now().UTC()) {
+		t.Fatalf("GetToken returned an invalid expiration time")
 	}
 }

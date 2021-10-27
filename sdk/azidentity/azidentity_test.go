@@ -21,6 +21,37 @@ const (
 	tokenValue               = "new_token"
 )
 
+// configuration for live tests
+var liveSP = struct {
+	tenantID string
+	clientID string
+	secret   string
+	pemPath  string
+	pfxPath  string
+	sniPath  string
+}{
+	tenantID: os.Getenv("IDENTITY_SP_TENANT_ID"),
+	clientID: os.Getenv("IDENTITY_SP_CLIENT_ID"),
+	secret:   os.Getenv("IDENTITY_SP_CLIENT_SECRET"),
+	pemPath:  os.Getenv("IDENTITY_SP_CERT_PEM"),
+	pfxPath:  os.Getenv("IDENTITY_SP_CERT_PFX"),
+	sniPath:  os.Getenv("IDENTITY_SP_CERT_SNI"),
+}
+
+var liveTestScope = "https://management.core.windows.net//.default"
+
+func init() {
+	host := AuthorityHost(os.Getenv("AZURE_AUTHORITY_HOST"))
+	switch host {
+	case AzureChina:
+		liveTestScope = "https://management.core.chinacloudapi.cn//.default"
+	case AzureGermany:
+		liveTestScope = "https://management.core.cloudapi.de//.default"
+	case AzureGovernment:
+		liveTestScope = "https://management.core.usgovcloudapi.net//.default"
+	}
+}
+
 func defaultTestPipeline(srv policy.Transporter, cred azcore.TokenCredential, scope string) runtime.Pipeline {
 	retryOpts := policy.RetryOptions{
 		MaxRetryDelay: 500 * time.Millisecond,

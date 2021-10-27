@@ -10,11 +10,13 @@ import (
 	"crypto/x509"
 	"errors"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -31,7 +33,7 @@ func newCertTest(name, certPath string, password string) certTest {
 	data, _ := os.ReadFile(certPath)
 	certs, key, err := ParseCertificates(data, []byte(password))
 	if err != nil {
-		panic("failed to load " + certPath)
+		log.Panicf("failed to parse %s: %v", certPath, err)
 	}
 	return certTest{name: name, certs: certs, key: key}
 }
@@ -318,5 +320,49 @@ func TestBearerPolicy_ClientCertificateCredential(t *testing.T) {
 	_, err = pipeline.Do(req)
 	if err != nil {
 		t.Fatalf("Expected nil error but received one")
+	}
+}
+
+func TestClientCertificateCredential_Live(t *testing.T) {
+	if liveSP.clientID == "" || liveSP.tenantID == "" {
+		t.Skip("missing live service principal configuration")
+	}
+	tests := []struct {
+		name      string
+		path      string
+		sendChain bool
+	}{
+		{"PEM", liveSP.pemPath, false}, {"PKCS12", liveSP.pfxPath, false}, {"SNI", liveSP.sniPath, true},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			if test.path == "" {
+				t.Skip("no certificate file specified")
+			}
+			certData, err := os.ReadFile(test.path)
+			if err != nil {
+				t.Fatalf(`failed to read cert: %v`, err)
+			}
+			certs, key, err := ParseCertificates(certData, nil)
+			if err != nil {
+				t.Fatalf(`failed to parse cert: %v`, err)
+			}
+			opts := &ClientCertificateCredentialOptions{SendCertificateChain: test.sendChain}
+			cred, err := NewClientCertificateCredential(liveSP.tenantID, liveSP.clientID, certs, key, opts)
+			if err != nil {
+				t.Fatalf("failed to construct credential: %v", err)
+			}
+
+			tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+			if err != nil {
+				t.Fatalf("GetToken failed: %v", err)
+			}
+			if tk.Token == "" {
+				t.Fatalf("GetToken returned an invalid token")
+			}
+			if !tk.ExpiresOn.After(time.Now().UTC()) {
+				t.Fatalf("GetToken returned an invalid expiration time")
+			}
+		})
 	}
 }

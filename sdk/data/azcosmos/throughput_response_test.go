@@ -67,8 +67,8 @@ func TestThroughputResponseParsing(t *testing.T) {
 		t.Fatalf("parsedResponse.ThroughputProperties.ETag is %s, expected %s", *parsedResponse.ThroughputProperties.ETag, *properties.ETag)
 	}
 
-	if parsedResponse.ActivityId != "someActivityId" {
-		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId)
+	if parsedResponse.ActivityID != "someActivityId" {
+		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityID)
 	}
 
 	if parsedResponse.RequestCharge != 13.42 {
@@ -133,8 +133,8 @@ func TestThroughputResponseParsingWithPreviousRU(t *testing.T) {
 		t.Fatalf("parsedResponse.ThroughputProperties.ETag is %s, expected %s", *parsedResponse.ThroughputProperties.ETag, *properties.ETag)
 	}
 
-	if parsedResponse.ActivityId != "someActivityId" {
-		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityId)
+	if parsedResponse.ActivityID != "someActivityId" {
+		t.Errorf("Expected ActivityId to be %s, but got %s", "someActivityId", parsedResponse.ActivityID)
 	}
 
 	if parsedResponse.RequestCharge != 23.42 {

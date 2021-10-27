@@ -67,7 +67,7 @@ func ExampleClient_CreateDatabase() {
 		panic(err)
 	}
 
-	fmt.Printf("Database created. ActivityId %s", databaseResponse.ActivityId)
+	fmt.Printf("Database created. ActivityId %s", databaseResponse.ActivityID)
 }
 
 func ExampleDatabaseClient_CreateContainer() {
@@ -110,7 +110,7 @@ func ExampleDatabaseClient_CreateContainer() {
 		panic(err)
 	}
 
-	fmt.Printf("Container created. ActivityId %s", resp.ActivityId)
+	fmt.Printf("Container created. ActivityId %s", resp.ActivityID)
 }
 
 func ExampleContainerClient_ReplaceThroughput() {
@@ -157,7 +157,7 @@ func ExampleContainerClient_ReplaceThroughput() {
 		panic(err)
 	}
 
-	fmt.Printf("Throughput updated. ActivityId %s", replaceThroughputResponse.ActivityId)
+	fmt.Printf("Throughput updated. ActivityId %s", replaceThroughputResponse.ActivityID)
 }
 
 func ExampleContainerClient_Replace() {
@@ -205,7 +205,7 @@ func ExampleContainerClient_Replace() {
 		panic(err)
 	}
 
-	fmt.Printf("Container updated. ActivityId %s", replaceResponse.ActivityId)
+	fmt.Printf("Container updated. ActivityId %s", replaceResponse.ActivityID)
 }
 
 func ExampleContainerClient_CreateItem() {
@@ -252,7 +252,7 @@ func ExampleContainerClient_CreateItem() {
 		panic(err)
 	}
 
-	fmt.Printf("Item created. ActivityId %s consuming %v RU", itemResponse.ActivityId, itemResponse.RequestCharge)
+	fmt.Printf("Item created. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
 }
 
 func ExampleContainerClient_ReadItem() {
@@ -295,7 +295,7 @@ func ExampleContainerClient_ReadItem() {
 		panic(err)
 	}
 
-	fmt.Printf("Item read. ActivityId %s consuming %v RU", itemResponse.ActivityId, itemResponse.RequestCharge)
+	fmt.Printf("Item read. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
 }
 
 func ExampleContainerClient_ReplaceItem() {
@@ -350,7 +350,7 @@ func ExampleContainerClient_ReplaceItem() {
 		panic(err)
 	}
 
-	fmt.Printf("Item replaced. ActivityId %s consuming %v RU", itemResponse.ActivityId, itemResponse.RequestCharge)
+	fmt.Printf("Item replaced. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
 }
 
 func ExampleContainerClient_DeleteItem() {
@@ -387,7 +387,7 @@ func ExampleContainerClient_DeleteItem() {
 		panic(err)
 	}
 
-	fmt.Printf("Item deleted. ActivityId %s consuming %v RU", itemResponse.ActivityId, itemResponse.RequestCharge)
+	fmt.Printf("Item deleted. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
 }
 
 func ExampleContainerClient_ReadItem_sessionConsistency() {
@@ -443,7 +443,7 @@ func ExampleContainerClient_ReadItem_sessionConsistency() {
 		panic(err)
 	}
 
-	fmt.Printf("Item read. ActivityId %s consuming %v RU", itemResponse.ActivityId, itemResponse.RequestCharge)
+	fmt.Printf("Item read. ActivityId %s consuming %v RU", itemResponse.ActivityID, itemResponse.RequestCharge)
 }
 
 // Azure Cosmos DB supports optimistic concurrency control to prevent lost updates or deletes and detection of conflicting operations.

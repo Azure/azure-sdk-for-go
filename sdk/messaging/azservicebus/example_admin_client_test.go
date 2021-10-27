@@ -53,3 +53,27 @@ func ExampleAdminClient_AddQueueWithProperties() {
 
 	fmt.Printf("Queue name: %s", queueProperties.Name)
 }
+
+func ExampleAdminClient_ListQueues() {
+	queuePager := adminClient.ListQueues(nil)
+
+	for queuePager.NextPage(context.TODO()) {
+		for _, queue := range queuePager.PageResponse() {
+			fmt.Printf("Queue name: %s, max size in MB: %d", queue.Name, queue.MaxSizeInMegabytes)
+		}
+	}
+
+	exitOnError("Failed when listing queues", queuePager.Err())
+}
+
+func ExampleAdminClient_ListQueuesRuntimeProperties() {
+	queuePager := adminClient.ListQueuesRuntimeProperties(nil)
+
+	for queuePager.NextPage(context.TODO()) {
+		for _, queue := range queuePager.PageResponse() {
+			fmt.Printf("Queue name: %s, active messages: %d", queue.Name, queue.ActiveMessageCount)
+		}
+	}
+
+	exitOnError("Failed when listing queues", queuePager.Err())
+}

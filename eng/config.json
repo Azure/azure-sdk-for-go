@@ -25,6 +25,10 @@
             "CoverageGoal": 0.76
         },
         {
+            "Name": "azservicebus",
+            "CoverageGoal": 0.24
+        },
+        {
             "Name": "data",
             "CoverageGoal": 0.62
         },

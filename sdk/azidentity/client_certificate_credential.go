@@ -159,13 +159,16 @@ func newCertContents(certs []*x509.Certificate, key *rsa.PrivateKey, sendCertifi
 	cc := certContents{pk: key}
 	// need the the signing cert's fingerprint: identify that cert by matching its public key to the private key
 	for _, cert := range certs {
-		if sendCertificateChain {
-			cc.x5c = append(cc.x5c, base64.StdEncoding.EncodeToString(cert.Raw))
-		}
 		certKey, ok := cert.PublicKey.(*rsa.PublicKey)
 		if ok && key.E == certKey.E && key.N.Cmp(certKey.N) == 0 {
 			fp := sha1.Sum(cert.Raw)
 			cc.fp = fp[:]
+			if sendCertificateChain {
+				// signing cert must be first in x5c
+				cc.x5c = append([]string{base64.StdEncoding.EncodeToString(cert.Raw)}, cc.x5c...)
+			}
+		} else if sendCertificateChain {
+			cc.x5c = append(cc.x5c, base64.StdEncoding.EncodeToString(cert.Raw))
 		}
 	}
 	if len(cc.fp) == 0 {

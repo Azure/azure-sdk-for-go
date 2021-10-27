@@ -6,6 +6,7 @@ package azservicebus
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/go-amqp"
@@ -15,7 +16,8 @@ import (
 type SessionReceiver struct {
 	*Receiver
 
-	sessionID *string
+	sessionID   *string
+	lockedUntil time.Time
 }
 
 // SessionReceiverOptions contains options for the `Client.AcceptSessionForQueue/Subscription` or `Client.AcceptNextSessionForQueue/Subscription`
@@ -46,12 +48,13 @@ func toReceiverOptions(sropts *SessionReceiverOptions) *ReceiverOptions {
 	}
 }
 
-func newSessionReceiver(sessionID *string, ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupOnClose func(), options *ReceiverOptions) (*SessionReceiver, error) {
+func newSessionReceiver(ctx context.Context, sessionID *string, ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupOnClose func(), options *ReceiverOptions) (*SessionReceiver, error) {
 	const sessionFilterName = "com.microsoft:session-filter"
 	const code = uint64(0x00000137000000C)
 
 	sessionReceiver := &SessionReceiver{
-		sessionID: sessionID,
+		sessionID:   sessionID,
+		lockedUntil: time.Time{},
 	}
 
 	var err error
@@ -89,13 +92,45 @@ func newSessionReceiver(sessionID *string, ns internal.NamespaceWithNewAMQPLinks
 		return nil, err
 	}
 
+	// temp workaround until we expose the session expiration time from the receiver in go-amqp
+	if err := sessionReceiver.RenewSessionLock(ctx); err != nil {
+		_ = sessionReceiver.Close(context.Background())
+		return nil, err
+	}
+
 	return sessionReceiver, nil
 }
 
+// SessionID is the session ID for this SessionReceiver.
 func (sr *SessionReceiver) SessionID() string {
 	// return the ultimately assigned session ID for this link (anonymous will get it from the
 	// link filter options, non-anonymous is set in newSessionReceiver)
 	return *sr.sessionID
+}
+
+// LockedUntil is the time the lock on this session expires.
+// The lock can be renewed using `SessionReceiver.RenewSessionLock`.
+func (sr *SessionReceiver) LockedUntil() time.Time {
+	return sr.lockedUntil
+}
+
+// RenewSessionLock renews this session's lock. The new expiration time is available
+// using `LockedUntil`.
+func (sr *SessionReceiver) RenewSessionLock(ctx context.Context) error {
+	_, _, mgmt, _, err := sr.amqpLinks.Get(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	newLockedUntil, err := mgmt.RenewSessionLock(ctx, *sr.sessionID)
+
+	if err != nil {
+		return err
+	}
+
+	sr.lockedUntil = newLockedUntil
+	return nil
 }
 
 // init ensures the link was created, guaranteeing that we get our expected session lock.

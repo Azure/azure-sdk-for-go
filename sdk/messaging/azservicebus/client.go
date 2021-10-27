@@ -164,6 +164,7 @@ func (client *Client) NewSender(queueOrTopic string) (*Sender, error) {
 func (client *Client) AcceptSessionForQueue(ctx context.Context, queue string, sessionID string, options *SessionReceiverOptions) (*SessionReceiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
+		ctx,
 		&sessionID,
 		client.namespace,
 		&entity{Queue: queue},
@@ -187,6 +188,7 @@ func (client *Client) AcceptSessionForQueue(ctx context.Context, queue string, s
 func (client *Client) AcceptSessionForSubscription(ctx context.Context, topic string, subscription string, sessionID string, options *SessionReceiverOptions) (*SessionReceiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
+		ctx,
 		&sessionID,
 		client.namespace,
 		&entity{Topic: topic, Subscription: subscription},
@@ -210,6 +212,7 @@ func (client *Client) AcceptSessionForSubscription(ctx context.Context, topic st
 func (client *Client) AcceptNextSessionForQueue(ctx context.Context, queue string, options *SessionReceiverOptions) (*SessionReceiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
+		ctx,
 		nil,
 		client.namespace,
 		&entity{Queue: queue},
@@ -233,6 +236,7 @@ func (client *Client) AcceptNextSessionForQueue(ctx context.Context, queue strin
 func (client *Client) AcceptNextSessionForSubscription(ctx context.Context, topic string, subscription string, options *SessionReceiverOptions) (*SessionReceiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
+		ctx,
 		nil,
 		client.namespace,
 		&entity{Topic: topic, Subscription: subscription},

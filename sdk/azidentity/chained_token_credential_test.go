@@ -48,16 +48,9 @@ func TestChainedTokenCredential_InstantiateFailure(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error for sending a nil credential in the chain")
 	}
-	var credErr *CredentialUnavailableError
-	if !errors.As(err, &credErr) {
-		t.Fatalf("Expected a CredentialUnavailableError, but received: %T", credErr)
-	}
 	_, err = NewChainedTokenCredential([]azcore.TokenCredential{}, nil)
 	if err == nil {
 		t.Fatalf("Expected an error for not sending any credential sources")
-	}
-	if !errors.As(err, &credErr) {
-		t.Fatalf("Expected a CredentialUnavailableError, but received: %T", credErr)
 	}
 }
 
@@ -118,9 +111,9 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Expected an error but did not receive one")
 	}
-	var authErr *AuthenticationFailedError
+	var authErr AuthenticationFailedError
 	if !errors.As(err, &authErr) {
-		t.Fatalf("Expected Error Type: AuthenticationFailedError, ReceivedErrorType: %T", err)
+		t.Fatalf("Expected AuthenticationFailedError, received %T", err)
 	}
 	if len(err.Error()) == 0 {
 		t.Fatalf("Did not create an appropriate error message")
@@ -130,7 +123,7 @@ func TestChainedTokenCredential_GetTokenFail(t *testing.T) {
 func TestChainedTokenCredential_GetTokenWithUnavailableCredentialInChain(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()
-	srv.AppendError(&CredentialUnavailableError{credentialType: "MockCredential", message: "Mocking a credential unavailable error"})
+	srv.AppendError(newCredentialUnavailableError("MockCredential", "Mocking a credential unavailable error"))
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientSecretCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())

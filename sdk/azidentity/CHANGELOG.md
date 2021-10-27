@@ -54,6 +54,8 @@
 * `AzureCLICredential` no longer reads the environment variable `AZURE_CLI_PATH`
 * `NewManagedIdentityCredential` no longer reads environment variables `AZURE_CLIENT_ID` and
   `AZURE_RESOURCE_ID`. Use `ManagedIdentityCredentialOptions.ID` instead.
+* Unexported `AuthenticationFailedError` and `CredentialUnavailableError` structs. In their place are two
+  interfaces having the same names.
 
 ### Bugs Fixed
 * `AzureCLICredential.GetToken` no longer mutates its `opts.Scopes`

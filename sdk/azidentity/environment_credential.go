@@ -5,6 +5,8 @@ package azidentity
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"os"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -46,15 +48,11 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 	}
 	tenantID := os.Getenv("AZURE_TENANT_ID")
 	if tenantID == "" {
-		err := &CredentialUnavailableError{credentialType: "Environment Credential", message: "Missing environment variable AZURE_TENANT_ID"}
-		logCredentialError(err.credentialType, err)
-		return nil, err
+		return nil, errors.New("Missing environment variable AZURE_TENANT_ID")
 	}
 	clientID := os.Getenv("AZURE_CLIENT_ID")
 	if clientID == "" {
-		err := &CredentialUnavailableError{credentialType: "Environment Credential", message: "Missing environment variable AZURE_CLIENT_ID"}
-		logCredentialError(err.credentialType, err)
-		return nil, err
+		return nil, errors.New("Missing environment variable AZURE_CLIENT_ID")
 	}
 	if clientSecret := os.Getenv("AZURE_CLIENT_SECRET"); clientSecret != "" {
 		log.Write(EventCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientSecretCredential")
@@ -68,7 +66,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		log.Write(EventCredential, "Azure Identity => NewEnvironmentCredential() invoking ClientCertificateCredential")
 		certData, err := os.ReadFile(certPath)
 		if err != nil {
-			return nil, &CredentialUnavailableError{credentialType: "Environment Credential", message: "Failed to read certificate file: " + err.Error()}
+			return nil, fmt.Errorf("Failed to read certificate file: %v", err)
 		}
 		cred, err := NewClientCertificateCredential(tenantID, clientID, certData, &ClientCertificateCredentialOptions{AuthorityHost: cp.AuthorityHost, ClientOptions: cp.ClientOptions})
 		if err != nil {
@@ -86,9 +84,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 			return &EnvironmentCredential{cred: cred}, nil
 		}
 	}
-	err := &CredentialUnavailableError{credentialType: "Environment Credential", message: "Missing environment variable AZURE_CLIENT_SECRET or AZURE_CLIENT_CERTIFICATE_PATH or AZURE_USERNAME and AZURE_PASSWORD"}
-	logCredentialError(err.credentialType, err)
-	return nil, err
+	return nil, errors.New("Missing environment variable AZURE_CLIENT_SECRET or AZURE_CLIENT_CERTIFICATE_PATH or AZURE_USERNAME and AZURE_PASSWORD")
 }
 
 // GetToken obtains a token from Azure Active Directory, using the underlying credential's GetToken method.

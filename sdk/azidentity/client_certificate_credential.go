@@ -49,7 +49,7 @@ type ClientCertificateCredential struct {
 // options: ClientCertificateCredentialOptions that can be used to provide additional configurations for the credential, such as the certificate password.
 func NewClientCertificateCredential(tenantID string, clientID string, certData []byte, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
 	if !validTenantID(tenantID) {
-		return nil, &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: tenantIDValidationErr}
+		return nil, errors.New(tenantIDValidationErr)
 	}
 	cp := ClientCertificateCredentialOptions{}
 	if options != nil {
@@ -60,9 +60,8 @@ func NewClientCertificateCredential(tenantID string, clientID string, certData [
 		cert, err = loadPKCS12Cert(certData, cp.Password, cp.SendCertificateChain)
 	}
 	if err != nil {
-		credErr := &CredentialUnavailableError{credentialType: "Client Certificate Credential", message: err.Error()}
-		logCredentialError(credErr.credentialType, credErr)
-		return nil, credErr
+		logCredentialError("Client Certificate Credential", err)
+		return nil, err
 	}
 	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
 	if err != nil {

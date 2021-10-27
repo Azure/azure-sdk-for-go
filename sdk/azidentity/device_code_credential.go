@@ -88,7 +88,7 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 	}
 	cp.init()
 	if !validTenantID(cp.TenantID) {
-		return nil, &CredentialUnavailableError{credentialType: "Device Code Credential", message: tenantIDValidationErr}
+		return nil, errors.New(tenantIDValidationErr)
 	}
 	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
 	if err != nil {
@@ -132,8 +132,9 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 	// make initial request to the device code endpoint for a device code and instructions for authentication
 	dc, err := c.client.requestNewDeviceCode(ctx, c.tenantID, c.clientID, opts.Scopes)
 	if err != nil {
-		addGetTokenFailureLogs("Device Code Credential", err, true)
-		return nil, err // TODO check what error type to return here
+		authErr := newAuthenticationFailedError(err, nil)
+		addGetTokenFailureLogs("Device Code Credential", authErr, true)
+		return nil, authErr
 	}
 	// send authentication flow instructions back to the user to log in and authorize the device
 
@@ -156,8 +157,8 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 		}
 		// if there is an error, check for an AADAuthenticationFailedError in order to check the status for token retrieval
 		// if the error is not an AADAuthenticationFailedError, then fail here since something unexpected occurred
-		var authFailed *AuthenticationFailedError
-		if errors.As(err, &authFailed) && strings.Contains(authFailed.msg, "authorization_pending") {
+		var authFailed AuthenticationFailedError
+		if errors.As(err, &authFailed) && strings.Contains(authFailed.Error(), "authorization_pending") {
 			// wait for the interval specified from the initial device code endpoint and then poll for the token again
 			time.Sleep(time.Duration(dc.Interval) * time.Second)
 		} else {

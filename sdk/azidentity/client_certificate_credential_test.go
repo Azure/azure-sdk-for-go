@@ -40,10 +40,6 @@ func TestClientCertificateCredential_InvalidTenantID(t *testing.T) {
 	if cred != nil {
 		t.Fatalf("Expected a nil credential value. Received: %v", cred)
 	}
-	var errType *CredentialUnavailableError
-	if !errors.As(err, &errType) {
-		t.Fatalf("Did not receive a CredentialUnavailableError. Received: %t", err)
-	}
 }
 
 func TestClientCertificateCredential_CreateAuthRequestSuccess(t *testing.T) {
@@ -221,7 +217,7 @@ func TestClientCertificateCredential_GetTokenInvalidCredentials(t *testing.T) {
 			if err == nil {
 				t.Fatalf("Expected to receive a nil error, but received: %v", err)
 			}
-			var authFailed *AuthenticationFailedError
+			var authFailed AuthenticationFailedError
 			if !errors.As(err, &authFailed) {
 				t.Fatalf("Expected: AuthenticationFailedError, Received: %T", err)
 			}

@@ -133,7 +133,7 @@ func defaultTokenProvider() func(ctx context.Context, resource string, tenantID 
 				// if there's no output in stderr report the error message instead
 				msg = err.Error()
 			}
-			return nil, &CredentialUnavailableError{credentialType: "Azure CLI Credential", message: msg}
+			return nil, newCredentialUnavailableError("Azure CLI Credential", msg)
 		}
 
 		return output, nil

@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -65,17 +66,16 @@ func NewDefaultAzureCredential(options *DefaultAzureCredentialOptions) (*Default
 		errMsg += err.Error()
 	}
 
-	cliCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TenantID: options.TenantID})
+	cliCred, err := NewAzureCLICredential(&AzureCLICredentialOptions{TenantID: cp.TenantID})
 	if err == nil {
 		creds = append(creds, cliCred)
 	} else {
 		errMsg += err.Error()
 	}
 
-	// if no credentials are added to the slice of TokenCredentials then return a CredentialUnavailableError
 	if len(creds) == 0 {
-		err := &CredentialUnavailableError{credentialType: "Default Azure Credential", message: errMsg}
-		logCredentialError(err.credentialType, err)
+		err := errors.New(errMsg)
+		logCredentialError("Default Azure Credential", err)
 		return nil, err
 	}
 	chain, err := NewChainedTokenCredential(creds, nil)

@@ -38,9 +38,9 @@ func (p *HSMSecurityDomainDownloadPoller) Poll(ctx context.Context) (*http.Respo
 	return p.pt.Poll(ctx)
 }
 
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final HSMSecurityDomainDownloadResponse will be returned.
+// FinalResponse performs a final GET to the service and returns the final response
+// for the polling operation. If there is an error performing the final GET then an error is returned.
+// If the final GET succeeded then the final HSMSecurityDomainDownloadResponse will be returned.
 func (p *HSMSecurityDomainDownloadPoller) FinalResponse(ctx context.Context) (HSMSecurityDomainDownloadResponse, error) {
 	respType := HSMSecurityDomainDownloadResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.SecurityDomainObject)
@@ -81,9 +81,9 @@ func (p *HSMSecurityDomainUploadPoller) Poll(ctx context.Context) (*http.Respons
 	return p.pt.Poll(ctx)
 }
 
-	// FinalResponse performs a final GET to the service and returns the final response
-	// for the polling operation. If there is an error performing the final GET then an error is returned.
-	// If the final GET succeeded then the final HSMSecurityDomainUploadResponse will be returned.
+// FinalResponse performs a final GET to the service and returns the final response
+// for the polling operation. If there is an error performing the final GET then an error is returned.
+// If the final GET succeeded then the final HSMSecurityDomainUploadResponse will be returned.
 func (p *HSMSecurityDomainUploadPoller) FinalResponse(ctx context.Context) (HSMSecurityDomainUploadResponse, error) {
 	respType := HSMSecurityDomainUploadResponse{}
 	resp, err := p.pt.FinalResponse(ctx, &respType.SecurityDomainOperationStatus)
@@ -99,4 +99,3 @@ func (p *HSMSecurityDomainUploadPoller) FinalResponse(ctx context.Context) (HSMS
 func (p *HSMSecurityDomainUploadPoller) ResumeToken() (string, error) {
 	return p.pt.ResumeToken()
 }
-

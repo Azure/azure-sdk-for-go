@@ -63,20 +63,20 @@ func (a *Attributes) unmarshalInternal(rawMsg map[string]json.RawMessage) error 
 		var err error
 		switch key {
 		case "created":
-				err = unpopulateTimeUnix(val, &a.Created)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &a.Created)
+			delete(rawMsg, key)
 		case "enabled":
-				err = unpopulate(val, &a.Enabled)
-				delete(rawMsg, key)
+			err = unpopulate(val, &a.Enabled)
+			delete(rawMsg, key)
 		case "exp":
-				err = unpopulateTimeUnix(val, &a.Expires)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &a.Expires)
+			delete(rawMsg, key)
 		case "nbf":
-				err = unpopulateTimeUnix(val, &a.NotBefore)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &a.NotBefore)
+			delete(rawMsg, key)
 		case "updated":
-				err = unpopulateTimeUnix(val, &a.Updated)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &a.Updated)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -109,7 +109,7 @@ func (b *BackupKeyResult) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &b.Value, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -167,14 +167,14 @@ func (d *DeletedKeyBundle) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "deletedDate":
-				err = unpopulateTimeUnix(val, &d.DeletedDate)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &d.DeletedDate)
+			delete(rawMsg, key)
 		case "recoveryId":
-				err = unpopulate(val, &d.RecoveryID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.RecoveryID)
+			delete(rawMsg, key)
 		case "scheduledPurgeDate":
-				err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -219,14 +219,14 @@ func (d *DeletedKeyItem) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "deletedDate":
-				err = unpopulateTimeUnix(val, &d.DeletedDate)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &d.DeletedDate)
+			delete(rawMsg, key)
 		case "recoveryId":
-				err = unpopulate(val, &d.RecoveryID)
-				delete(rawMsg, key)
+			err = unpopulate(val, &d.RecoveryID)
+			delete(rawMsg, key)
 		case "scheduledPurgeDate":
-				err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -316,7 +316,7 @@ type JSONWebKey struct {
 	E []byte `json:"e,omitempty"`
 
 	// Symmetric key.
-	K []byte `json:"k,omitempty"`
+	K      []byte    `json:"k,omitempty"`
 	KeyOps []*string `json:"key_ops,omitempty"`
 
 	// Key identifier.
@@ -379,53 +379,53 @@ func (j *JSONWebKey) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "crv":
-				err = unpopulate(val, &j.Crv)
-				delete(rawMsg, key)
+			err = unpopulate(val, &j.Crv)
+			delete(rawMsg, key)
 		case "d":
 			err = runtime.DecodeByteArray(string(val), &j.D, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "dp":
 			err = runtime.DecodeByteArray(string(val), &j.DP, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "dq":
 			err = runtime.DecodeByteArray(string(val), &j.DQ, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "e":
 			err = runtime.DecodeByteArray(string(val), &j.E, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "k":
 			err = runtime.DecodeByteArray(string(val), &j.K, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "key_ops":
-				err = unpopulate(val, &j.KeyOps)
-				delete(rawMsg, key)
+			err = unpopulate(val, &j.KeyOps)
+			delete(rawMsg, key)
 		case "kid":
-				err = unpopulate(val, &j.Kid)
-				delete(rawMsg, key)
+			err = unpopulate(val, &j.Kid)
+			delete(rawMsg, key)
 		case "kty":
-				err = unpopulate(val, &j.Kty)
-				delete(rawMsg, key)
+			err = unpopulate(val, &j.Kty)
+			delete(rawMsg, key)
 		case "n":
 			err = runtime.DecodeByteArray(string(val), &j.N, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "p":
 			err = runtime.DecodeByteArray(string(val), &j.P, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "q":
 			err = runtime.DecodeByteArray(string(val), &j.Q, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "qi":
 			err = runtime.DecodeByteArray(string(val), &j.QI, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "key_hsm":
 			err = runtime.DecodeByteArray(string(val), &j.T, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "x":
 			err = runtime.DecodeByteArray(string(val), &j.X, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "y":
 			err = runtime.DecodeByteArray(string(val), &j.Y, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -444,8 +444,8 @@ type KeyAttributes struct {
 	RecoverableDays *int32 `json:"recoverableDays,omitempty" azure:"ro"`
 
 	// READ-ONLY; Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains 'Purgeable' the key can be permanently
-// deleted by a privileged user; otherwise, only the system
-// can purge the key, at the end of the retention interval.
+	// deleted by a privileged user; otherwise, only the system
+	// can purge the key, at the end of the retention interval.
 	RecoveryLevel *DeletionRecoveryLevel `json:"recoveryLevel,omitempty" azure:"ro"`
 }
 
@@ -469,14 +469,14 @@ func (k *KeyAttributes) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "exportable":
-				err = unpopulate(val, &k.Exportable)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Exportable)
+			delete(rawMsg, key)
 		case "recoverableDays":
-				err = unpopulate(val, &k.RecoverableDays)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.RecoverableDays)
+			delete(rawMsg, key)
 		case "recoveryLevel":
-				err = unpopulate(val, &k.RecoveryLevel)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.RecoveryLevel)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -535,20 +535,20 @@ func (k *KeyBundle) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 		var err error
 		switch key {
 		case "attributes":
-				err = unpopulate(val, &k.Attributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Attributes)
+			delete(rawMsg, key)
 		case "key":
-				err = unpopulate(val, &k.Key)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Key)
+			delete(rawMsg, key)
 		case "managed":
-				err = unpopulate(val, &k.Managed)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Managed)
+			delete(rawMsg, key)
 		case "release_policy":
-				err = unpopulate(val, &k.ReleasePolicy)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.ReleasePolicy)
+			delete(rawMsg, key)
 		case "tags":
-				err = unpopulate(val, &k.Tags)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Tags)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -566,8 +566,8 @@ type KeyCreateParameters struct {
 	Curve *JSONWebKeyCurveName `json:"crv,omitempty"`
 
 	// The attributes of a key managed by the key vault service.
-	KeyAttributes *KeyAttributes `json:"attributes,omitempty"`
-	KeyOps []*JSONWebKeyOperation `json:"key_ops,omitempty"`
+	KeyAttributes *KeyAttributes         `json:"attributes,omitempty"`
+	KeyOps        []*JSONWebKeyOperation `json:"key_ops,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
 	KeySize *int32 `json:"key_size,omitempty"`
@@ -680,17 +680,17 @@ func (k *KeyItem) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 		var err error
 		switch key {
 		case "attributes":
-				err = unpopulate(val, &k.Attributes)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Attributes)
+			delete(rawMsg, key)
 		case "kid":
-				err = unpopulate(val, &k.Kid)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Kid)
+			delete(rawMsg, key)
 		case "managed":
-				err = unpopulate(val, &k.Managed)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Managed)
+			delete(rawMsg, key)
 		case "tags":
-				err = unpopulate(val, &k.Tags)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Tags)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -756,19 +756,19 @@ func (k *KeyOperationResult) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "aad":
 			err = runtime.DecodeByteArray(string(val), &k.AdditionalAuthenticatedData, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "tag":
 			err = runtime.DecodeByteArray(string(val), &k.AuthenticationTag, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "iv":
 			err = runtime.DecodeByteArray(string(val), &k.Iv, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "kid":
-				err = unpopulate(val, &k.Kid)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Kid)
+			delete(rawMsg, key)
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &k.Result, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -817,19 +817,19 @@ func (k *KeyOperationsParameters) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "aad":
 			err = runtime.DecodeByteArray(string(val), &k.AAD, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "alg":
-				err = unpopulate(val, &k.Algorithm)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Algorithm)
+			delete(rawMsg, key)
 		case "iv":
 			err = runtime.DecodeByteArray(string(val), &k.Iv, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "tag":
 			err = runtime.DecodeByteArray(string(val), &k.Tag, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &k.Value, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -894,11 +894,11 @@ func (k *KeyReleasePolicy) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "contentType":
-				err = unpopulate(val, &k.ContentType)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.ContentType)
+			delete(rawMsg, key)
 		case "data":
 			err = runtime.DecodeByteArray(string(val), &k.Data, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -937,7 +937,7 @@ func (k *KeyRestoreParameters) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &k.KeyBundleBackup, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -952,8 +952,8 @@ type KeyRotationPolicy struct {
 	Attributes *KeyRotationPolicyAttributes `json:"attributes,omitempty"`
 
 	// Actions that will be performed by Key Vault over the lifetime of a key. For preview, lifetimeActions can only have two items at maximum: one for rotate,
-// one for notify. Notification time would be
-// default to 30 days before expiry and it is not configurable.
+	// one for notify. Notification time would be
+	// default to 30 days before expiry and it is not configurable.
 	LifetimeActions []*LifetimeActions `json:"lifetimeActions,omitempty"`
 
 	// READ-ONLY; The key policy id.
@@ -972,7 +972,7 @@ func (k KeyRotationPolicy) MarshalJSON() ([]byte, error) {
 // KeyRotationPolicyAttributes - The key rotation policy attributes.
 type KeyRotationPolicyAttributes struct {
 	// The expiryTime will be applied on the new key version. It should be at least 28 days. It will be in ISO 8601 Format. Examples: 90 days: P90D, 3 months:
-// P3M, 48 hours: PT48H, 1 year and 10 days: P1Y10D
+	// P3M, 48 hours: PT48H, 1 year and 10 days: P1Y10D
 	ExpiryTime *string `json:"expiryTime,omitempty"`
 
 	// READ-ONLY; The key rotation policy created time in UTC.
@@ -1001,14 +1001,14 @@ func (k *KeyRotationPolicyAttributes) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "created":
-				err = unpopulateTimeUnix(val, &k.Created)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &k.Created)
+			delete(rawMsg, key)
 		case "expiryTime":
-				err = unpopulate(val, &k.ExpiryTime)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.ExpiryTime)
+			delete(rawMsg, key)
 		case "updated":
-				err = unpopulateTimeUnix(val, &k.Updated)
-				delete(rawMsg, key)
+			err = unpopulateTimeUnix(val, &k.Updated)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1044,11 +1044,11 @@ func (k *KeySignParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "alg":
-				err = unpopulate(val, &k.Algorithm)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Algorithm)
+			delete(rawMsg, key)
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &k.Value, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1255,14 +1255,14 @@ func (k *KeyVerifyParameters) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "alg":
-				err = unpopulate(val, &k.Algorithm)
-				delete(rawMsg, key)
+			err = unpopulate(val, &k.Algorithm)
+			delete(rawMsg, key)
 		case "digest":
 			err = runtime.DecodeByteArray(string(val), &k.Digest, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &k.Signature, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1350,7 +1350,7 @@ func (r *RandomBytes) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "value":
 			err = runtime.DecodeByteArray(string(val), &r.Value, runtime.Base64URLFormat)
-				delete(rawMsg, key)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return err
@@ -1406,7 +1406,7 @@ func (r RoleAssignmentListResult) MarshalJSON() ([]byte, error) {
 // RoleAssignmentProperties - Role assignment properties.
 type RoleAssignmentProperties struct {
 	// REQUIRED; The principal ID assigned to the role. This maps to the ID inside the Active Directory. It can point to a user, service principal, or security
-// group.
+	// group.
 	PrincipalID *string `json:"principalId,omitempty"`
 
 	// REQUIRED; The role definition ID used in the role assignment.
@@ -1443,7 +1443,7 @@ type RoleAssignmentsGetOptions struct {
 // RoleAssignmentsListForScopeOptions contains the optional parameters for the RoleAssignments.ListForScope method.
 type RoleAssignmentsListForScopeOptions struct {
 	// The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or above the scope. Use $filter=principalId eq {id} to
-// return all role assignments at, above or below the scope for the specified principal.
+	// return all role assignments at, above or below the scope for the specified principal.
 	Filter *string
 }
 
@@ -1555,7 +1555,7 @@ type SecurityDomainJSONWebKey struct {
 	Kid *string `json:"kid,omitempty"`
 
 	// REQUIRED; JsonWebKey Key Type (kty), as defined in https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40. For Security Domain this value
-// must be RSA.
+	// must be RSA.
 	Kty *string `json:"kty,omitempty"`
 
 	// REQUIRED; RSA modulus.
@@ -1598,8 +1598,8 @@ type SecurityDomainObject struct {
 
 type SecurityDomainOperationStatus struct {
 	// operation status
-	Status *OperationStatus `json:"status,omitempty"`
-	StatusDetails *string `json:"status_details,omitempty"`
+	Status        *OperationStatus `json:"status,omitempty"`
+	StatusDetails *string          `json:"status_details,omitempty"`
 }
 
 type TransferKey struct {
@@ -1636,4 +1636,3 @@ func unpopulate(data json.RawMessage, v interface{}) error {
 	}
 	return json.Unmarshal(data, v)
 }
-

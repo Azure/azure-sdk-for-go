@@ -25,8 +25,6 @@ import (
 
 var pathToPackage = "sdk/keyvault/azkeys/azcrypto"
 
-const headerAuthorization = "Authorization"
-
 func startTest(t *testing.T) func() {
 	err := recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)

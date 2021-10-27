@@ -32,7 +32,6 @@ func NewConnection(options *azcore.ClientOptions) *Connection {
 }
 
 // Pipeline returns the connection's pipeline.
-func (c *Connection) Pipeline() (runtime.Pipeline) {
+func (c *Connection) Pipeline() runtime.Pipeline {
 	return c.p
 }
-

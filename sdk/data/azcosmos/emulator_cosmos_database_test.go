@@ -12,32 +12,33 @@ func TestDatabaseCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t)
 
-	database := DatabaseProperties{Id: "baseDbTest"}
+	database := DatabaseProperties{ID: "baseDbTest"}
 
 	resp, err := client.CreateDatabase(context.TODO(), database, nil)
 	if err != nil {
 		t.Fatalf("Failed to create database: %v", err)
 	}
 
-	if resp.DatabaseProperties.Id != database.Id {
+	if resp.DatabaseProperties.ID != database.ID {
 		t.Errorf("Unexpected id match: %v", resp.DatabaseProperties)
 	}
 
-	resp, err = resp.DatabaseProperties.Database.Read(context.TODO(), nil)
+	db, _ := client.NewDatabase("baseDbTest")
+	resp, err = db.Read(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to read database: %v", err)
 	}
 
-	if resp.DatabaseProperties.Id != database.Id {
+	if resp.DatabaseProperties.ID != database.ID {
 		t.Errorf("Unexpected id match: %v", resp.DatabaseProperties)
 	}
 
-	throughputResponse, err := resp.DatabaseProperties.Database.ReadThroughput(context.TODO(), nil)
+	throughputResponse, err := db.ReadThroughput(context.TODO(), nil)
 	if err == nil {
 		t.Fatalf("Expected not finding throughput but instead got : %v", throughputResponse)
 	}
 
-	resp, err = resp.DatabaseProperties.Database.Delete(context.TODO(), nil)
+	resp, err = db.Delete(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to delete database: %v", err)
 	}
@@ -47,34 +48,35 @@ func TestDatabaseWithOfferCRUD(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
 	client := emulatorTests.getClient(t)
 
-	database := DatabaseProperties{Id: "baseDbTest"}
+	database := DatabaseProperties{ID: "baseDbTest"}
 	tp := NewManualThroughputProperties(400)
-	resp, err := client.CreateDatabase(context.TODO(), database, &CreateDatabaseOptions{ThroughputProperties: tp})
+	resp, err := client.CreateDatabase(context.TODO(), database, &CreateDatabaseOptions{ThroughputProperties: &tp})
 	if err != nil {
 		t.Fatalf("Failed to create database: %v", err)
 	}
 
-	if resp.DatabaseProperties.Id != database.Id {
+	if resp.DatabaseProperties.ID != database.ID {
 		t.Errorf("Unexpected id match: %v", resp.DatabaseProperties)
 	}
 
-	resp, err = resp.DatabaseProperties.Database.Read(context.TODO(), nil)
+	db, _ := client.NewDatabase("baseDbTest")
+	resp, err = db.Read(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to read database: %v", err)
 	}
 
-	if resp.DatabaseProperties.Id != database.Id {
+	if resp.DatabaseProperties.ID != database.ID {
 		t.Errorf("Unexpected id match: %v", resp.DatabaseProperties)
 	}
 
-	throughputResponse, err := resp.DatabaseProperties.Database.ReadThroughput(context.TODO(), nil)
+	throughputResponse, err := db.ReadThroughput(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to read throughput: %v", err)
 	}
 
-	mt, err := throughputResponse.ThroughputProperties.ManualThroughput()
-	if err != nil {
-		t.Errorf("Failed to read throughput: %v", err)
+	mt, hasManualThroughput := throughputResponse.ThroughputProperties.ManualThroughput()
+	if !hasManualThroughput {
+		t.Fatalf("Expected manual throughput to be available")
 	}
 
 	if mt != 400 {
@@ -82,12 +84,12 @@ func TestDatabaseWithOfferCRUD(t *testing.T) {
 	}
 
 	newScale := NewManualThroughputProperties(500)
-	_, err = resp.DatabaseProperties.Database.ReplaceThroughput(context.TODO(), *newScale, nil)
+	_, err = db.ReplaceThroughput(context.TODO(), newScale, nil)
 	if err != nil {
 		t.Errorf("Failed to read throughput: %v", err)
 	}
 
-	resp, err = resp.DatabaseProperties.Database.Delete(context.TODO(), nil)
+	resp, err = db.Delete(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to delete database: %v", err)
 	}

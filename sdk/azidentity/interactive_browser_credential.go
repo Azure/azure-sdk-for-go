@@ -7,6 +7,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/base64"
+	"errors"
 	"math/rand"
 	"net/url"
 	"path"
@@ -24,6 +25,8 @@ import (
 // All zero-value fields will be initialized with their default values. Please note, that both the TenantID or ClientID fields should
 // changed together if default values are not desired.
 type InteractiveBrowserCredentialOptions struct {
+	azcore.ClientOptions
+
 	// The Azure Active Directory tenant (directory) ID of the application. Defaults to "organizations".
 	TenantID string
 	// The ID of the application the user will sign in to. When not set, users will sign in to an Azure development application.
@@ -34,15 +37,6 @@ type InteractiveBrowserCredentialOptions struct {
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost AuthorityHost
-	// HTTPClient sets the transport for making HTTP requests
-	// Leave this as nil to use the default HTTP transport
-	HTTPClient policy.Transporter
-	// Retry configures the built-in retry policy behavior
-	Retry policy.RetryOptions
-	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry policy.TelemetryOptions
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
 }
 
 // init returns an instance of InteractiveBrowserCredentialOptions initialized with default values.
@@ -71,13 +65,13 @@ func NewInteractiveBrowserCredential(options *InteractiveBrowserCredentialOption
 	}
 	cp.init()
 	if !validTenantID(cp.TenantID) {
-		return nil, &CredentialUnavailableError{credentialType: "Interactive Browser Credential", message: tenantIDValidationErr}
+		return nil, errors.New(tenantIDValidationErr)
 	}
 	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: cp.HTTPClient, Retry: cp.Retry, Telemetry: cp.Telemetry, Logging: cp.Logging})
+	c, err := newAADIdentityClient(authorityHost, &cp.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

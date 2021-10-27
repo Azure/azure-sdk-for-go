@@ -14,19 +14,19 @@ import (
 
 func Test_set(t *testing.T) {
 	key := "someKey"
-	expectedValue := ContainerProperties{Id: "someId"}
+	expectedValue := ContainerProperties{ID: "someId"}
 
 	cache := newAsyncCache()
 
 	cache.setValue(key, expectedValue)
 	value, _ := cache.getValue(key)
 	containerProps, _ := value.(ContainerProperties)
-	assert.Equal(t, expectedValue.Id, containerProps.Id)
+	assert.Equal(t, expectedValue.ID, containerProps.ID)
 }
 
 func Test_setAsync(t *testing.T) {
 	key := "someKeyAsync"
-	expectedValue := ContainerProperties{Id: "someIdAsync"}
+	expectedValue := ContainerProperties{ID: "someIdAsync"}
 
 	cache := newAsyncCache()
 
@@ -38,13 +38,13 @@ func Test_setAsync(t *testing.T) {
 	_ = cache.set(key, f, context.Background())
 	value, _ := cache.getValue(key)
 	containerProps, _ := value.(ContainerProperties)
-	assert.Equal(t, expectedValue.Id, containerProps.Id)
+	assert.Equal(t, expectedValue.ID, containerProps.ID)
 }
 
 func Test_getAsync_not_obsolete(t *testing.T) {
 	key := "testAsyncKey"
-	expectedValue0 := ContainerProperties{Id: "0"}
-	expectedValue1 := ContainerProperties{Id: "1"}
+	expectedValue0 := ContainerProperties{ID: "0"}
+	expectedValue1 := ContainerProperties{ID: "1"}
 	f1Called := false
 	f2Called := false
 
@@ -80,17 +80,17 @@ func Test_getAsync_not_obsolete(t *testing.T) {
 	assert.False(t, f2Called)
 
 	containerProps, _ := value.(ContainerProperties)
-	assert.Equal(t, expectedValue1.Id, containerProps.Id)
+	assert.Equal(t, expectedValue1.ID, containerProps.ID)
 
 	containerProps2, _ := value2.(ContainerProperties)
-	assert.Equal(t, expectedValue1.Id, containerProps2.Id)
+	assert.Equal(t, expectedValue1.ID, containerProps2.ID)
 }
 
 func Test_getAsync_obsolete(t *testing.T) {
 	key := "testAsyncObsoleteKey"
-	expectedValue0 := ContainerProperties{Id: "0"}
-	expectedValue1 := ContainerProperties{Id: "1"}
-	expectedValue2 := ContainerProperties{Id: "2"}
+	expectedValue0 := ContainerProperties{ID: "0"}
+	expectedValue1 := ContainerProperties{ID: "1"}
+	expectedValue2 := ContainerProperties{ID: "2"}
 	f1Called := false
 	f2Called := false
 
@@ -127,15 +127,15 @@ func Test_getAsync_obsolete(t *testing.T) {
 
 	assert.True(t, f1Called)
 	assert.True(t, f2Called)
-	assert.Equal(t, expectedValue2.Id, containerProps.Id)
-	assert.Equal(t, expectedValue2.Id, containerProps2.Id)
+	assert.Equal(t, expectedValue2.ID, containerProps.ID)
+	assert.Equal(t, expectedValue2.ID, containerProps2.ID)
 }
 
 func Test_getAsync_obsolete_with_error(t *testing.T) {
 	key := "testAsyncObsoleteKey"
-	expectedValue0 := ContainerProperties{Id: "0"}
-	expectedValue1 := ContainerProperties{Id: "1"}
-	expectedValue2 := ContainerProperties{Id: "2"}
+	expectedValue0 := ContainerProperties{ID: "0"}
+	expectedValue1 := ContainerProperties{ID: "1"}
+	expectedValue2 := ContainerProperties{ID: "2"}
 	f1Called := false
 	f2Called := false
 
@@ -176,9 +176,9 @@ func Test_getAsync_obsolete_with_error(t *testing.T) {
 
 func Test_getAsync_obsolete_with_context_error(t *testing.T) {
 	key := "testAsyncObsoleteKey"
-	expectedValue0 := ContainerProperties{Id: "0"}
-	expectedValue1 := ContainerProperties{Id: "1"}
-	expectedValue2 := ContainerProperties{Id: "2"}
+	expectedValue0 := ContainerProperties{ID: "0"}
+	expectedValue1 := ContainerProperties{ID: "1"}
+	expectedValue2 := ContainerProperties{ID: "2"}
 	f1Called := false
 	f2Called := false
 
@@ -221,14 +221,14 @@ func Test_getAsync_obsolete_with_context_error(t *testing.T) {
 
 func Test_remove(t *testing.T) {
 	key := "someKeyToRemove"
-	expectedValue := ContainerProperties{Id: "someIdToRemove"}
+	expectedValue := ContainerProperties{ID: "someIdToRemove"}
 
 	cache := newAsyncCache()
 
 	cache.setValue(key, expectedValue)
 	value, _ := cache.getValue(key)
 	containerProps, _ := value.(ContainerProperties)
-	assert.Equal(t, expectedValue.Id, containerProps.Id)
+	assert.Equal(t, expectedValue.ID, containerProps.ID)
 
 	cache.remove(key)
 
@@ -239,21 +239,21 @@ func Test_remove(t *testing.T) {
 
 func Test_clear(t *testing.T) {
 	key := "someKeyToClear"
-	expectedValue := ContainerProperties{Id: "someIdToDelete"}
+	expectedValue := ContainerProperties{ID: "someIdToDelete"}
 	key2 := "someKeyToClear2"
-	expectedValue2 := ContainerProperties{Id: "someIdToDelete2"}
+	expectedValue2 := ContainerProperties{ID: "someIdToDelete2"}
 
 	cache := newAsyncCache()
 
 	cache.setValue(key, expectedValue)
 	value, _ := cache.getValue(key)
 	containerProps, _ := value.(ContainerProperties)
-	assert.Equal(t, expectedValue.Id, containerProps.Id)
+	assert.Equal(t, expectedValue.ID, containerProps.ID)
 
 	cache.setValue(key2, expectedValue2)
 	value2, _ := cache.getValue(key2)
 	containerProps2, _ := value2.(ContainerProperties)
-	assert.Equal(t, expectedValue2.Id, containerProps2.Id)
+	assert.Equal(t, expectedValue2.ID, containerProps2.ID)
 
 	cache.clear()
 

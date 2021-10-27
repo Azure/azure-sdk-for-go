@@ -6,6 +6,7 @@ package azidentity
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -54,13 +55,11 @@ type aadIdentityClient struct {
 	pipeline      runtime.Pipeline
 }
 
-// newAADIdentityClient creates a new instance of the aadIdentityClient with the TokenCredentialOptions
-// that are passed into it along with a default pipeline.
-// options: TokenCredentialOptions that can configure policies for the pipeline and the authority host that
-// will be used to retrieve tokens and authenticate
-func newAADIdentityClient(authorityHost string, options pipelineOptions) (*aadIdentityClient, error) {
+// newAADIdentityClient creates a new instance of the aadIdentityClient
+func newAADIdentityClient(authorityHost string, options *azcore.ClientOptions) (*aadIdentityClient, error) {
 	logEnvVars()
-	return &aadIdentityClient{authorityHost: authorityHost, pipeline: newDefaultPipeline(options)}, nil
+	pl := runtime.NewPipeline(component, version, nil, nil, options)
+	return &aadIdentityClient{authorityHost: authorityHost, pipeline: pl}, nil
 }
 
 // aadAuthenticationError is used to unmarshal error responses received from Azure Active Directory
@@ -86,7 +85,7 @@ func getError(resp *http.Response) error {
 	} else {
 		msg = fmt.Sprintf("authentication failed: %s", authFailed.Message)
 	}
-	return &AuthenticationFailedError{msg: msg, resp: resp}
+	return newAuthenticationFailedError(errors.New(msg), resp)
 }
 
 // refreshAccessToken creates a refresh token request and returns the resulting Access Token or
@@ -171,7 +170,7 @@ func (c *aadIdentityClient) createAccessToken(res *http.Response) (*azcore.Acces
 		ExpiresOn string      `json:"expires_on"`
 	}{}
 	if err := runtime.UnmarshalAsJSON(res, &value); err != nil {
-		return nil, fmt.Errorf("internal AccessToken: %w", err)
+		return nil, fmt.Errorf("internal AccessToken: %v", err)
 	}
 	t, err := value.ExpiresIn.Int64()
 	if err != nil {
@@ -193,7 +192,7 @@ func (c *aadIdentityClient) createRefreshAccessToken(res *http.Response) (*token
 		ExpiresOn    string      `json:"expires_on"`
 	}{}
 	if err := runtime.UnmarshalAsJSON(res, &value); err != nil {
-		return nil, fmt.Errorf("internal AccessToken: %w", err)
+		return nil, fmt.Errorf("internal AccessToken: %v", err)
 	}
 	t, err := value.ExpiresIn.Int64()
 	if err != nil {
@@ -321,7 +320,7 @@ func (c *aadIdentityClient) createUsernamePasswordAuthRequest(ctx context.Contex
 func createDeviceCodeResult(res *http.Response) (*deviceCodeResult, error) {
 	value := &deviceCodeResult{}
 	if err := runtime.UnmarshalAsJSON(res, &value); err != nil {
-		return nil, fmt.Errorf("DeviceCodeResult: %w", err)
+		return nil, fmt.Errorf("DeviceCodeResult: %v", err)
 	}
 	return value, nil
 }

@@ -41,6 +41,7 @@ func setDefaults(o *policy.RetryOptions) {
 	if o.StatusCodes == nil {
 		o.StatusCodes = []int{
 			http.StatusRequestTimeout,      // 408
+			http.StatusTooManyRequests,     // 429
 			http.StatusInternalServerError, // 500
 			http.StatusBadGateway,          // 502
 			http.StatusServiceUnavailable,  // 503

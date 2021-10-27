@@ -11,6 +11,8 @@
   enough to fit into a single batch.
 - Receiving from sessions using a SessionReceiver, created using Client.AcceptSessionFor(Queue|Subscription)
   or Client.AcceptNextSessionFor(Queue|Subscription).
+- Can now renew a message lock for a ReceivedMessage using Receiver.RenewMessageLock()
+- Can now renew a session lock for a SessionReceiver using SessionReceiver.RenewSessionLock()
 
 ### Breaking Changes
 

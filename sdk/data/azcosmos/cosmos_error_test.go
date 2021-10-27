@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
@@ -24,7 +25,7 @@ func TestCosmosErrorOnEmptyResponse(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	pl := azruntime.NewPipeline(srv)
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
 	resp, _ := pl.Do(req)
 
 	cError := newCosmosError(resp)
@@ -45,7 +46,7 @@ func TestCosmosErrorOnNonJsonBody(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	pl := azruntime.NewPipeline(srv)
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
 	resp, _ := pl.Do(req)
 
 	cError := newCosmosError(resp)
@@ -75,7 +76,7 @@ func TestCosmosErrorOnJsonBody(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	pl := azruntime.NewPipeline(srv)
+	pl := azruntime.NewPipeline("azcosmostest", "v1.0.0", []policy.Policy{}, []policy.Policy{}, &policy.ClientOptions{Transport: srv})
 	resp, _ := pl.Do(req)
 
 	cError := newCosmosError(resp)

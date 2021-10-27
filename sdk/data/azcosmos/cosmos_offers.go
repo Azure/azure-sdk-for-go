@@ -12,7 +12,7 @@ import (
 )
 
 type cosmosOffers struct {
-	connection *cosmosClientConnection
+	client *Client
 }
 
 type cosmosOffersResponse struct {
@@ -24,7 +24,7 @@ func (c cosmosOffers) ReadThroughputIfExists(
 	targetRID string,
 	requestOptions *ThroughputOptions) (ThroughputResponse, error) {
 	// TODO: might want to replace with query iterator once that is in
-	operationContext := cosmosOperationContext{
+	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeOffer,
 		resourceAddress: "",
 	}
@@ -34,7 +34,7 @@ func (c cosmosOffers) ReadThroughputIfExists(
 		return ThroughputResponse{}, err
 	}
 
-	azResponse, err := c.connection.sendQueryRequest(
+	azResponse, err := c.client.sendQueryRequest(
 		path,
 		ctx,
 		fmt.Sprintf(`SELECT * FROM c WHERE c.offerResourceId = '%s'`, targetRID),
@@ -57,7 +57,7 @@ func (c cosmosOffers) ReadThroughputIfExists(
 	}
 
 	// Now read the individual offer
-	operationContext = cosmosOperationContext{
+	operationContext = pipelineRequestOptions{
 		resourceType:    resourceTypeOffer,
 		resourceAddress: theOffers.Offers[0].offerId,
 		isRidBased:      true,
@@ -68,7 +68,7 @@ func (c cosmosOffers) ReadThroughputIfExists(
 		return ThroughputResponse{}, err
 	}
 
-	azResponse, err = c.connection.sendGetRequest(
+	azResponse, err = c.client.sendGetRequest(
 		path,
 		ctx,
 		operationContext,
@@ -95,7 +95,7 @@ func (c cosmosOffers) ReplaceThroughputIfExists(
 	readRequestCharge := readResponse.RequestCharge
 	readResponse.ThroughputProperties.offer = properties.offer
 
-	operationContext := cosmosOperationContext{
+	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeOffer,
 		resourceAddress: readResponse.ThroughputProperties.offerId,
 		isRidBased:      true,
@@ -106,7 +106,7 @@ func (c cosmosOffers) ReplaceThroughputIfExists(
 		return ThroughputResponse{}, err
 	}
 
-	azResponse, err := c.connection.sendPutRequest(
+	azResponse, err := c.client.sendPutRequest(
 		path,
 		ctx,
 		readResponse.ThroughputProperties,

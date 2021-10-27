@@ -1,10 +1,18 @@
 #!/bin/bash
 
-cd $CODEPATH
 if [ -z $1 ]; then
-    echo "Please input code path"
+    echo "Please input resource Provider name"
+    exit 1
 fi
-CODE_PATH=$1
+ResourceProvider=$1
+
+if [ -z $2 ]; then
+    echo "Please input sdk dir path"
+    exit 1
+fi
+SDK_DIR_PATH=$2
+
+CODE_PATH=${SDK_DIR_PATH}/sdk/${ResourceProvider}/arm${ResourceProvider}
 cd ${CODE_PATH}
 
 echo $GOPATH

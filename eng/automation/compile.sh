@@ -2,6 +2,7 @@
 
 if [ -z $1 ]; then
     echo "Please input code path"
+    exit 1
 fi
 CODE_PATH=$1
 cd ${CODE_PATH}

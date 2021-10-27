@@ -12,17 +12,23 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
+// KeyVaultClient contains the methods for the KeyVaultClient group.
+// Don't use this type directly, use NewKeyVaultClient() instead.
 type KeyVaultClient struct {
-	Con *connection
+	con *Connection
+}
+
+// NewKeyVaultClient creates a new instance of KeyVaultClient with the specified values.
+func NewKeyVaultClient(con *Connection) *KeyVaultClient {
+	return &KeyVaultClient{con: con}
 }
 
 // BackupKey - The Key Backup operation exports a key from Azure Key Vault in a protected form. Note that this operation does NOT return key material in
@@ -41,7 +47,7 @@ func (client *KeyVaultClient) BackupKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientBackupKeyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientBackupKeyResponse{}, err
 	}
@@ -86,7 +92,7 @@ func (client *KeyVaultClient) backupKeyHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -102,7 +108,7 @@ func (client *KeyVaultClient) CreateKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientCreateKeyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientCreateKeyResponse{}, err
 	}
@@ -147,7 +153,7 @@ func (client *KeyVaultClient) createKeyHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -165,7 +171,7 @@ func (client *KeyVaultClient) Decrypt(ctx context.Context, vaultBaseURL string, 
 	if err != nil {
 		return KeyVaultClientDecryptResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientDecryptResponse{}, err
 	}
@@ -214,7 +220,7 @@ func (client *KeyVaultClient) decryptHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -230,7 +236,7 @@ func (client *KeyVaultClient) DeleteKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientDeleteKeyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientDeleteKeyResponse{}, err
 	}
@@ -275,7 +281,7 @@ func (client *KeyVaultClient) deleteKeyHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -295,7 +301,7 @@ func (client *KeyVaultClient) Encrypt(ctx context.Context, vaultBaseURL string, 
 	if err != nil {
 		return KeyVaultClientEncryptResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientEncryptResponse{}, err
 	}
@@ -344,7 +350,7 @@ func (client *KeyVaultClient) encryptHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -358,7 +364,7 @@ func (client *KeyVaultClient) Export(ctx context.Context, vaultBaseURL string, k
 	if err != nil {
 		return KeyVaultClientExportResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientExportResponse{}, err
 	}
@@ -407,7 +413,7 @@ func (client *KeyVaultClient) exportHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -423,7 +429,7 @@ func (client *KeyVaultClient) GetDeletedKey(ctx context.Context, vaultBaseURL st
 	if err != nil {
 		return KeyVaultClientGetDeletedKeyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientGetDeletedKeyResponse{}, err
 	}
@@ -468,7 +474,7 @@ func (client *KeyVaultClient) getDeletedKeyHandleError(resp *http.Response) erro
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -481,7 +487,7 @@ func (client *KeyVaultClient) getDeletedKeyHandleError(resp *http.Response) erro
 // non soft-delete enabled vault. This operation
 // requires the keys/list permission.
 // If the operation fails it returns the *KeyVaultError error type.
-func (client *KeyVaultClient) GetDeletedKeys(vaultBaseURL string, options *KeyVaultClientGetDeletedKeysOptions) *KeyVaultClientGetDeletedKeysPager {
+func (client *KeyVaultClient) GetDeletedKeys(vaultBaseURL string, options *KeyVaultClientGetDeletedKeysOptions) (*KeyVaultClientGetDeletedKeysPager) {
 	return &KeyVaultClientGetDeletedKeysPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -527,7 +533,7 @@ func (client *KeyVaultClient) getDeletedKeysHandleError(resp *http.Response) err
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -542,7 +548,7 @@ func (client *KeyVaultClient) GetKey(ctx context.Context, vaultBaseURL string, k
 	if err != nil {
 		return KeyVaultClientGetKeyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientGetKeyResponse{}, err
 	}
@@ -591,7 +597,7 @@ func (client *KeyVaultClient) getKeyHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -606,7 +612,7 @@ func (client *KeyVaultClient) GetKeyRotationPolicy(ctx context.Context, vaultBas
 	if err != nil {
 		return KeyVaultClientGetKeyRotationPolicyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientGetKeyRotationPolicyResponse{}, err
 	}
@@ -651,7 +657,7 @@ func (client *KeyVaultClient) getKeyRotationPolicyHandleError(resp *http.Respons
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -660,7 +666,7 @@ func (client *KeyVaultClient) getKeyRotationPolicyHandleError(resp *http.Respons
 
 // GetKeyVersions - The full key identifier, attributes, and tags are provided in the response. This operation requires the keys/list permission.
 // If the operation fails it returns the *KeyVaultError error type.
-func (client *KeyVaultClient) GetKeyVersions(vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyVersionsOptions) *KeyVaultClientGetKeyVersionsPager {
+func (client *KeyVaultClient) GetKeyVersions(vaultBaseURL string, keyName string, options *KeyVaultClientGetKeyVersionsOptions) (*KeyVaultClientGetKeyVersionsPager) {
 	return &KeyVaultClientGetKeyVersionsPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -710,7 +716,7 @@ func (client *KeyVaultClient) getKeyVersionsHandleError(resp *http.Response) err
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -722,7 +728,7 @@ func (client *KeyVaultClient) getKeyVersionsHandleError(resp *http.Response) err
 // identifier, attributes, and tags are provided in the response. Individual versions of a key are not listed in the response. This operation requires the
 // keys/list permission.
 // If the operation fails it returns the *KeyVaultError error type.
-func (client *KeyVaultClient) GetKeys(vaultBaseURL string, options *KeyVaultClientGetKeysOptions) *KeyVaultClientGetKeysPager {
+func (client *KeyVaultClient) GetKeys(vaultBaseURL string, options *KeyVaultClientGetKeysOptions) (*KeyVaultClientGetKeysPager) {
 	return &KeyVaultClientGetKeysPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
@@ -768,7 +774,7 @@ func (client *KeyVaultClient) getKeysHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -782,7 +788,7 @@ func (client *KeyVaultClient) GetRandomBytes(ctx context.Context, vaultBaseURL s
 	if err != nil {
 		return KeyVaultClientGetRandomBytesResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientGetRandomBytesResponse{}, err
 	}
@@ -823,7 +829,7 @@ func (client *KeyVaultClient) getRandomBytesHandleError(resp *http.Response) err
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -839,7 +845,7 @@ func (client *KeyVaultClient) ImportKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientImportKeyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientImportKeyResponse{}, err
 	}
@@ -884,7 +890,7 @@ func (client *KeyVaultClient) importKeyHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -900,7 +906,7 @@ func (client *KeyVaultClient) PurgeDeletedKey(ctx context.Context, vaultBaseURL 
 	if err != nil {
 		return KeyVaultClientPurgeDeletedKeyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientPurgeDeletedKeyResponse{}, err
 	}
@@ -936,7 +942,7 @@ func (client *KeyVaultClient) purgeDeletedKeyHandleError(resp *http.Response) er
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -952,7 +958,7 @@ func (client *KeyVaultClient) RecoverDeletedKey(ctx context.Context, vaultBaseUR
 	if err != nil {
 		return KeyVaultClientRecoverDeletedKeyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientRecoverDeletedKeyResponse{}, err
 	}
@@ -997,7 +1003,7 @@ func (client *KeyVaultClient) recoverDeletedKeyHandleError(resp *http.Response) 
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1012,7 +1018,7 @@ func (client *KeyVaultClient) Release(ctx context.Context, vaultBaseURL string, 
 	if err != nil {
 		return KeyVaultClientReleaseResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientReleaseResponse{}, err
 	}
@@ -1061,7 +1067,7 @@ func (client *KeyVaultClient) releaseHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1083,7 +1089,7 @@ func (client *KeyVaultClient) RestoreKey(ctx context.Context, vaultBaseURL strin
 	if err != nil {
 		return KeyVaultClientRestoreKeyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientRestoreKeyResponse{}, err
 	}
@@ -1124,7 +1130,7 @@ func (client *KeyVaultClient) restoreKeyHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1138,7 +1144,7 @@ func (client *KeyVaultClient) RotateKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientRotateKeyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientRotateKeyResponse{}, err
 	}
@@ -1183,7 +1189,7 @@ func (client *KeyVaultClient) rotateKeyHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1198,7 +1204,7 @@ func (client *KeyVaultClient) Sign(ctx context.Context, vaultBaseURL string, key
 	if err != nil {
 		return KeyVaultClientSignResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientSignResponse{}, err
 	}
@@ -1247,7 +1253,7 @@ func (client *KeyVaultClient) signHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1263,7 +1269,7 @@ func (client *KeyVaultClient) UnwrapKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientUnwrapKeyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientUnwrapKeyResponse{}, err
 	}
@@ -1312,7 +1318,7 @@ func (client *KeyVaultClient) unwrapKeyHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1327,7 +1333,7 @@ func (client *KeyVaultClient) UpdateKey(ctx context.Context, vaultBaseURL string
 	if err != nil {
 		return KeyVaultClientUpdateKeyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientUpdateKeyResponse{}, err
 	}
@@ -1376,7 +1382,7 @@ func (client *KeyVaultClient) updateKeyHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1390,7 +1396,7 @@ func (client *KeyVaultClient) UpdateKeyRotationPolicy(ctx context.Context, vault
 	if err != nil {
 		return KeyVaultClientUpdateKeyRotationPolicyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientUpdateKeyRotationPolicyResponse{}, err
 	}
@@ -1435,7 +1441,7 @@ func (client *KeyVaultClient) updateKeyRotationPolicyHandleError(resp *http.Resp
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1453,7 +1459,7 @@ func (client *KeyVaultClient) Verify(ctx context.Context, vaultBaseURL string, k
 	if err != nil {
 		return KeyVaultClientVerifyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientVerifyResponse{}, err
 	}
@@ -1502,7 +1508,7 @@ func (client *KeyVaultClient) verifyHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
@@ -1520,7 +1526,7 @@ func (client *KeyVaultClient) WrapKey(ctx context.Context, vaultBaseURL string, 
 	if err != nil {
 		return KeyVaultClientWrapKeyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := 	client.con.Pipeline().Do(req)
 	if err != nil {
 		return KeyVaultClientWrapKeyResponse{}, err
 	}
@@ -1569,9 +1575,10 @@ func (client *KeyVaultClient) wrapKeyHandleError(resp *http.Response) error {
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
 	}
-	errType := KeyVaultError{raw: string(body)}
+		errType := KeyVaultError{raw: string(body)}
 	if err := runtime.UnmarshalAsJSON(resp, &errType); err != nil {
 		return runtime.NewResponseError(fmt.Errorf("%s\n%s", string(body), err), resp)
 	}
 	return runtime.NewResponseError(&errType, resp)
 }
+

@@ -13,13 +13,11 @@ import (
 	"hash/fnv"
 	"net/http"
 	"os"
-	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
@@ -27,10 +25,31 @@ import (
 
 var pathToPackage = "sdk/keyvault/azkeys/testdata"
 
-const headerAuthorization = "Authorization"
-
 var fakeURL = "https://fakekvurl.vault.azure.net/"
 
+func TestMain(m *testing.M) {
+	// Initialize
+	if recording.GetRecordMode() == "record" {
+		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
+		err := recording.AddURISanitizer("https://fakekvurl.vault.azure.net/", vaultUrl, nil)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	// Run tests
+	exitVal := m.Run()
+
+	// 3. Reset
+	// TODO: Add after sanitizer PR
+	err := recording.ResetSanitizers(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	// 4. Error out if applicable
+	os.Exit(exitVal)
+}
 func createRandomName(t *testing.T, prefix string) (string, error) {
 	h := fnv.New32a()
 	_, err := h.Write([]byte(t.Name()))
@@ -42,25 +61,38 @@ type recordingPolicy struct {
 	t       *testing.T
 }
 
+func (r recordingPolicy) Host() string {
+	if r.options.UseHTTPS {
+		return "localhost:5001"
+	}
+	return "localhost:5000"
+}
+
+func (r recordingPolicy) Scheme() string {
+	if r.options.UseHTTPS {
+		return "https"
+	}
+	return "http"
+}
+
 func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Policy {
 	if o == nil {
-		o = &recording.RecordingOptions{}
+		o = &recording.RecordingOptions{UseHTTPS: true}
 	}
 	p := &recordingPolicy{options: *o, t: t}
-	p.options.Init()
 	return p
 }
 
 func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 	if recording.GetRecordMode() != "live" {
 		originalURLHost := req.Raw().URL.Host
-		req.Raw().URL.Scheme = "https"
-		req.Raw().URL.Host = p.options.Host
-		req.Raw().Host = p.options.Host
+		req.Raw().URL.Scheme = p.Scheme()
+		req.Raw().URL.Host = p.Host()
+		req.Raw().Host = p.Host()
 
-		req.Raw().Header.Set(recording.UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.Scheme, originalURLHost))
+		req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%v://%v", p.Scheme(), originalURLHost))
 		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
-		req.Raw().Header.Set(recording.IdHeader, recording.GetRecordingId(p.t))
+		req.Raw().Header.Set(recording.IDHeader, recording.GetRecordingId(p.t))
 	}
 	return req.Next()
 }
@@ -74,10 +106,10 @@ func lookupEnvVar(s string) string {
 }
 
 func createClient(t *testing.T, testType string) (*Client, error) {
-	vaultUrl := recording.GetEnvVariable(t, "AZURE_KEYVAULT_URL", fakeURL)
+	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeURL)
 	var credOptions *azidentity.ClientSecretCredentialOptions
 	if testType == HSMTEST {
-		vaultUrl = recording.GetEnvVariable(t, "AZURE_MANAGEDHSM_URL", fakeURL)
+		vaultUrl = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeURL)
 	}
 	if recording.GetRecordMode() == "playback" {
 		vaultUrl = fakeURL
@@ -88,10 +120,11 @@ func createClient(t *testing.T, testType string) (*Client, error) {
 	require.NoError(t, err)
 
 	options := &ClientOptions{
-		PerCallPolicies: []policy.Policy{p},
-		Transport:       client,
+		azcore.ClientOptions{
+			PerCallPolicies: []policy.Policy{p},
+			Transport:       client,
+		},
 	}
-	_ = options
 
 	var cred azcore.TokenCredential
 	if recording.GetRecordMode() != "playback" {
@@ -137,24 +170,6 @@ func NewFakeCredential(accountName, accountKey string) *FakeCredential {
 		accountName: accountName,
 		accountKey:  accountKey,
 	}
-}
-
-type fakeCredPolicy struct {
-	cred *FakeCredential
-}
-
-func newFakeCredPolicy(cred *FakeCredential, opts runtime.AuthenticationOptions) *fakeCredPolicy {
-	return &fakeCredPolicy{cred: cred}
-}
-
-func (f *fakeCredPolicy) Do(req *policy.Request) (*http.Response, error) {
-	authHeader := strings.Join([]string{"Authorization ", f.cred.accountName, ":", f.cred.accountKey}, "")
-	req.Raw().Header.Set(headerAuthorization, authHeader)
-	return req.Next()
-}
-
-func (f *FakeCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
-	return newFakeCredPolicy(f, options)
 }
 
 func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {

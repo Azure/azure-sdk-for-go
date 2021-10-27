@@ -33,6 +33,9 @@
 # PRLabel: %Tables
 /sdk/data/aztables/      @seankane-msft @jhendrixMSFT 
 
+# PRLabel: %Service Bus
+/sdk/messaging/azservicebus   @richardpark-msft @jhendrixMSFT 
+
 # PRLabel: %Mgmt
 /sdk/resourcemanager/    @ArcturusZhang @lirenhe
 

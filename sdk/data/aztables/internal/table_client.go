@@ -26,13 +26,13 @@ import (
 // TableClient contains the methods for the Table group.
 // Don't use this type directly, use NewTableClient() instead.
 type TableClient struct {
-	Con     *Connection // making this public because it is needed for the batching requests
+	con     *Connection
 	version Enum0
 }
 
 // NewTableClient creates a new instance of TableClient with the specified values.
 func NewTableClient(con *Connection, version Enum0) *TableClient {
-	return &TableClient{Con: con, version: version}
+	return &TableClient{con: con, version: version}
 }
 
 // Create - Creates a new table under the given account.
@@ -42,7 +42,7 @@ func (client *TableClient) Create(ctx context.Context, dataServiceVersion Enum1,
 	if err != nil {
 		return TableCreateResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableCreateResponse{}, err
 	}
@@ -55,7 +55,7 @@ func (client *TableClient) Create(ctx context.Context, dataServiceVersion Enum1,
 // createCreateRequest creates the Create request.
 func (client *TableClient) createCreateRequest(ctx context.Context, dataServiceVersion Enum1, tableProperties TableProperties, tableCreateOptions *TableCreateOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/Tables"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -124,7 +124,7 @@ func (client *TableClient) Delete(ctx context.Context, table string, options *Ta
 	if err != nil {
 		return TableDeleteResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableDeleteResponse{}, err
 	}
@@ -141,7 +141,7 @@ func (client *TableClient) deleteCreateRequest(ctx context.Context, table string
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -195,7 +195,7 @@ func (client *TableClient) DeleteEntity(ctx context.Context, dataServiceVersion 
 	if err != nil {
 		return TableDeleteEntityResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableDeleteEntityResponse{}, err
 	}
@@ -220,7 +220,7 @@ func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, dataSe
 		return nil, errors.New("parameter rowKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -284,7 +284,7 @@ func (client *TableClient) GetAccessPolicy(ctx context.Context, table string, co
 	if err != nil {
 		return TableGetAccessPolicyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableGetAccessPolicyResponse{}, err
 	}
@@ -301,7 +301,7 @@ func (client *TableClient) getAccessPolicyCreateRequest(ctx context.Context, tab
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -364,7 +364,7 @@ func (client *TableClient) InsertEntity(ctx context.Context, dataServiceVersion 
 	if err != nil {
 		return TableInsertEntityResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableInsertEntityResponse{}, err
 	}
@@ -381,7 +381,7 @@ func (client *TableClient) InsertEntityCreateRequest(ctx context.Context, dataSe
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -462,7 +462,7 @@ func (client *TableClient) MergeEntity(ctx context.Context, dataServiceVersion E
 	if err != nil {
 		return TableMergeEntityResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableMergeEntityResponse{}, err
 	}
@@ -487,7 +487,7 @@ func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, dataSer
 		return nil, errors.New("parameter rowKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -559,7 +559,7 @@ func (client *TableClient) Query(ctx context.Context, dataServiceVersion Enum1, 
 	if err != nil {
 		return TableQueryResponseEnvelope{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableQueryResponseEnvelope{}, err
 	}
@@ -572,7 +572,7 @@ func (client *TableClient) Query(ctx context.Context, dataServiceVersion Enum1, 
 // queryCreateRequest creates the Query request.
 func (client *TableClient) queryCreateRequest(ctx context.Context, dataServiceVersion Enum1, tableQueryOptions *TableQueryOptions, queryOptions *QueryOptions) (*policy.Request, error) {
 	urlPath := "/Tables"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -649,7 +649,7 @@ func (client *TableClient) QueryEntities(ctx context.Context, dataServiceVersion
 	if err != nil {
 		return TableQueryEntitiesResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableQueryEntitiesResponse{}, err
 	}
@@ -666,7 +666,7 @@ func (client *TableClient) queryEntitiesCreateRequest(ctx context.Context, dataS
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -753,7 +753,7 @@ func (client *TableClient) QueryEntityWithPartitionAndRowKey(ctx context.Context
 	if err != nil {
 		return TableQueryEntityWithPartitionAndRowKeyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableQueryEntityWithPartitionAndRowKeyResponse{}, err
 	}
@@ -778,7 +778,7 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx co
 		return nil, errors.New("parameter rowKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -859,7 +859,7 @@ func (client *TableClient) SetAccessPolicy(ctx context.Context, table string, co
 	if err != nil {
 		return TableSetAccessPolicyResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableSetAccessPolicyResponse{}, err
 	}
@@ -876,7 +876,7 @@ func (client *TableClient) setAccessPolicyCreateRequest(ctx context.Context, tab
 		return nil, errors.New("parameter table cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{table}", url.PathEscape(table))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -943,7 +943,7 @@ func (client *TableClient) UpdateEntity(ctx context.Context, dataServiceVersion 
 	if err != nil {
 		return TableUpdateEntityResponse{}, err
 	}
-	resp, err := client.Con.Pipeline().Do(req)
+	resp, err := client.con.Pipeline().Do(req)
 	if err != nil {
 		return TableUpdateEntityResponse{}, err
 	}
@@ -968,7 +968,7 @@ func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, dataSe
 		return nil, errors.New("parameter rowKey cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{rowKey}", url.PathEscape(rowKey))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.Con.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.con.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

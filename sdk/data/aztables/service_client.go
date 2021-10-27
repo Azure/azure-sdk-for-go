@@ -20,7 +20,8 @@ import (
 type ServiceClient struct {
 	client  *generated.TableClient
 	service *generated.ServiceClient
-	cred    interface{}
+	cred    *SharedKeyCredential
+	con     *generated.Connection
 }
 
 // NewServiceClient creates a ServiceClient struct using the specified serviceURL, credential, and options.
@@ -31,7 +32,7 @@ func NewServiceClient(serviceURL string, cred azcore.TokenCredential, options *C
 	return &ServiceClient{
 		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
 		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
-		cred:    cred,
+		con:     con,
 	}, nil
 }
 
@@ -46,6 +47,7 @@ func NewServiceClientWithNoCredential(serviceURL string, options *ClientOptions)
 	return &ServiceClient{
 		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
 		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
+		con:     con,
 	}, nil
 }
 
@@ -61,6 +63,7 @@ func NewServiceClientWithSharedKey(serviceURL string, cred *SharedKeyCredential,
 		client:  generated.NewTableClient(con, generated.Enum0TwoThousandNineteen0202),
 		service: generated.NewServiceClient(con, generated.Enum0TwoThousandNineteen0202),
 		cred:    cred,
+		con:     con,
 	}, nil
 }
 
@@ -102,9 +105,9 @@ func getConnectionOptions(serviceURL string, options *ClientOptions) *ClientOpti
 func (t *ServiceClient) NewClient(tableName string) *Client {
 	return &Client{
 		client:  t.client,
-		cred:    t.cred,
 		name:    tableName,
 		service: t,
+		con:     t.con,
 	}
 }
 
@@ -419,9 +422,8 @@ func (t *ServiceClient) SetProperties(ctx context.Context, properties ServicePro
 // GetAccountSASToken is a convenience method for generating a SAS token for the currently pointed at account. This methods returns the full service URL and an error
 // if there was an error during creation. This method can only be used by clients created by NewServiceClientWithSharedKey().
 func (t ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, permissions AccountSASPermissions, start time.Time, expiry time.Time) (string, error) {
-	cred, ok := t.cred.(*SharedKeyCredential)
-	if !ok {
-		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+	if t.cred == nil {
+		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
 	qps, err := AccountSASSignatureValues{
 		Version:       SASVersion,
@@ -431,11 +433,11 @@ func (t ServiceClient) GetAccountSASToken(resources AccountSASResourceTypes, per
 		ResourceTypes: resources.String(),
 		StartTime:     start.UTC(),
 		ExpiryTime:    expiry.UTC(),
-	}.Sign(cred)
+	}.Sign(t.cred)
 	if err != nil {
 		return "", err
 	}
-	endpoint := t.client.Con.Endpoint()
+	endpoint := t.con.Endpoint()
 	if !strings.HasSuffix(endpoint, "/") {
 		endpoint += "/"
 	}

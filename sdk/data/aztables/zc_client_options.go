@@ -5,15 +5,14 @@ package aztables
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 type ClientOptions struct {
 	azcore.ClientOptions
 }
 
-func (c *ClientOptions) toPolicyOptions() *policy.ClientOptions {
-	return &policy.ClientOptions{
+func (c *ClientOptions) toPolicyOptions() *azcore.ClientOptions {
+	return &azcore.ClientOptions{
 		Logging:          c.Logging,
 		Retry:            c.Retry,
 		Telemetry:        c.Telemetry,

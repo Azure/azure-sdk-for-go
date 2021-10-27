@@ -21,8 +21,9 @@ import (
 type Client struct {
 	client  *generated.TableClient
 	service *ServiceClient
-	cred    interface{}
+	cred    *SharedKeyCredential
 	name    string
+	con     *generated.Connection
 }
 
 // NewClient creates a Client struct in the context of the table specified in the serviceURL, authorizing requests with an Azure AD access token.
@@ -658,9 +659,8 @@ func (t *Client) SetAccessPolicy(ctx context.Context, options *SetAccessPolicyOp
 // GetTableSASToken is a convenience method for generating a SAS token for a specific table.
 // It can only be used by clients created by NewClientWithSharedKey().
 func (t Client) GetTableSASToken(permissions SASPermissions, start time.Time, expiry time.Time) (string, error) {
-	cred, ok := t.cred.(*SharedKeyCredential)
-	if !ok {
-		return "", errors.New("credential is not a SharedKeyCredential. SAS can only be signed with a SharedKeyCredential")
+	if t.cred == nil {
+		return "", errors.New("SAS can only be signed with a SharedKeyCredential")
 	}
 	qps, err := SASSignatureValues{
 		TableName:         t.name,
@@ -671,12 +671,12 @@ func (t Client) GetTableSASToken(permissions SASPermissions, start time.Time, ex
 		StartRowKey:       permissions.StartRowKey,
 		EndPartitionKey:   permissions.EndPartitionKey,
 		EndRowKey:         permissions.EndRowKey,
-	}.NewSASQueryParameters(cred)
+	}.NewSASQueryParameters(t.cred)
 	if err != nil {
 		return "", err
 	}
 
-	serviceURL := t.client.Con.Endpoint()
+	serviceURL := t.con.Endpoint()
 	if !strings.Contains(serviceURL, "/") {
 		serviceURL += "/"
 	}

@@ -17,6 +17,10 @@
             "CoverageGoal": 0.68
         },
         {
+            "Name": "azkeys",
+            "CoverageGoal": 0.70
+        },
+        {
             "Name": "azsecrets",
             "CoverageGoal": 0.76
         },

@@ -1,6 +1,6 @@
 # Release History
 
-## 0.1.2 (Unreleased)
+## 0.2.0 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Bumps `azcore` dependency to `v0.20.0` and `azidentity` to `v0.11.0`
 
 ## 0.1.1 (2021-10-06)
 * Adds the MIT License for redistribution

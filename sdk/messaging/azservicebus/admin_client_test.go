@@ -248,7 +248,7 @@ func TestAdminClient_GetQueueRuntimeProperties(t *testing.T) {
 	_, err = adminClient.AddQueue(context.Background(), queueName)
 	require.NoError(t, err)
 
-	defer adminClient.DeleteQueue(context.Background(), queueName)
+	defer deleteQueue(t, adminClient, queueName)
 
 	sender, err := client.NewSender(queueName)
 	require.NoError(t, err)
@@ -311,7 +311,7 @@ func TestAdminClient_getQueuePage(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		defer adminClient.DeleteQueue(context.Background(), queueName)
+		defer deleteQueue(t, adminClient, queueName)
 	}
 
 	// we skipped the first queue so it shouldn't come back in the results.
@@ -373,7 +373,7 @@ func TestAdminClient_ListQueuesRuntimeProperties(t *testing.T) {
 		})
 		require.NoError(t, err)
 
-		defer adminClient.DeleteQueue(context.Background(), queueName)
+		defer deleteQueue(t, adminClient, queueName)
 	}
 
 	// we skipped the first queue so it shouldn't come back in the results.
@@ -493,4 +493,9 @@ func TestAdminClient_ISO8601StringToDuration(t *testing.T) {
 
 func toDurationPtr(d time.Duration) *time.Duration {
 	return &d
+}
+
+func deleteQueue(t *testing.T, ac *AdminClient, queueName string) {
+	_, err := ac.DeleteQueue(context.Background(), queueName)
+	require.NoError(t, err)
 }

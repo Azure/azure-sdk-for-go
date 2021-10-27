@@ -104,9 +104,9 @@ func Example() {
 		log.Fatal(err)
 	}
 
-	manualThroughput, err := throughputResponse.ThroughputProperties.ManualThroughput()
-	if err != nil {
-		log.Fatal(err)
+	manualThroughput, hasManual := throughputResponse.ThroughputProperties.ManualThroughput()
+	if !hasManual {
+		log.Fatal("Expected to have manual throughput")
 	}
 	fmt.Printf("Container is provisioned with %v RU/s", manualThroughput)
 
@@ -125,9 +125,9 @@ func Example() {
 		log.Fatal(err)
 	}
 
-	autoscaleMaxThroughputResponse, err := replaceThroughputResponse.ThroughputProperties.AutoscaleMaxThroughput()
-	if err != nil {
-		log.Fatal(err)
+	autoscaleMaxThroughputResponse, hasAutoscale := replaceThroughputResponse.ThroughputProperties.AutoscaleMaxThroughput()
+	if !hasAutoscale {
+		log.Fatal("Expected to have autoscale throughput")
 	}
 
 	fmt.Printf("Container is provisioned with %v RU/s", autoscaleMaxThroughputResponse)

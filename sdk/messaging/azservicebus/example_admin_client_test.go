@@ -75,5 +75,5 @@ func ExampleAdminClient_ListQueuesRuntimeProperties() {
 		}
 	}
 
-	exitOnError("Failed when listing queues", queuePager.Err())
+	exitOnError("Failed when listing queues runtime properties", queuePager.Err())
 }

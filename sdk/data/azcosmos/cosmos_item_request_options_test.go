@@ -20,7 +20,7 @@ func TestItemRequestOptionsToHeaders(t *testing.T) {
 	options.IfMatchEtag = &etagValue
 	header := options.toHeaders()
 	if header == nil {
-		t.Error("toHeaders should return non-nil")
+		t.Fatal("toHeaders should return non-nil")
 	}
 
 	headers := *header

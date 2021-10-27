@@ -18,6 +18,7 @@ const (
 	accessTokenRespError     = `{"error": "invalid_client","error_description": "Invalid client secret is provided.","error_codes": [0],"timestamp": "2019-12-01 19:00:00Z","trace_id": "2d091b0","correlation_id": "a999","error_uri": "https://login.contoso.com/error?code=0"}`
 	accessTokenRespSuccess   = `{"access_token": "` + tokenValue + `", "expires_in": 3600}`
 	accessTokenRespMalformed = `{"access_token": 0, "expires_in": 3600}`
+	tokenValue               = "new_token"
 )
 
 func defaultTestPipeline(srv policy.Transporter, cred azcore.TokenCredential, scope string) runtime.Pipeline {
@@ -25,11 +26,8 @@ func defaultTestPipeline(srv policy.Transporter, cred azcore.TokenCredential, sc
 		MaxRetryDelay: 500 * time.Millisecond,
 		RetryDelay:    50 * time.Millisecond,
 	}
-	return runtime.NewPipeline(
-		srv,
-		runtime.NewRetryPolicy(&retryOpts),
-		runtime.NewBearerTokenPolicy(cred, runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: []string{scope}}}),
-		runtime.NewLogPolicy(nil))
+	b := runtime.NewBearerTokenPolicy(cred, []string{scope}, nil)
+	return runtime.NewPipeline("azidentity-test", version, nil, []policy.Policy{b}, &azcore.ClientOptions{Retry: retryOpts, Transport: srv})
 }
 
 // constants for this file
@@ -38,25 +36,30 @@ const (
 	customHostString = "https://custommock.com/"
 )
 
-// Set AZURE_AUTHORITY_HOST for the duration of a test. Restore its prior value
-// after the test completes. Prevents tests which set the variable from breaking live
-// tests in sovereign clouds. Obviated by 1.17's T.Setenv
-func setEnvAuthorityHost(host string, t *testing.T) {
-	originalHost := os.Getenv("AZURE_AUTHORITY_HOST")
-	err := os.Setenv("AZURE_AUTHORITY_HOST", host)
-	if err != nil {
-		t.Fatalf("Unexpected error setting AZURE_AUTHORITY_HOST: %v", err)
-	}
-	t.Cleanup(func() {
-		err = os.Setenv("AZURE_AUTHORITY_HOST", originalHost)
+// Set environment variables for the duration of a test. Restore their prior values
+// after the test completes. Obviated by 1.17's T.Setenv
+func setEnvironmentVariables(t *testing.T, vars map[string]string) {
+	priorValues := make(map[string]string, len(vars))
+	for k, v := range vars {
+		priorValues[k] = os.Getenv(k)
+		err := os.Setenv(k, v)
 		if err != nil {
-			t.Fatalf("Unexpected error resetting AZURE_AUTHORITY_HOST: %v", err)
+			t.Fatalf("Unexpected error setting %s: %v", k, err)
+		}
+	}
+
+	t.Cleanup(func() {
+		for k, v := range priorValues {
+			err := os.Setenv(k, v)
+			if err != nil {
+				t.Fatalf("Unexpected error resetting %s: %v", k, err)
+			}
 		}
 	})
 }
 
 func Test_SetEnvAuthorityHost(t *testing.T) {
-	setEnvAuthorityHost(envHostString, t)
+	setEnvironmentVariables(t, map[string]string{"AZURE_AUTHORITY_HOST": envHostString})
 	authorityHost, err := setAuthorityHost("")
 	if err != nil {
 		t.Fatal(err)
@@ -67,7 +70,7 @@ func Test_SetEnvAuthorityHost(t *testing.T) {
 }
 
 func Test_CustomAuthorityHost(t *testing.T) {
-	setEnvAuthorityHost(envHostString, t)
+	setEnvironmentVariables(t, map[string]string{"AZURE_AUTHORITY_HOST": envHostString})
 	authorityHost, err := setAuthorityHost(customHostString)
 	if err != nil {
 		t.Fatal(err)
@@ -79,7 +82,7 @@ func Test_CustomAuthorityHost(t *testing.T) {
 }
 
 func Test_DefaultAuthorityHost(t *testing.T) {
-	setEnvAuthorityHost("", t)
+	setEnvironmentVariables(t, map[string]string{"AZURE_AUTHORITY_HOST": ""})
 	authorityHost, err := setAuthorityHost("")
 	if err != nil {
 		t.Fatal(err)
@@ -90,7 +93,7 @@ func Test_DefaultAuthorityHost(t *testing.T) {
 }
 
 func Test_NonHTTPSAuthorityHost(t *testing.T) {
-	setEnvAuthorityHost("", t)
+	setEnvironmentVariables(t, map[string]string{"AZURE_AUTHORITY_HOST": ""})
 	authorityHost, err := setAuthorityHost("http://foo.com")
 	if err == nil {
 		t.Fatal("Expected an error but did not receive one.")

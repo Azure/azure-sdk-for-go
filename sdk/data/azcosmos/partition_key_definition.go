@@ -9,5 +9,5 @@ type PartitionKeyDefinition struct {
 	// Paths returns the list of partition key paths of the container.
 	Paths []string `json:"paths"`
 	// Version returns the version of the hash partitioning of the container.
-	Version PartitionKeyDefinitionVersion `json:"version,omitempty"`
+	Version int `json:"version,omitempty"`
 }

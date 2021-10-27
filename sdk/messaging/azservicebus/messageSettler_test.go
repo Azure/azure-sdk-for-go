@@ -23,7 +23,7 @@ func TestMessageSettlementUsingReceiver(t *testing.T) {
 	require.NoError(t, err)
 
 	var msg *ReceivedMessage
-	msg, err = receiver.ReceiveMessage(ctx, nil)
+	msg, err = receiver.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, 1, msg.DeliveryCount)
 
@@ -31,7 +31,7 @@ func TestMessageSettlementUsingReceiver(t *testing.T) {
 	err = receiver.AbandonMessage(context.Background(), msg)
 	require.NoError(t, err)
 
-	msg, err = receiver.ReceiveMessage(ctx, nil)
+	msg, err = receiver.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, 2, msg.DeliveryCount)
 
@@ -39,7 +39,7 @@ func TestMessageSettlementUsingReceiver(t *testing.T) {
 	err = receiver.DeadLetterMessage(ctx, msg, nil)
 	require.NoError(t, err)
 
-	msg, err = deadLetterReceiver.ReceiveMessage(ctx, nil)
+	msg, err = deadLetterReceiver.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, 2, msg.DeliveryCount)
 
@@ -55,7 +55,7 @@ func TestMessageSettlementUsingReceiver(t *testing.T) {
 	err = deadLetterReceiver.AbandonMessage(ctx, msg)
 	require.NoError(t, err)
 
-	msg, err = deadLetterReceiver.ReceiveMessage(ctx, nil)
+	msg, err = deadLetterReceiver.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, 2, msg.DeliveryCount)
 
@@ -85,7 +85,7 @@ func TestDeferredMessages(t *testing.T) {
 		// BUG: we're timing out here, even though our abandon should have put the message
 		// back into the queue. It appears that settlement methods don't work on messages
 		// that have been received as deferred.
-		msg, err = receiver.ReceiveMessage(ctx, nil)
+		msg, err = receiver.receiveMessage(ctx, nil)
 		require.NoError(t, err)
 		require.NotNil(t, msg)
 	})
@@ -106,7 +106,7 @@ func TestDeferredMessages(t *testing.T) {
 		err := receiver.DeferMessage(ctx, msg)
 		require.NoError(t, err)
 
-		msg, err = receiver.ReceiveDeferredMessage(ctx, *msg.SequenceNumber)
+		msg, err = receiver.receiveDeferredMessage(ctx, *msg.SequenceNumber)
 		require.NoError(t, err)
 
 		err = receiver.CompleteMessage(ctx, msg)
@@ -131,7 +131,7 @@ func TestDeferredMessage_DeadLettering(t *testing.T) {
 	require.NoError(t, err)
 
 	// check that the message made it to the dead letter queue
-	msg, err = deadLetterReceiver.ReceiveMessage(context.Background(), nil)
+	msg, err = deadLetterReceiver.receiveMessage(context.Background(), nil)
 	require.NoError(t, err)
 	require.NotNil(t, msg)
 
@@ -165,21 +165,21 @@ func TestMessageSettlementUsingOnlyBackupSettlement(t *testing.T) {
 	actualSettler.onlyDoBackupSettlement = true
 
 	var msg *ReceivedMessage
-	msg, err = receiver.ReceiveMessage(ctx, nil)
+	msg, err = receiver.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, 1, msg.DeliveryCount)
 
 	err = receiver.AbandonMessage(context.Background(), msg)
 	require.NoError(t, err)
 
-	msg, err = receiver.ReceiveMessage(ctx, nil)
+	msg, err = receiver.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, 2, msg.DeliveryCount)
 
 	err = receiver.DeadLetterMessage(ctx, msg, nil)
 	require.NoError(t, err)
 
-	msg, err = deadLetterReceiver.ReceiveMessage(ctx, nil)
+	msg, err = deadLetterReceiver.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 	require.EqualValues(t, 2, msg.DeliveryCount)
 
@@ -250,7 +250,7 @@ func (testStuff *testStuff) deferMessageForTest(t *testing.T) *ReceivedMessage {
 	require.NoError(t, err)
 
 	var msg *ReceivedMessage
-	msg, err = testStuff.Receiver.ReceiveMessage(context.Background(), nil)
+	msg, err = testStuff.Receiver.receiveMessage(context.Background(), nil)
 	require.NoError(t, err)
 	require.NotNil(t, msg)
 
@@ -259,7 +259,7 @@ func (testStuff *testStuff) deferMessageForTest(t *testing.T) *ReceivedMessage {
 	err = testStuff.Receiver.DeferMessage(context.Background(), msg)
 	require.NoError(t, err)
 
-	msg, err = testStuff.Receiver.ReceiveDeferredMessage(context.Background(), *msg.SequenceNumber)
+	msg, err = testStuff.Receiver.receiveDeferredMessage(context.Background(), *msg.SequenceNumber)
 	require.NoError(t, err)
 
 	return msg

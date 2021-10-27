@@ -5,6 +5,7 @@ package azidentity
 
 import (
 	"context"
+	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -13,18 +14,11 @@ import (
 // ClientSecretCredentialOptions configures the ClientSecretCredential with optional parameters.
 // All zero-value fields will be initialized with their default values.
 type ClientSecretCredentialOptions struct {
+	azcore.ClientOptions
+
 	// The host of the Azure Active Directory authority. The default is AzurePublicCloud.
 	// Leave empty to allow overriding the value from the AZURE_AUTHORITY_HOST environment variable.
 	AuthorityHost AuthorityHost
-	// HTTPClient sets the transport for making HTTP requests
-	// Leave this as nil to use the default HTTP transport
-	HTTPClient policy.Transporter
-	// Retry configures the built-in retry policy behavior
-	Retry policy.RetryOptions
-	// Telemetry configures the built-in telemetry policy behavior
-	Telemetry policy.TelemetryOptions
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
 }
 
 // ClientSecretCredential enables authentication to Azure Active Directory using a client secret that was generated for an App Registration.  More information on how
@@ -44,16 +38,17 @@ type ClientSecretCredential struct {
 // options: allow to configure the management of the requests sent to Azure Active Directory.
 func NewClientSecretCredential(tenantID string, clientID string, clientSecret string, options *ClientSecretCredentialOptions) (*ClientSecretCredential, error) {
 	if !validTenantID(tenantID) {
-		return nil, &CredentialUnavailableError{credentialType: "Client Secret Credential", message: tenantIDValidationErr}
+		return nil, errors.New(tenantIDValidationErr)
 	}
-	if options == nil {
-		options = &ClientSecretCredentialOptions{}
+	cp := ClientSecretCredentialOptions{}
+	if options != nil {
+		cp = *options
 	}
-	authorityHost, err := setAuthorityHost(options.AuthorityHost)
+	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
 	if err != nil {
 		return nil, err
 	}
-	c, err := newAADIdentityClient(authorityHost, pipelineOptions{HTTPClient: options.HTTPClient, Retry: options.Retry, Telemetry: options.Telemetry, Logging: options.Logging})
+	c, err := newAADIdentityClient(authorityHost, &cp.ClientOptions)
 	if err != nil {
 		return nil, err
 	}

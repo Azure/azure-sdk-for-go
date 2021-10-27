@@ -5,7 +5,6 @@ package azidentity
 
 import (
 	"context"
-	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -23,10 +22,6 @@ func TestUsernamePasswordCredential_InvalidTenantID(t *testing.T) {
 	}
 	if cred != nil {
 		t.Fatalf("Expected a nil credential value. Received: %v", cred)
-	}
-	var errType *CredentialUnavailableError
-	if !errors.As(err, &errType) {
-		t.Fatalf("Did not receive a CredentialUnavailableError. Received: %t", err)
 	}
 }
 
@@ -83,7 +78,7 @@ func TestUsernamePasswordCredential_GetTokenSuccess(t *testing.T) {
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := UsernamePasswordCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -100,7 +95,7 @@ func TestUsernamePasswordCredential_GetTokenInvalidCredentials(t *testing.T) {
 	srv.SetResponse(mock.WithStatusCode(http.StatusUnauthorized))
 	options := UsernamePasswordCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "wrong_password", &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
@@ -118,7 +113,7 @@ func TestBearerPolicy_UsernamePasswordCredential(t *testing.T) {
 	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
 	options := UsernamePasswordCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
-	options.HTTPClient = srv
+	options.Transport = srv
 	cred, err := NewUsernamePasswordCredential(tenantID, clientID, "username", "password", &options)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)

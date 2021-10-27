@@ -78,9 +78,8 @@ properties := azcosmos.ContainerProperties{
 }
 
 throughput := azcosmos.NewManualThroughputProperties(400)
-response, err := database.CreateContainer(context, properties, &CreateContainerOptions{ThroughputProperties: throughput})
+response, err := database.CreateContainer(context, properties, &CreateContainerOptions{ThroughputProperties: &throughput})
 handle(err)
-container := resp.ContainerProperties.Container
 ```
 
 ### CRUD operation on Items
@@ -92,21 +91,21 @@ item := map[string]string{
 }
 
 // Create partition key
-container := client.GetContainer(dbName, containerName)
-pk, err := azcosmos.NewPartitionKey("1")
+container, err := client.NewContainer(dbName, containerName)
 handle(err)
+pk := azcosmos.NewPartitionKeyString("1")
 
 // Create an item
-itemResponse, err := container.CreateItem(context, &pk, item, nil)
+itemResponse, err := container.CreateItem(context, pk, item, nil)
 handle(err)
 
-itemResponse, err = container.ReadItem(context, &pk, "1", nil)
+itemResponse, err = container.ReadItem(context, pk, "1", nil)
 handle(err)
 
-itemResponse, err = container.ReplaceItem(context, &pk, "1", item, nil)
+itemResponse, err = container.ReplaceItem(context, pk, "1", item, nil)
 handle(err)
 
-itemResponse, err = container.DeleteItem(context, &pk, "1", nil)
+itemResponse, err = container.DeleteItem(context, pk, "1", nil)
 handle(err)
 ```
 

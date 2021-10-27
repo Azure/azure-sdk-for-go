@@ -79,7 +79,7 @@ The `DefaultAzureCredential` is appropriate for most scenarios where the applica
 You can find more examples of using various credentials in [Azure Identity Examples Wiki page](https://github.com/Azure/azure-sdk-for-go/wiki/Azure-Identity-Examples).
 
 ### Authenticating with `DefaultAzureCredential`
-This example demonstrates authenticating the `ResourcesClient` from the [armresources][armresources_library] module using `DefaultAzureCredential`.
+This example demonstrates authenticating the `ResourcesClient` from the armresources module using `DefaultAzureCredential`.
 
 ```go
 // The default credential checks environment variables for configuration.
@@ -95,7 +95,7 @@ client := armresources.NewResourcesClient(armcore.NewDefaultConnection(cred, nil
 See more how to configure the `DefaultAzureCredential` on your workstation or Azure in [Configure DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-go/wiki/Set-up-Your-Environment-for-Authentication#configure-defaultazurecredential).
 
 ### Authenticating a user assigned managed identity with `DefaultAzureCredential`
-This example demonstrates authenticating the `ResourcesClient` from the [armresources][armresources_library] module using the `DefaultAzureCredential`, deployed to an Azure resource with a user assigned managed identity configured.
+This example demonstrates authenticating the `ResourcesClient` from the armresources module using the `DefaultAzureCredential`, deployed to an Azure resource with a user assigned managed identity configured.
 
 See more about how to configure a user assigned managed identity for an Azure resource in [Enable managed identity for Azure resources](https://github.com/Azure/azure-sdk-for-go/wiki/Set-up-Your-Environment-for-Authentication#enable-managed-identity-for-azure-resources).
 
@@ -122,7 +122,7 @@ The [Managed identity authentication](https://docs.microsoft.com/azure/active-di
 
 ### Examples
 ####  Authenticating in Azure with Managed Identity
-This examples demonstrates authenticating the `ResourcesClient` from the [armresources][armresources_library] module using `ManagedIdentityCredential` in a virtual machine, app service, function app, cloud shell, or AKS environment on Azure, with system assigned, or user assigned managed identity enabled.
+This examples demonstrates authenticating the `ResourcesClient` from the armresources module using `ManagedIdentityCredential` in a virtual machine, app service, function app, cloud shell, or AKS environment on Azure, with system assigned, or user assigned managed identity enabled.
 
 See more about how to configure your Azure resource for managed identity in [Enable managed identity for Azure resources](https://github.com/Azure/azure-sdk-for-go/wiki/Set-up-Your-Environment-for-Authentication#enable-managed-identity-for-azure-resources)
 
@@ -232,7 +232,7 @@ Azure Active Directory
 
 ### Logging
 
-This module uses the classification based logging implementation in azcore. To turn on logging set `AZURE_SDK_GO_LOGGING` to `all`. If you only want to include logs for `azidentity`, you must create you own logger and set the log classification as `LogCredential`.
+This module uses the classification based logging implementation in azcore. To turn on logging set `AZURE_SDK_GO_LOGGING` to `all`. If you only want to include logs for `azidentity`, you must create you own logger and set the log classification as `EventCredential`.
 Credentials log basic information only, including `GetToken` success or failure and errors. These log entries do not contain authentication secrets but may contain sensitive information.
 
 To obtain more detailed logging, including request/response bodies and header values, make sure to leave the logger as default or enable the `LogRequest` and/or `LogResponse` classifications. A logger that only includes credential logs can be like the following:
@@ -245,7 +245,7 @@ azlog.SetListener(func(cls LogClassification, s string) {
   })
 
 // Include only azidentity credential logs
-azlog.SetClassifications(azidentity.LogCredential)
+azlog.SetClassifications(azidentity.EventCredential)
 ```
 
 > CAUTION: logs from credentials contain sensitive information.
@@ -280,7 +280,6 @@ or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any
 additional questions or comments.
 
 [azure_cli]: https://docs.microsoft.com/cli/azure
-[armresources_library]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resources/armresources
 [azblob]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fidentity%2Fazure-identity%2FREADME.png)

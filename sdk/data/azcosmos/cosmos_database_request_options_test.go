@@ -21,7 +21,7 @@ func TestDatabaseOptionsToHeaders(t *testing.T) {
 	options.IfNoneMatchEtag = &noneEtagValue
 	header := options.toHeaders()
 	if header == nil {
-		t.Error("toHeaders should return non-nil")
+		t.Fatal("toHeaders should return non-nil")
 	}
 
 	headers := *header
@@ -45,7 +45,7 @@ func TestDeleteDatabaseOptionsToHeaders(t *testing.T) {
 	options.IfNoneMatchEtag = &noneEtagValue
 	header := options.toHeaders()
 	if header == nil {
-		t.Error("toHeaders should return non-nil")
+		t.Fatal("toHeaders should return non-nil")
 	}
 
 	headers := *header

@@ -16,7 +16,7 @@ type ContainerResponse struct {
 	Response
 }
 
-func newContainerResponse(resp *http.Response, container *Container) (ContainerResponse, error) {
+func newContainerResponse(resp *http.Response) (ContainerResponse, error) {
 	response := ContainerResponse{
 		Response: newResponse(resp),
 	}
@@ -26,6 +26,5 @@ func newContainerResponse(resp *http.Response, container *Container) (ContainerR
 		return response, err
 	}
 	response.ContainerProperties = properties
-	response.ContainerProperties.Container = container
 	return response, nil
 }

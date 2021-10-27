@@ -35,7 +35,7 @@ func TestSessionReceiver_acceptSession(t *testing.T) {
 	receiver, err := client.AcceptSessionForQueue(ctx, queueName, "session-1", nil)
 	require.NoError(t, err)
 
-	msg, err := receiver.ReceiveMessage(ctx, nil)
+	msg, err := receiver.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, "session-based message", msg.Body)
@@ -69,7 +69,7 @@ func TestSessionReceiver_blankSessionIDs(t *testing.T) {
 	receiver, err := client.AcceptSessionForQueue(ctx, queueName, "", nil)
 	require.NoError(t, err)
 
-	msg, err := receiver.ReceiveMessage(ctx, nil)
+	msg, err := receiver.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, "session-based message", msg.Body)
@@ -120,7 +120,7 @@ func TestSessionReceiver_acceptNextSession(t *testing.T) {
 	receiver, err := client.AcceptNextSessionForQueue(ctx, queueName, nil)
 	require.NoError(t, err)
 
-	msg, err := receiver.ReceiveMessage(ctx, nil)
+	msg, err := receiver.receiveMessage(ctx, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t, "session-based message", msg.Body)
@@ -167,7 +167,7 @@ func TestSessionReceiver_nonSessionReceiver(t *testing.T) {
 
 	// normal receivers are lazy initialized so we need to do _something_ to make sure
 	// the link gets spun up (and thus fails)
-	message, err := receiver.ReceiveMessage(context.Background(), nil)
+	message, err := receiver.receiveMessage(context.Background(), nil)
 	require.Nil(t, message)
 
 	var amqpError *amqp.Error
@@ -181,6 +181,43 @@ func TestSessionReceiver_nonSessionReceiver(t *testing.T) {
 	require.True(t, errors.As(err, &amqpError))
 	require.EqualValues(t, amqpError.Condition, "amqp:not-allowed")
 	require.Contains(t, amqpError.Description, "It is not possible for an entity that requires sessions to create a non-sessionful message receiver.")
+}
+
+func TestSessionReceiver_RenewSessionLock(t *testing.T) {
+	client, cleanup, queueName := setupLiveTest(t, &QueueProperties{
+		RequiresSession: to.BoolPtr(true),
+	})
+	defer cleanup()
+
+	sessionReceiver, err := client.AcceptSessionForQueue(context.Background(), queueName, "session-1", nil)
+	require.NoError(t, err)
+
+	sender, err := client.NewSender(queueName)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{
+		Body:      []byte("hello world"),
+		SessionID: to.StringPtr("session-1"),
+	})
+	require.NoError(t, err)
+
+	messages, err := sessionReceiver.ReceiveMessages(context.Background(), 1, nil)
+	require.NoError(t, err)
+	require.NotNil(t, messages)
+
+	// surprisingly this works. Not sure what it accomplishes though. C# has a manual check for it.
+	// err = sessionReceiver.RenewMessageLock(context.Background(), messages[0])
+	// require.NoError(t, err)
+
+	orig := sessionReceiver.LockedUntil()
+	require.NoError(t, sessionReceiver.RenewSessionLock(context.Background()))
+	require.Greater(t, sessionReceiver.LockedUntil().UnixNano(), orig.UnixNano())
+
+	// bogus renewal
+	sessionReceiver.sessionID = to.StringPtr("bogus")
+
+	err = sessionReceiver.RenewSessionLock(context.Background())
+	require.Contains(t, err.Error(), "status code 410 and description: The session lock has expired on the MessageSession")
 }
 
 func Test_toReceiverOptions(t *testing.T) {

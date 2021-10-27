@@ -16,7 +16,7 @@ import (
 	"github.com/devigned/tab"
 )
 
-// Client provides methods to create Sender, Receiver and Processor
+// Client provides methods to create Sender and Receiver
 // instances to send and receive messages from Service Bus.
 type Client struct {
 	config    clientConfig
@@ -120,34 +120,6 @@ func newClientImpl(config clientConfig, options *ClientOptions) (*Client, error)
 	return client, err
 }
 
-// NewProcessor creates a Processor for a queue.
-func (client *Client) NewProcessorForQueue(queue string, options *ProcessorOptions) (*Processor, error) {
-	id, cleanupOnClose := client.getCleanupForCloseable()
-
-	processor, err := newProcessor(client.namespace, &entity{Queue: queue}, cleanupOnClose, options)
-
-	if err != nil {
-		return nil, err
-	}
-
-	client.addCloseable(id, processor)
-	return processor, nil
-}
-
-// NewProcessor creates a Processor for a subscription.
-func (client *Client) NewProcessorForSubscription(topic string, subscription string, options *ProcessorOptions) (*Processor, error) {
-	id, cleanupOnClose := client.getCleanupForCloseable()
-
-	processor, err := newProcessor(client.namespace, &entity{Topic: topic, Subscription: subscription}, cleanupOnClose, options)
-
-	if err != nil {
-		return nil, err
-	}
-
-	client.addCloseable(id, processor)
-	return processor, nil
-}
-
 // NewReceiver creates a Receiver for a queue. A receiver allows you to receive messages.
 func (client *Client) NewReceiverForQueue(queue string, options *ReceiverOptions) (*Receiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
@@ -192,6 +164,7 @@ func (client *Client) NewSender(queueOrTopic string) (*Sender, error) {
 func (client *Client) AcceptSessionForQueue(ctx context.Context, queue string, sessionID string, options *SessionReceiverOptions) (*SessionReceiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
+		ctx,
 		&sessionID,
 		client.namespace,
 		&entity{Queue: queue},
@@ -215,6 +188,7 @@ func (client *Client) AcceptSessionForQueue(ctx context.Context, queue string, s
 func (client *Client) AcceptSessionForSubscription(ctx context.Context, topic string, subscription string, sessionID string, options *SessionReceiverOptions) (*SessionReceiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
+		ctx,
 		&sessionID,
 		client.namespace,
 		&entity{Topic: topic, Subscription: subscription},
@@ -238,6 +212,7 @@ func (client *Client) AcceptSessionForSubscription(ctx context.Context, topic st
 func (client *Client) AcceptNextSessionForQueue(ctx context.Context, queue string, options *SessionReceiverOptions) (*SessionReceiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
+		ctx,
 		nil,
 		client.namespace,
 		&entity{Queue: queue},
@@ -261,6 +236,7 @@ func (client *Client) AcceptNextSessionForQueue(ctx context.Context, queue strin
 func (client *Client) AcceptNextSessionForSubscription(ctx context.Context, topic string, subscription string, options *SessionReceiverOptions) (*SessionReceiver, error) {
 	id, cleanupOnClose := client.getCleanupForCloseable()
 	sessionReceiver, err := newSessionReceiver(
+		ctx,
 		nil,
 		client.namespace,
 		&entity{Topic: topic, Subscription: subscription},
@@ -279,7 +255,7 @@ func (client *Client) AcceptNextSessionForSubscription(ctx context.Context, topi
 	return sessionReceiver, nil
 }
 
-// Close closes the current connection Service Bus as well as any Sender, Receiver or Processors created
+// Close closes the current connection Service Bus as well as any Senders or Receivers created
 // using this client.
 func (client *Client) Close(ctx context.Context) error {
 	var lastError error

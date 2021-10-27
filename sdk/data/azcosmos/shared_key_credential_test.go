@@ -63,7 +63,7 @@ func Test_buildCanonicalizedAuthHeaderFromRequest(t *testing.T) {
 	expected := url.QueryEscape(fmt.Sprintf("type=%s&ver=%s&sig=%s", tokenType, version, signature))
 
 	req, _ := azruntime.NewRequest(context.TODO(), http.MethodGet, "http://localhost")
-	operationContext := cosmosOperationContext{
+	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "dbs/testdb",
 	}
@@ -95,7 +95,7 @@ func Test_buildCanonicalizedAuthHeaderFromRequestWithRid(t *testing.T) {
 	expected := url.QueryEscape(fmt.Sprintf("type=%s&ver=%s&sig=%s", tokenType, version, signature))
 
 	req, _ := azruntime.NewRequest(context.TODO(), http.MethodGet, "http://localhost")
-	operationContext := cosmosOperationContext{
+	operationContext := pipelineRequestOptions{
 		resourceType:    resourceTypeDatabase,
 		resourceAddress: "dbs/Rid",
 		isRidBased:      true,

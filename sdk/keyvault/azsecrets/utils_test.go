@@ -24,8 +24,6 @@ import (
 
 var pathToPackage = "sdk/keyvault/azsecrets/testdata"
 
-const headerAuthorization = "Authorization"
-
 func createRandomName(t *testing.T, prefix string) (string, error) {
 	h := fnv.New32a()
 	_, err := h.Write([]byte(t.Name()))

@@ -34,11 +34,11 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 	}
 	rawServiceURL, tableName, err := parseURL(serviceURL)
 	if err != nil {
-		return &Client{}, err
+		return nil, err
 	}
 	s, err := NewServiceClient(rawServiceURL, cred, options)
 	if err != nil {
-		return &Client{}, err
+		return nil, err
 	}
 	return s.NewClient(tableName), nil
 }
@@ -51,11 +51,11 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 	}
 	rawServiceURL, tableName, err := parseURL(serviceURL)
 	if err != nil {
-		return &Client{}, err
+		return nil, err
 	}
 	s, err := NewServiceClientWithNoCredential(rawServiceURL, options)
 	if err != nil {
-		return &Client{}, err
+		return nil, err
 	}
 	return s.NewClient(tableName), nil
 }
@@ -68,11 +68,11 @@ func NewClientWithSharedKey(serviceURL string, cred *SharedKeyCredential, option
 	}
 	rawServiceURL, tableName, err := parseURL(serviceURL)
 	if err != nil {
-		return &Client{}, err
+		return nil, err
 	}
 	s, err := NewServiceClientWithSharedKey(rawServiceURL, cred, options)
 	if err != nil {
-		return &Client{}, err
+		return nil, err
 	}
 	return s.NewClient(tableName), nil
 }

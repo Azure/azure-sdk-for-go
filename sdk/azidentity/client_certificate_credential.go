@@ -55,7 +55,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	}
 	pk, ok := key.(*rsa.PrivateKey)
 	if !ok {
-		return nil, errors.New("'key' must be an RSA private key")
+		return nil, errors.New("'key' must be an *rsa.PrivateKey")
 	}
 	if !validTenantID(tenantID) {
 		return nil, errors.New(tenantIDValidationErr)

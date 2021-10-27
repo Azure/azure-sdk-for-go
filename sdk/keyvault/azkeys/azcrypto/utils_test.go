@@ -12,13 +12,11 @@ import (
 	"hash/fnv"
 	"net/http"
 	"os"
-	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
@@ -30,10 +28,10 @@ var pathToPackage = "sdk/keyvault/azkeys/azcrypto"
 const headerAuthorization = "Authorization"
 
 func startTest(t *testing.T) func() {
-	err := recording.StartRecording(t, pathToPackage, nil)
+	err := recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
 	return func() {
-		err := recording.StopRecording(t, nil)
+		err := recording.Stop(t, nil)
 		require.NoError(t, err)
 	}
 }
@@ -49,25 +47,38 @@ type recordingPolicy struct {
 	t       *testing.T
 }
 
+func (r recordingPolicy) Host() string {
+	if r.options.UseHTTPS {
+		return "localhost:5001"
+	}
+	return "localhost:5000"
+}
+
+func (r recordingPolicy) Scheme() string {
+	if r.options.UseHTTPS {
+		return "https"
+	}
+	return "http"
+}
+
 func NewRecordingPolicy(t *testing.T, o *recording.RecordingOptions) policy.Policy {
 	if o == nil {
-		o = &recording.RecordingOptions{}
+		o = &recording.RecordingOptions{UseHTTPS: true}
 	}
 	p := &recordingPolicy{options: *o, t: t}
-	p.options.Init()
 	return p
 }
 
 func (p *recordingPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
 	if recording.GetRecordMode() != "live" {
 		originalURLHost := req.Raw().URL.Host
-		req.Raw().URL.Scheme = "https"
-		req.Raw().URL.Host = p.options.Host
-		req.Raw().Host = p.options.Host
+		req.Raw().URL.Scheme = p.Scheme()
+		req.Raw().URL.Host = p.Host()
+		req.Raw().Host = p.Host()
 
-		req.Raw().Header.Set(recording.UpstreamUriHeader, fmt.Sprintf("%v://%v", p.options.Scheme, originalURLHost))
+		req.Raw().Header.Set(recording.UpstreamURIHeader, fmt.Sprintf("%v://%v", p.Scheme(), originalURLHost))
 		req.Raw().Header.Set(recording.ModeHeader, recording.GetRecordMode())
-		req.Raw().Header.Set(recording.IdHeader, recording.GetRecordingId(p.t))
+		req.Raw().Header.Set(recording.IDHeader, recording.GetRecordingId(p.t))
 	}
 	return req.Next()
 }
@@ -99,8 +110,10 @@ func createClient(t *testing.T, key string) (*Client, error) {
 	require.NoError(t, err)
 
 	options := &ClientOptions{
-		PerCallPolicies: []policy.Policy{p},
-		Transport:       client,
+		azcore.ClientOptions{
+			PerCallPolicies: []policy.Policy{p},
+			Transport:       client,
+		},
 	}
 
 	cred := getCredential(t)
@@ -109,7 +122,7 @@ func createClient(t *testing.T, key string) (*Client, error) {
 }
 
 func createKeyClient(t *testing.T) (*azkeys.Client, error) {
-	vaultUrl := recording.GetEnvVariable(t, "AZURE_KEYVAULT_URL", "https://fakekvurl.vault.azure.net/")
+	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", "https://fakekvurl.vault.azure.net/")
 	if recording.GetRecordMode() == "playback" {
 		vaultUrl = "https://fakekvurl.vault.azure.net/"
 	}
@@ -119,8 +132,10 @@ func createKeyClient(t *testing.T) (*azkeys.Client, error) {
 	require.NoError(t, err)
 
 	options := &azkeys.ClientOptions{
-		PerCallPolicies: []policy.Policy{p},
-		Transport:       client,
+		azcore.ClientOptions{
+			PerCallPolicies: []policy.Policy{p},
+			Transport:       client,
+		},
 	}
 
 	cred := getCredential(t)
@@ -161,36 +176,9 @@ func NewFakeCredential(accountName, accountKey string) *FakeCredential {
 	}
 }
 
-type fakeCredPolicy struct {
-	cred *FakeCredential
-}
-
-func newFakeCredPolicy(cred *FakeCredential, opts runtime.AuthenticationOptions) *fakeCredPolicy {
-	return &fakeCredPolicy{cred: cred}
-}
-
-func (f *fakeCredPolicy) Do(req *policy.Request) (*http.Response, error) {
-	authHeader := strings.Join([]string{"Authorization ", f.cred.accountName, ":", f.cred.accountKey}, "")
-	req.Raw().Header.Set(headerAuthorization, authHeader)
-	return req.Next()
-}
-
-func (f *FakeCredential) NewAuthenticationPolicy(options runtime.AuthenticationOptions) policy.Policy {
-	return newFakeCredPolicy(f, options)
-}
-
 func (f *FakeCredential) GetToken(ctx context.Context, options policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	return &azcore.AccessToken{
 		Token:     "faketoken",
 		ExpiresOn: time.Date(2040, time.January, 1, 1, 1, 1, 1, time.UTC),
 	}, nil
 }
-
-// func toBytes(s string, t *testing.T) []byte {
-// 	if len(s)%2 == 1 {
-// 		s = fmt.Sprintf("0%s", s)
-// 	}
-// 	ret, err := hex.DecodeString(s)
-// 	require.NoError(t, err)
-// 	return ret
-// }

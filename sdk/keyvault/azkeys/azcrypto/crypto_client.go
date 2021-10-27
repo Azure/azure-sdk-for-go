@@ -15,6 +15,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal"
 )
@@ -33,39 +34,21 @@ type Client struct {
 
 // ClientOptions are the configurable options on a Client.
 type ClientOptions struct {
-	// Transport sets the transport for making HTTP requests.
-	Transport policy.Transporter
-
-	// Retry configures the built-in retry policy behavior.
-	Retry policy.RetryOptions
-
-	// Telemetry configures the built-in telemetry policy behavior.
-	Telemetry policy.TelemetryOptions
-
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
-
-	// PerCallPolicies contains custom policies to inject into the pipeline.
-	// Each policy is executed once per request.
-	PerCallPolicies []policy.Policy
-
-	// PerRetryPolicies contains custom policies to inject into the pipeline.
-	// Each policy is executed once per request, and for each retry request.
-	PerTryPolicies []policy.Policy
+	azcore.ClientOptions
 }
 
 // converts ClientOptions to generated *internal.ConnectionOptions
-func (c *ClientOptions) toConnectionOptions() *internal.ConnectionOptions {
+func (c *ClientOptions) toConnectionOptions() *policy.ClientOptions {
 	if c == nil {
 		return nil
 	}
-	return &internal.ConnectionOptions{
+	return &policy.ClientOptions{
 		Transport:        c.Transport,
 		Retry:            c.Retry,
 		Telemetry:        c.Telemetry,
 		Logging:          c.Logging,
 		PerCallPolicies:  c.PerCallPolicies,
-		PerRetryPolicies: c.PerTryPolicies,
+		PerRetryPolicies: c.PerRetryPolicies,
 	}
 }
 
@@ -106,6 +89,17 @@ func NewClient(key string, cred azcore.TokenCredential, options *ClientOptions) 
 		options = &ClientOptions{}
 	}
 
+	options.PerRetryPolicies = append(
+		options.PerRetryPolicies,
+		runtime.NewBearerTokenPolicy(
+			cred,
+			[]string{"https://vault.azure.net/.default"},
+			nil,
+		),
+	)
+
+	conn := internal.NewConnection(options.toConnectionOptions())
+
 	vaultURL, err := parseVaultURL(key)
 	if err != nil {
 		return &Client{}, err
@@ -117,9 +111,7 @@ func NewClient(key string, cred azcore.TokenCredential, options *ClientOptions) 
 	}
 
 	return &Client{
-		kvClient: &internal.KeyVaultClient{
-			Con: internal.NewConnection(cred, options.toConnectionOptions()),
-		},
+		kvClient:   internal.NewKeyVaultClient(conn),
 		vaultURL:   vaultURL,
 		keyID:      keyID,
 		keyVersion: keyVersion,

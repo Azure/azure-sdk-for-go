@@ -14,7 +14,8 @@ Creating the Client
 
 To create a client, you will need the account's endpoint URL and a key credential.
 
-	cred, _ := azcosmos.NewKeyCredential("myAccountKey")
+	cred, err := azcosmos.NewKeyCredential("myAccountKey")
+	handle(err)
 	client, err := azcosmos.NewClientWithKey("myAccountEndpointURL", cred, nil)
 	handle(err)
 
@@ -40,10 +41,11 @@ Creating a database
 
 Create a database and obtain a `DatabaseClient` to perform operations on your newly created database.
 
-	cred, _ := azcosmos.NewKeyCredential("myAccountKey")
+	cred, err := azcosmos.NewKeyCredential("myAccountKey")
+	handle(err)
 	client, err := azcosmos.NewClientWithKey("myAccountEndpointURL", cred, nil)
 	handle(err)
-	database := azcosmos.DatabaseProperties{Id: "myDatabase"}
+	database := azcosmos.DatabaseProperties{ID: "myDatabase"}
 	response, err := client.CreateDatabase(context, database, nil)
 	handle(err)
 	database, err := azcosmos.NewDatabase("myDatabase")
@@ -54,12 +56,13 @@ Creating a container
 
 Create a container on an existing database and obtain a `ContainerClient` to perform operations on your newly created container.
 
-	cred, _ := azcosmos.NewKeyCredential("myAccountKey")
+	cred, err := azcosmos.NewKeyCredential("myAccountKey")
+	handle(err)
 	client, err := azcosmos.NewClientWithKey("myAccountEndpointURL", cred, nil)
 	handle(err)
 	database := azcosmos.NewDatabase("myDatabase")
 	properties := azcosmos.ContainerProperties{
-		Id: "myContainer",
+		ID: "myContainer",
 		PartitionKeyDefinition: azcosmos.PartitionKeyDefinition{
 			Paths: []string{"/myPartitionKeyProperty"},
 		},
@@ -79,9 +82,7 @@ Creating, reading, and deleting items
 		"otherValue": 10
 	}
 	marshalled, err := json.Marshal(item)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handle(err)
 
 	pk := azcosmos.NewPartitionKeyString("myPartitionKeyValue")
 	itemResponse, err := container.CreateItem(context, pk, marshalled, nil)
@@ -93,15 +94,11 @@ Creating, reading, and deleting items
 
 	var itemResponseBody map[string]string
 	err = json.Unmarshal(itemResponse.Value, &itemResponseBody)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handle(err)
 
 	itemResponseBody["value"] = "3"
 	marshalledReplace, err := json.Marshal(itemResponseBody)
-	if err != nil {
-		log.Fatal(err)
-	}
+	handle(err)
 
 	itemResponse, err = container.ReplaceItem(context, pk, id, marshalledReplace, nil)
 	handle(err)

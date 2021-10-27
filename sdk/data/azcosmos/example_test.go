@@ -16,14 +16,14 @@ import (
 )
 
 func ExampleNewClientWithKey() {
-	endpoint, ok := os.LookupEnv("SOME_ENDPOINT")
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
 	}
 
-	key, ok := os.LookupEnv("SOME_KEY")
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_KEY could not be found")
 	}
 
 	// Create new Cosmos DB client.
@@ -41,14 +41,14 @@ func ExampleNewClientWithKey() {
 }
 
 func ExampleClient_CreateDatabase() {
-	endpoint, ok := os.LookupEnv("SOME_ENDPOINT")
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
 	}
 
-	key, ok := os.LookupEnv("SOME_KEY")
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_KEY could not be found")
 	}
 
 	cred, err := azcosmos.NewKeyCredential(key)
@@ -71,14 +71,14 @@ func ExampleClient_CreateDatabase() {
 }
 
 func ExampleDatabaseClient_CreateContainer() {
-	endpoint, ok := os.LookupEnv("SOME_ENDPOINT")
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
 	}
 
-	key, ok := os.LookupEnv("SOME_KEY")
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_KEY could not be found")
 	}
 
 	cred, err := azcosmos.NewKeyCredential(key)
@@ -114,14 +114,14 @@ func ExampleDatabaseClient_CreateContainer() {
 }
 
 func ExampleContainerClient_ReplaceThroughput() {
-	endpoint, ok := os.LookupEnv("SOME_ENDPOINT")
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
 	}
 
-	key, ok := os.LookupEnv("SOME_KEY")
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_KEY could not be found")
 	}
 
 	cred, err := azcosmos.NewKeyCredential(key)
@@ -161,14 +161,14 @@ func ExampleContainerClient_ReplaceThroughput() {
 }
 
 func ExampleContainerClient_Replace() {
-	endpoint, ok := os.LookupEnv("SOME_ENDPOINT")
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
 	}
 
-	key, ok := os.LookupEnv("SOME_KEY")
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_KEY could not be found")
 	}
 
 	cred, err := azcosmos.NewKeyCredential(key)
@@ -209,14 +209,14 @@ func ExampleContainerClient_Replace() {
 }
 
 func ExampleContainerClient_CreateItem() {
-	endpoint, ok := os.LookupEnv("SOME_ENDPOINT")
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
 	}
 
-	key, ok := os.LookupEnv("SOME_KEY")
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_KEY could not be found")
 	}
 
 	cred, err := azcosmos.NewKeyCredential(key)
@@ -256,14 +256,14 @@ func ExampleContainerClient_CreateItem() {
 }
 
 func ExampleContainerClient_ReadItem() {
-	endpoint, ok := os.LookupEnv("SOME_ENDPOINT")
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
 	}
 
-	key, ok := os.LookupEnv("SOME_KEY")
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_KEY could not be found")
 	}
 
 	cred, err := azcosmos.NewKeyCredential(key)
@@ -299,14 +299,14 @@ func ExampleContainerClient_ReadItem() {
 }
 
 func ExampleContainerClient_ReplaceItem() {
-	endpoint, ok := os.LookupEnv("SOME_ENDPOINT")
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
 	}
 
-	key, ok := os.LookupEnv("SOME_KEY")
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_KEY could not be found")
 	}
 
 	cred, err := azcosmos.NewKeyCredential(key)
@@ -354,14 +354,14 @@ func ExampleContainerClient_ReplaceItem() {
 }
 
 func ExampleContainerClient_DeleteItem() {
-	endpoint, ok := os.LookupEnv("SOME_ENDPOINT")
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
 	}
 
-	key, ok := os.LookupEnv("SOME_KEY")
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_KEY could not be found")
 	}
 
 	cred, err := azcosmos.NewKeyCredential(key)
@@ -391,14 +391,14 @@ func ExampleContainerClient_DeleteItem() {
 }
 
 func ExampleContainerClient_ReadItem_sessionConsistency() {
-	endpoint, ok := os.LookupEnv("SOME_ENDPOINT")
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
 	}
 
-	key, ok := os.LookupEnv("SOME_KEY")
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_KEY could not be found")
 	}
 
 	cred, err := azcosmos.NewKeyCredential(key)
@@ -447,16 +447,16 @@ func ExampleContainerClient_ReadItem_sessionConsistency() {
 }
 
 // Azure Cosmos DB supports optimistic concurrency control to prevent lost updates or deletes and detection of conflicting operations.
-// Check the item response status code. If an error is imitted and the response code is 412 then retry operation.
+// Check the item response status code. If an error is emitted and the response code is 412 then retry operation.
 func ExampleContainerClient_ReplaceItem_optimisticConcurrency() {
-	endpoint, ok := os.LookupEnv("SOME_ENDPOINT")
+	endpoint, ok := os.LookupEnv("AZURE_COSMOS_ENDPOINT")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_ENDPOINT could not be found")
 	}
 
-	key, ok := os.LookupEnv("SOME_KEY")
+	key, ok := os.LookupEnv("AZURE_COSMOS_KEY")
 	if !ok {
-		panic("SOME_ENDPOINT could not be found")
+		panic("AZURE_COSMOS_KEY could not be found")
 	}
 
 	cred, err := azcosmos.NewKeyCredential(key)

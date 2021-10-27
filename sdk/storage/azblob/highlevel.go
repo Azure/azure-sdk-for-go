@@ -598,7 +598,7 @@ func (u *UploadStreamToBlockBlobOptions) getCommitBlockListOptions() *CommitBloc
 
 // UploadStreamToBlockBlob copies the file held in io.Reader to the Blob at blockBlobClient.
 // A Context deadline or cancellation will cause this to error.
-func (bb BlockBlobClient) UploadStreamToBlockBlob(ctx context.Context, body io.ReadSeekCloser, o UploadStreamToBlockBlobOptions) (BlockBlobCommitBlockListResponse, error) {
+func (bb BlockBlobClient) UploadStreamToBlockBlob(ctx context.Context, body io.Reader, o UploadStreamToBlockBlobOptions) (BlockBlobCommitBlockListResponse, error) {
 	if err := o.defaults(); err != nil {
 		return BlockBlobCommitBlockListResponse{}, err
 	}

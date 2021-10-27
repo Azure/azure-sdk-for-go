@@ -19,12 +19,12 @@ type (
 
 	// QueueEntity is the Azure Service Bus description of a Queue for management activities
 	QueueEntity struct {
-		*QueuePutRequest
+		*QueueDescription
 		*Entity
 	}
 
-	// queueFeed is a specialized feed containing QueueEntries
-	queueFeed struct {
+	// QueueFeed is a specialized feed containing QueueEntries
+	QueueFeed struct {
 		*Feed
 		Entries []QueueEnvelope `xml:"entry"`
 	}
@@ -36,7 +36,7 @@ type (
 	}
 
 	// QueueManagementOption represents named configuration options for queue mutation
-	QueueManagementOption func(*QueuePutRequest) error
+	QueueManagementOption func(*QueueDescription) error
 
 	// Targetable provides the ability to forward messages to the entity
 	Targetable interface {
@@ -45,13 +45,13 @@ type (
 
 	// queueContent is a specialized Queue body for an Atom entry
 	queueContent struct {
-		XMLName          xml.Name        `xml:"content"`
-		Type             string          `xml:"type,attr"`
-		QueueDescription QueuePutRequest `xml:"QueueDescription"`
+		XMLName          xml.Name         `xml:"content"`
+		Type             string           `xml:"type,attr"`
+		QueueDescription QueueDescription `xml:"QueueDescription"`
 	}
 
-	// QueuePutRequest is the content type for Queue management requests
-	QueuePutRequest struct {
+	// QueueDescription is the content type for Queue management requests
+	QueueDescription struct {
 		XMLName xml.Name `xml:"QueueDescription"`
 		BaseEntityDescription
 		LockDuration                        *string       `xml:"LockDuration,omitempty"`               // LockDuration - ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
@@ -67,6 +67,7 @@ type (
 		MessageCount                        *int64        `xml:"MessageCount,omitempty"`                        // MessageCount - The number of messages in the queue.
 		IsAnonymousAccessible               *bool         `xml:"IsAnonymousAccessible,omitempty"`
 		Status                              *EntityStatus `xml:"Status,omitempty"`
+		AccessedAt                          *date.Time    `xml:"AccessedAt,omitempty"`
 		CreatedAt                           *date.Time    `xml:"CreatedAt,omitempty"`
 		UpdatedAt                           *date.Time    `xml:"UpdatedAt,omitempty"`
 		SupportOrdering                     *bool         `xml:"SupportOrdering,omitempty"`

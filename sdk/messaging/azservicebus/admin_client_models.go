@@ -5,8 +5,6 @@ package azservicebus
 
 import (
 	"time"
-
-	"github.com/Azure/go-autorest/autorest/date"
 )
 
 // QueueProperties represents the static properties of the queue.
@@ -69,37 +67,41 @@ type QueueProperties struct {
 	ForwardDeadLetteredMessagesTo *string
 }
 
+// QueueRuntimeProperties represent dynamic properties of a queue, such as the ActiveMessageCount.
 type QueueRuntimeProperties struct {
+	// Name is the name of the queue.
+	Name string
+
 	// SizeInBytes - The size of the queue, in bytes.
-	SizeInBytes *int64
+	SizeInBytes int64
 
 	// CreatedAt is when the entity was created.
-	CreatedAt *date.Time
+	CreatedAt time.Time
 
 	// UpdatedAt is when the entity was last updated.
-	UpdatedAt *date.Time
+	UpdatedAt time.Time
 
 	// AccessedAt is when the entity was last updated.
-	AccessedAt *date.Time
+	AccessedAt time.Time
 
 	// TotalMessageCount is the number of messages in the queue.
-	TotalMessageCount *int64
+	TotalMessageCount int64
 
 	// ActiveMessageCount is the number of active messages in the entity.
-	ActiveMessageCount *int32
+	ActiveMessageCount int32
 
 	// DeadLetterMessageCount is the number of dead-lettered messages in the entity.
-	DeadLetterMessageCount *int32
+	DeadLetterMessageCount int32
 
 	// ScheduledMessageCount is the number of messages that are scheduled to be enqueued.
-	ScheduledMessageCount *int32
+	ScheduledMessageCount int32
 
 	// TransferDeadLetterMessageCount is the number of messages transfer-messages which are dead-lettered
 	// into transfer-dead-letter subqueue.
-	TransferDeadLetterMessageCount *int32
+	TransferDeadLetterMessageCount int32
 
 	// TransferMessageCount is the number of messages which are yet to be transferred/forwarded to destination entity.
-	TransferMessageCount *int32
+	TransferMessageCount int32
 }
 
 // EntityStatus represents the current status of the entity.

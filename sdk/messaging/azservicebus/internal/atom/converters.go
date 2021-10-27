@@ -8,7 +8,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
-func ConvertToQueueRequest(qd *QueuePutRequest, tokenProvider auth.TokenProvider) (*QueueEnvelope, []MiddlewareFunc) {
+func ConvertToQueueRequest(qd *QueueDescription, tokenProvider auth.TokenProvider) (*QueueEnvelope, []MiddlewareFunc) {
 	qd.ServiceBusSchema = to.StringPtr(serviceBusSchema)
 
 	qe := &QueueEnvelope{

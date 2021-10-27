@@ -55,7 +55,7 @@ func createQueue(t *testing.T, connectionString string, queueProperties *QueuePr
 	}
 
 	queueProperties.Name = queueName
-	_, err = adminClient.CreateQueueWithProperties(context.Background(), queueProperties)
+	_, err = adminClient.AddQueueWithProperties(context.Background(), queueProperties)
 	require.NoError(t, err)
 
 	return queueName, func() {

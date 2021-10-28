@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // TopologyClient contains the methods for the Topology group.
@@ -31,8 +32,15 @@ type TopologyClient struct {
 }
 
 // NewTopologyClient creates a new instance of TopologyClient with the specified values.
-func NewTopologyClient(con *arm.Connection, subscriptionID string, ascLocation string) *TopologyClient {
-	return &TopologyClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID, ascLocation: ascLocation}
+func NewTopologyClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *TopologyClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &TopologyClient{subscriptionID: subscriptionID, ascLocation: ascLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a specific topology component.

@@ -10,11 +10,10 @@ package armsecurity
 
 import (
 	"context"
-	"net/http"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"reflect"
 )
 
 // AdaptiveNetworkHardeningsListByExtendedResourcePager provides operations for iterating over paged responses.
@@ -2498,6 +2497,114 @@ func (p *SecureScoresListPager) NextPage(ctx context.Context) bool {
 
 // PageResponse returns the current SecureScoresListResponse page.
 func (p *SecureScoresListPager) PageResponse() SecureScoresListResponse {
+	return p.current
+}
+
+// SecurityConnectorsListByResourceGroupPager provides operations for iterating over paged responses.
+type SecurityConnectorsListByResourceGroupPager struct {
+	client    *SecurityConnectorsClient
+	current   SecurityConnectorsListByResourceGroupResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, SecurityConnectorsListByResourceGroupResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *SecurityConnectorsListByResourceGroupPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *SecurityConnectorsListByResourceGroupPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SecurityConnectorsList.NextLink == nil || len(*p.current.SecurityConnectorsList.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listByResourceGroupHandleError(resp)
+		return false
+	}
+	result, err := p.client.listByResourceGroupHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current SecurityConnectorsListByResourceGroupResponse page.
+func (p *SecurityConnectorsListByResourceGroupPager) PageResponse() SecurityConnectorsListByResourceGroupResponse {
+	return p.current
+}
+
+// SecurityConnectorsListPager provides operations for iterating over paged responses.
+type SecurityConnectorsListPager struct {
+	client    *SecurityConnectorsClient
+	current   SecurityConnectorsListResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, SecurityConnectorsListResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *SecurityConnectorsListPager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *SecurityConnectorsListPager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SecurityConnectorsList.NextLink == nil || len(*p.current.SecurityConnectorsList.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listHandleError(resp)
+		return false
+	}
+	result, err := p.client.listHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current SecurityConnectorsListResponse page.
+func (p *SecurityConnectorsListPager) PageResponse() SecurityConnectorsListResponse {
 	return p.current
 }
 

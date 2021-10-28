@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // InformationProtectionPoliciesClient contains the methods for the InformationProtectionPolicies group.
@@ -29,8 +30,15 @@ type InformationProtectionPoliciesClient struct {
 }
 
 // NewInformationProtectionPoliciesClient creates a new instance of InformationProtectionPoliciesClient with the specified values.
-func NewInformationProtectionPoliciesClient(con *arm.Connection) *InformationProtectionPoliciesClient {
-	return &InformationProtectionPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewInformationProtectionPoliciesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *InformationProtectionPoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &InformationProtectionPoliciesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Details of the information protection policy.

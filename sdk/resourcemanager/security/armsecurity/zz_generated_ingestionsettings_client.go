@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IngestionSettingsClient contains the methods for the IngestionSettings group.
@@ -30,8 +31,15 @@ type IngestionSettingsClient struct {
 }
 
 // NewIngestionSettingsClient creates a new instance of IngestionSettingsClient with the specified values.
-func NewIngestionSettingsClient(con *arm.Connection, subscriptionID string) *IngestionSettingsClient {
-	return &IngestionSettingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIngestionSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IngestionSettingsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IngestionSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Create setting for ingesting security data and logs to correlate with resources associated with the subscription.

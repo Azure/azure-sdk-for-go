@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RegulatoryComplianceAssessmentsClient contains the methods for the RegulatoryComplianceAssessments group.
@@ -30,8 +31,15 @@ type RegulatoryComplianceAssessmentsClient struct {
 }
 
 // NewRegulatoryComplianceAssessmentsClient creates a new instance of RegulatoryComplianceAssessmentsClient with the specified values.
-func NewRegulatoryComplianceAssessmentsClient(con *arm.Connection, subscriptionID string) *RegulatoryComplianceAssessmentsClient {
-	return &RegulatoryComplianceAssessmentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRegulatoryComplianceAssessmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RegulatoryComplianceAssessmentsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RegulatoryComplianceAssessmentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Supported regulatory compliance details and state for selected assessment

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DeviceSecurityGroupsClient contains the methods for the DeviceSecurityGroups group.
@@ -29,8 +30,15 @@ type DeviceSecurityGroupsClient struct {
 }
 
 // NewDeviceSecurityGroupsClient creates a new instance of DeviceSecurityGroupsClient with the specified values.
-func NewDeviceSecurityGroupsClient(con *arm.Connection) *DeviceSecurityGroupsClient {
-	return &DeviceSecurityGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewDeviceSecurityGroupsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *DeviceSecurityGroupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DeviceSecurityGroupsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Use this method to creates or updates the device security group on a specified IoT Hub resource.

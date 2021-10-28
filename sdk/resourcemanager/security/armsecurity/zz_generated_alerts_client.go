@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // AlertsClient contains the methods for the Alerts group.
@@ -32,8 +32,15 @@ type AlertsClient struct {
 }
 
 // NewAlertsClient creates a new instance of AlertsClient with the specified values.
-func NewAlertsClient(con *arm.Connection, subscriptionID string, ascLocation string) *AlertsClient {
-	return &AlertsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID, ascLocation: ascLocation}
+func NewAlertsClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *AlertsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AlertsClient{subscriptionID: subscriptionID, ascLocation: ascLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetResourceGroupLevel - Get an alert that is associated a resource group or a resource in a resource group

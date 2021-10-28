@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // WorkspaceSettingsClient contains the methods for the WorkspaceSettings group.
@@ -30,8 +31,15 @@ type WorkspaceSettingsClient struct {
 }
 
 // NewWorkspaceSettingsClient creates a new instance of WorkspaceSettingsClient with the specified values.
-func NewWorkspaceSettingsClient(con *arm.Connection, subscriptionID string) *WorkspaceSettingsClient {
-	return &WorkspaceSettingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewWorkspaceSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspaceSettingsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &WorkspaceSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - creating settings about where we should store your security data and logs

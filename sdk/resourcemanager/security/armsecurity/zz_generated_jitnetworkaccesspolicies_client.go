@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // JitNetworkAccessPoliciesClient contains the methods for the JitNetworkAccessPolicies group.
@@ -31,8 +32,15 @@ type JitNetworkAccessPoliciesClient struct {
 }
 
 // NewJitNetworkAccessPoliciesClient creates a new instance of JitNetworkAccessPoliciesClient with the specified values.
-func NewJitNetworkAccessPoliciesClient(con *arm.Connection, subscriptionID string, ascLocation string) *JitNetworkAccessPoliciesClient {
-	return &JitNetworkAccessPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID, ascLocation: ascLocation}
+func NewJitNetworkAccessPoliciesClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *JitNetworkAccessPoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &JitNetworkAccessPoliciesClient{subscriptionID: subscriptionID, ascLocation: ascLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create a policy for protecting resources using Just-in-Time access control

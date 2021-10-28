@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SecureScoreControlsClient contains the methods for the SecureScoreControls group.
@@ -30,8 +31,15 @@ type SecureScoreControlsClient struct {
 }
 
 // NewSecureScoreControlsClient creates a new instance of SecureScoreControlsClient with the specified values.
-func NewSecureScoreControlsClient(con *arm.Connection, subscriptionID string) *SecureScoreControlsClient {
-	return &SecureScoreControlsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSecureScoreControlsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecureScoreControlsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SecureScoreControlsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Get all security controls within a scope

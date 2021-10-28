@@ -22,16 +22,16 @@ import (
 	"strings"
 )
 
-// SecureScoresClient contains the methods for the SecureScores group.
-// Don't use this type directly, use NewSecureScoresClient() instead.
-type SecureScoresClient struct {
+// MdeOnboardingsClient contains the methods for the MdeOnboardings group.
+// Don't use this type directly, use NewMdeOnboardingsClient() instead.
+type MdeOnboardingsClient struct {
 	ep             string
 	pl             runtime.Pipeline
 	subscriptionID string
 }
 
-// NewSecureScoresClient creates a new instance of SecureScoresClient with the specified values.
-func NewSecureScoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SecureScoresClient {
+// NewMdeOnboardingsClient creates a new instance of MdeOnboardingsClient with the specified values.
+func NewMdeOnboardingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MdeOnboardingsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
@@ -39,59 +39,55 @@ func NewSecureScoresClient(subscriptionID string, credential azcore.TokenCredent
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &SecureScoresClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	return &MdeOnboardingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
-// Get - Get secure score for a specific Security Center initiative within your current scope. For the ASC Default initiative, use 'ascScore'.
+// Get - The default configuration or data needed to onboard the machine to MDE
 // If the operation fails it returns the *CloudError error type.
-func (client *SecureScoresClient) Get(ctx context.Context, secureScoreName string, options *SecureScoresGetOptions) (SecureScoresGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, secureScoreName, options)
+func (client *MdeOnboardingsClient) Get(ctx context.Context, options *MdeOnboardingsGetOptions) (MdeOnboardingsGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, options)
 	if err != nil {
-		return SecureScoresGetResponse{}, err
+		return MdeOnboardingsGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return SecureScoresGetResponse{}, err
+		return MdeOnboardingsGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return SecureScoresGetResponse{}, client.getHandleError(resp)
+		return MdeOnboardingsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SecureScoresClient) getCreateRequest(ctx context.Context, secureScoreName string, options *SecureScoresGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScores/{secureScoreName}"
+func (client *MdeOnboardingsClient) getCreateRequest(ctx context.Context, options *MdeOnboardingsGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/mdeOnboardings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if secureScoreName == "" {
-		return nil, errors.New("parameter secureScoreName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{secureScoreName}", url.PathEscape(secureScoreName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SecureScoresClient) getHandleResponse(resp *http.Response) (SecureScoresGetResponse, error) {
-	result := SecureScoresGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SecureScoreItem); err != nil {
-		return SecureScoresGetResponse{}, err
+func (client *MdeOnboardingsClient) getHandleResponse(resp *http.Response) (MdeOnboardingsGetResponse, error) {
+	result := MdeOnboardingsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MdeOnboardingData); err != nil {
+		return MdeOnboardingsGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *SecureScoresClient) getHandleError(resp *http.Response) error {
+func (client *MdeOnboardingsClient) getHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -103,23 +99,26 @@ func (client *SecureScoresClient) getHandleError(resp *http.Response) error {
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// List - List secure scores for all your Security Center initiatives within your current scope.
+// List - The configuration or data needed to onboard the machine to MDE
 // If the operation fails it returns the *CloudError error type.
-func (client *SecureScoresClient) List(options *SecureScoresListOptions) *SecureScoresListPager {
-	return &SecureScoresListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
-		},
-		advancer: func(ctx context.Context, resp SecureScoresListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.SecureScoresList.NextLink)
-		},
+func (client *MdeOnboardingsClient) List(ctx context.Context, options *MdeOnboardingsListOptions) (MdeOnboardingsListResponse, error) {
+	req, err := client.listCreateRequest(ctx, options)
+	if err != nil {
+		return MdeOnboardingsListResponse{}, err
 	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return MdeOnboardingsListResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return MdeOnboardingsListResponse{}, client.listHandleError(resp)
+	}
+	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *SecureScoresClient) listCreateRequest(ctx context.Context, options *SecureScoresListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/secureScores"
+func (client *MdeOnboardingsClient) listCreateRequest(ctx context.Context, options *MdeOnboardingsListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/mdeOnboardings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -129,23 +128,23 @@ func (client *SecureScoresClient) listCreateRequest(ctx context.Context, options
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-01-01")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SecureScoresClient) listHandleResponse(resp *http.Response) (SecureScoresListResponse, error) {
-	result := SecureScoresListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SecureScoresList); err != nil {
-		return SecureScoresListResponse{}, err
+func (client *MdeOnboardingsClient) listHandleResponse(resp *http.Response) (MdeOnboardingsListResponse, error) {
+	result := MdeOnboardingsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MdeOnboardingDataList); err != nil {
+		return MdeOnboardingsListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *SecureScoresClient) listHandleError(resp *http.Response) error {
+func (client *MdeOnboardingsClient) listHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)

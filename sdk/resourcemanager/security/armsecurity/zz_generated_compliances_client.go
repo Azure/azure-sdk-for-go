@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CompliancesClient contains the methods for the Compliances group.
@@ -29,8 +30,15 @@ type CompliancesClient struct {
 }
 
 // NewCompliancesClient creates a new instance of CompliancesClient with the specified values.
-func NewCompliancesClient(con *arm.Connection) *CompliancesClient {
-	return &CompliancesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewCompliancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *CompliancesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CompliancesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Details of a specific Compliance.

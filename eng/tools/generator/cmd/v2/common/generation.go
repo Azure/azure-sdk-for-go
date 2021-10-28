@@ -106,9 +106,6 @@ func (ctx GenerateContext) GenerateForSingleRPNamespace(generateParam *GenerateP
 		log.Printf("Package '%s' existed, do update process", packagePath)
 
 		log.Printf("Get ori exports for changelog generation...")
-		if err := (*ctx.SDKRepo).Add(fmt.Sprintf("sdk/resourcemanager/%s/%s", generateParam.RPName, generateParam.NamespaceName)); err != nil {
-			return nil, err
-		}
 		oriExports, err = exports.Get(packagePath)
 		if err != nil {
 			return nil, err

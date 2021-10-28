@@ -10,10 +10,9 @@ package armservicefabric
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // ApplicationDeltaHealthPolicy - Defines a delta health policy used to evaluate the health of an application or one of its child entities when upgrading
@@ -868,8 +867,8 @@ func (c ClusterProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "sfZonalUpgradeMode", c.SfZonalUpgradeMode)
 	populate(objectMap, "upgradeDescription", c.UpgradeDescription)
 	populate(objectMap, "upgradeMode", c.UpgradeMode)
-	populate(objectMap, "upgradePauseEndTimestampUtc", (*timeRFC3339)(c.UpgradePauseEndTimestampUTC))
-	populate(objectMap, "upgradePauseStartTimestampUtc", (*timeRFC3339)(c.UpgradePauseStartTimestampUTC))
+	populateTimeRFC3339(objectMap, "upgradePauseEndTimestampUtc", c.UpgradePauseEndTimestampUTC)
+	populateTimeRFC3339(objectMap, "upgradePauseStartTimestampUtc", c.UpgradePauseStartTimestampUTC)
 	populate(objectMap, "upgradeWave", c.UpgradeWave)
 	populate(objectMap, "vmImage", c.VMImage)
 	populate(objectMap, "vmssZonalUpgradeMode", c.VmssZonalUpgradeMode)
@@ -965,14 +964,10 @@ func (c *ClusterProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &c.UpgradeMode)
 			delete(rawMsg, key)
 		case "upgradePauseEndTimestampUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			c.UpgradePauseEndTimestampUTC = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &c.UpgradePauseEndTimestampUTC)
 			delete(rawMsg, key)
 		case "upgradePauseStartTimestampUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			c.UpgradePauseStartTimestampUTC = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &c.UpgradePauseStartTimestampUTC)
 			delete(rawMsg, key)
 		case "upgradeWave":
 			err = unpopulate(val, &c.UpgradeWave)
@@ -1094,8 +1089,8 @@ func (c ClusterPropertiesUpdateParameters) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "sfZonalUpgradeMode", c.SfZonalUpgradeMode)
 	populate(objectMap, "upgradeDescription", c.UpgradeDescription)
 	populate(objectMap, "upgradeMode", c.UpgradeMode)
-	populate(objectMap, "upgradePauseEndTimestampUtc", (*timeRFC3339)(c.UpgradePauseEndTimestampUTC))
-	populate(objectMap, "upgradePauseStartTimestampUtc", (*timeRFC3339)(c.UpgradePauseStartTimestampUTC))
+	populateTimeRFC3339(objectMap, "upgradePauseEndTimestampUtc", c.UpgradePauseEndTimestampUTC)
+	populateTimeRFC3339(objectMap, "upgradePauseStartTimestampUtc", c.UpgradePauseStartTimestampUTC)
 	populate(objectMap, "upgradeWave", c.UpgradeWave)
 	populate(objectMap, "vmssZonalUpgradeMode", c.VmssZonalUpgradeMode)
 	populate(objectMap, "waveUpgradePaused", c.WaveUpgradePaused)
@@ -1163,14 +1158,10 @@ func (c *ClusterPropertiesUpdateParameters) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &c.UpgradeMode)
 			delete(rawMsg, key)
 		case "upgradePauseEndTimestampUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			c.UpgradePauseEndTimestampUTC = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &c.UpgradePauseEndTimestampUTC)
 			delete(rawMsg, key)
 		case "upgradePauseStartTimestampUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			c.UpgradePauseStartTimestampUTC = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &c.UpgradePauseStartTimestampUTC)
 			delete(rawMsg, key)
 		case "upgradeWave":
 			err = unpopulate(val, &c.UpgradeWave)
@@ -2286,9 +2277,9 @@ func (s StatefulServiceProperties) MarshalJSON() ([]byte, error) {
 	s.ServiceResourceProperties.marshalInternal(objectMap, ServiceKindStateful)
 	populate(objectMap, "hasPersistedState", s.HasPersistedState)
 	populate(objectMap, "minReplicaSetSize", s.MinReplicaSetSize)
-	populate(objectMap, "quorumLossWaitDuration", (*timeRFC3339)(s.QuorumLossWaitDuration))
-	populate(objectMap, "replicaRestartWaitDuration", (*timeRFC3339)(s.ReplicaRestartWaitDuration))
-	populate(objectMap, "standByReplicaKeepDuration", (*timeRFC3339)(s.StandByReplicaKeepDuration))
+	populateTimeRFC3339(objectMap, "quorumLossWaitDuration", s.QuorumLossWaitDuration)
+	populateTimeRFC3339(objectMap, "replicaRestartWaitDuration", s.ReplicaRestartWaitDuration)
+	populateTimeRFC3339(objectMap, "standByReplicaKeepDuration", s.StandByReplicaKeepDuration)
 	populate(objectMap, "targetReplicaSetSize", s.TargetReplicaSetSize)
 	return json.Marshal(objectMap)
 }
@@ -2309,19 +2300,13 @@ func (s *StatefulServiceProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.MinReplicaSetSize)
 			delete(rawMsg, key)
 		case "quorumLossWaitDuration":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.QuorumLossWaitDuration = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.QuorumLossWaitDuration)
 			delete(rawMsg, key)
 		case "replicaRestartWaitDuration":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.ReplicaRestartWaitDuration = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.ReplicaRestartWaitDuration)
 			delete(rawMsg, key)
 		case "standByReplicaKeepDuration":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.StandByReplicaKeepDuration = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.StandByReplicaKeepDuration)
 			delete(rawMsg, key)
 		case "targetReplicaSetSize":
 			err = unpopulate(val, &s.TargetReplicaSetSize)
@@ -2361,9 +2346,9 @@ func (s StatefulServiceUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	s.ServiceResourceUpdateProperties.marshalInternal(objectMap, ServiceKindStateful)
 	populate(objectMap, "minReplicaSetSize", s.MinReplicaSetSize)
-	populate(objectMap, "quorumLossWaitDuration", (*timeRFC3339)(s.QuorumLossWaitDuration))
-	populate(objectMap, "replicaRestartWaitDuration", (*timeRFC3339)(s.ReplicaRestartWaitDuration))
-	populate(objectMap, "standByReplicaKeepDuration", (*timeRFC3339)(s.StandByReplicaKeepDuration))
+	populateTimeRFC3339(objectMap, "quorumLossWaitDuration", s.QuorumLossWaitDuration)
+	populateTimeRFC3339(objectMap, "replicaRestartWaitDuration", s.ReplicaRestartWaitDuration)
+	populateTimeRFC3339(objectMap, "standByReplicaKeepDuration", s.StandByReplicaKeepDuration)
 	populate(objectMap, "targetReplicaSetSize", s.TargetReplicaSetSize)
 	return json.Marshal(objectMap)
 }
@@ -2381,19 +2366,13 @@ func (s *StatefulServiceUpdateProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.MinReplicaSetSize)
 			delete(rawMsg, key)
 		case "quorumLossWaitDuration":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.QuorumLossWaitDuration = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.QuorumLossWaitDuration)
 			delete(rawMsg, key)
 		case "replicaRestartWaitDuration":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.ReplicaRestartWaitDuration = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.ReplicaRestartWaitDuration)
 			delete(rawMsg, key)
 		case "standByReplicaKeepDuration":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.StandByReplicaKeepDuration = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.StandByReplicaKeepDuration)
 			delete(rawMsg, key)
 		case "targetReplicaSetSize":
 			err = unpopulate(val, &s.TargetReplicaSetSize)
@@ -2533,10 +2512,10 @@ type SystemData struct {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdAt", (*timeRFC3339)(s.CreatedAt))
+	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populate(objectMap, "lastModifiedAt", (*timeRFC3339)(s.LastModifiedAt))
+	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -2552,9 +2531,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.CreatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, &s.CreatedBy)
@@ -2563,9 +2540,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.LastModifiedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, &s.LastModifiedBy)

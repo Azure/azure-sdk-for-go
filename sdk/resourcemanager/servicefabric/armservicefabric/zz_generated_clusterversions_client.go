@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ClusterVersionsClient contains the methods for the ClusterVersions group.
@@ -30,8 +31,15 @@ type ClusterVersionsClient struct {
 }
 
 // NewClusterVersionsClient creates a new instance of ClusterVersionsClient with the specified values.
-func NewClusterVersionsClient(con *arm.Connection, subscriptionID string) *ClusterVersionsClient {
-	return &ClusterVersionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewClusterVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ClusterVersionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ClusterVersionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets information about an available Service Fabric cluster code version.

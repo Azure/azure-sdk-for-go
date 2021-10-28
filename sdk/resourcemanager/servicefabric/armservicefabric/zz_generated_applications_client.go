@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ApplicationsClient contains the methods for the Applications group.
@@ -31,8 +31,15 @@ type ApplicationsClient struct {
 }
 
 // NewApplicationsClient creates a new instance of ApplicationsClient with the specified values.
-func NewApplicationsClient(con *arm.Connection, subscriptionID string) *ApplicationsClient {
-	return &ApplicationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ApplicationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ApplicationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create or update a Service Fabric application resource with the specified name.

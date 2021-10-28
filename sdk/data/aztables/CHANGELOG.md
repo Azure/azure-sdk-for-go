@@ -8,6 +8,7 @@
 
 ### Breaking Changes
 * `NewClient` and `NewServiceClient` is now used for authenticating the `Client` and `ServiceClient` with credentials from `azidentity` only.
+* `ClientOptions` embeds `azcore.ClientOptions` and removes all named fields.
 
 ### Bugs Fixed
 

@@ -1,10 +1,10 @@
-# Azure Cosmos DB Module for Go
+# Azure {{PackageTitle}} Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/{{rpName}}/{{packageName}})](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/{{rpName}}/{{packageName}})
 
-The `armcosmos` module provides operations for working with Azure Cosmos DB.
+The `{{packageName}}` module provides operations for working with Azure {{PackageTitle}}.
 
-[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/cosmos/armcosmos)
+[Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/{{rpName}}/{{packageName}})
 
 # Getting started
 
@@ -17,15 +17,15 @@ The `armcosmos` module provides operations for working with Azure Cosmos DB.
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Cosmos DB module:
+Install the Azure {{PackageTitle}} module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/{{rpName}}/{{packageName}}
 ```
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Cosmos DB.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure {{PackageTitle}}.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,22 +33,21 @@ cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 For more information on authentication, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
 
-## Connecting to Azure Cosmos DB
-
-Once you have a credential, create a connection to the desired ARM endpoint. The `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` package provides facilities for connecting with ARM endpoints including public and sovereign clouds as well as Azure Stack.
-
-```go
-con := arm.NewDefaultConnection(cred, nil)
-```
-
-For more information on ARM connections, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
-
 ## Clients
 
-Azure Cosmos DB modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your `arm.Connection`.
+Azure Cosmos DB modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
 
 ```go
-client := armcosmos.{{NewClientMethod}}
+client := armcosmos.NewDatabaseClient(<subscription ID>, cred, nil)
+```
+
+You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
+
+```go
+options = arm.ClientOptions{
+    Host: arm.AzureChina,
+}
+client := armcosmos.NewDatabaseClient(<subscription ID>, cred, &options)
 ```
 
 ## Provide Feedback

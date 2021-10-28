@@ -9,7 +9,7 @@ package azkeys
 import (
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal"
+	internal "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 )
 
 // Attributes - The object attributes managed by the KeyVault service.

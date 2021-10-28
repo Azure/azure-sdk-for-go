@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azkeys
+package auth
 
 import (
 	"errors"
@@ -16,13 +16,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
-type keyvaultChallengePolicy struct {
-	cred        azcore.TokenCredential
-	transport   policy.Transporter
+type KeyVaultChallengePolicy struct {
+	Cred        azcore.TokenCredential
+	Transport   policy.Transporter
 	cachedToken *azcore.AccessToken
 }
 
-func (k *keyvaultChallengePolicy) Do(req *policy.Request) (*http.Response, error) {
+func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error) {
 	// if k.cachedToken != nil {
 	// 	// cached token available
 	// 	cushion := time.Now().Add(-60 * time.Second)
@@ -37,7 +37,7 @@ func (k *keyvaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		return nil, err
 	}
 
-	challengeResp, err := k.transport.Do(challengeReq)
+	challengeResp, err := k.Transport.Do(challengeReq)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +53,7 @@ func (k *keyvaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		scope += "/.default"
 	}
 
-	token, err := k.cred.GetToken(req.Raw().Context(), policy.TokenRequestOptions{
+	token, err := k.Cred.GetToken(req.Raw().Context(), policy.TokenRequestOptions{
 		Scopes: []string{scope},
 	})
 	if err != nil {

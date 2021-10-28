@@ -15,9 +15,9 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys"
-	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/auth"
+	internal "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
 )
 
 // The Client performs cryptographic operations using Azure Key Vault Keys. This client
@@ -96,7 +96,13 @@ func NewClient(key string, cred azcore.TokenCredential, options *ClientOptions) 
 		options.Transport = http.DefaultClient
 	}
 
-	// options.PerRetryPolicies = append(options.PerRetryPolicies, &internal.keyvaultChallengePolicy{cred: credential, transport: options.Transport})
+	options.PerRetryPolicies = append(
+		options.PerRetryPolicies,
+		&auth.KeyVaultChallengePolicy{
+			Cred: cred,
+			Transport: options.Transport,
+		},
+	)
 	conn := internal.NewConnection(options.toConnectionOptions())
 
 	vaultURL, err := parseVaultURL(key)

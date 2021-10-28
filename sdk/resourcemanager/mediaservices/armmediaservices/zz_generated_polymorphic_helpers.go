@@ -47,6 +47,25 @@ func unmarshalAudioAnalyzerPresetClassificationArray(rawMsg json.RawMessage) ([]
 	return fArray, nil
 }
 
+func unmarshalAudioAnalyzerPresetClassificationMap(rawMsg json.RawMessage) (map[string]AudioAnalyzerPresetClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]AudioAnalyzerPresetClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalAudioAnalyzerPresetClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}
+
 func unmarshalAudioClassification(rawMsg json.RawMessage) (AudioClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -82,6 +101,25 @@ func unmarshalAudioClassificationArray(rawMsg json.RawMessage) ([]AudioClassific
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalAudioClassificationMap(rawMsg json.RawMessage) (map[string]AudioClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]AudioClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalAudioClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
 }
 
 func unmarshalAudioTrackDescriptorClassification(rawMsg json.RawMessage) (AudioTrackDescriptorClassification, error) {
@@ -123,6 +161,25 @@ func unmarshalAudioTrackDescriptorClassificationArray(rawMsg json.RawMessage) ([
 	return fArray, nil
 }
 
+func unmarshalAudioTrackDescriptorClassificationMap(rawMsg json.RawMessage) (map[string]AudioTrackDescriptorClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]AudioTrackDescriptorClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalAudioTrackDescriptorClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}
+
 func unmarshalClipTimeClassification(rawMsg json.RawMessage) (ClipTimeClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -160,6 +217,25 @@ func unmarshalClipTimeClassificationArray(rawMsg json.RawMessage) ([]ClipTimeCla
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalClipTimeClassificationMap(rawMsg json.RawMessage) (map[string]ClipTimeClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]ClipTimeClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalClipTimeClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
 }
 
 func unmarshalCodecClassification(rawMsg json.RawMessage) (CodecClassification, error) {
@@ -217,6 +293,25 @@ func unmarshalCodecClassificationArray(rawMsg json.RawMessage) ([]CodecClassific
 	return fArray, nil
 }
 
+func unmarshalCodecClassificationMap(rawMsg json.RawMessage) (map[string]CodecClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]CodecClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalCodecClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}
+
 func unmarshalContentKeyPolicyConfigurationClassification(rawMsg json.RawMessage) (ContentKeyPolicyConfigurationClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -262,6 +357,25 @@ func unmarshalContentKeyPolicyConfigurationClassificationArray(rawMsg json.RawMe
 	return fArray, nil
 }
 
+func unmarshalContentKeyPolicyConfigurationClassificationMap(rawMsg json.RawMessage) (map[string]ContentKeyPolicyConfigurationClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]ContentKeyPolicyConfigurationClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalContentKeyPolicyConfigurationClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}
+
 func unmarshalContentKeyPolicyPlayReadyContentKeyLocationClassification(rawMsg json.RawMessage) (ContentKeyPolicyPlayReadyContentKeyLocationClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -299,6 +413,25 @@ func unmarshalContentKeyPolicyPlayReadyContentKeyLocationClassificationArray(raw
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalContentKeyPolicyPlayReadyContentKeyLocationClassificationMap(rawMsg json.RawMessage) (map[string]ContentKeyPolicyPlayReadyContentKeyLocationClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]ContentKeyPolicyPlayReadyContentKeyLocationClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalContentKeyPolicyPlayReadyContentKeyLocationClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
 }
 
 func unmarshalContentKeyPolicyRestrictionClassification(rawMsg json.RawMessage) (ContentKeyPolicyRestrictionClassification, error) {
@@ -342,6 +475,25 @@ func unmarshalContentKeyPolicyRestrictionClassificationArray(rawMsg json.RawMess
 	return fArray, nil
 }
 
+func unmarshalContentKeyPolicyRestrictionClassificationMap(rawMsg json.RawMessage) (map[string]ContentKeyPolicyRestrictionClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]ContentKeyPolicyRestrictionClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalContentKeyPolicyRestrictionClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}
+
 func unmarshalContentKeyPolicyRestrictionTokenKeyClassification(rawMsg json.RawMessage) (ContentKeyPolicyRestrictionTokenKeyClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -381,6 +533,25 @@ func unmarshalContentKeyPolicyRestrictionTokenKeyClassificationArray(rawMsg json
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalContentKeyPolicyRestrictionTokenKeyClassificationMap(rawMsg json.RawMessage) (map[string]ContentKeyPolicyRestrictionTokenKeyClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]ContentKeyPolicyRestrictionTokenKeyClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalContentKeyPolicyRestrictionTokenKeyClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
 }
 
 func unmarshalFormatClassification(rawMsg json.RawMessage) (FormatClassification, error) {
@@ -430,6 +601,25 @@ func unmarshalFormatClassificationArray(rawMsg json.RawMessage) ([]FormatClassif
 	return fArray, nil
 }
 
+func unmarshalFormatClassificationMap(rawMsg json.RawMessage) (map[string]FormatClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]FormatClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalFormatClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}
+
 func unmarshalH265VideoLayerClassification(rawMsg json.RawMessage) (H265VideoLayerClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -465,6 +655,25 @@ func unmarshalH265VideoLayerClassificationArray(rawMsg json.RawMessage) ([]H265V
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalH265VideoLayerClassificationMap(rawMsg json.RawMessage) (map[string]H265VideoLayerClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]H265VideoLayerClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalH265VideoLayerClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
 }
 
 func unmarshalImageClassification(rawMsg json.RawMessage) (ImageClassification, error) {
@@ -506,6 +715,25 @@ func unmarshalImageClassificationArray(rawMsg json.RawMessage) ([]ImageClassific
 	return fArray, nil
 }
 
+func unmarshalImageClassificationMap(rawMsg json.RawMessage) (map[string]ImageClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]ImageClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalImageClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}
+
 func unmarshalImageFormatClassification(rawMsg json.RawMessage) (ImageFormatClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -543,6 +771,25 @@ func unmarshalImageFormatClassificationArray(rawMsg json.RawMessage) ([]ImageFor
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalImageFormatClassificationMap(rawMsg json.RawMessage) (map[string]ImageFormatClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]ImageFormatClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalImageFormatClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
 }
 
 func unmarshalInputDefinitionClassification(rawMsg json.RawMessage) (InputDefinitionClassification, error) {
@@ -584,6 +831,25 @@ func unmarshalInputDefinitionClassificationArray(rawMsg json.RawMessage) ([]Inpu
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalInputDefinitionClassificationMap(rawMsg json.RawMessage) (map[string]InputDefinitionClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]InputDefinitionClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalInputDefinitionClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
 }
 
 func unmarshalJobInputClassification(rawMsg json.RawMessage) (JobInputClassification, error) {
@@ -631,6 +897,25 @@ func unmarshalJobInputClassificationArray(rawMsg json.RawMessage) ([]JobInputCla
 	return fArray, nil
 }
 
+func unmarshalJobInputClassificationMap(rawMsg json.RawMessage) (map[string]JobInputClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]JobInputClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalJobInputClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}
+
 func unmarshalJobInputClipClassification(rawMsg json.RawMessage) (JobInputClipClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -670,6 +955,25 @@ func unmarshalJobInputClipClassificationArray(rawMsg json.RawMessage) ([]JobInpu
 	return fArray, nil
 }
 
+func unmarshalJobInputClipClassificationMap(rawMsg json.RawMessage) (map[string]JobInputClipClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]JobInputClipClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalJobInputClipClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}
+
 func unmarshalJobOutputClassification(rawMsg json.RawMessage) (JobOutputClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -705,6 +1009,25 @@ func unmarshalJobOutputClassificationArray(rawMsg json.RawMessage) ([]JobOutputC
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalJobOutputClassificationMap(rawMsg json.RawMessage) (map[string]JobOutputClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]JobOutputClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalJobOutputClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
 }
 
 func unmarshalLayerClassification(rawMsg json.RawMessage) (LayerClassification, error) {
@@ -754,6 +1077,25 @@ func unmarshalLayerClassificationArray(rawMsg json.RawMessage) ([]LayerClassific
 	return fArray, nil
 }
 
+func unmarshalLayerClassificationMap(rawMsg json.RawMessage) (map[string]LayerClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]LayerClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalLayerClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}
+
 func unmarshalMultiBitrateFormatClassification(rawMsg json.RawMessage) (MultiBitrateFormatClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -793,6 +1135,25 @@ func unmarshalMultiBitrateFormatClassificationArray(rawMsg json.RawMessage) ([]M
 	return fArray, nil
 }
 
+func unmarshalMultiBitrateFormatClassificationMap(rawMsg json.RawMessage) (map[string]MultiBitrateFormatClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]MultiBitrateFormatClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalMultiBitrateFormatClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}
+
 func unmarshalOverlayClassification(rawMsg json.RawMessage) (OverlayClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -830,6 +1191,25 @@ func unmarshalOverlayClassificationArray(rawMsg json.RawMessage) ([]OverlayClass
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalOverlayClassificationMap(rawMsg json.RawMessage) (map[string]OverlayClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]OverlayClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalOverlayClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
 }
 
 func unmarshalPresetClassification(rawMsg json.RawMessage) (PresetClassification, error) {
@@ -875,6 +1255,25 @@ func unmarshalPresetClassificationArray(rawMsg json.RawMessage) ([]PresetClassif
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalPresetClassificationMap(rawMsg json.RawMessage) (map[string]PresetClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]PresetClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalPresetClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
 }
 
 func unmarshalTrackDescriptorClassification(rawMsg json.RawMessage) (TrackDescriptorClassification, error) {
@@ -924,6 +1323,25 @@ func unmarshalTrackDescriptorClassificationArray(rawMsg json.RawMessage) ([]Trac
 	return fArray, nil
 }
 
+func unmarshalTrackDescriptorClassificationMap(rawMsg json.RawMessage) (map[string]TrackDescriptorClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]TrackDescriptorClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalTrackDescriptorClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}
+
 func unmarshalVideoClassification(rawMsg json.RawMessage) (VideoClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -969,6 +1387,25 @@ func unmarshalVideoClassificationArray(rawMsg json.RawMessage) ([]VideoClassific
 	return fArray, nil
 }
 
+func unmarshalVideoClassificationMap(rawMsg json.RawMessage) (map[string]VideoClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]VideoClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalVideoClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}
+
 func unmarshalVideoLayerClassification(rawMsg json.RawMessage) (VideoLayerClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -1004,6 +1441,25 @@ func unmarshalVideoLayerClassificationArray(rawMsg json.RawMessage) ([]VideoLaye
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalVideoLayerClassificationMap(rawMsg json.RawMessage) (map[string]VideoLayerClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]VideoLayerClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalVideoLayerClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
 }
 
 func unmarshalVideoTrackDescriptorClassification(rawMsg json.RawMessage) (VideoTrackDescriptorClassification, error) {
@@ -1043,4 +1499,23 @@ func unmarshalVideoTrackDescriptorClassificationArray(rawMsg json.RawMessage) ([
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalVideoTrackDescriptorClassificationMap(rawMsg json.RawMessage) (map[string]VideoTrackDescriptorClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]VideoTrackDescriptorClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalVideoTrackDescriptorClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
 }

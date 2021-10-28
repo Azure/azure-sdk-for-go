@@ -11,13 +11,14 @@ package armoperationalinsights
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // WorkspacePurgeClient contains the methods for the WorkspacePurge group.
@@ -29,8 +30,15 @@ type WorkspacePurgeClient struct {
 }
 
 // NewWorkspacePurgeClient creates a new instance of WorkspacePurgeClient with the specified values.
-func NewWorkspacePurgeClient(con *arm.Connection, subscriptionID string) *WorkspacePurgeClient {
-	return &WorkspacePurgeClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewWorkspacePurgeClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkspacePurgeClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &WorkspacePurgeClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetPurgeStatus - Gets status of an ongoing purge operation.

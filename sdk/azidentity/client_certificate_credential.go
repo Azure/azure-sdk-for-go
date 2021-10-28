@@ -80,9 +80,9 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	return &ClientCertificateCredential{tenantID: tenantID, clientID: clientID, cert: cert, sendCertificateChain: cp.SendCertificateChain, client: c}, nil
 }
 
-// GetToken obtains a token from Azure Active Directory, using the certificate in the file path.
-// scopes: The list of scopes for which the token will have access.
-// ctx: controlling the request lifetime.
+// GetToken obtains a token from Azure Active Directory, using the provided certificate.
+// ctx: Context controlling the request lifetime.
+// opts: details of the authentication request.
 // Returns an AccessToken which can be used to authenticate service client calls.
 func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
 	tk, err := c.client.authenticateCertificate(ctx, c.tenantID, c.clientID, c.cert, c.sendCertificateChain, opts.Scopes)
@@ -95,8 +95,8 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.
 }
 
 // LoadCerts loads certificates and a private key for use with NewClientCertificateCredential.
-// certData: certificate data encoded in PEM or PKCS12 format, including the certificate's private key. Typically, the contents of a file.
-// password: the password required to decrypt the private key. Pass nil if the key is not encrypted. This method can't decrypt keys in PEM format.
+// certData: certificate data encoded in PEM or PKCS12 format, including the certificate's private key.
+// password: the password required to decrypt the private key. Pass nil if the key is not encrypted. This function can't decrypt keys in PEM format.
 func LoadCerts(certData []byte, password []byte) ([]*x509.Certificate, crypto.PrivateKey, error) {
 	var blocks []*pem.Block
 	var err error

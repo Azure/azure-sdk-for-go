@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RecordSetsClient contains the methods for the RecordSets group.
@@ -31,8 +32,15 @@ type RecordSetsClient struct {
 }
 
 // NewRecordSetsClient creates a new instance of RecordSetsClient with the specified values.
-func NewRecordSetsClient(con *arm.Connection, subscriptionID string) *RecordSetsClient {
-	return &RecordSetsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRecordSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RecordSetsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RecordSetsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a record set within a Private DNS zone.

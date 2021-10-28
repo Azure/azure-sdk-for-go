@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ReservationsSummariesClient contains the methods for the ReservationsSummaries group.
@@ -29,8 +30,15 @@ type ReservationsSummariesClient struct {
 }
 
 // NewReservationsSummariesClient creates a new instance of ReservationsSummariesClient with the specified values.
-func NewReservationsSummariesClient(con *arm.Connection) *ReservationsSummariesClient {
-	return &ReservationsSummariesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewReservationsSummariesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ReservationsSummariesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ReservationsSummariesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Lists the reservations summaries for the defined scope daily or monthly grain.

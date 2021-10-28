@@ -12,12 +12,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"strings"
 )
 
 // ReservationRecommendationsClient contains the methods for the ReservationRecommendations group.
@@ -28,8 +29,15 @@ type ReservationRecommendationsClient struct {
 }
 
 // NewReservationRecommendationsClient creates a new instance of ReservationRecommendationsClient with the specified values.
-func NewReservationRecommendationsClient(con *arm.Connection) *ReservationRecommendationsClient {
-	return &ReservationRecommendationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewReservationRecommendationsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ReservationRecommendationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ReservationRecommendationsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - List of recommendations for purchasing reserved instances.

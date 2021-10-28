@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ReservationTransactionsClient contains the methods for the ReservationTransactions group.
@@ -29,8 +30,15 @@ type ReservationTransactionsClient struct {
 }
 
 // NewReservationTransactionsClient creates a new instance of ReservationTransactionsClient with the specified values.
-func NewReservationTransactionsClient(con *arm.Connection) *ReservationTransactionsClient {
-	return &ReservationTransactionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewReservationTransactionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ReservationTransactionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ReservationTransactionsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - List of transactions for reserved instances on billing account scope

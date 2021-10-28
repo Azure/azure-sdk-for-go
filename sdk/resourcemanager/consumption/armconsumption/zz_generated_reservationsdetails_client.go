@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ReservationsDetailsClient contains the methods for the ReservationsDetails group.
@@ -29,8 +30,15 @@ type ReservationsDetailsClient struct {
 }
 
 // NewReservationsDetailsClient creates a new instance of ReservationsDetailsClient with the specified values.
-func NewReservationsDetailsClient(con *arm.Connection) *ReservationsDetailsClient {
-	return &ReservationsDetailsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewReservationsDetailsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ReservationsDetailsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ReservationsDetailsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Lists the reservations details for the defined scope and provided date range.

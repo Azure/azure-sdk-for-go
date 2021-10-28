@@ -24,7 +24,7 @@
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://vault.azure.net\u0022",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
         "X-Content-Type-Options": "nosniff",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
@@ -75,7 +75,7 @@
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://rosebud.vault.azure.net/keys/key3297178601/d18279d8e57542c8a1ac80eb2d549cc8",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key3297178601/d18279d8e57542c8a1ac80eb2d549cc8",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -130,7 +130,7 @@
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://rosebud.vault.azure.net/keys/key3297178601/2bf5a9055bf74b4e975791bfdf058f7c",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key3297178601/2bf5a9055bf74b4e975791bfdf058f7c",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -183,11 +183,11 @@
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "recoveryId": "https://rosebud.vault.azure.net/deletedkeys/key3297178601",
+        "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/key3297178601",
         "deletedDate": 1635460114,
         "scheduledPurgeDate": 1636064914,
         "key": {
-          "kid": "https://rosebud.vault.azure.net/keys/key3297178601/2bf5a9055bf74b4e975791bfdf058f7c",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key3297178601/2bf5a9055bf74b4e975791bfdf058f7c",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -314,11 +314,11 @@
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
-        "recoveryId": "https://rosebud.vault.azure.net/deletedkeys/key3297178601",
+        "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/key3297178601",
         "deletedDate": 1635460114,
         "scheduledPurgeDate": 1636064914,
         "key": {
-          "kid": "https://rosebud.vault.azure.net/keys/key3297178601/2bf5a9055bf74b4e975791bfdf058f7c",
+          "kid": "https://fakekvurl.vault.azure.net/keys/key3297178601/2bf5a9055bf74b4e975791bfdf058f7c",
           "kty": "RSA",
           "key_ops": [
             "encrypt",

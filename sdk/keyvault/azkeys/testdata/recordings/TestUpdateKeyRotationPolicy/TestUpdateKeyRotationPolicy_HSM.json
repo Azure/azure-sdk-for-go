@@ -22,7 +22,7 @@
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-request-id": "8b9888da-383e-11ec-aa61-000d3a5f7959",
@@ -81,7 +81,7 @@
             "sign",
             "verify"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key664229775/8df836484bae4569264578e76bfd32f9",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/key664229775/8df836484bae4569264578e76bfd32f9",
           "kty": "RSA-HSM",
           "n": "uMlNvhy_f_z30sA3AZBs-akGiv4ys1LMRc_FgsZOXmZfsjDwK4ZxiBLwcuxtFVy7GrF0wc93u6ywiaV19lUw1YeYAQ4As9jmV-K4HoEXAqZI9Y2Hb3JXOksriu6_Q_yyXbCKIOhLjXWd_4g79JteJl6Qw4aLlMUuufjqj-4QUmLcW_MjF5L6PbLWHXxETDip8iE2ip9_JmmXGp0klTymW-o2d8Flp28IWPgX6He5SgyxLEmxUQyuoSn1AWpc68U-NKh9bzZB9gr1pzHleIiSwYCNXgPdPgg34T0dd5qBHb-goLGJI7qzXaIn8RwlZAkRUARF0oLqTdKXX3uzNoejhQ"
         }
@@ -184,11 +184,11 @@
             "sign",
             "verify"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key664229775/8df836484bae4569264578e76bfd32f9",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/key664229775/8df836484bae4569264578e76bfd32f9",
           "kty": "RSA-HSM",
           "n": "uMlNvhy_f_z30sA3AZBs-akGiv4ys1LMRc_FgsZOXmZfsjDwK4ZxiBLwcuxtFVy7GrF0wc93u6ywiaV19lUw1YeYAQ4As9jmV-K4HoEXAqZI9Y2Hb3JXOksriu6_Q_yyXbCKIOhLjXWd_4g79JteJl6Qw4aLlMUuufjqj-4QUmLcW_MjF5L6PbLWHXxETDip8iE2ip9_JmmXGp0klTymW-o2d8Flp28IWPgX6He5SgyxLEmxUQyuoSn1AWpc68U-NKh9bzZB9gr1pzHleIiSwYCNXgPdPgg34T0dd5qBHb-goLGJI7qzXaIn8RwlZAkRUARF0oLqTdKXX3uzNoejhQ"
         },
-        "recoveryId": "https://rosebudhsm.managedhsm.azure.net/deletedkeys/key664229775",
+        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key664229775",
         "scheduledPurgeDate": 1636064983
       }
     },
@@ -241,11 +241,11 @@
             "decrypt",
             "wrapKey"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key664229775/8df836484bae4569264578e76bfd32f9",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/key664229775/8df836484bae4569264578e76bfd32f9",
           "kty": "RSA-HSM",
           "n": "uMlNvhy_f_z30sA3AZBs-akGiv4ys1LMRc_FgsZOXmZfsjDwK4ZxiBLwcuxtFVy7GrF0wc93u6ywiaV19lUw1YeYAQ4As9jmV-K4HoEXAqZI9Y2Hb3JXOksriu6_Q_yyXbCKIOhLjXWd_4g79JteJl6Qw4aLlMUuufjqj-4QUmLcW_MjF5L6PbLWHXxETDip8iE2ip9_JmmXGp0klTymW-o2d8Flp28IWPgX6He5SgyxLEmxUQyuoSn1AWpc68U-NKh9bzZB9gr1pzHleIiSwYCNXgPdPgg34T0dd5qBHb-goLGJI7qzXaIn8RwlZAkRUARF0oLqTdKXX3uzNoejhQ"
         },
-        "recoveryId": "https://rosebudhsm.managedhsm.azure.net/deletedkeys/key664229775",
+        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key664229775",
         "scheduledPurgeDate": 1636064983
       }
     },
@@ -298,11 +298,11 @@
             "decrypt",
             "wrapKey"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key664229775/8df836484bae4569264578e76bfd32f9",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/key664229775/8df836484bae4569264578e76bfd32f9",
           "kty": "RSA-HSM",
           "n": "uMlNvhy_f_z30sA3AZBs-akGiv4ys1LMRc_FgsZOXmZfsjDwK4ZxiBLwcuxtFVy7GrF0wc93u6ywiaV19lUw1YeYAQ4As9jmV-K4HoEXAqZI9Y2Hb3JXOksriu6_Q_yyXbCKIOhLjXWd_4g79JteJl6Qw4aLlMUuufjqj-4QUmLcW_MjF5L6PbLWHXxETDip8iE2ip9_JmmXGp0klTymW-o2d8Flp28IWPgX6He5SgyxLEmxUQyuoSn1AWpc68U-NKh9bzZB9gr1pzHleIiSwYCNXgPdPgg34T0dd5qBHb-goLGJI7qzXaIn8RwlZAkRUARF0oLqTdKXX3uzNoejhQ"
         },
-        "recoveryId": "https://rosebudhsm.managedhsm.azure.net/deletedkeys/key664229775",
+        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key664229775",
         "scheduledPurgeDate": 1636064983
       }
     },

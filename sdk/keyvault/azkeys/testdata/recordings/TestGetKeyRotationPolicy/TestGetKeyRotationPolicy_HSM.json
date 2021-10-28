@@ -22,7 +22,7 @@
         "Content-Security-Policy": "default-src \u0027self\u0027",
         "Content-Type": "application/json; charset=utf-8",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
         "X-Content-Type-Options": "nosniff",
         "X-Frame-Options": "SAMEORIGIN",
         "x-ms-request-id": "8671d6c2-383e-11ec-aa61-000d3a5f7959",
@@ -81,7 +81,7 @@
             "sign",
             "verify"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key4173570635/86e69282c6e306373b8aa6e53abe6296",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/key4173570635/86e69282c6e306373b8aa6e53abe6296",
           "kty": "RSA-HSM",
           "n": "rf0fKvZylwjRyA9C_fQQYJe7YcDJ2Emyhciig3LCqZQTsWpLsqwV1KnSsQCFterp0-WpwYXxit-rKe8gRqgrqUH1c7tmrLRV3YxvXKgXvRgGQbo-L7WEM9lOBCZlOLzRRZMcs74n1LwsRVgzlXow6Q9wg9_pmzNNjkIwo-Rz_2rfRSaA8gm3kM3VvnvsCsG3ESn-dx5RzgEhBbF8icrFLD8Xs2R0SDzMx4ESIBeqSSXYwTo4cB1XBQuwUR84AhA1EQcdXVefMj9YVIkOBUC3n7g9G8dR1mLlv93dUCga0xGD5UNvPYrgT-9AMRlRBvLIdKDIjxAEvLBdWF7pe0picQ"
         }
@@ -117,7 +117,7 @@
       "ResponseBody": {
         "error": {
           "code": "KeyNotFound",
-          "message": "Key not found: https://rosebudhsm.managedhsm.azure.net/keys/key4173570635/rotationpolicy (Activity ID: 86e404ae-383e-11ec-aa61-000d3a5f7959)"
+          "message": "Key not found: https://fakekvurl.managedhsm.azure.net/keys/key4173570635/rotationpolicy (Activity ID: 86e404ae-383e-11ec-aa61-000d3a5f7959)"
         }
       }
     },
@@ -169,11 +169,11 @@
             "sign",
             "verify"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key4173570635/86e69282c6e306373b8aa6e53abe6296",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/key4173570635/86e69282c6e306373b8aa6e53abe6296",
           "kty": "RSA-HSM",
           "n": "rf0fKvZylwjRyA9C_fQQYJe7YcDJ2Emyhciig3LCqZQTsWpLsqwV1KnSsQCFterp0-WpwYXxit-rKe8gRqgrqUH1c7tmrLRV3YxvXKgXvRgGQbo-L7WEM9lOBCZlOLzRRZMcs74n1LwsRVgzlXow6Q9wg9_pmzNNjkIwo-Rz_2rfRSaA8gm3kM3VvnvsCsG3ESn-dx5RzgEhBbF8icrFLD8Xs2R0SDzMx4ESIBeqSSXYwTo4cB1XBQuwUR84AhA1EQcdXVefMj9YVIkOBUC3n7g9G8dR1mLlv93dUCga0xGD5UNvPYrgT-9AMRlRBvLIdKDIjxAEvLBdWF7pe0picQ"
         },
-        "recoveryId": "https://rosebudhsm.managedhsm.azure.net/deletedkeys/key4173570635",
+        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key4173570635",
         "scheduledPurgeDate": 1636064974
       }
     },
@@ -226,11 +226,11 @@
             "decrypt",
             "wrapKey"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key4173570635/86e69282c6e306373b8aa6e53abe6296",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/key4173570635/86e69282c6e306373b8aa6e53abe6296",
           "kty": "RSA-HSM",
           "n": "rf0fKvZylwjRyA9C_fQQYJe7YcDJ2Emyhciig3LCqZQTsWpLsqwV1KnSsQCFterp0-WpwYXxit-rKe8gRqgrqUH1c7tmrLRV3YxvXKgXvRgGQbo-L7WEM9lOBCZlOLzRRZMcs74n1LwsRVgzlXow6Q9wg9_pmzNNjkIwo-Rz_2rfRSaA8gm3kM3VvnvsCsG3ESn-dx5RzgEhBbF8icrFLD8Xs2R0SDzMx4ESIBeqSSXYwTo4cB1XBQuwUR84AhA1EQcdXVefMj9YVIkOBUC3n7g9G8dR1mLlv93dUCga0xGD5UNvPYrgT-9AMRlRBvLIdKDIjxAEvLBdWF7pe0picQ"
         },
-        "recoveryId": "https://rosebudhsm.managedhsm.azure.net/deletedkeys/key4173570635",
+        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key4173570635",
         "scheduledPurgeDate": 1636064974
       }
     },
@@ -283,11 +283,11 @@
             "decrypt",
             "wrapKey"
           ],
-          "kid": "https://rosebudhsm.managedhsm.azure.net/keys/key4173570635/86e69282c6e306373b8aa6e53abe6296",
+          "kid": "https://fakekvurl.managedhsm.azure.net/keys/key4173570635/86e69282c6e306373b8aa6e53abe6296",
           "kty": "RSA-HSM",
           "n": "rf0fKvZylwjRyA9C_fQQYJe7YcDJ2Emyhciig3LCqZQTsWpLsqwV1KnSsQCFterp0-WpwYXxit-rKe8gRqgrqUH1c7tmrLRV3YxvXKgXvRgGQbo-L7WEM9lOBCZlOLzRRZMcs74n1LwsRVgzlXow6Q9wg9_pmzNNjkIwo-Rz_2rfRSaA8gm3kM3VvnvsCsG3ESn-dx5RzgEhBbF8icrFLD8Xs2R0SDzMx4ESIBeqSSXYwTo4cB1XBQuwUR84AhA1EQcdXVefMj9YVIkOBUC3n7g9G8dR1mLlv93dUCga0xGD5UNvPYrgT-9AMRlRBvLIdKDIjxAEvLBdWF7pe0picQ"
         },
-        "recoveryId": "https://rosebudhsm.managedhsm.azure.net/deletedkeys/key4173570635",
+        "recoveryId": "https://fakekvurl.managedhsm.azure.net/deletedkeys/key4173570635",
         "scheduledPurgeDate": 1636064974
       }
     },

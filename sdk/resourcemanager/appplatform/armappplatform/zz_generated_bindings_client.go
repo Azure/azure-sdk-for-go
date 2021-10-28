@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // BindingsClient contains the methods for the Bindings group.
@@ -31,8 +31,15 @@ type BindingsClient struct {
 }
 
 // NewBindingsClient creates a new instance of BindingsClient with the specified values.
-func NewBindingsClient(con *arm.Connection, subscriptionID string) *BindingsClient {
-	return &BindingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewBindingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *BindingsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &BindingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create a new Binding or update an exiting Binding.
@@ -100,7 +107,7 @@ func (client *BindingsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, bindingResource)
@@ -184,7 +191,7 @@ func (client *BindingsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -248,7 +255,7 @@ func (client *BindingsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -314,7 +321,7 @@ func (client *BindingsClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -407,7 +414,7 @@ func (client *BindingsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, bindingResource)

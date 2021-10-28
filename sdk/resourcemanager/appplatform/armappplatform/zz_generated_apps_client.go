@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // AppsClient contains the methods for the Apps group.
@@ -31,8 +31,15 @@ type AppsClient struct {
 }
 
 // NewAppsClient creates a new instance of AppsClient with the specified values.
-func NewAppsClient(con *arm.Connection, subscriptionID string) *AppsClient {
-	return &AppsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAppsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AppsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AppsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create a new App or update an exiting App.
@@ -96,7 +103,7 @@ func (client *AppsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, appResource)
@@ -176,7 +183,7 @@ func (client *AppsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -236,7 +243,7 @@ func (client *AppsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	if options != nil && options.SyncStatus != nil {
 		reqQP.Set("syncStatus", *options.SyncStatus)
 	}
@@ -308,7 +315,7 @@ func (client *AppsClient) getResourceUploadURLCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -370,7 +377,7 @@ func (client *AppsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -459,7 +466,7 @@ func (client *AppsClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, appResource)
@@ -519,7 +526,7 @@ func (client *AppsClient) validateDomainCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, validatePayload)

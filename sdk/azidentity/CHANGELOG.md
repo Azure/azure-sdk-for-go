@@ -19,15 +19,14 @@
 * Removed `ExcludeAzureCLICredential`, `ExcludeEnvironmentCredential`, and `ExcludeMSICredential`
   from `DefaultAzureCredentialOptions`
 * `NewClientCertificateCredential` requires a `[]*x509.Certificate` and `crypto.PrivateKey` instead of
-  a path to a certificate file. Added `LoadCerts` to simplify extracting these from a certificate in
-  common cases:
+  a path to a certificate file. Added `ParseCertificates` to simplify getting these in common cases:
   ```go
   // before
   cred, err := NewClientCertificateCredential("tenant", "client-id", "/cert.pem", nil)
 
   // after
   certData, err := os.ReadFile("/cert.pem")
-  certs, key, err := LoadCerts(certData, password)
+  certs, key, err := ParseCertificates(certData, password)
   cred, err := NewClientCertificateCredential(tenantID, clientID, certs, key, nil)
   ```
 * Removed `InteractiveBrowserCredentialOptions.ClientSecret` and `.Port`

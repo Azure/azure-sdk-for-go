@@ -29,7 +29,7 @@ type certTest struct {
 
 func newCertTest(name, certPath string, password string) certTest {
 	data, _ := os.ReadFile(certPath)
-	certs, key, err := LoadCerts(data, []byte(password))
+	certs, key, err := ParseCertificates(data, []byte(password))
 	if err != nil {
 		panic("failed to load " + certPath)
 	}

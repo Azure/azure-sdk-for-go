@@ -46,8 +46,8 @@ type ClientCertificateCredential struct {
 // NewClientCertificateCredential creates an instance of ClientCertificateCredential with the details needed to authenticate against Azure Active Directory with the specified certificate.
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
-// certs: one or more certificates, for example as returned by LoadCerts()
-// key: the signing certificate's private key, for example as returned by LoadCerts()
+// certs: one or more certificates, for example as returned by ParseCertificates()
+// key: the signing certificate's private key, for example as returned by ParseCertificates()
 // options: ClientCertificateCredentialOptions that can be used to provide additional configurations for the credential, such as the certificate password.
 func NewClientCertificateCredential(tenantID string, clientID string, certs []*x509.Certificate, key crypto.PrivateKey, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
 	if len(certs) == 0 {
@@ -94,10 +94,10 @@ func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.
 	return tk, nil
 }
 
-// LoadCerts loads certificates and a private key for use with NewClientCertificateCredential.
+// ParseCertificates loads certificates and a private key for use with NewClientCertificateCredential.
 // certData: certificate data encoded in PEM or PKCS12 format, including the certificate's private key.
 // password: the password required to decrypt the private key. Pass nil if the key is not encrypted. This function can't decrypt keys in PEM format.
-func LoadCerts(certData []byte, password []byte) ([]*x509.Certificate, crypto.PrivateKey, error) {
+func ParseCertificates(certData []byte, password []byte) ([]*x509.Certificate, crypto.PrivateKey, error) {
 	var blocks []*pem.Block
 	var err error
 	if len(password) == 0 {

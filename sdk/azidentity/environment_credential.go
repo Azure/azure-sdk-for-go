@@ -68,7 +68,7 @@ func NewEnvironmentCredential(options *EnvironmentCredentialOptions) (*Environme
 		if err != nil {
 			return nil, fmt.Errorf("Failed to read certificate file: %v", err)
 		}
-		certs, key, err := LoadCerts(certData, nil)
+		certs, key, err := ParseCertificates(certData, nil)
 		if err != nil {
 			return nil, fmt.Errorf(`failed to load certificate from "%s": %v`, certPath, err)
 		}

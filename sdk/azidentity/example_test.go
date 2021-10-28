@@ -29,9 +29,9 @@ func ExampleNewClientCertificateCredential() {
 	handleError(err)
 
 	// NewClientCertificateCredential requires at least one *x509.Certificate, and a crypto.PrivateKey.
-	// LoadCerts returns these given certificate data in PEM or PKCS12 format. It handles common scenarios
+	// ParseCertificates returns these given certificate data in PEM or PKCS12 format. It handles common scenarios
 	// but has limitations, for example it doesn't load PEM encrypted private keys.
-	certs, key, err := azidentity.LoadCerts(data, nil)
+	certs, key, err := azidentity.ParseCertificates(data, nil)
 	handleError(err)
 
 	cred, err = azidentity.NewClientCertificateCredential(tenantID, clientID, certs, key, nil)

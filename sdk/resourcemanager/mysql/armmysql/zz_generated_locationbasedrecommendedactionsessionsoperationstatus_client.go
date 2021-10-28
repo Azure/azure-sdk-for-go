@@ -11,13 +11,14 @@ package armmysql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // LocationBasedRecommendedActionSessionsOperationStatusClient contains the methods for the LocationBasedRecommendedActionSessionsOperationStatus group.
@@ -29,8 +30,15 @@ type LocationBasedRecommendedActionSessionsOperationStatusClient struct {
 }
 
 // NewLocationBasedRecommendedActionSessionsOperationStatusClient creates a new instance of LocationBasedRecommendedActionSessionsOperationStatusClient with the specified values.
-func NewLocationBasedRecommendedActionSessionsOperationStatusClient(con *arm.Connection, subscriptionID string) *LocationBasedRecommendedActionSessionsOperationStatusClient {
-	return &LocationBasedRecommendedActionSessionsOperationStatusClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewLocationBasedRecommendedActionSessionsOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationBasedRecommendedActionSessionsOperationStatusClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &LocationBasedRecommendedActionSessionsOperationStatusClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Recommendation action session operation status.

@@ -26,12 +26,41 @@ import (
 var pathToPackage = "sdk/keyvault/azkeys/testdata"
 
 const fakeKvURL = "https://fakekvurl.vault.azure.net/"
+const fakeKvMHSMURL = "https://fakekvurl.managedhsm.azure.net/"
+
+var enableHSM = false
+var hsmErrorMessage = "Could not find env var 'AZURE_MANAGEDHSM_URL'"
 
 func TestMain(m *testing.M) {
 	// Initialize
 	if recording.GetRecordMode() == "record" {
 		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
 		err := recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		err = recording.AddBodyKeySanitizer("$.key.kid", vaultUrl, fakeKvURL, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		mhsmURL, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL")
+		if ok {
+			enableHSM = true
+			err = recording.AddURISanitizer(fakeKvMHSMURL, mhsmURL, nil)
+			if err != nil {
+				panic(err)
+			}
+		}
+		err = recording.AddBodyKeySanitizer("$.key.kid", mhsmURL, fakeKvMHSMURL, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		tenantID := os.Getenv("KEYVAULT_TENANT_ID")
+		fmt.Println(tenantID)
+		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", tenantID, "00000000-0000-0000-0000-000000000000", nil)
 		if err != nil {
 			panic(err)
 		}
@@ -109,11 +138,11 @@ func createClient(t *testing.T, testType string) (*Client, error) {
 	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeKvURL)
 	var credOptions *azidentity.ClientSecretCredentialOptions
 	if testType == HSMTEST {
-		vaultUrl = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeKvURL)
+		vaultUrl = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeKvMHSMURL)
 	}
-	if recording.GetRecordMode() == "playback" {
-		vaultUrl = fakeKvURL
-	}
+	// if recording.GetRecordMode() == "playback" {
+	// 	vaultUrl = fakeKvURL
+	// }
 
 	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})
 	client, err := recording.GetHTTPClient(t)

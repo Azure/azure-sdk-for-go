@@ -25,6 +25,8 @@ import (
 
 var pathToPackage = "sdk/keyvault/azkeys/azcrypto"
 
+const fakeKvURL = "https://fakekvurl.vault.azure.net/"
+
 func startTest(t *testing.T) func() {
 	err := recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
@@ -120,9 +122,9 @@ func createClient(t *testing.T, key string) (*Client, error) {
 }
 
 func createKeyClient(t *testing.T) (*azkeys.Client, error) {
-	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", "https://fakekvurl.vault.azure.net/")
+	vaultUrl := recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeKvURL)
 	if recording.GetRecordMode() == "playback" {
-		vaultUrl = "https://fakekvurl.vault.azure.net/"
+		vaultUrl = fakeKvURL
 	}
 
 	p := NewRecordingPolicy(t, &recording.RecordingOptions{UseHTTPS: true})

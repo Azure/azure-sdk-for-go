@@ -23,7 +23,7 @@ func TestMain(m *testing.M) {
 	// Initialize
 	if recording.GetRecordMode() == "record" {
 		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-		err := recording.AddURISanitizer("https://fakekvurl.vault.azure.net/", vaultUrl, nil)
+		err := recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
 		if err != nil {
 			panic(err)
 		}

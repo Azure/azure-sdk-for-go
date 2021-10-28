@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
-// KeyCredential creates an immutable KeyCredential containing the
+// NewKeyCredential creates an KeyCredential containing the
 // account's primary or secondary key.
 func NewKeyCredential(accountKey string) (KeyCredential, error) {
 	c := KeyCredential{}

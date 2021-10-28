@@ -21,7 +21,9 @@ const (
 // ThroughputProperties describes the throughput configuration of a resource.
 // It must be initialized through the available constructors.
 type ThroughputProperties struct {
-	ETag         *azcore.ETag
+	// ETag contains the entity etag of the throughput information.
+	ETag *azcore.ETag
+	// LastModified contains the last modified time of the throughput information.
 	LastModified time.Time
 
 	version         string

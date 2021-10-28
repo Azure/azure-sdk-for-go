@@ -10,10 +10,9 @@ package armnotificationhubs
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AdmCredential - Description of a NotificationHub AdmCredential.
@@ -318,7 +317,7 @@ type NamespaceProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type NamespaceProperties.
 func (n NamespaceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdAt", (*timeRFC3339)(n.CreatedAt))
+	populateTimeRFC3339(objectMap, "createdAt", n.CreatedAt)
 	populate(objectMap, "critical", n.Critical)
 	populate(objectMap, "dataCenter", n.DataCenter)
 	populate(objectMap, "enabled", n.Enabled)
@@ -331,7 +330,7 @@ func (n NamespaceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "serviceBusEndpoint", n.ServiceBusEndpoint)
 	populate(objectMap, "status", n.Status)
 	populate(objectMap, "subscriptionId", n.SubscriptionID)
-	populate(objectMap, "updatedAt", (*timeRFC3339)(n.UpdatedAt))
+	populateTimeRFC3339(objectMap, "updatedAt", n.UpdatedAt)
 	return json.Marshal(objectMap)
 }
 
@@ -345,9 +344,7 @@ func (n *NamespaceProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			n.CreatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &n.CreatedAt)
 			delete(rawMsg, key)
 		case "critical":
 			err = unpopulate(val, &n.Critical)
@@ -386,9 +383,7 @@ func (n *NamespaceProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &n.SubscriptionID)
 			delete(rawMsg, key)
 		case "updatedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			n.UpdatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &n.UpdatedAt)
 			delete(rawMsg, key)
 		}
 		if err != nil {

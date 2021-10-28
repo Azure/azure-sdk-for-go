@@ -11,13 +11,14 @@ package armnotificationhubs
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // NotificationHubsClient contains the methods for the NotificationHubs group.
@@ -29,8 +30,15 @@ type NotificationHubsClient struct {
 }
 
 // NewNotificationHubsClient creates a new instance of NotificationHubsClient with the specified values.
-func NewNotificationHubsClient(con *arm.Connection, subscriptionID string) *NotificationHubsClient {
-	return &NotificationHubsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewNotificationHubsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NotificationHubsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &NotificationHubsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckNotificationHubAvailability - Checks the availability of the given notificationHub in a namespace.

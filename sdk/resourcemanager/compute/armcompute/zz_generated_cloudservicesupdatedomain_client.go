@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // CloudServicesUpdateDomainClient contains the methods for the CloudServicesUpdateDomain group.
@@ -32,8 +32,15 @@ type CloudServicesUpdateDomainClient struct {
 }
 
 // NewCloudServicesUpdateDomainClient creates a new instance of CloudServicesUpdateDomainClient with the specified values.
-func NewCloudServicesUpdateDomainClient(con *arm.Connection, subscriptionID string) *CloudServicesUpdateDomainClient {
-	return &CloudServicesUpdateDomainClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewCloudServicesUpdateDomainClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CloudServicesUpdateDomainClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CloudServicesUpdateDomainClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetUpdateDomain - Gets the specified update domain of a cloud service. Use nextLink property in the response to get the next page of update domains.

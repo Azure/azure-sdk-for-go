@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // CloudServicesClient contains the methods for the CloudServices group.
@@ -31,8 +31,15 @@ type CloudServicesClient struct {
 }
 
 // NewCloudServicesClient creates a new instance of CloudServicesClient with the specified values.
-func NewCloudServicesClient(con *arm.Connection, subscriptionID string) *CloudServicesClient {
-	return &CloudServicesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewCloudServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CloudServicesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CloudServicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create or update a cloud service. Please note some properties can be set only during cloud service creation.

@@ -12,7 +12,7 @@ package avs
 import (
 	"context"
 
-	original "github.com/Azure/azure-sdk-for-go/services/avs/mgmt/2021-06-01/avs"
+	original "github.com/Azure/azure-sdk-for-go/services/avs/mgmt/2021-12-01/avs"
 )
 
 const (
@@ -37,6 +37,20 @@ const (
 	AddonTypeHCX             AddonType = original.AddonTypeHCX
 	AddonTypeSRM             AddonType = original.AddonTypeSRM
 	AddonTypeVR              AddonType = original.AddonTypeVR
+)
+
+type AffinityType = original.AffinityType
+
+const (
+	AffinityTypeAffinity     AffinityType = original.AffinityTypeAffinity
+	AffinityTypeAntiAffinity AffinityType = original.AffinityTypeAntiAffinity
+)
+
+type AvailabilityStrategy = original.AvailabilityStrategy
+
+const (
+	AvailabilityStrategyDualZone   AvailabilityStrategy = original.AvailabilityStrategyDualZone
+	AvailabilityStrategySingleZone AvailabilityStrategy = original.AvailabilityStrategySingleZone
 )
 
 type CloudLinkStatus = original.CloudLinkStatus
@@ -88,12 +102,45 @@ const (
 	DatastoreProvisioningStateUpdating  DatastoreProvisioningState = original.DatastoreProvisioningStateUpdating
 )
 
+type DatastoreStatus = original.DatastoreStatus
+
+const (
+	DatastoreStatusAccessible        DatastoreStatus = original.DatastoreStatusAccessible
+	DatastoreStatusAttached          DatastoreStatus = original.DatastoreStatusAttached
+	DatastoreStatusDeadOrError       DatastoreStatus = original.DatastoreStatusDeadOrError
+	DatastoreStatusDetached          DatastoreStatus = original.DatastoreStatusDetached
+	DatastoreStatusInaccessible      DatastoreStatus = original.DatastoreStatusInaccessible
+	DatastoreStatusLostCommunication DatastoreStatus = original.DatastoreStatusLostCommunication
+	DatastoreStatusUnknown           DatastoreStatus = original.DatastoreStatusUnknown
+)
+
 type DhcpType = original.DhcpType
 
 const (
 	DhcpTypeRELAY                     DhcpType = original.DhcpTypeRELAY
 	DhcpTypeSERVER                    DhcpType = original.DhcpTypeSERVER
 	DhcpTypeWorkloadNetworkDhcpEntity DhcpType = original.DhcpTypeWorkloadNetworkDhcpEntity
+)
+
+type EncryptionKeyStatus = original.EncryptionKeyStatus
+
+const (
+	EncryptionKeyStatusAccessDenied EncryptionKeyStatus = original.EncryptionKeyStatusAccessDenied
+	EncryptionKeyStatusConnected    EncryptionKeyStatus = original.EncryptionKeyStatusConnected
+)
+
+type EncryptionState = original.EncryptionState
+
+const (
+	EncryptionStateDisabled EncryptionState = original.EncryptionStateDisabled
+	EncryptionStateEnabled  EncryptionState = original.EncryptionStateEnabled
+)
+
+type EncryptionVersionType = original.EncryptionVersionType
+
+const (
+	EncryptionVersionTypeAutoDetected EncryptionVersionType = original.EncryptionVersionTypeAutoDetected
+	EncryptionVersionTypeFixed        EncryptionVersionType = original.EncryptionVersionTypeFixed
 )
 
 type ExpressRouteAuthorizationProvisioningState = original.ExpressRouteAuthorizationProvisioningState
@@ -150,16 +197,36 @@ const (
 	OptionalParamEnumRequired OptionalParamEnum = original.OptionalParamEnumRequired
 )
 
+type PlacementPolicyProvisioningState = original.PlacementPolicyProvisioningState
+
+const (
+	PlacementPolicyProvisioningStateBuilding  PlacementPolicyProvisioningState = original.PlacementPolicyProvisioningStateBuilding
+	PlacementPolicyProvisioningStateDeleting  PlacementPolicyProvisioningState = original.PlacementPolicyProvisioningStateDeleting
+	PlacementPolicyProvisioningStateFailed    PlacementPolicyProvisioningState = original.PlacementPolicyProvisioningStateFailed
+	PlacementPolicyProvisioningStateSucceeded PlacementPolicyProvisioningState = original.PlacementPolicyProvisioningStateSucceeded
+	PlacementPolicyProvisioningStateUpdating  PlacementPolicyProvisioningState = original.PlacementPolicyProvisioningStateUpdating
+)
+
+type PlacementPolicyState = original.PlacementPolicyState
+
+const (
+	PlacementPolicyStateDisabled PlacementPolicyState = original.PlacementPolicyStateDisabled
+	PlacementPolicyStateEnabled  PlacementPolicyState = original.PlacementPolicyStateEnabled
+)
+
 type PortMirroringDirectionEnum = original.PortMirroringDirectionEnum
 
 const (
-	PortMirroringDirectionEnumINGRESSEGRESSBIDIRECTIONAL PortMirroringDirectionEnum = original.PortMirroringDirectionEnumINGRESSEGRESSBIDIRECTIONAL
+	PortMirroringDirectionEnumBIDIRECTIONAL PortMirroringDirectionEnum = original.PortMirroringDirectionEnumBIDIRECTIONAL
+	PortMirroringDirectionEnumEGRESS        PortMirroringDirectionEnum = original.PortMirroringDirectionEnumEGRESS
+	PortMirroringDirectionEnumINGRESS       PortMirroringDirectionEnum = original.PortMirroringDirectionEnumINGRESS
 )
 
 type PortMirroringStatusEnum = original.PortMirroringStatusEnum
 
 const (
-	PortMirroringStatusEnumSUCCESSFAILURE PortMirroringStatusEnum = original.PortMirroringStatusEnumSUCCESSFAILURE
+	PortMirroringStatusEnumFAILURE PortMirroringStatusEnum = original.PortMirroringStatusEnumFAILURE
+	PortMirroringStatusEnumSUCCESS PortMirroringStatusEnum = original.PortMirroringStatusEnumSUCCESS
 )
 
 type PrivateCloudProvisioningState = original.PrivateCloudProvisioningState
@@ -179,6 +246,13 @@ type QuotaEnabled = original.QuotaEnabled
 const (
 	QuotaEnabledDisabled QuotaEnabled = original.QuotaEnabledDisabled
 	QuotaEnabledEnabled  QuotaEnabled = original.QuotaEnabledEnabled
+)
+
+type ResourceIdentityType = original.ResourceIdentityType
+
+const (
+	ResourceIdentityTypeNone           ResourceIdentityType = original.ResourceIdentityTypeNone
+	ResourceIdentityTypeSystemAssigned ResourceIdentityType = original.ResourceIdentityTypeSystemAssigned
 )
 
 type ScriptExecutionProvisioningState = original.ScriptExecutionProvisioningState
@@ -216,7 +290,8 @@ const (
 type SegmentStatusEnum = original.SegmentStatusEnum
 
 const (
-	SegmentStatusEnumSUCCESSFAILURE SegmentStatusEnum = original.SegmentStatusEnumSUCCESSFAILURE
+	SegmentStatusEnumFAILURE SegmentStatusEnum = original.SegmentStatusEnumFAILURE
+	SegmentStatusEnumSUCCESS SegmentStatusEnum = original.SegmentStatusEnumSUCCESS
 )
 
 type SslEnum = original.SslEnum
@@ -237,22 +312,40 @@ const (
 type Type = original.Type
 
 const (
-	TypeCredential               Type = original.TypeCredential
-	TypeScriptExecutionParameter Type = original.TypeScriptExecutionParameter
-	TypeSecureValue              Type = original.TypeSecureValue
-	TypeValue                    Type = original.TypeValue
+	TypePlacementPolicyProperties Type = original.TypePlacementPolicyProperties
+	TypeVMHost                    Type = original.TypeVMHost
+	TypeVMVM                      Type = original.TypeVMVM
+)
+
+type TypeBasicScriptExecutionParameter = original.TypeBasicScriptExecutionParameter
+
+const (
+	TypeBasicScriptExecutionParameterTypeCredential               TypeBasicScriptExecutionParameter = original.TypeBasicScriptExecutionParameterTypeCredential
+	TypeBasicScriptExecutionParameterTypeScriptExecutionParameter TypeBasicScriptExecutionParameter = original.TypeBasicScriptExecutionParameterTypeScriptExecutionParameter
+	TypeBasicScriptExecutionParameterTypeSecureValue              TypeBasicScriptExecutionParameter = original.TypeBasicScriptExecutionParameterTypeSecureValue
+	TypeBasicScriptExecutionParameterTypeValue                    TypeBasicScriptExecutionParameter = original.TypeBasicScriptExecutionParameterTypeValue
 )
 
 type VMGroupStatusEnum = original.VMGroupStatusEnum
 
 const (
-	VMGroupStatusEnumSUCCESSFAILURE VMGroupStatusEnum = original.VMGroupStatusEnumSUCCESSFAILURE
+	VMGroupStatusEnumFAILURE VMGroupStatusEnum = original.VMGroupStatusEnumFAILURE
+	VMGroupStatusEnumSUCCESS VMGroupStatusEnum = original.VMGroupStatusEnumSUCCESS
 )
 
 type VMTypeEnum = original.VMTypeEnum
 
 const (
-	VMTypeEnumREGULAREDGESERVICE VMTypeEnum = original.VMTypeEnumREGULAREDGESERVICE
+	VMTypeEnumEDGE    VMTypeEnum = original.VMTypeEnumEDGE
+	VMTypeEnumREGULAR VMTypeEnum = original.VMTypeEnumREGULAR
+	VMTypeEnumSERVICE VMTypeEnum = original.VMTypeEnumSERVICE
+)
+
+type VirtualMachineRestrictMovementState = original.VirtualMachineRestrictMovementState
+
+const (
+	VirtualMachineRestrictMovementStateDisabled VirtualMachineRestrictMovementState = original.VirtualMachineRestrictMovementStateDisabled
+	VirtualMachineRestrictMovementStateEnabled  VirtualMachineRestrictMovementState = original.VirtualMachineRestrictMovementStateEnabled
 )
 
 type VisibilityParameterEnum = original.VisibilityParameterEnum
@@ -347,8 +440,10 @@ type AdminCredentials = original.AdminCredentials
 type AuthorizationsClient = original.AuthorizationsClient
 type AuthorizationsCreateOrUpdateFuture = original.AuthorizationsCreateOrUpdateFuture
 type AuthorizationsDeleteFuture = original.AuthorizationsDeleteFuture
+type AvailabilityProperties = original.AvailabilityProperties
 type BaseClient = original.BaseClient
 type BasicAddonProperties = original.BasicAddonProperties
+type BasicPlacementPolicyProperties = original.BasicPlacementPolicyProperties
 type BasicScriptExecutionParameter = original.BasicScriptExecutionParameter
 type BasicWorkloadNetworkDhcpEntity = original.BasicWorkloadNetworkDhcpEntity
 type Circuit = original.Circuit
@@ -382,6 +477,8 @@ type DatastoresClient = original.DatastoresClient
 type DatastoresCreateOrUpdateFuture = original.DatastoresCreateOrUpdateFuture
 type DatastoresDeleteFuture = original.DatastoresDeleteFuture
 type DiskPoolVolume = original.DiskPoolVolume
+type Encryption = original.Encryption
+type EncryptionKeyVaultProperties = original.EncryptionKeyVaultProperties
 type Endpoints = original.Endpoints
 type ErrorAdditionalInfo = original.ErrorAdditionalInfo
 type ErrorResponse = original.ErrorResponse
@@ -419,7 +516,19 @@ type OperationListPage = original.OperationListPage
 type OperationProperties = original.OperationProperties
 type OperationsClient = original.OperationsClient
 type PSCredentialExecutionParameter = original.PSCredentialExecutionParameter
+type PlacementPoliciesClient = original.PlacementPoliciesClient
+type PlacementPoliciesCreateOrUpdateFuture = original.PlacementPoliciesCreateOrUpdateFuture
+type PlacementPoliciesDeleteFuture = original.PlacementPoliciesDeleteFuture
+type PlacementPoliciesList = original.PlacementPoliciesList
+type PlacementPoliciesListIterator = original.PlacementPoliciesListIterator
+type PlacementPoliciesListPage = original.PlacementPoliciesListPage
+type PlacementPoliciesUpdateFuture = original.PlacementPoliciesUpdateFuture
+type PlacementPolicy = original.PlacementPolicy
+type PlacementPolicyProperties = original.PlacementPolicyProperties
+type PlacementPolicyUpdate = original.PlacementPolicyUpdate
+type PlacementPolicyUpdateProperties = original.PlacementPolicyUpdateProperties
 type PrivateCloud = original.PrivateCloud
+type PrivateCloudIdentity = original.PrivateCloudIdentity
 type PrivateCloudList = original.PrivateCloudList
 type PrivateCloudListIterator = original.PrivateCloudListIterator
 type PrivateCloudListPage = original.PrivateCloudListPage
@@ -463,6 +572,16 @@ type ServiceSpecification = original.ServiceSpecification
 type Sku = original.Sku
 type TrackedResource = original.TrackedResource
 type Trial = original.Trial
+type VMHostPlacementPolicyProperties = original.VMHostPlacementPolicyProperties
+type VMVMPlacementPolicyProperties = original.VMVMPlacementPolicyProperties
+type VirtualMachine = original.VirtualMachine
+type VirtualMachineProperties = original.VirtualMachineProperties
+type VirtualMachineRestrictMovement = original.VirtualMachineRestrictMovement
+type VirtualMachinesClient = original.VirtualMachinesClient
+type VirtualMachinesList = original.VirtualMachinesList
+type VirtualMachinesListIterator = original.VirtualMachinesListIterator
+type VirtualMachinesListPage = original.VirtualMachinesListPage
+type VirtualMachinesRestrictMovementFuture = original.VirtualMachinesRestrictMovementFuture
 type WorkloadNetworkDNSService = original.WorkloadNetworkDNSService
 type WorkloadNetworkDNSServiceProperties = original.WorkloadNetworkDNSServiceProperties
 type WorkloadNetworkDNSServicesList = original.WorkloadNetworkDNSServicesList
@@ -639,6 +758,18 @@ func NewOperationsClient(subscriptionID string) OperationsClient {
 func NewOperationsClientWithBaseURI(baseURI string, subscriptionID string) OperationsClient {
 	return original.NewOperationsClientWithBaseURI(baseURI, subscriptionID)
 }
+func NewPlacementPoliciesClient(subscriptionID string) PlacementPoliciesClient {
+	return original.NewPlacementPoliciesClient(subscriptionID)
+}
+func NewPlacementPoliciesClientWithBaseURI(baseURI string, subscriptionID string) PlacementPoliciesClient {
+	return original.NewPlacementPoliciesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewPlacementPoliciesListIterator(page PlacementPoliciesListPage) PlacementPoliciesListIterator {
+	return original.NewPlacementPoliciesListIterator(page)
+}
+func NewPlacementPoliciesListPage(cur PlacementPoliciesList, getNextPage func(context.Context, PlacementPoliciesList) (PlacementPoliciesList, error)) PlacementPoliciesListPage {
+	return original.NewPlacementPoliciesListPage(cur, getNextPage)
+}
 func NewPrivateCloudListIterator(page PrivateCloudListPage) PrivateCloudListIterator {
 	return original.NewPrivateCloudListIterator(page)
 }
@@ -686,6 +817,18 @@ func NewScriptPackagesListIterator(page ScriptPackagesListPage) ScriptPackagesLi
 }
 func NewScriptPackagesListPage(cur ScriptPackagesList, getNextPage func(context.Context, ScriptPackagesList) (ScriptPackagesList, error)) ScriptPackagesListPage {
 	return original.NewScriptPackagesListPage(cur, getNextPage)
+}
+func NewVirtualMachinesClient(subscriptionID string) VirtualMachinesClient {
+	return original.NewVirtualMachinesClient(subscriptionID)
+}
+func NewVirtualMachinesClientWithBaseURI(baseURI string, subscriptionID string) VirtualMachinesClient {
+	return original.NewVirtualMachinesClientWithBaseURI(baseURI, subscriptionID)
+}
+func NewVirtualMachinesListIterator(page VirtualMachinesListPage) VirtualMachinesListIterator {
+	return original.NewVirtualMachinesListIterator(page)
+}
+func NewVirtualMachinesListPage(cur VirtualMachinesList, getNextPage func(context.Context, VirtualMachinesList) (VirtualMachinesList, error)) VirtualMachinesListPage {
+	return original.NewVirtualMachinesListPage(cur, getNextPage)
 }
 func NewWithBaseURI(baseURI string, subscriptionID string) BaseClient {
 	return original.NewWithBaseURI(baseURI, subscriptionID)
@@ -756,6 +899,12 @@ func PossibleAddonProvisioningStateValues() []AddonProvisioningState {
 func PossibleAddonTypeValues() []AddonType {
 	return original.PossibleAddonTypeValues()
 }
+func PossibleAffinityTypeValues() []AffinityType {
+	return original.PossibleAffinityTypeValues()
+}
+func PossibleAvailabilityStrategyValues() []AvailabilityStrategy {
+	return original.PossibleAvailabilityStrategyValues()
+}
 func PossibleCloudLinkStatusValues() []CloudLinkStatus {
 	return original.PossibleCloudLinkStatusValues()
 }
@@ -771,8 +920,20 @@ func PossibleDNSServiceStatusEnumValues() []DNSServiceStatusEnum {
 func PossibleDatastoreProvisioningStateValues() []DatastoreProvisioningState {
 	return original.PossibleDatastoreProvisioningStateValues()
 }
+func PossibleDatastoreStatusValues() []DatastoreStatus {
+	return original.PossibleDatastoreStatusValues()
+}
 func PossibleDhcpTypeValues() []DhcpType {
 	return original.PossibleDhcpTypeValues()
+}
+func PossibleEncryptionKeyStatusValues() []EncryptionKeyStatus {
+	return original.PossibleEncryptionKeyStatusValues()
+}
+func PossibleEncryptionStateValues() []EncryptionState {
+	return original.PossibleEncryptionStateValues()
+}
+func PossibleEncryptionVersionTypeValues() []EncryptionVersionType {
+	return original.PossibleEncryptionVersionTypeValues()
 }
 func PossibleExpressRouteAuthorizationProvisioningStateValues() []ExpressRouteAuthorizationProvisioningState {
 	return original.PossibleExpressRouteAuthorizationProvisioningStateValues()
@@ -795,6 +956,12 @@ func PossibleMountOptionEnumValues() []MountOptionEnum {
 func PossibleOptionalParamEnumValues() []OptionalParamEnum {
 	return original.PossibleOptionalParamEnumValues()
 }
+func PossiblePlacementPolicyProvisioningStateValues() []PlacementPolicyProvisioningState {
+	return original.PossiblePlacementPolicyProvisioningStateValues()
+}
+func PossiblePlacementPolicyStateValues() []PlacementPolicyState {
+	return original.PossiblePlacementPolicyStateValues()
+}
 func PossiblePortMirroringDirectionEnumValues() []PortMirroringDirectionEnum {
 	return original.PossiblePortMirroringDirectionEnumValues()
 }
@@ -806,6 +973,9 @@ func PossiblePrivateCloudProvisioningStateValues() []PrivateCloudProvisioningSta
 }
 func PossibleQuotaEnabledValues() []QuotaEnabled {
 	return original.PossibleQuotaEnabledValues()
+}
+func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
+	return original.PossibleResourceIdentityTypeValues()
 }
 func PossibleScriptExecutionProvisioningStateValues() []ScriptExecutionProvisioningState {
 	return original.PossibleScriptExecutionProvisioningStateValues()
@@ -825,6 +995,9 @@ func PossibleSslEnumValues() []SslEnum {
 func PossibleTrialStatusValues() []TrialStatus {
 	return original.PossibleTrialStatusValues()
 }
+func PossibleTypeBasicScriptExecutionParameterValues() []TypeBasicScriptExecutionParameter {
+	return original.PossibleTypeBasicScriptExecutionParameterValues()
+}
 func PossibleTypeValues() []Type {
 	return original.PossibleTypeValues()
 }
@@ -833,6 +1006,9 @@ func PossibleVMGroupStatusEnumValues() []VMGroupStatusEnum {
 }
 func PossibleVMTypeEnumValues() []VMTypeEnum {
 	return original.PossibleVMTypeEnumValues()
+}
+func PossibleVirtualMachineRestrictMovementStateValues() []VirtualMachineRestrictMovementState {
+	return original.PossibleVirtualMachineRestrictMovementStateValues()
 }
 func PossibleVisibilityParameterEnumValues() []VisibilityParameterEnum {
 	return original.PossibleVisibilityParameterEnumValues()

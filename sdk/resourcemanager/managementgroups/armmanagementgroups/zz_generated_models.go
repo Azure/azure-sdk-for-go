@@ -10,10 +10,9 @@ package armmanagementgroups
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AzureAsyncOperationResults - The results of Azure-AsyncOperation.
@@ -108,7 +107,7 @@ func (c CreateManagementGroupDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "parent", c.Parent)
 	populate(objectMap, "updatedBy", c.UpdatedBy)
-	populate(objectMap, "updatedTime", (*timeRFC3339)(c.UpdatedTime))
+	populateTimeRFC3339(objectMap, "updatedTime", c.UpdatedTime)
 	populate(objectMap, "version", c.Version)
 	return json.Marshal(objectMap)
 }
@@ -129,9 +128,7 @@ func (c *CreateManagementGroupDetails) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &c.UpdatedBy)
 			delete(rawMsg, key)
 		case "updatedTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			c.UpdatedTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &c.UpdatedTime)
 			delete(rawMsg, key)
 		case "version":
 			err = unpopulate(val, &c.Version)
@@ -637,7 +634,7 @@ func (m ManagementGroupDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "parent", m.Parent)
 	populate(objectMap, "path", m.Path)
 	populate(objectMap, "updatedBy", m.UpdatedBy)
-	populate(objectMap, "updatedTime", (*timeRFC3339)(m.UpdatedTime))
+	populateTimeRFC3339(objectMap, "updatedTime", m.UpdatedTime)
 	populate(objectMap, "version", m.Version)
 	return json.Marshal(objectMap)
 }
@@ -667,9 +664,7 @@ func (m *ManagementGroupDetails) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &m.UpdatedBy)
 			delete(rawMsg, key)
 		case "updatedTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			m.UpdatedTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &m.UpdatedTime)
 			delete(rawMsg, key)
 		case "version":
 			err = unpopulate(val, &m.Version)

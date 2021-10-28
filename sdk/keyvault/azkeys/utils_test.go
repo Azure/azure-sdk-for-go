@@ -45,24 +45,25 @@ func TestMain(m *testing.M) {
 			panic(err)
 		}
 
+		tenantID := os.Getenv("KEYVAULT_TENANT_ID")
+		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", tenantID, "00000000-0000-0000-0000-000000000000", nil)
+		if err != nil {
+			panic(err)
+		}
+
 		mhsmURL, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL")
 		if ok {
+			fmt.Println("Did not find managed HSM url, skipping those tests")
 			enableHSM = true
 			err = recording.AddURISanitizer(fakeKvMHSMURL, mhsmURL, nil)
 			if err != nil {
 				panic(err)
 			}
-		}
-		err = recording.AddBodyKeySanitizer("$.key.kid", mhsmURL, fakeKvMHSMURL, nil)
-		if err != nil {
-			panic(err)
-		}
 
-		tenantID := os.Getenv("KEYVAULT_TENANT_ID")
-		fmt.Println(tenantID)
-		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", tenantID, "00000000-0000-0000-0000-000000000000", nil)
-		if err != nil {
-			panic(err)
+			err = recording.AddBodyKeySanitizer("$.key.kid", mhsmURL, fakeKvMHSMURL, nil)
+			if err != nil {
+				panic(err)
+			}
 		}
 	}
 
@@ -79,6 +80,25 @@ func TestMain(m *testing.M) {
 	// 4. Error out if applicable
 	os.Exit(exitVal)
 }
+
+func startTest(t *testing.T) func() {
+	err := recording.Start(t, pathToPackage, nil)
+	require.NoError(t, err)
+	return func() {
+		err := recording.Stop(t, nil)
+		require.NoError(t, err)
+	}
+}
+
+func skipHSM(t *testing.T, testType string) {
+	if testType == HSMTEST && !enableHSM {
+		if recording.GetRecordMode() != recording.PlaybackMode {
+			t.Log("Skipping HSM Test")
+			t.Skip()
+		}
+	}
+}
+
 func createRandomName(t *testing.T, prefix string) (string, error) {
 	h := fnv.New32a()
 	_, err := h.Write([]byte(t.Name()))

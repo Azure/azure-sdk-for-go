@@ -20,7 +20,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "97",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:51 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:00 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -29,7 +29,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "a993ece4-5f0f-4725-9b35-0b362c387ecb",
+        "x-ms-request-id": "6716e609-3dfb-4806-afb6-36eeb7d9d747",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -62,7 +62,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "693",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:52 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:00 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -70,12 +70,12 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "b46c1c5f-2f4d-443a-aec8-b9b0fe1ce53f",
+        "x-ms-request-id": "fa728e63-5726-4a4d-b84e-158c28aea35f",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey0762797297/37e5acface7649569dadc0748553b7ce",
+          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey0762797297/b2109278a4844e1abd350145c44838c2",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -85,52 +85,15 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "vIfsuAWhYIkOy0Yqsb187u4UB9wQpWvupnmviJ8wQJR1KkhGbX_4YbUHmEh07cyUJbVf1FUrRjp_tAWOfUeG1okes-Gaxs_pV3fag1rgcoI58OCptHYPC4Lt4Vf-ygRLSkkP_7BQLem0CEyUu6Pvsz15zr8jzlcIsvYeUzo4XpeS8GahRaGPlWehEv2ZksZJ_nlefjCRNYEpmJLtvTLDX2-58I3WTCHZsXxGr9Hbq7OCNh17WbBvz5crWrX6meIyh5zxuxKftQPwbqVIB7AX_48yZEjzaruAe_EROBZeLVt_JNH3uCGVGznAz7a_B-eheQmSw_25sLx4-SrLXeNOvQ",
+          "n": "zCESyMnygzRPCAzfQP-QzHUpJHFJjfK1_s23-bin5p1wpUsenmUBb-oY6V1VmqCbieKYxSA1brhOQ4gpaw_fGtwfA41lSngY3WcbYdrz1yCwe-0stzOFx5ieuAIbrWv33XeWQdABwby7hXL3379C0XZP12VJPS5hKDFxbV5M5lQUMGg0s1omXEtPSuThRORxJ0RVJHKF3bto5XovxVTrlEneQokRSIPxPOGDwz3JZvKv0r90cXJo1iT9g5LH4BTJaiGV1TgpHB4teOOCXGRbAREG3L25vHEPbw29ZR5_Tb8bpndcO0NGbXe7n8ibIH3KmQE7xGac8qNo112xkRMgeQ",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
-          "created": 1635445432,
-          "updated": 1635445432,
+          "created": 1635456420,
+          "updated": 1635456420,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-delkey0762797297?api-version=7.3-preview",
-      "RequestMethod": "DELETE",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "DELETE",
-        ":path": "/keys/list-delkey0762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:52 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "611c9b24-c2ff-42af-be70-834ab87682ff",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
         }
       }
     },
@@ -153,7 +116,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "831",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:52 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:01 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -161,15 +124,15 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "e4506f42-5cfb-46a8-9e20-15f77dc6f757",
+        "x-ms-request-id": "bfb39e2d-cf0b-477d-8651-aa234d22df66",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey0762797297",
-        "deletedDate": 1635445433,
-        "scheduledPurgeDate": 1636050233,
+        "deletedDate": 1635456421,
+        "scheduledPurgeDate": 1636061221,
         "key": {
-          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey0762797297/37e5acface7649569dadc0748553b7ce",
+          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey0762797297/b2109278a4844e1abd350145c44838c2",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -179,13 +142,13 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "vIfsuAWhYIkOy0Yqsb187u4UB9wQpWvupnmviJ8wQJR1KkhGbX_4YbUHmEh07cyUJbVf1FUrRjp_tAWOfUeG1okes-Gaxs_pV3fag1rgcoI58OCptHYPC4Lt4Vf-ygRLSkkP_7BQLem0CEyUu6Pvsz15zr8jzlcIsvYeUzo4XpeS8GahRaGPlWehEv2ZksZJ_nlefjCRNYEpmJLtvTLDX2-58I3WTCHZsXxGr9Hbq7OCNh17WbBvz5crWrX6meIyh5zxuxKftQPwbqVIB7AX_48yZEjzaruAe_EROBZeLVt_JNH3uCGVGznAz7a_B-eheQmSw_25sLx4-SrLXeNOvQ",
+          "n": "zCESyMnygzRPCAzfQP-QzHUpJHFJjfK1_s23-bin5p1wpUsenmUBb-oY6V1VmqCbieKYxSA1brhOQ4gpaw_fGtwfA41lSngY3WcbYdrz1yCwe-0stzOFx5ieuAIbrWv33XeWQdABwby7hXL3379C0XZP12VJPS5hKDFxbV5M5lQUMGg0s1omXEtPSuThRORxJ0RVJHKF3bto5XovxVTrlEneQokRSIPxPOGDwz3JZvKv0r90cXJo1iT9g5LH4BTJaiGV1TgpHB4teOOCXGRbAREG3L25vHEPbw29ZR5_Tb8bpndcO0NGbXe7n8ibIH3KmQE7xGac8qNo112xkRMgeQ",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
-          "created": 1635445432,
-          "updated": 1635445432,
+          "created": 1635456420,
+          "updated": 1635456420,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
         }
@@ -201,43 +164,6 @@
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:53 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "7691ec64-ebaa-4fdf-92ed-140b477bf3e9",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey0762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey0762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
       },
@@ -247,7 +173,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "89",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:53 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:01 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -255,198 +181,13 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "4fe957d5-621d-4872-a4e8-0318033e249a",
+        "x-ms-request-id": "49e119fd-f5f7-41fc-aa00-fadd2b5aa8a5",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "error": {
           "code": "KeyNotFound",
           "message": "Deleted Key not found: list-delkey0762797297"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey0762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey0762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:53 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "83dac429-fc85-429f-a628-64a0378ca074",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey0762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey0762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "89",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:53 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "306cad5c-45c9-4100-a5cb-6089dd12efd6",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "KeyNotFound",
-          "message": "Deleted Key not found: list-delkey0762797297"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey0762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey0762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:54 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "5ea13c01-bbc2-4f04-876f-5edaa898b02c",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey0762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey0762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "89",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:54 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "ea890d0b-d25d-4423-a909-ab1a06bc392e",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "KeyNotFound",
-          "message": "Deleted Key not found: list-delkey0762797297"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey0762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey0762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:54 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "1c635d34-1072-4e5c-9b69-deb35bdbd594",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
         }
       }
     },
@@ -469,7 +210,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "831",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:54 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:01 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -477,15 +218,15 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "25b6f0f7-bd0c-4d52-b1ce-afc44470804b",
+        "x-ms-request-id": "05069b4d-83da-49c4-b476-6d8aafd54115",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey0762797297",
-        "deletedDate": 1635445433,
-        "scheduledPurgeDate": 1636050233,
+        "deletedDate": 1635456421,
+        "scheduledPurgeDate": 1636061221,
         "key": {
-          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey0762797297/37e5acface7649569dadc0748553b7ce",
+          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey0762797297/b2109278a4844e1abd350145c44838c2",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -495,54 +236,15 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "vIfsuAWhYIkOy0Yqsb187u4UB9wQpWvupnmviJ8wQJR1KkhGbX_4YbUHmEh07cyUJbVf1FUrRjp_tAWOfUeG1okes-Gaxs_pV3fag1rgcoI58OCptHYPC4Lt4Vf-ygRLSkkP_7BQLem0CEyUu6Pvsz15zr8jzlcIsvYeUzo4XpeS8GahRaGPlWehEv2ZksZJ_nlefjCRNYEpmJLtvTLDX2-58I3WTCHZsXxGr9Hbq7OCNh17WbBvz5crWrX6meIyh5zxuxKftQPwbqVIB7AX_48yZEjzaruAe_EROBZeLVt_JNH3uCGVGznAz7a_B-eheQmSw_25sLx4-SrLXeNOvQ",
+          "n": "zCESyMnygzRPCAzfQP-QzHUpJHFJjfK1_s23-bin5p1wpUsenmUBb-oY6V1VmqCbieKYxSA1brhOQ4gpaw_fGtwfA41lSngY3WcbYdrz1yCwe-0stzOFx5ieuAIbrWv33XeWQdABwby7hXL3379C0XZP12VJPS5hKDFxbV5M5lQUMGg0s1omXEtPSuThRORxJ0RVJHKF3bto5XovxVTrlEneQokRSIPxPOGDwz3JZvKv0r90cXJo1iT9g5LH4BTJaiGV1TgpHB4teOOCXGRbAREG3L25vHEPbw29ZR5_Tb8bpndcO0NGbXe7n8ibIH3KmQE7xGac8qNo112xkRMgeQ",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
-          "created": 1635445432,
-          "updated": 1635445432,
+          "created": 1635456420,
+          "updated": 1635456420,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-delkey1762797297/create?api-version=7.3-preview",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "POST",
-        ":path": "/keys/list-delkey1762797297/create?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Content-Length": "0",
-        "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:55 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "0765959c-b29c-4941-b1ac-90804fed0a02",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
         }
       }
     },
@@ -569,7 +271,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "693",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:55 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:02 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -577,12 +279,12 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "411ed9b3-2ac8-4a5e-8c4f-f78614e870c8",
+        "x-ms-request-id": "9c8ff54a-6fb2-4520-94a2-e855db342b11",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey1762797297/a3c367ca4cee4493b059200a171897d0",
+          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey1762797297/29eba18860d546b298a63480118669d2",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -592,52 +294,15 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "vPMFSRdrdxlgp1SYfyt2WY875BxHBmmLreeUfOZb_4fVopcUpG1RL5rpukgWDpxnL_nJMYTYM_CqB-_FItADplPdoqdpi8aha-M4SkinVqqeMpQp670CnqL26dsiowGkfmvo8h_xdHBd9XLYMTGFx5hmCJ_Rm2n3w_GqXZVOmv399i_jLjqdTqxRwJ9qoT1Am7Fju0BHVM6IePQb-kCzlFJg3Pz86w1t4eB66PP23C9KQHjWwvwxEJXT8LR9LtpFqY9RtGYipVPCnSEwXV8z0YRyD271TsWkap7aSO5w1BBSOb8GxcFCn-V5CIURx-OT69Yr0pQ8B9cHfWhVQrUoSQ",
+          "n": "nnN75iaf0tDJXoM0qSZyvMlzYfr1L1ma7OnMSjvJiATaApDXyDDsvN4jTW_NBybdqp-p2Z5kEXvwxQu3RiewLA-vPYgekSvSyHNHc9wOvM0LFSyQhMyyNoTxZbzEP1hMLq2wTIJwCvuV0EndunUPuayqHvAavWtUk4oLNdTQCDEZ-IQmAB7GuG_fM0oALnPTY1ktu5z3s1lJG7q_PaCK5K5DOqbp5rna9KRixT-ZgtwTw3lKLqpaqmy_IPvy9xOIaJD6hzct_tss3_C0d2tcSUghJrgIKWHLPMaPmKlK-24VwD5eGvs6kLio1BtwW9JQXIpnzj5beJ9cq1bzXtzeFQ",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
-          "created": 1635445435,
-          "updated": 1635445435,
+          "created": 1635456422,
+          "updated": 1635456422,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-delkey1762797297?api-version=7.3-preview",
-      "RequestMethod": "DELETE",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "DELETE",
-        ":path": "/keys/list-delkey1762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:55 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "dfa27db2-d460-47fa-84c1-1e0f15041c96",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
         }
       }
     },
@@ -660,7 +325,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "831",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:55 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:02 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -668,15 +333,15 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "c3f7238a-39b6-4d85-85fd-b753a3af9994",
+        "x-ms-request-id": "c0159e51-cfcc-4b6e-bbba-c9dc45ee0cd5",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297",
-        "deletedDate": 1635445436,
-        "scheduledPurgeDate": 1636050236,
+        "deletedDate": 1635456422,
+        "scheduledPurgeDate": 1636061222,
         "key": {
-          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey1762797297/a3c367ca4cee4493b059200a171897d0",
+          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey1762797297/29eba18860d546b298a63480118669d2",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -686,13 +351,13 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "vPMFSRdrdxlgp1SYfyt2WY875BxHBmmLreeUfOZb_4fVopcUpG1RL5rpukgWDpxnL_nJMYTYM_CqB-_FItADplPdoqdpi8aha-M4SkinVqqeMpQp670CnqL26dsiowGkfmvo8h_xdHBd9XLYMTGFx5hmCJ_Rm2n3w_GqXZVOmv399i_jLjqdTqxRwJ9qoT1Am7Fju0BHVM6IePQb-kCzlFJg3Pz86w1t4eB66PP23C9KQHjWwvwxEJXT8LR9LtpFqY9RtGYipVPCnSEwXV8z0YRyD271TsWkap7aSO5w1BBSOb8GxcFCn-V5CIURx-OT69Yr0pQ8B9cHfWhVQrUoSQ",
+          "n": "nnN75iaf0tDJXoM0qSZyvMlzYfr1L1ma7OnMSjvJiATaApDXyDDsvN4jTW_NBybdqp-p2Z5kEXvwxQu3RiewLA-vPYgekSvSyHNHc9wOvM0LFSyQhMyyNoTxZbzEP1hMLq2wTIJwCvuV0EndunUPuayqHvAavWtUk4oLNdTQCDEZ-IQmAB7GuG_fM0oALnPTY1ktu5z3s1lJG7q_PaCK5K5DOqbp5rna9KRixT-ZgtwTw3lKLqpaqmy_IPvy9xOIaJD6hzct_tss3_C0d2tcSUghJrgIKWHLPMaPmKlK-24VwD5eGvs6kLio1BtwW9JQXIpnzj5beJ9cq1bzXtzeFQ",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
-          "created": 1635445435,
-          "updated": 1635445435,
+          "created": 1635456422,
+          "updated": 1635456422,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
         }
@@ -708,30 +373,30 @@
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
-      "StatusCode": 401,
+      "StatusCode": 404,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "97",
+        "Content-Length": "89",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:55 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:02 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
         "X-Content-Type-Options": "nosniff",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "f6119b30-e817-46d7-adc2-04071da176ac",
+        "x-ms-request-id": "2acecb27-c786-4300-a90e-99468d94c6cf",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: list-delkey1762797297"
         }
       }
     },
@@ -754,7 +419,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "89",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:56 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:02 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -762,568 +427,13 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "9f8a2ae6-3f54-4180-9016-f880c58f99f5",
+        "x-ms-request-id": "bf9665e9-0c25-4f73-81aa-152ca319bf00",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "error": {
           "code": "KeyNotFound",
           "message": "Deleted Key not found: list-delkey1762797297"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:56 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "0ad0d0aa-492d-415b-85ba-65fad1908595",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "89",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:56 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "f70ccd4e-f584-4928-97e0-2608e03d4b0d",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "KeyNotFound",
-          "message": "Deleted Key not found: list-delkey1762797297"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:56 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "51166b4d-13cf-45c6-8445-458e2bebae7c",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "89",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:57 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "3b5d8861-2c2c-4b6d-bd40-dc567636ad2a",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "KeyNotFound",
-          "message": "Deleted Key not found: list-delkey1762797297"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:57 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "90559736-5b70-4873-81c3-e95520bfffaa",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "89",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:57 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "e7770dbd-a548-4103-a004-6613d00e88bb",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "KeyNotFound",
-          "message": "Deleted Key not found: list-delkey1762797297"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:57 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "33c0bae5-6548-4dbc-8030-b2c6a8b1b1d5",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "89",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:58 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "909fcbe1-05e0-493a-ab50-6391db5c82db",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "KeyNotFound",
-          "message": "Deleted Key not found: list-delkey1762797297"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:58 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "c4092270-efcc-45b5-89b2-623a04f1af29",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "89",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:23:58 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "1df2df4f-ad4a-4a4d-8a96-74ed85574509",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "KeyNotFound",
-          "message": "Deleted Key not found: list-delkey1762797297"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:00 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "44caa499-802f-44c2-ac4f-709bd026a27a",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "89",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:00 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "7cc6ced9-281e-47ca-be5d-8b15e97905a7",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "KeyNotFound",
-          "message": "Deleted Key not found: list-delkey1762797297"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:00 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "95e03bc8-01d0-4d7b-a606-bf62a9b0e897",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "89",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:00 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "97c4809f-2096-4518-ba00-b8d8568cfd65",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "KeyNotFound",
-          "message": "Deleted Key not found: list-delkey1762797297"
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey1762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:01 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "be4ada52-042e-4de0-99a5-d8b3a646248f",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
         }
       }
     },
@@ -1346,7 +456,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "831",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:01 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:03 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -1354,15 +464,15 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "4e1cfdd8-2b96-41ea-a80e-ccdc02435733",
+        "x-ms-request-id": "7f0e4b7d-f4b3-4173-bff6-6b6ff8cd9974",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297",
-        "deletedDate": 1635445436,
-        "scheduledPurgeDate": 1636050236,
+        "deletedDate": 1635456422,
+        "scheduledPurgeDate": 1636061222,
         "key": {
-          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey1762797297/a3c367ca4cee4493b059200a171897d0",
+          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey1762797297/29eba18860d546b298a63480118669d2",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -1372,54 +482,15 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "vPMFSRdrdxlgp1SYfyt2WY875BxHBmmLreeUfOZb_4fVopcUpG1RL5rpukgWDpxnL_nJMYTYM_CqB-_FItADplPdoqdpi8aha-M4SkinVqqeMpQp670CnqL26dsiowGkfmvo8h_xdHBd9XLYMTGFx5hmCJ_Rm2n3w_GqXZVOmv399i_jLjqdTqxRwJ9qoT1Am7Fju0BHVM6IePQb-kCzlFJg3Pz86w1t4eB66PP23C9KQHjWwvwxEJXT8LR9LtpFqY9RtGYipVPCnSEwXV8z0YRyD271TsWkap7aSO5w1BBSOb8GxcFCn-V5CIURx-OT69Yr0pQ8B9cHfWhVQrUoSQ",
+          "n": "nnN75iaf0tDJXoM0qSZyvMlzYfr1L1ma7OnMSjvJiATaApDXyDDsvN4jTW_NBybdqp-p2Z5kEXvwxQu3RiewLA-vPYgekSvSyHNHc9wOvM0LFSyQhMyyNoTxZbzEP1hMLq2wTIJwCvuV0EndunUPuayqHvAavWtUk4oLNdTQCDEZ-IQmAB7GuG_fM0oALnPTY1ktu5z3s1lJG7q_PaCK5K5DOqbp5rna9KRixT-ZgtwTw3lKLqpaqmy_IPvy9xOIaJD6hzct_tss3_C0d2tcSUghJrgIKWHLPMaPmKlK-24VwD5eGvs6kLio1BtwW9JQXIpnzj5beJ9cq1bzXtzeFQ",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
-          "created": 1635445435,
-          "updated": 1635445435,
+          "created": 1635456422,
+          "updated": 1635456422,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-delkey2762797297/create?api-version=7.3-preview",
-      "RequestMethod": "POST",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "POST",
-        ":path": "/keys/list-delkey2762797297/create?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Content-Length": "0",
-        "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:01 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "04765967-bc61-482c-92fc-95e361f7d327",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
         }
       }
     },
@@ -1446,7 +517,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "693",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:02 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:03 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -1454,12 +525,12 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "c4703a6d-48ad-4d73-9552-6d3f8a99cf2a",
+        "x-ms-request-id": "1e20bfe9-0871-4c69-b0d2-afd4a282f078",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey2762797297/6e69bd82644f46f09339c071b203032b",
+          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey2762797297/36e0d43b6d08486b8a17198402a6a0ae",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -1469,52 +540,15 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "zJYyaaEz9AtKLF_L1NI0a1y4eGicFIZU_ItyBa6k_RkVbVkN2erRIWrnsKuPJnEQ9RwyhXgQlezj7rrwDVD6F-gqzVwBTxGXZyoHaypLaQY74llF8EGTIMfFWauXvSJmtw6oNbImVvq_fAwGe0Ru4cgB1l255M01d-SD_lqenbuOM08jp9aXlRV7lmuYLLBVHVI4HHgOcbTYewZnNPxcBo4UESMCO9gNfHB5tAk3Dm9eL6o0qVZjR5eHjQk7RmCGBX_x5QWwY93UtVaVE77utKx1PgFih5A0z15aIaOE1ccgrf1H1BXMr8nb0rrlcfHgDm9O0OnSqYf3x4TUJdEI_Q",
+          "n": "vZpqIGrylkFh12FDObbPEa3nOI5ddwZp3JZ7rnQ7POvYq49chACQriJsH7RDf2cIqKmNR2kZs32-vqgXvZo7hOUGcR3o1K-4IkbfkuSIaXNc4YabcLPTLCCo2EywTwsCnJ0LlBNLhukQ0FJulU_v5zJl5Q1a0Dip266s9l_Ot8BpbKnPBJPEf45l9Ir-Xd4rKfjQ386ZwSCIm5UxHP-IEDF3JEMG5yjO8AryWl-oRThMmzd0vok7X7GzKUNBAMEmUYqlX9lo9ISZlDSASTDPLDNCS_gEDzy_PRnkDm-NZha6nwIiuyIcUFPKdZJsd3njFd7oYNRpgevpuR7wj6wqvQ",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
-          "created": 1635445442,
-          "updated": 1635445442,
+          "created": 1635456424,
+          "updated": 1635456424,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-delkey2762797297?api-version=7.3-preview",
-      "RequestMethod": "DELETE",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "DELETE",
-        ":path": "/keys/list-delkey2762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:02 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "b3bf009c-d806-4f8b-bd86-e50ba805d41f",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
         }
       }
     },
@@ -1537,7 +571,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "831",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:02 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:04 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -1545,15 +579,15 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "5b9b4e31-4b3b-4cbd-be33-2a72dcfe641b",
+        "x-ms-request-id": "652934ee-fcb3-4688-8ffd-492da2ea1061",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey2762797297",
-        "deletedDate": 1635445442,
-        "scheduledPurgeDate": 1636050242,
+        "deletedDate": 1635456424,
+        "scheduledPurgeDate": 1636061224,
         "key": {
-          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey2762797297/6e69bd82644f46f09339c071b203032b",
+          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey2762797297/36e0d43b6d08486b8a17198402a6a0ae",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -1563,52 +597,15 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "zJYyaaEz9AtKLF_L1NI0a1y4eGicFIZU_ItyBa6k_RkVbVkN2erRIWrnsKuPJnEQ9RwyhXgQlezj7rrwDVD6F-gqzVwBTxGXZyoHaypLaQY74llF8EGTIMfFWauXvSJmtw6oNbImVvq_fAwGe0Ru4cgB1l255M01d-SD_lqenbuOM08jp9aXlRV7lmuYLLBVHVI4HHgOcbTYewZnNPxcBo4UESMCO9gNfHB5tAk3Dm9eL6o0qVZjR5eHjQk7RmCGBX_x5QWwY93UtVaVE77utKx1PgFih5A0z15aIaOE1ccgrf1H1BXMr8nb0rrlcfHgDm9O0OnSqYf3x4TUJdEI_Q",
+          "n": "vZpqIGrylkFh12FDObbPEa3nOI5ddwZp3JZ7rnQ7POvYq49chACQriJsH7RDf2cIqKmNR2kZs32-vqgXvZo7hOUGcR3o1K-4IkbfkuSIaXNc4YabcLPTLCCo2EywTwsCnJ0LlBNLhukQ0FJulU_v5zJl5Q1a0Dip266s9l_Ot8BpbKnPBJPEf45l9Ir-Xd4rKfjQ386ZwSCIm5UxHP-IEDF3JEMG5yjO8AryWl-oRThMmzd0vok7X7GzKUNBAMEmUYqlX9lo9ISZlDSASTDPLDNCS_gEDzy_PRnkDm-NZha6nwIiuyIcUFPKdZJsd3njFd7oYNRpgevpuR7wj6wqvQ",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
-          "created": 1635445442,
-          "updated": 1635445442,
+          "created": 1635456424,
+          "updated": 1635456424,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey2762797297?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys/list-delkey2762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:02 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "f048f534-d89f-4011-9133-9ad3bdeb738d",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
         }
       }
     },
@@ -1631,7 +628,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "89",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:02 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:04 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -1639,7 +636,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "1fdfa2f3-bd26-44e4-bb4b-f3e83bfecf0f",
+        "x-ms-request-id": "8ff412f5-7472-484d-a960-aeb32ead3513",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -1659,30 +656,30 @@
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
       },
       "RequestBody": null,
-      "StatusCode": 401,
+      "StatusCode": 404,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "97",
+        "Content-Length": "89",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:02 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:05 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
         "X-Content-Type-Options": "nosniff",
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "654987c0-00f4-47c9-bba7-bfe488f7d9aa",
+        "x-ms-request-id": "61c230e5-1448-4cf1-b937-8011cc90939f",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
+          "code": "KeyNotFound",
+          "message": "Deleted Key not found: list-delkey2762797297"
         }
       }
     },
@@ -1705,7 +702,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "831",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:03 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:06 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -1713,15 +710,15 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "8b591033-4268-4056-b12e-91781596bc56",
+        "x-ms-request-id": "fb40de0b-ea6a-49ec-8626-cb33135cb802",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey2762797297",
-        "deletedDate": 1635445442,
-        "scheduledPurgeDate": 1636050242,
+        "deletedDate": 1635456424,
+        "scheduledPurgeDate": 1636061224,
         "key": {
-          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey2762797297/6e69bd82644f46f09339c071b203032b",
+          "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey2762797297/36e0d43b6d08486b8a17198402a6a0ae",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -1731,52 +728,15 @@
             "wrapKey",
             "unwrapKey"
           ],
-          "n": "zJYyaaEz9AtKLF_L1NI0a1y4eGicFIZU_ItyBa6k_RkVbVkN2erRIWrnsKuPJnEQ9RwyhXgQlezj7rrwDVD6F-gqzVwBTxGXZyoHaypLaQY74llF8EGTIMfFWauXvSJmtw6oNbImVvq_fAwGe0Ru4cgB1l255M01d-SD_lqenbuOM08jp9aXlRV7lmuYLLBVHVI4HHgOcbTYewZnNPxcBo4UESMCO9gNfHB5tAk3Dm9eL6o0qVZjR5eHjQk7RmCGBX_x5QWwY93UtVaVE77utKx1PgFih5A0z15aIaOE1ccgrf1H1BXMr8nb0rrlcfHgDm9O0OnSqYf3x4TUJdEI_Q",
+          "n": "vZpqIGrylkFh12FDObbPEa3nOI5ddwZp3JZ7rnQ7POvYq49chACQriJsH7RDf2cIqKmNR2kZs32-vqgXvZo7hOUGcR3o1K-4IkbfkuSIaXNc4YabcLPTLCCo2EywTwsCnJ0LlBNLhukQ0FJulU_v5zJl5Q1a0Dip266s9l_Ot8BpbKnPBJPEf45l9Ir-Xd4rKfjQ386ZwSCIm5UxHP-IEDF3JEMG5yjO8AryWl-oRThMmzd0vok7X7GzKUNBAMEmUYqlX9lo9ISZlDSASTDPLDNCS_gEDzy_PRnkDm-NZha6nwIiuyIcUFPKdZJsd3njFd7oYNRpgevpuR7wj6wqvQ",
           "e": "AQAB"
         },
         "attributes": {
           "enabled": true,
-          "created": 1635445442,
-          "updated": 1635445442,
+          "created": 1635456424,
+          "updated": 1635456424,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/deletedkeys?api-version=7.3-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "GET",
-        ":path": "/deletedkeys?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:03 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "e981e936-1580-48be-9081-4adcf96e3fed",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
         }
       }
     },
@@ -1797,9 +757,9 @@
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "3126",
+        "Content-Length": "1074",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:03 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:07 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -1807,167 +767,52 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "59a9a456-657c-4949-9541-a23d6d06723e",
+        "x-ms-request-id": "10cef296-ac12-42ad-a942-84aded7fd457",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "value": [
           {
             "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey0762797297",
-            "deletedDate": 1635445433,
-            "scheduledPurgeDate": 1636050233,
+            "deletedDate": 1635456421,
+            "scheduledPurgeDate": 1636061221,
             "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey0762797297",
             "attributes": {
               "enabled": true,
-              "created": 1635445432,
-              "updated": 1635445432,
+              "created": 1635456420,
+              "updated": 1635456420,
               "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
               "recoverableDays": 7
             }
           },
           {
             "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey1762797297",
-            "deletedDate": 1635445436,
-            "scheduledPurgeDate": 1636050236,
+            "deletedDate": 1635456422,
+            "scheduledPurgeDate": 1636061222,
             "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey1762797297",
             "attributes": {
               "enabled": true,
-              "created": 1635445435,
-              "updated": 1635445435,
+              "created": 1635456422,
+              "updated": 1635456422,
               "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
               "recoverableDays": 7
             }
           },
           {
             "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/list-delkey2762797297",
-            "deletedDate": 1635445442,
-            "scheduledPurgeDate": 1636050242,
+            "deletedDate": 1635456424,
+            "scheduledPurgeDate": 1636061224,
             "kid": "https://fakekvurl.vault.azure.net/keys/list-delkey2762797297",
             "attributes": {
               "enabled": true,
-              "created": 1635445442,
-              "updated": 1635445442,
-              "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-              "recoverableDays": 7
-            }
-          },
-          {
-            "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/list-key0762797297",
-            "deletedDate": 1635444578,
-            "scheduledPurgeDate": 1636049378,
-            "kid": "https://fakekvurl.vault.azure.net/keys/list-key0762797297",
-            "attributes": {
-              "enabled": true,
-              "created": 1635444577,
-              "updated": 1635444577,
-              "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-              "recoverableDays": 7
-            }
-          },
-          {
-            "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/list-key1762797297",
-            "deletedDate": 1635444583,
-            "scheduledPurgeDate": 1636049383,
-            "kid": "https://fakekvurl.vault.azure.net/keys/list-key1762797297",
-            "attributes": {
-              "enabled": true,
-              "created": 1635444583,
-              "updated": 1635444583,
-              "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-              "recoverableDays": 7
-            }
-          },
-          {
-            "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/list-key2762797297",
-            "deletedDate": 1635444587,
-            "scheduledPurgeDate": 1636049387,
-            "kid": "https://fakekvurl.vault.azure.net/keys/list-key2762797297",
-            "attributes": {
-              "enabled": true,
-              "created": 1635444587,
-              "updated": 1635444587,
-              "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-              "recoverableDays": 7
-            }
-          },
-          {
-            "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/listkey0762797297",
-            "deletedDate": 1635445152,
-            "scheduledPurgeDate": 1636049952,
-            "kid": "https://fakekvurl.vault.azure.net/keys/listkey0762797297",
-            "attributes": {
-              "enabled": true,
-              "created": 1635445151,
-              "updated": 1635445151,
-              "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-              "recoverableDays": 7
-            }
-          },
-          {
-            "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/listkey1762797297",
-            "deletedDate": 1635445159,
-            "scheduledPurgeDate": 1636049959,
-            "kid": "https://fakekvurl.vault.azure.net/keys/listkey1762797297",
-            "attributes": {
-              "enabled": true,
-              "created": 1635445158,
-              "updated": 1635445158,
-              "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
-              "recoverableDays": 7
-            }
-          },
-          {
-            "recoveryId": "https://fakekvurl.vault.azure.net/deletedkeys/listkey2762797297",
-            "deletedDate": 1635445172,
-            "scheduledPurgeDate": 1636049972,
-            "kid": "https://fakekvurl.vault.azure.net/keys/listkey2762797297",
-            "attributes": {
-              "enabled": true,
-              "created": 1635445172,
-              "updated": 1635445172,
+              "created": 1635456424,
+              "updated": 1635456424,
               "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
               "recoverableDays": 7
             }
           }
         ],
         "nextLink": null
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-delkey2762797297?api-version=7.3-preview",
-      "RequestMethod": "DELETE",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "DELETE",
-        ":path": "/keys/list-delkey2762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:03 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "eacfe185-705e-4d37-8c7f-d9287b200a59",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
-        }
       }
     },
     {
@@ -1989,7 +834,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "309",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:03 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:07 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -1997,7 +842,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "17784fe3-d043-479f-afc9-c0c6dc9a5dbc",
+        "x-ms-request-id": "36c66e7e-6bae-4c04-bcb9-fc42a3a6e8e8",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -2017,43 +862,6 @@
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:04 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "8e27107f-6af0-465c-a076-c34e90e11baf",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-delkey1762797297?api-version=7.3-preview",
-      "RequestMethod": "DELETE",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "DELETE",
-        ":path": "/keys/list-delkey1762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
       },
@@ -2063,7 +871,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "309",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:04 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:08 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -2071,7 +879,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "07e44b9e-3085-4343-bbd1-51c8f4369132",
+        "x-ms-request-id": "00361afe-58b4-4093-abce-44d0931139e3",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -2091,43 +899,6 @@
         ":scheme": "https",
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
-        "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
-      },
-      "RequestBody": null,
-      "StatusCode": 401,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "97",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:04 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/00000000-0000-0000-0000-000000000000\u0022, resource=\u0022https://vault.azure.net\u0022",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "b9a32848-71ba-4f83-b5b8-1e4e71efc93a",
-        "X-Powered-By": "ASP.NET"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "Unauthorized",
-          "message": "AKV10000: Request is missing a Bearer or PoP token."
-        }
-      }
-    },
-    {
-      "RequestUri": "https://fakekvurl.vault.azure.net/keys/list-delkey0762797297?api-version=7.3-preview",
-      "RequestMethod": "DELETE",
-      "RequestHeaders": {
-        ":authority": "localhost:5001",
-        ":method": "DELETE",
-        ":path": "/keys/list-delkey0762797297?api-version=7.3-preview",
-        ":scheme": "https",
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
         "User-Agent": "azsdk-go-internal/v0.1.0 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)"
       },
@@ -2137,7 +908,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "309",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:04 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:08 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -2145,7 +916,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "6c022550-d8a3-4683-86f2-635336abfb00",
+        "x-ms-request-id": "bd8ed0be-5106-4846-94e7-8ed5ca3c6455",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {

@@ -20,7 +20,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "97",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:30 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:14 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -29,7 +29,7 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "8cf5661b-28fb-45dc-8718-6a6336bef49a",
+        "x-ms-request-id": "ef881925-dea4-4ea4-b12b-fefb6a946cc5",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
@@ -80,7 +80,7 @@
         "Cache-Control": "no-cache",
         "Content-Length": "683",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 28 Oct 2021 18:24:32 GMT",
+        "Date": "Thu, 28 Oct 2021 21:27:14 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
@@ -88,12 +88,12 @@
         "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=72.49.29.93;act_addr_fam=InterNetwork;",
         "x-ms-keyvault-region": "westus2",
         "x-ms-keyvault-service-version": "1.9.150.1",
-        "x-ms-request-id": "3baabb0d-551d-4fb9-91cf-29708f912258",
+        "x-ms-request-id": "397afc8a-ff99-4831-b520-498b6741a098",
         "X-Powered-By": "ASP.NET"
       },
       "ResponseBody": {
         "key": {
-          "kid": "https://fakekvurl.vault.azure.net/keys/importedKey/baad25c496d147a7b0a473f548dd0d46",
+          "kid": "https://fakekvurl.vault.azure.net/keys/importedKey/fe70a2aa9a604cc595a7704f45f6432c",
           "kty": "RSA",
           "key_ops": [
             "encrypt",
@@ -108,8 +108,8 @@
         },
         "attributes": {
           "enabled": true,
-          "created": 1635445471,
-          "updated": 1635445471,
+          "created": 1635456435,
+          "updated": 1635456435,
           "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
           "recoverableDays": 7
         }

@@ -1,0 +1,102 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakeaccount.table.cosmos.azure.com/Tables",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/Tables",
+        ":scheme": "https",
+        "Accept": "application/json;odata=minimalmetadata",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "35",
+        "Content-Type": "application/json",
+        "dataserviceversion": "3.0",
+        "User-Agent": "azsdk-go-aztables/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 26 Oct 2021 20:12:30 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": {
+        "TableName": "tableName1372739261"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "Date": "Tue, 26 Oct 2021 20:12:31 GMT",
+        "ETag": "W/\u0022datetime\u00272021-10-26T20%3A12%3A30.7988488Z\u0027\u0022",
+        "Location": "https://seankaneprim.table.cosmos.azure.com/Tables(\u0027tableName1372739261\u0027)",
+        "Transfer-Encoding": "chunked",
+        "x-ms-request-id": "11d96cd5-3655-4fb8-923c-92e36c3e47fe"
+      },
+      "ResponseBody": {
+        "TableName": "tableName1372739261",
+        "odata.metadata": "https://seankaneprim.table.cosmos.azure.com/$metadata#Tables/@Element"
+      }
+    },
+    {
+      "RequestUri": "https://fakeaccount.table.cosmos.azure.com/tableName1372739261(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/tableName1372739261(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "125",
+        "Content-Type": "application/json",
+        "dataserviceversion": "3.0",
+        "If-Match": "*",
+        "User-Agent": "azsdk-go-aztables/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-http-method": "MERGE",
+        "x-ms-date": "Tue, 26 Oct 2021 20:12:31 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": {
+        "Bool": true,
+        "Integer": 1,
+        "PartitionKey": "partition",
+        "RowKey": "1",
+        "String": "some string 1",
+        "Timestamp": "0001-01-01T00:00:00Z"
+      },
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=fullmetadata",
+        "Date": "Tue, 26 Oct 2021 20:12:31 GMT",
+        "Transfer-Encoding": "chunked",
+        "x-ms-request-id": "686a3d12-c78d-49d7-b94d-52733d29f96e"
+      },
+      "ResponseBody": [
+        "{\u0022odata.error\u0022:{\u0022code\u0022:\u0022ResourceNotFound\u0022,\u0022message\u0022:{\u0022lang\u0022:\u0022en-us\u0022,\u0022value\u0022:\u0022The specified resource does not exist.\\nRequestID:686a3d12-c78d-49d7-b94d-52733d29f96e\\n\u0022}}}\r\n"
+      ]
+    },
+    {
+      "RequestUri": "https://fakeaccount.table.cosmos.azure.com/Tables(\u0027tableName1372739261\u0027)",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "DELETE",
+        ":path": "/Tables(\u0027tableName1372739261\u0027)",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-aztables/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 26 Oct 2021 20:12:31 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Date": "Tue, 26 Oct 2021 20:12:31 GMT",
+        "x-ms-request-id": "a0b57e34-06cc-4c40-9d22-84e847f18b7f"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

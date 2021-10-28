@@ -6,8 +6,6 @@ package aztables
 import (
 	"fmt"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // NewServiceClientFromConnectionString creates a new ServiceClient struct from a connection string. The connection
@@ -17,7 +15,10 @@ func NewServiceClientFromConnectionString(connectionString string, options *Clie
 	if err != nil {
 		return nil, err
 	}
-	return NewServiceClient(endpoint, credential, options)
+	if credential == nil {
+		return NewServiceClientWithNoCredential(endpoint, options)
+	}
+	return NewServiceClientWithSharedKey(endpoint, credential, options)
 }
 
 // convertConnStrToMap converts a connection string (in format key1=value1;key2=value2;key3=value3;) into a map of key-value pairs
@@ -41,9 +42,9 @@ func convertConnStrToMap(connStr string) (map[string]string, error) {
 
 // parseConnectionString parses a connection string into a service URL and a SharedKeyCredential or a service url with the
 // SharedAccessSignature combined.
-func parseConnectionString(connStr string) (string, azcore.Credential, error) {
+func parseConnectionString(connStr string) (string, *SharedKeyCredential, error) {
 	var serviceURL string
-	var cred azcore.Credential
+	var cred *SharedKeyCredential
 
 	defaultScheme := "https"
 	defaultSuffix := "core.windows.net"
@@ -63,7 +64,7 @@ func parseConnectionString(connStr string) (string, azcore.Credential, error) {
 		if !ok {
 			return "", nil, errConnectionString
 		}
-		return fmt.Sprintf("%v://%v.table.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature), azcore.NewAnonymousCredential(), nil
+		return fmt.Sprintf("%v://%v.table.%v/?%v", defaultScheme, accountName, defaultSuffix, sharedAccessSignature), nil, nil
 	}
 
 	protocol, ok := connStrMap["DefaultEndpointsProtocol"]

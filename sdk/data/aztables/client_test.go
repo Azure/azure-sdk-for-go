@@ -4,7 +4,6 @@
 package aztables
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"testing"
@@ -33,7 +32,7 @@ func TestCreateTable(t *testing.T) {
 			client, delete := initClientTest(t, service, false)
 			defer delete()
 
-			resp, err := client.Create(context.Background(), nil)
+			resp, err := client.Create(ctx, nil)
 
 			require.NoError(t, err)
 			require.NotNil(t, resp.RawResponse)
@@ -109,7 +108,7 @@ func TestDeleteEntityWithETag(t *testing.T) {
 
 			marshalledEntity, err = json.Marshal(simpleEntity2)
 			require.NoError(t, err)
-			resp, err = client.AddEntity(context.Background(), marshalledEntity, nil)
+			resp, err = client.AddEntity(ctx, marshalledEntity, nil)
 			require.NoError(t, err)
 			newETag := resp.ETag
 

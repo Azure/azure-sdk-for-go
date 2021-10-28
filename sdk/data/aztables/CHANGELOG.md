@@ -3,8 +3,12 @@
 ## 0.2.1 (Unreleased)
 
 ### Features Added
+* Added `NewClientWithNoCredential` and `NewServiceClientWithNoCredential` for authenticating the `Client` and `ServiceClient` with SAS URLs
+* Added `NewClientWithSharedKey` and `NewServiceClientWithSharedKey` for authenticating the `Client` and `ServiceClient` with Shared Keys
 
 ### Breaking Changes
+* `NewClient` and `NewServiceClient` is now used for authenticating the `Client` and `ServiceClient` with credentials from `azidentity` only.
+* `ClientOptions` embeds `azcore.ClientOptions` and removes all named fields.
 
 ### Bugs Fixed
 

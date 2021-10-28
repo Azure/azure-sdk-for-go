@@ -10,60 +10,30 @@ package internal
 
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
-var scopes = []string{"https://storage.azure.com/.default"}
-
-// ConnectionOptions contains configuration settings for the connection's pipeline.
-// All zero-value fields will be initialized with their default values.
-type ConnectionOptions struct {
-	// HTTPClient sets the transport for making HTTP requests.
-	HTTPClient policy.Transporter
-	// Retry configures the built-in retry policy behavior.
-	Retry policy.RetryOptions
-	// Telemetry configures the built-in telemetry policy behavior.
-	Telemetry policy.TelemetryOptions
-	// Logging configures the built-in logging policy behavior.
-	Logging policy.LogOptions
-	// PerCallPolicies contains custom policies to inject into the pipeline.
-	// Each policy is executed once per request.
-	PerCallPolicies []policy.Policy
-	// PerRetryPolicies contains custom policies to inject into the pipeline.
-	// Each policy is executed once per request, and for each retry request.
-	PerRetryPolicies []policy.Policy
-}
-
-type connection struct {
+type Connection struct {
 	u string
 	p runtime.Pipeline
 }
 
-// NewConnection creates an instance of the connection type with the specified endpoint.
+// NewConnection creates an instance of the Connection type with the specified endpoint.
 // Pass nil to accept the default options; this is the same as passing a zero-value options.
-func NewConnection(endpoint string, cred azcore.Credential, options *ConnectionOptions) *connection {
-	if options == nil {
-		options = &ConnectionOptions{}
+func NewConnection(endpoint string, options *azcore.ClientOptions) *Connection {
+	cp := azcore.ClientOptions{}
+	if options != nil {
+		cp = *options
 	}
-	policies := []policy.Policy{}
-	if !options.Telemetry.Disabled {
-		policies = append(policies, runtime.NewTelemetryPolicy(module, version, &options.Telemetry))
-	}
-	policies = append(policies, options.PerCallPolicies...)
-	policies = append(policies, runtime.NewRetryPolicy(&options.Retry))
-	policies = append(policies, options.PerRetryPolicies...)
-	policies = append(policies, cred.NewAuthenticationPolicy(runtime.AuthenticationOptions{TokenRequest: policy.TokenRequestOptions{Scopes: scopes}}))
-	policies = append(policies, runtime.NewLogPolicy(&options.Logging))
-	return &connection{u: endpoint, p: runtime.NewPipeline(options.HTTPClient, policies...)}
+	return &Connection{u: endpoint, p: runtime.NewPipeline(module, version, nil, nil, &cp)}
 }
 
 // Endpoint returns the connection's endpoint.
-func (c *connection) Endpoint() string {
+func (c *Connection) Endpoint() string {
 	return c.u
 }
 
 // Pipeline returns the connection's pipeline.
-func (c *connection) Pipeline() runtime.Pipeline {
+func (c *Connection) Pipeline() runtime.Pipeline {
 	return c.p
 }

@@ -1,0 +1,153 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://fakeaccount.table.cosmos.azure.com/Tables",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/Tables",
+        ":scheme": "https",
+        "Accept": "application/json;odata=minimalmetadata",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "35",
+        "Content-Type": "application/json",
+        "dataserviceversion": "3.0",
+        "User-Agent": "azsdk-go-aztables/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 26 Oct 2021 20:12:45 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": {
+        "TableName": "tableName3051201099"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "Date": "Tue, 26 Oct 2021 20:12:46 GMT",
+        "ETag": "W/\u0022datetime\u00272021-10-26T20%3A12%3A46.0539912Z\u0027\u0022",
+        "Location": "https://seankaneprim.table.cosmos.azure.com/Tables(\u0027tableName3051201099\u0027)",
+        "Transfer-Encoding": "chunked",
+        "x-ms-request-id": "40ae3eee-763d-49f0-9d48-2acb3a1336c2"
+      },
+      "ResponseBody": {
+        "TableName": "tableName3051201099",
+        "odata.metadata": "https://seankaneprim.table.cosmos.azure.com/$metadata#Tables/@Element"
+      }
+    },
+    {
+      "RequestUri": "https://fakeaccount.table.cosmos.azure.com/tableName3051201099",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "POST",
+        ":path": "/tableName3051201099",
+        ":scheme": "https",
+        "Accept": "application/json;odata=minimalmetadata",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "Content-Length": "371",
+        "Content-Type": "application/json",
+        "dataserviceversion": "3.0",
+        "prefer": "return-no-content",
+        "User-Agent": "azsdk-go-aztables/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 26 Oct 2021 20:12:46 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": {
+        "Binary": "U29tZUJpbmFyeQ==",
+        "Binary@odata.type": "Edm.Binary",
+        "Bool": false,
+        "DateTime": "2013-08-02T17:37:43.0090043Z",
+        "DateTime@odata.type": "Edm.DateTime",
+        "Double": 1234.1234,
+        "Guid": "4185404a-5818-48c3-b9be-f217df0dba6f",
+        "Guid@odata.type": "Edm.Guid",
+        "Int32": 1234,
+        "Int64": "123456789012",
+        "Int64@odata.type": "Edm.Int64",
+        "PartitionKey": "partition",
+        "RowKey": "1",
+        "String": "test"
+      },
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Date": "Tue, 26 Oct 2021 20:12:46 GMT",
+        "ETag": "W/\u0022datetime\u00272021-10-26T20%3A12%3A46.7419144Z\u0027\u0022",
+        "Location": "https://seankaneprim.table.cosmos.azure.com/tableName3051201099(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)",
+        "Preference-Applied": "return-no-content",
+        "x-ms-request-id": "434d9959-50c8-4be8-a342-366b315595fa"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://fakeaccount.table.cosmos.azure.com/tableName3051201099(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)?%24format=application%2Fjson%3Bodata%3Dminimalmetadata",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "GET",
+        ":path": "/tableName3051201099(PartitionKey=\u0027partition\u0027,RowKey=\u00271\u0027)?%24format=application%2Fjson%3Bodata%3Dminimalmetadata",
+        ":scheme": "https",
+        "Accept": "application/json;odata=minimalmetadata",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "dataserviceversion": "3.0",
+        "User-Agent": "azsdk-go-aztables/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 26 Oct 2021 20:12:47 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Type": "application/json; odata=minimalmetadata",
+        "Date": "Tue, 26 Oct 2021 20:12:46 GMT",
+        "ETag": "W/\u0022datetime\u00272021-10-26T20%3A12%3A46.7419144Z\u0027\u0022",
+        "Transfer-Encoding": "chunked",
+        "x-ms-request-id": "40aeb873-9a4e-4c3f-b711-4870d9e2b315"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://seankaneprim.table.cosmos.azure.com/tableName3051201099/$metadata#tableName3051201099/@Element",
+        "odata.etag": "W/\u0022datetime\u00272021-10-26T20%3A12%3A46.7419144Z\u0027\u0022",
+        "Binary@odata.type": "Edm.Binary",
+        "Binary": "U29tZUJpbmFyeQ==",
+        "Bool": false,
+        "DateTime@odata.type": "Edm.DateTime",
+        "DateTime": "2013-08-02T17:37:43.0090043Z",
+        "Double": 1234.1234,
+        "Guid@odata.type": "Edm.Guid",
+        "Guid": "4185404a-5818-48c3-b9be-f217df0dba6f",
+        "Int32": 1234,
+        "Int64@odata.type": "Edm.Int64",
+        "Int64": "123456789012",
+        "PartitionKey": "partition",
+        "RowKey": "1",
+        "String": "test",
+        "Timestamp": "2021-10-26T20:12:46.7419144Z"
+      }
+    },
+    {
+      "RequestUri": "https://fakeaccount.table.cosmos.azure.com/Tables(\u0027tableName3051201099\u0027)",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        ":authority": "localhost:5001",
+        ":method": "DELETE",
+        ":path": "/Tables(\u0027tableName3051201099\u0027)",
+        ":scheme": "https",
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-aztables/v0.2.1 azsdk-go-azcore/v0.20.0 (go1.17; Windows_NT)",
+        "x-ms-date": "Tue, 26 Oct 2021 20:12:47 GMT",
+        "x-ms-version": "2019-02-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Date": "Tue, 26 Oct 2021 20:12:46 GMT",
+        "x-ms-request-id": "4a571f60-4b4d-40b8-9cee-3d588c70908c"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {}
+}

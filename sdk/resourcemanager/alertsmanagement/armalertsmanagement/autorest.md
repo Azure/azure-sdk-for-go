@@ -5,10 +5,10 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/3c16aae50c7110e1aad241ac93995621d4093d46/specification/alertsmanagement/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/3c16aae50c7110e1aad241ac93995621d4093d46/specification/alertsmanagement/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/c24ee32fb97dfefbeb34df5f981af8470bdf6593/specification/alertsmanagement/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/c24ee32fb97dfefbeb34df5f981af8470bdf6593/specification/alertsmanagement/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 0.1.0
+module-version: 0.2.0
 modelerfour:
   lenient-model-deduplication: true
 ```

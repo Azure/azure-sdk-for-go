@@ -51,6 +51,25 @@ func unmarshalActionRulePropertiesClassificationArray(rawMsg json.RawMessage) ([
 	return fArray, nil
 }
 
+func unmarshalActionRulePropertiesClassificationMap(rawMsg json.RawMessage) (map[string]ActionRulePropertiesClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]ActionRulePropertiesClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalActionRulePropertiesClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}
+
 func unmarshalAlertsMetaDataPropertiesClassification(rawMsg json.RawMessage) (AlertsMetaDataPropertiesClassification, error) {
 	if rawMsg == nil {
 		return nil, nil
@@ -86,4 +105,23 @@ func unmarshalAlertsMetaDataPropertiesClassificationArray(rawMsg json.RawMessage
 		fArray[index] = f
 	}
 	return fArray, nil
+}
+
+func unmarshalAlertsMetaDataPropertiesClassificationMap(rawMsg json.RawMessage) (map[string]AlertsMetaDataPropertiesClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]AlertsMetaDataPropertiesClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalAlertsMetaDataPropertiesClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
 }

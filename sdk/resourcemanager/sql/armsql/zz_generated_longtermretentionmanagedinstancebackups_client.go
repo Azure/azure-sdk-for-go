@@ -11,15 +11,15 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // LongTermRetentionManagedInstanceBackupsClient contains the methods for the LongTermRetentionManagedInstanceBackups group.
@@ -31,8 +31,15 @@ type LongTermRetentionManagedInstanceBackupsClient struct {
 }
 
 // NewLongTermRetentionManagedInstanceBackupsClient creates a new instance of LongTermRetentionManagedInstanceBackupsClient with the specified values.
-func NewLongTermRetentionManagedInstanceBackupsClient(con *arm.Connection, subscriptionID string) *LongTermRetentionManagedInstanceBackupsClient {
-	return &LongTermRetentionManagedInstanceBackupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewLongTermRetentionManagedInstanceBackupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LongTermRetentionManagedInstanceBackupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &LongTermRetentionManagedInstanceBackupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginDelete - Deletes a long term retention backup.

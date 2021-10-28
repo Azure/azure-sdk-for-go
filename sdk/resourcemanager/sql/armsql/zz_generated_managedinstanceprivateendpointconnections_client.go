@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ManagedInstancePrivateEndpointConnectionsClient contains the methods for the ManagedInstancePrivateEndpointConnections group.
@@ -30,8 +30,15 @@ type ManagedInstancePrivateEndpointConnectionsClient struct {
 }
 
 // NewManagedInstancePrivateEndpointConnectionsClient creates a new instance of ManagedInstancePrivateEndpointConnectionsClient with the specified values.
-func NewManagedInstancePrivateEndpointConnectionsClient(con *arm.Connection, subscriptionID string) *ManagedInstancePrivateEndpointConnectionsClient {
-	return &ManagedInstancePrivateEndpointConnectionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewManagedInstancePrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedInstancePrivateEndpointConnectionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagedInstancePrivateEndpointConnectionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Approve or reject a private endpoint connection with a given name.

@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // InstanceFailoverGroupsClient contains the methods for the InstanceFailoverGroups group.
@@ -30,8 +30,15 @@ type InstanceFailoverGroupsClient struct {
 }
 
 // NewInstanceFailoverGroupsClient creates a new instance of InstanceFailoverGroupsClient with the specified values.
-func NewInstanceFailoverGroupsClient(con *arm.Connection, subscriptionID string) *InstanceFailoverGroupsClient {
-	return &InstanceFailoverGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewInstanceFailoverGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *InstanceFailoverGroupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &InstanceFailoverGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a failover group.

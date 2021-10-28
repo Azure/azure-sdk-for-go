@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ManagementAssociationsClient contains the methods for the ManagementAssociations group.
@@ -33,8 +34,15 @@ type ManagementAssociationsClient struct {
 }
 
 // NewManagementAssociationsClient creates a new instance of ManagementAssociationsClient with the specified values.
-func NewManagementAssociationsClient(con *arm.Connection, subscriptionID string, providerName string, resourceType string, resourceName string) *ManagementAssociationsClient {
-	return &ManagementAssociationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID, providerName: providerName, resourceType: resourceType, resourceName: resourceName}
+func NewManagementAssociationsClient(subscriptionID string, providerName string, resourceType string, resourceName string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagementAssociationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagementAssociationsClient{subscriptionID: subscriptionID, providerName: providerName, resourceType: resourceType, resourceName: resourceName, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates the ManagementAssociation.

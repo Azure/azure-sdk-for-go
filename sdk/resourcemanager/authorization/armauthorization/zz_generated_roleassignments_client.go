@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RoleAssignmentsClient contains the methods for the RoleAssignments group.
@@ -30,8 +31,15 @@ type RoleAssignmentsClient struct {
 }
 
 // NewRoleAssignmentsClient creates a new instance of RoleAssignmentsClient with the specified values.
-func NewRoleAssignmentsClient(con *arm.Connection, subscriptionID string) *RoleAssignmentsClient {
-	return &RoleAssignmentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRoleAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RoleAssignmentsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RoleAssignmentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Create or update a role assignment by scope and name.

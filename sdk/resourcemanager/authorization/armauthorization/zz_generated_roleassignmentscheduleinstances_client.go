@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RoleAssignmentScheduleInstancesClient contains the methods for the RoleAssignmentScheduleInstances group.
@@ -29,8 +30,15 @@ type RoleAssignmentScheduleInstancesClient struct {
 }
 
 // NewRoleAssignmentScheduleInstancesClient creates a new instance of RoleAssignmentScheduleInstancesClient with the specified values.
-func NewRoleAssignmentScheduleInstancesClient(con *arm.Connection) *RoleAssignmentScheduleInstancesClient {
-	return &RoleAssignmentScheduleInstancesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewRoleAssignmentScheduleInstancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RoleAssignmentScheduleInstancesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RoleAssignmentScheduleInstancesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets the specified role assignment schedule instance.

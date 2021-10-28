@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RoleDefinitionsClient contains the methods for the RoleDefinitions group.
@@ -29,8 +30,15 @@ type RoleDefinitionsClient struct {
 }
 
 // NewRoleDefinitionsClient creates a new instance of RoleDefinitionsClient with the specified values.
-func NewRoleDefinitionsClient(con *arm.Connection) *RoleDefinitionsClient {
-	return &RoleDefinitionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewRoleDefinitionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RoleDefinitionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RoleDefinitionsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a role definition.

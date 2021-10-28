@@ -22,16 +22,16 @@ import (
 	"strings"
 )
 
-// HubRouteTablesClient contains the methods for the HubRouteTables group.
-// Don't use this type directly, use NewHubRouteTablesClient() instead.
-type HubRouteTablesClient struct {
+// RoutingIntentClient contains the methods for the RoutingIntent group.
+// Don't use this type directly, use NewRoutingIntentClient() instead.
+type RoutingIntentClient struct {
 	ep             string
 	pl             runtime.Pipeline
 	subscriptionID string
 }
 
-// NewHubRouteTablesClient creates a new instance of HubRouteTablesClient with the specified values.
-func NewHubRouteTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *HubRouteTablesClient {
+// NewRoutingIntentClient creates a new instance of RoutingIntentClient with the specified values.
+func NewRoutingIntentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RoutingIntentClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
@@ -39,33 +39,33 @@ func NewHubRouteTablesClient(subscriptionID string, credential azcore.TokenCrede
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &HubRouteTablesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	return &RoutingIntentClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
-// BeginCreateOrUpdate - Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
+// BeginCreateOrUpdate - Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
 // If the operation fails it returns the *CloudError error type.
-func (client *HubRouteTablesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, routeTableParameters HubRouteTable, options *HubRouteTablesBeginCreateOrUpdateOptions) (HubRouteTablesCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualHubName, routeTableName, routeTableParameters, options)
+func (client *RoutingIntentClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, routingIntentParameters RoutingIntent, options *RoutingIntentBeginCreateOrUpdateOptions) (RoutingIntentCreateOrUpdatePollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualHubName, routingIntentName, routingIntentParameters, options)
 	if err != nil {
-		return HubRouteTablesCreateOrUpdatePollerResponse{}, err
+		return RoutingIntentCreateOrUpdatePollerResponse{}, err
 	}
-	result := HubRouteTablesCreateOrUpdatePollerResponse{
+	result := RoutingIntentCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("HubRouteTablesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("RoutingIntentClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
 	if err != nil {
-		return HubRouteTablesCreateOrUpdatePollerResponse{}, err
+		return RoutingIntentCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &HubRouteTablesCreateOrUpdatePoller{
+	result.Poller = &RoutingIntentCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdate - Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
+// CreateOrUpdate - Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
 // If the operation fails it returns the *CloudError error type.
-func (client *HubRouteTablesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, routeTableParameters HubRouteTable, options *HubRouteTablesBeginCreateOrUpdateOptions) (*http.Response, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, routeTableParameters, options)
+func (client *RoutingIntentClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, routingIntentParameters RoutingIntent, options *RoutingIntentBeginCreateOrUpdateOptions) (*http.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, routingIntentName, routingIntentParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -80,8 +80,8 @@ func (client *HubRouteTablesClient) createOrUpdate(ctx context.Context, resource
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *HubRouteTablesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, routeTableParameters HubRouteTable, options *HubRouteTablesBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubRouteTables/{routeTableName}"
+func (client *RoutingIntentClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, routingIntentParameters RoutingIntent, options *RoutingIntentBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent/{routingIntentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -94,10 +94,10 @@ func (client *HubRouteTablesClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter virtualHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualHubName}", url.PathEscape(virtualHubName))
-	if routeTableName == "" {
-		return nil, errors.New("parameter routeTableName cannot be empty")
+	if routingIntentName == "" {
+		return nil, errors.New("parameter routingIntentName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{routeTableName}", url.PathEscape(routeTableName))
+	urlPath = strings.ReplaceAll(urlPath, "{routingIntentName}", url.PathEscape(routingIntentName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
@@ -106,11 +106,11 @@ func (client *HubRouteTablesClient) createOrUpdateCreateRequest(ctx context.Cont
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, routeTableParameters)
+	return req, runtime.MarshalAsJSON(req, routingIntentParameters)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *HubRouteTablesClient) createOrUpdateHandleError(resp *http.Response) error {
+func (client *RoutingIntentClient) createOrUpdateHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -122,30 +122,30 @@ func (client *HubRouteTablesClient) createOrUpdateHandleError(resp *http.Respons
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// BeginDelete - Deletes a RouteTable.
+// BeginDelete - Deletes a RoutingIntent.
 // If the operation fails it returns the *CloudError error type.
-func (client *HubRouteTablesClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesBeginDeleteOptions) (HubRouteTablesDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, virtualHubName, routeTableName, options)
+func (client *RoutingIntentClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentBeginDeleteOptions) (RoutingIntentDeletePollerResponse, error) {
+	resp, err := client.deleteOperation(ctx, resourceGroupName, virtualHubName, routingIntentName, options)
 	if err != nil {
-		return HubRouteTablesDeletePollerResponse{}, err
+		return RoutingIntentDeletePollerResponse{}, err
 	}
-	result := HubRouteTablesDeletePollerResponse{
+	result := RoutingIntentDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("HubRouteTablesClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("RoutingIntentClient.Delete", "location", resp, client.pl, client.deleteHandleError)
 	if err != nil {
-		return HubRouteTablesDeletePollerResponse{}, err
+		return RoutingIntentDeletePollerResponse{}, err
 	}
-	result.Poller = &HubRouteTablesDeletePoller{
+	result.Poller = &RoutingIntentDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Delete - Deletes a RouteTable.
+// Delete - Deletes a RoutingIntent.
 // If the operation fails it returns the *CloudError error type.
-func (client *HubRouteTablesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesBeginDeleteOptions) (*http.Response, error) {
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, options)
+func (client *RoutingIntentClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentBeginDeleteOptions) (*http.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualHubName, routingIntentName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -160,8 +160,8 @@ func (client *HubRouteTablesClient) deleteOperation(ctx context.Context, resourc
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *HubRouteTablesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubRouteTables/{routeTableName}"
+func (client *RoutingIntentClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent/{routingIntentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -174,10 +174,10 @@ func (client *HubRouteTablesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter virtualHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualHubName}", url.PathEscape(virtualHubName))
-	if routeTableName == "" {
-		return nil, errors.New("parameter routeTableName cannot be empty")
+	if routingIntentName == "" {
+		return nil, errors.New("parameter routingIntentName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{routeTableName}", url.PathEscape(routeTableName))
+	urlPath = strings.ReplaceAll(urlPath, "{routingIntentName}", url.PathEscape(routingIntentName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
@@ -190,7 +190,7 @@ func (client *HubRouteTablesClient) deleteCreateRequest(ctx context.Context, res
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *HubRouteTablesClient) deleteHandleError(resp *http.Response) error {
+func (client *RoutingIntentClient) deleteHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -202,26 +202,26 @@ func (client *HubRouteTablesClient) deleteHandleError(resp *http.Response) error
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// Get - Retrieves the details of a RouteTable.
+// Get - Retrieves the details of a RoutingIntent.
 // If the operation fails it returns the *CloudError error type.
-func (client *HubRouteTablesClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesGetOptions) (HubRouteTablesGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, options)
+func (client *RoutingIntentClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentGetOptions) (RoutingIntentGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualHubName, routingIntentName, options)
 	if err != nil {
-		return HubRouteTablesGetResponse{}, err
+		return RoutingIntentGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return HubRouteTablesGetResponse{}, err
+		return RoutingIntentGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return HubRouteTablesGetResponse{}, client.getHandleError(resp)
+		return RoutingIntentGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *HubRouteTablesClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubRouteTables/{routeTableName}"
+func (client *RoutingIntentClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent/{routingIntentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -234,10 +234,10 @@ func (client *HubRouteTablesClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter virtualHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualHubName}", url.PathEscape(virtualHubName))
-	if routeTableName == "" {
-		return nil, errors.New("parameter routeTableName cannot be empty")
+	if routingIntentName == "" {
+		return nil, errors.New("parameter routingIntentName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{routeTableName}", url.PathEscape(routeTableName))
+	urlPath = strings.ReplaceAll(urlPath, "{routingIntentName}", url.PathEscape(routingIntentName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
@@ -250,16 +250,16 @@ func (client *HubRouteTablesClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *HubRouteTablesClient) getHandleResponse(resp *http.Response) (HubRouteTablesGetResponse, error) {
-	result := HubRouteTablesGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.HubRouteTable); err != nil {
-		return HubRouteTablesGetResponse{}, err
+func (client *RoutingIntentClient) getHandleResponse(resp *http.Response) (RoutingIntentGetResponse, error) {
+	result := RoutingIntentGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RoutingIntent); err != nil {
+		return RoutingIntentGetResponse{}, err
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *HubRouteTablesClient) getHandleError(resp *http.Response) error {
+func (client *RoutingIntentClient) getHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -271,23 +271,23 @@ func (client *HubRouteTablesClient) getHandleError(resp *http.Response) error {
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// List - Retrieves the details of all RouteTables.
+// List - Retrieves the details of all RoutingIntent child resources of the VirtualHub.
 // If the operation fails it returns the *CloudError error type.
-func (client *HubRouteTablesClient) List(resourceGroupName string, virtualHubName string, options *HubRouteTablesListOptions) *HubRouteTablesListPager {
-	return &HubRouteTablesListPager{
+func (client *RoutingIntentClient) List(resourceGroupName string, virtualHubName string, options *RoutingIntentListOptions) *RoutingIntentListPager {
+	return &RoutingIntentListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, virtualHubName, options)
 		},
-		advancer: func(ctx context.Context, resp HubRouteTablesListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListHubRouteTablesResult.NextLink)
+		advancer: func(ctx context.Context, resp RoutingIntentListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListRoutingIntentResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *HubRouteTablesClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, options *HubRouteTablesListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubRouteTables"
+func (client *RoutingIntentClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, options *RoutingIntentListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -312,16 +312,16 @@ func (client *HubRouteTablesClient) listCreateRequest(ctx context.Context, resou
 }
 
 // listHandleResponse handles the List response.
-func (client *HubRouteTablesClient) listHandleResponse(resp *http.Response) (HubRouteTablesListResponse, error) {
-	result := HubRouteTablesListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListHubRouteTablesResult); err != nil {
-		return HubRouteTablesListResponse{}, err
+func (client *RoutingIntentClient) listHandleResponse(resp *http.Response) (RoutingIntentListResponse, error) {
+	result := RoutingIntentListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListRoutingIntentResult); err != nil {
+		return RoutingIntentListResponse{}, err
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *HubRouteTablesClient) listHandleError(resp *http.Response) error {
+func (client *RoutingIntentClient) listHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)

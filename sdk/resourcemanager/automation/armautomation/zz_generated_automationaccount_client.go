@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AutomationAccountClient contains the methods for the AutomationAccount group.
@@ -30,8 +31,15 @@ type AutomationAccountClient struct {
 }
 
 // NewAutomationAccountClient creates a new instance of AutomationAccountClient with the specified values.
-func NewAutomationAccountClient(con *arm.Connection, subscriptionID string) *AutomationAccountClient {
-	return &AutomationAccountClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAutomationAccountClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AutomationAccountClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AutomationAccountClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create or update automation account.

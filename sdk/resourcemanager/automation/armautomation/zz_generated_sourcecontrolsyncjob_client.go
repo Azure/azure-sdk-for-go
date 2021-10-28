@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SourceControlSyncJobClient contains the methods for the SourceControlSyncJob group.
@@ -30,8 +31,15 @@ type SourceControlSyncJobClient struct {
 }
 
 // NewSourceControlSyncJobClient creates a new instance of SourceControlSyncJobClient with the specified values.
-func NewSourceControlSyncJobClient(con *arm.Connection, subscriptionID string) *SourceControlSyncJobClient {
-	return &SourceControlSyncJobClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSourceControlSyncJobClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SourceControlSyncJobClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SourceControlSyncJobClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Creates the sync job for a source control.

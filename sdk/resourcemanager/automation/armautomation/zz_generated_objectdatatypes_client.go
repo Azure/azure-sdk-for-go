@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ObjectDataTypesClient contains the methods for the ObjectDataTypes group.
@@ -30,8 +31,15 @@ type ObjectDataTypesClient struct {
 }
 
 // NewObjectDataTypesClient creates a new instance of ObjectDataTypesClient with the specified values.
-func NewObjectDataTypesClient(con *arm.Connection, subscriptionID string) *ObjectDataTypesClient {
-	return &ObjectDataTypesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewObjectDataTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ObjectDataTypesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ObjectDataTypesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListFieldsByModuleAndType - Retrieve a list of fields of a given type identified by module name.

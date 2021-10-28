@@ -1,4 +1,427 @@
 # Release History
 
+## 0.2.0 (2021-10-28)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` parameter(s) have been changed from `(context.Context, string, Enum27, string, string, *PrivateEndpointConnectionsBeginDeleteOptions)` to `(context.Context, string, Enum20, string, string, *PrivateEndpointConnectionsBeginDeleteOptions)`
+- Function `NewTopicsClient` parameter(s) have been changed from `(*arm.Connection, string)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewPrivateEndpointConnectionsClient` parameter(s) have been changed from `(*arm.Connection, string)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewEventSubscriptionsClient` parameter(s) have been changed from `(*arm.Connection, string)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewDomainTopicsClient` parameter(s) have been changed from `(*arm.Connection, string)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewDomainsClient` parameter(s) have been changed from `(*arm.Connection, string)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewSystemTopicsClient` parameter(s) have been changed from `(*arm.Connection, string)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewExtensionTopicsClient` parameter(s) have been changed from `(*arm.Connection)` to `(azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewOperationsClient` parameter(s) have been changed from `(*arm.Connection)` to `(azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewTopicTypesClient` parameter(s) have been changed from `(*arm.Connection)` to `(azcore.TokenCredential, *arm.ClientOptions)`
+- Function `*PrivateEndpointConnectionsClient.ListByResource` parameter(s) have been changed from `(string, Enum28, string, *PrivateEndpointConnectionsListByResourceOptions)` to `(string, Enum21, string, *PrivateEndpointConnectionsListByResourceOptions)`
+- Function `NewPrivateLinkResourcesClient` parameter(s) have been changed from `(*arm.Connection, string)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(context.Context, string, Enum25, string, string, *PrivateEndpointConnectionsGetOptions)` to `(context.Context, string, Enum18, string, string, *PrivateEndpointConnectionsGetOptions)`
+- Function `NewSystemTopicEventSubscriptionsClient` parameter(s) have been changed from `(*arm.Connection, string)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginUpdate` parameter(s) have been changed from `(context.Context, string, Enum26, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsBeginUpdateOptions)` to `(context.Context, string, Enum19, string, string, PrivateEndpointConnection, *PrivateEndpointConnectionsBeginUpdateOptions)`
+- Const `PartnerRegistrationProvisioningStateDeleting` has been removed
+- Const `PartnerTopicProvisioningStateSucceeded` has been removed
+- Const `PartnerNamespaceProvisioningStateDeleting` has been removed
+- Const `AdvancedFilterOperatorTypeIsNullOrUndefined` has been removed
+- Const `Enum25Domains` has been removed
+- Const `Enum27Topics` has been removed
+- Const `Enum26Topics` has been removed
+- Const `ResourceKindAzure` has been removed
+- Const `AdvancedFilterOperatorTypeStringNotContains` has been removed
+- Const `Enum28Domains` has been removed
+- Const `PartnerTopicReadinessStateNotActivatedByUserYet` has been removed
+- Const `PartnerTopicReadinessStateDeactivatedByUser` has been removed
+- Const `Enum25PartnerNamespaces` has been removed
+- Const `PartnerTopicProvisioningStateFailed` has been removed
+- Const `PartnerTopicActivationStateDeactivated` has been removed
+- Const `AdvancedFilterOperatorTypeStringNotBeginsWith` has been removed
+- Const `PartnerNamespaceProvisioningStateCanceled` has been removed
+- Const `AdvancedFilterOperatorTypeStringNotEndsWith` has been removed
+- Const `AdvancedFilterOperatorTypeNumberInRange` has been removed
+- Const `EventChannelProvisioningStateFailed` has been removed
+- Const `PartnerRegistrationProvisioningStateSucceeded` has been removed
+- Const `Enum26PartnerNamespaces` has been removed
+- Const `Enum27Domains` has been removed
+- Const `PartnerTopicActivationStateActivated` has been removed
+- Const `PartnerTopicReadinessStateDeletedByUser` has been removed
+- Const `AdvancedFilterOperatorTypeIsNotNull` has been removed
+- Const `ResourceKindAzureArc` has been removed
+- Const `PartnerRegistrationVisibilityStateHidden` has been removed
+- Const `PartnerRegistrationProvisioningStateCreating` has been removed
+- Const `SKUPremium` has been removed
+- Const `AdvancedFilterOperatorTypeNumberNotInRange` has been removed
+- Const `Enum28PartnerNamespaces` has been removed
+- Const `Enum26Domains` has been removed
+- Const `PartnerNamespaceProvisioningStateUpdating` has been removed
+- Const `PartnerRegistrationProvisioningStateUpdating` has been removed
+- Const `PartnerTopicProvisioningStateCanceled` has been removed
+- Const `EventChannelProvisioningStateUpdating` has been removed
+- Const `PartnerTopicProvisioningStateDeleting` has been removed
+- Const `PartnerTopicReadinessStateActivatedByUser` has been removed
+- Const `Enum27PartnerNamespaces` has been removed
+- Const `PartnerRegistrationProvisioningStateFailed` has been removed
+- Const `EventChannelProvisioningStateSucceeded` has been removed
+- Const `PartnerNamespaceProvisioningStateCreating` has been removed
+- Const `PartnerRegistrationVisibilityStatePublicPreview` has been removed
+- Const `PartnerTopicProvisioningStateCreating` has been removed
+- Const `PartnerTopicActivationStateNeverActivated` has been removed
+- Const `EventChannelProvisioningStateCreating` has been removed
+- Const `Enum25Topics` has been removed
+- Const `PartnerNamespaceProvisioningStateSucceeded` has been removed
+- Const `EventChannelProvisioningStateCanceled` has been removed
+- Const `PartnerRegistrationProvisioningStateCanceled` has been removed
+- Const `Enum28Topics` has been removed
+- Const `PartnerNamespaceProvisioningStateFailed` has been removed
+- Const `EventChannelProvisioningStateDeleting` has been removed
+- Const `PartnerTopicProvisioningStateUpdating` has been removed
+- Const `SKUBasic` has been removed
+- Const `PartnerRegistrationVisibilityStateGenerallyAvailable` has been removed
+- Function `*PartnerNamespacesCreateOrUpdatePoller.Done` has been removed
+- Function `PartnerTopic.MarshalJSON` has been removed
+- Function `PossibleEnum26Values` has been removed
+- Function `*PartnerTopicEventSubscriptionsCreateOrUpdatePoller.Done` has been removed
+- Function `ResourceKind.ToPtr` has been removed
+- Function `*PartnerNamespacesClient.ListByResourceGroup` has been removed
+- Function `*PartnerNamespacesListByResourceGroupPager.NextPage` has been removed
+- Function `*PartnerRegistrationsClient.Get` has been removed
+- Function `*PartnerNamespacesCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `PartnerNamespacesUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PartnerNamespacesUpdatePoller.FinalResponse` has been removed
+- Function `*EventChannelsClient.Get` has been removed
+- Function `*PartnerTopicEventSubscriptionsUpdatePoller.Poll` has been removed
+- Function `NumberNotInRangeAdvancedFilter.MarshalJSON` has been removed
+- Function `PartnerTopicProvisioningState.ToPtr` has been removed
+- Function `*PartnerNamespacesDeletePollerResponse.Resume` has been removed
+- Function `*EventChannelsClient.BeginDelete` has been removed
+- Function `*PartnerNamespacesListBySubscriptionPager.NextPage` has been removed
+- Function `PossiblePartnerRegistrationVisibilityStateValues` has been removed
+- Function `*PartnerTopicEventSubscriptionsDeletePoller.FinalResponse` has been removed
+- Function `PossibleEventChannelProvisioningStateValues` has been removed
+- Function `*PartnerNamespacesListBySubscriptionPager.PageResponse` has been removed
+- Function `*EventChannelsListByPartnerNamespacePager.NextPage` has been removed
+- Function `*PartnerTopicEventSubscriptionsUpdatePoller.FinalResponse` has been removed
+- Function `*PartnerTopicsClient.Deactivate` has been removed
+- Function `PossiblePartnerTopicProvisioningStateValues` has been removed
+- Function `*PartnerTopicsDeletePoller.FinalResponse` has been removed
+- Function `PossiblePartnerTopicActivationStateValues` has been removed
+- Function `PartnerNamespacesListResult.MarshalJSON` has been removed
+- Function `*PartnerRegistrationsClient.Update` has been removed
+- Function `PartnerNamespaceProvisioningState.ToPtr` has been removed
+- Function `*PartnerNamespacesClient.BeginDelete` has been removed
+- Function `*PartnerTopicsClient.Activate` has been removed
+- Function `PossiblePartnerNamespaceProvisioningStateValues` has been removed
+- Function `*PartnerTopicEventSubscriptionsDeletePoller.Poll` has been removed
+- Function `*PartnerTopicsDeletePoller.Poll` has been removed
+- Function `Enum28.ToPtr` has been removed
+- Function `PossibleResourceKindValues` has been removed
+- Function `IsNotNullAdvancedFilter.MarshalJSON` has been removed
+- Function `*PartnerTopicsDeletePoller.Done` has been removed
+- Function `*PartnerTopicEventSubscriptionsListByPartnerTopicPager.NextPage` has been removed
+- Function `PartnerNamespaceUpdateParameterProperties.MarshalJSON` has been removed
+- Function `*PartnerTopicsListBySubscriptionPager.NextPage` has been removed
+- Function `NewEventChannelsClient` has been removed
+- Function `*PartnerTopicEventSubscriptionsCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `*PartnerTopicEventSubscriptionsUpdatePoller.ResumeToken` has been removed
+- Function `*PartnerNamespacesClient.Get` has been removed
+- Function `*PartnerTopicProperties.UnmarshalJSON` has been removed
+- Function `EventChannelsListResult.MarshalJSON` has been removed
+- Function `*PartnerTopicsClient.Get` has been removed
+- Function `*PartnerNamespacesCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `PartnerRegistrationsListResult.MarshalJSON` has been removed
+- Function `StringNotEndsWithAdvancedFilter.MarshalJSON` has been removed
+- Function `*PartnerTopicsClient.ListByResourceGroup` has been removed
+- Function `PartnerRegistration.MarshalJSON` has been removed
+- Function `*PartnerTopicsListByResourceGroupPager.Err` has been removed
+- Function `*PartnerTopicEventSubscriptionsListByPartnerTopicPager.PageResponse` has been removed
+- Function `PartnerTopicEventSubscriptionsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*PartnerNamespacesDeletePoller.Poll` has been removed
+- Function `*StringNotBeginsWithAdvancedFilter.UnmarshalJSON` has been removed
+- Function `EventChannelProvisioningState.ToPtr` has been removed
+- Function `PartnerTopicEventSubscriptionsCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PartnerTopicEventSubscriptionsDeletePollerResponse.Resume` has been removed
+- Function `*EventChannelsListByPartnerNamespacePager.Err` has been removed
+- Function `*PartnerNamespacesUpdatePoller.Done` has been removed
+- Function `*PartnerRegistrationsListBySubscriptionPager.PageResponse` has been removed
+- Function `*EventChannelFilter.UnmarshalJSON` has been removed
+- Function `*PartnerNamespacesUpdatePoller.ResumeToken` has been removed
+- Function `*PartnerNamespacesDeletePoller.Done` has been removed
+- Function `*NumberNotInRangeAdvancedFilter.UnmarshalJSON` has been removed
+- Function `Enum26.ToPtr` has been removed
+- Function `PartnerNamespacesDeletePollerResponse.PollUntilDone` has been removed
+- Function `*EventChannelsClient.ListByPartnerNamespace` has been removed
+- Function `*PartnerRegistrationsListByResourceGroupPager.PageResponse` has been removed
+- Function `*PartnerRegistrationsListByResourceGroupPager.Err` has been removed
+- Function `PossibleEnum27Values` has been removed
+- Function `PossibleEnum28Values` has been removed
+- Function `*PartnerTopicsListByResourceGroupPager.NextPage` has been removed
+- Function `*PartnerTopicEventSubscriptionsUpdatePollerResponse.Resume` has been removed
+- Function `PartnerNamespacesCreateOrUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*EventChannelsDeletePoller.ResumeToken` has been removed
+- Function `NewPartnerTopicsClient` has been removed
+- Function `PartnerNamespace.MarshalJSON` has been removed
+- Function `PossibleSKUValues` has been removed
+- Function `*PartnerNamespacesClient.RegenerateKey` has been removed
+- Function `NewPartnerTopicEventSubscriptionsClient` has been removed
+- Function `*PartnerNamespacesListByResourceGroupPager.Err` has been removed
+- Function `EventChannelsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*EventChannelProperties.UnmarshalJSON` has been removed
+- Function `PartnerTopicUpdateParameters.MarshalJSON` has been removed
+- Function `*PartnerRegistrationsClient.ListBySubscription` has been removed
+- Function `*PartnerNamespacesClient.ListSharedAccessKeys` has been removed
+- Function `PartnerRegistrationProvisioningState.ToPtr` has been removed
+- Function `PartnerTopicsListResult.MarshalJSON` has been removed
+- Function `*PartnerRegistrationsClient.CreateOrUpdate` has been removed
+- Function `*PartnerTopicEventSubscriptionsDeletePoller.Done` has been removed
+- Function `NewPartnerNamespacesClient` has been removed
+- Function `*PartnerTopicEventSubscriptionsClient.GetDeliveryAttributes` has been removed
+- Function `PartnerNamespaceProperties.MarshalJSON` has been removed
+- Function `*PartnerNamespacesCreateOrUpdatePollerResponse.Resume` has been removed
+- Function `PartnerRegistrationProperties.MarshalJSON` has been removed
+- Function `*PartnerNamespacesClient.BeginUpdate` has been removed
+- Function `SKU.ToPtr` has been removed
+- Function `*PartnerNamespacesListBySubscriptionPager.Err` has been removed
+- Function `*EventChannelsDeletePoller.FinalResponse` has been removed
+- Function `*PartnerTopicsClient.ListBySubscription` has been removed
+- Function `EventChannelProperties.MarshalJSON` has been removed
+- Function `*PartnerRegistrationsListByResourceGroupPager.NextPage` has been removed
+- Function `*NumberInRangeAdvancedFilter.UnmarshalJSON` has been removed
+- Function `*PartnerRegistrationsListBySubscriptionPager.Err` has been removed
+- Function `*PartnerNamespacesUpdatePoller.Poll` has been removed
+- Function `*PartnerTopicsClient.BeginDelete` has been removed
+- Function `Enum25.ToPtr` has been removed
+- Function `*PartnerTopicEventSubscriptionsCreateOrUpdatePoller.ResumeToken` has been removed
+- Function `NewPartnerRegistrationsClient` has been removed
+- Function `*EventChannelsDeletePollerResponse.Resume` has been removed
+- Function `PossibleEnum25Values` has been removed
+- Function `*PartnerNamespacesDeletePoller.FinalResponse` has been removed
+- Function `PartnerTopicEventSubscriptionsUpdatePollerResponse.PollUntilDone` has been removed
+- Function `*PartnerTopicsDeletePoller.ResumeToken` has been removed
+- Function `*PartnerRegistrationsClient.Delete` has been removed
+- Function `EventChannelFilter.MarshalJSON` has been removed
+- Function `IsNullOrUndefinedAdvancedFilter.MarshalJSON` has been removed
+- Function `PartnerTopicReadinessState.ToPtr` has been removed
+- Function `*PartnerTopicEventSubscriptionsListByPartnerTopicPager.Err` has been removed
+- Function `Enum27.ToPtr` has been removed
+- Function `*PartnerTopicEventSubscriptionsClient.ListByPartnerTopic` has been removed
+- Function `*PartnerTopicEventSubscriptionsUpdatePoller.Done` has been removed
+- Function `*PartnerNamespacesListByResourceGroupPager.PageResponse` has been removed
+- Function `*EventChannelsListByPartnerNamespacePager.PageResponse` has been removed
+- Function `*PartnerNamespacesUpdatePollerResponse.Resume` has been removed
+- Function `*PartnerTopicEventSubscriptionsClient.Get` has been removed
+- Function `*PartnerTopicEventSubscriptionsClient.BeginDelete` has been removed
+- Function `PartnerRegistrationVisibilityState.ToPtr` has been removed
+- Function `PossiblePartnerTopicReadinessStateValues` has been removed
+- Function `EventChannel.MarshalJSON` has been removed
+- Function `*PartnerTopicEventSubscriptionsClient.GetFullURL` has been removed
+- Function `*PartnerTopicEventSubscriptionsDeletePoller.ResumeToken` has been removed
+- Function `*PartnerNamespacesClient.BeginCreateOrUpdate` has been removed
+- Function `StringNotBeginsWithAdvancedFilter.MarshalJSON` has been removed
+- Function `*PartnerTopicEventSubscriptionsCreateOrUpdatePoller.FinalResponse` has been removed
+- Function `PartnerTopicProperties.MarshalJSON` has been removed
+- Function `*PartnerTopicsClient.Update` has been removed
+- Function `*PartnerRegistrationsListBySubscriptionPager.NextPage` has been removed
+- Function `*PartnerTopicsListByResourceGroupPager.PageResponse` has been removed
+- Function `*StringNotContainsAdvancedFilter.UnmarshalJSON` has been removed
+- Function `NumberInRangeAdvancedFilter.MarshalJSON` has been removed
+- Function `*PartnerRegistrationsClient.ListByResourceGroup` has been removed
+- Function `*PartnerTopicEventSubscriptionsClient.BeginUpdate` has been removed
+- Function `*EventChannelsDeletePoller.Poll` has been removed
+- Function `PartnerNamespaceUpdateParameters.MarshalJSON` has been removed
+- Function `*PartnerTopicsListBySubscriptionPager.PageResponse` has been removed
+- Function `PartnerTopicsDeletePollerResponse.PollUntilDone` has been removed
+- Function `*EventChannelsDeletePoller.Done` has been removed
+- Function `*PartnerNamespacesDeletePoller.ResumeToken` has been removed
+- Function `*StringNotEndsWithAdvancedFilter.UnmarshalJSON` has been removed
+- Function `*PartnerTopicEventSubscriptionsCreateOrUpdatePoller.Poll` has been removed
+- Function `PartnerRegistrationUpdateParameters.MarshalJSON` has been removed
+- Function `PartnerTopicActivationState.ToPtr` has been removed
+- Function `*EventChannelsClient.CreateOrUpdate` has been removed
+- Function `PossiblePartnerRegistrationProvisioningStateValues` has been removed
+- Function `*PartnerTopicEventSubscriptionsClient.BeginCreateOrUpdate` has been removed
+- Function `*PartnerTopicsDeletePollerResponse.Resume` has been removed
+- Function `*PartnerNamespacesClient.ListBySubscription` has been removed
+- Function `*PartnerTopicsListBySubscriptionPager.Err` has been removed
+- Function `StringNotContainsAdvancedFilter.MarshalJSON` has been removed
+- Function `*PartnerNamespacesCreateOrUpdatePoller.Poll` has been removed
+- Struct `EventChannel` has been removed
+- Struct `EventChannelDestination` has been removed
+- Struct `EventChannelFilter` has been removed
+- Struct `EventChannelProperties` has been removed
+- Struct `EventChannelSource` has been removed
+- Struct `EventChannelsBeginDeleteOptions` has been removed
+- Struct `EventChannelsClient` has been removed
+- Struct `EventChannelsCreateOrUpdateOptions` has been removed
+- Struct `EventChannelsCreateOrUpdateResponse` has been removed
+- Struct `EventChannelsCreateOrUpdateResult` has been removed
+- Struct `EventChannelsDeletePoller` has been removed
+- Struct `EventChannelsDeletePollerResponse` has been removed
+- Struct `EventChannelsDeleteResponse` has been removed
+- Struct `EventChannelsGetOptions` has been removed
+- Struct `EventChannelsGetResponse` has been removed
+- Struct `EventChannelsGetResult` has been removed
+- Struct `EventChannelsListByPartnerNamespaceOptions` has been removed
+- Struct `EventChannelsListByPartnerNamespacePager` has been removed
+- Struct `EventChannelsListByPartnerNamespaceResponse` has been removed
+- Struct `EventChannelsListByPartnerNamespaceResult` has been removed
+- Struct `EventChannelsListResult` has been removed
+- Struct `ExtendedLocation` has been removed
+- Struct `IsNotNullAdvancedFilter` has been removed
+- Struct `IsNullOrUndefinedAdvancedFilter` has been removed
+- Struct `NumberInRangeAdvancedFilter` has been removed
+- Struct `NumberNotInRangeAdvancedFilter` has been removed
+- Struct `PartnerNamespace` has been removed
+- Struct `PartnerNamespaceProperties` has been removed
+- Struct `PartnerNamespaceRegenerateKeyRequest` has been removed
+- Struct `PartnerNamespaceSharedAccessKeys` has been removed
+- Struct `PartnerNamespaceUpdateParameterProperties` has been removed
+- Struct `PartnerNamespaceUpdateParameters` has been removed
+- Struct `PartnerNamespacesBeginCreateOrUpdateOptions` has been removed
+- Struct `PartnerNamespacesBeginDeleteOptions` has been removed
+- Struct `PartnerNamespacesBeginUpdateOptions` has been removed
+- Struct `PartnerNamespacesClient` has been removed
+- Struct `PartnerNamespacesCreateOrUpdatePoller` has been removed
+- Struct `PartnerNamespacesCreateOrUpdatePollerResponse` has been removed
+- Struct `PartnerNamespacesCreateOrUpdateResponse` has been removed
+- Struct `PartnerNamespacesCreateOrUpdateResult` has been removed
+- Struct `PartnerNamespacesDeletePoller` has been removed
+- Struct `PartnerNamespacesDeletePollerResponse` has been removed
+- Struct `PartnerNamespacesDeleteResponse` has been removed
+- Struct `PartnerNamespacesGetOptions` has been removed
+- Struct `PartnerNamespacesGetResponse` has been removed
+- Struct `PartnerNamespacesGetResult` has been removed
+- Struct `PartnerNamespacesListByResourceGroupOptions` has been removed
+- Struct `PartnerNamespacesListByResourceGroupPager` has been removed
+- Struct `PartnerNamespacesListByResourceGroupResponse` has been removed
+- Struct `PartnerNamespacesListByResourceGroupResult` has been removed
+- Struct `PartnerNamespacesListBySubscriptionOptions` has been removed
+- Struct `PartnerNamespacesListBySubscriptionPager` has been removed
+- Struct `PartnerNamespacesListBySubscriptionResponse` has been removed
+- Struct `PartnerNamespacesListBySubscriptionResult` has been removed
+- Struct `PartnerNamespacesListResult` has been removed
+- Struct `PartnerNamespacesListSharedAccessKeysOptions` has been removed
+- Struct `PartnerNamespacesListSharedAccessKeysResponse` has been removed
+- Struct `PartnerNamespacesListSharedAccessKeysResult` has been removed
+- Struct `PartnerNamespacesRegenerateKeyOptions` has been removed
+- Struct `PartnerNamespacesRegenerateKeyResponse` has been removed
+- Struct `PartnerNamespacesRegenerateKeyResult` has been removed
+- Struct `PartnerNamespacesUpdatePoller` has been removed
+- Struct `PartnerNamespacesUpdatePollerResponse` has been removed
+- Struct `PartnerNamespacesUpdateResponse` has been removed
+- Struct `PartnerNamespacesUpdateResult` has been removed
+- Struct `PartnerRegistration` has been removed
+- Struct `PartnerRegistrationProperties` has been removed
+- Struct `PartnerRegistrationUpdateParameters` has been removed
+- Struct `PartnerRegistrationsClient` has been removed
+- Struct `PartnerRegistrationsCreateOrUpdateOptions` has been removed
+- Struct `PartnerRegistrationsCreateOrUpdateResponse` has been removed
+- Struct `PartnerRegistrationsCreateOrUpdateResult` has been removed
+- Struct `PartnerRegistrationsDeleteOptions` has been removed
+- Struct `PartnerRegistrationsDeleteResponse` has been removed
+- Struct `PartnerRegistrationsGetOptions` has been removed
+- Struct `PartnerRegistrationsGetResponse` has been removed
+- Struct `PartnerRegistrationsGetResult` has been removed
+- Struct `PartnerRegistrationsListByResourceGroupOptions` has been removed
+- Struct `PartnerRegistrationsListByResourceGroupPager` has been removed
+- Struct `PartnerRegistrationsListByResourceGroupResponse` has been removed
+- Struct `PartnerRegistrationsListByResourceGroupResult` has been removed
+- Struct `PartnerRegistrationsListBySubscriptionOptions` has been removed
+- Struct `PartnerRegistrationsListBySubscriptionPager` has been removed
+- Struct `PartnerRegistrationsListBySubscriptionResponse` has been removed
+- Struct `PartnerRegistrationsListBySubscriptionResult` has been removed
+- Struct `PartnerRegistrationsListResult` has been removed
+- Struct `PartnerRegistrationsUpdateOptions` has been removed
+- Struct `PartnerRegistrationsUpdateResponse` has been removed
+- Struct `PartnerRegistrationsUpdateResult` has been removed
+- Struct `PartnerTopic` has been removed
+- Struct `PartnerTopicEventSubscriptionsBeginCreateOrUpdateOptions` has been removed
+- Struct `PartnerTopicEventSubscriptionsBeginDeleteOptions` has been removed
+- Struct `PartnerTopicEventSubscriptionsBeginUpdateOptions` has been removed
+- Struct `PartnerTopicEventSubscriptionsClient` has been removed
+- Struct `PartnerTopicEventSubscriptionsCreateOrUpdatePoller` has been removed
+- Struct `PartnerTopicEventSubscriptionsCreateOrUpdatePollerResponse` has been removed
+- Struct `PartnerTopicEventSubscriptionsCreateOrUpdateResponse` has been removed
+- Struct `PartnerTopicEventSubscriptionsCreateOrUpdateResult` has been removed
+- Struct `PartnerTopicEventSubscriptionsDeletePoller` has been removed
+- Struct `PartnerTopicEventSubscriptionsDeletePollerResponse` has been removed
+- Struct `PartnerTopicEventSubscriptionsDeleteResponse` has been removed
+- Struct `PartnerTopicEventSubscriptionsGetDeliveryAttributesOptions` has been removed
+- Struct `PartnerTopicEventSubscriptionsGetDeliveryAttributesResponse` has been removed
+- Struct `PartnerTopicEventSubscriptionsGetDeliveryAttributesResult` has been removed
+- Struct `PartnerTopicEventSubscriptionsGetFullURLOptions` has been removed
+- Struct `PartnerTopicEventSubscriptionsGetFullURLResponse` has been removed
+- Struct `PartnerTopicEventSubscriptionsGetFullURLResult` has been removed
+- Struct `PartnerTopicEventSubscriptionsGetOptions` has been removed
+- Struct `PartnerTopicEventSubscriptionsGetResponse` has been removed
+- Struct `PartnerTopicEventSubscriptionsGetResult` has been removed
+- Struct `PartnerTopicEventSubscriptionsListByPartnerTopicOptions` has been removed
+- Struct `PartnerTopicEventSubscriptionsListByPartnerTopicPager` has been removed
+- Struct `PartnerTopicEventSubscriptionsListByPartnerTopicResponse` has been removed
+- Struct `PartnerTopicEventSubscriptionsListByPartnerTopicResult` has been removed
+- Struct `PartnerTopicEventSubscriptionsUpdatePoller` has been removed
+- Struct `PartnerTopicEventSubscriptionsUpdatePollerResponse` has been removed
+- Struct `PartnerTopicEventSubscriptionsUpdateResponse` has been removed
+- Struct `PartnerTopicEventSubscriptionsUpdateResult` has been removed
+- Struct `PartnerTopicProperties` has been removed
+- Struct `PartnerTopicUpdateParameters` has been removed
+- Struct `PartnerTopicsActivateOptions` has been removed
+- Struct `PartnerTopicsActivateResponse` has been removed
+- Struct `PartnerTopicsActivateResult` has been removed
+- Struct `PartnerTopicsBeginDeleteOptions` has been removed
+- Struct `PartnerTopicsClient` has been removed
+- Struct `PartnerTopicsDeactivateOptions` has been removed
+- Struct `PartnerTopicsDeactivateResponse` has been removed
+- Struct `PartnerTopicsDeactivateResult` has been removed
+- Struct `PartnerTopicsDeletePoller` has been removed
+- Struct `PartnerTopicsDeletePollerResponse` has been removed
+- Struct `PartnerTopicsDeleteResponse` has been removed
+- Struct `PartnerTopicsGetOptions` has been removed
+- Struct `PartnerTopicsGetResponse` has been removed
+- Struct `PartnerTopicsGetResult` has been removed
+- Struct `PartnerTopicsListByResourceGroupOptions` has been removed
+- Struct `PartnerTopicsListByResourceGroupPager` has been removed
+- Struct `PartnerTopicsListByResourceGroupResponse` has been removed
+- Struct `PartnerTopicsListByResourceGroupResult` has been removed
+- Struct `PartnerTopicsListBySubscriptionOptions` has been removed
+- Struct `PartnerTopicsListBySubscriptionPager` has been removed
+- Struct `PartnerTopicsListBySubscriptionResponse` has been removed
+- Struct `PartnerTopicsListBySubscriptionResult` has been removed
+- Struct `PartnerTopicsListResult` has been removed
+- Struct `PartnerTopicsUpdateOptions` has been removed
+- Struct `PartnerTopicsUpdateResponse` has been removed
+- Struct `PartnerTopicsUpdateResult` has been removed
+- Struct `ResourceSKU` has been removed
+- Struct `StringNotBeginsWithAdvancedFilter` has been removed
+- Struct `StringNotContainsAdvancedFilter` has been removed
+- Struct `StringNotEndsWithAdvancedFilter` has been removed
+- Field `SKU` of struct `TopicUpdateParameters` has been removed
+- Field `SKU` of struct `Topic` has been removed
+- Field `ExtendedLocation` of struct `Topic` has been removed
+- Field `Kind` of struct `Topic` has been removed
+- Field `SKU` of struct `DomainUpdateParameters` has been removed
+- Field `SKU` of struct `Domain` has been removed
+- Field `IsDataAction` of struct `Operation` has been removed
+
+### New Content
+
+- New const `Enum21Domains`
+- New const `Enum19Topics`
+- New const `Enum20Topics`
+- New const `Enum21Topics`
+- New const `Enum20Domains`
+- New const `Enum18Domains`
+- New const `Enum19Domains`
+- New const `Enum18Topics`
+- New function `Enum21.ToPtr() *Enum21`
+- New function `Enum20.ToPtr() *Enum20`
+- New function `Enum18.ToPtr() *Enum18`
+- New function `Enum19.ToPtr() *Enum19`
+- New function `PossibleEnum21Values() []Enum21`
+- New function `PossibleEnum19Values() []Enum19`
+- New function `PossibleEnum20Values() []Enum20`
+- New function `PossibleEnum18Values() []Enum18`
+- New field `SystemData` in struct `ExtensionTopic`
+
+Total 544 breaking change(s), 17 additive change(s).
+
+
 ## 0.1.0 (2021-10-08)
 - To better align with the Azure SDK guidelines (https://azure.github.io/azure-sdk/general_introduction.html), we have decided to change the module path to "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventgrid/armeventgrid". Therefore, we are deprecating the old module path (which is "github.com/Azure/azure-sdk-for-go/sdk/eventgrid/armeventgrid") to avoid confusion.

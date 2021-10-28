@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // EmergingIssuesClient contains the methods for the EmergingIssues group.
@@ -29,8 +30,15 @@ type EmergingIssuesClient struct {
 }
 
 // NewEmergingIssuesClient creates a new instance of EmergingIssuesClient with the specified values.
-func NewEmergingIssuesClient(con *arm.Connection) *EmergingIssuesClient {
-	return &EmergingIssuesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewEmergingIssuesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EmergingIssuesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &EmergingIssuesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets Azure services' emerging issues.

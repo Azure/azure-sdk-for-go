@@ -28,7 +28,6 @@ const REGULARTEST = "NON-HSM"
 
 var testTypes = []string{REGULARTEST, HSMTEST}
 
-
 func TestCreateKeyRSA(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
@@ -482,8 +481,7 @@ func TestGetRandomBytes(t *testing.T) {
 func TestRotateKey(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
-			// t.Skipf("Rotate")
+			alwaysSkipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -508,7 +506,7 @@ func TestRotateKey(t *testing.T) {
 func TestGetKeyRotationPolicy(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
+			alwaysSkipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 
@@ -571,7 +569,7 @@ func TestReleaseKey(t *testing.T) {
 func TestUpdateKeyRotationPolicy(t *testing.T) {
 	for _, testType := range testTypes {
 		t.Run(fmt.Sprintf("%s_%s", t.Name(), testType), func(t *testing.T) {
-			skipHSM(t, testType)
+			alwaysSkipHSM(t, testType)
 			stop := startTest(t)
 			defer stop()
 

@@ -29,7 +29,6 @@ const fakeKvURL = "https://fakekvurl.vault.azure.net/"
 const fakeKvMHSMURL = "https://fakekvurl.managedhsm.azure.net/"
 
 var enableHSM = false
-var hsmErrorMessage = "Could not find env var 'AZURE_MANAGEDHSM_URL'"
 
 func TestMain(m *testing.M) {
 	// Initialize
@@ -96,6 +95,13 @@ func skipHSM(t *testing.T, testType string) {
 			t.Log("Skipping HSM Test")
 			t.Skip()
 		}
+	}
+}
+
+func alwaysSkipHSM(t *testing.T, testType string) {
+	if testType == HSMTEST {
+		t.Log("Skipping HSM Test")
+		t.Skip()
 	}
 }
 

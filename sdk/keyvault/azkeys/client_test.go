@@ -12,7 +12,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"os"
 	"testing"
 	"time"
 
@@ -29,29 +28,11 @@ const REGULARTEST = "NON-HSM"
 
 var testTypes = []string{REGULARTEST, HSMTEST}
 
-func TestMain(m *testing.M) {
-	// Initialize
-	if recording.GetRecordMode() == "record" {
-		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
-		err := recording.AddUriSanitizer("https://fakekvurl.vault.azure.net/", vaultUrl, nil)
-		if err != nil {
-			panic(err)
-		}
-	}
-
-	// Run
-	exitVal := m.Run()
-
-	// cleanup
-
-	os.Exit(exitVal)
-}
-
 func startTest(t *testing.T) func() {
-	err := recording.StartRecording(t, pathToPackage, nil)
+	err := recording.Start(t, pathToPackage, nil)
 	require.NoError(t, err)
 	return func() {
-		err := recording.StopRecording(t, nil)
+		err := recording.Stop(t, nil)
 		require.NoError(t, err)
 	}
 }
@@ -599,7 +580,7 @@ func TestReleaseKey(t *testing.T) {
 			defer cleanUpKey(t, client, key)
 
 			// Get attestation token from service
-			attestationURL := recording.GetEnvVariable(t, "AZURE_KEYVAULT_ATTESTATION_URL", "https://fakewebsite.net/")
+			attestationURL := recording.GetEnvVariable("AZURE_KEYVAULT_ATTESTATION_URL", "https://fakewebsite.net/")
 			req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", attestationURL), nil)
 			require.NoError(t, err)
 

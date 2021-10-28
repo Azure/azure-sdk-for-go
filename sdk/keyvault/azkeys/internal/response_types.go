@@ -37,6 +37,7 @@ type HSMSecurityDomainDownloadPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 func (l HSMSecurityDomainDownloadPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (HSMSecurityDomainDownloadResponse, error) {
 	respType := HSMSecurityDomainDownloadResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SecurityDomainObject)
@@ -48,8 +49,8 @@ func (l HSMSecurityDomainDownloadPollerResponse) PollUntilDone(ctx context.Conte
 }
 
 // Resume rehydrates a HSMSecurityDomainDownloadPollerResponse from the provided client and resume token.
-func (l *HSMSecurityDomainDownloadPollerResponse) Resume(ctx context.Context, client *hsmSecurityDomainClient, token string) error {
-	pt, err := runtime.NewPollerFromResumeToken("hsmSecurityDomainClient.Download", token, client.con.Pipeline(), client.downloadHandleError)
+func (l *HSMSecurityDomainDownloadPollerResponse) Resume(ctx context.Context, client *HSMSecurityDomainClient, token string) error {
+	pt, err := runtime.NewPollerFromResumeToken("HSMSecurityDomainClient.Download", token, client.con.Pipeline(), client.downloadHandleError)
 	if err != nil {
 		return err
 	}
@@ -111,6 +112,7 @@ type HSMSecurityDomainUploadPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
 func (l HSMSecurityDomainUploadPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (HSMSecurityDomainUploadResponse, error) {
 	respType := HSMSecurityDomainUploadResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.SecurityDomainOperationStatus)
@@ -122,8 +124,8 @@ func (l HSMSecurityDomainUploadPollerResponse) PollUntilDone(ctx context.Context
 }
 
 // Resume rehydrates a HSMSecurityDomainUploadPollerResponse from the provided client and resume token.
-func (l *HSMSecurityDomainUploadPollerResponse) Resume(ctx context.Context, client *hsmSecurityDomainClient, token string) error {
-	pt, err := runtime.NewPollerFromResumeToken("hsmSecurityDomainClient.Upload", token, client.con.Pipeline(), client.uploadHandleError)
+func (l *HSMSecurityDomainUploadPollerResponse) Resume(ctx context.Context, client *HSMSecurityDomainClient, token string) error {
+	pt, err := runtime.NewPollerFromResumeToken("HSMSecurityDomainClient.Upload", token, client.con.Pipeline(), client.uploadHandleError)
 	if err != nil {
 		return err
 	}

@@ -47,7 +47,7 @@ func (p *KeyVaultClientGetDeletedKeysPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.Con.Pipeline().Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
@@ -101,7 +101,7 @@ func (p *KeyVaultClientGetKeyVersionsPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.Con.Pipeline().Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
@@ -155,7 +155,7 @@ func (p *KeyVaultClientGetKeysPager) NextPage(ctx context.Context) bool {
 		p.err = err
 		return false
 	}
-	resp, err := p.client.Con.Pipeline().Do(req)
+	resp, err := p.client.con.Pipeline().Do(req)
 	if err != nil {
 		p.err = err
 		return false
@@ -180,7 +180,7 @@ func (p *KeyVaultClientGetKeysPager) PageResponse() KeyVaultClientGetKeysRespons
 
 // RoleAssignmentsListForScopePager provides operations for iterating over paged responses.
 type RoleAssignmentsListForScopePager struct {
-	client    *roleAssignmentsClient
+	client    *RoleAssignmentsClient
 	current   RoleAssignmentsListForScopeResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)
@@ -234,7 +234,7 @@ func (p *RoleAssignmentsListForScopePager) PageResponse() RoleAssignmentsListFor
 
 // RoleDefinitionsListPager provides operations for iterating over paged responses.
 type RoleDefinitionsListPager struct {
-	client    *roleDefinitionsClient
+	client    *RoleDefinitionsClient
 	current   RoleDefinitionsListResponse
 	err       error
 	requester func(context.Context) (*policy.Request, error)

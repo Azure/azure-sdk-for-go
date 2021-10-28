@@ -17,6 +17,7 @@ module: azkeys
 openapi-type: "data-plane"
 security: "AADToken"
 security-scopes:  "https://vault.azure.net/.default"
-use: "@autorest/go@4.0.0-preview.29"
+use: "@autorest/go@4.0.0-preview.30"
 module-version: 0.1.0
+export-clients: true
 ```

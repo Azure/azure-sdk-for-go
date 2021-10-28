@@ -51,11 +51,11 @@ func (a *Attributes) UnmarshalJSON(data []byte) error {
 }
 
 func (a Attributes) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "created", (*timeUnix)(a.Created))
+	populateTimeUnix(objectMap, "created", a.Created)
 	populate(objectMap, "enabled", a.Enabled)
-	populate(objectMap, "exp", (*timeUnix)(a.Expires))
-	populate(objectMap, "nbf", (*timeUnix)(a.NotBefore))
-	populate(objectMap, "updated", (*timeUnix)(a.Updated))
+	populateTimeUnix(objectMap, "exp", a.Expires)
+	populateTimeUnix(objectMap, "nbf", a.NotBefore)
+	populateTimeUnix(objectMap, "updated", a.Updated)
 }
 
 func (a *Attributes) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -63,27 +63,19 @@ func (a *Attributes) unmarshalInternal(rawMsg map[string]json.RawMessage) error 
 		var err error
 		switch key {
 		case "created":
-			var aux timeUnix
-			err = unpopulate(val, &aux)
-			a.Created = (*time.Time)(&aux)
+			err = unpopulateTimeUnix(val, &a.Created)
 			delete(rawMsg, key)
 		case "enabled":
 			err = unpopulate(val, &a.Enabled)
 			delete(rawMsg, key)
 		case "exp":
-			var aux timeUnix
-			err = unpopulate(val, &aux)
-			a.Expires = (*time.Time)(&aux)
+			err = unpopulateTimeUnix(val, &a.Expires)
 			delete(rawMsg, key)
 		case "nbf":
-			var aux timeUnix
-			err = unpopulate(val, &aux)
-			a.NotBefore = (*time.Time)(&aux)
+			err = unpopulateTimeUnix(val, &a.NotBefore)
 			delete(rawMsg, key)
 		case "updated":
-			var aux timeUnix
-			err = unpopulate(val, &aux)
-			a.Updated = (*time.Time)(&aux)
+			err = unpopulateTimeUnix(val, &a.Updated)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -159,9 +151,9 @@ type DeletedKeyBundle struct {
 func (d DeletedKeyBundle) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	d.KeyBundle.marshalInternal(objectMap)
-	populate(objectMap, "deletedDate", (*timeUnix)(d.DeletedDate))
+	populateTimeUnix(objectMap, "deletedDate", d.DeletedDate)
 	populate(objectMap, "recoveryId", d.RecoveryID)
-	populate(objectMap, "scheduledPurgeDate", (*timeUnix)(d.ScheduledPurgeDate))
+	populateTimeUnix(objectMap, "scheduledPurgeDate", d.ScheduledPurgeDate)
 	return json.Marshal(objectMap)
 }
 
@@ -175,17 +167,13 @@ func (d *DeletedKeyBundle) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "deletedDate":
-			var aux timeUnix
-			err = unpopulate(val, &aux)
-			d.DeletedDate = (*time.Time)(&aux)
+			err = unpopulateTimeUnix(val, &d.DeletedDate)
 			delete(rawMsg, key)
 		case "recoveryId":
 			err = unpopulate(val, &d.RecoveryID)
 			delete(rawMsg, key)
 		case "scheduledPurgeDate":
-			var aux timeUnix
-			err = unpopulate(val, &aux)
-			d.ScheduledPurgeDate = (*time.Time)(&aux)
+			err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -215,9 +203,9 @@ type DeletedKeyItem struct {
 func (d DeletedKeyItem) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	d.KeyItem.marshalInternal(objectMap)
-	populate(objectMap, "deletedDate", (*timeUnix)(d.DeletedDate))
+	populateTimeUnix(objectMap, "deletedDate", d.DeletedDate)
 	populate(objectMap, "recoveryId", d.RecoveryID)
-	populate(objectMap, "scheduledPurgeDate", (*timeUnix)(d.ScheduledPurgeDate))
+	populateTimeUnix(objectMap, "scheduledPurgeDate", d.ScheduledPurgeDate)
 	return json.Marshal(objectMap)
 }
 
@@ -231,17 +219,13 @@ func (d *DeletedKeyItem) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "deletedDate":
-			var aux timeUnix
-			err = unpopulate(val, &aux)
-			d.DeletedDate = (*time.Time)(&aux)
+			err = unpopulateTimeUnix(val, &d.DeletedDate)
 			delete(rawMsg, key)
 		case "recoveryId":
 			err = unpopulate(val, &d.RecoveryID)
 			delete(rawMsg, key)
 		case "scheduledPurgeDate":
-			var aux timeUnix
-			err = unpopulate(val, &aux)
-			d.ScheduledPurgeDate = (*time.Time)(&aux)
+			err = unpopulateTimeUnix(val, &d.ScheduledPurgeDate)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1001,9 +985,9 @@ type KeyRotationPolicyAttributes struct {
 // MarshalJSON implements the json.Marshaller interface for type KeyRotationPolicyAttributes.
 func (k KeyRotationPolicyAttributes) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "created", (*timeUnix)(k.Created))
+	populateTimeUnix(objectMap, "created", k.Created)
 	populate(objectMap, "expiryTime", k.ExpiryTime)
-	populate(objectMap, "updated", (*timeUnix)(k.Updated))
+	populateTimeUnix(objectMap, "updated", k.Updated)
 	return json.Marshal(objectMap)
 }
 
@@ -1017,17 +1001,13 @@ func (k *KeyRotationPolicyAttributes) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "created":
-			var aux timeUnix
-			err = unpopulate(val, &aux)
-			k.Created = (*time.Time)(&aux)
+			err = unpopulateTimeUnix(val, &k.Created)
 			delete(rawMsg, key)
 		case "expiryTime":
 			err = unpopulate(val, &k.ExpiryTime)
 			delete(rawMsg, key)
 		case "updated":
-			var aux timeUnix
-			err = unpopulate(val, &aux)
-			k.Updated = (*time.Time)(&aux)
+			err = unpopulateTimeUnix(val, &k.Updated)
 			delete(rawMsg, key)
 		}
 		if err != nil {

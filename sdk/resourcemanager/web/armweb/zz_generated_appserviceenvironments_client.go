@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // AppServiceEnvironmentsClient contains the methods for the AppServiceEnvironments group.
@@ -32,8 +32,15 @@ type AppServiceEnvironmentsClient struct {
 }
 
 // NewAppServiceEnvironmentsClient creates a new instance of AppServiceEnvironmentsClient with the specified values.
-func NewAppServiceEnvironmentsClient(con *arm.Connection, subscriptionID string) *AppServiceEnvironmentsClient {
-	return &AppServiceEnvironmentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAppServiceEnvironmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AppServiceEnvironmentsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AppServiceEnvironmentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginApproveOrRejectPrivateEndpointConnection - Description for Approves or rejects a private endpoint connection

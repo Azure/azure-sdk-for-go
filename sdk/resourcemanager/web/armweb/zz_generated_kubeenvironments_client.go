@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // KubeEnvironmentsClient contains the methods for the KubeEnvironments group.
@@ -31,8 +31,15 @@ type KubeEnvironmentsClient struct {
 }
 
 // NewKubeEnvironmentsClient creates a new instance of KubeEnvironmentsClient with the specified values.
-func NewKubeEnvironmentsClient(con *arm.Connection, subscriptionID string) *KubeEnvironmentsClient {
-	return &KubeEnvironmentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewKubeEnvironmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *KubeEnvironmentsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &KubeEnvironmentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Description for Creates or updates a Kubernetes Environment.

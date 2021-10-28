@@ -52,3 +52,22 @@ func unmarshalServerPropertiesForCreateClassificationArray(rawMsg json.RawMessag
 	}
 	return fArray, nil
 }
+
+func unmarshalServerPropertiesForCreateClassificationMap(rawMsg json.RawMessage) (map[string]ServerPropertiesForCreateClassification, error) {
+	if rawMsg == nil {
+		return nil, nil
+	}
+	var rawMessages map[string]json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fMap := make(map[string]ServerPropertiesForCreateClassification, len(rawMessages))
+	for key, rawMessage := range rawMessages {
+		f, err := unmarshalServerPropertiesForCreateClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fMap[key] = f
+	}
+	return fMap, nil
+}

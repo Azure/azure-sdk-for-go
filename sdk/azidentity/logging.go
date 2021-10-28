@@ -35,8 +35,8 @@ func logEnvVars() {
 	if envCheck := os.Getenv("AZURE_CLIENT_SECRET"); len(envCheck) > 0 {
 		envVars = append(envVars, "AZURE_CLIENT_SECRET")
 	}
-	if envCheck := os.Getenv("AZURE_AUTHORITY_HOST"); len(envCheck) > 0 {
-		envVars = append(envVars, "AZURE_AUTHORITY_HOST")
+	if envCheck := os.Getenv(azureAuthorityHost); len(envCheck) > 0 {
+		envVars = append(envVars, azureAuthorityHost)
 	}
 	if len(envVars) > 0 {
 		log.Writef(EventCredential, "Azure Identity => Found the following environment variables:\n\t%s", strings.Join(envVars, ", "))

@@ -41,7 +41,7 @@ var liveSP = struct {
 var liveTestScope = "https://management.core.windows.net//.default"
 
 func init() {
-	host := AuthorityHost(os.Getenv("AZURE_AUTHORITY_HOST"))
+	host := AuthorityHost(os.Getenv(azureAuthorityHost))
 	switch host {
 	case AzureChina:
 		liveTestScope = "https://management.core.chinacloudapi.cn//.default"
@@ -90,7 +90,7 @@ func setEnvironmentVariables(t *testing.T, vars map[string]string) {
 }
 
 func Test_SetEnvAuthorityHost(t *testing.T) {
-	setEnvironmentVariables(t, map[string]string{"AZURE_AUTHORITY_HOST": envHostString})
+	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: envHostString})
 	authorityHost, err := setAuthorityHost("")
 	if err != nil {
 		t.Fatal(err)
@@ -101,7 +101,7 @@ func Test_SetEnvAuthorityHost(t *testing.T) {
 }
 
 func Test_CustomAuthorityHost(t *testing.T) {
-	setEnvironmentVariables(t, map[string]string{"AZURE_AUTHORITY_HOST": envHostString})
+	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: envHostString})
 	authorityHost, err := setAuthorityHost(customHostString)
 	if err != nil {
 		t.Fatal(err)
@@ -113,7 +113,7 @@ func Test_CustomAuthorityHost(t *testing.T) {
 }
 
 func Test_DefaultAuthorityHost(t *testing.T) {
-	setEnvironmentVariables(t, map[string]string{"AZURE_AUTHORITY_HOST": ""})
+	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: ""})
 	authorityHost, err := setAuthorityHost("")
 	if err != nil {
 		t.Fatal(err)
@@ -124,7 +124,7 @@ func Test_DefaultAuthorityHost(t *testing.T) {
 }
 
 func Test_NonHTTPSAuthorityHost(t *testing.T) {
-	setEnvironmentVariables(t, map[string]string{"AZURE_AUTHORITY_HOST": ""})
+	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: ""})
 	authorityHost, err := setAuthorityHost("http://foo.com")
 	if err == nil {
 		t.Fatal("Expected an error but did not receive one.")

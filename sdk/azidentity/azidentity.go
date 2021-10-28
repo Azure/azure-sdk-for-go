@@ -14,6 +14,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
+const azureAuthorityHost = "AZURE_AUTHORITY_HOST"
+
 // AuthorityHost is the base URL for Azure Active Directory
 type AuthorityHost string
 
@@ -25,7 +27,7 @@ const (
 	// AzureGovernment is a global constant to use in order to access the Azure Government cloud.
 	AzureGovernment AuthorityHost = "https://login.microsoftonline.us/"
 	// AzurePublicCloud is a global constant to use in order to access the Azure public cloud.
-	AzurePublicCloud AuthorityHost = "https://login.microsoftonline.com"
+	AzurePublicCloud AuthorityHost = "https://login.microsoftonline.com/"
 )
 
 // defaultSuffix is the default AADv2 scope
@@ -57,7 +59,7 @@ func setAuthorityHost(authorityHost AuthorityHost) (string, error) {
 	host := string(authorityHost)
 	if host == "" {
 		host = string(AzurePublicCloud)
-		if envAuthorityHost := os.Getenv("AZURE_AUTHORITY_HOST"); envAuthorityHost != "" {
+		if envAuthorityHost := os.Getenv(azureAuthorityHost); envAuthorityHost != "" {
 			host = envAuthorityHost
 		}
 	}

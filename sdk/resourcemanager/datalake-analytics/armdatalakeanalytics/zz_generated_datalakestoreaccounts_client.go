@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DataLakeStoreAccountsClient contains the methods for the DataLakeStoreAccounts group.
@@ -31,8 +32,15 @@ type DataLakeStoreAccountsClient struct {
 }
 
 // NewDataLakeStoreAccountsClient creates a new instance of DataLakeStoreAccountsClient with the specified values.
-func NewDataLakeStoreAccountsClient(con *arm.Connection, subscriptionID string) *DataLakeStoreAccountsClient {
-	return &DataLakeStoreAccountsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDataLakeStoreAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataLakeStoreAccountsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DataLakeStoreAccountsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Add - Updates the specified Data Lake Analytics account to include the additional Data Lake Store account.

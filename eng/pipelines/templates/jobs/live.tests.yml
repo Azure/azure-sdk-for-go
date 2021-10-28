@@ -87,6 +87,7 @@ jobs:
           GoVersion: $(GoVersion)
           EnvVars:
             AZURE_RECORD_MODE: 'live'
+            ${{ insert }}: ${{ parameters.EnvVars }}
 
       - ${{ parameters.PostSteps }}
 

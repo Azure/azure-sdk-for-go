@@ -43,7 +43,7 @@ func createClientAssertionJWT(clientID string, audience string, cert *certConten
 		X5t: base64.RawURLEncoding.EncodeToString(cert.fp),
 	}
 	if sendCertificateChain {
-		headerData.X5c = cert.publicCertificates
+		headerData.X5c = cert.x5c
 	}
 
 	headerJSON, err := json.Marshal(headerData)

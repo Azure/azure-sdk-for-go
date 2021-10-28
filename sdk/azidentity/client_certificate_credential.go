@@ -5,8 +5,11 @@ package azidentity
 
 import (
 	"context"
+	"crypto"
 	"crypto/rsa"
+	"crypto/sha1"
 	"crypto/x509"
+
 	"encoding/base64"
 	"encoding/pem"
 	"errors"
@@ -21,8 +24,6 @@ import (
 type ClientCertificateCredentialOptions struct {
 	azcore.ClientOptions
 
-	// The password required to decrypt the private key.  Leave empty if there is no password.
-	Password string
 	// Set to true to include x5c header in client claims when acquiring a token to enable
 	// SubjectName and Issuer based authentication for ClientCertificateCredential.
 	SendCertificateChain bool
@@ -45,9 +46,17 @@ type ClientCertificateCredential struct {
 // NewClientCertificateCredential creates an instance of ClientCertificateCredential with the details needed to authenticate against Azure Active Directory with the specified certificate.
 // tenantID: The Azure Active Directory tenant (directory) ID of the service principal.
 // clientID: The client (application) ID of the service principal.
-// certData: The bytes of a certificate in PEM or PKCS12 format, including the private key.
+// certs: one or more certificates, for example as returned by ParseCertificates()
+// key: the signing certificate's private key, for example as returned by ParseCertificates()
 // options: ClientCertificateCredentialOptions that can be used to provide additional configurations for the credential, such as the certificate password.
-func NewClientCertificateCredential(tenantID string, clientID string, certData []byte, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
+func NewClientCertificateCredential(tenantID string, clientID string, certs []*x509.Certificate, key crypto.PrivateKey, options *ClientCertificateCredentialOptions) (*ClientCertificateCredential, error) {
+	if len(certs) == 0 {
+		return nil, errors.New("at least one certificate is required")
+	}
+	pk, ok := key.(*rsa.PrivateKey)
+	if !ok {
+		return nil, errors.New("'key' must be an *rsa.PrivateKey")
+	}
 	if !validTenantID(tenantID) {
 		return nil, errors.New(tenantIDValidationErr)
 	}
@@ -55,15 +64,12 @@ func NewClientCertificateCredential(tenantID string, clientID string, certData [
 	if options != nil {
 		cp = *options
 	}
-	cert, err := loadPEMCert(certData, cp.Password, cp.SendCertificateChain)
-	if err != nil {
-		cert, err = loadPKCS12Cert(certData, cp.Password, cp.SendCertificateChain)
-	}
+	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
 	if err != nil {
 		logCredentialError("Client Certificate Credential", err)
 		return nil, err
 	}
-	authorityHost, err := setAuthorityHost(cp.AuthorityHost)
+	cert, err := newCertContents(certs, pk, cp.SendCertificateChain)
 	if err != nil {
 		return nil, err
 	}
@@ -74,82 +80,105 @@ func NewClientCertificateCredential(tenantID string, clientID string, certData [
 	return &ClientCertificateCredential{tenantID: tenantID, clientID: clientID, cert: cert, sendCertificateChain: cp.SendCertificateChain, client: c}, nil
 }
 
-// contains decoded cert contents we care about
-type certContents struct {
-	fp                 fingerprint
-	pk                 *rsa.PrivateKey
-	publicCertificates []string
+// GetToken obtains a token from Azure Active Directory, using the provided certificate.
+// ctx: Context controlling the request lifetime.
+// opts: details of the authentication request.
+// Returns an AccessToken which can be used to authenticate service client calls.
+func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
+	tk, err := c.client.authenticateCertificate(ctx, c.tenantID, c.clientID, c.cert, c.sendCertificateChain, opts.Scopes)
+	if err != nil {
+		addGetTokenFailureLogs("Client Certificate Credential", err, true)
+		return nil, err
+	}
+	logGetTokenSuccess(c, opts)
+	return tk, nil
 }
 
-func newCertContents(blocks []*pem.Block, fromPEM bool, sendCertificateChain bool) (*certContents, error) {
-	cc := certContents{}
-	// first extract the private key
+// ParseCertificates loads certificates and a private key for use with NewClientCertificateCredential.
+// certData: certificate data encoded in PEM or PKCS12 format, including the certificate's private key.
+// password: the password required to decrypt the private key. Pass nil if the key is not encrypted. This function can't decrypt keys in PEM format.
+func ParseCertificates(certData []byte, password []byte) ([]*x509.Certificate, crypto.PrivateKey, error) {
+	var blocks []*pem.Block
+	var err error
+	if len(password) == 0 {
+		blocks, err = loadPEMCert(certData)
+	}
+	if len(blocks) == 0 || err != nil {
+		blocks, err = loadPKCS12Cert(certData, string(password))
+	}
+	if err != nil {
+		return nil, nil, err
+	}
+	var certs []*x509.Certificate
+	var pk crypto.PrivateKey
 	for _, block := range blocks {
-		if block.Type == "PRIVATE KEY" {
-			var key interface{}
-			var err error
-			if fromPEM {
-				key, err = x509.ParsePKCS8PrivateKey(block.Bytes)
-			} else {
-				key, err = x509.ParsePKCS1PrivateKey(block.Bytes)
+		switch block.Type {
+		case "CERTIFICATE":
+			c, err := x509.ParseCertificate(block.Bytes)
+			if err != nil {
+				return nil, nil, err
+			}
+			certs = append(certs, c)
+		case "PRIVATE KEY":
+			if pk != nil {
+				return nil, nil, errors.New("certData contains multiple private keys")
+			}
+			pk, err = x509.ParsePKCS8PrivateKey(block.Bytes)
+			if err != nil {
+				pk, err = x509.ParsePKCS1PrivateKey(block.Bytes)
 			}
 			if err != nil {
-				return nil, err
+				return nil, nil, err
 			}
-			rsaKey, ok := key.(*rsa.PrivateKey)
-			if !ok {
-				return nil, errors.New("unexpected private key type")
+		case "RSA PRIVATE KEY":
+			if pk != nil {
+				return nil, nil, errors.New("certData contains multiple private keys")
 			}
-			cc.pk = rsaKey
-			break
-		}
-	}
-	if cc.pk == nil {
-		return nil, errors.New("missing private key")
-	}
-	// now find the certificate with the matching public key of our private key
-	for _, block := range blocks {
-		if block.Type == "CERTIFICATE" {
-			cert, err := x509.ParseCertificate(block.Bytes)
+			pk, err = x509.ParsePKCS1PrivateKey(block.Bytes)
 			if err != nil {
-				return nil, err
-			}
-			certKey, ok := cert.PublicKey.(*rsa.PublicKey)
-			if !ok {
-				// keep looking
-				continue
-			}
-			if cc.pk.E != certKey.E || cc.pk.N.Cmp(certKey.N) != 0 {
-				// keep looking
-				continue
-			}
-			// found a match
-			fp, err := newFingerprint(block)
-			if err != nil {
-				return nil, err
-			}
-			cc.fp = fp
-			break
-		}
-	}
-	if cc.fp == nil {
-		return nil, errors.New("missing certificate")
-	}
-	// now find all the public certificates to send in the x5c header
-	if sendCertificateChain {
-		for _, block := range blocks {
-			if block.Type == "CERTIFICATE" {
-				cc.publicCertificates = append(cc.publicCertificates, base64.StdEncoding.EncodeToString(block.Bytes))
+				return nil, nil, err
 			}
 		}
+	}
+	if len(certs) == 0 {
+		return nil, nil, errors.New("found no certificate")
+	}
+	if pk == nil {
+		return nil, nil, errors.New("found no private key")
+	}
+	return certs, pk, nil
+}
+
+type certContents struct {
+	fp  []byte          // the signing cert's fingerprint, a SHA-1 digest
+	pk  *rsa.PrivateKey // the signing key
+	x5c []string        // concatenation of every provided cert, base64 encoded
+}
+
+func newCertContents(certs []*x509.Certificate, key *rsa.PrivateKey, sendCertificateChain bool) (*certContents, error) {
+	cc := certContents{pk: key}
+	// need the the signing cert's fingerprint: identify that cert by matching its public key to the private key
+	for _, cert := range certs {
+		certKey, ok := cert.PublicKey.(*rsa.PublicKey)
+		if ok && key.E == certKey.E && key.N.Cmp(certKey.N) == 0 {
+			fp := sha1.Sum(cert.Raw)
+			cc.fp = fp[:]
+			if sendCertificateChain {
+				// signing cert must be first in x5c
+				cc.x5c = append([]string{base64.StdEncoding.EncodeToString(cert.Raw)}, cc.x5c...)
+			}
+		} else if sendCertificateChain {
+			cc.x5c = append(cc.x5c, base64.StdEncoding.EncodeToString(cert.Raw))
+		}
+	}
+	if len(cc.fp) == 0 {
+		return nil, errors.New("found no certificate matching 'key'")
 	}
 	return &cc, nil
 }
 
-func loadPEMCert(certData []byte, password string, sendCertificateChain bool) (*certContents, error) {
-	// TODO: wire up support for password
+func loadPEMCert(certData []byte) ([]*pem.Block, error) {
 	blocks := []*pem.Block{}
-	// read all of the PEM blocks
 	for {
 		var block *pem.Block
 		block, certData = pem.Decode(certData)
@@ -161,11 +190,10 @@ func loadPEMCert(certData []byte, password string, sendCertificateChain bool) (*
 	if len(blocks) == 0 {
 		return nil, errors.New("didn't find any PEM blocks")
 	}
-	return newCertContents(blocks, true, sendCertificateChain)
+	return blocks, nil
 }
 
-func loadPKCS12Cert(certData []byte, password string, sendCertificateChain bool) (*certContents, error) {
-	// convert data to PEM blocks
+func loadPKCS12Cert(certData []byte, password string) ([]*pem.Block, error) {
 	blocks, err := pkcs12.ToPEM(certData, password)
 	if err != nil {
 		return nil, err
@@ -174,21 +202,7 @@ func loadPKCS12Cert(certData []byte, password string, sendCertificateChain bool)
 		// not mentioning PKCS12 in this message because we end up here when certData is garbage
 		return nil, errors.New("didn't find any certificate content")
 	}
-	return newCertContents(blocks, false, sendCertificateChain)
-}
-
-// GetToken obtains a token from Azure Active Directory, using the certificate in the file path.
-// scopes: The list of scopes for which the token will have access.
-// ctx: controlling the request lifetime.
-// Returns an AccessToken which can be used to authenticate service client calls.
-func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (*azcore.AccessToken, error) {
-	tk, err := c.client.authenticateCertificate(ctx, c.tenantID, c.clientID, c.cert, c.sendCertificateChain, opts.Scopes)
-	if err != nil {
-		addGetTokenFailureLogs("Client Certificate Credential", err, true)
-		return nil, err
-	}
-	logGetTokenSuccess(c, opts)
-	return tk, nil
+	return blocks, err
 }
 
 var _ azcore.TokenCredential = (*ClientCertificateCredential)(nil)

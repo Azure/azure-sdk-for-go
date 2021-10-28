@@ -5,6 +5,9 @@ package azidentity
 
 import (
 	"context"
+	"crypto"
+	"crypto/rsa"
+	"crypto/x509"
 	"errors"
 	"io/ioutil"
 	"net/http"
@@ -18,22 +21,31 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 )
 
-var pemCert, _ = os.ReadFile("testdata/certificate.pem")
-var pkcs12Cert, _ = os.ReadFile("testdata/certificate.pfx")
-var pkcs12CertEncrypted, _ = os.ReadFile("testdata/certificate_encrypted_key.pfx")
+type certTest struct {
+	name  string
+	certs []*x509.Certificate
+	key   crypto.PrivateKey
+}
 
-var allCertTests = []struct {
-	name     string
-	certData []byte
-	password string
-}{
-	{"pem", pemCert, ""},
-	{"pkcs12", pkcs12Cert, ""},
-	{"pkcs12Encrypted", pkcs12CertEncrypted, "password"},
+func newCertTest(name, certPath string, password string) certTest {
+	data, _ := os.ReadFile(certPath)
+	certs, key, err := ParseCertificates(data, []byte(password))
+	if err != nil {
+		panic("failed to load " + certPath)
+	}
+	return certTest{name: name, certs: certs, key: key}
+}
+
+var allCertTests = []certTest{
+	newCertTest("pem", "testdata/certificate.pem", ""),
+	newCertTest("pemB", "testdata/certificate_formatB.pem", ""),
+	newCertTest("pkcs12", "testdata/certificate.pfx", ""),
+	newCertTest("pkcs12Encrypted", "testdata/certificate_encrypted_key.pfx", "password"),
 }
 
 func TestClientCertificateCredential_InvalidTenantID(t *testing.T) {
-	cred, err := NewClientCertificateCredential(badTenantID, clientID, pemCert, nil)
+	test := allCertTests[0]
+	cred, err := NewClientCertificateCredential(badTenantID, clientID, test.certs, test.key, nil)
 	if err == nil {
 		t.Fatal("Expected an error but received none")
 	}
@@ -43,7 +55,8 @@ func TestClientCertificateCredential_InvalidTenantID(t *testing.T) {
 }
 
 func TestClientCertificateCredential_CreateAuthRequestSuccess(t *testing.T) {
-	cred, err := NewClientCertificateCredential(tenantID, clientID, pemCert, nil)
+	test := allCertTests[0]
+	cred, err := NewClientCertificateCredential(tenantID, clientID, test.certs, test.key, nil)
 	if err != nil {
 		t.Fatalf("Failed to instantiate credential")
 	}
@@ -87,9 +100,10 @@ func TestClientCertificateCredential_CreateAuthRequestSuccess(t *testing.T) {
 }
 
 func TestClientCertificateCredential_CreateAuthRequestSuccess_withCertificateChain(t *testing.T) {
+	test := allCertTests[0]
 	opts := ClientCertificateCredentialOptions{}
 	opts.SendCertificateChain = true
-	cred, err := NewClientCertificateCredential(tenantID, clientID, pemCert, &opts)
+	cred, err := NewClientCertificateCredential(tenantID, clientID, test.certs, test.key, &opts)
 	if err != nil {
 		t.Fatalf("Failed to instantiate credential")
 	}
@@ -100,8 +114,8 @@ func TestClientCertificateCredential_CreateAuthRequestSuccess_withCertificateCha
 	if req.Raw().Header.Get(headerContentType) != headerURLEncoded {
 		t.Fatalf("Unexpected value for Content-Type header")
 	}
-	if len(cred.cert.publicCertificates) != 1 {
-		t.Fatalf("Wrong number of public certificates. Expected: %v, Received: %v", 1, len(cred.cert.publicCertificates))
+	if len(cred.cert.x5c) != 1 {
+		t.Fatalf("Wrong number of public certificates. Expected: %v, Received: %v", 1, len(cred.cert.x5c))
 	}
 	body, err := ioutil.ReadAll(req.Raw().Body)
 	if err != nil {
@@ -122,11 +136,11 @@ func TestClientCertificateCredential_CreateAuthRequestSuccess_withCertificateCha
 		t.Fatalf("Wrong client assertion type assigned to request")
 	}
 	// create a client assertion for comparison with the one in the request
-	cert, err := loadPEMCert(pemCert, "", true)
+	cc, err := newCertContents(test.certs, test.key.(*rsa.PrivateKey), opts.SendCertificateChain)
 	if err != nil {
-		t.Fatalf("Failed extract data from PEM file: %v", err)
+		t.Fatalf("%v", err)
 	}
-	assertion, err := createClientAssertionJWT(clientID, runtime.JoinPaths(string(AzurePublicCloud), tenantID, tokenEndpoint(oauthPath(tenantID))), cert, true)
+	assertion, err := createClientAssertionJWT(clientID, runtime.JoinPaths(string(AzurePublicCloud), tenantID, tokenEndpoint(oauthPath(tenantID))), cc, true)
 	if err != nil {
 		t.Fatalf("Failed to create client assertion: %v", err)
 	}
@@ -163,8 +177,7 @@ func TestClientCertificateCredential_GetTokenSuccess(t *testing.T) {
 			options := ClientCertificateCredentialOptions{}
 			options.AuthorityHost = AuthorityHost(srv.URL())
 			options.Transport = srv
-			options.Password = test.password
-			cred, err := NewClientCertificateCredential(tenantID, clientID, test.certData, &options)
+			cred, err := NewClientCertificateCredential(tenantID, clientID, test.certs, test.key, &options)
 			if err != nil {
 				t.Fatalf("Expected an empty error but received: %s", err.Error())
 			}
@@ -186,8 +199,7 @@ func TestClientCertificateCredential_GetTokenSuccess_withCertificateChain(t *tes
 			options.AuthorityHost = AuthorityHost(srv.URL())
 			options.SendCertificateChain = true
 			options.Transport = srv
-			options.Password = test.password
-			cred, err := NewClientCertificateCredential(tenantID, clientID, test.certData, &options)
+			cred, err := NewClientCertificateCredential(tenantID, clientID, test.certs, test.key, &options)
 			if err != nil {
 				t.Fatalf("Expected an empty error but received: %s", err.Error())
 			}
@@ -208,8 +220,7 @@ func TestClientCertificateCredential_GetTokenInvalidCredentials(t *testing.T) {
 			options := ClientCertificateCredentialOptions{}
 			options.AuthorityHost = AuthorityHost(srv.URL())
 			options.Transport = srv
-			options.Password = test.password
-			cred, err := NewClientCertificateCredential(tenantID, clientID, test.certData, &options)
+			cred, err := NewClientCertificateCredential(tenantID, clientID, test.certs, test.key, &options)
 			if err != nil {
 				t.Fatalf("Did not expect an error but received one: %v", err)
 			}
@@ -226,17 +237,14 @@ func TestClientCertificateCredential_GetTokenInvalidCredentials(t *testing.T) {
 }
 
 func TestClientCertificateCredential_GetTokenCheckPrivateKeyBlocks(t *testing.T) {
+	test := allCertTests[0]
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.Transport = srv
-	certData, err := os.ReadFile("testdata/certificate_formatB.pem")
-	if err != nil {
-		t.Fatalf("Failed to read certificate file: %s", err.Error())
-	}
-	cred, err := NewClientCertificateCredential(tenantID, clientID, certData, &options)
+	cred, err := NewClientCertificateCredential(tenantID, clientID, test.certs, test.key, &options)
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %s", err.Error())
 	}
@@ -253,47 +261,44 @@ func TestClientCertificateCredential_NoData(t *testing.T) {
 	options := ClientCertificateCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.Transport = srv
-	_, err := NewClientCertificateCredential(tenantID, clientID, []byte{}, &options)
+	var key crypto.PrivateKey
+	_, err := NewClientCertificateCredential(tenantID, clientID, []*x509.Certificate{}, key, &options)
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")
 	}
 }
 
 func TestClientCertificateCredential_NoCertificate(t *testing.T) {
+	test := allCertTests[0]
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.Transport = srv
-	certData, err := os.ReadFile("testdata/certificate_empty.pem")
-	if err != nil {
-		t.Fatalf("Failed to read certificate file: %s", err.Error())
-	}
-	_, err = NewClientCertificateCredential(tenantID, clientID, certData, &options)
+	_, err := NewClientCertificateCredential(tenantID, clientID, []*x509.Certificate{}, test.key, &options)
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")
 	}
 }
 
 func TestClientCertificateCredential_NoPrivateKey(t *testing.T) {
+	test := allCertTests[0]
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
 	options := ClientCertificateCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.Transport = srv
-	certData, err := os.ReadFile("testdata/certificate_nokey.pem")
-	if err != nil {
-		t.Fatalf("Failed to read certificate file: %s", err.Error())
-	}
-	_, err = NewClientCertificateCredential(tenantID, clientID, certData, &options)
+	var key crypto.PrivateKey
+	_, err := NewClientCertificateCredential(tenantID, clientID, test.certs, key, &options)
 	if err == nil {
 		t.Fatalf("Expected an error but received nil")
 	}
 }
 
 func TestBearerPolicy_ClientCertificateCredential(t *testing.T) {
+	test := allCertTests[0]
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse(mock.WithBody([]byte(accessTokenRespSuccess)))
@@ -301,7 +306,7 @@ func TestBearerPolicy_ClientCertificateCredential(t *testing.T) {
 	options := ClientCertificateCredentialOptions{}
 	options.AuthorityHost = AuthorityHost(srv.URL())
 	options.Transport = srv
-	cred, err := NewClientCertificateCredential(tenantID, clientID, pemCert, &options)
+	cred, err := NewClientCertificateCredential(tenantID, clientID, test.certs, test.key, &options)
 	if err != nil {
 		t.Fatalf("Did not expect an error but received: %v", err)
 	}

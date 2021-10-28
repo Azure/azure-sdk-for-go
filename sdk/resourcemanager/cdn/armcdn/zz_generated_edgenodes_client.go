@@ -11,7 +11,9 @@ package armcdn
 import (
 	"context"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -25,8 +27,15 @@ type EdgeNodesClient struct {
 }
 
 // NewEdgeNodesClient creates a new instance of EdgeNodesClient with the specified values.
-func NewEdgeNodesClient(con *arm.Connection) *EdgeNodesClient {
-	return &EdgeNodesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewEdgeNodesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EdgeNodesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &EdgeNodesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.

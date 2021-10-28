@@ -99,7 +99,7 @@ func NewClient(key string, cred azcore.TokenCredential, options *ClientOptions) 
 	options.PerRetryPolicies = append(
 		options.PerRetryPolicies,
 		&auth.KeyVaultChallengePolicy{
-			Cred: cred,
+			Cred:      cred,
 			Transport: options.Transport,
 		},
 	)

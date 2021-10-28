@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // MetricsClient contains the methods for the Metrics group.
@@ -29,8 +30,15 @@ type MetricsClient struct {
 }
 
 // NewMetricsClient creates a new instance of MetricsClient with the specified values.
-func NewMetricsClient(con *arm.Connection) *MetricsClient {
-	return &MetricsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewMetricsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *MetricsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &MetricsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Lists the metric values for a resource.

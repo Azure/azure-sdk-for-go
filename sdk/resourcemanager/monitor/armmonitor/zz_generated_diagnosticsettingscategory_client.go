@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DiagnosticSettingsCategoryClient contains the methods for the DiagnosticSettingsCategory group.
@@ -29,8 +30,15 @@ type DiagnosticSettingsCategoryClient struct {
 }
 
 // NewDiagnosticSettingsCategoryClient creates a new instance of DiagnosticSettingsCategoryClient with the specified values.
-func NewDiagnosticSettingsCategoryClient(con *arm.Connection) *DiagnosticSettingsCategoryClient {
-	return &DiagnosticSettingsCategoryClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewDiagnosticSettingsCategoryClient(credential azcore.TokenCredential, options *arm.ClientOptions) *DiagnosticSettingsCategoryClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DiagnosticSettingsCategoryClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets the diagnostic settings category for the specified resource.

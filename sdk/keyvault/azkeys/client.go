@@ -14,15 +14,15 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal"
 )
 
 // Client is the struct for interacting with a KeyVault Keys instance
 type Client struct {
-	kvClient *internal.KeyVaultClient
-	vaultUrl string
-	cred     azcore.TokenCredential // keeping this here for NewCryptoClient
+	kvClient  *internal.KeyVaultClient
+	vaultUrl  string
+	cred      azcore.TokenCredential // keeping this here for NewCryptoClient
+	transport policy.Transporter
 }
 
 // ClientOptions are the configurable options on a Client.
@@ -52,21 +52,20 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 		options = &ClientOptions{}
 	}
 
-	options.PerRetryPolicies = append(
-		options.PerRetryPolicies,
-		runtime.NewBearerTokenPolicy(
-			credential,
-			[]string{"https://vault.azure.net/.default"},
-			nil,
-		),
-	)
+	// Have to have a transport for the challenge policy
+	if options.Transport == nil {
+		options.Transport = http.DefaultClient
+	}
+
+	options.PerRetryPolicies = append(options.PerRetryPolicies, &keyvaultChallengePolicy{cred: credential, transport: options.Transport})
 
 	conn := internal.NewConnection(options.toConnectionOptions())
 
 	return &Client{
-		kvClient: internal.NewKeyVaultClient(conn),
-		vaultUrl: vaultUrl,
-		cred:     credential,
+		kvClient:  internal.NewKeyVaultClient(conn),
+		vaultUrl:  vaultUrl,
+		cred:      credential,
+		transport: options.Transport,
 	}, nil
 }
 

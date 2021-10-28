@@ -30,6 +30,8 @@ type Client struct {
 	keyID      string
 	keyVersion string
 	useService bool
+	cred       azcore.TokenCredential
+	transport  policy.Transporter
 }
 
 // ClientOptions are the configurable options on a Client.
@@ -89,15 +91,12 @@ func NewClient(key string, cred azcore.TokenCredential, options *ClientOptions) 
 		options = &ClientOptions{}
 	}
 
-	options.PerRetryPolicies = append(
-		options.PerRetryPolicies,
-		runtime.NewBearerTokenPolicy(
-			cred,
-			[]string{"https://vault.azure.net/.default"},
-			nil,
-		),
-	)
+	// Have to have a transport for the challenge policy
+	if options.Transport == nil {
+		options.Transport = http.DefaultClient
+	}
 
+	// options.PerRetryPolicies = append(options.PerRetryPolicies, &internal.keyvaultChallengePolicy{cred: credential, transport: options.Transport})
 	conn := internal.NewConnection(options.toConnectionOptions())
 
 	vaultURL, err := parseVaultURL(key)
@@ -116,6 +115,8 @@ func NewClient(key string, cred azcore.TokenCredential, options *ClientOptions) 
 		keyID:      keyID,
 		keyVersion: keyVersion,
 		useService: true,
+		cred:       cred,
+		transport:  options.Transport,
 	}, nil
 }
 

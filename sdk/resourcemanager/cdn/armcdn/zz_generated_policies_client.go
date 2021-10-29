@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -30,8 +31,15 @@ type PoliciesClient struct {
 }
 
 // NewPoliciesClient creates a new instance of PoliciesClient with the specified values.
-func NewPoliciesClient(con *arm.Connection, subscriptionID string) *PoliciesClient {
-	return &PoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &PoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create or update policy with specified rule set name within a resource group.
@@ -211,7 +219,7 @@ func (client *PoliciesClient) getCreateRequest(ctx context.Context, resourceGrou
 func (client *PoliciesClient) getHandleResponse(resp *http.Response) (PoliciesGetResponse, error) {
 	result := PoliciesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CdnWebApplicationFirewallPolicy); err != nil {
-		return PoliciesGetResponse{}, err
+		return PoliciesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -269,7 +277,7 @@ func (client *PoliciesClient) listCreateRequest(ctx context.Context, resourceGro
 func (client *PoliciesClient) listHandleResponse(resp *http.Response) (PoliciesListResponse, error) {
 	result := PoliciesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CdnWebApplicationFirewallPolicyList); err != nil {
-		return PoliciesListResponse{}, err
+		return PoliciesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

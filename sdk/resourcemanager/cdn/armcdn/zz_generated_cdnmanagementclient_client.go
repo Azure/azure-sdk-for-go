@@ -12,7 +12,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -29,8 +31,15 @@ type CdnManagementClient struct {
 }
 
 // NewCdnManagementClient creates a new instance of CdnManagementClient with the specified values.
-func NewCdnManagementClient(con *arm.Connection, subscriptionID string) *CdnManagementClient {
-	return &CdnManagementClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewCdnManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CdnManagementClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CdnManagementClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CheckNameAvailability - Check the availability of a resource name. This is needed for resources where name is globally unique, such as a CDN endpoint.
@@ -68,7 +77,7 @@ func (client *CdnManagementClient) checkNameAvailabilityCreateRequest(ctx contex
 func (client *CdnManagementClient) checkNameAvailabilityHandleResponse(resp *http.Response) (CdnManagementClientCheckNameAvailabilityResponse, error) {
 	result := CdnManagementClientCheckNameAvailabilityResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityOutput); err != nil {
-		return CdnManagementClientCheckNameAvailabilityResponse{}, err
+		return CdnManagementClientCheckNameAvailabilityResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -126,7 +135,7 @@ func (client *CdnManagementClient) checkNameAvailabilityWithSubscriptionCreateRe
 func (client *CdnManagementClient) checkNameAvailabilityWithSubscriptionHandleResponse(resp *http.Response) (CdnManagementClientCheckNameAvailabilityWithSubscriptionResponse, error) {
 	result := CdnManagementClientCheckNameAvailabilityWithSubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityOutput); err != nil {
-		return CdnManagementClientCheckNameAvailabilityWithSubscriptionResponse{}, err
+		return CdnManagementClientCheckNameAvailabilityWithSubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -185,7 +194,7 @@ func (client *CdnManagementClient) validateProbeCreateRequest(ctx context.Contex
 func (client *CdnManagementClient) validateProbeHandleResponse(resp *http.Response) (CdnManagementClientValidateProbeResponse, error) {
 	result := CdnManagementClientValidateProbeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateProbeOutput); err != nil {
-		return CdnManagementClientValidateProbeResponse{}, err
+		return CdnManagementClientValidateProbeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -67,9 +67,9 @@ func TestReceiverForceTimeoutWithTooFewMessages(t *testing.T) {
 	require.NoError(t, err)
 
 	// there's only one message, requesting more messages will time out.
-	messages, err := receiver.ReceiveMessages(context.Background(), 1+1, &ReceiveOptions{
-		MaxWaitTime: 10 * time.Second,
-	})
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	messages, err := receiver.ReceiveMessages(ctx, 1+1, nil)
 	require.NoError(t, err)
 
 	require.EqualValues(t,
@@ -127,11 +127,13 @@ func TestReceiveWithEarlyFirstMessageTimeout(t *testing.T) {
 	receiver, err := serviceBusClient.NewReceiverForQueue(queueName, nil)
 	require.NoError(t, err)
 
+	// this is never meant to be hit since the first message time is so short.
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
+	defer cancel()
+
 	startTime := time.Now()
-	messages, err := receiver.ReceiveMessages(context.Background(), 1,
+	messages, err := receiver.ReceiveMessages(ctx, 1,
 		&ReceiveOptions{
-			// this is never meant to be hit since the first message time is so short.
-			MaxWaitTime:                  10 * time.Minute,
 			maxWaitTimeAfterFirstMessage: time.Millisecond,
 		})
 
@@ -164,9 +166,10 @@ func TestReceiverSendAndReceiveManyTimes(t *testing.T) {
 	var allMessages []*ReceivedMessage
 
 	for i := 0; i < 100; i++ {
-		messages, err := receiver.ReceiveMessages(context.Background(), 1, &ReceiveOptions{
-			MaxWaitTime: 10 * time.Second,
-		})
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+
+		messages, err := receiver.ReceiveMessages(ctx, 1, nil)
 		require.NoError(t, err)
 		allMessages = append(allMessages, messages...)
 

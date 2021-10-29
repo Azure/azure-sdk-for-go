@@ -142,17 +142,12 @@ func newReceiver(ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupO
 
 // ReceiveOptions are options for the ReceiveMessages function.
 type ReceiveOptions struct {
-	// MaxWaitTime configures how long to wait for the first
-	// message in a set of messages to arrive.
-	// Default: 60 seconds
-	MaxWaitTime time.Duration
-
 	maxWaitTimeAfterFirstMessage time.Duration
 }
 
 // ReceiveMessages receives a fixed number of messages, up to numMessages.
-// There are two timeouts involved in receiving messages:
-// 1. An explicit timeout set with `ReceiveOptions.MaxWaitTime` (default: 60 seconds)
+// There are two ways to stop receiving messages:
+// 1. Cancelling the `ctx` parameter.
 // 2. An implicit timeout (default: 1 second) that starts after the first
 //    message has been received.
 func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options *ReceiveOptions) ([]*ReceivedMessage, error) {
@@ -171,7 +166,7 @@ func (r *Receiver) ReceiveMessages(ctx context.Context, maxMessages int, options
 	r.mu.Unlock()
 
 	if isReceiving {
-		return nil, errors.New("receiver is already receiving messages. ReceiveMessages() cannot be called concurrently.")
+		return nil, errors.New("receiver is already receiving messages. ReceiveMessages() cannot be called concurrently")
 	}
 
 	return r.receiveMessagesImpl(ctx, maxMessages, options)
@@ -186,13 +181,10 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	//    link is still valid.
 	// Phase 3. <drain the link and leave it in a good state>
 	localOpts := &ReceiveOptions{
-		MaxWaitTime:                  time.Minute,
 		maxWaitTimeAfterFirstMessage: time.Second,
 	}
 
 	if options != nil {
-		localOpts.MaxWaitTime = options.MaxWaitTime
-
 		if options.maxWaitTimeAfterFirstMessage != 0 {
 			localOpts.maxWaitTimeAfterFirstMessage = options.maxWaitTimeAfterFirstMessage
 		}
@@ -274,10 +266,7 @@ func (r *Receiver) drainLink(receiver internal.AMQPReceiver, messages []*Receive
 
 // getMessages receives messages until a link failure, timeout or the user
 // cancels their context.
-func (r *Receiver) getMessages(theirCtx context.Context, receiver internal.AMQPReceiver, maxMessages int, ropts *ReceiveOptions) ([]*ReceivedMessage, error) {
-	ctx, cancel := context.WithTimeout(theirCtx, ropts.MaxWaitTime)
-	defer cancel()
-
+func (r *Receiver) getMessages(ctx context.Context, receiver internal.AMQPReceiver, maxMessages int, ropts *ReceiveOptions) ([]*ReceivedMessage, error) {
 	var messages []*ReceivedMessage
 
 	for {
@@ -305,14 +294,9 @@ func (r *Receiver) getMessages(theirCtx context.Context, receiver internal.AMQPR
 		}
 
 		if len(messages) == 1 {
-			go func() {
-				select {
-				case <-time.After(ropts.maxWaitTimeAfterFirstMessage):
-					cancel()
-				case <-ctx.Done():
-					break
-				}
-			}()
+			var cancel context.CancelFunc
+			ctx, cancel = context.WithTimeout(ctx, time.Second)
+			defer cancel()
 		}
 	}
 }

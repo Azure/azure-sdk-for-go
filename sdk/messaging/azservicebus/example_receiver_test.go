@@ -56,8 +56,8 @@ func ExampleClient_NewReceiverForSubscription_deadLetterQueue() {
 }
 
 func ExampleReceiver_ReceiveMessages() {
-	// ReceiveMessages respects the passed in context, and will gracefully close
-	// down when it is cancelled.
+	// ReceiveMessages respects the passed in context, and will gracefully stop
+	// receiving when 'ctx' is cancelled.
 	ctx, cancel := context.WithTimeout(context.TODO(), 60*time.Second)
 	defer cancel()
 

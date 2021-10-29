@@ -11,13 +11,14 @@ package armcompute
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // UsageClient contains the methods for the Usage group.
@@ -29,8 +30,15 @@ type UsageClient struct {
 }
 
 // NewUsageClient creates a new instance of UsageClient with the specified values.
-func NewUsageClient(con *arm.Connection, subscriptionID string) *UsageClient {
-	return &UsageClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewUsageClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *UsageClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &UsageClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Gets, for the specified location, the current compute resource usage information as well as the limits for compute resources under the subscription.
@@ -73,7 +81,7 @@ func (client *UsageClient) listCreateRequest(ctx context.Context, location strin
 func (client *UsageClient) listHandleResponse(resp *http.Response) (UsageListResponse, error) {
 	result := UsageListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListUsagesResult); err != nil {
-		return UsageListResponse{}, err
+		return UsageListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

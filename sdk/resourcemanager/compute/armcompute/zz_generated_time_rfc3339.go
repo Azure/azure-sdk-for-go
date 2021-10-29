@@ -9,6 +9,9 @@
 package armcompute
 
 import (
+	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"reflect"
 	"regexp"
 	"strings"
 	"time"
@@ -55,4 +58,28 @@ func (t *timeRFC3339) Parse(layout, value string) error {
 	p, err := time.Parse(layout, strings.ToUpper(value))
 	*t = timeRFC3339(p)
 	return err
+}
+
+func populateTimeRFC3339(m map[string]interface{}, k string, t *time.Time) {
+	if t == nil {
+		return
+	} else if azcore.IsNullValue(t) {
+		m[k] = nil
+		return
+	} else if reflect.ValueOf(t).IsNil() {
+		return
+	}
+	m[k] = (*timeRFC3339)(t)
+}
+
+func unpopulateTimeRFC3339(data json.RawMessage, t **time.Time) error {
+	if data == nil || strings.EqualFold(string(data), "null") {
+		return nil
+	}
+	var aux timeRFC3339
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+	*t = (*time.Time)(&aux)
+	return nil
 }

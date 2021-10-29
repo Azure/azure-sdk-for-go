@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // DiskEncryptionSetsClient contains the methods for the DiskEncryptionSets group.
@@ -31,8 +31,15 @@ type DiskEncryptionSetsClient struct {
 }
 
 // NewDiskEncryptionSetsClient creates a new instance of DiskEncryptionSetsClient with the specified values.
-func NewDiskEncryptionSetsClient(con *arm.Connection, subscriptionID string) *DiskEncryptionSetsClient {
-	return &DiskEncryptionSetsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDiskEncryptionSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DiskEncryptionSetsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DiskEncryptionSetsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a disk encryption set
@@ -234,7 +241,7 @@ func (client *DiskEncryptionSetsClient) getCreateRequest(ctx context.Context, re
 func (client *DiskEncryptionSetsClient) getHandleResponse(resp *http.Response) (DiskEncryptionSetsGetResponse, error) {
 	result := DiskEncryptionSetsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskEncryptionSet); err != nil {
-		return DiskEncryptionSetsGetResponse{}, err
+		return DiskEncryptionSetsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -288,7 +295,7 @@ func (client *DiskEncryptionSetsClient) listCreateRequest(ctx context.Context, o
 func (client *DiskEncryptionSetsClient) listHandleResponse(resp *http.Response) (DiskEncryptionSetsListResponse, error) {
 	result := DiskEncryptionSetsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskEncryptionSetList); err != nil {
-		return DiskEncryptionSetsListResponse{}, err
+		return DiskEncryptionSetsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -350,7 +357,7 @@ func (client *DiskEncryptionSetsClient) listAssociatedResourcesCreateRequest(ctx
 func (client *DiskEncryptionSetsClient) listAssociatedResourcesHandleResponse(resp *http.Response) (DiskEncryptionSetsListAssociatedResourcesResponse, error) {
 	result := DiskEncryptionSetsListAssociatedResourcesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceURIList); err != nil {
-		return DiskEncryptionSetsListAssociatedResourcesResponse{}, err
+		return DiskEncryptionSetsListAssociatedResourcesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -408,7 +415,7 @@ func (client *DiskEncryptionSetsClient) listByResourceGroupCreateRequest(ctx con
 func (client *DiskEncryptionSetsClient) listByResourceGroupHandleResponse(resp *http.Response) (DiskEncryptionSetsListByResourceGroupResponse, error) {
 	result := DiskEncryptionSetsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskEncryptionSetList); err != nil {
-		return DiskEncryptionSetsListByResourceGroupResponse{}, err
+		return DiskEncryptionSetsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

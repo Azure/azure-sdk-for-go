@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // CloudServicesClient contains the methods for the CloudServices group.
@@ -31,8 +31,15 @@ type CloudServicesClient struct {
 }
 
 // NewCloudServicesClient creates a new instance of CloudServicesClient with the specified values.
-func NewCloudServicesClient(con *arm.Connection, subscriptionID string) *CloudServicesClient {
-	return &CloudServicesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewCloudServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CloudServicesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CloudServicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create or update a cloud service. Please note some properties can be set only during cloud service creation.
@@ -316,7 +323,7 @@ func (client *CloudServicesClient) getCreateRequest(ctx context.Context, resourc
 func (client *CloudServicesClient) getHandleResponse(resp *http.Response) (CloudServicesGetResponse, error) {
 	result := CloudServicesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CloudService); err != nil {
-		return CloudServicesGetResponse{}, err
+		return CloudServicesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -381,7 +388,7 @@ func (client *CloudServicesClient) getInstanceViewCreateRequest(ctx context.Cont
 func (client *CloudServicesClient) getInstanceViewHandleResponse(resp *http.Response) (CloudServicesGetInstanceViewResponse, error) {
 	result := CloudServicesGetInstanceViewResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CloudServiceInstanceView); err != nil {
-		return CloudServicesGetInstanceViewResponse{}, err
+		return CloudServicesGetInstanceViewResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -440,7 +447,7 @@ func (client *CloudServicesClient) listCreateRequest(ctx context.Context, resour
 func (client *CloudServicesClient) listHandleResponse(resp *http.Response) (CloudServicesListResponse, error) {
 	result := CloudServicesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CloudServiceListResult); err != nil {
-		return CloudServicesListResponse{}, err
+		return CloudServicesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -496,7 +503,7 @@ func (client *CloudServicesClient) listAllCreateRequest(ctx context.Context, opt
 func (client *CloudServicesClient) listAllHandleResponse(resp *http.Response) (CloudServicesListAllResponse, error) {
 	result := CloudServicesListAllResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CloudServiceListResult); err != nil {
-		return CloudServicesListAllResponse{}, err
+		return CloudServicesListAllResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

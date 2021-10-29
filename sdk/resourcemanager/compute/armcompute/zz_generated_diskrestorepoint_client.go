@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // DiskRestorePointClient contains the methods for the DiskRestorePoint group.
@@ -31,8 +31,15 @@ type DiskRestorePointClient struct {
 }
 
 // NewDiskRestorePointClient creates a new instance of DiskRestorePointClient with the specified values.
-func NewDiskRestorePointClient(con *arm.Connection, subscriptionID string) *DiskRestorePointClient {
-	return &DiskRestorePointClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDiskRestorePointClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DiskRestorePointClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DiskRestorePointClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get disk restorePoint resource
@@ -90,7 +97,7 @@ func (client *DiskRestorePointClient) getCreateRequest(ctx context.Context, reso
 func (client *DiskRestorePointClient) getHandleResponse(resp *http.Response) (DiskRestorePointGetResponse, error) {
 	result := DiskRestorePointGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskRestorePoint); err != nil {
-		return DiskRestorePointGetResponse{}, err
+		return DiskRestorePointGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -240,7 +247,7 @@ func (client *DiskRestorePointClient) listByRestorePointCreateRequest(ctx contex
 func (client *DiskRestorePointClient) listByRestorePointHandleResponse(resp *http.Response) (DiskRestorePointListByRestorePointResponse, error) {
 	result := DiskRestorePointListByRestorePointResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiskRestorePointList); err != nil {
-		return DiskRestorePointListByRestorePointResponse{}, err
+		return DiskRestorePointListByRestorePointResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

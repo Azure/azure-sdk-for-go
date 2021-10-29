@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ResourceHealthMetadataClient contains the methods for the ResourceHealthMetadata group.
@@ -30,8 +31,15 @@ type ResourceHealthMetadataClient struct {
 }
 
 // NewResourceHealthMetadataClient creates a new instance of ResourceHealthMetadataClient with the specified values.
-func NewResourceHealthMetadataClient(con *arm.Connection, subscriptionID string) *ResourceHealthMetadataClient {
-	return &ResourceHealthMetadataClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewResourceHealthMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ResourceHealthMetadataClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ResourceHealthMetadataClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetBySite - Description for Gets the category of ResourceHealthMetadata to use for the given site
@@ -81,7 +89,7 @@ func (client *ResourceHealthMetadataClient) getBySiteCreateRequest(ctx context.C
 func (client *ResourceHealthMetadataClient) getBySiteHandleResponse(resp *http.Response) (ResourceHealthMetadataGetBySiteResponse, error) {
 	result := ResourceHealthMetadataGetBySiteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceHealthMetadata); err != nil {
-		return ResourceHealthMetadataGetBySiteResponse{}, err
+		return ResourceHealthMetadataGetBySiteResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -150,7 +158,7 @@ func (client *ResourceHealthMetadataClient) getBySiteSlotCreateRequest(ctx conte
 func (client *ResourceHealthMetadataClient) getBySiteSlotHandleResponse(resp *http.Response) (ResourceHealthMetadataGetBySiteSlotResponse, error) {
 	result := ResourceHealthMetadataGetBySiteSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceHealthMetadata); err != nil {
-		return ResourceHealthMetadataGetBySiteSlotResponse{}, err
+		return ResourceHealthMetadataGetBySiteSlotResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -204,7 +212,7 @@ func (client *ResourceHealthMetadataClient) listCreateRequest(ctx context.Contex
 func (client *ResourceHealthMetadataClient) listHandleResponse(resp *http.Response) (ResourceHealthMetadataListResponse, error) {
 	result := ResourceHealthMetadataListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceHealthMetadataCollection); err != nil {
-		return ResourceHealthMetadataListResponse{}, err
+		return ResourceHealthMetadataListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -262,7 +270,7 @@ func (client *ResourceHealthMetadataClient) listByResourceGroupCreateRequest(ctx
 func (client *ResourceHealthMetadataClient) listByResourceGroupHandleResponse(resp *http.Response) (ResourceHealthMetadataListByResourceGroupResponse, error) {
 	result := ResourceHealthMetadataListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceHealthMetadataCollection); err != nil {
-		return ResourceHealthMetadataListByResourceGroupResponse{}, err
+		return ResourceHealthMetadataListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -324,7 +332,7 @@ func (client *ResourceHealthMetadataClient) listBySiteCreateRequest(ctx context.
 func (client *ResourceHealthMetadataClient) listBySiteHandleResponse(resp *http.Response) (ResourceHealthMetadataListBySiteResponse, error) {
 	result := ResourceHealthMetadataListBySiteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceHealthMetadataCollection); err != nil {
-		return ResourceHealthMetadataListBySiteResponse{}, err
+		return ResourceHealthMetadataListBySiteResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -390,7 +398,7 @@ func (client *ResourceHealthMetadataClient) listBySiteSlotCreateRequest(ctx cont
 func (client *ResourceHealthMetadataClient) listBySiteSlotHandleResponse(resp *http.Response) (ResourceHealthMetadataListBySiteSlotResponse, error) {
 	result := ResourceHealthMetadataListBySiteSlotResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceHealthMetadataCollection); err != nil {
-		return ResourceHealthMetadataListBySiteSlotResponse{}, err
+		return ResourceHealthMetadataListBySiteSlotResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

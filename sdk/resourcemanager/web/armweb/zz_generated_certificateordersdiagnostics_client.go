@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CertificateOrdersDiagnosticsClient contains the methods for the CertificateOrdersDiagnostics group.
@@ -31,8 +32,15 @@ type CertificateOrdersDiagnosticsClient struct {
 }
 
 // NewCertificateOrdersDiagnosticsClient creates a new instance of CertificateOrdersDiagnosticsClient with the specified values.
-func NewCertificateOrdersDiagnosticsClient(con *arm.Connection, subscriptionID string) *CertificateOrdersDiagnosticsClient {
-	return &CertificateOrdersDiagnosticsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewCertificateOrdersDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CertificateOrdersDiagnosticsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CertificateOrdersDiagnosticsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetAppServiceCertificateOrderDetectorResponse - Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
@@ -95,7 +103,7 @@ func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderD
 func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderDetectorResponseHandleResponse(resp *http.Response) (CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse, error) {
 	result := CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponse); err != nil {
-		return CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse{}, err
+		return CertificateOrdersDiagnosticsGetAppServiceCertificateOrderDetectorResponseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -157,7 +165,7 @@ func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrder
 func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrderDetectorResponseHandleResponse(resp *http.Response) (CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse, error) {
 	result := CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponseCollection); err != nil {
-		return CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse{}, err
+		return CertificateOrdersDiagnosticsListAppServiceCertificateOrderDetectorResponseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

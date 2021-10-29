@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ReservationsSummariesClient contains the methods for the ReservationsSummaries group.
@@ -29,8 +30,15 @@ type ReservationsSummariesClient struct {
 }
 
 // NewReservationsSummariesClient creates a new instance of ReservationsSummariesClient with the specified values.
-func NewReservationsSummariesClient(con *arm.Connection) *ReservationsSummariesClient {
-	return &ReservationsSummariesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewReservationsSummariesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ReservationsSummariesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ReservationsSummariesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Lists the reservations summaries for the defined scope daily or monthly grain.
@@ -50,9 +58,6 @@ func (client *ReservationsSummariesClient) List(scope string, grain Datagrain, o
 // listCreateRequest creates the List request.
 func (client *ReservationsSummariesClient) listCreateRequest(ctx context.Context, scope string, grain Datagrain, options *ReservationsSummariesListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Consumption/reservationSummaries"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -85,7 +90,7 @@ func (client *ReservationsSummariesClient) listCreateRequest(ctx context.Context
 func (client *ReservationsSummariesClient) listHandleResponse(resp *http.Response) (ReservationsSummariesListResponse, error) {
 	result := ReservationsSummariesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationSummariesListResult); err != nil {
-		return ReservationsSummariesListResponse{}, err
+		return ReservationsSummariesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -143,7 +148,7 @@ func (client *ReservationsSummariesClient) listByReservationOrderCreateRequest(c
 func (client *ReservationsSummariesClient) listByReservationOrderHandleResponse(resp *http.Response) (ReservationsSummariesListByReservationOrderResponse, error) {
 	result := ReservationsSummariesListByReservationOrderResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationSummariesListResult); err != nil {
-		return ReservationsSummariesListByReservationOrderResponse{}, err
+		return ReservationsSummariesListByReservationOrderResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -205,7 +210,7 @@ func (client *ReservationsSummariesClient) listByReservationOrderAndReservationC
 func (client *ReservationsSummariesClient) listByReservationOrderAndReservationHandleResponse(resp *http.Response) (ReservationsSummariesListByReservationOrderAndReservationResponse, error) {
 	result := ReservationsSummariesListByReservationOrderAndReservationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationSummariesListResult); err != nil {
-		return ReservationsSummariesListByReservationOrderAndReservationResponse{}, err
+		return ReservationsSummariesListByReservationOrderAndReservationResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

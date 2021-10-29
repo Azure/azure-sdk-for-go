@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AggregatedCostClient contains the methods for the AggregatedCost group.
@@ -29,8 +30,15 @@ type AggregatedCostClient struct {
 }
 
 // NewAggregatedCostClient creates a new instance of AggregatedCostClient with the specified values.
-func NewAggregatedCostClient(con *arm.Connection) *AggregatedCostClient {
-	return &AggregatedCostClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewAggregatedCostClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AggregatedCostClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AggregatedCostClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetByManagementGroup - Provides the aggregate cost of a management group and all child management groups by current billing period.
@@ -75,7 +83,7 @@ func (client *AggregatedCostClient) getByManagementGroupCreateRequest(ctx contex
 func (client *AggregatedCostClient) getByManagementGroupHandleResponse(resp *http.Response) (AggregatedCostGetByManagementGroupResponse, error) {
 	result := AggregatedCostGetByManagementGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementGroupAggregatedCostResult); err != nil {
-		return AggregatedCostGetByManagementGroupResponse{}, err
+		return AggregatedCostGetByManagementGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -136,7 +144,7 @@ func (client *AggregatedCostClient) getForBillingPeriodByManagementGroupCreateRe
 func (client *AggregatedCostClient) getForBillingPeriodByManagementGroupHandleResponse(resp *http.Response) (AggregatedCostGetForBillingPeriodByManagementGroupResponse, error) {
 	result := AggregatedCostGetForBillingPeriodByManagementGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementGroupAggregatedCostResult); err != nil {
-		return AggregatedCostGetForBillingPeriodByManagementGroupResponse{}, err
+		return AggregatedCostGetForBillingPeriodByManagementGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // BalancesClient contains the methods for the Balances group.
@@ -29,8 +30,15 @@ type BalancesClient struct {
 }
 
 // NewBalancesClient creates a new instance of BalancesClient with the specified values.
-func NewBalancesClient(con *arm.Connection) *BalancesClient {
-	return &BalancesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewBalancesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *BalancesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &BalancesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetByBillingAccount - Gets the balances for a scope by billingAccountId. Balances are available via this API only for May 1, 2014 or later.
@@ -72,7 +80,7 @@ func (client *BalancesClient) getByBillingAccountCreateRequest(ctx context.Conte
 func (client *BalancesClient) getByBillingAccountHandleResponse(resp *http.Response) (BalancesGetByBillingAccountResponse, error) {
 	result := BalancesGetByBillingAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Balance); err != nil {
-		return BalancesGetByBillingAccountResponse{}, err
+		return BalancesGetByBillingAccountResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -134,7 +142,7 @@ func (client *BalancesClient) getForBillingPeriodByBillingAccountCreateRequest(c
 func (client *BalancesClient) getForBillingPeriodByBillingAccountHandleResponse(resp *http.Response) (BalancesGetForBillingPeriodByBillingAccountResponse, error) {
 	result := BalancesGetForBillingPeriodByBillingAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Balance); err != nil {
-		return BalancesGetForBillingPeriodByBillingAccountResponse{}, err
+		return BalancesGetForBillingPeriodByBillingAccountResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

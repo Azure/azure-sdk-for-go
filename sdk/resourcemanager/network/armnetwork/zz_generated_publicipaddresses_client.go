@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // PublicIPAddressesClient contains the methods for the PublicIPAddresses group.
@@ -31,8 +31,15 @@ type PublicIPAddressesClient struct {
 }
 
 // NewPublicIPAddressesClient creates a new instance of PublicIPAddressesClient with the specified values.
-func NewPublicIPAddressesClient(con *arm.Connection, subscriptionID string) *PublicIPAddressesClient {
-	return &PublicIPAddressesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewPublicIPAddressesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PublicIPAddressesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &PublicIPAddressesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a static or dynamic public IP address.
@@ -92,7 +99,7 @@ func (client *PublicIPAddressesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -168,7 +175,7 @@ func (client *PublicIPAddressesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -224,7 +231,7 @@ func (client *PublicIPAddressesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -237,7 +244,7 @@ func (client *PublicIPAddressesClient) getCreateRequest(ctx context.Context, res
 func (client *PublicIPAddressesClient) getHandleResponse(resp *http.Response) (PublicIPAddressesGetResponse, error) {
 	result := PublicIPAddressesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddress); err != nil {
-		return PublicIPAddressesGetResponse{}, err
+		return PublicIPAddressesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -308,7 +315,7 @@ func (client *PublicIPAddressesClient) getCloudServicePublicIPAddressCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -321,7 +328,7 @@ func (client *PublicIPAddressesClient) getCloudServicePublicIPAddressCreateReque
 func (client *PublicIPAddressesClient) getCloudServicePublicIPAddressHandleResponse(resp *http.Response) (PublicIPAddressesGetCloudServicePublicIPAddressResponse, error) {
 	result := PublicIPAddressesGetCloudServicePublicIPAddressResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddress); err != nil {
-		return PublicIPAddressesGetCloudServicePublicIPAddressResponse{}, err
+		return PublicIPAddressesGetCloudServicePublicIPAddressResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -405,7 +412,7 @@ func (client *PublicIPAddressesClient) getVirtualMachineScaleSetPublicIPAddressC
 func (client *PublicIPAddressesClient) getVirtualMachineScaleSetPublicIPAddressHandleResponse(resp *http.Response) (PublicIPAddressesGetVirtualMachineScaleSetPublicIPAddressResponse, error) {
 	result := PublicIPAddressesGetVirtualMachineScaleSetPublicIPAddressResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddress); err != nil {
-		return PublicIPAddressesGetVirtualMachineScaleSetPublicIPAddressResponse{}, err
+		return PublicIPAddressesGetVirtualMachineScaleSetPublicIPAddressResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -453,7 +460,7 @@ func (client *PublicIPAddressesClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -463,7 +470,7 @@ func (client *PublicIPAddressesClient) listCreateRequest(ctx context.Context, re
 func (client *PublicIPAddressesClient) listHandleResponse(resp *http.Response) (PublicIPAddressesListResponse, error) {
 	result := PublicIPAddressesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddressListResult); err != nil {
-		return PublicIPAddressesListResponse{}, err
+		return PublicIPAddressesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -507,7 +514,7 @@ func (client *PublicIPAddressesClient) listAllCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -517,7 +524,7 @@ func (client *PublicIPAddressesClient) listAllCreateRequest(ctx context.Context,
 func (client *PublicIPAddressesClient) listAllHandleResponse(resp *http.Response) (PublicIPAddressesListAllResponse, error) {
 	result := PublicIPAddressesListAllResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddressListResult); err != nil {
-		return PublicIPAddressesListAllResponse{}, err
+		return PublicIPAddressesListAllResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -569,7 +576,7 @@ func (client *PublicIPAddressesClient) listCloudServicePublicIPAddressesCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -579,7 +586,7 @@ func (client *PublicIPAddressesClient) listCloudServicePublicIPAddressesCreateRe
 func (client *PublicIPAddressesClient) listCloudServicePublicIPAddressesHandleResponse(resp *http.Response) (PublicIPAddressesListCloudServicePublicIPAddressesResponse, error) {
 	result := PublicIPAddressesListCloudServicePublicIPAddressesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddressListResult); err != nil {
-		return PublicIPAddressesListCloudServicePublicIPAddressesResponse{}, err
+		return PublicIPAddressesListCloudServicePublicIPAddressesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -643,7 +650,7 @@ func (client *PublicIPAddressesClient) listCloudServiceRoleInstancePublicIPAddre
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -653,7 +660,7 @@ func (client *PublicIPAddressesClient) listCloudServiceRoleInstancePublicIPAddre
 func (client *PublicIPAddressesClient) listCloudServiceRoleInstancePublicIPAddressesHandleResponse(resp *http.Response) (PublicIPAddressesListCloudServiceRoleInstancePublicIPAddressesResponse, error) {
 	result := PublicIPAddressesListCloudServiceRoleInstancePublicIPAddressesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddressListResult); err != nil {
-		return PublicIPAddressesListCloudServiceRoleInstancePublicIPAddressesResponse{}, err
+		return PublicIPAddressesListCloudServiceRoleInstancePublicIPAddressesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -715,7 +722,7 @@ func (client *PublicIPAddressesClient) listVirtualMachineScaleSetPublicIPAddress
 func (client *PublicIPAddressesClient) listVirtualMachineScaleSetPublicIPAddressesHandleResponse(resp *http.Response) (PublicIPAddressesListVirtualMachineScaleSetPublicIPAddressesResponse, error) {
 	result := PublicIPAddressesListVirtualMachineScaleSetPublicIPAddressesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddressListResult); err != nil {
-		return PublicIPAddressesListVirtualMachineScaleSetPublicIPAddressesResponse{}, err
+		return PublicIPAddressesListVirtualMachineScaleSetPublicIPAddressesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -790,7 +797,7 @@ func (client *PublicIPAddressesClient) listVirtualMachineScaleSetVMPublicIPAddre
 func (client *PublicIPAddressesClient) listVirtualMachineScaleSetVMPublicIPAddressesHandleResponse(resp *http.Response) (PublicIPAddressesListVirtualMachineScaleSetVMPublicIPAddressesResponse, error) {
 	result := PublicIPAddressesListVirtualMachineScaleSetVMPublicIPAddressesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddressListResult); err != nil {
-		return PublicIPAddressesListVirtualMachineScaleSetVMPublicIPAddressesResponse{}, err
+		return PublicIPAddressesListVirtualMachineScaleSetVMPublicIPAddressesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -845,7 +852,7 @@ func (client *PublicIPAddressesClient) updateTagsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -855,7 +862,7 @@ func (client *PublicIPAddressesClient) updateTagsCreateRequest(ctx context.Conte
 func (client *PublicIPAddressesClient) updateTagsHandleResponse(resp *http.Response) (PublicIPAddressesUpdateTagsResponse, error) {
 	result := PublicIPAddressesUpdateTagsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicIPAddress); err != nil {
-		return PublicIPAddressesUpdateTagsResponse{}, err
+		return PublicIPAddressesUpdateTagsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

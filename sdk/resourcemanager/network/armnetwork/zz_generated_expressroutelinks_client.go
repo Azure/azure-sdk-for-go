@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ExpressRouteLinksClient contains the methods for the ExpressRouteLinks group.
@@ -30,8 +31,15 @@ type ExpressRouteLinksClient struct {
 }
 
 // NewExpressRouteLinksClient creates a new instance of ExpressRouteLinksClient with the specified values.
-func NewExpressRouteLinksClient(con *arm.Connection, subscriptionID string) *ExpressRouteLinksClient {
-	return &ExpressRouteLinksClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewExpressRouteLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExpressRouteLinksClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ExpressRouteLinksClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Retrieves the specified ExpressRouteLink resource.
@@ -75,7 +83,7 @@ func (client *ExpressRouteLinksClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -85,7 +93,7 @@ func (client *ExpressRouteLinksClient) getCreateRequest(ctx context.Context, res
 func (client *ExpressRouteLinksClient) getHandleResponse(resp *http.Response) (ExpressRouteLinksGetResponse, error) {
 	result := ExpressRouteLinksGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteLink); err != nil {
-		return ExpressRouteLinksGetResponse{}, err
+		return ExpressRouteLinksGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -137,7 +145,7 @@ func (client *ExpressRouteLinksClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -147,7 +155,7 @@ func (client *ExpressRouteLinksClient) listCreateRequest(ctx context.Context, re
 func (client *ExpressRouteLinksClient) listHandleResponse(resp *http.Response) (ExpressRouteLinksListResponse, error) {
 	result := ExpressRouteLinksListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteLinkListResult); err != nil {
-		return ExpressRouteLinksListResponse{}, err
+		return ExpressRouteLinksListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

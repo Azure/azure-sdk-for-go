@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // DscpConfigurationClient contains the methods for the DscpConfiguration group.
@@ -31,8 +31,15 @@ type DscpConfigurationClient struct {
 }
 
 // NewDscpConfigurationClient creates a new instance of DscpConfigurationClient with the specified values.
-func NewDscpConfigurationClient(con *arm.Connection, subscriptionID string) *DscpConfigurationClient {
-	return &DscpConfigurationClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDscpConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DscpConfigurationClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DscpConfigurationClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a DSCP Configuration.
@@ -92,7 +99,7 @@ func (client *DscpConfigurationClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -168,7 +175,7 @@ func (client *DscpConfigurationClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -224,7 +231,7 @@ func (client *DscpConfigurationClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -234,7 +241,7 @@ func (client *DscpConfigurationClient) getCreateRequest(ctx context.Context, res
 func (client *DscpConfigurationClient) getHandleResponse(resp *http.Response) (DscpConfigurationGetResponse, error) {
 	result := DscpConfigurationGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscpConfiguration); err != nil {
-		return DscpConfigurationGetResponse{}, err
+		return DscpConfigurationGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -282,7 +289,7 @@ func (client *DscpConfigurationClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -292,7 +299,7 @@ func (client *DscpConfigurationClient) listCreateRequest(ctx context.Context, re
 func (client *DscpConfigurationClient) listHandleResponse(resp *http.Response) (DscpConfigurationListResponse, error) {
 	result := DscpConfigurationListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscpConfigurationListResult); err != nil {
-		return DscpConfigurationListResponse{}, err
+		return DscpConfigurationListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -336,7 +343,7 @@ func (client *DscpConfigurationClient) listAllCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -346,7 +353,7 @@ func (client *DscpConfigurationClient) listAllCreateRequest(ctx context.Context,
 func (client *DscpConfigurationClient) listAllHandleResponse(resp *http.Response) (DscpConfigurationListAllResponse, error) {
 	result := DscpConfigurationListAllResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscpConfigurationListResult); err != nil {
-		return DscpConfigurationListAllResponse{}, err
+		return DscpConfigurationListAllResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

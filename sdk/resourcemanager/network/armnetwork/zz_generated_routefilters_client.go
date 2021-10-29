@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // RouteFiltersClient contains the methods for the RouteFilters group.
@@ -31,8 +31,15 @@ type RouteFiltersClient struct {
 }
 
 // NewRouteFiltersClient creates a new instance of RouteFiltersClient with the specified values.
-func NewRouteFiltersClient(con *arm.Connection, subscriptionID string) *RouteFiltersClient {
-	return &RouteFiltersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRouteFiltersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RouteFiltersClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RouteFiltersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a route filter in a specified resource group.
@@ -92,7 +99,7 @@ func (client *RouteFiltersClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, routeFilterParameters)
@@ -168,7 +175,7 @@ func (client *RouteFiltersClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -224,7 +231,7 @@ func (client *RouteFiltersClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -237,7 +244,7 @@ func (client *RouteFiltersClient) getCreateRequest(ctx context.Context, resource
 func (client *RouteFiltersClient) getHandleResponse(resp *http.Response) (RouteFiltersGetResponse, error) {
 	result := RouteFiltersGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RouteFilter); err != nil {
-		return RouteFiltersGetResponse{}, err
+		return RouteFiltersGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -281,7 +288,7 @@ func (client *RouteFiltersClient) listCreateRequest(ctx context.Context, options
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -291,7 +298,7 @@ func (client *RouteFiltersClient) listCreateRequest(ctx context.Context, options
 func (client *RouteFiltersClient) listHandleResponse(resp *http.Response) (RouteFiltersListResponse, error) {
 	result := RouteFiltersListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RouteFilterListResult); err != nil {
-		return RouteFiltersListResponse{}, err
+		return RouteFiltersListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -339,7 +346,7 @@ func (client *RouteFiltersClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -349,7 +356,7 @@ func (client *RouteFiltersClient) listByResourceGroupCreateRequest(ctx context.C
 func (client *RouteFiltersClient) listByResourceGroupHandleResponse(resp *http.Response) (RouteFiltersListByResourceGroupResponse, error) {
 	result := RouteFiltersListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RouteFilterListResult); err != nil {
-		return RouteFiltersListByResourceGroupResponse{}, err
+		return RouteFiltersListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -404,7 +411,7 @@ func (client *RouteFiltersClient) updateTagsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -414,7 +421,7 @@ func (client *RouteFiltersClient) updateTagsCreateRequest(ctx context.Context, r
 func (client *RouteFiltersClient) updateTagsHandleResponse(resp *http.Response) (RouteFiltersUpdateTagsResponse, error) {
 	result := RouteFiltersUpdateTagsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RouteFilter); err != nil {
-		return RouteFiltersUpdateTagsResponse{}, err
+		return RouteFiltersUpdateTagsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

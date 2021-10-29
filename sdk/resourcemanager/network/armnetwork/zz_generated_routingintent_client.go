@@ -22,16 +22,16 @@ import (
 	"strings"
 )
 
-// VirtualHubIPConfigurationClient contains the methods for the VirtualHubIPConfiguration group.
-// Don't use this type directly, use NewVirtualHubIPConfigurationClient() instead.
-type VirtualHubIPConfigurationClient struct {
+// RoutingIntentClient contains the methods for the RoutingIntent group.
+// Don't use this type directly, use NewRoutingIntentClient() instead.
+type RoutingIntentClient struct {
 	ep             string
 	pl             runtime.Pipeline
 	subscriptionID string
 }
 
-// NewVirtualHubIPConfigurationClient creates a new instance of VirtualHubIPConfigurationClient with the specified values.
-func NewVirtualHubIPConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualHubIPConfigurationClient {
+// NewRoutingIntentClient creates a new instance of RoutingIntentClient with the specified values.
+func NewRoutingIntentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RoutingIntentClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
@@ -39,33 +39,33 @@ func NewVirtualHubIPConfigurationClient(subscriptionID string, credential azcore
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &VirtualHubIPConfigurationClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	return &RoutingIntentClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
-// BeginCreateOrUpdate - Creates a VirtualHubIpConfiguration resource if it doesn't exist else updates the existing VirtualHubIpConfiguration.
+// BeginCreateOrUpdate - Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualHubIPConfigurationClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, parameters HubIPConfiguration, options *VirtualHubIPConfigurationBeginCreateOrUpdateOptions) (VirtualHubIPConfigurationCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualHubName, ipConfigName, parameters, options)
+func (client *RoutingIntentClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, routingIntentParameters RoutingIntent, options *RoutingIntentBeginCreateOrUpdateOptions) (RoutingIntentCreateOrUpdatePollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualHubName, routingIntentName, routingIntentParameters, options)
 	if err != nil {
-		return VirtualHubIPConfigurationCreateOrUpdatePollerResponse{}, err
+		return RoutingIntentCreateOrUpdatePollerResponse{}, err
 	}
-	result := VirtualHubIPConfigurationCreateOrUpdatePollerResponse{
+	result := RoutingIntentCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualHubIPConfigurationClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("RoutingIntentClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
 	if err != nil {
-		return VirtualHubIPConfigurationCreateOrUpdatePollerResponse{}, err
+		return RoutingIntentCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &VirtualHubIPConfigurationCreateOrUpdatePoller{
+	result.Poller = &RoutingIntentCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdate - Creates a VirtualHubIpConfiguration resource if it doesn't exist else updates the existing VirtualHubIpConfiguration.
+// CreateOrUpdate - Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualHubIPConfigurationClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, parameters HubIPConfiguration, options *VirtualHubIPConfigurationBeginCreateOrUpdateOptions) (*http.Response, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, ipConfigName, parameters, options)
+func (client *RoutingIntentClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, routingIntentParameters RoutingIntent, options *RoutingIntentBeginCreateOrUpdateOptions) (*http.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, routingIntentName, routingIntentParameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -80,8 +80,8 @@ func (client *VirtualHubIPConfigurationClient) createOrUpdate(ctx context.Contex
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *VirtualHubIPConfigurationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, parameters HubIPConfiguration, options *VirtualHubIPConfigurationBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/ipConfigurations/{ipConfigName}"
+func (client *RoutingIntentClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, routingIntentParameters RoutingIntent, options *RoutingIntentBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent/{routingIntentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -94,10 +94,10 @@ func (client *VirtualHubIPConfigurationClient) createOrUpdateCreateRequest(ctx c
 		return nil, errors.New("parameter virtualHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualHubName}", url.PathEscape(virtualHubName))
-	if ipConfigName == "" {
-		return nil, errors.New("parameter ipConfigName cannot be empty")
+	if routingIntentName == "" {
+		return nil, errors.New("parameter routingIntentName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{ipConfigName}", url.PathEscape(ipConfigName))
+	urlPath = strings.ReplaceAll(urlPath, "{routingIntentName}", url.PathEscape(routingIntentName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
@@ -106,11 +106,11 @@ func (client *VirtualHubIPConfigurationClient) createOrUpdateCreateRequest(ctx c
 	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, parameters)
+	return req, runtime.MarshalAsJSON(req, routingIntentParameters)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *VirtualHubIPConfigurationClient) createOrUpdateHandleError(resp *http.Response) error {
+func (client *RoutingIntentClient) createOrUpdateHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -122,30 +122,30 @@ func (client *VirtualHubIPConfigurationClient) createOrUpdateHandleError(resp *h
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// BeginDelete - Deletes a VirtualHubIpConfiguration.
+// BeginDelete - Deletes a RoutingIntent.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualHubIPConfigurationClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationBeginDeleteOptions) (VirtualHubIPConfigurationDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, virtualHubName, ipConfigName, options)
+func (client *RoutingIntentClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentBeginDeleteOptions) (RoutingIntentDeletePollerResponse, error) {
+	resp, err := client.deleteOperation(ctx, resourceGroupName, virtualHubName, routingIntentName, options)
 	if err != nil {
-		return VirtualHubIPConfigurationDeletePollerResponse{}, err
+		return RoutingIntentDeletePollerResponse{}, err
 	}
-	result := VirtualHubIPConfigurationDeletePollerResponse{
+	result := RoutingIntentDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("VirtualHubIPConfigurationClient.Delete", "location", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("RoutingIntentClient.Delete", "location", resp, client.pl, client.deleteHandleError)
 	if err != nil {
-		return VirtualHubIPConfigurationDeletePollerResponse{}, err
+		return RoutingIntentDeletePollerResponse{}, err
 	}
-	result.Poller = &VirtualHubIPConfigurationDeletePoller{
+	result.Poller = &RoutingIntentDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Delete - Deletes a VirtualHubIpConfiguration.
+// Delete - Deletes a RoutingIntent.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualHubIPConfigurationClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationBeginDeleteOptions) (*http.Response, error) {
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualHubName, ipConfigName, options)
+func (client *RoutingIntentClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentBeginDeleteOptions) (*http.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualHubName, routingIntentName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -160,8 +160,8 @@ func (client *VirtualHubIPConfigurationClient) deleteOperation(ctx context.Conte
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *VirtualHubIPConfigurationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/ipConfigurations/{ipConfigName}"
+func (client *RoutingIntentClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent/{routingIntentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -174,10 +174,10 @@ func (client *VirtualHubIPConfigurationClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter virtualHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualHubName}", url.PathEscape(virtualHubName))
-	if ipConfigName == "" {
-		return nil, errors.New("parameter ipConfigName cannot be empty")
+	if routingIntentName == "" {
+		return nil, errors.New("parameter routingIntentName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{ipConfigName}", url.PathEscape(ipConfigName))
+	urlPath = strings.ReplaceAll(urlPath, "{routingIntentName}", url.PathEscape(routingIntentName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
@@ -190,7 +190,7 @@ func (client *VirtualHubIPConfigurationClient) deleteCreateRequest(ctx context.C
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *VirtualHubIPConfigurationClient) deleteHandleError(resp *http.Response) error {
+func (client *RoutingIntentClient) deleteHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -202,26 +202,26 @@ func (client *VirtualHubIPConfigurationClient) deleteHandleError(resp *http.Resp
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// Get - Retrieves the details of a Virtual Hub Ip configuration.
+// Get - Retrieves the details of a RoutingIntent.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualHubIPConfigurationClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationGetOptions) (VirtualHubIPConfigurationGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualHubName, ipConfigName, options)
+func (client *RoutingIntentClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentGetOptions) (RoutingIntentGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualHubName, routingIntentName, options)
 	if err != nil {
-		return VirtualHubIPConfigurationGetResponse{}, err
+		return RoutingIntentGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return VirtualHubIPConfigurationGetResponse{}, err
+		return RoutingIntentGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return VirtualHubIPConfigurationGetResponse{}, client.getHandleError(resp)
+		return RoutingIntentGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *VirtualHubIPConfigurationClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/ipConfigurations/{ipConfigName}"
+func (client *RoutingIntentClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent/{routingIntentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -234,10 +234,10 @@ func (client *VirtualHubIPConfigurationClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter virtualHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualHubName}", url.PathEscape(virtualHubName))
-	if ipConfigName == "" {
-		return nil, errors.New("parameter ipConfigName cannot be empty")
+	if routingIntentName == "" {
+		return nil, errors.New("parameter routingIntentName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{ipConfigName}", url.PathEscape(ipConfigName))
+	urlPath = strings.ReplaceAll(urlPath, "{routingIntentName}", url.PathEscape(routingIntentName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
@@ -250,16 +250,16 @@ func (client *VirtualHubIPConfigurationClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualHubIPConfigurationClient) getHandleResponse(resp *http.Response) (VirtualHubIPConfigurationGetResponse, error) {
-	result := VirtualHubIPConfigurationGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.HubIPConfiguration); err != nil {
-		return VirtualHubIPConfigurationGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *RoutingIntentClient) getHandleResponse(resp *http.Response) (RoutingIntentGetResponse, error) {
+	result := RoutingIntentGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RoutingIntent); err != nil {
+		return RoutingIntentGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *VirtualHubIPConfigurationClient) getHandleError(resp *http.Response) error {
+func (client *RoutingIntentClient) getHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -271,23 +271,23 @@ func (client *VirtualHubIPConfigurationClient) getHandleError(resp *http.Respons
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// List - Retrieves the details of all VirtualHubIpConfigurations.
+// List - Retrieves the details of all RoutingIntent child resources of the VirtualHub.
 // If the operation fails it returns the *CloudError error type.
-func (client *VirtualHubIPConfigurationClient) List(resourceGroupName string, virtualHubName string, options *VirtualHubIPConfigurationListOptions) *VirtualHubIPConfigurationListPager {
-	return &VirtualHubIPConfigurationListPager{
+func (client *RoutingIntentClient) List(resourceGroupName string, virtualHubName string, options *RoutingIntentListOptions) *RoutingIntentListPager {
+	return &RoutingIntentListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, virtualHubName, options)
 		},
-		advancer: func(ctx context.Context, resp VirtualHubIPConfigurationListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListVirtualHubIPConfigurationResults.NextLink)
+		advancer: func(ctx context.Context, resp RoutingIntentListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.ListRoutingIntentResult.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *VirtualHubIPConfigurationClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, options *VirtualHubIPConfigurationListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/ipConfigurations"
+func (client *RoutingIntentClient) listCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, options *RoutingIntentListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routingIntent"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -312,16 +312,16 @@ func (client *VirtualHubIPConfigurationClient) listCreateRequest(ctx context.Con
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualHubIPConfigurationClient) listHandleResponse(resp *http.Response) (VirtualHubIPConfigurationListResponse, error) {
-	result := VirtualHubIPConfigurationListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListVirtualHubIPConfigurationResults); err != nil {
-		return VirtualHubIPConfigurationListResponse{}, runtime.NewResponseError(err, resp)
+func (client *RoutingIntentClient) listHandleResponse(resp *http.Response) (RoutingIntentListResponse, error) {
+	result := RoutingIntentListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListRoutingIntentResult); err != nil {
+		return RoutingIntentListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *VirtualHubIPConfigurationClient) listHandleError(resp *http.Response) error {
+func (client *RoutingIntentClient) listHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)

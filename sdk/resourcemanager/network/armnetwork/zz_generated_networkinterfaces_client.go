@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // NetworkInterfacesClient contains the methods for the NetworkInterfaces group.
@@ -31,8 +31,15 @@ type NetworkInterfacesClient struct {
 }
 
 // NewNetworkInterfacesClient creates a new instance of NetworkInterfacesClient with the specified values.
-func NewNetworkInterfacesClient(con *arm.Connection, subscriptionID string) *NetworkInterfacesClient {
-	return &NetworkInterfacesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewNetworkInterfacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NetworkInterfacesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &NetworkInterfacesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a network interface.
@@ -92,7 +99,7 @@ func (client *NetworkInterfacesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -168,7 +175,7 @@ func (client *NetworkInterfacesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -224,7 +231,7 @@ func (client *NetworkInterfacesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -237,7 +244,7 @@ func (client *NetworkInterfacesClient) getCreateRequest(ctx context.Context, res
 func (client *NetworkInterfacesClient) getHandleResponse(resp *http.Response) (NetworkInterfacesGetResponse, error) {
 	result := NetworkInterfacesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterface); err != nil {
-		return NetworkInterfacesGetResponse{}, err
+		return NetworkInterfacesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -300,7 +307,7 @@ func (client *NetworkInterfacesClient) getCloudServiceNetworkInterfaceCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -313,7 +320,7 @@ func (client *NetworkInterfacesClient) getCloudServiceNetworkInterfaceCreateRequ
 func (client *NetworkInterfacesClient) getCloudServiceNetworkInterfaceHandleResponse(resp *http.Response) (NetworkInterfacesGetCloudServiceNetworkInterfaceResponse, error) {
 	result := NetworkInterfacesGetCloudServiceNetworkInterfaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterface); err != nil {
-		return NetworkInterfacesGetCloudServiceNetworkInterfaceResponse{}, err
+		return NetworkInterfacesGetCloudServiceNetworkInterfaceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -388,7 +395,7 @@ func (client *NetworkInterfacesClient) getEffectiveRouteTableCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -469,7 +476,7 @@ func (client *NetworkInterfacesClient) getVirtualMachineScaleSetIPConfigurationC
 func (client *NetworkInterfacesClient) getVirtualMachineScaleSetIPConfigurationHandleResponse(resp *http.Response) (NetworkInterfacesGetVirtualMachineScaleSetIPConfigurationResponse, error) {
 	result := NetworkInterfacesGetVirtualMachineScaleSetIPConfigurationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterfaceIPConfiguration); err != nil {
-		return NetworkInterfacesGetVirtualMachineScaleSetIPConfigurationResponse{}, err
+		return NetworkInterfacesGetVirtualMachineScaleSetIPConfigurationResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -545,7 +552,7 @@ func (client *NetworkInterfacesClient) getVirtualMachineScaleSetNetworkInterface
 func (client *NetworkInterfacesClient) getVirtualMachineScaleSetNetworkInterfaceHandleResponse(resp *http.Response) (NetworkInterfacesGetVirtualMachineScaleSetNetworkInterfaceResponse, error) {
 	result := NetworkInterfacesGetVirtualMachineScaleSetNetworkInterfaceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterface); err != nil {
-		return NetworkInterfacesGetVirtualMachineScaleSetNetworkInterfaceResponse{}, err
+		return NetworkInterfacesGetVirtualMachineScaleSetNetworkInterfaceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -593,7 +600,7 @@ func (client *NetworkInterfacesClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -603,7 +610,7 @@ func (client *NetworkInterfacesClient) listCreateRequest(ctx context.Context, re
 func (client *NetworkInterfacesClient) listHandleResponse(resp *http.Response) (NetworkInterfacesListResponse, error) {
 	result := NetworkInterfacesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterfaceListResult); err != nil {
-		return NetworkInterfacesListResponse{}, err
+		return NetworkInterfacesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -647,7 +654,7 @@ func (client *NetworkInterfacesClient) listAllCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -657,7 +664,7 @@ func (client *NetworkInterfacesClient) listAllCreateRequest(ctx context.Context,
 func (client *NetworkInterfacesClient) listAllHandleResponse(resp *http.Response) (NetworkInterfacesListAllResponse, error) {
 	result := NetworkInterfacesListAllResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterfaceListResult); err != nil {
-		return NetworkInterfacesListAllResponse{}, err
+		return NetworkInterfacesListAllResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -709,7 +716,7 @@ func (client *NetworkInterfacesClient) listCloudServiceNetworkInterfacesCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -719,7 +726,7 @@ func (client *NetworkInterfacesClient) listCloudServiceNetworkInterfacesCreateRe
 func (client *NetworkInterfacesClient) listCloudServiceNetworkInterfacesHandleResponse(resp *http.Response) (NetworkInterfacesListCloudServiceNetworkInterfacesResponse, error) {
 	result := NetworkInterfacesListCloudServiceNetworkInterfacesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterfaceListResult); err != nil {
-		return NetworkInterfacesListCloudServiceNetworkInterfacesResponse{}, err
+		return NetworkInterfacesListCloudServiceNetworkInterfacesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -775,7 +782,7 @@ func (client *NetworkInterfacesClient) listCloudServiceRoleInstanceNetworkInterf
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -785,7 +792,7 @@ func (client *NetworkInterfacesClient) listCloudServiceRoleInstanceNetworkInterf
 func (client *NetworkInterfacesClient) listCloudServiceRoleInstanceNetworkInterfacesHandleResponse(resp *http.Response) (NetworkInterfacesListCloudServiceRoleInstanceNetworkInterfacesResponse, error) {
 	result := NetworkInterfacesListCloudServiceRoleInstanceNetworkInterfacesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterfaceListResult); err != nil {
-		return NetworkInterfacesListCloudServiceRoleInstanceNetworkInterfacesResponse{}, err
+		return NetworkInterfacesListCloudServiceRoleInstanceNetworkInterfacesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -860,7 +867,7 @@ func (client *NetworkInterfacesClient) listEffectiveNetworkSecurityGroupsCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -934,7 +941,7 @@ func (client *NetworkInterfacesClient) listVirtualMachineScaleSetIPConfiguration
 func (client *NetworkInterfacesClient) listVirtualMachineScaleSetIPConfigurationsHandleResponse(resp *http.Response) (NetworkInterfacesListVirtualMachineScaleSetIPConfigurationsResponse, error) {
 	result := NetworkInterfacesListVirtualMachineScaleSetIPConfigurationsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterfaceIPConfigurationListResult); err != nil {
-		return NetworkInterfacesListVirtualMachineScaleSetIPConfigurationsResponse{}, err
+		return NetworkInterfacesListVirtualMachineScaleSetIPConfigurationsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -996,7 +1003,7 @@ func (client *NetworkInterfacesClient) listVirtualMachineScaleSetNetworkInterfac
 func (client *NetworkInterfacesClient) listVirtualMachineScaleSetNetworkInterfacesHandleResponse(resp *http.Response) (NetworkInterfacesListVirtualMachineScaleSetNetworkInterfacesResponse, error) {
 	result := NetworkInterfacesListVirtualMachineScaleSetNetworkInterfacesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterfaceListResult); err != nil {
-		return NetworkInterfacesListVirtualMachineScaleSetNetworkInterfacesResponse{}, err
+		return NetworkInterfacesListVirtualMachineScaleSetNetworkInterfacesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1062,7 +1069,7 @@ func (client *NetworkInterfacesClient) listVirtualMachineScaleSetVMNetworkInterf
 func (client *NetworkInterfacesClient) listVirtualMachineScaleSetVMNetworkInterfacesHandleResponse(resp *http.Response) (NetworkInterfacesListVirtualMachineScaleSetVMNetworkInterfacesResponse, error) {
 	result := NetworkInterfacesListVirtualMachineScaleSetVMNetworkInterfacesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterfaceListResult); err != nil {
-		return NetworkInterfacesListVirtualMachineScaleSetVMNetworkInterfacesResponse{}, err
+		return NetworkInterfacesListVirtualMachineScaleSetVMNetworkInterfacesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -1117,7 +1124,7 @@ func (client *NetworkInterfacesClient) updateTagsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-03-01")
+	reqQP.Set("api-version", "2021-05-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -1127,7 +1134,7 @@ func (client *NetworkInterfacesClient) updateTagsCreateRequest(ctx context.Conte
 func (client *NetworkInterfacesClient) updateTagsHandleResponse(resp *http.Response) (NetworkInterfacesUpdateTagsResponse, error) {
 	result := NetworkInterfacesUpdateTagsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterface); err != nil {
-		return NetworkInterfacesUpdateTagsResponse{}, err
+		return NetworkInterfacesUpdateTagsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

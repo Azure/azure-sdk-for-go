@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ManagementGroupSubscriptionsClient contains the methods for the ManagementGroupSubscriptions group.
@@ -29,8 +30,15 @@ type ManagementGroupSubscriptionsClient struct {
 }
 
 // NewManagementGroupSubscriptionsClient creates a new instance of ManagementGroupSubscriptionsClient with the specified values.
-func NewManagementGroupSubscriptionsClient(con *arm.Connection) *ManagementGroupSubscriptionsClient {
-	return &ManagementGroupSubscriptionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewManagementGroupSubscriptionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ManagementGroupSubscriptionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagementGroupSubscriptionsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Associates existing subscription with the management group.
@@ -79,7 +87,7 @@ func (client *ManagementGroupSubscriptionsClient) createCreateRequest(ctx contex
 func (client *ManagementGroupSubscriptionsClient) createHandleResponse(resp *http.Response) (ManagementGroupSubscriptionsCreateResponse, error) {
 	result := ManagementGroupSubscriptionsCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionUnderManagementGroup); err != nil {
-		return ManagementGroupSubscriptionsCreateResponse{}, err
+		return ManagementGroupSubscriptionsCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -198,7 +206,7 @@ func (client *ManagementGroupSubscriptionsClient) getSubscriptionCreateRequest(c
 func (client *ManagementGroupSubscriptionsClient) getSubscriptionHandleResponse(resp *http.Response) (ManagementGroupSubscriptionsGetSubscriptionResponse, error) {
 	result := ManagementGroupSubscriptionsGetSubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionUnderManagementGroup); err != nil {
-		return ManagementGroupSubscriptionsGetSubscriptionResponse{}, err
+		return ManagementGroupSubscriptionsGetSubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -255,7 +263,7 @@ func (client *ManagementGroupSubscriptionsClient) getSubscriptionsUnderManagemen
 func (client *ManagementGroupSubscriptionsClient) getSubscriptionsUnderManagementGroupHandleResponse(resp *http.Response) (ManagementGroupSubscriptionsGetSubscriptionsUnderManagementGroupResponse, error) {
 	result := ManagementGroupSubscriptionsGetSubscriptionsUnderManagementGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListSubscriptionUnderManagementGroup); err != nil {
-		return ManagementGroupSubscriptionsGetSubscriptionsUnderManagementGroupResponse{}, err
+		return ManagementGroupSubscriptionsGetSubscriptionsUnderManagementGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

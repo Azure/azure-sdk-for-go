@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // ManagementGroupsClient contains the methods for the ManagementGroups group.
@@ -31,8 +31,15 @@ type ManagementGroupsClient struct {
 }
 
 // NewManagementGroupsClient creates a new instance of ManagementGroupsClient with the specified values.
-func NewManagementGroupsClient(con *arm.Connection) *ManagementGroupsClient {
-	return &ManagementGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewManagementGroupsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ManagementGroupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagementGroupsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Create or update a management group. If a management group is already created and a subsequent create request is issued with different
@@ -230,7 +237,7 @@ func (client *ManagementGroupsClient) getCreateRequest(ctx context.Context, grou
 func (client *ManagementGroupsClient) getHandleResponse(resp *http.Response) (ManagementGroupsGetResponse, error) {
 	result := ManagementGroupsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementGroup); err != nil {
-		return ManagementGroupsGetResponse{}, err
+		return ManagementGroupsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -290,7 +297,7 @@ func (client *ManagementGroupsClient) getDescendantsCreateRequest(ctx context.Co
 func (client *ManagementGroupsClient) getDescendantsHandleResponse(resp *http.Response) (ManagementGroupsGetDescendantsResponse, error) {
 	result := ManagementGroupsGetDescendantsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DescendantListResult); err != nil {
-		return ManagementGroupsGetDescendantsResponse{}, err
+		return ManagementGroupsGetDescendantsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -346,7 +353,7 @@ func (client *ManagementGroupsClient) listCreateRequest(ctx context.Context, opt
 func (client *ManagementGroupsClient) listHandleResponse(resp *http.Response) (ManagementGroupsListResponse, error) {
 	result := ManagementGroupsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementGroupListResult); err != nil {
-		return ManagementGroupsListResponse{}, err
+		return ManagementGroupsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -406,7 +413,7 @@ func (client *ManagementGroupsClient) updateCreateRequest(ctx context.Context, g
 func (client *ManagementGroupsClient) updateHandleResponse(resp *http.Response) (ManagementGroupsUpdateResponse, error) {
 	result := ManagementGroupsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementGroup); err != nil {
-		return ManagementGroupsUpdateResponse{}, err
+		return ManagementGroupsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

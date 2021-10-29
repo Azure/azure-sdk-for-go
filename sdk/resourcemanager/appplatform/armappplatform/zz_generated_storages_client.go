@@ -22,16 +22,16 @@ import (
 	"strings"
 )
 
-// CertificatesClient contains the methods for the Certificates group.
-// Don't use this type directly, use NewCertificatesClient() instead.
-type CertificatesClient struct {
+// StoragesClient contains the methods for the Storages group.
+// Don't use this type directly, use NewStoragesClient() instead.
+type StoragesClient struct {
 	ep             string
 	pl             runtime.Pipeline
 	subscriptionID string
 }
 
-// NewCertificatesClient creates a new instance of CertificatesClient with the specified values.
-func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CertificatesClient {
+// NewStoragesClient creates a new instance of StoragesClient with the specified values.
+func NewStoragesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StoragesClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
@@ -39,33 +39,33 @@ func NewCertificatesClient(subscriptionID string, credential azcore.TokenCredent
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &CertificatesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	return &StoragesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
-// BeginCreateOrUpdate - Create or update certificate resource.
+// BeginCreateOrUpdate - Create or update storage resource.
 // If the operation fails it returns the *CloudError error type.
-func (client *CertificatesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, certificateResource CertificateResource, options *CertificatesBeginCreateOrUpdateOptions) (CertificatesCreateOrUpdatePollerResponse, error) {
-	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, certificateName, certificateResource, options)
+func (client *StoragesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, storageName string, storageResource StorageResource, options *StoragesBeginCreateOrUpdateOptions) (StoragesCreateOrUpdatePollerResponse, error) {
+	resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, storageName, storageResource, options)
 	if err != nil {
-		return CertificatesCreateOrUpdatePollerResponse{}, err
+		return StoragesCreateOrUpdatePollerResponse{}, err
 	}
-	result := CertificatesCreateOrUpdatePollerResponse{
+	result := StoragesCreateOrUpdatePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CertificatesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
+	pt, err := armruntime.NewPoller("StoragesClient.CreateOrUpdate", "azure-async-operation", resp, client.pl, client.createOrUpdateHandleError)
 	if err != nil {
-		return CertificatesCreateOrUpdatePollerResponse{}, err
+		return StoragesCreateOrUpdatePollerResponse{}, err
 	}
-	result.Poller = &CertificatesCreateOrUpdatePoller{
+	result.Poller = &StoragesCreateOrUpdatePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// CreateOrUpdate - Create or update certificate resource.
+// CreateOrUpdate - Create or update storage resource.
 // If the operation fails it returns the *CloudError error type.
-func (client *CertificatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, certificateResource CertificateResource, options *CertificatesBeginCreateOrUpdateOptions) (*http.Response, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, certificateName, certificateResource, options)
+func (client *StoragesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, storageName string, storageResource StorageResource, options *StoragesBeginCreateOrUpdateOptions) (*http.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, storageName, storageResource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -80,8 +80,8 @@ func (client *CertificatesClient) createOrUpdate(ctx context.Context, resourceGr
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, certificateResource CertificateResource, options *CertificatesBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/certificates/{certificateName}"
+func (client *StoragesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, storageName string, storageResource StorageResource, options *StoragesBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/storages/{storageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -94,10 +94,10 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if certificateName == "" {
-		return nil, errors.New("parameter certificateName cannot be empty")
+	if storageName == "" {
+		return nil, errors.New("parameter storageName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
+	urlPath = strings.ReplaceAll(urlPath, "{storageName}", url.PathEscape(storageName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
@@ -106,11 +106,11 @@ func (client *CertificatesClient) createOrUpdateCreateRequest(ctx context.Contex
 	reqQP.Set("api-version", "2021-09-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
-	return req, runtime.MarshalAsJSON(req, certificateResource)
+	return req, runtime.MarshalAsJSON(req, storageResource)
 }
 
 // createOrUpdateHandleError handles the CreateOrUpdate error response.
-func (client *CertificatesClient) createOrUpdateHandleError(resp *http.Response) error {
+func (client *StoragesClient) createOrUpdateHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -122,30 +122,30 @@ func (client *CertificatesClient) createOrUpdateHandleError(resp *http.Response)
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// BeginDelete - Delete the certificate resource.
+// BeginDelete - Delete the storage resource.
 // If the operation fails it returns the *CloudError error type.
-func (client *CertificatesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, options *CertificatesBeginDeleteOptions) (CertificatesDeletePollerResponse, error) {
-	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, certificateName, options)
+func (client *StoragesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, storageName string, options *StoragesBeginDeleteOptions) (StoragesDeletePollerResponse, error) {
+	resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, storageName, options)
 	if err != nil {
-		return CertificatesDeletePollerResponse{}, err
+		return StoragesDeletePollerResponse{}, err
 	}
-	result := CertificatesDeletePollerResponse{
+	result := StoragesDeletePollerResponse{
 		RawResponse: resp,
 	}
-	pt, err := armruntime.NewPoller("CertificatesClient.Delete", "azure-async-operation", resp, client.pl, client.deleteHandleError)
+	pt, err := armruntime.NewPoller("StoragesClient.Delete", "azure-async-operation", resp, client.pl, client.deleteHandleError)
 	if err != nil {
-		return CertificatesDeletePollerResponse{}, err
+		return StoragesDeletePollerResponse{}, err
 	}
-	result.Poller = &CertificatesDeletePoller{
+	result.Poller = &StoragesDeletePoller{
 		pt: pt,
 	}
 	return result, nil
 }
 
-// Delete - Delete the certificate resource.
+// Delete - Delete the storage resource.
 // If the operation fails it returns the *CloudError error type.
-func (client *CertificatesClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, options *CertificatesBeginDeleteOptions) (*http.Response, error) {
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, certificateName, options)
+func (client *StoragesClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, storageName string, options *StoragesBeginDeleteOptions) (*http.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, storageName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -160,8 +160,8 @@ func (client *CertificatesClient) deleteOperation(ctx context.Context, resourceG
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, options *CertificatesBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/certificates/{certificateName}"
+func (client *StoragesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, storageName string, options *StoragesBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/storages/{storageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -174,10 +174,10 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if certificateName == "" {
-		return nil, errors.New("parameter certificateName cannot be empty")
+	if storageName == "" {
+		return nil, errors.New("parameter storageName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
+	urlPath = strings.ReplaceAll(urlPath, "{storageName}", url.PathEscape(storageName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
@@ -190,7 +190,7 @@ func (client *CertificatesClient) deleteCreateRequest(ctx context.Context, resou
 }
 
 // deleteHandleError handles the Delete error response.
-func (client *CertificatesClient) deleteHandleError(resp *http.Response) error {
+func (client *StoragesClient) deleteHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -202,26 +202,26 @@ func (client *CertificatesClient) deleteHandleError(resp *http.Response) error {
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// Get - Get the certificate resource.
+// Get - Get the storage resource.
 // If the operation fails it returns the *CloudError error type.
-func (client *CertificatesClient) Get(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, options *CertificatesGetOptions) (CertificatesGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, certificateName, options)
+func (client *StoragesClient) Get(ctx context.Context, resourceGroupName string, serviceName string, storageName string, options *StoragesGetOptions) (StoragesGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, storageName, options)
 	if err != nil {
-		return CertificatesGetResponse{}, err
+		return StoragesGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return CertificatesGetResponse{}, err
+		return StoragesGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return CertificatesGetResponse{}, client.getHandleError(resp)
+		return StoragesGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *CertificatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, certificateName string, options *CertificatesGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/certificates/{certificateName}"
+func (client *StoragesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, storageName string, options *StoragesGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/storages/{storageName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -234,10 +234,10 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if certificateName == "" {
-		return nil, errors.New("parameter certificateName cannot be empty")
+	if storageName == "" {
+		return nil, errors.New("parameter storageName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{certificateName}", url.PathEscape(certificateName))
+	urlPath = strings.ReplaceAll(urlPath, "{storageName}", url.PathEscape(storageName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
@@ -250,16 +250,16 @@ func (client *CertificatesClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *CertificatesClient) getHandleResponse(resp *http.Response) (CertificatesGetResponse, error) {
-	result := CertificatesGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateResource); err != nil {
-		return CertificatesGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *StoragesClient) getHandleResponse(resp *http.Response) (StoragesGetResponse, error) {
+	result := StoragesGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StorageResource); err != nil {
+		return StoragesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *CertificatesClient) getHandleError(resp *http.Response) error {
+func (client *StoragesClient) getHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -271,23 +271,23 @@ func (client *CertificatesClient) getHandleError(resp *http.Response) error {
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// List - List all the certificates of one user.
+// List - List all the storages of one Azure Spring Cloud instance.
 // If the operation fails it returns the *CloudError error type.
-func (client *CertificatesClient) List(resourceGroupName string, serviceName string, options *CertificatesListOptions) *CertificatesListPager {
-	return &CertificatesListPager{
+func (client *StoragesClient) List(resourceGroupName string, serviceName string, options *StoragesListOptions) *StoragesListPager {
+	return &StoragesListPager{
 		client: client,
 		requester: func(ctx context.Context) (*policy.Request, error) {
 			return client.listCreateRequest(ctx, resourceGroupName, serviceName, options)
 		},
-		advancer: func(ctx context.Context, resp CertificatesListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.CertificateResourceCollection.NextLink)
+		advancer: func(ctx context.Context, resp StoragesListResponse) (*policy.Request, error) {
+			return runtime.NewRequest(ctx, http.MethodGet, *resp.StorageResourceCollection.NextLink)
 		},
 	}
 }
 
 // listCreateRequest creates the List request.
-func (client *CertificatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *CertificatesListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/certificates"
+func (client *StoragesClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *StoragesListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/storages"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -312,16 +312,16 @@ func (client *CertificatesClient) listCreateRequest(ctx context.Context, resourc
 }
 
 // listHandleResponse handles the List response.
-func (client *CertificatesClient) listHandleResponse(resp *http.Response) (CertificatesListResponse, error) {
-	result := CertificatesListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateResourceCollection); err != nil {
-		return CertificatesListResponse{}, runtime.NewResponseError(err, resp)
+func (client *StoragesClient) listHandleResponse(resp *http.Response) (StoragesListResponse, error) {
+	result := StoragesListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StorageResourceCollection); err != nil {
+		return StoragesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *CertificatesClient) listHandleError(resp *http.Response) error {
+func (client *StoragesClient) listHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)

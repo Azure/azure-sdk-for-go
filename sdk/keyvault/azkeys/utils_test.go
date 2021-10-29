@@ -33,37 +33,47 @@ var enableHSM = false
 func TestMain(m *testing.M) {
 	// Initialize
 	if recording.GetRecordMode() == "record" {
-		vaultUrl := os.Getenv("AZKEYS_KEYVAULT_URL")
-		err := recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
+		err := recording.ResetSanitizers(nil)
 		if err != nil {
 			panic(err)
 		}
 
-		// err = recording.AddBodyKeySanitizer("$.key.kid", vaultUrl, fakeKvURL, nil)
-		// if err != nil {
-		// 	panic(err)
-		// }
+		vaultUrl := os.Getenv("AZKEYS_KEYVAULT_URL")
+		err = recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
+		if err != nil {
+			panic(err)
+		}
 
-		// tenantID := os.Getenv("AZKEYS_TENANT_ID")
-		// err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", tenantID, "00000000-0000-0000-0000-000000000000", nil)
-		// if err != nil {
-		// 	panic(err)
-		// }
+		err = recording.AddBodyKeySanitizer("$.key.kid", fakeKvURL, vaultUrl, nil)
+		if err != nil {
+			panic(err)
+		}
 
-		// mhsmURL, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL")
-		// if ok {
-		// 	fmt.Println("Did not find managed HSM url, skipping those tests")
-		// 	enableHSM = true
-		// 	err = recording.AddURISanitizer(fakeKvMHSMURL, mhsmURL, nil)
-		// 	if err != nil {
-		// 		panic(err)
-		// 	}
+		err = recording.AddBodyKeySanitizer("$.recoveryId", fakeKvURL, vaultUrl, nil)
+		if err != nil {
+			panic(err)
+		}
 
-		// 	err = recording.AddBodyKeySanitizer("$.key.kid", mhsmURL, fakeKvMHSMURL, nil)
-		// 	if err != nil {
-		// 		panic(err)
-		// 	}
-		// }
+		tenantID := os.Getenv("AZKEYS_TENANT_ID")
+		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", "00000000-0000-0000-0000-000000000000", tenantID, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		mhsmURL, ok := os.LookupEnv("AZURE_MANAGEDHSM_URL")
+		if ok {
+			fmt.Println("Did not find managed HSM url, skipping those tests")
+			enableHSM = true
+			err = recording.AddURISanitizer(fakeKvMHSMURL, mhsmURL, nil)
+			if err != nil {
+				panic(err)
+			}
+
+			err = recording.AddBodyKeySanitizer("$.key.kid", mhsmURL, fakeKvMHSMURL, nil)
+			if err != nil {
+				panic(err)
+			}
+		}
 	}
 
 	// Run tests

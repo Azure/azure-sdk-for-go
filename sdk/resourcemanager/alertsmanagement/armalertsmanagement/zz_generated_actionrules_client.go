@@ -12,7 +12,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -29,8 +31,15 @@ type ActionRulesClient struct {
 }
 
 // NewActionRulesClient creates a new instance of ActionRulesClient with the specified values.
-func NewActionRulesClient(con *arm.Connection, subscriptionID string) *ActionRulesClient {
-	return &ActionRulesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewActionRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ActionRulesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ActionRulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateUpdate - Creates/Updates a specific action rule
@@ -83,7 +92,7 @@ func (client *ActionRulesClient) createUpdateHandleResponse(resp *http.Response)
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionRule); err != nil {
-		return ActionRulesCreateUpdateResponse{}, err
+		return ActionRulesCreateUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -151,7 +160,7 @@ func (client *ActionRulesClient) deleteHandleResponse(resp *http.Response) (Acti
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
-		return ActionRulesDeleteResponse{}, err
+		return ActionRulesDeleteResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -219,7 +228,7 @@ func (client *ActionRulesClient) getByNameHandleResponse(resp *http.Response) (A
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionRule); err != nil {
-		return ActionRulesGetByNameResponse{}, err
+		return ActionRulesGetByNameResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -310,7 +319,7 @@ func (client *ActionRulesClient) listByResourceGroupHandleResponse(resp *http.Re
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionRulesList); err != nil {
-		return ActionRulesListByResourceGroupResponse{}, err
+		return ActionRulesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -397,7 +406,7 @@ func (client *ActionRulesClient) listBySubscriptionHandleResponse(resp *http.Res
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionRulesList); err != nil {
-		return ActionRulesListBySubscriptionResponse{}, err
+		return ActionRulesListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -465,7 +474,7 @@ func (client *ActionRulesClient) updateHandleResponse(resp *http.Response) (Acti
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionRule); err != nil {
-		return ActionRulesUpdateResponse{}, err
+		return ActionRulesUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

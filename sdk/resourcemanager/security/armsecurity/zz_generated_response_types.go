@@ -10,10 +10,9 @@ package armsecurity
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // AdaptiveApplicationControlsDeleteResponse contains the response from method AdaptiveApplicationControls.Delete.
@@ -68,6 +67,8 @@ type AdaptiveNetworkHardeningsEnforcePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l AdaptiveNetworkHardeningsEnforcePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AdaptiveNetworkHardeningsEnforceResponse, error) {
 	respType := AdaptiveNetworkHardeningsEnforceResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -232,6 +233,8 @@ type AlertsSimulatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l AlertsSimulatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AlertsSimulateResponse, error) {
 	respType := AlertsSimulateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -1262,6 +1265,30 @@ type LocationsListResult struct {
 	AscLocationList
 }
 
+// MdeOnboardingsGetResponse contains the response from method MdeOnboardings.Get.
+type MdeOnboardingsGetResponse struct {
+	MdeOnboardingsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// MdeOnboardingsGetResult contains the result from method MdeOnboardings.Get.
+type MdeOnboardingsGetResult struct {
+	MdeOnboardingData
+}
+
+// MdeOnboardingsListResponse contains the response from method MdeOnboardings.List.
+type MdeOnboardingsListResponse struct {
+	MdeOnboardingsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// MdeOnboardingsListResult contains the result from method MdeOnboardings.List.
+type MdeOnboardingsListResult struct {
+	MdeOnboardingDataList
+}
+
 // OperationsListResponse contains the response from method Operations.List.
 type OperationsListResponse struct {
 	OperationsListResult
@@ -1556,6 +1583,72 @@ type SecureScoresListResult struct {
 	SecureScoresList
 }
 
+// SecurityConnectorsCreateOrUpdateResponse contains the response from method SecurityConnectors.CreateOrUpdate.
+type SecurityConnectorsCreateOrUpdateResponse struct {
+	SecurityConnectorsCreateOrUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SecurityConnectorsCreateOrUpdateResult contains the result from method SecurityConnectors.CreateOrUpdate.
+type SecurityConnectorsCreateOrUpdateResult struct {
+	SecurityConnector
+}
+
+// SecurityConnectorsDeleteResponse contains the response from method SecurityConnectors.Delete.
+type SecurityConnectorsDeleteResponse struct {
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SecurityConnectorsGetResponse contains the response from method SecurityConnectors.Get.
+type SecurityConnectorsGetResponse struct {
+	SecurityConnectorsGetResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SecurityConnectorsGetResult contains the result from method SecurityConnectors.Get.
+type SecurityConnectorsGetResult struct {
+	SecurityConnector
+}
+
+// SecurityConnectorsListByResourceGroupResponse contains the response from method SecurityConnectors.ListByResourceGroup.
+type SecurityConnectorsListByResourceGroupResponse struct {
+	SecurityConnectorsListByResourceGroupResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SecurityConnectorsListByResourceGroupResult contains the result from method SecurityConnectors.ListByResourceGroup.
+type SecurityConnectorsListByResourceGroupResult struct {
+	SecurityConnectorsList
+}
+
+// SecurityConnectorsListResponse contains the response from method SecurityConnectors.List.
+type SecurityConnectorsListResponse struct {
+	SecurityConnectorsListResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SecurityConnectorsListResult contains the result from method SecurityConnectors.List.
+type SecurityConnectorsListResult struct {
+	SecurityConnectorsList
+}
+
+// SecurityConnectorsUpdateResponse contains the response from method SecurityConnectors.Update.
+type SecurityConnectorsUpdateResponse struct {
+	SecurityConnectorsUpdateResult
+	// RawResponse contains the underlying HTTP response.
+	RawResponse *http.Response
+}
+
+// SecurityConnectorsUpdateResult contains the result from method SecurityConnectors.Update.
+type SecurityConnectorsUpdateResult struct {
+	SecurityConnector
+}
+
 // SecurityContactsCreateResponse contains the response from method SecurityContacts.Create.
 type SecurityContactsCreateResponse struct {
 	SecurityContactsCreateResult
@@ -1680,6 +1773,8 @@ type ServerVulnerabilityAssessmentDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ServerVulnerabilityAssessmentDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ServerVulnerabilityAssessmentDeleteResponse, error) {
 	respType := ServerVulnerabilityAssessmentDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)

@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // CustomEntityStoreAssignmentsClient contains the methods for the CustomEntityStoreAssignments group.
@@ -30,8 +31,15 @@ type CustomEntityStoreAssignmentsClient struct {
 }
 
 // NewCustomEntityStoreAssignmentsClient creates a new instance of CustomEntityStoreAssignmentsClient with the specified values.
-func NewCustomEntityStoreAssignmentsClient(con *arm.Connection, subscriptionID string) *CustomEntityStoreAssignmentsClient {
-	return &CustomEntityStoreAssignmentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewCustomEntityStoreAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *CustomEntityStoreAssignmentsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &CustomEntityStoreAssignmentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Creates a custom entity store assignment for the provided subscription, if not already exists.
@@ -81,7 +89,7 @@ func (client *CustomEntityStoreAssignmentsClient) createCreateRequest(ctx contex
 func (client *CustomEntityStoreAssignmentsClient) createHandleResponse(resp *http.Response) (CustomEntityStoreAssignmentsCreateResponse, error) {
 	result := CustomEntityStoreAssignmentsCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomEntityStoreAssignment); err != nil {
-		return CustomEntityStoreAssignmentsCreateResponse{}, err
+		return CustomEntityStoreAssignmentsCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -202,7 +210,7 @@ func (client *CustomEntityStoreAssignmentsClient) getCreateRequest(ctx context.C
 func (client *CustomEntityStoreAssignmentsClient) getHandleResponse(resp *http.Response) (CustomEntityStoreAssignmentsGetResponse, error) {
 	result := CustomEntityStoreAssignmentsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomEntityStoreAssignment); err != nil {
-		return CustomEntityStoreAssignmentsGetResponse{}, err
+		return CustomEntityStoreAssignmentsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -260,7 +268,7 @@ func (client *CustomEntityStoreAssignmentsClient) listByResourceGroupCreateReque
 func (client *CustomEntityStoreAssignmentsClient) listByResourceGroupHandleResponse(resp *http.Response) (CustomEntityStoreAssignmentsListByResourceGroupResponse, error) {
 	result := CustomEntityStoreAssignmentsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomEntityStoreAssignmentsListResult); err != nil {
-		return CustomEntityStoreAssignmentsListByResourceGroupResponse{}, err
+		return CustomEntityStoreAssignmentsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -314,7 +322,7 @@ func (client *CustomEntityStoreAssignmentsClient) listBySubscriptionCreateReques
 func (client *CustomEntityStoreAssignmentsClient) listBySubscriptionHandleResponse(resp *http.Response) (CustomEntityStoreAssignmentsListBySubscriptionResponse, error) {
 	result := CustomEntityStoreAssignmentsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomEntityStoreAssignmentsListResult); err != nil {
-		return CustomEntityStoreAssignmentsListBySubscriptionResponse{}, err
+		return CustomEntityStoreAssignmentsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

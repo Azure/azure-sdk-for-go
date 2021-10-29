@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IotSecuritySolutionsAnalyticsRecommendationClient contains the methods for the IotSecuritySolutionsAnalyticsRecommendation group.
@@ -31,8 +32,15 @@ type IotSecuritySolutionsAnalyticsRecommendationClient struct {
 }
 
 // NewIotSecuritySolutionsAnalyticsRecommendationClient creates a new instance of IotSecuritySolutionsAnalyticsRecommendationClient with the specified values.
-func NewIotSecuritySolutionsAnalyticsRecommendationClient(con *arm.Connection, subscriptionID string) *IotSecuritySolutionsAnalyticsRecommendationClient {
-	return &IotSecuritySolutionsAnalyticsRecommendationClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIotSecuritySolutionsAnalyticsRecommendationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IotSecuritySolutionsAnalyticsRecommendationClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IotSecuritySolutionsAnalyticsRecommendationClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Use this method to get the aggregated security analytics recommendation of yours IoT Security solution. This aggregation is performed by recommendation
@@ -87,7 +95,7 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getCreateReques
 func (client *IotSecuritySolutionsAnalyticsRecommendationClient) getHandleResponse(resp *http.Response) (IotSecuritySolutionsAnalyticsRecommendationGetResponse, error) {
 	result := IotSecuritySolutionsAnalyticsRecommendationGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecurityAggregatedRecommendation); err != nil {
-		return IotSecuritySolutionsAnalyticsRecommendationGetResponse{}, err
+		return IotSecuritySolutionsAnalyticsRecommendationGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -152,7 +160,7 @@ func (client *IotSecuritySolutionsAnalyticsRecommendationClient) listCreateReque
 func (client *IotSecuritySolutionsAnalyticsRecommendationClient) listHandleResponse(resp *http.Response) (IotSecuritySolutionsAnalyticsRecommendationListResponse, error) {
 	result := IotSecuritySolutionsAnalyticsRecommendationListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IoTSecurityAggregatedRecommendationList); err != nil {
-		return IotSecuritySolutionsAnalyticsRecommendationListResponse{}, err
+		return IotSecuritySolutionsAnalyticsRecommendationListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

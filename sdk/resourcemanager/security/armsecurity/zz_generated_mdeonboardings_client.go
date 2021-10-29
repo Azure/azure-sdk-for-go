@@ -22,17 +22,16 @@ import (
 	"strings"
 )
 
-// LocationsClient contains the methods for the Locations group.
-// Don't use this type directly, use NewLocationsClient() instead.
-type LocationsClient struct {
+// MdeOnboardingsClient contains the methods for the MdeOnboardings group.
+// Don't use this type directly, use NewMdeOnboardingsClient() instead.
+type MdeOnboardingsClient struct {
 	ep             string
 	pl             runtime.Pipeline
 	subscriptionID string
-	ascLocation    string
 }
 
-// NewLocationsClient creates a new instance of LocationsClient with the specified values.
-func NewLocationsClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *LocationsClient {
+// NewMdeOnboardingsClient creates a new instance of MdeOnboardingsClient with the specified values.
+func NewMdeOnboardingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MdeOnboardingsClient {
 	cp := arm.ClientOptions{}
 	if options != nil {
 		cp = *options
@@ -40,59 +39,55 @@ func NewLocationsClient(subscriptionID string, ascLocation string, credential az
 	if len(cp.Host) == 0 {
 		cp.Host = arm.AzurePublicCloud
 	}
-	return &LocationsClient{subscriptionID: subscriptionID, ascLocation: ascLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
+	return &MdeOnboardingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
-// Get - Details of a specific location
+// Get - The default configuration or data needed to onboard the machine to MDE
 // If the operation fails it returns the *CloudError error type.
-func (client *LocationsClient) Get(ctx context.Context, options *LocationsGetOptions) (LocationsGetResponse, error) {
+func (client *MdeOnboardingsClient) Get(ctx context.Context, options *MdeOnboardingsGetOptions) (MdeOnboardingsGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, options)
 	if err != nil {
-		return LocationsGetResponse{}, err
+		return MdeOnboardingsGetResponse{}, err
 	}
 	resp, err := client.pl.Do(req)
 	if err != nil {
-		return LocationsGetResponse{}, err
+		return MdeOnboardingsGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return LocationsGetResponse{}, client.getHandleError(resp)
+		return MdeOnboardingsGetResponse{}, client.getHandleError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *LocationsClient) getCreateRequest(ctx context.Context, options *LocationsGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}"
+func (client *MdeOnboardingsClient) getCreateRequest(ctx context.Context, options *MdeOnboardingsGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/mdeOnboardings/default"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if client.ascLocation == "" {
-		return nil, errors.New("parameter client.ascLocation cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(client.ascLocation))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2015-06-01-preview")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *LocationsClient) getHandleResponse(resp *http.Response) (LocationsGetResponse, error) {
-	result := LocationsGetResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AscLocation); err != nil {
-		return LocationsGetResponse{}, runtime.NewResponseError(err, resp)
+func (client *MdeOnboardingsClient) getHandleResponse(resp *http.Response) (MdeOnboardingsGetResponse, error) {
+	result := MdeOnboardingsGetResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MdeOnboardingData); err != nil {
+		return MdeOnboardingsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
 
 // getHandleError handles the Get error response.
-func (client *LocationsClient) getHandleError(resp *http.Response) error {
+func (client *MdeOnboardingsClient) getHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)
@@ -104,25 +99,26 @@ func (client *LocationsClient) getHandleError(resp *http.Response) error {
 	return runtime.NewResponseError(&errType, resp)
 }
 
-// List - The location of the responsible ASC of the specific subscription (home region). For each subscription there is only one responsible location.
-// The location in the response should be used to read or
-// write other resources in ASC according to their ID.
+// List - The configuration or data needed to onboard the machine to MDE
 // If the operation fails it returns the *CloudError error type.
-func (client *LocationsClient) List(options *LocationsListOptions) *LocationsListPager {
-	return &LocationsListPager{
-		client: client,
-		requester: func(ctx context.Context) (*policy.Request, error) {
-			return client.listCreateRequest(ctx, options)
-		},
-		advancer: func(ctx context.Context, resp LocationsListResponse) (*policy.Request, error) {
-			return runtime.NewRequest(ctx, http.MethodGet, *resp.AscLocationList.NextLink)
-		},
+func (client *MdeOnboardingsClient) List(ctx context.Context, options *MdeOnboardingsListOptions) (MdeOnboardingsListResponse, error) {
+	req, err := client.listCreateRequest(ctx, options)
+	if err != nil {
+		return MdeOnboardingsListResponse{}, err
 	}
+	resp, err := client.pl.Do(req)
+	if err != nil {
+		return MdeOnboardingsListResponse{}, err
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		return MdeOnboardingsListResponse{}, client.listHandleError(resp)
+	}
+	return client.listHandleResponse(resp)
 }
 
 // listCreateRequest creates the List request.
-func (client *LocationsClient) listCreateRequest(ctx context.Context, options *LocationsListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations"
+func (client *MdeOnboardingsClient) listCreateRequest(ctx context.Context, options *MdeOnboardingsListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/mdeOnboardings"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -132,23 +128,23 @@ func (client *LocationsClient) listCreateRequest(ctx context.Context, options *L
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2015-06-01-preview")
+	reqQP.Set("api-version", "2021-10-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *LocationsClient) listHandleResponse(resp *http.Response) (LocationsListResponse, error) {
-	result := LocationsListResponse{RawResponse: resp}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AscLocationList); err != nil {
-		return LocationsListResponse{}, runtime.NewResponseError(err, resp)
+func (client *MdeOnboardingsClient) listHandleResponse(resp *http.Response) (MdeOnboardingsListResponse, error) {
+	result := MdeOnboardingsListResponse{RawResponse: resp}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MdeOnboardingDataList); err != nil {
+		return MdeOnboardingsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
 
 // listHandleError handles the List error response.
-func (client *LocationsClient) listHandleError(resp *http.Response) error {
+func (client *MdeOnboardingsClient) listHandleError(resp *http.Response) error {
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return runtime.NewResponseError(err, resp)

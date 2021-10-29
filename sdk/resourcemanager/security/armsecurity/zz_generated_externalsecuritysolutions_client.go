@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ExternalSecuritySolutionsClient contains the methods for the ExternalSecuritySolutions group.
@@ -31,8 +32,15 @@ type ExternalSecuritySolutionsClient struct {
 }
 
 // NewExternalSecuritySolutionsClient creates a new instance of ExternalSecuritySolutionsClient with the specified values.
-func NewExternalSecuritySolutionsClient(con *arm.Connection, subscriptionID string, ascLocation string) *ExternalSecuritySolutionsClient {
-	return &ExternalSecuritySolutionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID, ascLocation: ascLocation}
+func NewExternalSecuritySolutionsClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *ExternalSecuritySolutionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ExternalSecuritySolutionsClient{subscriptionID: subscriptionID, ascLocation: ascLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a specific external Security Solution.
@@ -86,7 +94,7 @@ func (client *ExternalSecuritySolutionsClient) getCreateRequest(ctx context.Cont
 func (client *ExternalSecuritySolutionsClient) getHandleResponse(resp *http.Response) (ExternalSecuritySolutionsGetResponse, error) {
 	result := ExternalSecuritySolutionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExternalSecuritySolution); err != nil {
-		return ExternalSecuritySolutionsGetResponse{}, err
+		return ExternalSecuritySolutionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -140,7 +148,7 @@ func (client *ExternalSecuritySolutionsClient) listCreateRequest(ctx context.Con
 func (client *ExternalSecuritySolutionsClient) listHandleResponse(resp *http.Response) (ExternalSecuritySolutionsListResponse, error) {
 	result := ExternalSecuritySolutionsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExternalSecuritySolutionList); err != nil {
-		return ExternalSecuritySolutionsListResponse{}, err
+		return ExternalSecuritySolutionsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -198,7 +206,7 @@ func (client *ExternalSecuritySolutionsClient) listByHomeRegionCreateRequest(ctx
 func (client *ExternalSecuritySolutionsClient) listByHomeRegionHandleResponse(resp *http.Response) (ExternalSecuritySolutionsListByHomeRegionResponse, error) {
 	result := ExternalSecuritySolutionsListByHomeRegionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExternalSecuritySolutionList); err != nil {
-		return ExternalSecuritySolutionsListByHomeRegionResponse{}, err
+		return ExternalSecuritySolutionsListByHomeRegionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

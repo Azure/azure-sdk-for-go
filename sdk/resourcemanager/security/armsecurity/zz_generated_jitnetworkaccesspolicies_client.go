@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // JitNetworkAccessPoliciesClient contains the methods for the JitNetworkAccessPolicies group.
@@ -31,8 +32,15 @@ type JitNetworkAccessPoliciesClient struct {
 }
 
 // NewJitNetworkAccessPoliciesClient creates a new instance of JitNetworkAccessPoliciesClient with the specified values.
-func NewJitNetworkAccessPoliciesClient(con *arm.Connection, subscriptionID string, ascLocation string) *JitNetworkAccessPoliciesClient {
-	return &JitNetworkAccessPoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID, ascLocation: ascLocation}
+func NewJitNetworkAccessPoliciesClient(subscriptionID string, ascLocation string, credential azcore.TokenCredential, options *arm.ClientOptions) *JitNetworkAccessPoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &JitNetworkAccessPoliciesClient{subscriptionID: subscriptionID, ascLocation: ascLocation, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create a policy for protecting resources using Just-in-Time access control
@@ -86,7 +94,7 @@ func (client *JitNetworkAccessPoliciesClient) createOrUpdateCreateRequest(ctx co
 func (client *JitNetworkAccessPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesCreateOrUpdateResponse, error) {
 	result := JitNetworkAccessPoliciesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPolicy); err != nil {
-		return JitNetworkAccessPoliciesCreateOrUpdateResponse{}, err
+		return JitNetworkAccessPoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -215,7 +223,7 @@ func (client *JitNetworkAccessPoliciesClient) getCreateRequest(ctx context.Conte
 func (client *JitNetworkAccessPoliciesClient) getHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesGetResponse, error) {
 	result := JitNetworkAccessPoliciesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPolicy); err != nil {
-		return JitNetworkAccessPoliciesGetResponse{}, err
+		return JitNetworkAccessPoliciesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -288,7 +296,7 @@ func (client *JitNetworkAccessPoliciesClient) initiateCreateRequest(ctx context.
 func (client *JitNetworkAccessPoliciesClient) initiateHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesInitiateResponse, error) {
 	result := JitNetworkAccessPoliciesInitiateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessRequest); err != nil {
-		return JitNetworkAccessPoliciesInitiateResponse{}, err
+		return JitNetworkAccessPoliciesInitiateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -342,7 +350,7 @@ func (client *JitNetworkAccessPoliciesClient) listCreateRequest(ctx context.Cont
 func (client *JitNetworkAccessPoliciesClient) listHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesListResponse, error) {
 	result := JitNetworkAccessPoliciesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPoliciesList); err != nil {
-		return JitNetworkAccessPoliciesListResponse{}, err
+		return JitNetworkAccessPoliciesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -400,7 +408,7 @@ func (client *JitNetworkAccessPoliciesClient) listByRegionCreateRequest(ctx cont
 func (client *JitNetworkAccessPoliciesClient) listByRegionHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesListByRegionResponse, error) {
 	result := JitNetworkAccessPoliciesListByRegionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPoliciesList); err != nil {
-		return JitNetworkAccessPoliciesListByRegionResponse{}, err
+		return JitNetworkAccessPoliciesListByRegionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -458,7 +466,7 @@ func (client *JitNetworkAccessPoliciesClient) listByResourceGroupCreateRequest(c
 func (client *JitNetworkAccessPoliciesClient) listByResourceGroupHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesListByResourceGroupResponse, error) {
 	result := JitNetworkAccessPoliciesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPoliciesList); err != nil {
-		return JitNetworkAccessPoliciesListByResourceGroupResponse{}, err
+		return JitNetworkAccessPoliciesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -520,7 +528,7 @@ func (client *JitNetworkAccessPoliciesClient) listByResourceGroupAndRegionCreate
 func (client *JitNetworkAccessPoliciesClient) listByResourceGroupAndRegionHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesListByResourceGroupAndRegionResponse, error) {
 	result := JitNetworkAccessPoliciesListByResourceGroupAndRegionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPoliciesList); err != nil {
-		return JitNetworkAccessPoliciesListByResourceGroupAndRegionResponse{}, err
+		return JitNetworkAccessPoliciesListByResourceGroupAndRegionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

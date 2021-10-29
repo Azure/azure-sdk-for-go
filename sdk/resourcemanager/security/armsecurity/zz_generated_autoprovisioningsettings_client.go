@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AutoProvisioningSettingsClient contains the methods for the AutoProvisioningSettings group.
@@ -30,8 +31,15 @@ type AutoProvisioningSettingsClient struct {
 }
 
 // NewAutoProvisioningSettingsClient creates a new instance of AutoProvisioningSettingsClient with the specified values.
-func NewAutoProvisioningSettingsClient(con *arm.Connection, subscriptionID string) *AutoProvisioningSettingsClient {
-	return &AutoProvisioningSettingsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAutoProvisioningSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *AutoProvisioningSettingsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AutoProvisioningSettingsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Details of a specific setting
@@ -77,7 +85,7 @@ func (client *AutoProvisioningSettingsClient) createCreateRequest(ctx context.Co
 func (client *AutoProvisioningSettingsClient) createHandleResponse(resp *http.Response) (AutoProvisioningSettingsCreateResponse, error) {
 	result := AutoProvisioningSettingsCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoProvisioningSetting); err != nil {
-		return AutoProvisioningSettingsCreateResponse{}, err
+		return AutoProvisioningSettingsCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -138,7 +146,7 @@ func (client *AutoProvisioningSettingsClient) getCreateRequest(ctx context.Conte
 func (client *AutoProvisioningSettingsClient) getHandleResponse(resp *http.Response) (AutoProvisioningSettingsGetResponse, error) {
 	result := AutoProvisioningSettingsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoProvisioningSetting); err != nil {
-		return AutoProvisioningSettingsGetResponse{}, err
+		return AutoProvisioningSettingsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -192,7 +200,7 @@ func (client *AutoProvisioningSettingsClient) listCreateRequest(ctx context.Cont
 func (client *AutoProvisioningSettingsClient) listHandleResponse(resp *http.Response) (AutoProvisioningSettingsListResponse, error) {
 	result := AutoProvisioningSettingsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoProvisioningSettingList); err != nil {
-		return AutoProvisioningSettingsListResponse{}, err
+		return AutoProvisioningSettingsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

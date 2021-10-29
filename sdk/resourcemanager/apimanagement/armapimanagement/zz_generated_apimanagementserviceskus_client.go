@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // APIManagementServiceSKUsClient contains the methods for the APIManagementServiceSKUs group.
@@ -30,8 +31,15 @@ type APIManagementServiceSKUsClient struct {
 }
 
 // NewAPIManagementServiceSKUsClient creates a new instance of APIManagementServiceSKUsClient with the specified values.
-func NewAPIManagementServiceSKUsClient(con *arm.Connection, subscriptionID string) *APIManagementServiceSKUsClient {
-	return &APIManagementServiceSKUsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewAPIManagementServiceSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *APIManagementServiceSKUsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &APIManagementServiceSKUsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListAvailableServiceSKUs - Gets all available SKU for a given API Management service
@@ -68,7 +76,7 @@ func (client *APIManagementServiceSKUsClient) listAvailableServiceSKUsCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -78,7 +86,7 @@ func (client *APIManagementServiceSKUsClient) listAvailableServiceSKUsCreateRequ
 func (client *APIManagementServiceSKUsClient) listAvailableServiceSKUsHandleResponse(resp *http.Response) (APIManagementServiceSKUsListAvailableServiceSKUsResponse, error) {
 	result := APIManagementServiceSKUsListAvailableServiceSKUsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceSKUResults); err != nil {
-		return APIManagementServiceSKUsListAvailableServiceSKUsResponse{}, err
+		return APIManagementServiceSKUsListAvailableServiceSKUsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

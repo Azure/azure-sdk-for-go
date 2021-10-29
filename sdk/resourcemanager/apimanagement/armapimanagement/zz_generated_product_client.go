@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ProductClient contains the methods for the Product group.
@@ -31,8 +32,15 @@ type ProductClient struct {
 }
 
 // NewProductClient creates a new instance of ProductClient with the specified values.
-func NewProductClient(con *arm.Connection, subscriptionID string) *ProductClient {
-	return &ProductClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewProductClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ProductClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ProductClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or Updates a product.
@@ -76,7 +84,7 @@ func (client *ProductClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header.Set("If-Match", *options.IfMatch)
@@ -92,7 +100,7 @@ func (client *ProductClient) createOrUpdateHandleResponse(resp *http.Response) (
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductContract); err != nil {
-		return ProductCreateOrUpdateResponse{}, err
+		return ProductCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -154,7 +162,7 @@ func (client *ProductClient) deleteCreateRequest(ctx context.Context, resourceGr
 	if options != nil && options.DeleteSubscriptions != nil {
 		reqQP.Set("deleteSubscriptions", strconv.FormatBool(*options.DeleteSubscriptions))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -215,7 +223,7 @@ func (client *ProductClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -228,7 +236,7 @@ func (client *ProductClient) getHandleResponse(resp *http.Response) (ProductGetR
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductContract); err != nil {
-		return ProductGetResponse{}, err
+		return ProductGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -284,7 +292,7 @@ func (client *ProductClient) getEntityTagCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -351,7 +359,7 @@ func (client *ProductClient) listByServiceCreateRequest(ctx context.Context, res
 	if options != nil && options.Tags != nil {
 		reqQP.Set("tags", *options.Tags)
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -361,7 +369,7 @@ func (client *ProductClient) listByServiceCreateRequest(ctx context.Context, res
 func (client *ProductClient) listByServiceHandleResponse(resp *http.Response) (ProductListByServiceResponse, error) {
 	result := ProductListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductCollection); err != nil {
-		return ProductListByServiceResponse{}, err
+		return ProductListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -425,7 +433,7 @@ func (client *ProductClient) listByTagsCreateRequest(ctx context.Context, resour
 	if options != nil && options.IncludeNotTaggedProducts != nil {
 		reqQP.Set("includeNotTaggedProducts", strconv.FormatBool(*options.IncludeNotTaggedProducts))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -435,7 +443,7 @@ func (client *ProductClient) listByTagsCreateRequest(ctx context.Context, resour
 func (client *ProductClient) listByTagsHandleResponse(resp *http.Response) (ProductListByTagsResponse, error) {
 	result := ProductListByTagsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagResourceCollection); err != nil {
-		return ProductListByTagsResponse{}, err
+		return ProductListByTagsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -494,7 +502,7 @@ func (client *ProductClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("If-Match", ifMatch)
 	req.Raw().Header.Set("Accept", "application/json")
@@ -508,7 +516,7 @@ func (client *ProductClient) updateHandleResponse(resp *http.Response) (ProductU
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductContract); err != nil {
-		return ProductUpdateResponse{}, err
+		return ProductUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

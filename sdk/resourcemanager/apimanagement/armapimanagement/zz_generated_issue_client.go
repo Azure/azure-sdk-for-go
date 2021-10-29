@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IssueClient contains the methods for the Issue group.
@@ -31,8 +32,15 @@ type IssueClient struct {
 }
 
 // NewIssueClient creates a new instance of IssueClient with the specified values.
-func NewIssueClient(con *arm.Connection, subscriptionID string) *IssueClient {
-	return &IssueClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIssueClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IssueClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IssueClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets API Management issue details
@@ -76,7 +84,7 @@ func (client *IssueClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -89,7 +97,7 @@ func (client *IssueClient) getHandleResponse(resp *http.Response) (IssueGetRespo
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IssueContract); err != nil {
-		return IssueGetResponse{}, err
+		return IssueGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -150,7 +158,7 @@ func (client *IssueClient) listByServiceCreateRequest(ctx context.Context, resou
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -160,7 +168,7 @@ func (client *IssueClient) listByServiceCreateRequest(ctx context.Context, resou
 func (client *IssueClient) listByServiceHandleResponse(resp *http.Response) (IssueListByServiceResponse, error) {
 	result := IssueListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IssueCollection); err != nil {
-		return IssueListByServiceResponse{}, err
+		return IssueListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

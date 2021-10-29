@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // NetworkStatusClient contains the methods for the NetworkStatus group.
@@ -30,8 +31,15 @@ type NetworkStatusClient struct {
 }
 
 // NewNetworkStatusClient creates a new instance of NetworkStatusClient with the specified values.
-func NewNetworkStatusClient(con *arm.Connection, subscriptionID string) *NetworkStatusClient {
-	return &NetworkStatusClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewNetworkStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *NetworkStatusClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &NetworkStatusClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByLocation - Gets the Connectivity Status to the external resources on which the Api Management service depends from inside the Cloud Service. This
@@ -76,7 +84,7 @@ func (client *NetworkStatusClient) listByLocationCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -86,7 +94,7 @@ func (client *NetworkStatusClient) listByLocationCreateRequest(ctx context.Conte
 func (client *NetworkStatusClient) listByLocationHandleResponse(resp *http.Response) (NetworkStatusListByLocationResponse, error) {
 	result := NetworkStatusListByLocationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkStatusContract); err != nil {
-		return NetworkStatusListByLocationResponse{}, err
+		return NetworkStatusListByLocationResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -142,7 +150,7 @@ func (client *NetworkStatusClient) listByServiceCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-04-01-preview")
+	reqQP.Set("api-version", "2021-08-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -152,7 +160,7 @@ func (client *NetworkStatusClient) listByServiceCreateRequest(ctx context.Contex
 func (client *NetworkStatusClient) listByServiceHandleResponse(resp *http.Response) (NetworkStatusListByServiceResponse, error) {
 	result := NetworkStatusListByServiceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkStatusContractByLocationArray); err != nil {
-		return NetworkStatusListByServiceResponse{}, err
+		return NetworkStatusListByServiceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -11,15 +11,15 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // SystemTopicsClient contains the methods for the SystemTopics group.
@@ -31,8 +31,15 @@ type SystemTopicsClient struct {
 }
 
 // NewSystemTopicsClient creates a new instance of SystemTopicsClient with the specified values.
-func NewSystemTopicsClient(con *arm.Connection, subscriptionID string) *SystemTopicsClient {
-	return &SystemTopicsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSystemTopicsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SystemTopicsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SystemTopicsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Asynchronously creates a new system topic with the specified parameters.
@@ -92,7 +99,7 @@ func (client *SystemTopicsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, systemTopicInfo)
@@ -167,7 +174,7 @@ func (client *SystemTopicsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -221,7 +228,7 @@ func (client *SystemTopicsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -231,7 +238,7 @@ func (client *SystemTopicsClient) getCreateRequest(ctx context.Context, resource
 func (client *SystemTopicsClient) getHandleResponse(resp *http.Response) (SystemTopicsGetResponse, error) {
 	result := SystemTopicsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SystemTopic); err != nil {
-		return SystemTopicsGetResponse{}, err
+		return SystemTopicsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -278,7 +285,7 @@ func (client *SystemTopicsClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -294,7 +301,7 @@ func (client *SystemTopicsClient) listByResourceGroupCreateRequest(ctx context.C
 func (client *SystemTopicsClient) listByResourceGroupHandleResponse(resp *http.Response) (SystemTopicsListByResourceGroupResponse, error) {
 	result := SystemTopicsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SystemTopicsListResult); err != nil {
-		return SystemTopicsListByResourceGroupResponse{}, err
+		return SystemTopicsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -337,7 +344,7 @@ func (client *SystemTopicsClient) listBySubscriptionCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -353,7 +360,7 @@ func (client *SystemTopicsClient) listBySubscriptionCreateRequest(ctx context.Co
 func (client *SystemTopicsClient) listBySubscriptionHandleResponse(resp *http.Response) (SystemTopicsListBySubscriptionResponse, error) {
 	result := SystemTopicsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SystemTopicsListResult); err != nil {
-		return SystemTopicsListBySubscriptionResponse{}, err
+		return SystemTopicsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -427,7 +434,7 @@ func (client *SystemTopicsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, systemTopicUpdateParameters)

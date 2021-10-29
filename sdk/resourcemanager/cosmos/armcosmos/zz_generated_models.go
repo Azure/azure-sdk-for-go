@@ -10,10 +10,9 @@ package armcosmos
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 type APIProperties struct {
@@ -40,47 +39,14 @@ func (a ARMProxyResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ARMProxyResource.
-func (a *ARMProxyResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return a.unmarshalInternal(rawMsg)
-}
-
 func (a ARMProxyResource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", a.ID)
 	populate(objectMap, "name", a.Name)
 	populate(objectMap, "type", a.Type)
 }
 
-func (a *ARMProxyResource) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, &a.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, &a.Name)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, &a.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // ARMResourceProperties - The core properties of ARM resources.
 type ARMResourceProperties struct {
-	// Identity for the resource.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
-
 	// The location of the resource group to which the resource belongs.
 	Location *string `json:"location,omitempty"`
 
@@ -110,7 +76,6 @@ func (a ARMResourceProperties) MarshalJSON() ([]byte, error) {
 
 func (a ARMResourceProperties) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", a.ID)
-	populate(objectMap, "identity", a.Identity)
 	populate(objectMap, "location", a.Location)
 	populate(objectMap, "name", a.Name)
 	populate(objectMap, "tags", a.Tags)
@@ -221,7 +186,7 @@ type BackupPolicyMigrationState struct {
 // MarshalJSON implements the json.Marshaller interface for type BackupPolicyMigrationState.
 func (b BackupPolicyMigrationState) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "startTime", (*timeRFC3339)(b.StartTime))
+	populateTimeRFC3339(objectMap, "startTime", b.StartTime)
 	populate(objectMap, "status", b.Status)
 	populate(objectMap, "targetType", b.TargetType)
 	return json.Marshal(objectMap)
@@ -237,9 +202,7 @@ func (b *BackupPolicyMigrationState) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "startTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			b.StartTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &b.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, &b.Status)
@@ -255,85 +218,66 @@ func (b *BackupPolicyMigrationState) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// BackupResource - A restorable backup of a Cassandra cluster.
-type BackupResource struct {
-	ARMProxyResource
-	Properties *BackupResourceProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BackupResource.
-func (b BackupResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	b.ARMProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", b.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BackupResource.
-func (b *BackupResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &b.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := b.ARMProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-type BackupResourceProperties struct {
-	// The time this backup was taken, formatted like 2021-01-21T17:35:21
-	Timestamp *time.Time `json:"timestamp,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type BackupResourceProperties.
-func (b BackupResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "timestamp", (*timeRFC3339)(b.Timestamp))
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type BackupResourceProperties.
-func (b *BackupResourceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "timestamp":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			b.Timestamp = (*time.Time)(&aux)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 // Capability - Cosmos DB capability object
 type Capability struct {
 	// Name of the Cosmos DB capability. For example, "name": "EnableCassandra". Current values also include "EnableTable" and "EnableGremlin".
 	Name *string `json:"name,omitempty"`
 }
 
+// Capacity - The object that represents all properties related to capacity enforcement on an account.
+type Capacity struct {
+	// The total throughput limit imposed on the account. A totalThroughputLimit of 2000 imposes a strict limit of max throughput that can be provisioned on
+	// that account to be 2000. A totalThroughputLimit of
+	// -1 indicates no limits on provisioning of throughput.
+	TotalThroughputLimit *int32 `json:"totalThroughputLimit,omitempty"`
+}
+
+// CassandraClusterPublicStatus - Properties of a managed Cassandra cluster public status.
+type CassandraClusterPublicStatus struct {
+	// List relevant information about any connection errors to the Datacenters.
+	ConnectionErrors []*ConnectionError `json:"connectionErrors,omitempty"`
+
+	// List of the status of each datacenter in this cluster.
+	DataCenters  []*CassandraClusterPublicStatusDataCentersItem `json:"dataCenters,omitempty"`
+	ETag         *string                                        `json:"eTag,omitempty"`
+	ReaperStatus *ManagedCassandraReaperStatus                  `json:"reaperStatus,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CassandraClusterPublicStatus.
+func (c CassandraClusterPublicStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "connectionErrors", c.ConnectionErrors)
+	populate(objectMap, "dataCenters", c.DataCenters)
+	populate(objectMap, "eTag", c.ETag)
+	populate(objectMap, "reaperStatus", c.ReaperStatus)
+	return json.Marshal(objectMap)
+}
+
+type CassandraClusterPublicStatusDataCentersItem struct {
+	// The name of this Datacenter.
+	Name  *string                                                                                              `json:"name,omitempty"`
+	Nodes []*ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems `json:"nodes,omitempty"`
+
+	// A list of all seed nodes in the cluster, managed and unmanaged.
+	SeedNodes []*string `json:"seedNodes,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CassandraClusterPublicStatusDataCentersItem.
+func (c CassandraClusterPublicStatusDataCentersItem) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "name", c.Name)
+	populate(objectMap, "nodes", c.Nodes)
+	populate(objectMap, "seedNodes", c.SeedNodes)
+	return json.Marshal(objectMap)
+}
+
 // CassandraClustersBeginCreateUpdateOptions contains the optional parameters for the CassandraClusters.BeginCreateUpdate method.
 type CassandraClustersBeginCreateUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CassandraClustersBeginDeallocateOptions contains the optional parameters for the CassandraClusters.BeginDeallocate method.
+type CassandraClustersBeginDeallocateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -342,13 +286,13 @@ type CassandraClustersBeginDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CassandraClustersBeginFetchNodeStatusOptions contains the optional parameters for the CassandraClusters.BeginFetchNodeStatus method.
-type CassandraClustersBeginFetchNodeStatusOptions struct {
+// CassandraClustersBeginInvokeCommandOptions contains the optional parameters for the CassandraClusters.BeginInvokeCommand method.
+type CassandraClustersBeginInvokeCommandOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CassandraClustersBeginRequestRepairOptions contains the optional parameters for the CassandraClusters.BeginRequestRepair method.
-type CassandraClustersBeginRequestRepairOptions struct {
+// CassandraClustersBeginStartOptions contains the optional parameters for the CassandraClusters.BeginStart method.
+type CassandraClustersBeginStartOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -357,18 +301,8 @@ type CassandraClustersBeginUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CassandraClustersGetBackupOptions contains the optional parameters for the CassandraClusters.GetBackup method.
-type CassandraClustersGetBackupOptions struct {
-	// placeholder for future optional parameters
-}
-
 // CassandraClustersGetOptions contains the optional parameters for the CassandraClusters.Get method.
 type CassandraClustersGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CassandraClustersListBackupsOptions contains the optional parameters for the CassandraClusters.ListBackups method.
-type CassandraClustersListBackupsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -379,6 +313,11 @@ type CassandraClustersListByResourceGroupOptions struct {
 
 // CassandraClustersListBySubscriptionOptions contains the optional parameters for the CassandraClusters.ListBySubscription method.
 type CassandraClustersListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// CassandraClustersStatusOptions contains the optional parameters for the CassandraClusters.Status method.
+type CassandraClustersStatusOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -509,11 +448,6 @@ type CassandraResourcesBeginCreateUpdateCassandraTableOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CassandraResourcesBeginCreateUpdateCassandraViewOptions contains the optional parameters for the CassandraResources.BeginCreateUpdateCassandraView method.
-type CassandraResourcesBeginCreateUpdateCassandraViewOptions struct {
-	// placeholder for future optional parameters
-}
-
 // CassandraResourcesBeginDeleteCassandraKeyspaceOptions contains the optional parameters for the CassandraResources.BeginDeleteCassandraKeyspace method.
 type CassandraResourcesBeginDeleteCassandraKeyspaceOptions struct {
 	// placeholder for future optional parameters
@@ -521,11 +455,6 @@ type CassandraResourcesBeginDeleteCassandraKeyspaceOptions struct {
 
 // CassandraResourcesBeginDeleteCassandraTableOptions contains the optional parameters for the CassandraResources.BeginDeleteCassandraTable method.
 type CassandraResourcesBeginDeleteCassandraTableOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CassandraResourcesBeginDeleteCassandraViewOptions contains the optional parameters for the CassandraResources.BeginDeleteCassandraView method.
-type CassandraResourcesBeginDeleteCassandraViewOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -553,18 +482,6 @@ type CassandraResourcesBeginMigrateCassandraTableToManualThroughputOptions struc
 	// placeholder for future optional parameters
 }
 
-// CassandraResourcesBeginMigrateCassandraViewToAutoscaleOptions contains the optional parameters for the CassandraResources.BeginMigrateCassandraViewToAutoscale
-// method.
-type CassandraResourcesBeginMigrateCassandraViewToAutoscaleOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CassandraResourcesBeginMigrateCassandraViewToManualThroughputOptions contains the optional parameters for the CassandraResources.BeginMigrateCassandraViewToManualThroughput
-// method.
-type CassandraResourcesBeginMigrateCassandraViewToManualThroughputOptions struct {
-	// placeholder for future optional parameters
-}
-
 // CassandraResourcesBeginUpdateCassandraKeyspaceThroughputOptions contains the optional parameters for the CassandraResources.BeginUpdateCassandraKeyspaceThroughput
 // method.
 type CassandraResourcesBeginUpdateCassandraKeyspaceThroughputOptions struct {
@@ -574,12 +491,6 @@ type CassandraResourcesBeginUpdateCassandraKeyspaceThroughputOptions struct {
 // CassandraResourcesBeginUpdateCassandraTableThroughputOptions contains the optional parameters for the CassandraResources.BeginUpdateCassandraTableThroughput
 // method.
 type CassandraResourcesBeginUpdateCassandraTableThroughputOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CassandraResourcesBeginUpdateCassandraViewThroughputOptions contains the optional parameters for the CassandraResources.BeginUpdateCassandraViewThroughput
-// method.
-type CassandraResourcesBeginUpdateCassandraViewThroughputOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -603,16 +514,6 @@ type CassandraResourcesGetCassandraTableThroughputOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CassandraResourcesGetCassandraViewOptions contains the optional parameters for the CassandraResources.GetCassandraView method.
-type CassandraResourcesGetCassandraViewOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CassandraResourcesGetCassandraViewThroughputOptions contains the optional parameters for the CassandraResources.GetCassandraViewThroughput method.
-type CassandraResourcesGetCassandraViewThroughputOptions struct {
-	// placeholder for future optional parameters
-}
-
 // CassandraResourcesListCassandraKeyspacesOptions contains the optional parameters for the CassandraResources.ListCassandraKeyspaces method.
 type CassandraResourcesListCassandraKeyspacesOptions struct {
 	// placeholder for future optional parameters
@@ -620,11 +521,6 @@ type CassandraResourcesListCassandraKeyspacesOptions struct {
 
 // CassandraResourcesListCassandraTablesOptions contains the optional parameters for the CassandraResources.ListCassandraTables method.
 type CassandraResourcesListCassandraTablesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CassandraResourcesListCassandraViewsOptions contains the optional parameters for the CassandraResources.ListCassandraViews method.
-type CassandraResourcesListCassandraViewsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -745,94 +641,6 @@ func (c CassandraTableResource) marshalInternal(objectMap map[string]interface{}
 	populate(objectMap, "schema", c.Schema)
 }
 
-// CassandraViewCreateUpdateParameters - Parameters to create and update Cosmos DB Cassandra view.
-type CassandraViewCreateUpdateParameters struct {
-	ARMResourceProperties
-	// REQUIRED; Properties to create and update Azure Cosmos DB Cassandra view.
-	Properties *CassandraViewCreateUpdateProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CassandraViewCreateUpdateParameters.
-func (c CassandraViewCreateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.ARMResourceProperties.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
-}
-
-// CassandraViewCreateUpdateProperties - Properties to create and update Azure Cosmos DB Cassandra view.
-type CassandraViewCreateUpdateProperties struct {
-	// REQUIRED; The standard JSON format of a Cassandra view
-	Resource *CassandraViewResource `json:"resource,omitempty"`
-
-	// A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
-	Options *CreateUpdateOptions `json:"options,omitempty"`
-}
-
-// CassandraViewGetProperties - The properties of an Azure Cosmos DB Cassandra view
-type CassandraViewGetProperties struct {
-	Options  *CassandraViewGetPropertiesOptions  `json:"options,omitempty"`
-	Resource *CassandraViewGetPropertiesResource `json:"resource,omitempty"`
-}
-
-type CassandraViewGetPropertiesOptions struct {
-	OptionsResource
-}
-
-type CassandraViewGetPropertiesResource struct {
-	CassandraViewResource
-	ExtendedResourceProperties
-}
-
-// CassandraViewGetResults - An Azure Cosmos DB Cassandra view.
-type CassandraViewGetResults struct {
-	ARMResourceProperties
-	// The properties of an Azure Cosmos DB Cassandra view
-	Properties *CassandraViewGetProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CassandraViewGetResults.
-func (c CassandraViewGetResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.ARMResourceProperties.marshalInternal(objectMap)
-	populate(objectMap, "properties", c.Properties)
-	return json.Marshal(objectMap)
-}
-
-// CassandraViewListResult - The List operation response, that contains the Cassandra views and their properties.
-type CassandraViewListResult struct {
-	// READ-ONLY; List of Cassandra views and their properties.
-	Value []*CassandraViewGetResults `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CassandraViewListResult.
-func (c CassandraViewListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", c.Value)
-	return json.Marshal(objectMap)
-}
-
-// CassandraViewResource - Cosmos DB Cassandra view resource object
-type CassandraViewResource struct {
-	// REQUIRED; Name of the Cosmos DB Cassandra view
-	ID *string `json:"id,omitempty"`
-
-	// REQUIRED; View Definition of the Cosmos DB Cassandra view
-	ViewDefinition *string `json:"viewDefinition,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type CassandraViewResource.
-func (c CassandraViewResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	c.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (c CassandraViewResource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "viewDefinition", c.ViewDefinition)
-}
-
 type Certificate struct {
 	// PEM formatted public key.
 	Pem *string `json:"pem,omitempty"`
@@ -861,70 +669,9 @@ type ClusterKey struct {
 	OrderBy *string `json:"orderBy,omitempty"`
 }
 
-// ClusterNodeStatus - The status of all nodes in the cluster (as returned by 'nodetool status').
-type ClusterNodeStatus struct {
-	// Information about nodes in the cluster (corresponds to what is returned from nodetool info).
-	Nodes []*ClusterNodeStatusNodesItem `json:"nodes,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ClusterNodeStatus.
-func (c ClusterNodeStatus) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "nodes", c.Nodes)
-	return json.Marshal(objectMap)
-}
-
-type ClusterNodeStatusNodesItem struct {
-	// The node's URL.
-	Address *string `json:"address,omitempty"`
-
-	// The Cassandra data center this node resides in.
-	Datacenter *string `json:"datacenter,omitempty"`
-
-	// The network ID of the node.
-	HostID *string `json:"hostId,omitempty"`
-
-	// The amount of file system data in the data directory (e.g., 47.66 KB), excluding all content in the snapshots subdirectories. Because all SSTable data
-	// files are included, any data that is not cleaned
-	// up (such as TTL-expired cell or tombstoned data) is counted.
-	Load *string `json:"load,omitempty"`
-
-	// The percentage of the data owned by the node per datacenter times the replication factor (e.g., 33.3, or null if the data is not available). For example,
-	// a node can own 33% of the ring, but shows 100%
-	// if the replication factor is 3. For non-system keyspaces, the endpoint percentage ownership information is shown.
-	Owns *float64 `json:"owns,omitempty"`
-
-	// The rack this node is part of.
-	Rack *string `json:"rack,omitempty"`
-
-	// The state of the node in relation to the cluster.
-	State *NodeState `json:"state,omitempty"`
-
-	// Indicates whether the node is functioning or not.
-	Status *NodeStatus `json:"status,omitempty"`
-
-	// List of tokens.
-	Tokens []*string `json:"tokens,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ClusterNodeStatusNodesItem.
-func (c ClusterNodeStatusNodesItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "address", c.Address)
-	populate(objectMap, "datacenter", c.Datacenter)
-	populate(objectMap, "hostId", c.HostID)
-	populate(objectMap, "load", c.Load)
-	populate(objectMap, "owns", c.Owns)
-	populate(objectMap, "rack", c.Rack)
-	populate(objectMap, "state", c.State)
-	populate(objectMap, "status", c.Status)
-	populate(objectMap, "tokens", c.Tokens)
-	return json.Marshal(objectMap)
-}
-
 // ClusterResource - Representation of a managed Cassandra cluster.
 type ClusterResource struct {
-	ARMResourceProperties
+	ManagedCassandraARMResourceProperties
 	// Properties of a managed Cassandra cluster.
 	Properties *ClusterResourceProperties `json:"properties,omitempty"`
 }
@@ -932,7 +679,7 @@ type ClusterResource struct {
 // MarshalJSON implements the json.Marshaller interface for type ClusterResource.
 func (c ClusterResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	c.ARMResourceProperties.marshalInternal(objectMap)
+	c.ManagedCassandraARMResourceProperties.marshalInternal(objectMap)
 	populate(objectMap, "properties", c.Properties)
 	return json.Marshal(objectMap)
 }
@@ -943,6 +690,9 @@ type ClusterResourceProperties struct {
 	// 'Cassandra' is the default password based
 	// authentication. The default is 'Cassandra'.
 	AuthenticationMethod *AuthenticationMethod `json:"authenticationMethod,omitempty"`
+
+	// Whether Cassandra audit logging is enabled
+	CassandraAuditLoggingEnabled *bool `json:"cassandraAuditLoggingEnabled,omitempty"`
 
 	// Which version of Cassandra should this cluster converge to running (e.g., 3.11). When updated, the cluster may take some time to migrate to the new version.
 	CassandraVersion *string `json:"cassandraVersion,omitempty"`
@@ -955,6 +705,9 @@ type ClusterResourceProperties struct {
 
 	// If you need to set the clusterName property in cassandra.yaml to something besides the resource name of the cluster, set the value to use on this property.
 	ClusterNameOverride *string `json:"clusterNameOverride,omitempty"`
+
+	// Whether the cluster and associated data centers has been deallocated.
+	Deallocated *bool `json:"deallocated,omitempty"`
 
 	// Resource id of a subnet that this cluster's management service should have its network interface attached to. The subnet must be routable to all subnets
 	// that will be delegated to data centers. The
@@ -1003,9 +756,11 @@ type ClusterResourceProperties struct {
 func (c ClusterResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "authenticationMethod", c.AuthenticationMethod)
+	populate(objectMap, "cassandraAuditLoggingEnabled", c.CassandraAuditLoggingEnabled)
 	populate(objectMap, "cassandraVersion", c.CassandraVersion)
 	populate(objectMap, "clientCertificates", c.ClientCertificates)
 	populate(objectMap, "clusterNameOverride", c.ClusterNameOverride)
+	populate(objectMap, "deallocated", c.Deallocated)
 	populate(objectMap, "delegatedManagementSubnetId", c.DelegatedManagementSubnetID)
 	populate(objectMap, "externalGossipCertificates", c.ExternalGossipCertificates)
 	populate(objectMap, "externalSeedNodes", c.ExternalSeedNodes)
@@ -1068,12 +823,117 @@ type Column struct {
 	Type *string `json:"type,omitempty"`
 }
 
+// CommandOutput - Response of /command api
+type CommandOutput struct {
+	// Output of the command.
+	CommandOutput *string `json:"commandOutput,omitempty"`
+}
+
+// CommandPostBody - Specification of which command to run where
+type CommandPostBody struct {
+	// REQUIRED; The command which should be run
+	Command *string `json:"command,omitempty"`
+
+	// REQUIRED; IP address of the cassandra host to run the command on
+	Host *string `json:"host,omitempty"`
+
+	// The arguments for the command to be run
+	Arguments map[string]*string `json:"arguments,omitempty"`
+
+	// If true, stops cassandra before executing the command and then start it again
+	CassandraStopStart *bool `json:"cassandra-stop-start,omitempty"`
+
+	// If true, allows the command to write to the cassandra directory, otherwise read-only.
+	Readwrite *bool `json:"readwrite,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CommandPostBody.
+func (c CommandPostBody) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "arguments", c.Arguments)
+	populate(objectMap, "cassandra-stop-start", c.CassandraStopStart)
+	populate(objectMap, "command", c.Command)
+	populate(objectMap, "host", c.Host)
+	populate(objectMap, "readwrite", c.Readwrite)
+	return json.Marshal(objectMap)
+}
+
 type Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties struct {
 	// READ-ONLY; The client id of user assigned identity.
 	ClientID *string `json:"clientId,omitempty" azure:"ro"`
 
 	// READ-ONLY; The principal id of user assigned identity.
 	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+}
+
+type ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems struct {
+	// The node's IP address.
+	Address *string `json:"address,omitempty"`
+
+	// A float representing the current system-wide CPU utilization as a percentage.
+	CPUUsage *float64 `json:"cpuUsage,omitempty"`
+
+	// The amount of disk free, in kB, of the directory /var/lib/cassandra.
+	DiskFreeKB *int64 `json:"diskFreeKB,omitempty"`
+
+	// The amount of disk used, in kB, of the directory /var/lib/cassandra.
+	DiskUsedKB *int64 `json:"diskUsedKB,omitempty"`
+
+	// The network ID of the node.
+	HostID *string `json:"hostID,omitempty"`
+
+	// The amount of file system data in the data directory (e.g., 47.66 kB), excluding all content in the snapshots subdirectories. Because all SSTable data
+	// files are included, any data that is not cleaned
+	// up (such as TTL-expired cells or tombstones) is counted.
+	Load *string `json:"load,omitempty"`
+
+	// Memory used by kernel buffers (Buffers in /proc/meminfo) and page cache and slabs (Cached and SReclaimable in /proc/meminfo), in kB.
+	MemoryBuffersAndCachedKB *int64 `json:"memoryBuffersAndCachedKB,omitempty"`
+
+	// Unused memory (MemFree and SwapFree in /proc/meminfo), in kB.
+	MemoryFreeKB *int64 `json:"memoryFreeKB,omitempty"`
+
+	// Total installed memory (MemTotal and SwapTotal in /proc/meminfo), in kB.
+	MemoryTotalKB *int64 `json:"memoryTotalKB,omitempty"`
+
+	// Used memory (calculated as total - free - buffers - cache), in kB.
+	MemoryUsedKB *int64 `json:"memoryUsedKB,omitempty"`
+
+	// The rack this node is part of.
+	Rack *string `json:"rack,omitempty"`
+	Size *int32  `json:"size,omitempty"`
+
+	// The state of the node in Cassandra ring.
+	State  *NodeState `json:"state,omitempty"`
+	Status *string    `json:"status,omitempty"`
+
+	// The timestamp when these statistics were captured.
+	Timestamp *string `json:"timestamp,omitempty"`
+
+	// List of tokens this node covers.
+	Tokens []*string `json:"tokens,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems.
+func (c ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "address", c.Address)
+	populate(objectMap, "cpuUsage", c.CPUUsage)
+	populate(objectMap, "diskFreeKB", c.DiskFreeKB)
+	populate(objectMap, "diskUsedKB", c.DiskUsedKB)
+	populate(objectMap, "hostID", c.HostID)
+	populate(objectMap, "load", c.Load)
+	populate(objectMap, "memoryBuffersAndCachedKB", c.MemoryBuffersAndCachedKB)
+	populate(objectMap, "memoryFreeKB", c.MemoryFreeKB)
+	populate(objectMap, "memoryTotalKB", c.MemoryTotalKB)
+	populate(objectMap, "memoryUsedKB", c.MemoryUsedKB)
+	populate(objectMap, "rack", c.Rack)
+	populate(objectMap, "size", c.Size)
+	populate(objectMap, "state", c.State)
+	populate(objectMap, "status", c.Status)
+	populate(objectMap, "timestamp", c.Timestamp)
+	populate(objectMap, "tokens", c.Tokens)
+	return json.Marshal(objectMap)
 }
 
 type CompositePath struct {
@@ -1094,6 +954,23 @@ type ConflictResolutionPolicy struct {
 
 	// Indicates the conflict resolution mode.
 	Mode *ConflictResolutionMode `json:"mode,omitempty"`
+}
+
+type ConnectionError struct {
+	// The kind of connection error that occurred.
+	ConnectionState *ConnectionState `json:"connectionState,omitempty"`
+
+	// Detailed error message about the failed connection.
+	Exception *string `json:"exception,omitempty"`
+
+	// The IP of host that originated the failed connection.
+	IPFrom *string `json:"iPFrom,omitempty"`
+
+	// The IP that the connection attempted to reach.
+	IPTo *string `json:"iPTo,omitempty"`
+
+	// The TCP port the connection was attempted on.
+	Port *int32 `json:"port,omitempty"`
 }
 
 // ConsistencyPolicy - The consistency policy for the Cosmos DB database account.
@@ -1179,16 +1056,6 @@ type CorsPolicy struct {
 	MaxAgeInSeconds *int64 `json:"maxAgeInSeconds,omitempty"`
 }
 
-// CosmosDBManagementClientLocationGetOptions contains the optional parameters for the CosmosDBManagementClient.LocationGet method.
-type CosmosDBManagementClientLocationGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CosmosDBManagementClientLocationListOptions contains the optional parameters for the CosmosDBManagementClient.LocationList method.
-type CosmosDBManagementClientLocationListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // CreateUpdateOptions are a list of key-value pairs that describe the resource. Supported keys are "If-Match", "If-None-Match", "Session-Token" and "Throughput"
 type CreateUpdateOptions struct {
 	// Specifies the Autoscale settings.
@@ -1213,31 +1080,14 @@ func (d DataCenterResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataCenterResource.
-func (d *DataCenterResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &d.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.ARMProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
 // DataCenterResourceProperties - Properties of a managed Cassandra data center.
 type DataCenterResourceProperties struct {
+	// If the azure data center has Availability Zone support, apply it to the Virtual Machine ScaleSet that host the cassandra data center virtual machines.
+	AvailabilityZone *bool `json:"availabilityZone,omitempty"`
+
+	// Indicates the Key Uri of the customer key to use for encryption of the backup storage account.
+	BackupStorageCustomerKeyURI *string `json:"backupStorageCustomerKeyUri,omitempty"`
+
 	// A fragment of a cassandra.yaml configuration file to be included in the cassandra.yaml for all nodes in this data center. The fragment should be Base64
 	// encoded, and only a subset of keys are allowed.
 	Base64EncodedCassandraYamlFragment *string `json:"base64EncodedCassandraYamlFragment,omitempty"`
@@ -1251,6 +1101,16 @@ type DataCenterResourceProperties struct {
 	// /providers/Microsoft.Network/virtualNetworks//subnets/'.
 	DelegatedSubnetID *string `json:"delegatedSubnetId,omitempty"`
 
+	// Number of disk used for data centers. Default value is 4.
+	DiskCapacity *int32 `json:"diskCapacity,omitempty"`
+
+	// Disk SKU used for data centers. Default value is P30.
+	DiskSKU *string `json:"diskSku,omitempty"`
+
+	// Key uri to use for encryption of managed disks. Ensure the system assigned identity of the cluster has been assigned appropriate permissions(key get/wrap/unwrap
+	// permissions) on the key.
+	ManagedDiskCustomerKeyURI *string `json:"managedDiskCustomerKeyUri,omitempty"`
+
 	// The number of nodes the data center should have. This is the desired number. After it is set, it may take some time for the data center to be scaled
 	// to match. To monitor the number of nodes and their
 	// status, use the fetchNodeStatus method on the cluster.
@@ -1258,6 +1118,9 @@ type DataCenterResourceProperties struct {
 
 	// The status of the resource at the time the operation was called.
 	ProvisioningState *ManagedCassandraProvisioningState `json:"provisioningState,omitempty"`
+
+	// Virtual Machine SKU used for data centers. Default value is StandardDS14v2
+	SKU *string `json:"sku,omitempty"`
 
 	// READ-ONLY; IP addresses for seed nodes in this data center. This is for reference. Generally you will want to use the seedNodes property on the cluster,
 	// which aggregates the seed nodes from all data centers in
@@ -1268,62 +1131,19 @@ type DataCenterResourceProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type DataCenterResourceProperties.
 func (d DataCenterResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
+	populate(objectMap, "availabilityZone", d.AvailabilityZone)
+	populate(objectMap, "backupStorageCustomerKeyUri", d.BackupStorageCustomerKeyURI)
 	populate(objectMap, "base64EncodedCassandraYamlFragment", d.Base64EncodedCassandraYamlFragment)
 	populate(objectMap, "dataCenterLocation", d.DataCenterLocation)
 	populate(objectMap, "delegatedSubnetId", d.DelegatedSubnetID)
+	populate(objectMap, "diskCapacity", d.DiskCapacity)
+	populate(objectMap, "diskSku", d.DiskSKU)
+	populate(objectMap, "managedDiskCustomerKeyUri", d.ManagedDiskCustomerKeyURI)
 	populate(objectMap, "nodeCount", d.NodeCount)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
+	populate(objectMap, "sku", d.SKU)
 	populate(objectMap, "seedNodes", d.SeedNodes)
 	return json.Marshal(objectMap)
-}
-
-// DataTransferRegionalServiceResource - Resource for a regional service location.
-type DataTransferRegionalServiceResource struct {
-	RegionalServiceResource
-}
-
-// DataTransferServiceResource - Describes the service response property.
-type DataTransferServiceResource struct {
-	// Properties for DataTransferServiceResource.
-	Properties *DataTransferServiceResourceProperties `json:"properties,omitempty"`
-}
-
-// DataTransferServiceResourceProperties - Properties for DataTransferServiceResource.
-type DataTransferServiceResourceProperties struct {
-	ServiceResourceProperties
-	// READ-ONLY; An array that contains all of the locations for the service.
-	Locations []*DataTransferRegionalServiceResource `json:"locations,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type DataTransferServiceResourceProperties.
-func (d DataTransferServiceResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	d.ServiceResourceProperties.marshalInternal(objectMap, ServiceTypeDataTransfer)
-	populate(objectMap, "locations", d.Locations)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DataTransferServiceResourceProperties.
-func (d *DataTransferServiceResourceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "locations":
-			err = unpopulate(val, &d.Locations)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := d.ServiceResourceProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // DatabaseAccountConnectionString - Connection string for the Cosmos DB account
@@ -1341,6 +1161,9 @@ type DatabaseAccountCreateUpdateParameters struct {
 	// REQUIRED; Properties to create and update Azure Cosmos DB database accounts.
 	Properties *DatabaseAccountCreateUpdateProperties `json:"properties,omitempty"`
 
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// Indicates the type of database account. This can only be set at database account creation.
 	Kind *DatabaseAccountKind `json:"kind,omitempty"`
 }
@@ -1349,6 +1172,7 @@ type DatabaseAccountCreateUpdateParameters struct {
 func (d DatabaseAccountCreateUpdateParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	d.ARMResourceProperties.marshalInternal(objectMap)
+	populate(objectMap, "identity", d.Identity)
 	populate(objectMap, "kind", d.Kind)
 	populate(objectMap, "properties", d.Properties)
 	return json.Marshal(objectMap)
@@ -1356,9 +1180,6 @@ func (d DatabaseAccountCreateUpdateParameters) MarshalJSON() ([]byte, error) {
 
 // DatabaseAccountCreateUpdateProperties - Properties to create and update Azure Cosmos DB database accounts.
 type DatabaseAccountCreateUpdateProperties struct {
-	// REQUIRED; Enum to indicate the mode of account creation.
-	CreateMode *CreateMode `json:"createMode,omitempty"`
-
 	// REQUIRED; The offer type for the database
 	DatabaseAccountOfferType *string `json:"databaseAccountOfferType,omitempty"`
 
@@ -1377,6 +1198,9 @@ type DatabaseAccountCreateUpdateProperties struct {
 	// List of Cosmos DB capabilities for the account
 	Capabilities []*Capability `json:"capabilities,omitempty"`
 
+	// The object that represents all properties related to capacity enforcement on an account.
+	Capacity *Capacity `json:"capacity,omitempty"`
+
 	// The cassandra connector offer type for the Cosmos DB database C* account.
 	ConnectorOffer *ConnectorOffer `json:"connectorOffer,omitempty"`
 
@@ -1386,13 +1210,13 @@ type DatabaseAccountCreateUpdateProperties struct {
 	// The CORS policy for the Cosmos DB database account.
 	Cors []*CorsPolicy `json:"cors,omitempty"`
 
+	// Enum to indicate the mode of account creation.
+	CreateMode *CreateMode `json:"createMode,omitempty"`
+
 	// The default identity for accessing key vault used in features like customer managed keys. The default identity needs to be explicitly set by the users.
 	// It can be "FirstPartyIdentity",
 	// "SystemAssignedIdentity" and more.
 	DefaultIdentity *string `json:"defaultIdentity,omitempty"`
-
-	// The Object representing the different Diagnostic log settings for the Cosmos DB Account.
-	DiagnosticLogSettings *DiagnosticLogSettings `json:"diagnosticLogSettings,omitempty"`
 
 	// Disable write operations on metadata resources (databases, containers, throughput) via account keys
 	DisableKeyBasedMetadataWriteAccess *bool `json:"disableKeyBasedMetadataWriteAccess,omitempty"`
@@ -1449,13 +1273,13 @@ func (d DatabaseAccountCreateUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "analyticalStorageConfiguration", d.AnalyticalStorageConfiguration)
 	populate(objectMap, "backupPolicy", d.BackupPolicy)
 	populate(objectMap, "capabilities", d.Capabilities)
+	populate(objectMap, "capacity", d.Capacity)
 	populate(objectMap, "connectorOffer", d.ConnectorOffer)
 	populate(objectMap, "consistencyPolicy", d.ConsistencyPolicy)
 	populate(objectMap, "cors", d.Cors)
 	populate(objectMap, "createMode", d.CreateMode)
 	populate(objectMap, "databaseAccountOfferType", d.DatabaseAccountOfferType)
 	populate(objectMap, "defaultIdentity", d.DefaultIdentity)
-	populate(objectMap, "diagnosticLogSettings", d.DiagnosticLogSettings)
 	populate(objectMap, "disableKeyBasedMetadataWriteAccess", d.DisableKeyBasedMetadataWriteAccess)
 	populate(objectMap, "disableLocalAuth", d.DisableLocalAuth)
 	populate(objectMap, "enableAnalyticalStorage", d.EnableAnalyticalStorage)
@@ -1496,6 +1320,9 @@ func (d *DatabaseAccountCreateUpdateProperties) UnmarshalJSON(data []byte) error
 		case "capabilities":
 			err = unpopulate(val, &d.Capabilities)
 			delete(rawMsg, key)
+		case "capacity":
+			err = unpopulate(val, &d.Capacity)
+			delete(rawMsg, key)
 		case "connectorOffer":
 			err = unpopulate(val, &d.ConnectorOffer)
 			delete(rawMsg, key)
@@ -1513,9 +1340,6 @@ func (d *DatabaseAccountCreateUpdateProperties) UnmarshalJSON(data []byte) error
 			delete(rawMsg, key)
 		case "defaultIdentity":
 			err = unpopulate(val, &d.DefaultIdentity)
-			delete(rawMsg, key)
-		case "diagnosticLogSettings":
-			err = unpopulate(val, &d.DiagnosticLogSettings)
 			delete(rawMsg, key)
 		case "disableKeyBasedMetadataWriteAccess":
 			err = unpopulate(val, &d.DisableKeyBasedMetadataWriteAccess)
@@ -1587,6 +1411,9 @@ type DatabaseAccountGetProperties struct {
 	// List of Cosmos DB capabilities for the account
 	Capabilities []*Capability `json:"capabilities,omitempty"`
 
+	// The object that represents all properties related to capacity enforcement on an account.
+	Capacity *Capacity `json:"capacity,omitempty"`
+
 	// The cassandra connector offer type for the Cosmos DB database C* account.
 	ConnectorOffer *ConnectorOffer `json:"connectorOffer,omitempty"`
 
@@ -1603,9 +1430,6 @@ type DatabaseAccountGetProperties struct {
 	// It can be "FirstPartyIdentity",
 	// "SystemAssignedIdentity" and more.
 	DefaultIdentity *string `json:"defaultIdentity,omitempty"`
-
-	// The Object representing the different Diagnostic log settings for the Cosmos DB Account.
-	DiagnosticLogSettings *DiagnosticLogSettings `json:"diagnosticLogSettings,omitempty"`
 
 	// Disable write operations on metadata resources (databases, containers, throughput) via account keys
 	DisableKeyBasedMetadataWriteAccess *bool `json:"disableKeyBasedMetadataWriteAccess,omitempty"`
@@ -1694,13 +1518,13 @@ func (d DatabaseAccountGetProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "analyticalStorageConfiguration", d.AnalyticalStorageConfiguration)
 	populate(objectMap, "backupPolicy", d.BackupPolicy)
 	populate(objectMap, "capabilities", d.Capabilities)
+	populate(objectMap, "capacity", d.Capacity)
 	populate(objectMap, "connectorOffer", d.ConnectorOffer)
 	populate(objectMap, "consistencyPolicy", d.ConsistencyPolicy)
 	populate(objectMap, "cors", d.Cors)
 	populate(objectMap, "createMode", d.CreateMode)
 	populate(objectMap, "databaseAccountOfferType", d.DatabaseAccountOfferType)
 	populate(objectMap, "defaultIdentity", d.DefaultIdentity)
-	populate(objectMap, "diagnosticLogSettings", d.DiagnosticLogSettings)
 	populate(objectMap, "disableKeyBasedMetadataWriteAccess", d.DisableKeyBasedMetadataWriteAccess)
 	populate(objectMap, "disableLocalAuth", d.DisableLocalAuth)
 	populate(objectMap, "documentEndpoint", d.DocumentEndpoint)
@@ -1748,6 +1572,9 @@ func (d *DatabaseAccountGetProperties) UnmarshalJSON(data []byte) error {
 		case "capabilities":
 			err = unpopulate(val, &d.Capabilities)
 			delete(rawMsg, key)
+		case "capacity":
+			err = unpopulate(val, &d.Capacity)
+			delete(rawMsg, key)
 		case "connectorOffer":
 			err = unpopulate(val, &d.ConnectorOffer)
 			delete(rawMsg, key)
@@ -1765,9 +1592,6 @@ func (d *DatabaseAccountGetProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "defaultIdentity":
 			err = unpopulate(val, &d.DefaultIdentity)
-			delete(rawMsg, key)
-		case "diagnosticLogSettings":
-			err = unpopulate(val, &d.DiagnosticLogSettings)
 			delete(rawMsg, key)
 		case "disableKeyBasedMetadataWriteAccess":
 			err = unpopulate(val, &d.DisableKeyBasedMetadataWriteAccess)
@@ -1849,6 +1673,9 @@ func (d *DatabaseAccountGetProperties) UnmarshalJSON(data []byte) error {
 // DatabaseAccountGetResults - An Azure Cosmos DB database account.
 type DatabaseAccountGetResults struct {
 	ARMResourceProperties
+	// Identity for the resource.
+	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+
 	// Indicates the type of database account. This can only be set at database account creation.
 	Kind *DatabaseAccountKind `json:"kind,omitempty"`
 
@@ -1863,6 +1690,7 @@ type DatabaseAccountGetResults struct {
 func (d DatabaseAccountGetResults) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	d.ARMResourceProperties.marshalInternal(objectMap)
+	populate(objectMap, "identity", d.Identity)
 	populate(objectMap, "kind", d.Kind)
 	populate(objectMap, "properties", d.Properties)
 	populate(objectMap, "systemData", d.SystemData)
@@ -1955,6 +1783,9 @@ type DatabaseAccountUpdateProperties struct {
 	// List of Cosmos DB capabilities for the account
 	Capabilities []*Capability `json:"capabilities,omitempty"`
 
+	// The object that represents all properties related to capacity enforcement on an account.
+	Capacity *Capacity `json:"capacity,omitempty"`
+
 	// The cassandra connector offer type for the Cosmos DB database C* account.
 	ConnectorOffer *ConnectorOffer `json:"connectorOffer,omitempty"`
 
@@ -1968,9 +1799,6 @@ type DatabaseAccountUpdateProperties struct {
 	// It can be "FirstPartyIdentity",
 	// "SystemAssignedIdentity" and more.
 	DefaultIdentity *string `json:"defaultIdentity,omitempty"`
-
-	// The Object representing the different Diagnostic log settings for the Cosmos DB Account.
-	DiagnosticLogSettings *DiagnosticLogSettings `json:"diagnosticLogSettings,omitempty"`
 
 	// Disable write operations on metadata resources (databases, containers, throughput) via account keys
 	DisableKeyBasedMetadataWriteAccess *bool `json:"disableKeyBasedMetadataWriteAccess,omitempty"`
@@ -2027,11 +1855,11 @@ func (d DatabaseAccountUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "analyticalStorageConfiguration", d.AnalyticalStorageConfiguration)
 	populate(objectMap, "backupPolicy", d.BackupPolicy)
 	populate(objectMap, "capabilities", d.Capabilities)
+	populate(objectMap, "capacity", d.Capacity)
 	populate(objectMap, "connectorOffer", d.ConnectorOffer)
 	populate(objectMap, "consistencyPolicy", d.ConsistencyPolicy)
 	populate(objectMap, "cors", d.Cors)
 	populate(objectMap, "defaultIdentity", d.DefaultIdentity)
-	populate(objectMap, "diagnosticLogSettings", d.DiagnosticLogSettings)
 	populate(objectMap, "disableKeyBasedMetadataWriteAccess", d.DisableKeyBasedMetadataWriteAccess)
 	populate(objectMap, "disableLocalAuth", d.DisableLocalAuth)
 	populate(objectMap, "enableAnalyticalStorage", d.EnableAnalyticalStorage)
@@ -2071,6 +1899,9 @@ func (d *DatabaseAccountUpdateProperties) UnmarshalJSON(data []byte) error {
 		case "capabilities":
 			err = unpopulate(val, &d.Capabilities)
 			delete(rawMsg, key)
+		case "capacity":
+			err = unpopulate(val, &d.Capacity)
+			delete(rawMsg, key)
 		case "connectorOffer":
 			err = unpopulate(val, &d.ConnectorOffer)
 			delete(rawMsg, key)
@@ -2082,9 +1913,6 @@ func (d *DatabaseAccountUpdateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "defaultIdentity":
 			err = unpopulate(val, &d.DefaultIdentity)
-			delete(rawMsg, key)
-		case "diagnosticLogSettings":
-			err = unpopulate(val, &d.DiagnosticLogSettings)
 			delete(rawMsg, key)
 		case "disableKeyBasedMetadataWriteAccess":
 			err = unpopulate(val, &d.DisableKeyBasedMetadataWriteAccess)
@@ -2278,12 +2106,6 @@ func (d DatabaseRestoreResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// DiagnosticLogSettings - Indicates what diagnostic log settings are to be enabled.
-type DiagnosticLogSettings struct {
-	// Describe the level of detail with which queries are to be logged.
-	EnableFullTextQuery *EnableFullTextQuery `json:"enableFullTextQuery,omitempty"`
-}
-
 // ErrorResponse - Error Response.
 // Implements the error and azcore.HTTPResponse interfaces.
 type ErrorResponse struct {
@@ -2356,168 +2178,6 @@ type FailoverPolicy struct {
 
 	// READ-ONLY; The unique identifier of the region in which the database account replicates to. Example: <accountName>-<locationName>.
 	ID *string `json:"id,omitempty" azure:"ro"`
-}
-
-// GraphAPIComputeRegionalServiceResource - Resource for a regional service location.
-type GraphAPIComputeRegionalServiceResource struct {
-	RegionalServiceResource
-	// READ-ONLY; The regional endpoint for GraphAPICompute.
-	GraphAPIComputeEndpoint *string `json:"graphApiComputeEndpoint,omitempty" azure:"ro"`
-}
-
-// GraphAPIComputeServiceResource - Describes the service response property for GraphAPICompute.
-type GraphAPIComputeServiceResource struct {
-	// Properties for GraphAPIComputeServiceResource.
-	Properties *GraphAPIComputeServiceResourceProperties `json:"properties,omitempty"`
-}
-
-// GraphAPIComputeServiceResourceProperties - Properties for GraphAPIComputeServiceResource.
-type GraphAPIComputeServiceResourceProperties struct {
-	ServiceResourceProperties
-	// GraphAPICompute endpoint for the service.
-	GraphAPIComputeEndpoint *string `json:"graphApiComputeEndpoint,omitempty"`
-
-	// READ-ONLY; An array that contains all of the locations for the service.
-	Locations []*GraphAPIComputeRegionalServiceResource `json:"locations,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GraphAPIComputeServiceResourceProperties.
-func (g GraphAPIComputeServiceResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	g.ServiceResourceProperties.marshalInternal(objectMap, ServiceTypeGraphAPICompute)
-	populate(objectMap, "graphApiComputeEndpoint", g.GraphAPIComputeEndpoint)
-	populate(objectMap, "locations", g.Locations)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type GraphAPIComputeServiceResourceProperties.
-func (g *GraphAPIComputeServiceResourceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "graphApiComputeEndpoint":
-			err = unpopulate(val, &g.GraphAPIComputeEndpoint)
-			delete(rawMsg, key)
-		case "locations":
-			err = unpopulate(val, &g.Locations)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := g.ServiceResourceProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// GraphResource - Cosmos DB Graph resource object
-type GraphResource struct {
-	// REQUIRED; Name of the Cosmos DB Graph
-	ID *string `json:"id,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GraphResource.
-func (g GraphResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	g.marshalInternal(objectMap)
-	return json.Marshal(objectMap)
-}
-
-func (g GraphResource) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "id", g.ID)
-}
-
-// GraphResourceCreateUpdateParameters - Parameters to create and update Cosmos DB Graph resource.
-type GraphResourceCreateUpdateParameters struct {
-	ARMResourceProperties
-	// REQUIRED; Properties to create and update Azure Cosmos DB Graph resource.
-	Properties *GraphResourceCreateUpdateProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GraphResourceCreateUpdateParameters.
-func (g GraphResourceCreateUpdateParameters) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	g.ARMResourceProperties.marshalInternal(objectMap)
-	populate(objectMap, "properties", g.Properties)
-	return json.Marshal(objectMap)
-}
-
-// GraphResourceCreateUpdateProperties - Properties to create and update Azure Cosmos DB Graph resource.
-type GraphResourceCreateUpdateProperties struct {
-	// REQUIRED; The standard JSON format of a Graph resource
-	Resource *GraphResource `json:"resource,omitempty"`
-
-	// A key-value pair of options to be applied for the request. This corresponds to the headers sent with the request.
-	Options *CreateUpdateOptions `json:"options,omitempty"`
-}
-
-// GraphResourceGetProperties - The properties of an Azure Cosmos DB SQL database
-type GraphResourceGetProperties struct {
-	Options  *GraphResourceGetPropertiesOptions  `json:"options,omitempty"`
-	Resource *GraphResourceGetPropertiesResource `json:"resource,omitempty"`
-}
-
-type GraphResourceGetPropertiesOptions struct {
-	OptionsResource
-}
-
-type GraphResourceGetPropertiesResource struct {
-	ExtendedResourceProperties
-	GraphResource
-}
-
-// GraphResourceGetResults - An Azure Cosmos DB Graph resource.
-type GraphResourceGetResults struct {
-	ARMResourceProperties
-	// The properties of an Azure Cosmos DB Graph resource.
-	Properties *GraphResourceGetProperties `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GraphResourceGetResults.
-func (g GraphResourceGetResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	g.ARMResourceProperties.marshalInternal(objectMap)
-	populate(objectMap, "properties", g.Properties)
-	return json.Marshal(objectMap)
-}
-
-// GraphResourcesBeginCreateUpdateGraphOptions contains the optional parameters for the GraphResources.BeginCreateUpdateGraph method.
-type GraphResourcesBeginCreateUpdateGraphOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GraphResourcesBeginDeleteGraphResourceOptions contains the optional parameters for the GraphResources.BeginDeleteGraphResource method.
-type GraphResourcesBeginDeleteGraphResourceOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GraphResourcesGetGraphOptions contains the optional parameters for the GraphResources.GetGraph method.
-type GraphResourcesGetGraphOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GraphResourcesListGraphsOptions contains the optional parameters for the GraphResources.ListGraphs method.
-type GraphResourcesListGraphsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GraphResourcesListResult - The List operation response, that contains the Graph resource and their properties.
-type GraphResourcesListResult struct {
-	// READ-ONLY; List of Graph resource and their properties.
-	Value []*GraphResourceGetResults `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GraphResourcesListResult.
-func (g GraphResourcesListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", g.Value)
-	return json.Marshal(objectMap)
 }
 
 // GremlinDatabaseCreateUpdateParameters - Parameters to create and update Cosmos DB Gremlin database.
@@ -2864,19 +2524,6 @@ func (i IndexingPolicy) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// ListBackups - List of restorable backups for a Cassandra cluster.
-type ListBackups struct {
-	// READ-ONLY; Container for array of backups.
-	Value []*BackupResource `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ListBackups.
-func (l ListBackups) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", l.Value)
-	return json.Marshal(objectMap)
-}
-
 // ListClusters - List of managed Cassandra clusters.
 type ListClusters struct {
 	// Container for the array of clusters.
@@ -2946,29 +2593,6 @@ func (l LocationGetResult) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type LocationGetResult.
-func (l *LocationGetResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &l.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := l.ARMProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
 // LocationListResult - The List operation response, that contains Cosmos DB locations and their properties.
 type LocationListResult struct {
 	// READ-ONLY; List of Cosmos DB locations and their properties.
@@ -2990,9 +2614,6 @@ type LocationProperties struct {
 	// READ-ONLY; Flag indicating whether the location is residency sensitive.
 	IsResidencyRestricted *bool `json:"isResidencyRestricted,omitempty" azure:"ro"`
 
-	// READ-ONLY; The current status of location in Azure.
-	Status *string `json:"status,omitempty" azure:"ro"`
-
 	// READ-ONLY; Flag indicating whether the location supports availability zones or not.
 	SupportsAvailabilityZone *bool `json:"supportsAvailabilityZone,omitempty" azure:"ro"`
 }
@@ -3002,8 +2623,89 @@ func (l LocationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "backupStorageRedundancies", l.BackupStorageRedundancies)
 	populate(objectMap, "isResidencyRestricted", l.IsResidencyRestricted)
-	populate(objectMap, "status", l.Status)
 	populate(objectMap, "supportsAvailabilityZone", l.SupportsAvailabilityZone)
+	return json.Marshal(objectMap)
+}
+
+// LocationsGetOptions contains the optional parameters for the Locations.Get method.
+type LocationsGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// LocationsListOptions contains the optional parameters for the Locations.List method.
+type LocationsListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ManagedCassandraARMResourceProperties - The core properties of ARM resources.
+type ManagedCassandraARMResourceProperties struct {
+	// Identity for the resource.
+	Identity *ManagedCassandraManagedServiceIdentity `json:"identity,omitempty"`
+
+	// The location of the resource group to which the resource belongs.
+	Location *string `json:"location,omitempty"`
+
+	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across resource groups).
+	// A maximum of 15 tags can be provided for a
+	// resource. Each tag must have a key no greater than 128 characters and value no greater than 256 characters. For example, the default experience for a
+	// template type is set with "defaultExperience":
+	// "Cassandra". Current "defaultExperience" values also include "Table", "Graph", "DocumentDB", and "MongoDB".
+	Tags map[string]*string `json:"tags,omitempty"`
+
+	// READ-ONLY; The unique resource identifier of the ARM resource.
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the ARM resource.
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of Azure resource.
+	Type *string `json:"type,omitempty" azure:"ro"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ManagedCassandraARMResourceProperties.
+func (m ManagedCassandraARMResourceProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	m.marshalInternal(objectMap)
+	return json.Marshal(objectMap)
+}
+
+func (m ManagedCassandraARMResourceProperties) marshalInternal(objectMap map[string]interface{}) {
+	populate(objectMap, "id", m.ID)
+	populate(objectMap, "identity", m.Identity)
+	populate(objectMap, "location", m.Location)
+	populate(objectMap, "name", m.Name)
+	populate(objectMap, "tags", m.Tags)
+	populate(objectMap, "type", m.Type)
+}
+
+// ManagedCassandraManagedServiceIdentity - Identity for the resource.
+type ManagedCassandraManagedServiceIdentity struct {
+	// The type of the resource.
+	Type *ManagedCassandraResourceIdentityType `json:"type,omitempty"`
+
+	// READ-ONLY; The object id of the identity resource.
+	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+
+	// READ-ONLY; The tenant id of the resource.
+	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+}
+
+type ManagedCassandraReaperStatus struct {
+	Healthy *bool `json:"healthy,omitempty"`
+
+	// Dictionary of
+	RepairRunIDs map[string]*string `json:"repairRunIds,omitempty"`
+
+	// Dictionary of
+	RepairSchedules map[string]*string `json:"repairSchedules,omitempty"`
+}
+
+// MarshalJSON implements the json.Marshaller interface for type ManagedCassandraReaperStatus.
+func (m ManagedCassandraReaperStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]interface{})
+	populate(objectMap, "healthy", m.Healthy)
+	populate(objectMap, "repairRunIds", m.RepairRunIDs)
+	populate(objectMap, "repairSchedules", m.RepairSchedules)
 	return json.Marshal(objectMap)
 }
 
@@ -3073,10 +2775,10 @@ func (m *Metric) UnmarshalJSON(data []byte) error {
 }
 
 func (m Metric) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "endTime", (*timeRFC3339)(m.EndTime))
+	populateTimeRFC3339(objectMap, "endTime", m.EndTime)
 	populate(objectMap, "metricValues", m.MetricValues)
 	populate(objectMap, "name", m.Name)
-	populate(objectMap, "startTime", (*timeRFC3339)(m.StartTime))
+	populateTimeRFC3339(objectMap, "startTime", m.StartTime)
 	populate(objectMap, "timeGrain", m.TimeGrain)
 	populate(objectMap, "unit", m.Unit)
 }
@@ -3086,9 +2788,7 @@ func (m *Metric) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 		var err error
 		switch key {
 		case "endTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			m.EndTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &m.EndTime)
 			delete(rawMsg, key)
 		case "metricValues":
 			err = unpopulate(val, &m.MetricValues)
@@ -3097,9 +2797,7 @@ func (m *Metric) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
 			err = unpopulate(val, &m.Name)
 			delete(rawMsg, key)
 		case "startTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			m.StartTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &m.StartTime)
 			delete(rawMsg, key)
 		case "timeGrain":
 			err = unpopulate(val, &m.TimeGrain)
@@ -3230,7 +2928,7 @@ func (m MetricValue) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "_count", m.Count)
 	populate(objectMap, "maximum", m.Maximum)
 	populate(objectMap, "minimum", m.Minimum)
-	populate(objectMap, "timestamp", (*timeRFC3339)(m.Timestamp))
+	populateTimeRFC3339(objectMap, "timestamp", m.Timestamp)
 	populate(objectMap, "total", m.Total)
 }
 
@@ -3251,9 +2949,7 @@ func (m *MetricValue) unmarshalInternal(rawMsg map[string]json.RawMessage) error
 			err = unpopulate(val, &m.Minimum)
 			delete(rawMsg, key)
 		case "timestamp":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			m.Timestamp = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &m.Timestamp)
 			delete(rawMsg, key)
 		case "total":
 			err = unpopulate(val, &m.Total)
@@ -3491,6 +3187,12 @@ type MongoDBResourcesBeginMigrateMongoDBDatabaseToManualThroughputOptions struct
 	// placeholder for future optional parameters
 }
 
+// MongoDBResourcesBeginRetrieveContinuousBackupInformationOptions contains the optional parameters for the MongoDBResources.BeginRetrieveContinuousBackupInformation
+// method.
+type MongoDBResourcesBeginRetrieveContinuousBackupInformationOptions struct {
+	// placeholder for future optional parameters
+}
+
 // MongoDBResourcesBeginUpdateMongoDBCollectionThroughputOptions contains the optional parameters for the MongoDBResources.BeginUpdateMongoDBCollectionThroughput
 // method.
 type MongoDBResourcesBeginUpdateMongoDBCollectionThroughputOptions struct {
@@ -3577,29 +3279,6 @@ func (n NotebookWorkspace) MarshalJSON() ([]byte, error) {
 	n.ARMProxyResource.marshalInternal(objectMap)
 	populate(objectMap, "properties", n.Properties)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type NotebookWorkspace.
-func (n *NotebookWorkspace) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &n.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := n.ARMProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // NotebookWorkspaceConnectionInfoResult - The connection info for the given notebook workspace
@@ -3849,10 +3528,10 @@ type PercentileMetric struct {
 // MarshalJSON implements the json.Marshaller interface for type PercentileMetric.
 func (p PercentileMetric) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "endTime", (*timeRFC3339)(p.EndTime))
+	populateTimeRFC3339(objectMap, "endTime", p.EndTime)
 	populate(objectMap, "metricValues", p.MetricValues)
 	populate(objectMap, "name", p.Name)
-	populate(objectMap, "startTime", (*timeRFC3339)(p.StartTime))
+	populateTimeRFC3339(objectMap, "startTime", p.StartTime)
 	populate(objectMap, "timeGrain", p.TimeGrain)
 	populate(objectMap, "unit", p.Unit)
 	return json.Marshal(objectMap)
@@ -3868,9 +3547,7 @@ func (p *PercentileMetric) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			p.EndTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &p.EndTime)
 			delete(rawMsg, key)
 		case "metricValues":
 			err = unpopulate(val, &p.MetricValues)
@@ -3879,9 +3556,7 @@ func (p *PercentileMetric) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &p.Name)
 			delete(rawMsg, key)
 		case "startTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			p.StartTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &p.StartTime)
 			delete(rawMsg, key)
 		case "timeGrain":
 			err = unpopulate(val, &p.TimeGrain)
@@ -4143,29 +3818,6 @@ func (p PrivateLinkResource) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type PrivateLinkResource.
-func (p *PrivateLinkResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &p.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := p.ARMProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
 // PrivateLinkResourceListResult - A list of private link resources
 type PrivateLinkResourceListResult struct {
 	// Array of private link resources
@@ -4233,35 +3885,6 @@ type RegionForOnlineOffline struct {
 	Region *string `json:"region,omitempty"`
 }
 
-// RegionalServiceResource - Resource for a regional service location.
-type RegionalServiceResource struct {
-	// READ-ONLY; The location name.
-	Location *string `json:"location,omitempty" azure:"ro"`
-
-	// READ-ONLY; The regional service name.
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Describes the status of a service.
-	Status *ServiceStatus `json:"status,omitempty" azure:"ro"`
-}
-
-// RepairPostBody - Specification of the keyspaces and tables to run repair on.
-type RepairPostBody struct {
-	// REQUIRED; The name of the keyspace that repair should be run on.
-	Keyspace *string `json:"keyspace,omitempty"`
-
-	// List of tables in the keyspace to repair. If omitted, repair all tables in the keyspace.
-	Tables []*string `json:"tables,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RepairPostBody.
-func (r RepairPostBody) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "keyspace", r.Keyspace)
-	populate(objectMap, "tables", r.Tables)
-	return json.Marshal(objectMap)
-}
-
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -4315,8 +3938,8 @@ func (r RestorableDatabaseAccountProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "apiType", r.APIType)
 	populate(objectMap, "accountName", r.AccountName)
-	populate(objectMap, "creationTime", (*timeRFC3339)(r.CreationTime))
-	populate(objectMap, "deletionTime", (*timeRFC3339)(r.DeletionTime))
+	populateTimeRFC3339(objectMap, "creationTime", r.CreationTime)
+	populateTimeRFC3339(objectMap, "deletionTime", r.DeletionTime)
 	populate(objectMap, "restorableLocations", r.RestorableLocations)
 	return json.Marshal(objectMap)
 }
@@ -4337,14 +3960,10 @@ func (r *RestorableDatabaseAccountProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &r.AccountName)
 			delete(rawMsg, key)
 		case "creationTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			r.CreationTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &r.CreationTime)
 			delete(rawMsg, key)
 		case "deletionTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			r.DeletionTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &r.DeletionTime)
 			delete(rawMsg, key)
 		case "restorableLocations":
 			err = unpopulate(val, &r.RestorableLocations)
@@ -4403,8 +4022,8 @@ type RestorableLocationResource struct {
 // MarshalJSON implements the json.Marshaller interface for type RestorableLocationResource.
 func (r RestorableLocationResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "creationTime", (*timeRFC3339)(r.CreationTime))
-	populate(objectMap, "deletionTime", (*timeRFC3339)(r.DeletionTime))
+	populateTimeRFC3339(objectMap, "creationTime", r.CreationTime)
+	populateTimeRFC3339(objectMap, "deletionTime", r.DeletionTime)
 	populate(objectMap, "locationName", r.LocationName)
 	populate(objectMap, "regionalDatabaseAccountInstanceId", r.RegionalDatabaseAccountInstanceID)
 	return json.Marshal(objectMap)
@@ -4420,14 +4039,10 @@ func (r *RestorableLocationResource) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "creationTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			r.CreationTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &r.CreationTime)
 			delete(rawMsg, key)
 		case "deletionTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			r.DeletionTime = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &r.DeletionTime)
 			delete(rawMsg, key)
 		case "locationName":
 			err = unpopulate(val, &r.LocationName)
@@ -4789,7 +4404,7 @@ func (r RestoreParameters) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "databasesToRestore", r.DatabasesToRestore)
 	populate(objectMap, "restoreMode", r.RestoreMode)
 	populate(objectMap, "restoreSource", r.RestoreSource)
-	populate(objectMap, "restoreTimestampInUtc", (*timeRFC3339)(r.RestoreTimestampInUTC))
+	populateTimeRFC3339(objectMap, "restoreTimestampInUtc", r.RestoreTimestampInUTC)
 	return json.Marshal(objectMap)
 }
 
@@ -4812,9 +4427,7 @@ func (r *RestoreParameters) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &r.RestoreSource)
 			delete(rawMsg, key)
 		case "restoreTimestampInUtc":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			r.RestoreTimestampInUTC = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &r.RestoreTimestampInUTC)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5031,64 +4644,6 @@ func (s SQLDatabaseResource) marshalInternal(objectMap map[string]interface{}) {
 	populate(objectMap, "id", s.ID)
 }
 
-// SQLDedicatedGatewayRegionalServiceResource - Resource for a regional service location.
-type SQLDedicatedGatewayRegionalServiceResource struct {
-	RegionalServiceResource
-	// READ-ONLY; The regional endpoint for SqlDedicatedGateway.
-	SQLDedicatedGatewayEndpoint *string `json:"sqlDedicatedGatewayEndpoint,omitempty" azure:"ro"`
-}
-
-// SQLDedicatedGatewayServiceResource - Describes the service response property for SqlDedicatedGateway.
-type SQLDedicatedGatewayServiceResource struct {
-	// Properties for SqlDedicatedGatewayServiceResource.
-	Properties *SQLDedicatedGatewayServiceResourceProperties `json:"properties,omitempty"`
-}
-
-// SQLDedicatedGatewayServiceResourceProperties - Properties for SqlDedicatedGatewayServiceResource.
-type SQLDedicatedGatewayServiceResourceProperties struct {
-	ServiceResourceProperties
-	// SqlDedicatedGateway endpoint for the service.
-	SQLDedicatedGatewayEndpoint *string `json:"sqlDedicatedGatewayEndpoint,omitempty"`
-
-	// READ-ONLY; An array that contains all of the locations for the service.
-	Locations []*SQLDedicatedGatewayRegionalServiceResource `json:"locations,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SQLDedicatedGatewayServiceResourceProperties.
-func (s SQLDedicatedGatewayServiceResourceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ServiceResourceProperties.marshalInternal(objectMap, ServiceTypeSQLDedicatedGateway)
-	populate(objectMap, "locations", s.Locations)
-	populate(objectMap, "sqlDedicatedGatewayEndpoint", s.SQLDedicatedGatewayEndpoint)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SQLDedicatedGatewayServiceResourceProperties.
-func (s *SQLDedicatedGatewayServiceResourceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "locations":
-			err = unpopulate(val, &s.Locations)
-			delete(rawMsg, key)
-		case "sqlDedicatedGatewayEndpoint":
-			err = unpopulate(val, &s.SQLDedicatedGatewayEndpoint)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.ServiceResourceProperties.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
 // SQLResourcesBeginCreateUpdateSQLContainerOptions contains the optional parameters for the SQLResources.BeginCreateUpdateSQLContainer method.
 type SQLResourcesBeginCreateUpdateSQLContainerOptions struct {
 	// placeholder for future optional parameters
@@ -5299,29 +4854,6 @@ func (s SQLRoleAssignmentGetResults) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type SQLRoleAssignmentGetResults.
-func (s *SQLRoleAssignmentGetResults) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.ARMProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
 // SQLRoleAssignmentListResult - The relevant Role Assignments.
 type SQLRoleAssignmentListResult struct {
 	// READ-ONLY; List of Role Assignments and their properties
@@ -5368,29 +4900,6 @@ func (s SQLRoleDefinitionGetResults) MarshalJSON() ([]byte, error) {
 	s.ARMProxyResource.marshalInternal(objectMap)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SQLRoleDefinitionGetResults.
-func (s *SQLRoleDefinitionGetResults) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			err = unpopulate(val, &s.Properties)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.ARMProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
 }
 
 // SQLRoleDefinitionListResult - The relevant Role Definitions.
@@ -5697,192 +5206,6 @@ type SeedNode struct {
 	IPAddress *string `json:"ipAddress,omitempty"`
 }
 
-// ServiceBeginCreateOptions contains the optional parameters for the Service.BeginCreate method.
-type ServiceBeginCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServiceBeginDeleteOptions contains the optional parameters for the Service.BeginDelete method.
-type ServiceBeginDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServiceGetOptions contains the optional parameters for the Service.Get method.
-type ServiceGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServiceListOptions contains the optional parameters for the Service.List method.
-type ServiceListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ServiceResource - Properties for the database account.
-type ServiceResource struct {
-	ARMProxyResource
-	// Services response resource.
-	Properties ServiceResourcePropertiesClassification `json:"properties,omitempty"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceResource.
-func (s ServiceResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	s.ARMProxyResource.marshalInternal(objectMap)
-	populate(objectMap, "properties", s.Properties)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceResource.
-func (s *ServiceResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "properties":
-			s.Properties, err = unmarshalServiceResourcePropertiesClassification(val)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	if err := s.ARMProxyResource.unmarshalInternal(rawMsg); err != nil {
-		return err
-	}
-	return nil
-}
-
-// ServiceResourceCreateUpdateParameters - Parameters for Create or Update Request for ServiceResource
-type ServiceResourceCreateUpdateParameters struct {
-	// Properties in ServiceResourceCreateUpdateParameters.
-	Properties *ServiceResourceCreateUpdateProperties `json:"properties,omitempty"`
-}
-
-// ServiceResourceCreateUpdateProperties - Properties in ServiceResourceCreateUpdateParameters.
-type ServiceResourceCreateUpdateProperties struct {
-	// Instance count for the service.
-	InstanceCount *int32 `json:"instanceCount,omitempty"`
-
-	// Instance type for the service.
-	InstanceSize *ServiceSize `json:"instanceSize,omitempty"`
-
-	// ServiceType for the service.
-	ServiceType *ServiceType `json:"serviceType,omitempty"`
-}
-
-// ServiceResourceListResult - The List operation response, that contains the Service Resource and their properties.
-type ServiceResourceListResult struct {
-	// READ-ONLY; List of Service Resource and their properties.
-	Value []*ServiceResource `json:"value,omitempty" azure:"ro"`
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ServiceResourceListResult.
-func (s ServiceResourceListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
-// ServiceResourcePropertiesClassification provides polymorphic access to related types.
-// Call the interface's GetServiceResourceProperties() method to access the common type.
-// Use a type switch to determine the concrete type.  The possible types are:
-// - *DataTransferServiceResourceProperties, *GraphAPIComputeServiceResourceProperties, *ServiceResourceProperties, *SqlDedicatedGatewayServiceResourceProperties
-type ServiceResourcePropertiesClassification interface {
-	// GetServiceResourceProperties returns the ServiceResourceProperties content of the underlying type.
-	GetServiceResourceProperties() *ServiceResourceProperties
-}
-
-// ServiceResourceProperties - Services response resource.
-type ServiceResourceProperties struct {
-	// REQUIRED; ServiceType for the service.
-	ServiceType *ServiceType `json:"serviceType,omitempty"`
-
-	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]map[string]interface{}
-
-	// Instance count for the service.
-	InstanceCount *int32 `json:"instanceCount,omitempty"`
-
-	// Instance type for the service.
-	InstanceSize *ServiceSize `json:"instanceSize,omitempty"`
-
-	// READ-ONLY; Time of the last state change (ISO-8601 format).
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
-
-	// READ-ONLY; Describes the status of a service.
-	Status *ServiceStatus `json:"status,omitempty" azure:"ro"`
-}
-
-// GetServiceResourceProperties implements the ServiceResourcePropertiesClassification interface for type ServiceResourceProperties.
-func (s *ServiceResourceProperties) GetServiceResourceProperties() *ServiceResourceProperties {
-	return s
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceResourceProperties.
-func (s *ServiceResourceProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return err
-	}
-	return s.unmarshalInternal(rawMsg)
-}
-
-func (s ServiceResourceProperties) marshalInternal(objectMap map[string]interface{}, discValue ServiceType) {
-	populate(objectMap, "creationTime", (*timeRFC3339)(s.CreationTime))
-	populate(objectMap, "instanceCount", s.InstanceCount)
-	populate(objectMap, "instanceSize", s.InstanceSize)
-	s.ServiceType = &discValue
-	objectMap["serviceType"] = s.ServiceType
-	populate(objectMap, "status", s.Status)
-	if s.AdditionalProperties != nil {
-		for key, val := range s.AdditionalProperties {
-			objectMap[key] = val
-		}
-	}
-}
-
-func (s *ServiceResourceProperties) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "creationTime":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.CreationTime = (*time.Time)(&aux)
-			delete(rawMsg, key)
-		case "instanceCount":
-			err = unpopulate(val, &s.InstanceCount)
-			delete(rawMsg, key)
-		case "instanceSize":
-			err = unpopulate(val, &s.InstanceSize)
-			delete(rawMsg, key)
-		case "serviceType":
-			err = unpopulate(val, &s.ServiceType)
-			delete(rawMsg, key)
-		case "status":
-			err = unpopulate(val, &s.Status)
-			delete(rawMsg, key)
-		default:
-			if s.AdditionalProperties == nil {
-				s.AdditionalProperties = map[string]map[string]interface{}{}
-			}
-			if val != nil {
-				var aux map[string]interface{}
-				err = json.Unmarshal(val, &aux)
-				s.AdditionalProperties[key] = aux
-			}
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
 type SpatialSpec struct {
 	// The path for which the indexing behavior applies to. Index paths typically start with root and end with wildcard (/path/*)
 	Path *string `json:"path,omitempty"`
@@ -5923,10 +5246,10 @@ type SystemData struct {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdAt", (*timeRFC3339)(s.CreatedAt))
+	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populate(objectMap, "lastModifiedAt", (*timeRFC3339)(s.LastModifiedAt))
+	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -5942,9 +5265,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.CreatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, &s.CreatedBy)
@@ -5953,9 +5274,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.LastModifiedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, &s.LastModifiedBy)

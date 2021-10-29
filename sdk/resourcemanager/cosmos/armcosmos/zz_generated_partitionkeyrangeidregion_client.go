@@ -11,13 +11,14 @@ package armcosmos
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // PartitionKeyRangeIDRegionClient contains the methods for the PartitionKeyRangeIDRegion group.
@@ -29,8 +30,15 @@ type PartitionKeyRangeIDRegionClient struct {
 }
 
 // NewPartitionKeyRangeIDRegionClient creates a new instance of PartitionKeyRangeIDRegionClient with the specified values.
-func NewPartitionKeyRangeIDRegionClient(con *arm.Connection, subscriptionID string) *PartitionKeyRangeIDRegionClient {
-	return &PartitionKeyRangeIDRegionClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewPartitionKeyRangeIDRegionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *PartitionKeyRangeIDRegionClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &PartitionKeyRangeIDRegionClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListMetrics - Retrieves the metrics determined by the given filter for the given partition key range id and region.
@@ -86,7 +94,7 @@ func (client *PartitionKeyRangeIDRegionClient) listMetricsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01-preview")
+	reqQP.Set("api-version", "2021-10-15")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
@@ -97,7 +105,7 @@ func (client *PartitionKeyRangeIDRegionClient) listMetricsCreateRequest(ctx cont
 func (client *PartitionKeyRangeIDRegionClient) listMetricsHandleResponse(resp *http.Response) (PartitionKeyRangeIDRegionListMetricsResponse, error) {
 	result := PartitionKeyRangeIDRegionListMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartitionMetricListResult); err != nil {
-		return PartitionKeyRangeIDRegionListMetricsResponse{}, err
+		return PartitionKeyRangeIDRegionListMetricsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

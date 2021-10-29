@@ -11,13 +11,14 @@ package armoperationalinsights
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ManagementGroupsClient contains the methods for the ManagementGroups group.
@@ -29,8 +30,15 @@ type ManagementGroupsClient struct {
 }
 
 // NewManagementGroupsClient creates a new instance of ManagementGroupsClient with the specified values.
-func NewManagementGroupsClient(con *arm.Connection, subscriptionID string) *ManagementGroupsClient {
-	return &ManagementGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewManagementGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagementGroupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagementGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Gets a list of management groups connected to a workspace.
@@ -80,7 +88,7 @@ func (client *ManagementGroupsClient) listCreateRequest(ctx context.Context, res
 func (client *ManagementGroupsClient) listHandleResponse(resp *http.Response) (ManagementGroupsListResponse, error) {
 	result := ManagementGroupsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceListManagementGroupsResult); err != nil {
-		return ManagementGroupsListResponse{}, err
+		return ManagementGroupsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

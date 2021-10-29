@@ -10,10 +10,9 @@ package armmediaservices
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // AccountFiltersCreateOrUpdateResponse contains the response from method AccountFilters.CreateOrUpdate.
@@ -350,6 +349,8 @@ type LiveEventsAllocatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l LiveEventsAllocatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LiveEventsAllocateResponse, error) {
 	respType := LiveEventsAllocateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -394,6 +395,8 @@ type LiveEventsCreatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l LiveEventsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LiveEventsCreateResponse, error) {
 	respType := LiveEventsCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.LiveEvent)
@@ -444,6 +447,8 @@ type LiveEventsDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l LiveEventsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LiveEventsDeleteResponse, error) {
 	respType := LiveEventsDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -512,6 +517,8 @@ type LiveEventsResetPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l LiveEventsResetPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LiveEventsResetResponse, error) {
 	respType := LiveEventsResetResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -556,6 +563,8 @@ type LiveEventsStartPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l LiveEventsStartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LiveEventsStartResponse, error) {
 	respType := LiveEventsStartResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -600,6 +609,8 @@ type LiveEventsStopPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l LiveEventsStopPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LiveEventsStopResponse, error) {
 	respType := LiveEventsStopResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -644,6 +655,8 @@ type LiveEventsUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l LiveEventsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LiveEventsUpdateResponse, error) {
 	respType := LiveEventsUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.LiveEvent)
@@ -694,6 +707,8 @@ type LiveOutputsCreatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l LiveOutputsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LiveOutputsCreateResponse, error) {
 	respType := LiveOutputsCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.LiveOutput)
@@ -744,6 +759,8 @@ type LiveOutputsDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l LiveOutputsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (LiveOutputsDeleteResponse, error) {
 	respType := LiveOutputsDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -986,6 +1003,8 @@ type StreamingEndpointsCreatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l StreamingEndpointsCreatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StreamingEndpointsCreateResponse, error) {
 	respType := StreamingEndpointsCreateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StreamingEndpoint)
@@ -1036,6 +1055,8 @@ type StreamingEndpointsDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l StreamingEndpointsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StreamingEndpointsDeleteResponse, error) {
 	respType := StreamingEndpointsDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -1104,6 +1125,8 @@ type StreamingEndpointsScalePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l StreamingEndpointsScalePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StreamingEndpointsScaleResponse, error) {
 	respType := StreamingEndpointsScaleResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -1148,6 +1171,8 @@ type StreamingEndpointsStartPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l StreamingEndpointsStartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StreamingEndpointsStartResponse, error) {
 	respType := StreamingEndpointsStartResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -1192,6 +1217,8 @@ type StreamingEndpointsStopPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l StreamingEndpointsStopPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StreamingEndpointsStopResponse, error) {
 	respType := StreamingEndpointsStopResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -1236,6 +1263,8 @@ type StreamingEndpointsUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l StreamingEndpointsUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (StreamingEndpointsUpdateResponse, error) {
 	respType := StreamingEndpointsUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.StreamingEndpoint)

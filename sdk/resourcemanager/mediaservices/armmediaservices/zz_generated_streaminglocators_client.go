@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // StreamingLocatorsClient contains the methods for the StreamingLocators group.
@@ -31,8 +32,15 @@ type StreamingLocatorsClient struct {
 }
 
 // NewStreamingLocatorsClient creates a new instance of StreamingLocatorsClient with the specified values.
-func NewStreamingLocatorsClient(con *arm.Connection, subscriptionID string) *StreamingLocatorsClient {
-	return &StreamingLocatorsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewStreamingLocatorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *StreamingLocatorsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &StreamingLocatorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Create a Streaming Locator in the Media Services account
@@ -86,7 +94,7 @@ func (client *StreamingLocatorsClient) createCreateRequest(ctx context.Context, 
 func (client *StreamingLocatorsClient) createHandleResponse(resp *http.Response) (StreamingLocatorsCreateResponse, error) {
 	result := StreamingLocatorsCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingLocator); err != nil {
-		return StreamingLocatorsCreateResponse{}, err
+		return StreamingLocatorsCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -215,7 +223,7 @@ func (client *StreamingLocatorsClient) getCreateRequest(ctx context.Context, res
 func (client *StreamingLocatorsClient) getHandleResponse(resp *http.Response) (StreamingLocatorsGetResponse, error) {
 	result := StreamingLocatorsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingLocator); err != nil {
-		return StreamingLocatorsGetResponse{}, err
+		return StreamingLocatorsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -286,7 +294,7 @@ func (client *StreamingLocatorsClient) listCreateRequest(ctx context.Context, re
 func (client *StreamingLocatorsClient) listHandleResponse(resp *http.Response) (StreamingLocatorsListResponse, error) {
 	result := StreamingLocatorsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StreamingLocatorCollection); err != nil {
-		return StreamingLocatorsListResponse{}, err
+		return StreamingLocatorsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -355,7 +363,7 @@ func (client *StreamingLocatorsClient) listContentKeysCreateRequest(ctx context.
 func (client *StreamingLocatorsClient) listContentKeysHandleResponse(resp *http.Response) (StreamingLocatorsListContentKeysResponse, error) {
 	result := StreamingLocatorsListContentKeysResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListContentKeysResponse); err != nil {
-		return StreamingLocatorsListContentKeysResponse{}, err
+		return StreamingLocatorsListContentKeysResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -424,7 +432,7 @@ func (client *StreamingLocatorsClient) listPathsCreateRequest(ctx context.Contex
 func (client *StreamingLocatorsClient) listPathsHandleResponse(resp *http.Response) (StreamingLocatorsListPathsResponse, error) {
 	result := StreamingLocatorsListPathsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListPathsResponse); err != nil {
-		return StreamingLocatorsListPathsResponse{}, err
+		return StreamingLocatorsListPathsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

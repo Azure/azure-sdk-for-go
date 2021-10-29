@@ -101,7 +101,7 @@ function Get-AllPackageInfoFromRepo($serviceDirectory)
   return $allPackageProps
 }
 
-function SetPackageVersion ($PackageName, $Version, $ReleaseDate, $PackageProperties)
+function SetPackageVersion ($PackageName, $Version, $ReleaseDate, $PackageProperties, $ReplaceLatestEntryTitle=$true)
 {
   if(!$ReleaseDate) {
     $ReleaseDate = Get-Date -Format "yyyy-MM-dd"
@@ -114,5 +114,6 @@ function SetPackageVersion ($PackageName, $Version, $ReleaseDate, $PackageProper
   & "${EngScriptsDir}/Update-ModuleVersion.ps1" `
     -ModulePath $PackageProperties.Name `
     -NewVersionString $Version `
-    -ReleaseDate $ReleaseDate
+    -ReleaseDate $ReleaseDate `
+    -ReplaceLatestEntryTitle $ReplaceLatestEntryTitle
 }

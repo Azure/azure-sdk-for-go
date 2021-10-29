@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ComputePoliciesClient contains the methods for the ComputePolicies group.
@@ -30,8 +31,15 @@ type ComputePoliciesClient struct {
 }
 
 // NewComputePoliciesClient creates a new instance of ComputePoliciesClient with the specified values.
-func NewComputePoliciesClient(con *arm.Connection, subscriptionID string) *ComputePoliciesClient {
-	return &ComputePoliciesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewComputePoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ComputePoliciesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ComputePoliciesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates the specified compute policy. During update, the compute policy with the specified name will be replaced with this
@@ -86,7 +94,7 @@ func (client *ComputePoliciesClient) createOrUpdateCreateRequest(ctx context.Con
 func (client *ComputePoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (ComputePoliciesCreateOrUpdateResponse, error) {
 	result := ComputePoliciesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComputePolicy); err != nil {
-		return ComputePoliciesCreateOrUpdateResponse{}, err
+		return ComputePoliciesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -215,7 +223,7 @@ func (client *ComputePoliciesClient) getCreateRequest(ctx context.Context, resou
 func (client *ComputePoliciesClient) getHandleResponse(resp *http.Response) (ComputePoliciesGetResponse, error) {
 	result := ComputePoliciesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComputePolicy); err != nil {
-		return ComputePoliciesGetResponse{}, err
+		return ComputePoliciesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -277,7 +285,7 @@ func (client *ComputePoliciesClient) listByAccountCreateRequest(ctx context.Cont
 func (client *ComputePoliciesClient) listByAccountHandleResponse(resp *http.Response) (ComputePoliciesListByAccountResponse, error) {
 	result := ComputePoliciesListByAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComputePolicyListResult); err != nil {
-		return ComputePoliciesListByAccountResponse{}, err
+		return ComputePoliciesListByAccountResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -349,7 +357,7 @@ func (client *ComputePoliciesClient) updateCreateRequest(ctx context.Context, re
 func (client *ComputePoliciesClient) updateHandleResponse(resp *http.Response) (ComputePoliciesUpdateResponse, error) {
 	result := ComputePoliciesUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComputePolicy); err != nil {
-		return ComputePoliciesUpdateResponse{}, err
+		return ComputePoliciesUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

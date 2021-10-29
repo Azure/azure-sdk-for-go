@@ -10,10 +10,9 @@ package armredis
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // CheckNameAvailabilityParameters - Parameters body to pass for resource name availability check.
@@ -1087,7 +1086,7 @@ type UpgradeNotification struct {
 func (u UpgradeNotification) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "name", u.Name)
-	populate(objectMap, "timestamp", (*timeRFC3339)(u.Timestamp))
+	populateTimeRFC3339(objectMap, "timestamp", u.Timestamp)
 	populate(objectMap, "upsellNotification", u.UpsellNotification)
 	return json.Marshal(objectMap)
 }
@@ -1105,9 +1104,7 @@ func (u *UpgradeNotification) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &u.Name)
 			delete(rawMsg, key)
 		case "timestamp":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			u.Timestamp = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &u.Timestamp)
 			delete(rawMsg, key)
 		case "upsellNotification":
 			err = unpopulate(val, &u.UpsellNotification)

@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // LinkedServerClient contains the methods for the LinkedServer group.
@@ -31,8 +31,15 @@ type LinkedServerClient struct {
 }
 
 // NewLinkedServerClient creates a new instance of LinkedServerClient with the specified values.
-func NewLinkedServerClient(con *arm.Connection, subscriptionID string) *LinkedServerClient {
-	return &LinkedServerClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewLinkedServerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *LinkedServerClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &LinkedServerClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Adds a linked server to the Redis cache (requires Premium SKU).
@@ -226,7 +233,7 @@ func (client *LinkedServerClient) getCreateRequest(ctx context.Context, resource
 func (client *LinkedServerClient) getHandleResponse(resp *http.Response) (LinkedServerGetResponse, error) {
 	result := LinkedServerGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RedisLinkedServerWithProperties); err != nil {
-		return LinkedServerGetResponse{}, err
+		return LinkedServerGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -288,7 +295,7 @@ func (client *LinkedServerClient) listCreateRequest(ctx context.Context, resourc
 func (client *LinkedServerClient) listHandleResponse(resp *http.Response) (LinkedServerListResponse, error) {
 	result := LinkedServerListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RedisLinkedServerWithPropertiesList); err != nil {
-		return LinkedServerListResponse{}, err
+		return LinkedServerListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

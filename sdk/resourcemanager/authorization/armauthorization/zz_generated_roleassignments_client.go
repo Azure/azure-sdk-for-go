@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RoleAssignmentsClient contains the methods for the RoleAssignments group.
@@ -30,8 +31,15 @@ type RoleAssignmentsClient struct {
 }
 
 // NewRoleAssignmentsClient creates a new instance of RoleAssignmentsClient with the specified values.
-func NewRoleAssignmentsClient(con *arm.Connection, subscriptionID string) *RoleAssignmentsClient {
-	return &RoleAssignmentsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRoleAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RoleAssignmentsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RoleAssignmentsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Create or update a role assignment by scope and name.
@@ -54,13 +62,7 @@ func (client *RoleAssignmentsClient) Create(ctx context.Context, scope string, r
 // createCreateRequest creates the Create request.
 func (client *RoleAssignmentsClient) createCreateRequest(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsCreateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	if roleAssignmentName == "" {
-		return nil, errors.New("parameter roleAssignmentName cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentName}", roleAssignmentName)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -77,7 +79,7 @@ func (client *RoleAssignmentsClient) createCreateRequest(ctx context.Context, sc
 func (client *RoleAssignmentsClient) createHandleResponse(resp *http.Response) (RoleAssignmentsCreateResponse, error) {
 	result := RoleAssignmentsCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
-		return RoleAssignmentsCreateResponse{}, err
+		return RoleAssignmentsCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -115,9 +117,6 @@ func (client *RoleAssignmentsClient) CreateByID(ctx context.Context, roleAssignm
 // createByIDCreateRequest creates the CreateByID request.
 func (client *RoleAssignmentsClient) createByIDCreateRequest(ctx context.Context, roleAssignmentID string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsCreateByIDOptions) (*policy.Request, error) {
 	urlPath := "/{roleAssignmentId}"
-	if roleAssignmentID == "" {
-		return nil, errors.New("parameter roleAssignmentID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", roleAssignmentID)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -134,7 +133,7 @@ func (client *RoleAssignmentsClient) createByIDCreateRequest(ctx context.Context
 func (client *RoleAssignmentsClient) createByIDHandleResponse(resp *http.Response) (RoleAssignmentsCreateByIDResponse, error) {
 	result := RoleAssignmentsCreateByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
-		return RoleAssignmentsCreateByIDResponse{}, err
+		return RoleAssignmentsCreateByIDResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -172,13 +171,7 @@ func (client *RoleAssignmentsClient) Delete(ctx context.Context, scope string, r
 // deleteCreateRequest creates the Delete request.
 func (client *RoleAssignmentsClient) deleteCreateRequest(ctx context.Context, scope string, roleAssignmentName string, options *RoleAssignmentsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	if roleAssignmentName == "" {
-		return nil, errors.New("parameter roleAssignmentName cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentName}", roleAssignmentName)
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -198,7 +191,7 @@ func (client *RoleAssignmentsClient) deleteCreateRequest(ctx context.Context, sc
 func (client *RoleAssignmentsClient) deleteHandleResponse(resp *http.Response) (RoleAssignmentsDeleteResponse, error) {
 	result := RoleAssignmentsDeleteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
-		return RoleAssignmentsDeleteResponse{}, err
+		return RoleAssignmentsDeleteResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -236,9 +229,6 @@ func (client *RoleAssignmentsClient) DeleteByID(ctx context.Context, roleAssignm
 // deleteByIDCreateRequest creates the DeleteByID request.
 func (client *RoleAssignmentsClient) deleteByIDCreateRequest(ctx context.Context, roleAssignmentID string, options *RoleAssignmentsDeleteByIDOptions) (*policy.Request, error) {
 	urlPath := "/{roleAssignmentId}"
-	if roleAssignmentID == "" {
-		return nil, errors.New("parameter roleAssignmentID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", roleAssignmentID)
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -258,7 +248,7 @@ func (client *RoleAssignmentsClient) deleteByIDCreateRequest(ctx context.Context
 func (client *RoleAssignmentsClient) deleteByIDHandleResponse(resp *http.Response) (RoleAssignmentsDeleteByIDResponse, error) {
 	result := RoleAssignmentsDeleteByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
-		return RoleAssignmentsDeleteByIDResponse{}, err
+		return RoleAssignmentsDeleteByIDResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -296,13 +286,7 @@ func (client *RoleAssignmentsClient) Get(ctx context.Context, scope string, role
 // getCreateRequest creates the Get request.
 func (client *RoleAssignmentsClient) getCreateRequest(ctx context.Context, scope string, roleAssignmentName string, options *RoleAssignmentsGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	if roleAssignmentName == "" {
-		return nil, errors.New("parameter roleAssignmentName cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentName}", roleAssignmentName)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -322,7 +306,7 @@ func (client *RoleAssignmentsClient) getCreateRequest(ctx context.Context, scope
 func (client *RoleAssignmentsClient) getHandleResponse(resp *http.Response) (RoleAssignmentsGetResponse, error) {
 	result := RoleAssignmentsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
-		return RoleAssignmentsGetResponse{}, err
+		return RoleAssignmentsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -360,9 +344,6 @@ func (client *RoleAssignmentsClient) GetByID(ctx context.Context, roleAssignment
 // getByIDCreateRequest creates the GetByID request.
 func (client *RoleAssignmentsClient) getByIDCreateRequest(ctx context.Context, roleAssignmentID string, options *RoleAssignmentsGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{roleAssignmentId}"
-	if roleAssignmentID == "" {
-		return nil, errors.New("parameter roleAssignmentID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", roleAssignmentID)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -382,7 +363,7 @@ func (client *RoleAssignmentsClient) getByIDCreateRequest(ctx context.Context, r
 func (client *RoleAssignmentsClient) getByIDHandleResponse(resp *http.Response) (RoleAssignmentsGetByIDResponse, error) {
 	result := RoleAssignmentsGetByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignment); err != nil {
-		return RoleAssignmentsGetByIDResponse{}, err
+		return RoleAssignmentsGetByIDResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -425,17 +406,8 @@ func (client *RoleAssignmentsClient) listForResourceCreateRequest(ctx context.Co
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceProviderNamespace == "" {
-		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", resourceProviderNamespace)
-	if resourceType == "" {
-		return nil, errors.New("parameter resourceType cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", resourceName)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -460,7 +432,7 @@ func (client *RoleAssignmentsClient) listForResourceCreateRequest(ctx context.Co
 func (client *RoleAssignmentsClient) listForResourceHandleResponse(resp *http.Response) (RoleAssignmentsListForResourceResponse, error) {
 	result := RoleAssignmentsListForResourceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
-		return RoleAssignmentsListForResourceResponse{}, err
+		return RoleAssignmentsListForResourceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -526,7 +498,7 @@ func (client *RoleAssignmentsClient) listForResourceGroupCreateRequest(ctx conte
 func (client *RoleAssignmentsClient) listForResourceGroupHandleResponse(resp *http.Response) (RoleAssignmentsListForResourceGroupResponse, error) {
 	result := RoleAssignmentsListForResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
-		return RoleAssignmentsListForResourceGroupResponse{}, err
+		return RoleAssignmentsListForResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -561,9 +533,6 @@ func (client *RoleAssignmentsClient) ListForScope(scope string, options *RoleAss
 // listForScopeCreateRequest creates the ListForScope request.
 func (client *RoleAssignmentsClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleAssignmentsListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -588,7 +557,7 @@ func (client *RoleAssignmentsClient) listForScopeCreateRequest(ctx context.Conte
 func (client *RoleAssignmentsClient) listForScopeHandleResponse(resp *http.Response) (RoleAssignmentsListForScopeResponse, error) {
 	result := RoleAssignmentsListForScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
-		return RoleAssignmentsListForScopeResponse{}, err
+		return RoleAssignmentsListForScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -650,7 +619,7 @@ func (client *RoleAssignmentsClient) listForSubscriptionCreateRequest(ctx contex
 func (client *RoleAssignmentsClient) listForSubscriptionHandleResponse(resp *http.Response) (RoleAssignmentsListForSubscriptionResponse, error) {
 	result := RoleAssignmentsListForSubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentListResult); err != nil {
-		return RoleAssignmentsListForSubscriptionResponse{}, err
+		return RoleAssignmentsListForSubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -688,13 +657,7 @@ func (client *RoleAssignmentsClient) Validate(ctx context.Context, scope string,
 // validateCreateRequest creates the Validate request.
 func (client *RoleAssignmentsClient) validateCreateRequest(ctx context.Context, scope string, roleAssignmentName string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsValidateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}/validate"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	if roleAssignmentName == "" {
-		return nil, errors.New("parameter roleAssignmentName cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentName}", roleAssignmentName)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -711,7 +674,7 @@ func (client *RoleAssignmentsClient) validateCreateRequest(ctx context.Context, 
 func (client *RoleAssignmentsClient) validateHandleResponse(resp *http.Response) (RoleAssignmentsValidateResponse, error) {
 	result := RoleAssignmentsValidateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidationResponse); err != nil {
-		return RoleAssignmentsValidateResponse{}, err
+		return RoleAssignmentsValidateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -749,9 +712,6 @@ func (client *RoleAssignmentsClient) ValidateByID(ctx context.Context, roleAssig
 // validateByIDCreateRequest creates the ValidateByID request.
 func (client *RoleAssignmentsClient) validateByIDCreateRequest(ctx context.Context, roleAssignmentID string, parameters RoleAssignmentCreateParameters, options *RoleAssignmentsValidateByIDOptions) (*policy.Request, error) {
 	urlPath := "/{roleAssignmentId}/validate"
-	if roleAssignmentID == "" {
-		return nil, errors.New("parameter roleAssignmentID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentId}", roleAssignmentID)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -768,7 +728,7 @@ func (client *RoleAssignmentsClient) validateByIDCreateRequest(ctx context.Conte
 func (client *RoleAssignmentsClient) validateByIDHandleResponse(resp *http.Response) (RoleAssignmentsValidateByIDResponse, error) {
 	result := RoleAssignmentsValidateByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidationResponse); err != nil {
-		return RoleAssignmentsValidateByIDResponse{}, err
+		return RoleAssignmentsValidateByIDResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

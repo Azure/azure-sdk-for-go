@@ -10,14 +10,14 @@ package armauthorization
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"net/http"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"strings"
 )
 
 // EligibleChildResourcesClient contains the methods for the EligibleChildResources group.
@@ -28,8 +28,15 @@ type EligibleChildResourcesClient struct {
 }
 
 // NewEligibleChildResourcesClient creates a new instance of EligibleChildResourcesClient with the specified values.
-func NewEligibleChildResourcesClient(con *arm.Connection) *EligibleChildResourcesClient {
-	return &EligibleChildResourcesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewEligibleChildResourcesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *EligibleChildResourcesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &EligibleChildResourcesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Get the child resources of a resource on which user has eligible access
@@ -49,9 +56,6 @@ func (client *EligibleChildResourcesClient) Get(scope string, options *EligibleC
 // getCreateRequest creates the Get request.
 func (client *EligibleChildResourcesClient) getCreateRequest(ctx context.Context, scope string, options *EligibleChildResourcesGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/eligibleChildResources"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -71,7 +75,7 @@ func (client *EligibleChildResourcesClient) getCreateRequest(ctx context.Context
 func (client *EligibleChildResourcesClient) getHandleResponse(resp *http.Response) (EligibleChildResourcesGetResponse, error) {
 	result := EligibleChildResourcesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EligibleChildResourcesListResult); err != nil {
-		return EligibleChildResourcesGetResponse{}, err
+		return EligibleChildResourcesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

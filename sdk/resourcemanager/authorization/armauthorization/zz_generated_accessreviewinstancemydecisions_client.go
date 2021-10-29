@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // AccessReviewInstanceMyDecisionsClient contains the methods for the AccessReviewInstanceMyDecisions group.
@@ -29,8 +30,15 @@ type AccessReviewInstanceMyDecisionsClient struct {
 }
 
 // NewAccessReviewInstanceMyDecisionsClient creates a new instance of AccessReviewInstanceMyDecisionsClient with the specified values.
-func NewAccessReviewInstanceMyDecisionsClient(con *arm.Connection) *AccessReviewInstanceMyDecisionsClient {
-	return &AccessReviewInstanceMyDecisionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewAccessReviewInstanceMyDecisionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *AccessReviewInstanceMyDecisionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &AccessReviewInstanceMyDecisionsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetByID - Get my single access review instance decision.
@@ -80,7 +88,7 @@ func (client *AccessReviewInstanceMyDecisionsClient) getByIDCreateRequest(ctx co
 func (client *AccessReviewInstanceMyDecisionsClient) getByIDHandleResponse(resp *http.Response) (AccessReviewInstanceMyDecisionsGetByIDResponse, error) {
 	result := AccessReviewInstanceMyDecisionsGetByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewDecision); err != nil {
-		return AccessReviewInstanceMyDecisionsGetByIDResponse{}, err
+		return AccessReviewInstanceMyDecisionsGetByIDResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -138,7 +146,7 @@ func (client *AccessReviewInstanceMyDecisionsClient) listCreateRequest(ctx conte
 func (client *AccessReviewInstanceMyDecisionsClient) listHandleResponse(resp *http.Response) (AccessReviewInstanceMyDecisionsListResponse, error) {
 	result := AccessReviewInstanceMyDecisionsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewDecisionListResult); err != nil {
-		return AccessReviewInstanceMyDecisionsListResponse{}, err
+		return AccessReviewInstanceMyDecisionsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -203,7 +211,7 @@ func (client *AccessReviewInstanceMyDecisionsClient) patchCreateRequest(ctx cont
 func (client *AccessReviewInstanceMyDecisionsClient) patchHandleResponse(resp *http.Response) (AccessReviewInstanceMyDecisionsPatchResponse, error) {
 	result := AccessReviewInstanceMyDecisionsPatchResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessReviewDecision); err != nil {
-		return AccessReviewInstanceMyDecisionsPatchResponse{}, err
+		return AccessReviewInstanceMyDecisionsPatchResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

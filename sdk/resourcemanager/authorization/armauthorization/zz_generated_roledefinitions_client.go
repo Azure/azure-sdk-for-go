@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RoleDefinitionsClient contains the methods for the RoleDefinitions group.
@@ -29,8 +30,15 @@ type RoleDefinitionsClient struct {
 }
 
 // NewRoleDefinitionsClient creates a new instance of RoleDefinitionsClient with the specified values.
-func NewRoleDefinitionsClient(con *arm.Connection) *RoleDefinitionsClient {
-	return &RoleDefinitionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewRoleDefinitionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *RoleDefinitionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RoleDefinitionsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a role definition.
@@ -53,9 +61,6 @@ func (client *RoleDefinitionsClient) CreateOrUpdate(ctx context.Context, scope s
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *RoleDefinitionsClient) createOrUpdateCreateRequest(ctx context.Context, scope string, roleDefinitionID string, roleDefinition RoleDefinition, options *RoleDefinitionsCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleDefinitionID == "" {
 		return nil, errors.New("parameter roleDefinitionID cannot be empty")
@@ -76,7 +81,7 @@ func (client *RoleDefinitionsClient) createOrUpdateCreateRequest(ctx context.Con
 func (client *RoleDefinitionsClient) createOrUpdateHandleResponse(resp *http.Response) (RoleDefinitionsCreateOrUpdateResponse, error) {
 	result := RoleDefinitionsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleDefinition); err != nil {
-		return RoleDefinitionsCreateOrUpdateResponse{}, err
+		return RoleDefinitionsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -114,9 +119,6 @@ func (client *RoleDefinitionsClient) Delete(ctx context.Context, scope string, r
 // deleteCreateRequest creates the Delete request.
 func (client *RoleDefinitionsClient) deleteCreateRequest(ctx context.Context, scope string, roleDefinitionID string, options *RoleDefinitionsDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleDefinitionID == "" {
 		return nil, errors.New("parameter roleDefinitionID cannot be empty")
@@ -137,7 +139,7 @@ func (client *RoleDefinitionsClient) deleteCreateRequest(ctx context.Context, sc
 func (client *RoleDefinitionsClient) deleteHandleResponse(resp *http.Response) (RoleDefinitionsDeleteResponse, error) {
 	result := RoleDefinitionsDeleteResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleDefinition); err != nil {
-		return RoleDefinitionsDeleteResponse{}, err
+		return RoleDefinitionsDeleteResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -175,9 +177,6 @@ func (client *RoleDefinitionsClient) Get(ctx context.Context, scope string, role
 // getCreateRequest creates the Get request.
 func (client *RoleDefinitionsClient) getCreateRequest(ctx context.Context, scope string, roleDefinitionID string, options *RoleDefinitionsGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if roleDefinitionID == "" {
 		return nil, errors.New("parameter roleDefinitionID cannot be empty")
@@ -198,7 +197,7 @@ func (client *RoleDefinitionsClient) getCreateRequest(ctx context.Context, scope
 func (client *RoleDefinitionsClient) getHandleResponse(resp *http.Response) (RoleDefinitionsGetResponse, error) {
 	result := RoleDefinitionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleDefinition); err != nil {
-		return RoleDefinitionsGetResponse{}, err
+		return RoleDefinitionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -236,9 +235,6 @@ func (client *RoleDefinitionsClient) GetByID(ctx context.Context, roleID string,
 // getByIDCreateRequest creates the GetByID request.
 func (client *RoleDefinitionsClient) getByIDCreateRequest(ctx context.Context, roleID string, options *RoleDefinitionsGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{roleId}"
-	if roleID == "" {
-		return nil, errors.New("parameter roleID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleId}", roleID)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -255,7 +251,7 @@ func (client *RoleDefinitionsClient) getByIDCreateRequest(ctx context.Context, r
 func (client *RoleDefinitionsClient) getByIDHandleResponse(resp *http.Response) (RoleDefinitionsGetByIDResponse, error) {
 	result := RoleDefinitionsGetByIDResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleDefinition); err != nil {
-		return RoleDefinitionsGetByIDResponse{}, err
+		return RoleDefinitionsGetByIDResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -290,9 +286,6 @@ func (client *RoleDefinitionsClient) List(scope string, options *RoleDefinitions
 // listCreateRequest creates the List request.
 func (client *RoleDefinitionsClient) listCreateRequest(ctx context.Context, scope string, options *RoleDefinitionsListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -312,7 +305,7 @@ func (client *RoleDefinitionsClient) listCreateRequest(ctx context.Context, scop
 func (client *RoleDefinitionsClient) listHandleResponse(resp *http.Response) (RoleDefinitionsListResponse, error) {
 	result := RoleDefinitionsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleDefinitionListResult); err != nil {
-		return RoleDefinitionsListResponse{}, err
+		return RoleDefinitionsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

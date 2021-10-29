@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package auth
+package internal
 
 import (
 	"context"
@@ -12,20 +12,36 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 type KeyVaultChallengePolicy struct {
-	Cred        azcore.TokenCredential
-	Transport   policy.Transporter
-	cachedToken *azcore.AccessToken
-	scope       *string
-	tenantID    *string
+	// mainResource is the resource to be retreived using the tenant specified in the credential
+	mainResource *ExpiringResource
+	cred         azcore.TokenCredential
+	transport    policy.Transporter
+	cachedToken  *azcore.AccessToken
+	scope        *string
+	tenantID     *string
+}
+
+func NewKeyVaultChallengePolicy(cred azcore.TokenCredential, t policy.Transporter) *KeyVaultChallengePolicy {
+	return &KeyVaultChallengePolicy{
+		cred:         cred,
+		transport:    t,
+		mainResource: NewExpiringResource(acquire),
+	}
 }
 
 func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error) {
+	as := acquiringResourceState{
+		p:   k,
+		req: req,
+	}
+
 	if k.scope == nil || k.tenantID == nil {
 		// First request, get both to get the token
 		challengeReq, err := k.getChallengeRequest(req)
@@ -33,7 +49,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			return nil, err
 		}
 
-		challengeResp, err := k.Transport.Do(challengeReq)
+		challengeResp, err := k.transport.Do(challengeReq)
 		if err != nil {
 			return nil, err
 		}
@@ -44,11 +60,19 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 		}
 	}
 
-	err := k.getToken(req.Raw().Context())
+	tk, err := k.mainResource.GetResource(as)
 	if err != nil {
 		return nil, err
 	}
-	k.decorateRequest(req)
+
+	if token, ok := tk.(*azcore.AccessToken); ok {
+		req.Raw().Header.Set("Authorization", fmt.Sprintf("Bearer %s", token.Token))
+	}
+	// err := k.getToken(req.Raw().Context())
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// k.decorateRequest(req)
 
 	// try the request
 	resp, err := req.Next()
@@ -66,7 +90,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 			return nil, err
 		}
 
-		token, err := k.Cred.GetToken(
+		token, err := k.cred.GetToken(
 			req.Raw().Context(),
 			policy.TokenRequestOptions{
 				Scopes:   []string{*k.scope},
@@ -91,7 +115,7 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 }
 
 func (k *KeyVaultChallengePolicy) getToken(ctx context.Context) error {
-	token, err := k.Cred.GetToken(
+	token, err := k.cred.GetToken(
 		ctx,
 		policy.TokenRequestOptions{
 			Scopes:   []string{*k.scope},
@@ -173,3 +197,56 @@ func (k KeyVaultChallengePolicy) getChallengeRequest(orig *policy.Request) (*htt
 
 	return req, err
 }
+
+// BearerTokenPolicy authorizes requests with bearer tokens acquired from a TokenCredential.
+type BearerTokenPolicy struct {
+	// mainResource is the resource to be retreived using the tenant specified in the credential
+	mainResource *ExpiringResource
+	// the following fields are read-only
+	cred   azcore.TokenCredential
+	scopes []string
+}
+
+type acquiringResourceState struct {
+	req *policy.Request
+	p   *KeyVaultChallengePolicy
+}
+
+// acquire acquires or updates the resource; only one
+// thread/goroutine at a time ever calls this function
+func acquire(state interface{}) (newResource interface{}, newExpiration time.Time, err error) {
+	s := state.(acquiringResourceState)
+	tk, err := s.p.cred.GetToken(s.req.Raw().Context(), policy.TokenRequestOptions{Scopes: []string{*s.p.scope}})
+	if err != nil {
+		return nil, time.Time{}, err
+	}
+	return tk, tk.ExpiresOn, nil
+}
+
+// // NewBearerTokenPolicy creates a policy object that authorizes requests with bearer tokens.
+// // cred: an azcore.TokenCredential implementation such as a credential object from azidentity
+// // scopes: the list of permission scopes required for the token.
+// // opts: optional settings. Pass nil to accept default values; this is the same as passing a zero-value options.
+// func NewBearerTokenPolicy(cred azcore.TokenCredential, scopes []string, opts *policy.BearerTokenOptions) *BearerTokenPolicy {
+// 	return &BearerTokenPolicy{
+// 		cred:         cred,
+// 		scopes:       scopes,
+// 		mainResource: NewExpiringResource(acquire),
+// 	}
+// }
+
+// Do authorizes a request with a bearer token
+// func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
+// as := acquiringResourceState{
+// 	p:   b,
+// 	req: req,
+// }
+// tk, err := b.mainResource.GetResource(as)
+// if err != nil {
+// 	return nil, err
+// }
+// if token, ok := tk.(*azcore.AccessToken); ok {
+// 	req.Raw().Header.Set(HeaderAuthorization, BearerTokenPrefix+token.Token)
+// }
+// return req.Next()
+// }

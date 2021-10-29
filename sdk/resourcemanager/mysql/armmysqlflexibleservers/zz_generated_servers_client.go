@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ServersClient contains the methods for the Servers group.
@@ -31,8 +31,15 @@ type ServersClient struct {
 }
 
 // NewServersClient creates a new instance of ServersClient with the specified values.
-func NewServersClient(con *arm.Connection, subscriptionID string) *ServersClient {
-	return &ServersClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewServersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServersClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ServersClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a new server or updates an existing server. The update action will overwrite the existing server.
@@ -310,7 +317,7 @@ func (client *ServersClient) getCreateRequest(ctx context.Context, resourceGroup
 func (client *ServersClient) getHandleResponse(resp *http.Response) (ServersGetResponse, error) {
 	result := ServersGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Server); err != nil {
-		return ServersGetResponse{}, err
+		return ServersGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -364,7 +371,7 @@ func (client *ServersClient) listCreateRequest(ctx context.Context, options *Ser
 func (client *ServersClient) listHandleResponse(resp *http.Response) (ServersListResponse, error) {
 	result := ServersListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerListResult); err != nil {
-		return ServersListResponse{}, err
+		return ServersListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -422,7 +429,7 @@ func (client *ServersClient) listByResourceGroupCreateRequest(ctx context.Contex
 func (client *ServersClient) listByResourceGroupHandleResponse(resp *http.Response) (ServersListByResourceGroupResponse, error) {
 	result := ServersListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerListResult); err != nil {
-		return ServersListByResourceGroupResponse{}, err
+		return ServersListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

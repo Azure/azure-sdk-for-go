@@ -10,14 +10,14 @@ package armmonitor
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"net/http"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"strings"
 )
 
 // MetricDefinitionsClient contains the methods for the MetricDefinitions group.
@@ -28,8 +28,15 @@ type MetricDefinitionsClient struct {
 }
 
 // NewMetricDefinitionsClient creates a new instance of MetricDefinitionsClient with the specified values.
-func NewMetricDefinitionsClient(con *arm.Connection) *MetricDefinitionsClient {
-	return &MetricDefinitionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewMetricDefinitionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) *MetricDefinitionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &MetricDefinitionsClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Lists the metric definitions for the resource.
@@ -52,9 +59,6 @@ func (client *MetricDefinitionsClient) List(ctx context.Context, resourceURI str
 // listCreateRequest creates the List request.
 func (client *MetricDefinitionsClient) listCreateRequest(ctx context.Context, resourceURI string, options *MetricDefinitionsListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/metricDefinitions"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -74,7 +78,7 @@ func (client *MetricDefinitionsClient) listCreateRequest(ctx context.Context, re
 func (client *MetricDefinitionsClient) listHandleResponse(resp *http.Response) (MetricDefinitionsListResponse, error) {
 	result := MetricDefinitionsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricDefinitionCollection); err != nil {
-		return MetricDefinitionsListResponse{}, err
+		return MetricDefinitionsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

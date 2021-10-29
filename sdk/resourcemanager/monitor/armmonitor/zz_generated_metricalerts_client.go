@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // MetricAlertsClient contains the methods for the MetricAlerts group.
@@ -30,8 +31,15 @@ type MetricAlertsClient struct {
 }
 
 // NewMetricAlertsClient creates a new instance of MetricAlertsClient with the specified values.
-func NewMetricAlertsClient(con *arm.Connection, subscriptionID string) *MetricAlertsClient {
-	return &MetricAlertsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewMetricAlertsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MetricAlertsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &MetricAlertsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create or update an metric alert definition.
@@ -81,7 +89,7 @@ func (client *MetricAlertsClient) createOrUpdateCreateRequest(ctx context.Contex
 func (client *MetricAlertsClient) createOrUpdateHandleResponse(resp *http.Response) (MetricAlertsCreateOrUpdateResponse, error) {
 	result := MetricAlertsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertResource); err != nil {
-		return MetricAlertsCreateOrUpdateResponse{}, err
+		return MetricAlertsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -202,7 +210,7 @@ func (client *MetricAlertsClient) getCreateRequest(ctx context.Context, resource
 func (client *MetricAlertsClient) getHandleResponse(resp *http.Response) (MetricAlertsGetResponse, error) {
 	result := MetricAlertsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertResource); err != nil {
-		return MetricAlertsGetResponse{}, err
+		return MetricAlertsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -263,7 +271,7 @@ func (client *MetricAlertsClient) listByResourceGroupCreateRequest(ctx context.C
 func (client *MetricAlertsClient) listByResourceGroupHandleResponse(resp *http.Response) (MetricAlertsListByResourceGroupResponse, error) {
 	result := MetricAlertsListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertResourceCollection); err != nil {
-		return MetricAlertsListByResourceGroupResponse{}, err
+		return MetricAlertsListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -320,7 +328,7 @@ func (client *MetricAlertsClient) listBySubscriptionCreateRequest(ctx context.Co
 func (client *MetricAlertsClient) listBySubscriptionHandleResponse(resp *http.Response) (MetricAlertsListBySubscriptionResponse, error) {
 	result := MetricAlertsListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertResourceCollection); err != nil {
-		return MetricAlertsListBySubscriptionResponse{}, err
+		return MetricAlertsListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -385,7 +393,7 @@ func (client *MetricAlertsClient) updateCreateRequest(ctx context.Context, resou
 func (client *MetricAlertsClient) updateHandleResponse(resp *http.Response) (MetricAlertsUpdateResponse, error) {
 	result := MetricAlertsUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertResource); err != nil {
-		return MetricAlertsUpdateResponse{}, err
+		return MetricAlertsUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

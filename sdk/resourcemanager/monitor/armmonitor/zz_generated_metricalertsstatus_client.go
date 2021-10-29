@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // MetricAlertsStatusClient contains the methods for the MetricAlertsStatus group.
@@ -30,8 +31,15 @@ type MetricAlertsStatusClient struct {
 }
 
 // NewMetricAlertsStatusClient creates a new instance of MetricAlertsStatusClient with the specified values.
-func NewMetricAlertsStatusClient(con *arm.Connection, subscriptionID string) *MetricAlertsStatusClient {
-	return &MetricAlertsStatusClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewMetricAlertsStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *MetricAlertsStatusClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &MetricAlertsStatusClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // List - Retrieve an alert rule status.
@@ -81,7 +89,7 @@ func (client *MetricAlertsStatusClient) listCreateRequest(ctx context.Context, r
 func (client *MetricAlertsStatusClient) listHandleResponse(resp *http.Response) (MetricAlertsStatusListResponse, error) {
 	result := MetricAlertsStatusListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertStatusCollection); err != nil {
-		return MetricAlertsStatusListResponse{}, err
+		return MetricAlertsStatusListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -150,7 +158,7 @@ func (client *MetricAlertsStatusClient) listByNameCreateRequest(ctx context.Cont
 func (client *MetricAlertsStatusClient) listByNameHandleResponse(resp *http.Response) (MetricAlertsStatusListByNameResponse, error) {
 	result := MetricAlertsStatusListByNameResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricAlertStatusCollection); err != nil {
-		return MetricAlertsStatusListByNameResponse{}, err
+		return MetricAlertsStatusListByNameResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

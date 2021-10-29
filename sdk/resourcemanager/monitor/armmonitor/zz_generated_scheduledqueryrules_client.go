@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ScheduledQueryRulesClient contains the methods for the ScheduledQueryRules group.
@@ -30,8 +31,15 @@ type ScheduledQueryRulesClient struct {
 }
 
 // NewScheduledQueryRulesClient creates a new instance of ScheduledQueryRulesClient with the specified values.
-func NewScheduledQueryRulesClient(con *arm.Connection, subscriptionID string) *ScheduledQueryRulesClient {
-	return &ScheduledQueryRulesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewScheduledQueryRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ScheduledQueryRulesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ScheduledQueryRulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates an log search rule.
@@ -81,7 +89,7 @@ func (client *ScheduledQueryRulesClient) createOrUpdateCreateRequest(ctx context
 func (client *ScheduledQueryRulesClient) createOrUpdateHandleResponse(resp *http.Response) (ScheduledQueryRulesCreateOrUpdateResponse, error) {
 	result := ScheduledQueryRulesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogSearchRuleResource); err != nil {
-		return ScheduledQueryRulesCreateOrUpdateResponse{}, err
+		return ScheduledQueryRulesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -202,7 +210,7 @@ func (client *ScheduledQueryRulesClient) getCreateRequest(ctx context.Context, r
 func (client *ScheduledQueryRulesClient) getHandleResponse(resp *http.Response) (ScheduledQueryRulesGetResponse, error) {
 	result := ScheduledQueryRulesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogSearchRuleResource); err != nil {
-		return ScheduledQueryRulesGetResponse{}, err
+		return ScheduledQueryRulesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -266,7 +274,7 @@ func (client *ScheduledQueryRulesClient) listByResourceGroupCreateRequest(ctx co
 func (client *ScheduledQueryRulesClient) listByResourceGroupHandleResponse(resp *http.Response) (ScheduledQueryRulesListByResourceGroupResponse, error) {
 	result := ScheduledQueryRulesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogSearchRuleResourceCollection); err != nil {
-		return ScheduledQueryRulesListByResourceGroupResponse{}, err
+		return ScheduledQueryRulesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -326,7 +334,7 @@ func (client *ScheduledQueryRulesClient) listBySubscriptionCreateRequest(ctx con
 func (client *ScheduledQueryRulesClient) listBySubscriptionHandleResponse(resp *http.Response) (ScheduledQueryRulesListBySubscriptionResponse, error) {
 	result := ScheduledQueryRulesListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogSearchRuleResourceCollection); err != nil {
-		return ScheduledQueryRulesListBySubscriptionResponse{}, err
+		return ScheduledQueryRulesListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -391,7 +399,7 @@ func (client *ScheduledQueryRulesClient) updateCreateRequest(ctx context.Context
 func (client *ScheduledQueryRulesClient) updateHandleResponse(resp *http.Response) (ScheduledQueryRulesUpdateResponse, error) {
 	result := ScheduledQueryRulesUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogSearchRuleResource); err != nil {
-		return ScheduledQueryRulesUpdateResponse{}, err
+		return ScheduledQueryRulesUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

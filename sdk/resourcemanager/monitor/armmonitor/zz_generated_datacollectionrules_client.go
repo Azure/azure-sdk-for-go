@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DataCollectionRulesClient contains the methods for the DataCollectionRules group.
@@ -30,8 +31,15 @@ type DataCollectionRulesClient struct {
 }
 
 // NewDataCollectionRulesClient creates a new instance of DataCollectionRulesClient with the specified values.
-func NewDataCollectionRulesClient(con *arm.Connection, subscriptionID string) *DataCollectionRulesClient {
-	return &DataCollectionRulesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDataCollectionRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataCollectionRulesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DataCollectionRulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Create - Creates or updates a data collection rule.
@@ -84,7 +92,7 @@ func (client *DataCollectionRulesClient) createCreateRequest(ctx context.Context
 func (client *DataCollectionRulesClient) createHandleResponse(resp *http.Response) (DataCollectionRulesCreateResponse, error) {
 	result := DataCollectionRulesCreateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleResource); err != nil {
-		return DataCollectionRulesCreateResponse{}, err
+		return DataCollectionRulesCreateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -205,7 +213,7 @@ func (client *DataCollectionRulesClient) getCreateRequest(ctx context.Context, r
 func (client *DataCollectionRulesClient) getHandleResponse(resp *http.Response) (DataCollectionRulesGetResponse, error) {
 	result := DataCollectionRulesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleResource); err != nil {
-		return DataCollectionRulesGetResponse{}, err
+		return DataCollectionRulesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -263,7 +271,7 @@ func (client *DataCollectionRulesClient) listByResourceGroupCreateRequest(ctx co
 func (client *DataCollectionRulesClient) listByResourceGroupHandleResponse(resp *http.Response) (DataCollectionRulesListByResourceGroupResponse, error) {
 	result := DataCollectionRulesListByResourceGroupResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleResourceListResult); err != nil {
-		return DataCollectionRulesListByResourceGroupResponse{}, err
+		return DataCollectionRulesListByResourceGroupResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -317,7 +325,7 @@ func (client *DataCollectionRulesClient) listBySubscriptionCreateRequest(ctx con
 func (client *DataCollectionRulesClient) listBySubscriptionHandleResponse(resp *http.Response) (DataCollectionRulesListBySubscriptionResponse, error) {
 	result := DataCollectionRulesListBySubscriptionResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleResourceListResult); err != nil {
-		return DataCollectionRulesListBySubscriptionResponse{}, err
+		return DataCollectionRulesListBySubscriptionResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -385,7 +393,7 @@ func (client *DataCollectionRulesClient) updateCreateRequest(ctx context.Context
 func (client *DataCollectionRulesClient) updateHandleResponse(resp *http.Response) (DataCollectionRulesUpdateResponse, error) {
 	result := DataCollectionRulesUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionRuleResource); err != nil {
-		return DataCollectionRulesUpdateResponse{}, err
+		return DataCollectionRulesUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

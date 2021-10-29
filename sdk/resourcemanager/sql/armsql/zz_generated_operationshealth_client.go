@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // OperationsHealthClient contains the methods for the OperationsHealth group.
@@ -29,8 +30,15 @@ type OperationsHealthClient struct {
 }
 
 // NewOperationsHealthClient creates a new instance of OperationsHealthClient with the specified values.
-func NewOperationsHealthClient(con *arm.Connection, subscriptionID string) *OperationsHealthClient {
-	return &OperationsHealthClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewOperationsHealthClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *OperationsHealthClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &OperationsHealthClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // ListByLocation - Gets a service operation health status.
@@ -73,7 +81,7 @@ func (client *OperationsHealthClient) listByLocationCreateRequest(ctx context.Co
 func (client *OperationsHealthClient) listByLocationHandleResponse(resp *http.Response) (OperationsHealthListByLocationResponse, error) {
 	result := OperationsHealthListByLocationResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationsHealthListResult); err != nil {
-		return OperationsHealthListByLocationResponse{}, err
+		return OperationsHealthListByLocationResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

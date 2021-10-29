@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // DataWarehouseUserActivitiesClient contains the methods for the DataWarehouseUserActivities group.
@@ -29,8 +30,15 @@ type DataWarehouseUserActivitiesClient struct {
 }
 
 // NewDataWarehouseUserActivitiesClient creates a new instance of DataWarehouseUserActivitiesClient with the specified values.
-func NewDataWarehouseUserActivitiesClient(con *arm.Connection, subscriptionID string) *DataWarehouseUserActivitiesClient {
-	return &DataWarehouseUserActivitiesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDataWarehouseUserActivitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DataWarehouseUserActivitiesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DataWarehouseUserActivitiesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets the user activities of a data warehouse which includes running and suspended queries
@@ -88,7 +96,7 @@ func (client *DataWarehouseUserActivitiesClient) getCreateRequest(ctx context.Co
 func (client *DataWarehouseUserActivitiesClient) getHandleResponse(resp *http.Response) (DataWarehouseUserActivitiesGetResponse, error) {
 	result := DataWarehouseUserActivitiesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataWarehouseUserActivities); err != nil {
-		return DataWarehouseUserActivitiesGetResponse{}, err
+		return DataWarehouseUserActivitiesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -153,7 +161,7 @@ func (client *DataWarehouseUserActivitiesClient) listByDatabaseCreateRequest(ctx
 func (client *DataWarehouseUserActivitiesClient) listByDatabaseHandleResponse(resp *http.Response) (DataWarehouseUserActivitiesListByDatabaseResponse, error) {
 	result := DataWarehouseUserActivitiesListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataWarehouseUserActivitiesListResult); err != nil {
-		return DataWarehouseUserActivitiesListByDatabaseResponse{}, err
+		return DataWarehouseUserActivitiesListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

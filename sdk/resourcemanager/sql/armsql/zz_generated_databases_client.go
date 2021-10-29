@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // DatabasesClient contains the methods for the Databases group.
@@ -30,8 +30,15 @@ type DatabasesClient struct {
 }
 
 // NewDatabasesClient creates a new instance of DatabasesClient with the specified values.
-func NewDatabasesClient(con *arm.Connection, subscriptionID string) *DatabasesClient {
-	return &DatabasesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabasesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DatabasesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates a new database or updates an existing database.
@@ -402,7 +409,7 @@ func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGro
 func (client *DatabasesClient) getHandleResponse(resp *http.Response) (DatabasesGetResponse, error) {
 	result := DatabasesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Database); err != nil {
-		return DatabasesGetResponse{}, err
+		return DatabasesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -546,7 +553,7 @@ func (client *DatabasesClient) listByElasticPoolCreateRequest(ctx context.Contex
 func (client *DatabasesClient) listByElasticPoolHandleResponse(resp *http.Response) (DatabasesListByElasticPoolResponse, error) {
 	result := DatabasesListByElasticPoolResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseListResult); err != nil {
-		return DatabasesListByElasticPoolResponse{}, err
+		return DatabasesListByElasticPoolResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -610,7 +617,7 @@ func (client *DatabasesClient) listByServerCreateRequest(ctx context.Context, re
 func (client *DatabasesClient) listByServerHandleResponse(resp *http.Response) (DatabasesListByServerResponse, error) {
 	result := DatabasesListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseListResult); err != nil {
-		return DatabasesListByServerResponse{}, err
+		return DatabasesListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -671,7 +678,7 @@ func (client *DatabasesClient) listInaccessibleByServerCreateRequest(ctx context
 func (client *DatabasesClient) listInaccessibleByServerHandleResponse(resp *http.Response) (DatabasesListInaccessibleByServerResponse, error) {
 	result := DatabasesListInaccessibleByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseListResult); err != nil {
-		return DatabasesListInaccessibleByServerResponse{}, err
+		return DatabasesListInaccessibleByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -739,7 +746,7 @@ func (client *DatabasesClient) listMetricDefinitionsCreateRequest(ctx context.Co
 func (client *DatabasesClient) listMetricDefinitionsHandleResponse(resp *http.Response) (DatabasesListMetricDefinitionsResponse, error) {
 	result := DatabasesListMetricDefinitionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricDefinitionListResult); err != nil {
-		return DatabasesListMetricDefinitionsResponse{}, err
+		return DatabasesListMetricDefinitionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -808,7 +815,7 @@ func (client *DatabasesClient) listMetricsCreateRequest(ctx context.Context, res
 func (client *DatabasesClient) listMetricsHandleResponse(resp *http.Response) (DatabasesListMetricsResponse, error) {
 	result := DatabasesListMetricsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricListResult); err != nil {
-		return DatabasesListMetricsResponse{}, err
+		return DatabasesListMetricsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

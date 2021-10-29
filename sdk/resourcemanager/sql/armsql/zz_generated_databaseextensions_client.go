@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // DatabaseExtensionsClient contains the methods for the DatabaseExtensions group.
@@ -30,8 +30,15 @@ type DatabaseExtensionsClient struct {
 }
 
 // NewDatabaseExtensionsClient creates a new instance of DatabaseExtensionsClient with the specified values.
-func NewDatabaseExtensionsClient(con *arm.Connection, subscriptionID string) *DatabaseExtensionsClient {
-	return &DatabaseExtensionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewDatabaseExtensionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *DatabaseExtensionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &DatabaseExtensionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Perform a database extension operation, like polybase import
@@ -227,7 +234,7 @@ func (client *DatabaseExtensionsClient) listByDatabaseCreateRequest(ctx context.
 func (client *DatabaseExtensionsClient) listByDatabaseHandleResponse(resp *http.Response) (DatabaseExtensionsListByDatabaseResponse, error) {
 	result := DatabaseExtensionsListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImportExportExtensionsOperationListResult); err != nil {
-		return DatabaseExtensionsListByDatabaseResponse{}, err
+		return DatabaseExtensionsListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

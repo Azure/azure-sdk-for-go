@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ServerAutomaticTuningClient contains the methods for the ServerAutomaticTuning group.
@@ -29,8 +30,15 @@ type ServerAutomaticTuningClient struct {
 }
 
 // NewServerAutomaticTuningClient creates a new instance of ServerAutomaticTuningClient with the specified values.
-func NewServerAutomaticTuningClient(con *arm.Connection, subscriptionID string) *ServerAutomaticTuningClient {
-	return &ServerAutomaticTuningClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewServerAutomaticTuningClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerAutomaticTuningClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ServerAutomaticTuningClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Retrieves server automatic tuning options.
@@ -80,7 +88,7 @@ func (client *ServerAutomaticTuningClient) getCreateRequest(ctx context.Context,
 func (client *ServerAutomaticTuningClient) getHandleResponse(resp *http.Response) (ServerAutomaticTuningGetResponse, error) {
 	result := ServerAutomaticTuningGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerAutomaticTuning); err != nil {
-		return ServerAutomaticTuningGetResponse{}, err
+		return ServerAutomaticTuningGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -144,7 +152,7 @@ func (client *ServerAutomaticTuningClient) updateCreateRequest(ctx context.Conte
 func (client *ServerAutomaticTuningClient) updateHandleResponse(resp *http.Response) (ServerAutomaticTuningUpdateResponse, error) {
 	result := ServerAutomaticTuningUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerAutomaticTuning); err != nil {
-		return ServerAutomaticTuningUpdateResponse{}, err
+		return ServerAutomaticTuningUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

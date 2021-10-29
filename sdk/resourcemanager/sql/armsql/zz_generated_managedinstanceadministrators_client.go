@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ManagedInstanceAdministratorsClient contains the methods for the ManagedInstanceAdministrators group.
@@ -30,8 +30,15 @@ type ManagedInstanceAdministratorsClient struct {
 }
 
 // NewManagedInstanceAdministratorsClient creates a new instance of ManagedInstanceAdministratorsClient with the specified values.
-func NewManagedInstanceAdministratorsClient(con *arm.Connection, subscriptionID string) *ManagedInstanceAdministratorsClient {
-	return &ManagedInstanceAdministratorsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewManagedInstanceAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedInstanceAdministratorsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagedInstanceAdministratorsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Creates or updates a managed instance administrator.
@@ -242,7 +249,7 @@ func (client *ManagedInstanceAdministratorsClient) getCreateRequest(ctx context.
 func (client *ManagedInstanceAdministratorsClient) getHandleResponse(resp *http.Response) (ManagedInstanceAdministratorsGetResponse, error) {
 	result := ManagedInstanceAdministratorsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceAdministrator); err != nil {
-		return ManagedInstanceAdministratorsGetResponse{}, err
+		return ManagedInstanceAdministratorsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -303,7 +310,7 @@ func (client *ManagedInstanceAdministratorsClient) listByInstanceCreateRequest(c
 func (client *ManagedInstanceAdministratorsClient) listByInstanceHandleResponse(resp *http.Response) (ManagedInstanceAdministratorsListByInstanceResponse, error) {
 	result := ManagedInstanceAdministratorsListByInstanceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceAdministratorListResult); err != nil {
-		return ManagedInstanceAdministratorsListByInstanceResponse{}, err
+		return ManagedInstanceAdministratorsListByInstanceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

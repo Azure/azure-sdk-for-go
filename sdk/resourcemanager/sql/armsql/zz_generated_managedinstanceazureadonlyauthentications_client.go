@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ManagedInstanceAzureADOnlyAuthenticationsClient contains the methods for the ManagedInstanceAzureADOnlyAuthentications group.
@@ -30,8 +30,15 @@ type ManagedInstanceAzureADOnlyAuthenticationsClient struct {
 }
 
 // NewManagedInstanceAzureADOnlyAuthenticationsClient creates a new instance of ManagedInstanceAzureADOnlyAuthenticationsClient with the specified values.
-func NewManagedInstanceAzureADOnlyAuthenticationsClient(con *arm.Connection, subscriptionID string) *ManagedInstanceAzureADOnlyAuthenticationsClient {
-	return &ManagedInstanceAzureADOnlyAuthenticationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewManagedInstanceAzureADOnlyAuthenticationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedInstanceAzureADOnlyAuthenticationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagedInstanceAzureADOnlyAuthenticationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreateOrUpdate - Sets Server Active Directory only authentication property or updates an existing server Active Directory only authentication property.
@@ -242,7 +249,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) getCreateRequest(
 func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) getHandleResponse(resp *http.Response) (ManagedInstanceAzureADOnlyAuthenticationsGetResponse, error) {
 	result := ManagedInstanceAzureADOnlyAuthenticationsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceAzureADOnlyAuthentication); err != nil {
-		return ManagedInstanceAzureADOnlyAuthenticationsGetResponse{}, err
+		return ManagedInstanceAzureADOnlyAuthenticationsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -303,7 +310,7 @@ func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) listByInstanceCre
 func (client *ManagedInstanceAzureADOnlyAuthenticationsClient) listByInstanceHandleResponse(resp *http.Response) (ManagedInstanceAzureADOnlyAuthenticationsListByInstanceResponse, error) {
 	result := ManagedInstanceAzureADOnlyAuthenticationsListByInstanceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceAzureADOnlyAuthListResult); err != nil {
-		return ManagedInstanceAzureADOnlyAuthenticationsListByInstanceResponse{}, err
+		return ManagedInstanceAzureADOnlyAuthenticationsListByInstanceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

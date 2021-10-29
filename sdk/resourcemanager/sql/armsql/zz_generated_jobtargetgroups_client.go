@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // JobTargetGroupsClient contains the methods for the JobTargetGroups group.
@@ -29,8 +30,15 @@ type JobTargetGroupsClient struct {
 }
 
 // NewJobTargetGroupsClient creates a new instance of JobTargetGroupsClient with the specified values.
-func NewJobTargetGroupsClient(con *arm.Connection, subscriptionID string) *JobTargetGroupsClient {
-	return &JobTargetGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewJobTargetGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *JobTargetGroupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &JobTargetGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates a target group.
@@ -88,7 +96,7 @@ func (client *JobTargetGroupsClient) createOrUpdateCreateRequest(ctx context.Con
 func (client *JobTargetGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (JobTargetGroupsCreateOrUpdateResponse, error) {
 	result := JobTargetGroupsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobTargetGroup); err != nil {
-		return JobTargetGroupsCreateOrUpdateResponse{}, err
+		return JobTargetGroupsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -222,7 +230,7 @@ func (client *JobTargetGroupsClient) getCreateRequest(ctx context.Context, resou
 func (client *JobTargetGroupsClient) getHandleResponse(resp *http.Response) (JobTargetGroupsGetResponse, error) {
 	result := JobTargetGroupsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobTargetGroup); err != nil {
-		return JobTargetGroupsGetResponse{}, err
+		return JobTargetGroupsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -287,7 +295,7 @@ func (client *JobTargetGroupsClient) listByAgentCreateRequest(ctx context.Contex
 func (client *JobTargetGroupsClient) listByAgentHandleResponse(resp *http.Response) (JobTargetGroupsListByAgentResponse, error) {
 	result := JobTargetGroupsListByAgentResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobTargetGroupListResult); err != nil {
-		return JobTargetGroupsListByAgentResponse{}, err
+		return JobTargetGroupsListByAgentResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

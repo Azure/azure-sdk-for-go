@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ServerDNSAliasesClient contains the methods for the ServerDNSAliases group.
@@ -30,8 +30,15 @@ type ServerDNSAliasesClient struct {
 }
 
 // NewServerDNSAliasesClient creates a new instance of ServerDNSAliasesClient with the specified values.
-func NewServerDNSAliasesClient(con *arm.Connection, subscriptionID string) *ServerDNSAliasesClient {
-	return &ServerDNSAliasesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewServerDNSAliasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ServerDNSAliasesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ServerDNSAliasesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginAcquire - Acquires server DNS alias from another server.
@@ -321,7 +328,7 @@ func (client *ServerDNSAliasesClient) getCreateRequest(ctx context.Context, reso
 func (client *ServerDNSAliasesClient) getHandleResponse(resp *http.Response) (ServerDNSAliasesGetResponse, error) {
 	result := ServerDNSAliasesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerDNSAlias); err != nil {
-		return ServerDNSAliasesGetResponse{}, err
+		return ServerDNSAliasesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -382,7 +389,7 @@ func (client *ServerDNSAliasesClient) listByServerCreateRequest(ctx context.Cont
 func (client *ServerDNSAliasesClient) listByServerHandleResponse(resp *http.Response) (ServerDNSAliasesListByServerResponse, error) {
 	result := ServerDNSAliasesListByServerResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerDNSAliasListResult); err != nil {
-		return ServerDNSAliasesListByServerResponse{}, err
+		return ServerDNSAliasesListByServerResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

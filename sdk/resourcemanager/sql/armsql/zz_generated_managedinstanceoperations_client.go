@@ -11,13 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ManagedInstanceOperationsClient contains the methods for the ManagedInstanceOperations group.
@@ -29,8 +30,15 @@ type ManagedInstanceOperationsClient struct {
 }
 
 // NewManagedInstanceOperationsClient creates a new instance of ManagedInstanceOperationsClient with the specified values.
-func NewManagedInstanceOperationsClient(con *arm.Connection, subscriptionID string) *ManagedInstanceOperationsClient {
-	return &ManagedInstanceOperationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewManagedInstanceOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ManagedInstanceOperationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ManagedInstanceOperationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Cancel - Cancels the asynchronous operation on the managed instance.
@@ -136,7 +144,7 @@ func (client *ManagedInstanceOperationsClient) getCreateRequest(ctx context.Cont
 func (client *ManagedInstanceOperationsClient) getHandleResponse(resp *http.Response) (ManagedInstanceOperationsGetResponse, error) {
 	result := ManagedInstanceOperationsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceOperation); err != nil {
-		return ManagedInstanceOperationsGetResponse{}, err
+		return ManagedInstanceOperationsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -197,7 +205,7 @@ func (client *ManagedInstanceOperationsClient) listByManagedInstanceCreateReques
 func (client *ManagedInstanceOperationsClient) listByManagedInstanceHandleResponse(resp *http.Response) (ManagedInstanceOperationsListByManagedInstanceResponse, error) {
 	result := ManagedInstanceOperationsListByManagedInstanceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceOperationListResult); err != nil {
-		return ManagedInstanceOperationsListByManagedInstanceResponse{}, err
+		return ManagedInstanceOperationsListByManagedInstanceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

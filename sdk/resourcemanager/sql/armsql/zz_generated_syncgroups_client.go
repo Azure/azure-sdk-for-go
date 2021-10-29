@@ -11,14 +11,14 @@ package armsql
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // SyncGroupsClient contains the methods for the SyncGroups group.
@@ -30,8 +30,15 @@ type SyncGroupsClient struct {
 }
 
 // NewSyncGroupsClient creates a new instance of SyncGroupsClient with the specified values.
-func NewSyncGroupsClient(con *arm.Connection, subscriptionID string) *SyncGroupsClient {
-	return &SyncGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSyncGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SyncGroupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SyncGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CancelSync - Cancels a sync group synchronization.
@@ -316,7 +323,7 @@ func (client *SyncGroupsClient) getCreateRequest(ctx context.Context, resourceGr
 func (client *SyncGroupsClient) getHandleResponse(resp *http.Response) (SyncGroupsGetResponse, error) {
 	result := SyncGroupsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncGroup); err != nil {
-		return SyncGroupsGetResponse{}, err
+		return SyncGroupsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -381,7 +388,7 @@ func (client *SyncGroupsClient) listByDatabaseCreateRequest(ctx context.Context,
 func (client *SyncGroupsClient) listByDatabaseHandleResponse(resp *http.Response) (SyncGroupsListByDatabaseResponse, error) {
 	result := SyncGroupsListByDatabaseResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncGroupListResult); err != nil {
-		return SyncGroupsListByDatabaseResponse{}, err
+		return SyncGroupsListByDatabaseResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -450,7 +457,7 @@ func (client *SyncGroupsClient) listHubSchemasCreateRequest(ctx context.Context,
 func (client *SyncGroupsClient) listHubSchemasHandleResponse(resp *http.Response) (SyncGroupsListHubSchemasResponse, error) {
 	result := SyncGroupsListHubSchemasResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncFullSchemaPropertiesListResult); err != nil {
-		return SyncGroupsListHubSchemasResponse{}, err
+		return SyncGroupsListHubSchemasResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -525,7 +532,7 @@ func (client *SyncGroupsClient) listLogsCreateRequest(ctx context.Context, resou
 func (client *SyncGroupsClient) listLogsHandleResponse(resp *http.Response) (SyncGroupsListLogsResponse, error) {
 	result := SyncGroupsListLogsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncGroupLogListResult); err != nil {
-		return SyncGroupsListLogsResponse{}, err
+		return SyncGroupsListLogsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -582,7 +589,7 @@ func (client *SyncGroupsClient) listSyncDatabaseIDsCreateRequest(ctx context.Con
 func (client *SyncGroupsClient) listSyncDatabaseIDsHandleResponse(resp *http.Response) (SyncGroupsListSyncDatabaseIDsResponse, error) {
 	result := SyncGroupsListSyncDatabaseIDsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncDatabaseIDListResult); err != nil {
-		return SyncGroupsListSyncDatabaseIDsResponse{}, err
+		return SyncGroupsListSyncDatabaseIDsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // SubscriptionsClient contains the methods for the Subscriptions group.
@@ -31,8 +32,15 @@ type SubscriptionsClient struct {
 }
 
 // NewSubscriptionsClient creates a new instance of SubscriptionsClient with the specified values.
-func NewSubscriptionsClient(con *arm.Connection, subscriptionID string) *SubscriptionsClient {
-	return &SubscriptionsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *SubscriptionsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SubscriptionsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates a topic subscription.
@@ -90,7 +98,7 @@ func (client *SubscriptionsClient) createOrUpdateCreateRequest(ctx context.Conte
 func (client *SubscriptionsClient) createOrUpdateHandleResponse(resp *http.Response) (SubscriptionsCreateOrUpdateResponse, error) {
 	result := SubscriptionsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBSubscription); err != nil {
-		return SubscriptionsCreateOrUpdateResponse{}, err
+		return SubscriptionsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -227,7 +235,7 @@ func (client *SubscriptionsClient) getCreateRequest(ctx context.Context, resourc
 func (client *SubscriptionsClient) getHandleResponse(resp *http.Response) (SubscriptionsGetResponse, error) {
 	result := SubscriptionsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBSubscription); err != nil {
-		return SubscriptionsGetResponse{}, err
+		return SubscriptionsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -299,7 +307,7 @@ func (client *SubscriptionsClient) listByTopicCreateRequest(ctx context.Context,
 func (client *SubscriptionsClient) listByTopicHandleResponse(resp *http.Response) (SubscriptionsListByTopicResponse, error) {
 	result := SubscriptionsListByTopicResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBSubscriptionListResult); err != nil {
-		return SubscriptionsListByTopicResponse{}, err
+		return SubscriptionsListByTopicResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

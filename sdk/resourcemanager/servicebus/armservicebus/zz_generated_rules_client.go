@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RulesClient contains the methods for the Rules group.
@@ -31,8 +32,15 @@ type RulesClient struct {
 }
 
 // NewRulesClient creates a new instance of RulesClient with the specified values.
-func NewRulesClient(con *arm.Connection, subscriptionID string) *RulesClient {
-	return &RulesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RulesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates a new rule and updates an existing rule
@@ -94,7 +102,7 @@ func (client *RulesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 func (client *RulesClient) createOrUpdateHandleResponse(resp *http.Response) (RulesCreateOrUpdateResponse, error) {
 	result := RulesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Rule); err != nil {
-		return RulesCreateOrUpdateResponse{}, err
+		return RulesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -239,7 +247,7 @@ func (client *RulesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 func (client *RulesClient) getHandleResponse(resp *http.Response) (RulesGetResponse, error) {
 	result := RulesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Rule); err != nil {
-		return RulesGetResponse{}, err
+		return RulesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -315,7 +323,7 @@ func (client *RulesClient) listBySubscriptionsCreateRequest(ctx context.Context,
 func (client *RulesClient) listBySubscriptionsHandleResponse(resp *http.Response) (RulesListBySubscriptionsResponse, error) {
 	result := RulesListBySubscriptionsResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RuleListResult); err != nil {
-		return RulesListBySubscriptionsResponse{}, err
+		return RulesListBySubscriptionsResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

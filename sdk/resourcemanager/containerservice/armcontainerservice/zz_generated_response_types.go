@@ -10,10 +10,9 @@ package armcontainerservice
 
 import (
 	"context"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"net/http"
 	"time"
-
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 )
 
 // AgentPoolsCreateOrUpdatePollerResponse contains the response from method AgentPools.CreateOrUpdate.
@@ -26,6 +25,8 @@ type AgentPoolsCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l AgentPoolsCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AgentPoolsCreateOrUpdateResponse, error) {
 	respType := AgentPoolsCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AgentPool)
@@ -76,6 +77,8 @@ type AgentPoolsDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l AgentPoolsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AgentPoolsDeleteResponse, error) {
 	respType := AgentPoolsDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -168,6 +171,8 @@ type AgentPoolsUpgradeNodeImageVersionPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l AgentPoolsUpgradeNodeImageVersionPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (AgentPoolsUpgradeNodeImageVersionResponse, error) {
 	respType := AgentPoolsUpgradeNodeImageVersionResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.AgentPool)
@@ -260,6 +265,8 @@ type ManagedClustersCreateOrUpdatePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ManagedClustersCreateOrUpdatePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersCreateOrUpdateResponse, error) {
 	respType := ManagedClustersCreateOrUpdateResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ManagedCluster)
@@ -310,6 +317,8 @@ type ManagedClustersDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ManagedClustersDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersDeleteResponse, error) {
 	respType := ManagedClustersDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -486,6 +495,8 @@ type ManagedClustersResetAADProfilePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ManagedClustersResetAADProfilePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersResetAADProfileResponse, error) {
 	respType := ManagedClustersResetAADProfileResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -530,6 +541,8 @@ type ManagedClustersResetServicePrincipalProfilePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ManagedClustersResetServicePrincipalProfilePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersResetServicePrincipalProfileResponse, error) {
 	respType := ManagedClustersResetServicePrincipalProfileResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -574,6 +587,8 @@ type ManagedClustersRotateClusterCertificatesPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ManagedClustersRotateClusterCertificatesPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersRotateClusterCertificatesResponse, error) {
 	respType := ManagedClustersRotateClusterCertificatesResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -618,6 +633,8 @@ type ManagedClustersRunCommandPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ManagedClustersRunCommandPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersRunCommandResponse, error) {
 	respType := ManagedClustersRunCommandResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.RunCommandResult)
@@ -668,6 +685,8 @@ type ManagedClustersStartPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ManagedClustersStartPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersStartResponse, error) {
 	respType := ManagedClustersStartResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -712,6 +731,8 @@ type ManagedClustersStopPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ManagedClustersStopPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersStopResponse, error) {
 	respType := ManagedClustersStopResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)
@@ -756,6 +777,8 @@ type ManagedClustersUpdateTagsPollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l ManagedClustersUpdateTagsPollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (ManagedClustersUpdateTagsResponse, error) {
 	respType := ManagedClustersUpdateTagsResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, &respType.ManagedCluster)
@@ -818,6 +841,8 @@ type PrivateEndpointConnectionsDeletePollerResponse struct {
 }
 
 // PollUntilDone will poll the service endpoint until a terminal state is reached or an error is received.
+// freq: the time to wait between intervals in absence of a Retry-After header. Allowed minimum is one second.
+// A good starting value is 30 seconds. Note that some resources might benefit from a different value.
 func (l PrivateEndpointConnectionsDeletePollerResponse) PollUntilDone(ctx context.Context, freq time.Duration) (PrivateEndpointConnectionsDeleteResponse, error) {
 	respType := PrivateEndpointConnectionsDeleteResponse{}
 	resp, err := l.Poller.pt.PollUntilDone(ctx, freq, nil)

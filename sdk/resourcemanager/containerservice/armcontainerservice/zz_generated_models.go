@@ -10,11 +10,10 @@ package armcontainerservice
 
 import (
 	"encoding/json"
-	"reflect"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"reflect"
+	"time"
 )
 
 // AccessProfile - Profile for enabling a user to access a managed cluster.
@@ -269,11 +268,11 @@ type CommandResultProperties struct {
 func (c CommandResultProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
 	populate(objectMap, "exitCode", c.ExitCode)
-	populate(objectMap, "finishedAt", (*timeRFC3339)(c.FinishedAt))
+	populateTimeRFC3339(objectMap, "finishedAt", c.FinishedAt)
 	populate(objectMap, "logs", c.Logs)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
 	populate(objectMap, "reason", c.Reason)
-	populate(objectMap, "startedAt", (*timeRFC3339)(c.StartedAt))
+	populateTimeRFC3339(objectMap, "startedAt", c.StartedAt)
 	return json.Marshal(objectMap)
 }
 
@@ -290,9 +289,7 @@ func (c *CommandResultProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &c.ExitCode)
 			delete(rawMsg, key)
 		case "finishedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			c.FinishedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &c.FinishedAt)
 			delete(rawMsg, key)
 		case "logs":
 			err = unpopulate(val, &c.Logs)
@@ -304,9 +301,7 @@ func (c *CommandResultProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &c.Reason)
 			delete(rawMsg, key)
 		case "startedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			c.StartedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &c.StartedAt)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -822,9 +817,9 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// The list of Availability zones to use for nodes. This can only be specified if the AgentPoolType property is 'VirtualMachineScaleSets'.
 	AvailabilityZones []*string `json:"availabilityZones,omitempty"`
 
-	// Desired Number of agents (VMs) specified to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user pools and in
-	// the range of 1 to 1000 (inclusive) for system
-	// pools. The default value is 1.
+	// Number of agents (VMs) to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user pools and in the range of 1 to
+	// 1000 (inclusive) for system pools. The default
+	// value is 1.
 	Count *int32 `json:"count,omitempty"`
 
 	// CreationData to be used to specify the source Snapshot ID if the node pool will be created/upgraded using a snapshot.
@@ -907,6 +902,11 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}
 	PodSubnetID *string `json:"podSubnetID,omitempty"`
 
+	// When an Agent Pool is first created it is initially Running. The Agent Pool can be stopped by setting this field to Stopped. A stopped Agent Pool stops
+	// all of its VMs and does not accrue billing
+	// charges. An Agent Pool can only be stopped if it is Running and provisioning state is Succeeded
+	PowerState *PowerState `json:"powerState,omitempty"`
+
 	// The ID for Proximity Placement Group.
 	ProximityPlacementGroupID *string `json:"proximityPlacementGroupID,omitempty"`
 
@@ -948,9 +948,6 @@ type ManagedClusterAgentPoolProfileProperties struct {
 
 	// READ-ONLY; The version of node image
 	NodeImageVersion *string `json:"nodeImageVersion,omitempty" azure:"ro"`
-
-	// READ-ONLY; Describes whether the Agent Pool is Running or Stopped
-	PowerState *PowerState `json:"powerState,omitempty" azure:"ro"`
 
 	// READ-ONLY; The current deployment or provisioning state.
 	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
@@ -1602,6 +1599,9 @@ type ManagedClusterWindowsProfile struct {
 	// For more details on CSI proxy, see the CSI proxy GitHub repo [https://github.com/kubernetes-csi/csi-proxy].
 	EnableCSIProxy *bool `json:"enableCSIProxy,omitempty"`
 
+	// The Windows gMSA Profile in the Managed Cluster.
+	GmsaProfile *WindowsGmsaProfile `json:"gmsaProfile,omitempty"`
+
 	// The license type to use for Windows VMs. See Azure Hybrid User Benefits [https://azure.microsoft.com/pricing/hybrid-benefit/faq/] for more details.
 	LicenseType *LicenseType `json:"licenseType,omitempty"`
 }
@@ -2076,6 +2076,24 @@ type SnapshotProperties struct {
 
 	// The type of a snapshot. The default is NodePool.
 	SnapshotType *SnapshotType `json:"snapshotType,omitempty"`
+
+	// READ-ONLY; Whether to use a FIPS-enabled OS.
+	EnableFIPS *bool `json:"enableFIPS,omitempty" azure:"ro"`
+
+	// READ-ONLY; The version of Kubernetes.
+	KubernetesVersion *string `json:"kubernetesVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY; The version of node image.
+	NodeImageVersion *string `json:"nodeImageVersion,omitempty" azure:"ro"`
+
+	// READ-ONLY; Specifies an OS SKU. This value must not be specified if OSType is Windows.
+	OSSKU *OSSKU `json:"osSku,omitempty" azure:"ro"`
+
+	// READ-ONLY; The operating system type. The default is Linux.
+	OSType *OSType `json:"osType,omitempty" azure:"ro"`
+
+	// READ-ONLY; The size of the VM.
+	VMSize *string `json:"vmSize,omitempty" azure:"ro"`
 }
 
 // SnapshotsCreateOrUpdateOptions contains the optional parameters for the Snapshots.CreateOrUpdate method.
@@ -2231,10 +2249,10 @@ type SystemData struct {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdAt", (*timeRFC3339)(s.CreatedAt))
+	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populate(objectMap, "lastModifiedAt", (*timeRFC3339)(s.LastModifiedAt))
+	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -2250,9 +2268,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.CreatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, &s.CreatedBy)
@@ -2261,9 +2277,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.LastModifiedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, &s.LastModifiedBy)
@@ -2323,8 +2337,8 @@ type TimeSpan struct {
 // MarshalJSON implements the json.Marshaller interface for type TimeSpan.
 func (t TimeSpan) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "end", (*timeRFC3339)(t.End))
-	populate(objectMap, "start", (*timeRFC3339)(t.Start))
+	populateTimeRFC3339(objectMap, "end", t.End)
+	populateTimeRFC3339(objectMap, "start", t.Start)
 	return json.Marshal(objectMap)
 }
 
@@ -2338,14 +2352,10 @@ func (t *TimeSpan) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "end":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			t.End = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &t.End)
 			delete(rawMsg, key)
 		case "start":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			t.Start = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &t.Start)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2365,6 +2375,20 @@ type UserAssignedIdentity struct {
 
 	// The resource ID of the user assigned identity.
 	ResourceID *string `json:"resourceId,omitempty"`
+}
+
+// WindowsGmsaProfile - Windows gMSA Profile in the managed cluster.
+type WindowsGmsaProfile struct {
+	// Specifies the DNS server for Windows gMSA.
+	// Set it to empty if you have configured the DNS server in the vnet which is used to create the managed cluster.
+	DNSServer *string `json:"dnsServer,omitempty"`
+
+	// Specifies whether to enable Windows gMSA in the managed cluster.
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Specifies the root domain name for Windows gMSA.
+	// Set it to empty if you have configured the DNS server in the vnet which is used to create the managed cluster.
+	RootDomainName *string `json:"rootDomainName,omitempty"`
 }
 
 func populate(m map[string]interface{}, k string, v interface{}) {

@@ -39,10 +39,10 @@ func TestMain(m *testing.M) {
 		}
 
 		vaultUrl := os.Getenv("AZKEYS_KEYVAULT_URL")
-		// err = recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
-		// if err != nil {
-		// 	panic(err)
-		// }
+		err = recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
+		if err != nil {
+			panic(err)
+		}
 
 		err = recording.AddBodyKeySanitizer("$.key.kid", fakeKvURL, vaultUrl, nil)
 		if err != nil {

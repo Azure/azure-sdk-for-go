@@ -93,9 +93,9 @@ func lookupEnvVar(s string) string {
 
 func getCredential(t *testing.T) azcore.TokenCredential {
 	if recording.GetRecordMode() != "playback" {
-		tenantId := lookupEnvVar("KEYVAULT_TENANT_ID")
-		clientId := lookupEnvVar("KEYVAULT_CLIENT_ID")
-		clientSecret := lookupEnvVar("KEYVAULT_CLIENT_SECRET")
+		tenantId := lookupEnvVar("AZKEYS_TENANT_ID")
+		clientId := lookupEnvVar("AZKEYS_CLIENT_ID")
+		clientSecret := lookupEnvVar("AZKEYS_CLIENT_SECRET")
 		cred, err := azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, nil)
 		require.NoError(t, err)
 		return cred

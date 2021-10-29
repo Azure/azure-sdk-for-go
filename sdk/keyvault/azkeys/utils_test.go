@@ -33,7 +33,7 @@ var enableHSM = false
 func TestMain(m *testing.M) {
 	// Initialize
 	if recording.GetRecordMode() == "record" {
-		vaultUrl := os.Getenv("AZURE_KEYVAULT_URL")
+		vaultUrl := os.Getenv("AZKEYS_KEYVAULT_URL")
 		err := recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
 		if err != nil {
 			panic(err)
@@ -44,7 +44,7 @@ func TestMain(m *testing.M) {
 			panic(err)
 		}
 
-		tenantID := os.Getenv("KEYVAULT_TENANT_ID")
+		tenantID := os.Getenv("AZKEYS_TENANT_ID")
 		err = recording.AddHeaderRegexSanitizer("WWW-Authenticate", tenantID, "00000000-0000-0000-0000-000000000000", nil)
 		if err != nil {
 			panic(err)
@@ -183,9 +183,9 @@ func createClient(t *testing.T, testType string) (*Client, error) {
 
 	var cred azcore.TokenCredential
 	if recording.GetRecordMode() != "playback" {
-		tenantId := lookupEnvVar("KEYVAULT_TENANT_ID")
-		clientId := lookupEnvVar("KEYVAULT_CLIENT_ID")
-		clientSecret := lookupEnvVar("KEYVAULT_CLIENT_SECRET")
+		tenantId := lookupEnvVar("AZKEYS_TENANT_ID")
+		clientId := lookupEnvVar("AZKEYS_CLIENT_ID")
+		clientSecret := lookupEnvVar("AZKEYS_CLIENT_SECRET")
 		cred, err = azidentity.NewClientSecretCredential(tenantId, clientId, clientSecret, credOptions)
 		require.NoError(t, err)
 	} else {

@@ -12,14 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ConnectedRegistriesClient contains the methods for the ConnectedRegistries group.
@@ -31,8 +31,15 @@ type ConnectedRegistriesClient struct {
 }
 
 // NewConnectedRegistriesClient creates a new instance of ConnectedRegistriesClient with the specified values.
-func NewConnectedRegistriesClient(con *arm.Connection, subscriptionID string) *ConnectedRegistriesClient {
-	return &ConnectedRegistriesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewConnectedRegistriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConnectedRegistriesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ConnectedRegistriesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCreate - Creates a connected registry for a container registry with the specified parameters.
@@ -96,7 +103,7 @@ func (client *ConnectedRegistriesClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, connectedRegistryCreateParameters)
@@ -176,7 +183,7 @@ func (client *ConnectedRegistriesClient) deactivateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -256,7 +263,7 @@ func (client *ConnectedRegistriesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -316,7 +323,7 @@ func (client *ConnectedRegistriesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -326,7 +333,7 @@ func (client *ConnectedRegistriesClient) getCreateRequest(ctx context.Context, r
 func (client *ConnectedRegistriesClient) getHandleResponse(resp *http.Response) (ConnectedRegistriesGetResponse, error) {
 	result := ConnectedRegistriesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectedRegistry); err != nil {
-		return ConnectedRegistriesGetResponse{}, err
+		return ConnectedRegistriesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -378,7 +385,7 @@ func (client *ConnectedRegistriesClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
@@ -391,7 +398,7 @@ func (client *ConnectedRegistriesClient) listCreateRequest(ctx context.Context, 
 func (client *ConnectedRegistriesClient) listHandleResponse(resp *http.Response) (ConnectedRegistriesListResponse, error) {
 	result := ConnectedRegistriesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectedRegistryListResult); err != nil {
-		return ConnectedRegistriesListResponse{}, err
+		return ConnectedRegistriesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -470,7 +477,7 @@ func (client *ConnectedRegistriesClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-08-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, connectedRegistryUpdateParameters)

@@ -12,15 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // RunsClient contains the methods for the Runs group.
@@ -32,8 +32,15 @@ type RunsClient struct {
 }
 
 // NewRunsClient creates a new instance of RunsClient with the specified values.
-func NewRunsClient(con *arm.Connection, subscriptionID string) *RunsClient {
-	return &RunsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RunsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RunsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // BeginCancel - Cancel an existing run.
@@ -167,7 +174,7 @@ func (client *RunsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 func (client *RunsClient) getHandleResponse(resp *http.Response) (RunsGetResponse, error) {
 	result := RunsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Run); err != nil {
-		return RunsGetResponse{}, err
+		return RunsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -236,7 +243,7 @@ func (client *RunsClient) getLogSasURLCreateRequest(ctx context.Context, resourc
 func (client *RunsClient) getLogSasURLHandleResponse(resp *http.Response) (RunsGetLogSasURLResponse, error) {
 	result := RunsGetLogSasURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunGetLogResult); err != nil {
-		return RunsGetLogSasURLResponse{}, err
+		return RunsGetLogSasURLResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -304,7 +311,7 @@ func (client *RunsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 func (client *RunsClient) listHandleResponse(resp *http.Response) (RunsListResponse, error) {
 	result := RunsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunListResult); err != nil {
-		return RunsListResponse{}, err
+		return RunsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

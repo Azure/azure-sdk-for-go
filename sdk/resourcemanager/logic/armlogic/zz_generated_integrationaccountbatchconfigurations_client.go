@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IntegrationAccountBatchConfigurationsClient contains the methods for the IntegrationAccountBatchConfigurations group.
@@ -30,8 +31,15 @@ type IntegrationAccountBatchConfigurationsClient struct {
 }
 
 // NewIntegrationAccountBatchConfigurationsClient creates a new instance of IntegrationAccountBatchConfigurationsClient with the specified values.
-func NewIntegrationAccountBatchConfigurationsClient(con *arm.Connection, subscriptionID string) *IntegrationAccountBatchConfigurationsClient {
-	return &IntegrationAccountBatchConfigurationsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIntegrationAccountBatchConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationAccountBatchConfigurationsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IntegrationAccountBatchConfigurationsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Create or update a batch configuration for an integration account.
@@ -85,7 +93,7 @@ func (client *IntegrationAccountBatchConfigurationsClient) createOrUpdateCreateR
 func (client *IntegrationAccountBatchConfigurationsClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountBatchConfigurationsCreateOrUpdateResponse, error) {
 	result := IntegrationAccountBatchConfigurationsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BatchConfiguration); err != nil {
-		return IntegrationAccountBatchConfigurationsCreateOrUpdateResponse{}, err
+		return IntegrationAccountBatchConfigurationsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -214,7 +222,7 @@ func (client *IntegrationAccountBatchConfigurationsClient) getCreateRequest(ctx 
 func (client *IntegrationAccountBatchConfigurationsClient) getHandleResponse(resp *http.Response) (IntegrationAccountBatchConfigurationsGetResponse, error) {
 	result := IntegrationAccountBatchConfigurationsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BatchConfiguration); err != nil {
-		return IntegrationAccountBatchConfigurationsGetResponse{}, err
+		return IntegrationAccountBatchConfigurationsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -279,7 +287,7 @@ func (client *IntegrationAccountBatchConfigurationsClient) listCreateRequest(ctx
 func (client *IntegrationAccountBatchConfigurationsClient) listHandleResponse(resp *http.Response) (IntegrationAccountBatchConfigurationsListResponse, error) {
 	result := IntegrationAccountBatchConfigurationsListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BatchConfigurationCollection); err != nil {
-		return IntegrationAccountBatchConfigurationsListResponse{}, err
+		return IntegrationAccountBatchConfigurationsListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // WorkflowTriggerHistoriesClient contains the methods for the WorkflowTriggerHistories group.
@@ -31,8 +32,15 @@ type WorkflowTriggerHistoriesClient struct {
 }
 
 // NewWorkflowTriggerHistoriesClient creates a new instance of WorkflowTriggerHistoriesClient with the specified values.
-func NewWorkflowTriggerHistoriesClient(con *arm.Connection, subscriptionID string) *WorkflowTriggerHistoriesClient {
-	return &WorkflowTriggerHistoriesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewWorkflowTriggerHistoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *WorkflowTriggerHistoriesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &WorkflowTriggerHistoriesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Get - Gets a workflow trigger history.
@@ -90,7 +98,7 @@ func (client *WorkflowTriggerHistoriesClient) getCreateRequest(ctx context.Conte
 func (client *WorkflowTriggerHistoriesClient) getHandleResponse(resp *http.Response) (WorkflowTriggerHistoriesGetResponse, error) {
 	result := WorkflowTriggerHistoriesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerHistory); err != nil {
-		return WorkflowTriggerHistoriesGetResponse{}, err
+		return WorkflowTriggerHistoriesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -162,7 +170,7 @@ func (client *WorkflowTriggerHistoriesClient) listCreateRequest(ctx context.Cont
 func (client *WorkflowTriggerHistoriesClient) listHandleResponse(resp *http.Response) (WorkflowTriggerHistoriesListResponse, error) {
 	result := WorkflowTriggerHistoriesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerHistoryListResult); err != nil {
-		return WorkflowTriggerHistoriesListResponse{}, err
+		return WorkflowTriggerHistoriesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

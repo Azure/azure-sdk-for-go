@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // IntegrationAccountSchemasClient contains the methods for the IntegrationAccountSchemas group.
@@ -31,8 +32,15 @@ type IntegrationAccountSchemasClient struct {
 }
 
 // NewIntegrationAccountSchemasClient creates a new instance of IntegrationAccountSchemasClient with the specified values.
-func NewIntegrationAccountSchemasClient(con *arm.Connection, subscriptionID string) *IntegrationAccountSchemasClient {
-	return &IntegrationAccountSchemasClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewIntegrationAccountSchemasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *IntegrationAccountSchemasClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &IntegrationAccountSchemasClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates an integration account schema.
@@ -86,7 +94,7 @@ func (client *IntegrationAccountSchemasClient) createOrUpdateCreateRequest(ctx c
 func (client *IntegrationAccountSchemasClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationAccountSchemasCreateOrUpdateResponse, error) {
 	result := IntegrationAccountSchemasCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountSchema); err != nil {
-		return IntegrationAccountSchemasCreateOrUpdateResponse{}, err
+		return IntegrationAccountSchemasCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -215,7 +223,7 @@ func (client *IntegrationAccountSchemasClient) getCreateRequest(ctx context.Cont
 func (client *IntegrationAccountSchemasClient) getHandleResponse(resp *http.Response) (IntegrationAccountSchemasGetResponse, error) {
 	result := IntegrationAccountSchemasGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountSchema); err != nil {
-		return IntegrationAccountSchemasGetResponse{}, err
+		return IntegrationAccountSchemasGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -283,7 +291,7 @@ func (client *IntegrationAccountSchemasClient) listCreateRequest(ctx context.Con
 func (client *IntegrationAccountSchemasClient) listHandleResponse(resp *http.Response) (IntegrationAccountSchemasListResponse, error) {
 	result := IntegrationAccountSchemasListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationAccountSchemaListResult); err != nil {
-		return IntegrationAccountSchemasListResponse{}, err
+		return IntegrationAccountSchemasListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -352,7 +360,7 @@ func (client *IntegrationAccountSchemasClient) listContentCallbackURLCreateReque
 func (client *IntegrationAccountSchemasClient) listContentCallbackURLHandleResponse(resp *http.Response) (IntegrationAccountSchemasListContentCallbackURLResponse, error) {
 	result := IntegrationAccountSchemasListContentCallbackURLResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
-		return IntegrationAccountSchemasListContentCallbackURLResponse{}, err
+		return IntegrationAccountSchemasListContentCallbackURLResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

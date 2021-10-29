@@ -10,11 +10,10 @@ package armkeyvault
 
 import (
 	"encoding/json"
-	"reflect"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"reflect"
+	"time"
 )
 
 // AccessPolicyEntry - An identity that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant
@@ -74,11 +73,11 @@ func (a *Attributes) UnmarshalJSON(data []byte) error {
 }
 
 func (a Attributes) marshalInternal(objectMap map[string]interface{}) {
-	populate(objectMap, "created", (*timeUnix)(a.Created))
+	populateTimeUnix(objectMap, "created", a.Created)
 	populate(objectMap, "enabled", a.Enabled)
-	populate(objectMap, "exp", (*timeUnix)(a.Expires))
-	populate(objectMap, "nbf", (*timeUnix)(a.NotBefore))
-	populate(objectMap, "updated", (*timeUnix)(a.Updated))
+	populateTimeUnix(objectMap, "exp", a.Expires)
+	populateTimeUnix(objectMap, "nbf", a.NotBefore)
+	populateTimeUnix(objectMap, "updated", a.Updated)
 }
 
 func (a *Attributes) unmarshalInternal(rawMsg map[string]json.RawMessage) error {
@@ -86,27 +85,19 @@ func (a *Attributes) unmarshalInternal(rawMsg map[string]json.RawMessage) error 
 		var err error
 		switch key {
 		case "created":
-			var aux timeUnix
-			err = unpopulate(val, &aux)
-			a.Created = (*time.Time)(&aux)
+			err = unpopulateTimeUnix(val, &a.Created)
 			delete(rawMsg, key)
 		case "enabled":
 			err = unpopulate(val, &a.Enabled)
 			delete(rawMsg, key)
 		case "exp":
-			var aux timeUnix
-			err = unpopulate(val, &aux)
-			a.Expires = (*time.Time)(&aux)
+			err = unpopulateTimeUnix(val, &a.Expires)
 			delete(rawMsg, key)
 		case "nbf":
-			var aux timeUnix
-			err = unpopulate(val, &aux)
-			a.NotBefore = (*time.Time)(&aux)
+			err = unpopulateTimeUnix(val, &a.NotBefore)
 			delete(rawMsg, key)
 		case "updated":
-			var aux timeUnix
-			err = unpopulate(val, &aux)
-			a.Updated = (*time.Time)(&aux)
+			err = unpopulateTimeUnix(val, &a.Updated)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -207,11 +198,11 @@ type DeletedManagedHsmProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type DeletedManagedHsmProperties.
 func (d DeletedManagedHsmProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "deletionDate", (*timeRFC3339)(d.DeletionDate))
+	populateTimeRFC3339(objectMap, "deletionDate", d.DeletionDate)
 	populate(objectMap, "location", d.Location)
 	populate(objectMap, "mhsmId", d.MhsmID)
 	populate(objectMap, "purgeProtectionEnabled", d.PurgeProtectionEnabled)
-	populate(objectMap, "scheduledPurgeDate", (*timeRFC3339)(d.ScheduledPurgeDate))
+	populateTimeRFC3339(objectMap, "scheduledPurgeDate", d.ScheduledPurgeDate)
 	populate(objectMap, "tags", d.Tags)
 	return json.Marshal(objectMap)
 }
@@ -226,9 +217,7 @@ func (d *DeletedManagedHsmProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "deletionDate":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			d.DeletionDate = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &d.DeletionDate)
 			delete(rawMsg, key)
 		case "location":
 			err = unpopulate(val, &d.Location)
@@ -240,9 +229,7 @@ func (d *DeletedManagedHsmProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &d.PurgeProtectionEnabled)
 			delete(rawMsg, key)
 		case "scheduledPurgeDate":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			d.ScheduledPurgeDate = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &d.ScheduledPurgeDate)
 			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, &d.Tags)
@@ -311,10 +298,10 @@ type DeletedVaultProperties struct {
 // MarshalJSON implements the json.Marshaller interface for type DeletedVaultProperties.
 func (d DeletedVaultProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "deletionDate", (*timeRFC3339)(d.DeletionDate))
+	populateTimeRFC3339(objectMap, "deletionDate", d.DeletionDate)
 	populate(objectMap, "location", d.Location)
 	populate(objectMap, "purgeProtectionEnabled", d.PurgeProtectionEnabled)
-	populate(objectMap, "scheduledPurgeDate", (*timeRFC3339)(d.ScheduledPurgeDate))
+	populateTimeRFC3339(objectMap, "scheduledPurgeDate", d.ScheduledPurgeDate)
 	populate(objectMap, "tags", d.Tags)
 	populate(objectMap, "vaultId", d.VaultID)
 	return json.Marshal(objectMap)
@@ -330,9 +317,7 @@ func (d *DeletedVaultProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "deletionDate":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			d.DeletionDate = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &d.DeletionDate)
 			delete(rawMsg, key)
 		case "location":
 			err = unpopulate(val, &d.Location)
@@ -341,9 +326,7 @@ func (d *DeletedVaultProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &d.PurgeProtectionEnabled)
 			delete(rawMsg, key)
 		case "scheduledPurgeDate":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			d.ScheduledPurgeDate = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &d.ScheduledPurgeDate)
 			delete(rawMsg, key)
 		case "tags":
 			err = unpopulate(val, &d.Tags)
@@ -890,7 +873,7 @@ func (m ManagedHsmProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "privateEndpointConnections", m.PrivateEndpointConnections)
 	populate(objectMap, "provisioningState", m.ProvisioningState)
 	populate(objectMap, "publicNetworkAccess", m.PublicNetworkAccess)
-	populate(objectMap, "scheduledPurgeDate", (*timeRFC3339)(m.ScheduledPurgeDate))
+	populateTimeRFC3339(objectMap, "scheduledPurgeDate", m.ScheduledPurgeDate)
 	populate(objectMap, "softDeleteRetentionInDays", m.SoftDeleteRetentionInDays)
 	populate(objectMap, "statusMessage", m.StatusMessage)
 	populate(objectMap, "tenantId", m.TenantID)
@@ -934,9 +917,7 @@ func (m *ManagedHsmProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &m.PublicNetworkAccess)
 			delete(rawMsg, key)
 		case "scheduledPurgeDate":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			m.ScheduledPurgeDate = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &m.ScheduledPurgeDate)
 			delete(rawMsg, key)
 		case "softDeleteRetentionInDays":
 			err = unpopulate(val, &m.SoftDeleteRetentionInDays)
@@ -1608,10 +1589,10 @@ type SystemData struct {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdAt", (*timeRFC3339)(s.CreatedAt))
+	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populate(objectMap, "lastModifiedAt", (*timeRFC3339)(s.LastModifiedAt))
+	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -1627,9 +1608,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.CreatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, &s.CreatedBy)
@@ -1638,9 +1617,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.LastModifiedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, &s.LastModifiedBy)

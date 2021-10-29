@@ -10,14 +10,14 @@ package armresourcehealth
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"net/http"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"strings"
 )
 
 // ChildAvailabilityStatusesClient contains the methods for the ChildAvailabilityStatuses group.
@@ -28,8 +28,15 @@ type ChildAvailabilityStatusesClient struct {
 }
 
 // NewChildAvailabilityStatusesClient creates a new instance of ChildAvailabilityStatusesClient with the specified values.
-func NewChildAvailabilityStatusesClient(con *arm.Connection) *ChildAvailabilityStatusesClient {
-	return &ChildAvailabilityStatusesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewChildAvailabilityStatusesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *ChildAvailabilityStatusesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ChildAvailabilityStatusesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetByResource - Gets current availability status for a single resource
@@ -52,9 +59,6 @@ func (client *ChildAvailabilityStatusesClient) GetByResource(ctx context.Context
 // getByResourceCreateRequest creates the GetByResource request.
 func (client *ChildAvailabilityStatusesClient) getByResourceCreateRequest(ctx context.Context, resourceURI string, options *ChildAvailabilityStatusesGetByResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ResourceHealth/childAvailabilityStatuses/current"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -77,7 +81,7 @@ func (client *ChildAvailabilityStatusesClient) getByResourceCreateRequest(ctx co
 func (client *ChildAvailabilityStatusesClient) getByResourceHandleResponse(resp *http.Response) (ChildAvailabilityStatusesGetByResourceResponse, error) {
 	result := ChildAvailabilityStatusesGetByResourceResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatus); err != nil {
-		return ChildAvailabilityStatusesGetByResourceResponse{}, err
+		return ChildAvailabilityStatusesGetByResourceResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -113,9 +117,6 @@ func (client *ChildAvailabilityStatusesClient) List(resourceURI string, options 
 // listCreateRequest creates the List request.
 func (client *ChildAvailabilityStatusesClient) listCreateRequest(ctx context.Context, resourceURI string, options *ChildAvailabilityStatusesListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.ResourceHealth/childAvailabilityStatuses"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -138,7 +139,7 @@ func (client *ChildAvailabilityStatusesClient) listCreateRequest(ctx context.Con
 func (client *ChildAvailabilityStatusesClient) listHandleResponse(resp *http.Response) (ChildAvailabilityStatusesListResponse, error) {
 	result := ChildAvailabilityStatusesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailabilityStatusListResult); err != nil {
-		return ChildAvailabilityStatusesListResponse{}, err
+		return ChildAvailabilityStatusesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

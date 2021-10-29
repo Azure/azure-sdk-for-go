@@ -32,17 +32,17 @@ var enableHSM = false
 
 func TestMain(m *testing.M) {
 	// Initialize
-	if recording.GetRecordMode() == "record" {
+	if recording.GetRecordMode() != "live" {
 		err := recording.ResetSanitizers(nil)
 		if err != nil {
 			panic(err)
 		}
 
 		vaultUrl := os.Getenv("AZKEYS_KEYVAULT_URL")
-		err = recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
-		if err != nil {
-			panic(err)
-		}
+		// err = recording.AddURISanitizer(fakeKvURL, vaultUrl, nil)
+		// if err != nil {
+		// 	panic(err)
+		// }
 
 		err = recording.AddBodyKeySanitizer("$.key.kid", fakeKvURL, vaultUrl, nil)
 		if err != nil {

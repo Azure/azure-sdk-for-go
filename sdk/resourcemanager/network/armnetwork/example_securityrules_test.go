@@ -21,7 +21,7 @@ func ExampleSecurityRulesClient_BeginCreateOrUpdate_allowSSH() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewSecurityRulesClient("<subscription ID>",cred,nil)
+	client := armnetwork.NewSecurityRulesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -57,7 +57,7 @@ func ExampleSecurityRulesClient_BeginCreateOrUpdate_allowHTTP() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewSecurityRulesClient("<subscription ID>",cred,nil)
+	client := armnetwork.NewSecurityRulesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -93,7 +93,7 @@ func ExampleSecurityRulesClient_BeginCreateOrUpdate_allowSQL() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewSecurityRulesClient("<subscription ID>",cred,nil)
+	client := armnetwork.NewSecurityRulesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -129,7 +129,7 @@ func ExampleSecurityRulesClient_BeginCreateOrUpdate_denyOut() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewSecurityRulesClient("<subscription ID>",cred,nil)
+	client := armnetwork.NewSecurityRulesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",

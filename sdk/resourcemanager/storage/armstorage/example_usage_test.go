@@ -19,7 +19,7 @@ func ExampleUsagesClient_ListByLocation() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewUsagesClient("<subscription ID>",cred,nil)
+	client := armstorage.NewUsagesClient("<subscription ID>", cred, nil)
 	resp, err := client.ListByLocation(context.Background(), "<Azure location>", nil)
 	if err != nil {
 		log.Fatalf("failed to delete account: %v", err)

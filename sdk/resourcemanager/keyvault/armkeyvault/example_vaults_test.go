@@ -21,7 +21,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armkeyvault.NewVaultsClient("<subscription ID>",cred,nil)
+	client := armkeyvault.NewVaultsClient("<subscription ID>", cred, nil)
 	poll, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -52,7 +52,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_withAccessPolicies() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armkeyvault.NewVaultsClient("<subscription ID>",cred,nil)
+	client := armkeyvault.NewVaultsClient("<subscription ID>", cred, nil)
 	poll, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -99,7 +99,7 @@ func ExampleVaultsClient_BeginCreateOrUpdate_forDeployment() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armkeyvault.NewVaultsClient("<subscription ID>",cred,nil)
+	client := armkeyvault.NewVaultsClient("<subscription ID>", cred, nil)
 	poll, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -148,7 +148,7 @@ func ExampleVaultsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armkeyvault.NewVaultsClient("subscription ID>",cred,nil)
+	client := armkeyvault.NewVaultsClient("subscription ID>", cred, nil)
 	resp, err := client.Get(context.Background(), "<resource group name>", "<vault name>", nil)
 	if err != nil {
 		log.Fatalf("failed to get the vault: %v", err)
@@ -161,7 +161,7 @@ func ExampleVaultsClient_List() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armkeyvault.NewVaultsClient("<subscription ID>",cred,nil)
+	client := armkeyvault.NewVaultsClient("<subscription ID>", cred, nil)
 	pager := client.List(nil)
 	for pager.NextPage(context.Background()) {
 		resp := pager.PageResponse()
@@ -182,7 +182,7 @@ func ExampleVaultsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armkeyvault.NewVaultsClient("<subscription ID>",cred,nil)
+	client := armkeyvault.NewVaultsClient("<subscription ID>", cred, nil)
 	_, err = client.Delete(context.Background(), "<resource group name>", "<vault name>", nil)
 	if err != nil {
 		log.Fatalf("failed to delete the vault: %v", err)

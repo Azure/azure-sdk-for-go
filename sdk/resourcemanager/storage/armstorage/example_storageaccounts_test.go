@@ -21,7 +21,7 @@ func ExampleStorageAccountsClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient("<subscription ID>",cred,nil)
+	client := armstorage.NewStorageAccountsClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreate(
 		context.Background(),
 		"<resource group name>",
@@ -52,7 +52,7 @@ func ExampleStorageAccountsClient_List() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient("<subscription ID>",cred,nil)
+	client := armstorage.NewStorageAccountsClient("<subscription ID>", cred, nil)
 	pager := client.List(nil)
 	for pager.NextPage(context.Background()) {
 		resp := pager.PageResponse()
@@ -73,7 +73,7 @@ func ExampleStorageAccountsClient_ListByResourceGroup() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient("<subscription ID>",cred,nil)
+	client := armstorage.NewStorageAccountsClient("<subscription ID>", cred, nil)
 	pager := client.ListByResourceGroup("<resource group name>", nil)
 	for pager.NextPage(context.Background()) {
 		resp := pager.PageResponse()
@@ -94,7 +94,7 @@ func ExampleStorageAccountsClient_CheckNameAvailability() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient("<subscription ID>",cred,nil)
+	client := armstorage.NewStorageAccountsClient("<subscription ID>", cred, nil)
 	resp, err := client.CheckNameAvailability(
 		context.Background(),
 		armstorage.StorageAccountCheckNameAvailabilityParameters{
@@ -113,7 +113,7 @@ func ExampleStorageAccountsClient_ListKeys() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient("<subscription ID>",cred,nil)
+	client := armstorage.NewStorageAccountsClient("<subscription ID>", cred, nil)
 	resp, err := client.ListKeys(context.Background(), "<resource group name>", "<storage account name>", nil)
 	if err != nil {
 		log.Fatalf("failed to delete account: %v", err)
@@ -128,7 +128,7 @@ func ExampleStorageAccountsClient_GetProperties() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient("<subscription ID>",cred,nil)
+	client := armstorage.NewStorageAccountsClient("<subscription ID>", cred, nil)
 	resp, err := client.GetProperties(context.Background(), "<resource group name>", "<storage account name>", nil)
 	if err != nil {
 		log.Fatalf("failed to delete account: %v", err)
@@ -141,7 +141,7 @@ func ExampleStorageAccountsClient_RegenerateKey() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient("<subscription ID>",cred,nil)
+	client := armstorage.NewStorageAccountsClient("<subscription ID>", cred, nil)
 	resp, err := client.RegenerateKey(context.Background(), "<resource group name>", "<storage account name>", armstorage.StorageAccountRegenerateKeyParameters{KeyName: to.StringPtr("<key name>")}, nil)
 	if err != nil {
 		log.Fatalf("failed to delete account: %v", err)
@@ -156,7 +156,7 @@ func ExampleStorageAccountsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient("<subscription ID>",cred,nil)
+	client := armstorage.NewStorageAccountsClient("<subscription ID>", cred, nil)
 	resp, err := client.Update(
 		context.Background(),
 		"<resource group name>",
@@ -175,7 +175,7 @@ func ExampleStorageAccountsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armstorage.NewStorageAccountsClient("<subscription ID>",cred,nil)
+	client := armstorage.NewStorageAccountsClient("<subscription ID>", cred, nil)
 	_, err = client.Delete(context.Background(), "<resource group name>", "<storage account name>", nil)
 	if err != nil {
 		log.Fatalf("failed to delete account: %v", err)

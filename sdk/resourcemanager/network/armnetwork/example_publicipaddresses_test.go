@@ -21,7 +21,7 @@ func ExamplePublicIPAddressesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewPublicIPAddressesClient("<subscription ID>",cred,nil)
+	client := armnetwork.NewPublicIPAddressesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -53,7 +53,7 @@ func ExamplePublicIPAddressesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewPublicIPAddressesClient("<subscription ID>",cred,nil)
+	client := armnetwork.NewPublicIPAddressesClient("<subscription ID>", cred, nil)
 	resp, err := client.Get(context.Background(), "<resource group name>", "<IP name>", nil)
 	if err != nil {
 		log.Fatalf("failed to get resource: %v", err)
@@ -66,7 +66,7 @@ func ExamplePublicIPAddressesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewPublicIPAddressesClient("<subscription ID>",cred,nil)
+	client := armnetwork.NewPublicIPAddressesClient("<subscription ID>", cred, nil)
 	resp, err := client.BeginDelete(context.Background(), "<resource group name>", "<IP name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)

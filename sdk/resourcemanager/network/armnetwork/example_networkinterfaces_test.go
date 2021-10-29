@@ -27,7 +27,7 @@ func ExampleNetworkInterfacesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewNetworkInterfacesClient("<subscription ID>",cred,nil)
+	client := armnetwork.NewNetworkInterfacesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -67,7 +67,7 @@ func ExampleNetworkInterfacesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewNetworkInterfacesClient("<subscription ID>",cred,nil)
+	client := armnetwork.NewNetworkInterfacesClient("<subscription ID>", cred, nil)
 	resp, err := client.Get(context.Background(), "<resource group name>", "<NIC name>", nil)
 	if err != nil {
 		log.Fatalf("failed to get resource: %v", err)
@@ -80,7 +80,7 @@ func ExampleNetworkInterfacesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armnetwork.NewNetworkInterfacesClient("<subscription ID>",cred,nil)
+	client := armnetwork.NewNetworkInterfacesClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginDelete(context.Background(), "<resource group name>", "<NIC name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)

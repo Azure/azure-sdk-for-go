@@ -21,7 +21,7 @@ func ExampleDisksClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewDisksClient("<subscription ID>",cred,nil)
+	client := armcompute.NewDisksClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -55,7 +55,7 @@ func ExampleDisksClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewDisksClient("<subscription ID>",cred,nil)
+	client := armcompute.NewDisksClient("<subscription ID>", cred, nil)
 	resp, err := client.Get(context.Background(), "<resource group name>", "<disk name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)

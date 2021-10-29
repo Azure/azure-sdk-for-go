@@ -32,7 +32,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachineScaleSetsClient("<subscription ID>",cred,nil)
+	client := armcompute.NewVirtualMachineScaleSetsClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -120,7 +120,7 @@ func ExampleVirtualMachineScaleSetsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachineScaleSetsClient("<subscription ID>",cred,nil)
+	client := armcompute.NewVirtualMachineScaleSetsClient("<subscription ID>", cred, nil)
 	resp, err := client.Get(context.Background(), "<resource group name>", "<VM scale set name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
@@ -133,7 +133,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachineScaleSetsClient("<subscription ID>",cred,nil)
+	client := armcompute.NewVirtualMachineScaleSetsClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -163,7 +163,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginDeallocate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachineScaleSetsClient("<subscription ID>",cred,nil)
+	client := armcompute.NewVirtualMachineScaleSetsClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginDeallocate(context.Background(), "<resource group name>", "<VM scale set name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
@@ -179,7 +179,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginStart() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachineScaleSetsClient("<subscription ID>",cred,nil)
+	client := armcompute.NewVirtualMachineScaleSetsClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginStart(context.Background(), "<resource group name>", "<VM scale set name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
@@ -195,7 +195,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginRestart() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachineScaleSetsClient("<subscription ID>",cred,nil)
+	client := armcompute.NewVirtualMachineScaleSetsClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginRestart(context.Background(), "<resource group name>", "<VM scale set name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
@@ -211,7 +211,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginPowerOff() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachineScaleSetsClient("<subscription ID>",cred,nil)
+	client := armcompute.NewVirtualMachineScaleSetsClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginPowerOff(context.Background(), "<resource group name>", "<VM scale set name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)

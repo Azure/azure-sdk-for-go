@@ -19,7 +19,7 @@ func ExampleResourcesClient_GetByID() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armresources.NewResourcesClient("<subscription ID>",cred,nil)
+	client := armresources.NewResourcesClient("<subscription ID>", cred, nil)
 	resp, err := client.GetByID(context.Background(), "<resource ID>", "<api version>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)
@@ -32,7 +32,7 @@ func ExampleResourcesClient_ListByResourceGroup() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armresources.NewResourcesClient("<subscription ID>",cred,nil)
+	client := armresources.NewResourcesClient("<subscription ID>", cred, nil)
 	page := client.ListByResourceGroup("<resource group name>", nil)
 	for page.NextPage(context.Background()) {
 		resp := page.PageResponse()

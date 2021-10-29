@@ -20,7 +20,7 @@ func ExampleAvailabilitySetsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewAvailabilitySetsClient("<subscription ID>",cred,nil)
+	client := armcompute.NewAvailabilitySetsClient("<subscription ID>", cred, nil)
 	resp, err := client.CreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -51,7 +51,7 @@ func ExampleAvailabilitySetsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewAvailabilitySetsClient("<subscription ID>",cred,nil)
+	client := armcompute.NewAvailabilitySetsClient("<subscription ID>", cred, nil)
 	resp, err := client.Get(context.Background(), "<resource group name>", "<availability set name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)

@@ -22,7 +22,7 @@ func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachineExtensionsClient("<subscription ID>",cred,nil)
+	client := armcompute.NewVirtualMachineExtensionsClient("<subscription ID>", cred, nil)
 	poller, err := client.BeginCreateOrUpdate(
 		context.Background(),
 		"<resource group name>",
@@ -69,7 +69,7 @@ func ExampleVirtualMachineExtensionsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armcompute.NewVirtualMachineExtensionsClient("<subscription ID>",cred,nil)
+	client := armcompute.NewVirtualMachineExtensionsClient("<subscription ID>", cred, nil)
 	resp, err := client.Get(context.Background(), "<resource group name>", "<VM name>", "<VM extension name>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)

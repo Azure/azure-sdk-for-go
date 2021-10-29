@@ -20,7 +20,7 @@ func ExampleSecretsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armkeyvault.NewSecretsClient("<subscription ID>",cred,nil)
+	client := armkeyvault.NewSecretsClient("<subscription ID>", cred, nil)
 	resp, err := client.CreateOrUpdate(
 		context.Background(),
 		"<resource group name>",

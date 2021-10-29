@@ -19,7 +19,7 @@ func ExampleProvidersClient_Register() {
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
-	client := armresources.NewProvidersClient("<subscription ID>",cred,nil)
+	client := armresources.NewProvidersClient("<subscription ID>", cred, nil)
 	resp, err := client.Register(context.Background(), "<resource provider namespace>", nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a response: %v", err)

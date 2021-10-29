@@ -12,13 +12,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // QueueServicesClient contains the methods for the QueueServices group.
@@ -30,8 +31,15 @@ type QueueServicesClient struct {
 }
 
 // NewQueueServicesClient creates a new instance of QueueServicesClient with the specified values.
-func NewQueueServicesClient(con *arm.Connection, subscriptionID string) *QueueServicesClient {
-	return &QueueServicesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewQueueServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *QueueServicesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &QueueServicesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetServiceProperties - Gets the properties of a storage account’s Queue service, including properties for Storage Analytics and CORS (Cross-Origin Resource
@@ -83,7 +91,7 @@ func (client *QueueServicesClient) getServicePropertiesCreateRequest(ctx context
 func (client *QueueServicesClient) getServicePropertiesHandleResponse(resp *http.Response) (QueueServicesGetServicePropertiesResponse, error) {
 	result := QueueServicesGetServicePropertiesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueueServiceProperties); err != nil {
-		return QueueServicesGetServicePropertiesResponse{}, err
+		return QueueServicesGetServicePropertiesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -148,7 +156,7 @@ func (client *QueueServicesClient) listCreateRequest(ctx context.Context, resour
 func (client *QueueServicesClient) listHandleResponse(resp *http.Response) (QueueServicesListResponse, error) {
 	result := QueueServicesListResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListQueueServices); err != nil {
-		return QueueServicesListResponse{}, err
+		return QueueServicesListResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -215,7 +223,7 @@ func (client *QueueServicesClient) setServicePropertiesCreateRequest(ctx context
 func (client *QueueServicesClient) setServicePropertiesHandleResponse(resp *http.Response) (QueueServicesSetServicePropertiesResponse, error) {
 	result := QueueServicesSetServicePropertiesResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueueServiceProperties); err != nil {
-		return QueueServicesSetServicePropertiesResponse{}, err
+		return QueueServicesSetServicePropertiesResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

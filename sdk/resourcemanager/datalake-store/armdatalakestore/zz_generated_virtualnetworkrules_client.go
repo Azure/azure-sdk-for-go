@@ -11,13 +11,14 @@ package armdatalakestore
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // VirtualNetworkRulesClient contains the methods for the VirtualNetworkRules group.
@@ -29,8 +30,15 @@ type VirtualNetworkRulesClient struct {
 }
 
 // NewVirtualNetworkRulesClient creates a new instance of VirtualNetworkRulesClient with the specified values.
-func NewVirtualNetworkRulesClient(con *arm.Connection, subscriptionID string) *VirtualNetworkRulesClient {
-	return &VirtualNetworkRulesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewVirtualNetworkRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *VirtualNetworkRulesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &VirtualNetworkRulesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates the specified virtual network rule. During update, the virtual network rule with the specified name will be replaced
@@ -85,7 +93,7 @@ func (client *VirtualNetworkRulesClient) createOrUpdateCreateRequest(ctx context
 func (client *VirtualNetworkRulesClient) createOrUpdateHandleResponse(resp *http.Response) (VirtualNetworkRulesCreateOrUpdateResponse, error) {
 	result := VirtualNetworkRulesCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkRule); err != nil {
-		return VirtualNetworkRulesCreateOrUpdateResponse{}, err
+		return VirtualNetworkRulesCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -211,7 +219,7 @@ func (client *VirtualNetworkRulesClient) getCreateRequest(ctx context.Context, r
 func (client *VirtualNetworkRulesClient) getHandleResponse(resp *http.Response) (VirtualNetworkRulesGetResponse, error) {
 	result := VirtualNetworkRulesGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkRule); err != nil {
-		return VirtualNetworkRulesGetResponse{}, err
+		return VirtualNetworkRulesGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -272,7 +280,7 @@ func (client *VirtualNetworkRulesClient) listByAccountCreateRequest(ctx context.
 func (client *VirtualNetworkRulesClient) listByAccountHandleResponse(resp *http.Response) (VirtualNetworkRulesListByAccountResponse, error) {
 	result := VirtualNetworkRulesListByAccountResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkRuleListResult); err != nil {
-		return VirtualNetworkRulesListByAccountResponse{}, err
+		return VirtualNetworkRulesListByAccountResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -343,7 +351,7 @@ func (client *VirtualNetworkRulesClient) updateCreateRequest(ctx context.Context
 func (client *VirtualNetworkRulesClient) updateHandleResponse(resp *http.Response) (VirtualNetworkRulesUpdateResponse, error) {
 	result := VirtualNetworkRulesUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkRule); err != nil {
-		return VirtualNetworkRulesUpdateResponse{}, err
+		return VirtualNetworkRulesUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

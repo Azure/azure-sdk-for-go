@@ -10,14 +10,14 @@ package armmsi
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"net/http"
-	"strings"
-
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"strings"
 )
 
 // SystemAssignedIdentitiesClient contains the methods for the SystemAssignedIdentities group.
@@ -28,8 +28,15 @@ type SystemAssignedIdentitiesClient struct {
 }
 
 // NewSystemAssignedIdentitiesClient creates a new instance of SystemAssignedIdentitiesClient with the specified values.
-func NewSystemAssignedIdentitiesClient(con *arm.Connection) *SystemAssignedIdentitiesClient {
-	return &SystemAssignedIdentitiesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version)}
+func NewSystemAssignedIdentitiesClient(credential azcore.TokenCredential, options *arm.ClientOptions) *SystemAssignedIdentitiesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &SystemAssignedIdentitiesClient{ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // GetByScope - Gets the systemAssignedIdentity available under the specified RP scope.
@@ -52,9 +59,6 @@ func (client *SystemAssignedIdentitiesClient) GetByScope(ctx context.Context, sc
 // getByScopeCreateRequest creates the GetByScope request.
 func (client *SystemAssignedIdentitiesClient) getByScopeCreateRequest(ctx context.Context, scope string, options *SystemAssignedIdentitiesGetByScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.ManagedIdentity/identities/default"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.ep, urlPath))
 	if err != nil {
@@ -71,7 +75,7 @@ func (client *SystemAssignedIdentitiesClient) getByScopeCreateRequest(ctx contex
 func (client *SystemAssignedIdentitiesClient) getByScopeHandleResponse(resp *http.Response) (SystemAssignedIdentitiesGetByScopeResponse, error) {
 	result := SystemAssignedIdentitiesGetByScopeResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SystemAssignedIdentity); err != nil {
-		return SystemAssignedIdentitiesGetByScopeResponse{}, err
+		return SystemAssignedIdentitiesGetByScopeResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

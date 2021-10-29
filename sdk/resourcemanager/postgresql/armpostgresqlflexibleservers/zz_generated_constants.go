@@ -10,7 +10,7 @@ package armpostgresqlflexibleservers
 
 const (
 	module  = "armpostgresqlflexibleservers"
-	version = "v0.1.0"
+	version = "v0.2.0"
 )
 
 // ConfigurationDataType - Data type of the configuration.

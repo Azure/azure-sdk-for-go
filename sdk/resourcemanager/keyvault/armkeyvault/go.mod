@@ -8,6 +8,4 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.11.0
 )
 
-//replace (
-//	github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.11.0 => ../../../azidentity
-//)
+replace github.com/Azure/azure-sdk-for-go/sdk/azidentity v0.11.0 => ../../../azidentity

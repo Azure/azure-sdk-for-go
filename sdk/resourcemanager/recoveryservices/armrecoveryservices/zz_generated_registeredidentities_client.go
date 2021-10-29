@@ -11,13 +11,14 @@ package armrecoveryservices
 import (
 	"context"
 	"errors"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // RegisteredIdentitiesClient contains the methods for the RegisteredIdentities group.
@@ -29,8 +30,15 @@ type RegisteredIdentitiesClient struct {
 }
 
 // NewRegisteredIdentitiesClient creates a new instance of RegisteredIdentitiesClient with the specified values.
-func NewRegisteredIdentitiesClient(con *arm.Connection, subscriptionID string) *RegisteredIdentitiesClient {
-	return &RegisteredIdentitiesClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewRegisteredIdentitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *RegisteredIdentitiesClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &RegisteredIdentitiesClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // Delete - Unregisters the given container from your Recovery Services vault.

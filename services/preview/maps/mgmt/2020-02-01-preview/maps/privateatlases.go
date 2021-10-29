@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// PrivateAtlasesClient is the resource Provider
+// PrivateAtlasesClient is the azure Maps
 type PrivateAtlasesClient struct {
 	BaseClient
 }
@@ -31,8 +31,8 @@ func NewPrivateAtlasesClientWithBaseURI(baseURI string, subscriptionID string) P
 	return PrivateAtlasesClient{NewWithBaseURI(baseURI, subscriptionID)}
 }
 
-// CreateOrUpdate create or update a Private Atlas resource. Private Atlas resource will enable the usage of Azure
-// resources to build a custom set of mapping data. It requires an account to exist before it can be created.
+// CreateOrUpdate [Deprecated] Create or update a Private Atlas resource. Private Atlas resource will enable the usage
+// of Azure resources to build a custom set of mapping data. It requires an account to exist before it can be created.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - the name of the Maps Account.
@@ -54,8 +54,7 @@ func (client PrivateAtlasesClient) CreateOrUpdate(ctx context.Context, resourceG
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}},
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: privateAtlasCreateParameters,
 			Constraints: []validation.Constraint{{Target: "privateAtlasCreateParameters.Location", Name: validation.Null, Rule: true, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("maps.PrivateAtlasesClient", "CreateOrUpdate", err.Error())
@@ -125,7 +124,7 @@ func (client PrivateAtlasesClient) CreateOrUpdateResponder(resp *http.Response) 
 	return
 }
 
-// Delete delete a Private Atlas resource.
+// Delete [Deprecated] Delete a Private Atlas resource.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - the name of the Maps Account.
@@ -146,8 +145,7 @@ func (client PrivateAtlasesClient) Delete(ctx context.Context, resourceGroupName
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("maps.PrivateAtlasesClient", "Delete", err.Error())
 	}
 
@@ -212,7 +210,7 @@ func (client PrivateAtlasesClient) DeleteResponder(resp *http.Response) (result 
 	return
 }
 
-// Get get a Private Atlas resource.
+// Get [Deprecated] Get a Private Atlas resource.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - the name of the Maps Account.
@@ -233,8 +231,7 @@ func (client PrivateAtlasesClient) Get(ctx context.Context, resourceGroupName st
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("maps.PrivateAtlasesClient", "Get", err.Error())
 	}
 
@@ -300,7 +297,7 @@ func (client PrivateAtlasesClient) GetResponder(resp *http.Response) (result Pri
 	return
 }
 
-// ListByAccount get all Private Atlas instances for an Azure Map Account
+// ListByAccount [Deprecated] Get all Private Atlas instances for an Azure Map Account
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - the name of the Maps Account.
@@ -320,8 +317,7 @@ func (client PrivateAtlasesClient) ListByAccount(ctx context.Context, resourceGr
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("maps.PrivateAtlasesClient", "ListByAccount", err.Error())
 	}
 
@@ -386,8 +382,8 @@ func (client PrivateAtlasesClient) ListByAccountResponder(resp *http.Response) (
 	return
 }
 
-// Update updates the Private Atlas resource. Only a subset of the parameters may be updated after creation, such as
-// Tags.
+// Update [Deprecated] Updates the Private Atlas resource. Only a subset of the parameters may be updated after
+// creation, such as Tags.
 // Parameters:
 // resourceGroupName - the name of the resource group. The name is case insensitive.
 // accountName - the name of the Maps Account.
@@ -409,8 +405,7 @@ func (client PrivateAtlasesClient) Update(ctx context.Context, resourceGroupName
 			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}},
 		{TargetValue: resourceGroupName,
 			Constraints: []validation.Constraint{{Target: "resourceGroupName", Name: validation.MaxLength, Rule: 90, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil},
-				{Target: "resourceGroupName", Name: validation.Pattern, Rule: `^[-\w\._\(\)]+$`, Chain: nil}}}}); err != nil {
+				{Target: "resourceGroupName", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
 		return result, validation.NewError("maps.PrivateAtlasesClient", "Update", err.Error())
 	}
 

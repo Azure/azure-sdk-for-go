@@ -14,7 +14,7 @@ import (
 	"net/http"
 )
 
-// Client is the resource Provider
+// Client is the azure Maps
 type Client struct {
 	BaseClient
 }

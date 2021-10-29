@@ -32,6 +32,8 @@ var _ AccountsClientAPI = (*maps.AccountsClient)(nil)
 type ClientAPI interface {
 	ListOperations(ctx context.Context) (result maps.OperationsPage, err error)
 	ListOperationsComplete(ctx context.Context) (result maps.OperationsIterator, err error)
+	ListSubscriptionOperations(ctx context.Context) (result maps.OperationsPage, err error)
+	ListSubscriptionOperationsComplete(ctx context.Context) (result maps.OperationsIterator, err error)
 }
 
 var _ ClientAPI = (*maps.Client)(nil)

@@ -12,7 +12,7 @@ import (
 )
 
 // The package's fully qualified name.
-const fqdn = "github.com/Azure/azure-sdk-for-go/services/maps/mgmt/2017-01-01-preview/maps"
+const fqdn = "github.com/Azure/azure-sdk-for-go/services/maps/mgmt/2017-01-01/maps"
 
 // Account an Azure resource which represents access to a suite of Maps REST APIs.
 type Account struct {

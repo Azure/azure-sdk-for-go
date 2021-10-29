@@ -15,7 +15,7 @@ import (
 	"net/http"
 )
 
-// AccountsClient is the resource Provider
+// AccountsClient is the azure Maps
 type AccountsClient struct {
 	BaseClient
 }

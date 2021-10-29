@@ -648,6 +648,14 @@ type Dimension struct {
 	Name *string `json:"name,omitempty"`
 	// DisplayName - Display name of dimension.
 	DisplayName *string `json:"displayName,omitempty"`
+	// InternalName - Internal name of the dimension.
+	InternalName *string `json:"internalName,omitempty"`
+	// InternalMetricName - Internal metric name of the dimension.
+	InternalMetricName *string `json:"internalMetricName,omitempty"`
+	// SourceMdmNamespace - Source Mdm Namespace of the dimension.
+	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty"`
+	// ToBeExportedToShoebox - Flag to indicate exporting to Azure Monitor.
+	ToBeExportedToShoebox *bool `json:"toBeExportedToShoebox,omitempty"`
 }
 
 // ErrorAdditionalInfo the resource management error additional info.

@@ -10,6 +10,7 @@ import (
 	"context"
 	"github.com/Azure/go-autorest/autorest"
 	"github.com/Azure/go-autorest/autorest/azure"
+	"github.com/Azure/go-autorest/autorest/validation"
 	"github.com/Azure/go-autorest/tracing"
 	"net/http"
 )
@@ -136,5 +137,124 @@ func (client Client) ListOperationsComplete(ctx context.Context) (result Operati
 		}()
 	}
 	result.page, err = client.ListOperations(ctx)
+	return
+}
+
+// ListSubscriptionOperations list operations available for the Maps Resource Provider
+func (client Client) ListSubscriptionOperations(ctx context.Context) (result OperationsPage, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListSubscriptionOperations")
+		defer func() {
+			sc := -1
+			if result.o.Response.Response != nil {
+				sc = result.o.Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	if err := validation.Validate([]validation.Validation{
+		{TargetValue: client.SubscriptionID,
+			Constraints: []validation.Constraint{{Target: "client.SubscriptionID", Name: validation.MinLength, Rule: 1, Chain: nil}}}}); err != nil {
+		return result, validation.NewError("maps.Client", "ListSubscriptionOperations", err.Error())
+	}
+
+	result.fn = client.listSubscriptionOperationsNextResults
+	req, err := client.ListSubscriptionOperationsPreparer(ctx)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "maps.Client", "ListSubscriptionOperations", nil, "Failure preparing request")
+		return
+	}
+
+	resp, err := client.ListSubscriptionOperationsSender(req)
+	if err != nil {
+		result.o.Response = autorest.Response{Response: resp}
+		err = autorest.NewErrorWithError(err, "maps.Client", "ListSubscriptionOperations", resp, "Failure sending request")
+		return
+	}
+
+	result.o, err = client.ListSubscriptionOperationsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "maps.Client", "ListSubscriptionOperations", resp, "Failure responding to request")
+		return
+	}
+	if result.o.hasNextLink() && result.o.IsEmpty() {
+		err = result.NextWithContext(ctx)
+		return
+	}
+
+	return
+}
+
+// ListSubscriptionOperationsPreparer prepares the ListSubscriptionOperations request.
+func (client Client) ListSubscriptionOperationsPreparer(ctx context.Context) (*http.Request, error) {
+	pathParameters := map[string]interface{}{
+		"subscriptionId": autorest.Encode("path", client.SubscriptionID),
+	}
+
+	const APIVersion = "2021-02-01"
+	queryParameters := map[string]interface{}{
+		"api-version": APIVersion,
+	}
+
+	preparer := autorest.CreatePreparer(
+		autorest.AsGet(),
+		autorest.WithBaseURL(client.BaseURI),
+		autorest.WithPathParameters("/subscriptions/{subscriptionId}/providers/Microsoft.Maps/operations", pathParameters),
+		autorest.WithQueryParameters(queryParameters))
+	return preparer.Prepare((&http.Request{}).WithContext(ctx))
+}
+
+// ListSubscriptionOperationsSender sends the ListSubscriptionOperations request. The method will close the
+// http.Response Body if it receives an error.
+func (client Client) ListSubscriptionOperationsSender(req *http.Request) (*http.Response, error) {
+	return client.Send(req, azure.DoRetryWithRegistration(client.Client))
+}
+
+// ListSubscriptionOperationsResponder handles the response to the ListSubscriptionOperations request. The method always
+// closes the http.Response Body.
+func (client Client) ListSubscriptionOperationsResponder(resp *http.Response) (result Operations, err error) {
+	err = autorest.Respond(
+		resp,
+		azure.WithErrorUnlessStatusCode(http.StatusOK),
+		autorest.ByUnmarshallingJSON(&result),
+		autorest.ByClosing())
+	result.Response = autorest.Response{Response: resp}
+	return
+}
+
+// listSubscriptionOperationsNextResults retrieves the next set of results, if any.
+func (client Client) listSubscriptionOperationsNextResults(ctx context.Context, lastResults Operations) (result Operations, err error) {
+	req, err := lastResults.operationsPreparer(ctx)
+	if err != nil {
+		return result, autorest.NewErrorWithError(err, "maps.Client", "listSubscriptionOperationsNextResults", nil, "Failure preparing next results request")
+	}
+	if req == nil {
+		return
+	}
+	resp, err := client.ListSubscriptionOperationsSender(req)
+	if err != nil {
+		result.Response = autorest.Response{Response: resp}
+		return result, autorest.NewErrorWithError(err, "maps.Client", "listSubscriptionOperationsNextResults", resp, "Failure sending next results request")
+	}
+	result, err = client.ListSubscriptionOperationsResponder(resp)
+	if err != nil {
+		err = autorest.NewErrorWithError(err, "maps.Client", "listSubscriptionOperationsNextResults", resp, "Failure responding to next results request")
+	}
+	return
+}
+
+// ListSubscriptionOperationsComplete enumerates all values, automatically crossing page boundaries as required.
+func (client Client) ListSubscriptionOperationsComplete(ctx context.Context) (result OperationsIterator, err error) {
+	if tracing.IsEnabled() {
+		ctx = tracing.StartSpan(ctx, fqdn+"/Client.ListSubscriptionOperations")
+		defer func() {
+			sc := -1
+			if result.Response().Response.Response != nil {
+				sc = result.page.Response().Response.Response.StatusCode
+			}
+			tracing.EndSpan(ctx, sc, err)
+		}()
+	}
+	result.page, err = client.ListSubscriptionOperations(ctx)
 	return
 }

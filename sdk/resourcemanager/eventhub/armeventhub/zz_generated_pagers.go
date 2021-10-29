@@ -10,11 +10,10 @@ package armeventhub
 
 import (
 	"context"
-	"net/http"
-	"reflect"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"reflect"
 )
 
 // ClustersListByResourceGroupPager provides operations for iterating over paged responses.
@@ -662,5 +661,59 @@ func (p *PrivateEndpointConnectionsListPager) NextPage(ctx context.Context) bool
 
 // PageResponse returns the current PrivateEndpointConnectionsListResponse page.
 func (p *PrivateEndpointConnectionsListPager) PageResponse() PrivateEndpointConnectionsListResponse {
+	return p.current
+}
+
+// SchemaRegistryListByNamespacePager provides operations for iterating over paged responses.
+type SchemaRegistryListByNamespacePager struct {
+	client    *SchemaRegistryClient
+	current   SchemaRegistryListByNamespaceResponse
+	err       error
+	requester func(context.Context) (*policy.Request, error)
+	advancer  func(context.Context, SchemaRegistryListByNamespaceResponse) (*policy.Request, error)
+}
+
+// Err returns the last error encountered while paging.
+func (p *SchemaRegistryListByNamespacePager) Err() error {
+	return p.err
+}
+
+// NextPage returns true if the pager advanced to the next page.
+// Returns false if there are no more pages or an error occurred.
+func (p *SchemaRegistryListByNamespacePager) NextPage(ctx context.Context) bool {
+	var req *policy.Request
+	var err error
+	if !reflect.ValueOf(p.current).IsZero() {
+		if p.current.SchemaGroupListResult.NextLink == nil || len(*p.current.SchemaGroupListResult.NextLink) == 0 {
+			return false
+		}
+		req, err = p.advancer(ctx, p.current)
+	} else {
+		req, err = p.requester(ctx)
+	}
+	if err != nil {
+		p.err = err
+		return false
+	}
+	resp, err := p.client.pl.Do(req)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	if !runtime.HasStatusCode(resp, http.StatusOK) {
+		p.err = p.client.listByNamespaceHandleError(resp)
+		return false
+	}
+	result, err := p.client.listByNamespaceHandleResponse(resp)
+	if err != nil {
+		p.err = err
+		return false
+	}
+	p.current = result
+	return true
+}
+
+// PageResponse returns the current SchemaRegistryListByNamespaceResponse page.
+func (p *SchemaRegistryListByNamespacePager) PageResponse() SchemaRegistryListByNamespaceResponse {
 	return p.current
 }

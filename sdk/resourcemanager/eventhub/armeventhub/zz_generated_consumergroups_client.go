@@ -12,14 +12,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
+	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 )
 
 // ConsumerGroupsClient contains the methods for the ConsumerGroups group.
@@ -31,8 +32,15 @@ type ConsumerGroupsClient struct {
 }
 
 // NewConsumerGroupsClient creates a new instance of ConsumerGroupsClient with the specified values.
-func NewConsumerGroupsClient(con *arm.Connection, subscriptionID string) *ConsumerGroupsClient {
-	return &ConsumerGroupsClient{ep: con.Endpoint(), pl: con.NewPipeline(module, version), subscriptionID: subscriptionID}
+func NewConsumerGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) *ConsumerGroupsClient {
+	cp := arm.ClientOptions{}
+	if options != nil {
+		cp = *options
+	}
+	if len(cp.Host) == 0 {
+		cp.Host = arm.AzurePublicCloud
+	}
+	return &ConsumerGroupsClient{subscriptionID: subscriptionID, ep: string(cp.Host), pl: armruntime.NewPipeline(module, version, credential, &cp)}
 }
 
 // CreateOrUpdate - Creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
@@ -80,7 +88,7 @@ func (client *ConsumerGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -90,7 +98,7 @@ func (client *ConsumerGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 func (client *ConsumerGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (ConsumerGroupsCreateOrUpdateResponse, error) {
 	result := ConsumerGroupsCreateOrUpdateResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConsumerGroup); err != nil {
-		return ConsumerGroupsCreateOrUpdateResponse{}, err
+		return ConsumerGroupsCreateOrUpdateResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -153,7 +161,7 @@ func (client *ConsumerGroupsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -217,7 +225,7 @@ func (client *ConsumerGroupsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header.Set("Accept", "application/json")
 	return req, nil
@@ -227,7 +235,7 @@ func (client *ConsumerGroupsClient) getCreateRequest(ctx context.Context, resour
 func (client *ConsumerGroupsClient) getHandleResponse(resp *http.Response) (ConsumerGroupsGetResponse, error) {
 	result := ConsumerGroupsGetResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConsumerGroup); err != nil {
-		return ConsumerGroupsGetResponse{}, err
+		return ConsumerGroupsGetResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }
@@ -283,7 +291,7 @@ func (client *ConsumerGroupsClient) listByEventHubCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
@@ -299,7 +307,7 @@ func (client *ConsumerGroupsClient) listByEventHubCreateRequest(ctx context.Cont
 func (client *ConsumerGroupsClient) listByEventHubHandleResponse(resp *http.Response) (ConsumerGroupsListByEventHubResponse, error) {
 	result := ConsumerGroupsListByEventHubResponse{RawResponse: resp}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConsumerGroupListResult); err != nil {
-		return ConsumerGroupsListByEventHubResponse{}, err
+		return ConsumerGroupsListByEventHubResponse{}, runtime.NewResponseError(err, resp)
 	}
 	return result, nil
 }

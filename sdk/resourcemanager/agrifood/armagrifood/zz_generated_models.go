@@ -10,10 +10,9 @@ package armagrifood
 
 import (
 	"encoding/json"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"reflect"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // CheckNameAvailabilityRequest - The check availability request body.
@@ -536,10 +535,10 @@ type SystemData struct {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]interface{})
-	populate(objectMap, "createdAt", (*timeRFC3339)(s.CreatedAt))
+	populateTimeRFC3339(objectMap, "createdAt", s.CreatedAt)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populate(objectMap, "lastModifiedAt", (*timeRFC3339)(s.LastModifiedAt))
+	populateTimeRFC3339(objectMap, "lastModifiedAt", s.LastModifiedAt)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -555,9 +554,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "createdAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.CreatedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.CreatedAt)
 			delete(rawMsg, key)
 		case "createdBy":
 			err = unpopulate(val, &s.CreatedBy)
@@ -566,9 +563,7 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, &s.CreatedByType)
 			delete(rawMsg, key)
 		case "lastModifiedAt":
-			var aux timeRFC3339
-			err = unpopulate(val, &aux)
-			s.LastModifiedAt = (*time.Time)(&aux)
+			err = unpopulateTimeRFC3339(val, &s.LastModifiedAt)
 			delete(rawMsg, key)
 		case "lastModifiedBy":
 			err = unpopulate(val, &s.LastModifiedBy)

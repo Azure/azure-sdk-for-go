@@ -1,4 +1,5 @@
 #!/bin/bash
+
 if [ -z $1 ]; then
     echo "Please input resource provider name"
     exit 1
@@ -17,12 +18,20 @@ if [ -z $3 ]; then
 fi
 SDK_PATH=$3
 
+TAG=""
+if [ -z $4]; then
+    echo "NOT Specified tag"
+else
+    echo "specified tag $4"
+    TAG=$4
+fi
+
 # Generate readme config file.
 cd $SWAGGER_PATH
-FILE=$SWAGGER_PATH/specification/$ResourceProvider/resource-manager/readme.go.md
+FILE=$SWAGGER_PATH/$ResourceProvider/resource-manager/readme.go.md
 if [ -f "$FILE" ]; then
     echo "$FILE exists."
-    cp "$FILE" $SWAGGER_PATH/specification/$ResourceProvider/resource-manager/readme.go.md
+    # cp "$FILE" $SWAGGER_PATH/$ResourceProvider/resource-manager/readme.go.md
 fi
 
 if [ "$?" != "0" ]; then
@@ -37,20 +46,19 @@ else
 fi
 
 # Generate Go-SDK
-tag=$TAG
 moduleName="sdk/$ResourceProvider/arm$ResourceProvider"
 module="github.com/Azure/azure-sdk-for-go/$moduleName"
 outputfolder="$SDK_PATH/$moduleName"
-if [ "$tag" == "" ]; then
-    npx autorest --use=@autorest/go@4.0.0-preview.28 --go --track2 --go-sdk-folder=$SDK_PATH --module=$module --output-folder=$outputfolder --azure-arm=true --file-prefix="zz_generated_" --clear-output-folder=false --module-version="0.0.1" $SWAGGER_PATH/specification/$ResourceProvider/resource-manager/readme.md
+if [ "$TAG" == "" ]; then
+    npx autorest --use=@autorest/go@4.0.0-preview.28 --go --track2 --go-sdk-folder=$SDK_PATH --module=$module --output-folder=$outputfolder --azure-arm=true --file-prefix="zz_generated_" --clear-output-folder=false --module-version="0.0.1" $SWAGGER_PATH/$ResourceProvider/resource-manager/readme.md
 else
-    npx autorest --use=@autorest/go@4.0.0-preview.28 --go --track2 --tag=$TAG --go-sdk-folder=$SDK_PATH --module=$module --output-folder=$outputfolder --azure-arm=true --file-prefix="zz_generated_" --clear-output-folder=false --module-version="0.0.1" $SWAGGER_PATH/specification/$ResourceProvider/resource-manager/readme.md
+    npx autorest --use=@autorest/go@4.0.0-preview.28 --go --track2 --tag=$TAG --go-sdk-folder=$SDK_PATH --module=$module --output-folder=$outputfolder --azure-arm=true --file-prefix="zz_generated_" --clear-output-folder=false --module-version="0.0.1" $SWAGGER_PATH/$ResourceProvider/resource-manager/readme.md
 fi
 
 if [ "$?" != "0" ]; then
-    echo -e "\e[31m[$(date -u)] ERROR: [$OPERATION : $ResourceProvider]: Generate go sdk failed"
+    echo -e "\e[31m[$(date -u)] ERROR: [$ResourceProvider]: Generate go sdk failed"
     exit 1
 fi
 
 #Generate Go-SDK Mock test
-npx autorest --version=3.2.1 --use=https://amecodegenstorage.blob.core.windows.net/tools/autorest-tests-0.1.0-preview.tgz $SWAGGER_PATH/specification/$ResourceProvider/resource-manager/readme.md --use=@autorest/go@4.0.0-preview.24 --file-prefix="zz_generated_" --track2 --go --output-folder=$outputfolder
+npx autorest --version=3.2.1 --use=https://amecodegenstorage.blob.core.windows.net/tools/autorest-tests-0.1.0-preview.tgz $SWAGGER_PATH/$ResourceProvider/resource-manager/readme.md --use=@autorest/go@4.0.0-preview.28 --file-prefix="zz_generated_" --track2 --go --output-folder=$outputfolder --module-version="0.0.1"

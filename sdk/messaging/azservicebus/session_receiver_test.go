@@ -224,8 +224,8 @@ func Test_toReceiverOptions(t *testing.T) {
 	require.Nil(t, toReceiverOptions(nil))
 
 	require.EqualValues(t, &ReceiverOptions{
-		ReceiveMode: ReceiveAndDelete,
+		ReceiveMode: ReceiveModeReceiveAndDelete,
 	}, toReceiverOptions(&SessionReceiverOptions{
-		ReceiveMode: ReceiveAndDelete,
+		ReceiveMode: ReceiveModeReceiveAndDelete,
 	}))
 }

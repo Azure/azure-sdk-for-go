@@ -20,12 +20,12 @@ import (
 type ReceiveMode = internal.ReceiveMode
 
 const (
-	// PeekLock will lock messages as they are received and can be settled
+	// ReceiveModePeekLock will lock messages as they are received and can be settled
 	// using the Receiver's (Complete|Abandon|DeadLetter|Defer)Message
 	// functions.
-	PeekLock ReceiveMode = internal.PeekLock
-	// ReceiveAndDelete will delete messages as they are received.
-	ReceiveAndDelete ReceiveMode = internal.ReceiveAndDelete
+	ReceiveModePeekLock ReceiveMode = internal.PeekLock
+	// ReceiveModeReceiveAndDelete will delete messages as they are received.
+	ReceiveModeReceiveAndDelete ReceiveMode = internal.ReceiveAndDelete
 )
 
 // SubQueue allows you to target a subqueue of a queue or subscription.
@@ -82,7 +82,7 @@ const defaultLinkRxBuffer = 2048
 
 func applyReceiverOptions(receiver *Receiver, entity *entity, options *ReceiverOptions) error {
 	if options == nil {
-		receiver.receiveMode = PeekLock
+		receiver.receiveMode = ReceiveModePeekLock
 		return nil
 	}
 
@@ -133,7 +133,7 @@ func newReceiver(ns internal.NamespaceWithNewAMQPLinks, entity *entity, cleanupO
 	receiver.amqpLinks = ns.NewAMQPLinks(entityPath, newLinksFn)
 
 	// 'nil' settler handles returning an error message for receiveAndDelete links.
-	if receiver.receiveMode == PeekLock {
+	if receiver.receiveMode == ReceiveModePeekLock {
 		receiver.settler = newMessageSettler(receiver.amqpLinks, receiver.baseRetrier)
 	}
 
@@ -506,7 +506,7 @@ func createReceiverLink(ctx context.Context, session internal.AMQPSession, linkO
 func createLinkOptions(mode ReceiveMode, entityPath string) []amqp.LinkOption {
 	receiveMode := amqp.ModeSecond
 
-	if mode == ReceiveAndDelete {
+	if mode == ReceiveModeReceiveAndDelete {
 		receiveMode = amqp.ModeFirst
 	}
 
@@ -517,7 +517,7 @@ func createLinkOptions(mode ReceiveMode, entityPath string) []amqp.LinkOption {
 		amqp.LinkCredit(defaultLinkRxBuffer),
 	}
 
-	if mode == ReceiveAndDelete {
+	if mode == ReceiveModeReceiveAndDelete {
 		opts = append(opts, amqp.LinkSenderSettle(amqp.ModeSettled))
 	}
 

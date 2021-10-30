@@ -58,8 +58,8 @@ func newSessionReceiver(ctx context.Context, sessionID *string, ns internal.Name
 
 	var err error
 
-	sessionReceiver.Receiver, err = newReceiver(ns, entity, cleanupOnClose, options, func(ctx context.Context, session internal.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
-		linkOptions := createLinkOptions(sessionReceiver.Receiver.receiveMode, sessionReceiver.amqpLinks.EntityPath())
+	sessionReceiver.inner, err = newReceiver(ns, entity, cleanupOnClose, options, func(ctx context.Context, session internal.AMQPSession) (internal.AMQPSenderCloser, internal.AMQPReceiverCloser, error) {
+		linkOptions := createLinkOptions(sessionReceiver.inner.receiveMode, sessionReceiver.inner.amqpLinks.EntityPath())
 
 		if sessionID == nil {
 			linkOptions = append(linkOptions, amqp.LinkSourceFilter(sessionFilterName, code, nil))
@@ -170,26 +170,32 @@ func (sr *SessionReceiver) LockedUntil() time.Time {
 	return sr.lockedUntil
 }
 
-func (sr *SessionReceiver) SetSessionState(ctx context.Context, state interface{}) error {
-	_, _, mgmt, _, err := sr.inner.amqpLinks.Get(ctx)
-
-	if err != nil {
-		return err
-	}
-}
-
-func (sr *SessionReceiver) GetSessionState(ctx context.Context) (interface{}, error) {
+// GetSessionState retrieves state associated with the session.
+func (sr *SessionReceiver) GetSessionState(ctx context.Context) ([]byte, error) {
 	_, _, mgmt, _, err := sr.inner.amqpLinks.Get(ctx)
 
 	if err != nil {
 		return nil, err
 	}
+
+	return mgmt.GetSessionState(ctx, sr.SessionID())
+}
+
+// SetSessionState sets the state associated with the session.
+func (sr *SessionReceiver) SetSessionState(ctx context.Context, state []byte) error {
+	_, _, mgmt, _, err := sr.inner.amqpLinks.Get(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	return mgmt.SetSessionState(ctx, sr.SessionID(), state)
 }
 
 // RenewSessionLock renews this session's lock. The new expiration time is available
 // using `LockedUntil`.
 func (sr *SessionReceiver) RenewSessionLock(ctx context.Context) error {
-	_, _, mgmt, _, err := sr.amqpLinks.Get(ctx)
+	_, _, mgmt, _, err := sr.inner.amqpLinks.Get(ctx)
 
 	if err != nil {
 		return err
@@ -208,6 +214,6 @@ func (sr *SessionReceiver) RenewSessionLock(ctx context.Context) error {
 // init ensures the link was created, guaranteeing that we get our expected session lock.
 func (sr *SessionReceiver) init(ctx context.Context) error {
 	// initialize the links
-	_, _, _, _, err := sr.amqpLinks.Get(ctx)
+	_, _, _, _, err := sr.inner.amqpLinks.Get(ctx)
 	return err
 }

@@ -340,7 +340,7 @@ func TestReceiverOptions(t *testing.T) {
 
 	require.NoError(t, applyReceiverOptions(receiver, e, nil))
 
-	require.EqualValues(t, PeekLock, receiver.receiveMode)
+	require.EqualValues(t, ReceiveModePeekLock, receiver.receiveMode)
 	path, err := e.String()
 	require.NoError(t, err)
 	require.EqualValues(t, "topic/Subscriptions/subscription", path)
@@ -350,11 +350,11 @@ func TestReceiverOptions(t *testing.T) {
 	e = &entity{Topic: "topic", Subscription: "subscription"}
 
 	require.NoError(t, applyReceiverOptions(receiver, e, &ReceiverOptions{
-		ReceiveMode: ReceiveAndDelete,
+		ReceiveMode: ReceiveModeReceiveAndDelete,
 		SubQueue:    SubQueueTransfer,
 	}))
 
-	require.EqualValues(t, ReceiveAndDelete, receiver.receiveMode)
+	require.EqualValues(t, ReceiveModeReceiveAndDelete, receiver.receiveMode)
 	path, err = e.String()
 	require.NoError(t, err)
 	require.EqualValues(t, "topic/Subscriptions/subscription/$Transfer/$DeadLetterQueue", path)

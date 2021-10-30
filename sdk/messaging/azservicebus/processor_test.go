@@ -165,7 +165,7 @@ func TestProcessorUnitTests(t *testing.T) {
 	require.NoError(t, applyProcessorOptions(p, e, nil))
 	require.True(t, p.autoComplete)
 	require.EqualValues(t, 1, p.maxConcurrentCalls)
-	require.EqualValues(t, PeekLock, p.receiveMode)
+	require.EqualValues(t, ReceiveModePeekLock, p.receiveMode)
 
 	p = &processor{}
 	e = &entity{
@@ -173,7 +173,7 @@ func TestProcessorUnitTests(t *testing.T) {
 	}
 
 	require.NoError(t, applyProcessorOptions(p, e, &processorOptions{
-		ReceiveMode:         ReceiveAndDelete,
+		ReceiveMode:         ReceiveModeReceiveAndDelete,
 		SubQueue:            SubQueueDeadLetter,
 		DisableAutoComplete: true,
 		MaxConcurrentCalls:  101,
@@ -181,7 +181,7 @@ func TestProcessorUnitTests(t *testing.T) {
 
 	require.False(t, p.autoComplete)
 	require.EqualValues(t, 101, p.maxConcurrentCalls)
-	require.EqualValues(t, ReceiveAndDelete, p.receiveMode)
+	require.EqualValues(t, ReceiveModeReceiveAndDelete, p.receiveMode)
 	fullEntityPath, err := e.String()
 	require.NoError(t, err)
 	require.EqualValues(t, "queue/$DeadLetterQueue", fullEntityPath)

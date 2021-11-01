@@ -29,13 +29,6 @@ func TestAzureChinaParse(t *testing.T) {
 	}
 }
 
-func TestAzureGermanyParse(t *testing.T) {
-	_, err := url.Parse(string(AzureGermany))
-	if err != nil {
-		t.Fatalf("Failed to parse AzureGermany authority host: %v", err)
-	}
-}
-
 func TestAzureGovernmentParse(t *testing.T) {
 	_, err := url.Parse(string(AzureGovernment))
 	if err != nil {

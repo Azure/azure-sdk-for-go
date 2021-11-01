@@ -20,8 +20,8 @@ import (
 
 // Client is the struct for interacting with a KeyVault Keys instance
 type Client struct {
-	kvClient  *generated.KeyVaultClient
-	vaultUrl  string
+	kvClient *generated.KeyVaultClient
+	vaultUrl string
 }
 
 // ClientOptions are the configurable options on a Client.
@@ -65,8 +65,8 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 
 	conn := generated.NewConnection(genOptions)
 	return &Client{
-		kvClient:  generated.NewKeyVaultClient(conn),
-		vaultUrl:  vaultUrl,
+		kvClient: generated.NewKeyVaultClient(conn),
+		vaultUrl: vaultUrl,
 	}, nil
 }
 

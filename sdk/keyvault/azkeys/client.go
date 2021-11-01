@@ -14,13 +14,13 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
-	internal "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
-	kvinternal "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
+	generated "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azkeys/internal/generated"
+	shared "github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal"
 )
 
 // Client is the struct for interacting with a KeyVault Keys instance
 type Client struct {
-	kvClient  *internal.KeyVaultClient
+	kvClient  *generated.KeyVaultClient
 	vaultUrl  string
 	cred      azcore.TokenCredential // keeping this here for NewCryptoClient
 	transport policy.Transporter
@@ -31,7 +31,7 @@ type ClientOptions struct {
 	azcore.ClientOptions
 }
 
-// converts ClientOptions to generated *internal.ConnectionOptions
+// converts ClientOptions to generated *generated.ConnectionOptions
 func (c *ClientOptions) toConnectionOptions() *policy.ClientOptions {
 	if c == nil {
 		return nil
@@ -60,13 +60,13 @@ func NewClient(vaultUrl string, credential azcore.TokenCredential, options *Clie
 
 	options.PerRetryPolicies = append(
 		options.PerRetryPolicies,
-		kvinternal.NewKeyVaultChallengePolicy(credential, options.Transport),
+		shared.NewKeyVaultChallengePolicy(credential, options.Transport),
 	)
 
-	conn := internal.NewConnection(options.toConnectionOptions())
+	conn := generated.NewConnection(options.toConnectionOptions())
 
 	return &Client{
-		kvClient:  internal.NewKeyVaultClient(conn),
+		kvClient:  generated.NewKeyVaultClient(conn),
 		vaultUrl:  vaultUrl,
 		cred:      credential,
 		transport: options.Transport,
@@ -92,26 +92,26 @@ type CreateKeyOptions struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// convert CreateKeyOptions to *internal.KeyVaultClientCreateKeyOptions
-func (c *CreateKeyOptions) toGenerated() *internal.KeyVaultClientCreateKeyOptions {
-	return &internal.KeyVaultClientCreateKeyOptions{}
+// convert CreateKeyOptions to *generated.KeyVaultClientCreateKeyOptions
+func (c *CreateKeyOptions) toGenerated() *generated.KeyVaultClientCreateKeyOptions {
+	return &generated.KeyVaultClientCreateKeyOptions{}
 }
 
-// convert CreateKeyOptions to internal.KeyCreateParameters
-func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) internal.KeyCreateParameters {
-	var attribs *internal.KeyAttributes
+// convert CreateKeyOptions to generated.KeyCreateParameters
+func (c *CreateKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
+	var attribs *generated.KeyAttributes
 	if c.KeyAttributes != nil {
 		attribs = c.KeyAttributes.toGenerated()
 	}
 
-	ops := make([]*internal.JSONWebKeyOperation, 0)
+	ops := make([]*generated.JSONWebKeyOperation, 0)
 	for _, o := range c.KeyOps {
-		ops = append(ops, (*internal.JSONWebKeyOperation)(o))
+		ops = append(ops, (*generated.JSONWebKeyOperation)(o))
 	}
 
-	return internal.KeyCreateParameters{
+	return generated.KeyCreateParameters{
 		Kty:            keyType.toGenerated(),
-		Curve:          (*internal.JSONWebKeyCurveName)(c.Curve),
+		Curve:          (*generated.JSONWebKeyCurveName)(c.Curve),
 		KeyAttributes:  attribs,
 		KeyOps:         ops,
 		KeySize:        c.KeySize,
@@ -127,8 +127,8 @@ type CreateKeyResponse struct {
 	RawResponse *http.Response
 }
 
-// creates CreateKeyResponse from internal.KeyVaultClient.CreateKeyResponse
-func createKeyResponseFromGenerated(g internal.KeyVaultClientCreateKeyResponse) CreateKeyResponse {
+// creates CreateKeyResponse from generated.KeyVaultClient.CreateKeyResponse
+func createKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateKeyResponse {
 	return CreateKeyResponse{
 		RawResponse: g.RawResponse,
 		KeyBundle: KeyBundle{
@@ -168,11 +168,11 @@ type CreateECKeyOptions struct {
 	HardwareProtected bool
 }
 
-// convert CreateECKeyOptions to internal.KeyCreateParameters
-func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) internal.KeyCreateParameters {
-	return internal.KeyCreateParameters{
+// convert CreateECKeyOptions to generated.KeyCreateParameters
+func (c *CreateECKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
+	return generated.KeyCreateParameters{
 		Kty:   keyType.toGenerated(),
-		Curve: (*internal.JSONWebKeyCurveName)(c.CurveName),
+		Curve: (*generated.JSONWebKeyCurveName)(c.CurveName),
 		Tags:  c.Tags,
 	}
 }
@@ -184,8 +184,8 @@ type CreateECKeyResponse struct {
 	RawResponse *http.Response
 }
 
-// convert the internal.KeyVaultClientCreateKeyResponse to CreateECKeyResponse
-func createECKeyResponseFromGenerated(g internal.KeyVaultClientCreateKeyResponse) CreateECKeyResponse {
+// convert the generated.KeyVaultClientCreateKeyResponse to CreateECKeyResponse
+func createECKeyResponseFromGenerated(g generated.KeyVaultClientCreateKeyResponse) CreateECKeyResponse {
 	return CreateECKeyResponse{
 		RawResponse: g.RawResponse,
 		KeyBundle: KeyBundle{
@@ -209,7 +209,7 @@ func (c *Client) CreateECKey(ctx context.Context, name string, options *CreateEC
 		options = &CreateECKeyOptions{}
 	}
 
-	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &internal.KeyVaultClientCreateKeyOptions{})
+	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
 	if err != nil {
 		return CreateECKeyResponse{}, nil
 	}
@@ -229,9 +229,9 @@ type CreateOCTKeyOptions struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// conver the CreateOCTKeyOptions to internal.KeyCreateParameters
-func (c *CreateOCTKeyOptions) toKeyCreateParameters(keyType KeyType) internal.KeyCreateParameters {
-	return internal.KeyCreateParameters{
+// conver the CreateOCTKeyOptions to generated.KeyCreateParameters
+func (c *CreateOCTKeyOptions) toKeyCreateParameters(keyType KeyType) generated.KeyCreateParameters {
+	return generated.KeyCreateParameters{
 		Kty:     keyType.toGenerated(),
 		KeySize: c.KeySize,
 		Tags:    c.Tags,
@@ -246,7 +246,7 @@ type CreateOCTKeyResponse struct {
 }
 
 // convert generated response to CreateOCTKeyResponse
-func createOCTKeyResponseFromGenerated(i internal.KeyVaultClientCreateKeyResponse) CreateOCTKeyResponse {
+func createOCTKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyResponse) CreateOCTKeyResponse {
 	return CreateOCTKeyResponse{
 		RawResponse: i.RawResponse,
 		KeyBundle: KeyBundle{
@@ -270,7 +270,7 @@ func (c *Client) CreateOCTKey(ctx context.Context, name string, options *CreateO
 		options = &CreateOCTKeyOptions{}
 	}
 
-	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &internal.KeyVaultClientCreateKeyOptions{})
+	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
 
 	return createOCTKeyResponseFromGenerated(resp), err
 }
@@ -290,9 +290,9 @@ type CreateRSAKeyOptions struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// convert CreateRSAKeyOptions to internal.KeyCreateParameters
-func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) internal.KeyCreateParameters {
-	return internal.KeyCreateParameters{
+// convert CreateRSAKeyOptions to generated.KeyCreateParameters
+func (c CreateRSAKeyOptions) toKeyCreateParameters(k KeyType) generated.KeyCreateParameters {
+	return generated.KeyCreateParameters{
 		Kty:            k.toGenerated(),
 		KeySize:        c.KeySize,
 		PublicExponent: c.PublicExponent,
@@ -308,7 +308,7 @@ type CreateRSAKeyResponse struct {
 }
 
 // convert internal response to CreateRSAKeyResponse
-func createRSAKeyResponseFromGenerated(i internal.KeyVaultClientCreateKeyResponse) CreateRSAKeyResponse {
+func createRSAKeyResponseFromGenerated(i generated.KeyVaultClientCreateKeyResponse) CreateRSAKeyResponse {
 	return CreateRSAKeyResponse{
 		RawResponse: i.RawResponse,
 		KeyBundle: KeyBundle{
@@ -332,7 +332,7 @@ func (c *Client) CreateRSAKey(ctx context.Context, name string, options *CreateR
 		options = &CreateRSAKeyOptions{}
 	}
 
-	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &internal.KeyVaultClientCreateKeyOptions{})
+	resp, err := c.kvClient.CreateKey(ctx, c.vaultUrl, name, options.toKeyCreateParameters(keyType), &generated.KeyVaultClientCreateKeyOptions{})
 	if err != nil {
 		return CreateRSAKeyResponse{}, err
 	}
@@ -354,7 +354,7 @@ type ListKeysPager interface {
 
 // listKeysPager implements the ListKeysPager interface
 type listKeysPager struct {
-	genPager internal.KeyVaultClientGetKeysPager
+	genPager generated.KeyVaultClientGetKeysPager
 }
 
 // PageResponse returns the results from the page most recently fetched from the service
@@ -380,8 +380,8 @@ type ListKeysOptions struct {
 }
 
 // convert ListKeysOptions to generated options
-func (l ListKeysOptions) toGenerated() *internal.KeyVaultClientGetKeysOptions {
-	return &internal.KeyVaultClientGetKeysOptions{Maxresults: l.MaxResults}
+func (l ListKeysOptions) toGenerated() *generated.KeyVaultClientGetKeysOptions {
+	return &generated.KeyVaultClientGetKeysOptions{Maxresults: l.MaxResults}
 }
 
 // ListKeysPage contains the current page of results for the Client.ListSecrets operation
@@ -396,7 +396,7 @@ type ListKeysPage struct {
 }
 
 // convert internal Response to ListKeysPage
-func listKeysPageFromGenerated(i internal.KeyVaultClientGetKeysResponse) ListKeysPage {
+func listKeysPageFromGenerated(i generated.KeyVaultClientGetKeysResponse) ListKeysPage {
 	var keys []*KeyItem
 	for _, k := range i.Value {
 		keys = append(keys, keyItemFromGenerated(k))
@@ -436,7 +436,7 @@ type GetKeyResponse struct {
 }
 
 // convert internal response to GetKeyResponse
-func getKeyResponseFromGenerated(i internal.KeyVaultClientGetKeyResponse) GetKeyResponse {
+func getKeyResponseFromGenerated(i generated.KeyVaultClientGetKeyResponse) GetKeyResponse {
 	return GetKeyResponse{
 		RawResponse: i.RawResponse,
 		KeyBundle: KeyBundle{
@@ -455,7 +455,7 @@ func (c *Client) GetKey(ctx context.Context, keyName string, options *GetKeyOpti
 		options = &GetKeyOptions{}
 	}
 
-	resp, err := c.kvClient.GetKey(ctx, c.vaultUrl, keyName, options.Version, &internal.KeyVaultClientGetKeyOptions{})
+	resp, err := c.kvClient.GetKey(ctx, c.vaultUrl, keyName, options.Version, &generated.KeyVaultClientGetKeyOptions{})
 	if err != nil {
 		return GetKeyResponse{}, err
 	}
@@ -467,8 +467,8 @@ func (c *Client) GetKey(ctx context.Context, keyName string, options *GetKeyOpti
 type GetDeletedKeyOptions struct{}
 
 // convert the GetDeletedKeyOptions to the internal representation
-func (g GetDeletedKeyOptions) toGenerated() *internal.KeyVaultClientGetDeletedKeyOptions {
-	return &internal.KeyVaultClientGetDeletedKeyOptions{}
+func (g GetDeletedKeyOptions) toGenerated() *generated.KeyVaultClientGetDeletedKeyOptions {
+	return &generated.KeyVaultClientGetDeletedKeyOptions{}
 }
 
 // GetDeletedKeyResponse contains the response from a Client.GetDeletedKey
@@ -479,7 +479,7 @@ type GetDeletedKeyResponse struct {
 }
 
 // convert generated response to GetDeletedKeyResponse
-func getDeletedKeyResponseFromGenerated(i internal.KeyVaultClientGetDeletedKeyResponse) GetDeletedKeyResponse {
+func getDeletedKeyResponseFromGenerated(i generated.KeyVaultClientGetDeletedKeyResponse) GetDeletedKeyResponse {
 	return GetDeletedKeyResponse{
 		RawResponse: i.RawResponse,
 		DeletedKeyBundle: DeletedKeyBundle{
@@ -516,8 +516,8 @@ func (c *Client) GetDeletedKey(ctx context.Context, keyName string, options *Get
 type PurgeDeletedKeyOptions struct{}
 
 // convert options to internal options
-func (p *PurgeDeletedKeyOptions) toGenerated() *internal.KeyVaultClientPurgeDeletedKeyOptions {
-	return &internal.KeyVaultClientPurgeDeletedKeyOptions{}
+func (p *PurgeDeletedKeyOptions) toGenerated() *generated.KeyVaultClientPurgeDeletedKeyOptions {
+	return &generated.KeyVaultClientPurgeDeletedKeyOptions{}
 }
 
 // PurgeDeletedKeyResponse contains the response from method Client.PurgeDeletedKey.
@@ -527,7 +527,7 @@ type PurgeDeletedKeyResponse struct {
 }
 
 // Converts the generated response to the publicly exposed version.
-func purgeDeletedKeyResponseFromGenerated(i internal.KeyVaultClientPurgeDeletedKeyResponse) PurgeDeletedKeyResponse {
+func purgeDeletedKeyResponseFromGenerated(i generated.KeyVaultClientPurgeDeletedKeyResponse) PurgeDeletedKeyResponse {
 	return PurgeDeletedKeyResponse{
 		RawResponse: i.RawResponse,
 	}
@@ -551,7 +551,7 @@ type DeleteKeyResponse struct {
 }
 
 // convert interal response to DeleteKeyResponse
-func deleteKeyResponseFromGenerated(i *internal.KeyVaultClientDeleteKeyResponse) *DeleteKeyResponse {
+func deleteKeyResponseFromGenerated(i *generated.KeyVaultClientDeleteKeyResponse) *DeleteKeyResponse {
 	if i == nil {
 		return nil
 	}
@@ -564,8 +564,8 @@ func deleteKeyResponseFromGenerated(i *internal.KeyVaultClientDeleteKeyResponse)
 type BeginDeleteKeyOptions struct{}
 
 // convert public options to generated options struct
-func (b *BeginDeleteKeyOptions) toGenerated() *internal.KeyVaultClientDeleteKeyOptions {
-	return &internal.KeyVaultClientDeleteKeyOptions{}
+func (b *BeginDeleteKeyOptions) toGenerated() *generated.KeyVaultClientDeleteKeyOptions {
+	return &generated.KeyVaultClientDeleteKeyOptions{}
 }
 
 // DeleteKeyPoller is the interface for the Client.DeleteKey operation.
@@ -586,9 +586,9 @@ type DeleteKeyPoller interface {
 type startDeleteKeyPoller struct {
 	keyName        string // This is the key to Poll for in GetDeletedKey
 	vaultUrl       string
-	client         *internal.KeyVaultClient
-	deleteResponse internal.KeyVaultClientDeleteKeyResponse
-	lastResponse   internal.KeyVaultClientGetDeletedKeyResponse
+	client         *generated.KeyVaultClient
+	deleteResponse generated.KeyVaultClientDeleteKeyResponse
+	lastResponse   generated.KeyVaultClientGetDeletedKeyResponse
 	RawResponse    *http.Response
 }
 
@@ -686,8 +686,8 @@ func (c *Client) BeginDeleteKey(ctx context.Context, keyName string, options *Be
 type BackupKeyOptions struct{}
 
 // convert Options to generated version
-func (b BackupKeyOptions) toGenerated() *internal.KeyVaultClientBackupKeyOptions {
-	return &internal.KeyVaultClientBackupKeyOptions{}
+func (b BackupKeyOptions) toGenerated() *generated.KeyVaultClientBackupKeyOptions {
+	return &generated.KeyVaultClientBackupKeyOptions{}
 }
 
 // BackupKeyResponse contains the response from the Client.BackupKey method
@@ -700,7 +700,7 @@ type BackupKeyResponse struct {
 }
 
 // convert internal reponse to BackupKeyResponse
-func backupKeyResponseFromGenerated(i internal.KeyVaultClientBackupKeyResponse) BackupKeyResponse {
+func backupKeyResponseFromGenerated(i generated.KeyVaultClientBackupKeyResponse) BackupKeyResponse {
 	return BackupKeyResponse{
 		RawResponse: i.RawResponse,
 		Value:       i.Value,
@@ -748,9 +748,9 @@ type RecoverDeletedKeyPoller interface {
 type beginRecoverPoller struct {
 	keyName         string
 	vaultUrl        string
-	client          *internal.KeyVaultClient
-	recoverResponse internal.KeyVaultClientRecoverDeletedKeyResponse
-	lastResponse    internal.KeyVaultClientGetKeyResponse
+	client          *generated.KeyVaultClient
+	recoverResponse generated.KeyVaultClientRecoverDeletedKeyResponse
+	lastResponse    generated.KeyVaultClientGetKeyResponse
 	RawResponse     *http.Response
 }
 
@@ -797,8 +797,8 @@ func (b *beginRecoverPoller) pollUntilDone(ctx context.Context, t time.Duration)
 type BeginRecoverDeletedKeyOptions struct{}
 
 // Convert the publicly exposed options object to the generated version
-func (b BeginRecoverDeletedKeyOptions) toGenerated() *internal.KeyVaultClientRecoverDeletedKeyOptions {
-	return &internal.KeyVaultClientRecoverDeletedKeyOptions{}
+func (b BeginRecoverDeletedKeyOptions) toGenerated() *generated.KeyVaultClientRecoverDeletedKeyOptions {
+	return &generated.KeyVaultClientRecoverDeletedKeyOptions{}
 }
 
 // RecoverDeletedKeyResponse is the response object for the Client.RecoverDeletedKey operation.
@@ -809,7 +809,7 @@ type RecoverDeletedKeyResponse struct {
 }
 
 // change recover deleted key reponse to the generated version.
-func recoverDeletedKeyResponseFromGenerated(i internal.KeyVaultClientRecoverDeletedKeyResponse) RecoverDeletedKeyResponse {
+func recoverDeletedKeyResponseFromGenerated(i generated.KeyVaultClientRecoverDeletedKeyResponse) RecoverDeletedKeyResponse {
 	return RecoverDeletedKeyResponse{
 		RawResponse: i.RawResponse,
 		KeyBundle: KeyBundle{
@@ -883,19 +883,19 @@ type UpdateKeyPropertiesOptions struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-// convert the options to internal.KeyUpdateParameters struct
-func (u UpdateKeyPropertiesOptions) toKeyUpdateParameters() internal.KeyUpdateParameters {
-	var attribs *internal.KeyAttributes
+// convert the options to generated.KeyUpdateParameters struct
+func (u UpdateKeyPropertiesOptions) toKeyUpdateParameters() generated.KeyUpdateParameters {
+	var attribs *generated.KeyAttributes
 	if u.KeyAttributes != nil {
 		attribs = u.KeyAttributes.toGenerated()
 	}
 
-	ops := make([]*internal.JSONWebKeyOperation, 0)
+	ops := make([]*generated.JSONWebKeyOperation, 0)
 	for _, o := range u.KeyOps {
-		ops = append(ops, (*internal.JSONWebKeyOperation)(o))
+		ops = append(ops, (*generated.JSONWebKeyOperation)(o))
 	}
 
-	return internal.KeyUpdateParameters{
+	return generated.KeyUpdateParameters{
 		KeyOps:        ops,
 		KeyAttributes: attribs,
 		Tags:          u.Tags,
@@ -903,8 +903,8 @@ func (u UpdateKeyPropertiesOptions) toKeyUpdateParameters() internal.KeyUpdatePa
 }
 
 // convert options to generated options
-func (u UpdateKeyPropertiesOptions) toGeneratedOptions() *internal.KeyVaultClientUpdateKeyOptions {
-	return &internal.KeyVaultClientUpdateKeyOptions{}
+func (u UpdateKeyPropertiesOptions) toGeneratedOptions() *generated.KeyVaultClientUpdateKeyOptions {
+	return &generated.KeyVaultClientUpdateKeyOptions{}
 }
 
 // UpdateKeyPropertiesResponse contains the response for the Client.UpdateKeyProperties method
@@ -915,7 +915,7 @@ type UpdateKeyPropertiesResponse struct {
 }
 
 // convert the internal response to UpdateKeyPropertiesResponse
-func updateKeyPropertiesFromGenerated(i internal.KeyVaultClientUpdateKeyResponse) UpdateKeyPropertiesResponse {
+func updateKeyPropertiesFromGenerated(i generated.KeyVaultClientUpdateKeyResponse) UpdateKeyPropertiesResponse {
 	return UpdateKeyPropertiesResponse{
 		RawResponse: i.RawResponse,
 		KeyBundle: KeyBundle{
@@ -962,7 +962,7 @@ type ListDeletedKeysPager interface {
 
 // listDeletedKeysPager is the pager returned by Client.ListDeletedKeys
 type listDeletedKeysPager struct {
-	genPager *internal.KeyVaultClientGetDeletedKeysPager
+	genPager *generated.KeyVaultClientGetDeletedKeysPager
 }
 
 // PageResponse returns the current page of results
@@ -1010,8 +1010,8 @@ type ListDeletedKeysOptions struct {
 }
 
 // Convert publicly exposed options to the generated version.a
-func (l *ListDeletedKeysOptions) toGenerated() *internal.KeyVaultClientGetDeletedKeysOptions {
-	return &internal.KeyVaultClientGetDeletedKeysOptions{
+func (l *ListDeletedKeysOptions) toGenerated() *generated.KeyVaultClientGetDeletedKeysOptions {
+	return &generated.KeyVaultClientGetDeletedKeysOptions{
 		Maxresults: l.MaxResults,
 	}
 }
@@ -1042,7 +1042,7 @@ type ListKeyVersionsPager interface {
 
 // listKeyVersionsPager implements the ListKeyVersionsPager interface
 type listKeyVersionsPager struct {
-	genPager *internal.KeyVaultClientGetKeyVersionsPager
+	genPager *generated.KeyVaultClientGetKeyVersionsPager
 }
 
 // PageResponse returns the results from the page most recently fetched from the service.
@@ -1069,11 +1069,11 @@ type ListKeyVersionsOptions struct {
 }
 
 // convert the public ListKeyVersionsOptions to the generated version
-func (l *ListKeyVersionsOptions) toGenerated() *internal.KeyVaultClientGetKeyVersionsOptions {
+func (l *ListKeyVersionsOptions) toGenerated() *generated.KeyVaultClientGetKeyVersionsOptions {
 	if l == nil {
-		return &internal.KeyVaultClientGetKeyVersionsOptions{}
+		return &generated.KeyVaultClientGetKeyVersionsOptions{}
 	}
-	return &internal.KeyVaultClientGetKeyVersionsOptions{
+	return &generated.KeyVaultClientGetKeyVersionsOptions{
 		Maxresults: l.MaxResults,
 	}
 }
@@ -1091,7 +1091,7 @@ type ListKeyVersionsPage struct {
 }
 
 // create ListKeysPage from generated pager
-func listKeyVersionsPageFromGenerated(i internal.KeyVaultClientGetKeyVersionsResponse) ListKeyVersionsPage {
+func listKeyVersionsPageFromGenerated(i generated.KeyVaultClientGetKeyVersionsResponse) ListKeyVersionsPage {
 	var keys []KeyItem
 	for _, s := range i.Value {
 		if s != nil {
@@ -1125,8 +1125,8 @@ func (c *Client) ListKeyVersions(keyName string, options *ListKeyVersionsOptions
 // RestoreKeyBackupOptions contains the optional parameters for the Client.RestoreKey method.
 type RestoreKeyBackupOptions struct{}
 
-func (r RestoreKeyBackupOptions) toGenerated() *internal.KeyVaultClientRestoreKeyOptions {
-	return &internal.KeyVaultClientRestoreKeyOptions{}
+func (r RestoreKeyBackupOptions) toGenerated() *generated.KeyVaultClientRestoreKeyOptions {
+	return &generated.KeyVaultClientRestoreKeyOptions{}
 }
 
 // RestoreKeyBackupResponse contains the response object for the Client.RestoreKeyBackup operation.
@@ -1137,7 +1137,7 @@ type RestoreKeyBackupResponse struct {
 }
 
 // converts the generated response to the publicly exposed version.
-func restoreKeyBackupResponseFromGenerated(i internal.KeyVaultClientRestoreKeyResponse) RestoreKeyBackupResponse {
+func restoreKeyBackupResponseFromGenerated(i generated.KeyVaultClientRestoreKeyResponse) RestoreKeyBackupResponse {
 	return RestoreKeyBackupResponse{
 		RawResponse: i.RawResponse,
 		KeyBundle: KeyBundle{
@@ -1156,7 +1156,7 @@ func (c *Client) RestoreKeyBackup(ctx context.Context, keyBackup []byte, options
 		options = &RestoreKeyBackupOptions{}
 	}
 
-	resp, err := c.kvClient.RestoreKey(ctx, c.vaultUrl, internal.KeyRestoreParameters{KeyBundleBackup: keyBackup}, options.toGenerated())
+	resp, err := c.kvClient.RestoreKey(ctx, c.vaultUrl, generated.KeyRestoreParameters{KeyBundleBackup: keyBackup}, options.toGenerated())
 	if err != nil {
 		return RestoreKeyBackupResponse{}, err
 	}
@@ -1176,12 +1176,12 @@ type ImportKeyOptions struct {
 	Tags map[string]*string `json:"tags,omitempty"`
 }
 
-func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) internal.KeyImportParameters {
-	var attribs *internal.KeyAttributes
+func (i ImportKeyOptions) toImportKeyParameters(key JSONWebKey) generated.KeyImportParameters {
+	var attribs *generated.KeyAttributes
 	if i.KeyAttributes != nil {
 		attribs = i.KeyAttributes.toGenerated()
 	}
-	return internal.KeyImportParameters{
+	return generated.KeyImportParameters{
 		Key:           key.toGenerated(),
 		Hsm:           i.Hsm,
 		KeyAttributes: attribs,
@@ -1197,7 +1197,7 @@ type ImportKeyResponse struct {
 }
 
 // convert the generated response to the ImportKeyResponse
-func importKeyResponseFromGenerated(i internal.KeyVaultClientImportKeyResponse) ImportKeyResponse {
+func importKeyResponseFromGenerated(i generated.KeyVaultClientImportKeyResponse) ImportKeyResponse {
 	return ImportKeyResponse{
 		RawResponse: i.RawResponse,
 		KeyBundle: KeyBundle{
@@ -1217,7 +1217,7 @@ func (c *Client) ImportKey(ctx context.Context, keyName string, key JSONWebKey, 
 		options = &ImportKeyOptions{}
 	}
 
-	resp, err := c.kvClient.ImportKey(ctx, c.vaultUrl, keyName, options.toImportKeyParameters(key), &internal.KeyVaultClientImportKeyOptions{})
+	resp, err := c.kvClient.ImportKey(ctx, c.vaultUrl, keyName, options.toImportKeyParameters(key), &generated.KeyVaultClientImportKeyOptions{})
 	if err != nil {
 		return ImportKeyResponse{}, err
 	}
@@ -1228,8 +1228,8 @@ func (c *Client) ImportKey(ctx context.Context, keyName string, key JSONWebKey, 
 // GetRandomBytesOptions contains the optional parameters for the Client.GetRandomBytes function.
 type GetRandomBytesOptions struct{}
 
-func (g GetRandomBytesOptions) toGenerated() *internal.KeyVaultClientGetRandomBytesOptions {
-	return &internal.KeyVaultClientGetRandomBytesOptions{}
+func (g GetRandomBytesOptions) toGenerated() *generated.KeyVaultClientGetRandomBytesOptions {
+	return &generated.KeyVaultClientGetRandomBytesOptions{}
 }
 
 // GetRandomBytesResponse is the response struct for the Client.GetRandomBytes function.
@@ -1251,7 +1251,7 @@ func (c *Client) GetRandomBytes(ctx context.Context, count *int32, options *GetR
 	resp, err := c.kvClient.GetRandomBytes(
 		ctx,
 		c.vaultUrl,
-		internal.GetRandomBytesRequest{Count: count},
+		generated.GetRandomBytesRequest{Count: count},
 		options.toGenerated(),
 	)
 
@@ -1267,8 +1267,8 @@ func (c *Client) GetRandomBytes(ctx context.Context, count *int32, options *GetR
 
 type RotateKeyOptions struct{}
 
-func (r RotateKeyOptions) toGenerated() *internal.KeyVaultClientRotateKeyOptions {
-	return &internal.KeyVaultClientRotateKeyOptions{}
+func (r RotateKeyOptions) toGenerated() *generated.KeyVaultClientRotateKeyOptions {
+	return &generated.KeyVaultClientRotateKeyOptions{}
 }
 
 type RotateKeyResponse struct {
@@ -1307,8 +1307,8 @@ func (c *Client) RotateKey(ctx context.Context, name string, options *RotateKeyO
 // GetKeyRotationPolicyOptions contains the optional parameters for the Client.GetKeyRotationPolicy function
 type GetKeyRotationPolicyOptions struct{}
 
-func (g GetKeyRotationPolicyOptions) toGenerated() *internal.KeyVaultClientGetKeyRotationPolicyOptions {
-	return &internal.KeyVaultClientGetKeyRotationPolicyOptions{}
+func (g GetKeyRotationPolicyOptions) toGenerated() *generated.KeyVaultClientGetKeyRotationPolicyOptions {
+	return &generated.KeyVaultClientGetKeyRotationPolicyOptions{}
 }
 
 // GetKeyRotationPolicyResponse contains the response struct for the Client.GetKeyRotationPolicy function
@@ -1318,7 +1318,7 @@ type GetKeyRotationPolicyResponse struct {
 	RawResponse *http.Response
 }
 
-func getKeyRotationPolicyResponseFromGenerated(i internal.KeyVaultClientGetKeyRotationPolicyResponse) GetKeyRotationPolicyResponse {
+func getKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientGetKeyRotationPolicyResponse) GetKeyRotationPolicyResponse {
 	var acts []*LifetimeActions
 	for _, a := range i.LifetimeActions {
 		acts = append(acts, lifetimeActionsFromGenerated(a))
@@ -1391,12 +1391,12 @@ func (c *Client) ReleaseKey(ctx context.Context, name string, target string, opt
 		c.vaultUrl,
 		name,
 		options.Version,
-		internal.KeyReleaseParameters{
+		generated.KeyReleaseParameters{
 			Target: &target,
-			Enc:    (*internal.KeyEncryptionAlgorithm)(options.Enc),
+			Enc:    (*generated.KeyEncryptionAlgorithm)(options.Enc),
 			Nonce:  options.Nonce,
 		},
-		&internal.KeyVaultClientReleaseOptions{},
+		&generated.KeyVaultClientReleaseOptions{},
 	)
 
 	if err != nil {
@@ -1423,12 +1423,12 @@ type UpdateKeyRotationPolicyOptions struct {
 	ID *string `json:"id,omitempty" azure:"ro"`
 }
 
-func (u UpdateKeyRotationPolicyOptions) toGenerated() internal.KeyRotationPolicy {
-	var attribs *internal.KeyRotationPolicyAttributes
+func (u UpdateKeyRotationPolicyOptions) toGenerated() generated.KeyRotationPolicy {
+	var attribs *generated.KeyRotationPolicyAttributes
 	if u.Attributes != nil {
 		attribs = u.Attributes.toGenerated()
 	}
-	var la []*internal.LifetimeActions
+	var la []*generated.LifetimeActions
 	for _, l := range u.LifetimeActions {
 		if l == nil {
 			la = append(la, nil)
@@ -1437,7 +1437,7 @@ func (u UpdateKeyRotationPolicyOptions) toGenerated() internal.KeyRotationPolicy
 		}
 	}
 
-	return internal.KeyRotationPolicy{
+	return generated.KeyRotationPolicy{
 		ID:              u.ID,
 		LifetimeActions: la,
 		Attributes:      attribs,
@@ -1451,7 +1451,7 @@ type UpdateKeyRotationPolicyResponse struct {
 	RawResponse *http.Response
 }
 
-func updateKeyRotationPolicyResponseFromGenerated(i internal.KeyVaultClientUpdateKeyRotationPolicyResponse) UpdateKeyRotationPolicyResponse {
+func updateKeyRotationPolicyResponseFromGenerated(i generated.KeyVaultClientUpdateKeyRotationPolicyResponse) UpdateKeyRotationPolicyResponse {
 	var acts []*LifetimeActions
 	for _, a := range i.LifetimeActions {
 		acts = append(acts, lifetimeActionsFromGenerated(a))
@@ -1484,7 +1484,7 @@ func (c *Client) UpdateKeyRotationPolicy(ctx context.Context, name string, optio
 		c.vaultUrl,
 		name,
 		options.toGenerated(),
-		&internal.KeyVaultClientUpdateKeyRotationPolicyOptions{},
+		&generated.KeyVaultClientUpdateKeyRotationPolicyOptions{},
 	)
 
 	if err != nil {

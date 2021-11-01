@@ -4,28 +4,35 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/require"
+	"os"
 	"testing"
 	"time"
 )
 
 func TestDedicatedHostsClient_CreateOrUpdate(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
+	//stop := startTest(t)
+	//defer stop()
+	//
+	//cred, opt := authenticateTest(t)
+	//conn := arm.NewDefaultConnection(cred, opt)
+	//subscriptionID := recording.GetEnvVariable(t, "AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 
-	cred, opt := authenticateTest(t)
-	conn := arm.NewDefaultConnection(cred, opt)
-	subscriptionID := recording.GetEnvVariable(t, "AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	cred,err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+	conn := arm.NewDefaultConnection(cred,nil)
+	subscriptionID,ok := os.LookupEnv("AZURE_SUBSCRIPTION_ID")
+	require.Equal(t, true,ok)
 
 	// create resource group
 	rgName, err := createRandomName(t, "testRP")
 	require.NoError(t, err)
 	rgClient := armresources.NewResourceGroupsClient(conn, subscriptionID)
 	_, err = rgClient.CreateOrUpdate(context.Background(), rgName, armresources.ResourceGroup{
-		Location: to.StringPtr("westus2"),
+		Location: to.StringPtr("westus"),
 	}, nil)
 	defer cleanup(t, rgClient, rgName)
 	require.NoError(t, err)

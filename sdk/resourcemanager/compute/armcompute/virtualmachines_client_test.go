@@ -4,24 +4,29 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/require"
+	"os"
 	"testing"
 	"time"
 )
 
-var location = "westus"
-
 func TestVirtualMachinesClient_CreateOrUpdate(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
+	//stop := startTest(t)
+	//defer stop()
+	//
+	//cred, opt := authenticateTest(t)
+	//conn := arm.NewDefaultConnection(cred, opt)
+	//subscriptionID := recording.GetEnvVariable(t, "AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 
-	cred, opt := authenticateTest(t)
-	conn := arm.NewDefaultConnection(cred, opt)
-	subscriptionID := recording.GetEnvVariable(t, "AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	cred,err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+	conn := arm.NewDefaultConnection(cred,nil)
+	subscriptionID,ok := os.LookupEnv("AZURE_SUBSCRIPTION_ID")
+	require.Equal(t, true,ok)
 
 	// create resource group
 	rgName, err := createRandomName(t, "testRP")
@@ -43,7 +48,7 @@ func TestVirtualMachinesClient_CreateOrUpdate(t *testing.T) {
 		vnName,
 		armnetwork.VirtualNetwork{
 			Resource: armnetwork.Resource{
-				Location: to.StringPtr(location),
+				Location: to.StringPtr("westus2"),
 			},
 			Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 				AddressSpace: &armnetwork.AddressSpace{
@@ -91,7 +96,7 @@ func TestVirtualMachinesClient_CreateOrUpdate(t *testing.T) {
 		ipName,
 		armnetwork.PublicIPAddress{
 			Resource: armnetwork.Resource{
-				Location: to.StringPtr(location),
+				Location: to.StringPtr("westus2"),
 			},
 			Properties: &armnetwork.PublicIPAddressPropertiesFormat{
 				PublicIPAllocationMethod: armnetwork.IPAllocationMethodStatic.ToPtr(), // Static or Dynamic
@@ -114,7 +119,7 @@ func TestVirtualMachinesClient_CreateOrUpdate(t *testing.T) {
 		nsgName,
 		armnetwork.NetworkSecurityGroup{
 			Resource: armnetwork.Resource{
-				Location: to.StringPtr(location),
+				Location: to.StringPtr("westus2"),
 			},
 			Properties: &armnetwork.NetworkSecurityGroupPropertiesFormat{
 				SecurityRules: []*armnetwork.SecurityRule{
@@ -167,7 +172,7 @@ func TestVirtualMachinesClient_CreateOrUpdate(t *testing.T) {
 		nicName,
 		armnetwork.NetworkInterface{
 			Resource: armnetwork.Resource{
-				Location: to.StringPtr(location),
+				Location: to.StringPtr("westus2"),
 			},
 			Properties: &armnetwork.NetworkInterfacePropertiesFormat{
 				//NetworkSecurityGroup:
@@ -212,10 +217,10 @@ func TestVirtualMachinesClient_CreateOrUpdate(t *testing.T) {
 	vmPoller, err := vmClient.BeginCreateOrUpdate(
 		context.Background(),
 		rgName,
-		nsgName,
+		vmName,
 		armcompute.VirtualMachine{
 			Resource: armcompute.Resource{
-				Location: to.StringPtr(location),
+				Location: to.StringPtr("westus2"),
 			},
 			Identity: &armcompute.VirtualMachineIdentity{
 				Type: armcompute.ResourceIdentityTypeNone.ToPtr(),

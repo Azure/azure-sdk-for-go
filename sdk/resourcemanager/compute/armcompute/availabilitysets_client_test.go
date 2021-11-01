@@ -2,14 +2,13 @@ package armcompute_test
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/require"
-	"hash/fnv"
+	"os"
 	"testing"
 )
 
@@ -18,26 +17,26 @@ func cleanup(t *testing.T, client *armresources.ResourceGroupsClient, resourceGr
 	require.NoError(t, err)
 }
 
-func createRandomName(t *testing.T, prefix string) (string, error) {
-	h := fnv.New32a()
-	_, err := h.Write([]byte(t.Name()))
-	return prefix + fmt.Sprint(h.Sum32()), err
-}
-
 func TestAvailabilitySetsClient_CreateOrUpdate(t *testing.T) {
-	stop := startTest(t)
-	defer stop()
+	//stop := startTest(t)
+	//defer stop()
 
-	cred, opt := authenticateTest(t)
-	conn := arm.NewDefaultConnection(cred, opt)
-	subscriptionID := recording.GetEnvVariable(t, "AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	//cred, opt := authenticateTest(t)
+	//conn := arm.NewDefaultConnection(cred, opt)
+	//subscriptionID := recording.GetEnvVariable(t, "AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+
+	cred,err := azidentity.NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+	conn := arm.NewDefaultConnection(cred,nil)
+	subscriptionID,ok := os.LookupEnv("AZURE_SUBSCRIPTION_ID")
+	require.Equal(t, true,ok)
 
 	// create resource group
 	rgName, err := createRandomName(t, "testRP")
 	require.NoError(t, err)
 	rgClient := armresources.NewResourceGroupsClient(conn, subscriptionID)
 	_, err = rgClient.CreateOrUpdate(context.Background(), rgName, armresources.ResourceGroup{
-		Location: to.StringPtr("westus2"),
+		Location: to.StringPtr("westus"),
 	}, nil)
 	defer cleanup(t, rgClient, rgName)
 	require.NoError(t, err)
@@ -52,7 +51,7 @@ func TestAvailabilitySetsClient_CreateOrUpdate(t *testing.T) {
 		name,
 		armcompute.AvailabilitySet{
 			Resource: armcompute.Resource{
-				Location: to.StringPtr("<Azure location>"),
+				Location: to.StringPtr("westus"),
 			},
 			SKU: &armcompute.SKU{
 				Name: to.StringPtr(string(armcompute.AvailabilitySetSKUTypesAligned)),
@@ -65,5 +64,5 @@ func TestAvailabilitySetsClient_CreateOrUpdate(t *testing.T) {
 		nil,
 	)
 	require.NoError(t, err)
-	require.Equal(t, resp.Name, name)
+	require.Equal(t, *resp.Name, name)
 }

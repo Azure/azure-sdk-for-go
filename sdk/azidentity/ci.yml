@@ -21,9 +21,6 @@ pr:
     include:
     - sdk/azidentity/
 
-variables:
-  - group: 'Test Secrets for Go Identity Live Tests'
-
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
   parameters:

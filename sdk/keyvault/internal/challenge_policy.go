@@ -116,7 +116,8 @@ func (k KeyVaultChallengePolicy) parseTenant(url string) *string {
 // sets the k.scope and k.tenantID from the WWW-Authenticate header
 func (k *KeyVaultChallengePolicy) findScopeAndTenant(resp *http.Response) error {
 	authHeader := resp.Header.Get("WWW-Authenticate")
-	if authHeader == "" {
+	if authHeader == "" && k.scope == nil && k.tenantID == nil {
+		// No WWW-Authenticate and we don't already know the scope and tenatnID
 		k.scope = nil
 		k.tenantID = nil
 		return errors.New("response has no WWW-Authenticate header for challenge authentication")

@@ -10,7 +10,7 @@ package armiothub
 
 const (
 	module  = "armiothub"
-	version = "v0.1.1"
+	version = "v0.2.0"
 )
 
 // AccessRights - The permissions assigned to the shared access policy.
@@ -430,7 +430,7 @@ func (c PublicNetworkAccess) ToPtr() *PublicNetworkAccess {
 	return &c
 }
 
-// ResourceIdentityType - The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity
+// ResourceIdentityType - The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both an implicitly created identity
 // and a set of user assigned identities. The type 'None' will remove any
 // identities from the service.
 type ResourceIdentityType string
@@ -486,7 +486,9 @@ const (
 	RoutingSourceDeviceJobLifecycleEvents    RoutingSource = "DeviceJobLifecycleEvents"
 	RoutingSourceDeviceLifecycleEvents       RoutingSource = "DeviceLifecycleEvents"
 	RoutingSourceDeviceMessages              RoutingSource = "DeviceMessages"
+	RoutingSourceDigitalTwinChangeEvents     RoutingSource = "DigitalTwinChangeEvents"
 	RoutingSourceInvalid                     RoutingSource = "Invalid"
+	RoutingSourceMqttBrokerMessages          RoutingSource = "MqttBrokerMessages"
 	RoutingSourceTwinChangeEvents            RoutingSource = "TwinChangeEvents"
 )
 
@@ -497,7 +499,9 @@ func PossibleRoutingSourceValues() []RoutingSource {
 		RoutingSourceDeviceJobLifecycleEvents,
 		RoutingSourceDeviceLifecycleEvents,
 		RoutingSourceDeviceMessages,
+		RoutingSourceDigitalTwinChangeEvents,
 		RoutingSourceInvalid,
+		RoutingSourceMqttBrokerMessages,
 		RoutingSourceTwinChangeEvents,
 	}
 }

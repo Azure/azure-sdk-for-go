@@ -97,3 +97,14 @@ func (er *ExpiringResource) GetResource(state interface{}) (interface{}, error) 
 	}
 	return resource, err // Return the resource this thread/goroutine can use
 }
+
+func (er *ExpiringResource) Reset() {
+	// acquire exclusive lock
+	er.cond.L.Lock()
+
+	// Reset the expiration as if we never got this resource to begin with
+	er.expiration = time.Time{}
+
+	er.cond.L.Unlock() // Release the lock so no threads/goroutines are blocked
+	// er.cond.Broadcast() // JR doesn't think we need this, but it causes no harm
+}

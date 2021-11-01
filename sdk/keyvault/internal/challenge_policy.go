@@ -81,8 +81,8 @@ func (k *KeyVaultChallengePolicy) Do(req *policy.Request) (*http.Response, error
 
 	// If it fails and has a 401, try it with a new token
 	if resp.StatusCode == 401 {
-		// Force a new token by creating a brand new ExpiringResource
-		k.mainResource = NewExpiringResource(acquire)
+		// Force a new token
+		k.mainResource.Reset()
 
 		// Check for a new auth policy
 		err := k.findScopeAndTenant(resp)

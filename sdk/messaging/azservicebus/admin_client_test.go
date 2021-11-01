@@ -966,7 +966,13 @@ func TestAdminClient_UpdateSubscription(t *testing.T) {
 	require.Nil(t, updateResp)
 }
 
-func TestAdminClient_LackPermissions(t *testing.T) {
+func setupLowPrivTest(t *testing.T) *struct {
+	Client    *AdminClient
+	TopicName string
+	SubName   string
+	QueueName string
+	Cleanup   func()
+} {
 	adminClient, err := NewAdminClientWithConnectionString(getConnectionString(t), nil)
 	require.NoError(t, err)
 
@@ -1002,93 +1008,109 @@ func TestAdminClient_LackPermissions(t *testing.T) {
 			deleteQueue(t, adminClient, queueName)
 		}
 	}()
-	defer cleanup()
+
+	return &struct {
+		Client    *AdminClient
+		TopicName string
+		SubName   string
+		QueueName string
+		Cleanup   func()
+	}{
+		Client:    lowPrivAdminClient,
+		QueueName: queueName,
+		TopicName: topicName,
+		SubName:   subName,
+		Cleanup:   cleanup,
+	}
+}
+
+func TestAdminClient_LackPermissions_Queue(t *testing.T) {
+	testData := setupLowPrivTest(t)
+	defer testData.Cleanup()
 
 	ctx := context.Background()
-	wg := sync.WaitGroup{}
-	wg.Add(3)
 
-	go func() {
-		defer wg.Done()
+	_, err := testData.Client.GetQueue(ctx, "not-found-queue")
+	require.True(t, atom.NotFound(err))
 
-		_, err = lowPrivAdminClient.GetQueue(ctx, "not-found-queue")
-		require.True(t, atom.NotFound(err))
+	_, err = testData.Client.GetQueue(ctx, testData.QueueName)
+	require.Contains(t, err.Error(), "error code: 401, Details: Manage,EntityRead claims")
 
-		_, err = lowPrivAdminClient.GetQueue(ctx, queueName)
-		require.Contains(t, err.Error(), "error code: 401, Details: Manage,EntityRead claims")
+	pager := testData.Client.ListQueues(nil)
+	require.False(t, pager.NextPage(context.Background()))
+	require.Contains(t, pager.Err().Error(), "error code: 401, Details: Manage,EntityRead claims required for this operation")
 
-		pager := lowPrivAdminClient.ListQueues(nil)
-		require.False(t, pager.NextPage(context.Background()))
-		require.Contains(t, pager.Err().Error(), "error code: 401, Details: Manage,EntityRead claims required for this operation")
+	_, err = testData.Client.AddQueue(ctx, "canneverbecreated")
+	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityWrite")
 
-		_, err = lowPrivAdminClient.AddQueue(ctx, "canneverbecreated")
-		require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityWrite")
+	_, err = testData.Client.UpdateQueue(ctx, &QueueProperties{
+		Name: "canneverbecreated",
+	})
+	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityWrite")
 
-		_, err = lowPrivAdminClient.UpdateQueue(ctx, &QueueProperties{
-			Name: "canneverbecreated",
-		})
-		require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityWrite")
+	_, err = testData.Client.DeleteQueue(ctx, testData.QueueName)
+	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityDelete.")
+}
 
-		_, err = lowPrivAdminClient.DeleteQueue(ctx, queueName)
-		require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityDelete.")
-	}()
+func TestAdminClient_LackPermissions_Topic(t *testing.T) {
+	testData := setupLowPrivTest(t)
+	defer testData.Cleanup()
 
-	go func() {
-		defer wg.Done()
+	ctx := context.Background()
 
-		_, err = lowPrivAdminClient.GetTopic(ctx, "not-found-topic")
-		require.True(t, atom.NotFound(err))
+	_, err := testData.Client.GetTopic(ctx, "not-found-topic")
+	require.True(t, atom.NotFound(err))
 
-		_, err = lowPrivAdminClient.GetTopic(ctx, topicName)
-		require.Contains(t, err.Error(), "error code: 401, Details: Manage,EntityRead claims")
+	_, err = testData.Client.GetTopic(ctx, testData.TopicName)
+	require.Contains(t, err.Error(), "error code: 401, Details: Manage,EntityRead claims")
 
-		pager := lowPrivAdminClient.ListTopics(nil)
-		require.False(t, pager.NextPage(context.Background()))
-		require.Contains(t, pager.Err().Error(), "error code: 401, Details: Manage,EntityRead claims required for this operation")
+	pager := testData.Client.ListTopics(nil)
+	require.False(t, pager.NextPage(context.Background()))
+	require.Contains(t, pager.Err().Error(), "error code: 401, Details: Manage,EntityRead claims required for this operation")
 
-		_, err = lowPrivAdminClient.AddTopic(ctx, "canneverbecreated")
-		require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action")
+	_, err = testData.Client.AddTopic(ctx, "canneverbecreated")
+	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action")
 
-		_, err = lowPrivAdminClient.UpdateTopic(ctx, &TopicProperties{
-			Name: "canneverbecreated",
-		})
-		require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action")
+	_, err = testData.Client.UpdateTopic(ctx, &TopicProperties{
+		Name: "canneverbecreated",
+	})
+	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action")
 
-		_, err := lowPrivAdminClient.DeleteTopic(ctx, topicName)
-		require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityDelete.")
+	_, err = testData.Client.DeleteTopic(ctx, testData.TopicName)
+	require.Contains(t, err.Error(), "error code: 401, Details: Authorization failed for specified action: Manage,EntityDelete.")
 
-		// sanity check that the http response is getting bundled into these errors, should it be needed.
-		var httpResponse azcore.HTTPResponse
-		require.True(t, errors.As(err, &httpResponse))
-		require.EqualValues(t, http.StatusUnauthorized, httpResponse.RawResponse().StatusCode)
-	}()
+	// sanity check that the http response is getting bundled into these errors, should it be needed.
+	var httpResponse azcore.HTTPResponse
+	require.True(t, errors.As(err, &httpResponse))
+	require.EqualValues(t, http.StatusUnauthorized, httpResponse.RawResponse().StatusCode)
+}
 
-	go func() {
-		defer wg.Done()
+func TestAdminClient_LackPermissions_Subscription(t *testing.T) {
+	testData := setupLowPrivTest(t)
+	defer testData.Cleanup()
 
-		_, err = lowPrivAdminClient.GetSubscription(ctx, topicName, "not-found-sub")
-		require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'GetSubscription'")
+	ctx := context.Background()
 
-		_, err = lowPrivAdminClient.GetSubscription(ctx, topicName, subName)
-		require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'GetSubscription'")
+	_, err := testData.Client.GetSubscription(ctx, testData.TopicName, "not-found-sub")
+	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'GetSubscription'")
 
-		pager := lowPrivAdminClient.ListSubscriptions(topicName, nil)
-		require.False(t, pager.NextPage(context.Background()))
-		require.Contains(t, pager.Err().Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'EnumerateSubscriptions' operation")
+	_, err = testData.Client.GetSubscription(ctx, testData.TopicName, testData.SubName)
+	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'GetSubscription'")
 
-		_, err = lowPrivAdminClient.AddSubscription(ctx, topicName, "canneverbecreated")
-		require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'CreateOrUpdateSubscription'")
+	pager := testData.Client.ListSubscriptions(testData.TopicName, nil)
+	require.False(t, pager.NextPage(context.Background()))
+	require.Contains(t, pager.Err().Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'EnumerateSubscriptions' operation")
 
-		_, err = lowPrivAdminClient.UpdateSubscription(ctx, topicName, &SubscriptionProperties{
-			Name: "canneverbecreated",
-		})
-		require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'CreateOrUpdateSubscription'")
+	_, err = testData.Client.AddSubscription(ctx, testData.TopicName, "canneverbecreated")
+	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'CreateOrUpdateSubscription'")
 
-		_, err := lowPrivAdminClient.DeleteSubscription(ctx, topicName, subName)
-		require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'DeleteSubscription'")
-	}()
+	_, err = testData.Client.UpdateSubscription(ctx, testData.TopicName, &SubscriptionProperties{
+		Name: "canneverbecreated",
+	})
+	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'CreateOrUpdateSubscription'")
 
-	wg.Wait()
+	_, err = testData.Client.DeleteSubscription(ctx, testData.TopicName, testData.SubName)
+	require.Contains(t, err.Error(), "401 SubCode=40100: Unauthorized : Unauthorized access for 'DeleteSubscription'")
 }
 
 func toDurationPtr(d time.Duration) *time.Duration {
